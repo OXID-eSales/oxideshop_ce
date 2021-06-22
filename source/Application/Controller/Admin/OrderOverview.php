@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin order overview manager.
@@ -124,7 +122,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
                 }
             }
 
-            if (($blMail = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sendmail"))) {
+            if (($blMail = Registry::getRequest()->getRequestEscapedParameter("sendmail"))) {
                 // send eMail
                 $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $oEmail->sendSendedNowMail($oOrder);

@@ -8,10 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxConfig;
 use oxAdminDetails;
-use oxException;
 
 /**
  * Admin article main deliveryset manager.
@@ -91,7 +88,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sModule = $this->_getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = $myConfig->getRequestParameter($sParam);
+            $aConfVars = Registry::getRequest()->getRequestEscapedParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $myConfig->saveShopConfVar(

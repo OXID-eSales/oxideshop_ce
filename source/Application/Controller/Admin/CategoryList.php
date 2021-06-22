@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -40,7 +39,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      */
     public function getListSorting()
     {
-        $sSortParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
+        $sSortParameter = Registry::getRequest()->getRequestEscapedParameter('sort');
         if ($this->_aCurrSorting === null && !$sSortParameter && ($oBaseObject = $this->getItemListBaseObject())) {
             $sCatView = $oBaseObject->getCoreTableName();
 

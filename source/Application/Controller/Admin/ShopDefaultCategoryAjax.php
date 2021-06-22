@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class controls article assignment to attributes
@@ -37,7 +36,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-        $oCat->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
+        $oCat->setLanguage(Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
 
         $sCategoriesTable = $oCat->getViewName();
 
@@ -49,7 +48,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
      */
     public function unassignCat()
     {
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sShopId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field('');
@@ -62,8 +61,8 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
      */
     public function assignCat()
     {
-        $sChosenCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcatid');
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sChosenCat = Registry::getRequest()->getRequestEscapedParameter('oxcatid');
+        $sShopId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field($sChosenCat);

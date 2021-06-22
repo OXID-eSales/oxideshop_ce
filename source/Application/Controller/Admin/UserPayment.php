@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin user payment settings manager.
@@ -90,8 +90,8 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
-            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-            $aDynvalues = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("dynvalue");
+            $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
+            $aDynvalues = Registry::getRequest()->getRequestEscapedParameter("dynvalue");
 
             if (isset($aDynvalues)) {
                 // store the dynvalues
@@ -113,7 +113,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function delPayment()
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
             if ($aParams['oxuserpayments__oxid'] != "-1") {
@@ -153,7 +153,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function getPaymentId()
     {
         if ($this->_sPaymentId == null) {
-            $this->_sPaymentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxpaymentid");
+            $this->_sPaymentId = Registry::getRequest()->getRequestEscapedParameter("oxpaymentid");
             if (!$this->_sPaymentId || $this->_blDelete) {
                 if ($oUser = $this->getUser()) {
                     $oUserPayments = $oUser->getUserPayments();

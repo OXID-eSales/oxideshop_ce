@@ -7,10 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxUtilsDate;
-use oxRegistry;
-use oxField;
-use oxPaymentList;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article main order manager.
@@ -94,7 +91,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($soxId != "-1") {
@@ -116,7 +113,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         }
 
         //change payment
-        $sPayId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("setPayment");
+        $sPayId = Registry::getRequest()->getRequestEscapedParameter("setPayment");
         if (!empty($sPayId) && ($sPayId != $oOrder->oxorder__oxpaymenttype->value)) {
             $aParams['oxorder__oxpaymenttype'] = $sPayId;
             $needOrderRecalculate = true;
@@ -124,7 +121,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
         $oOrder->assign($aParams);
 
-        $aDynvalues = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("dynvalue");
+        $aDynvalues = Registry::getRequest()->getRequestEscapedParameter("dynvalue");
         if (isset($aDynvalues)) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
             $oPayment->load($oOrder->oxorder__oxpaymentid->value);
@@ -133,7 +130,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $needOrderRecalculate = true;
         }
         //change delivery set
-        $sDelSetId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("setDelSet");
+        $sDelSetId = Registry::getRequest()->getRequestEscapedParameter("setDelSet");
         if (!empty($sDelSetId) && ($sDelSetId != $oOrder->oxorder__oxdeltype->value)) {
             $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
             $oOrder->setDelivery($sDelSetId);
@@ -170,7 +167,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
             // #1071C
             $oOrder->getOrderArticles(true);
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sendmail")) {
+            if (Registry::getRequest()->getRequestEscapedParameter("sendmail")) {
                 // send eMail
                 $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $oEmail->sendSendedNowMail($oOrder);

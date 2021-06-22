@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * General export class.
@@ -137,7 +136,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
             $this->stop(ERR_FILEIO);
         } else {
             // file is open
-            $iStart = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
+            $iStart = Registry::getRequest()->getRequestEscapedParameter("iStart");
             if (!$iStart) {
                 ftruncate($this->fpFile, 0);
             }

@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages discount countries
@@ -47,8 +46,8 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -71,9 +70,8 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function removeDiscCountry()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aChosenCntr = $this->_getActionIds('oxobject2discount.oxid');
-        if ($oConfig->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
@@ -87,11 +85,10 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function addDiscCountry()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }

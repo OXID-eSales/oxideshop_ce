@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
 use OxidEsales\Facts\Facts;
@@ -205,7 +206,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewParameter($sKey)
     {
-        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sKey);
+        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : Registry::getRequest()->getRequestEscapedParameter($sKey);
     }
 
     /**
@@ -297,7 +298,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
         if ($sBelboon = $session->getVariable('belboon')) {
             return $sBelboon;
         }
-        if (($sBelboon = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('belboon'))) {
+        if (($sBelboon = Registry::getRequest()->getRequestEscapedParameter('belboon'))) {
             $session->setVariable('belboon', $sBelboon);
         }
 
@@ -587,7 +588,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             $this->dispatchEvent(new AfterRequestProcessedEvent());
 
             //#M341 do not add redirect parameter
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) Registry::getRequest()->getRequestEscapedParameter('redirected'), 302);
         }
     }
 
@@ -781,7 +782,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getCategoryId()
     {
-        if ($this->_sCategoryId == null && ($sCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid'))) {
+        if ($this->_sCategoryId == null && ($sCatId = Registry::getRequest()->getRequestEscapedParameter('cnid'))) {
             $this->_sCategoryId = $sCatId;
         }
 

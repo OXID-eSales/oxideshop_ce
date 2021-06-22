@@ -7,10 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxException;
-use oxExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Article file download page.
@@ -34,7 +31,7 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function render()
     {
-        $sFileOrderId = Registry::getConfig()->getRequestParameter('sorderfileid');
+        $sFileOrderId = Registry::getRequest()->getRequestEscapedParameter('sorderfileid');
 
         if ($sFileOrderId) {
             $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);

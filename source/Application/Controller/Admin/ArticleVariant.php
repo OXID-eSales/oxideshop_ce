@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -111,8 +110,8 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function savevariant($sOXID = null, $aParams = null)
     {
         if (!isset($sOXID) && !isset($aParams)) {
-            $sOXID = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("voxid");
-            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+            $sOXID = Registry::getRequest()->getRequestEscapedParameter("voxid");
+            $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         }
 
         // varianthandling
@@ -209,7 +208,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function savevariants()
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aVarParams) {
                 $this->savevariant($soxId, $aVarParams);
@@ -235,7 +234,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $this->resetContentCache();
 
-        $variantOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestRawParameter("voxid");
+        $variantOxid = Registry::getRequest()->getRequestParameter("voxid");
         $variant = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $variant->delete($variantOxid);
     }
@@ -246,7 +245,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function changename()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $this->resetContentCache();
 
@@ -278,7 +277,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
             $this->resetContentCache();
 
-            if ($aSels = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("allsel")) {
+            if ($aSels = Registry::getRequest()->getRequestEscapedParameter("allsel")) {
                 $oVariantHandler = oxNew(\OxidEsales\Eshop\Application\Model\VariantHandler::class);
                 $oVariantHandler->genVariantFromSell($aSels, $oArticle);
             }

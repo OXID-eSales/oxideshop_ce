@@ -7,14 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
 use stdClass;
-use oxList;
-use oxBase;
-use oxI18n;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin selectlist list manager.
@@ -127,7 +122,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     public function getListSorting()
     {
         if ($this->_aCurrSorting === null) {
-            $this->_aCurrSorting = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
+            $this->_aCurrSorting = Registry::getRequest()->getRequestEscapedParameter('sort');
 
             if (!$this->_aCurrSorting && $this->_sDefSortField && ($baseObject = $this->getItemListBaseObject())) {
                 $this->_aCurrSorting[$baseObject->getCoreTableName()] = [$this->_sDefSortField => "asc"];
@@ -200,7 +195,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _getUserDefListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_iViewListSize) {
-            if (!($viewListSize = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('viewListSize'))) {
+            if (!($viewListSize = (int)Registry::getRequest()->getRequestEscapedParameter('viewListSize'))) {
                 $viewListSize = $this->_iDefViewListSize;
             }
             $this->_iViewListSize = $viewListSize;
@@ -287,7 +282,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $adminListSize = $this->_getViewListSize();
 
-        $jumpToPage = $page ? ((int)$page) : ((int)((int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lstrt')) / $adminListSize);
+        $jumpToPage = $page ? ((int)$page) : ((int)((int)Registry::getRequest()->getRequestEscapedParameter('lstrt')) / $adminListSize);
         $jumpToPage = ($page && $jumpToPage) ? ($jumpToPage - 1) : $jumpToPage;
 
         $jumpToPage = $jumpToPage * $adminListSize;
@@ -321,7 +316,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $listItem = $this->getItemListBaseObject();
             $languageId = $listItem->isMultilang() ? $listItem->getLanguage() : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
-            $descending = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('adminorder');
+            $descending = Registry::getRequest()->getRequestEscapedParameter('adminorder');
             $descending = $descending !== null ? (bool)$descending : $this->_blDesc;
 
             foreach ($sortFields as $table => $fieldData) {
@@ -706,7 +701,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                 $position = $this->_iOverPos;
                 $this->_iOverPos = null;
             } else {
-                $position = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lstrt');
+                $position = Registry::getRequest()->getRequestEscapedParameter('lstrt');
             }
 
             if (!$position) {
@@ -750,7 +745,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
                 $activeTab = $this->_iDefEdit;
             } else {
                 // active tab
-                $activeTab = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actedit');
+                $activeTab = Registry::getRequest()->getRequestEscapedParameter('actedit');
                 $activeTab = $activeTab ? $activeTab : $this->_iDefEdit;
             }
 
@@ -807,7 +802,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $this->_calcListItemsCount($query);
 
             // setting current list position (page)
-            $this->_setCurrentListPosition(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('jumppage'));
+            $this->_setCurrentListPosition(Registry::getRequest()->getRequestEscapedParameter('jumppage'));
 
             // setting addition params for list: current list size
             $this->_oList->setSqlLimit($this->_iCurrListPos, $this->_getViewListSize());

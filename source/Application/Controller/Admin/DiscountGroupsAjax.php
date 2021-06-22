@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages discount groups
@@ -45,12 +44,11 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -79,7 +77,7 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
-        if ($config->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         } elseif ($groupIds && is_array($groupIds)) {
@@ -94,11 +92,10 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function addDiscGroup()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $groupIds = $this->_getActionIds('oxgroups.oxid');
-        $discountId = $config->getRequestParameter('synchoxid');
+        $discountId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        if ($config->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $groupTable = $this->_getViewName('oxgroups');
             $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
         }

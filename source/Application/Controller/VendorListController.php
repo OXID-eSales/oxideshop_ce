@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-use oxUBase;
-use oxVendorList;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * List of articles for a selected vendor.
@@ -303,7 +301,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     protected function _getVendorId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
+        return Registry::getRequest()->getRequestEscapedParameter('cnid');
     }
 
     /**

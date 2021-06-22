@@ -14,7 +14,6 @@ use OxidEsales\Eshop\Application\Model\SimpleVariantList;
 use OxidEsales\Eshop\Application\Model\Vendor;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
@@ -331,7 +330,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+            $sListType = Registry::getRequest()->getRequestEscapedParameter('listtype');
             if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
@@ -815,7 +814,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
+            $aParams = Registry::getRequest()->getRequestEscapedParameter('pa');
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
@@ -835,12 +834,12 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         $oProduct = $this->getProduct();
         $sParentIdField = 'oxarticles__oxparentid';
         if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
-            $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
+            $sVarSelId = Registry::getRequest()->getRequestEscapedParameter("varselid");
 
             return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid"));
+        return $oProduct->getVariantSelections(Registry::getRequest()->getRequestEscapedParameter("varselid"));
     }
 
     /**
@@ -876,7 +875,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                 //as blLoadVariants = false affect "ab price" functionality
                 $myConfig->setConfigParam('blLoadVariants', true);
 
-                $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
+                $sOxid = Registry::getRequest()->getRequestEscapedParameter('anid');
 
                 // object is not yet loaded
                 $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -886,7 +885,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                     $myUtils->showMessageAndExit('');
                 }
 
-                $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
+                $sVarSelId = Registry::getRequest()->getRequestEscapedParameter("varselid");
                 $aVarSelections = $this->_oProduct->getVariantSelections($sVarSelId);
                 if ($aVarSelections && $aVarSelections['oActiveVariant'] && $aVarSelections['blPerfectFit']) {
                     $this->_oProduct = $aVarSelections['oActiveVariant'];

@@ -1315,7 +1315,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         // simple check if nothing was changed ...
-        $this->assertEquals((int) $oConfig->getRequestParameter('currency'), $oConfig->getShopCurrency());
+        $this->assertEquals((int) \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestEscapedParameter('currency'), $oConfig->getShopCurrency());
     }
 
 
@@ -1744,18 +1744,16 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetRequestParameterEscaped()
     {
-        $config = oxNew('oxConfig');
         $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('&amp;testValue', $config->getRequestParameter('testParameterKey'));
+        $this->assertEquals('&amp;testValue', Registry::getRequest()->getRequestEscapedParameter('testParameterKey'));
     }
 
     public function testGetRequestParameterRaw()
     {
-        $config = oxNew('oxConfig');
         $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('&testValue', $config->getRequestParameter('testParameterKey', true));
+        $this->assertEquals('&testValue', Registry::getRequest()->getRequestParameter('testParameterKey'));
     }
 
     public function testGetEdition()

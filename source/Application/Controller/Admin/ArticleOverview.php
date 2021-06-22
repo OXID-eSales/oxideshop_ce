@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article overview manager.
@@ -143,7 +142,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function updateArticle($article, $oxId)
     {
-        $article->loadInLang(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage"), $oxId);
+        $article->loadInLang(Registry::getRequest()->getRequestEscapedParameter("editlanguage"), $oxId);
 
         return $article;
     }

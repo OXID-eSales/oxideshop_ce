@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article images gallery popup window.
@@ -77,7 +77,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
             if ($aPicGallery['ZoomPic']) {
-                $sActPicId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actpicid');
+                $sActPicId = Registry::getRequest()->getRequestEscapedParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
@@ -116,7 +116,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
     {
         if ($this->_oProduct === null) {
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-            $oArticle->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'));
+            $oArticle->load(Registry::getRequest()->getRequestEscapedParameter('anid'));
             $this->_oProduct = $oArticle;
         }
 

@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin shop system RDFa manager.
@@ -51,7 +50,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
                 AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
                 AND OXSHOPID = :OXSHOPID
              ORDER BY OXLOADID ASC",
-            [':OXSHOPID' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")]
+            [':OXSHOPID' => Registry::getRequest()->getRequestEscapedParameter("oxid")]
         );
 
         return $oContentList;

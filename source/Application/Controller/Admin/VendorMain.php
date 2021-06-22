@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 use stdClass;
 
 /**
@@ -73,7 +72,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             }
         }
 
-        if (Registry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             $oVendorMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class);
             $this->_aViewData['oxajax'] = $oVendorMainAjax->getColumns();
 
@@ -93,7 +92,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         if (!isset($aParams['oxvendor__oxactive'])) {
             $aParams['oxvendor__oxactive'] = 0;
@@ -129,7 +128,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         if (!isset($aParams['oxvendor__oxactive'])) {
             $aParams['oxvendor__oxactive'] = 0;

@@ -139,12 +139,12 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $blAdmin = $this->isAdmin();
 
             // languages and search engines
-            if ($blAdmin && (($iSeLang = Registry::getConfig()->getRequestParameter('changelang')) !== null)) {
+            if ($blAdmin && (($iSeLang = Registry::getRequest()->getRequestEscapedParameter('changelang')) !== null)) {
                 $this->_iBaseLanguageId = $iSeLang;
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('lang');
+                $this->_iBaseLanguageId = Registry::getRequest()->getRequestEscapedParameter('lang');
             }
 
             //or determining by domain
@@ -160,7 +160,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('language');
+                $this->_iBaseLanguageId = Registry::getRequest()->getRequestEscapedParameter('language');
                 if (!isset($this->_iBaseLanguageId)) {
                     $this->_iBaseLanguageId = Registry::getSession()->getVariable('language');
                 }
@@ -249,9 +249,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 // choosing language ident
                 // check if we really need to set the new language
                 if ("saveinnlang" == Registry::getConfig()->getActiveView()->getFncName()) {
-                    $iLang = Registry::getConfig()->getRequestParameter("new_lang");
+                    $iLang = Registry::getRequest()->getRequestEscapedParameter("new_lang");
                 }
-                $iLang = ($iLang === null) ? Registry::getConfig()->getRequestParameter('editlanguage') : $iLang;
+                $iLang = ($iLang === null) ? Registry::getRequest()->getRequestEscapedParameter('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? Registry::getSession()->getVariable('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? $this->getBaseLanguage() : $iLang;
 

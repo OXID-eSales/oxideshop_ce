@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 use Exception;
 
@@ -89,7 +89,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         if (!$this->_allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             $oUserMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserMainAjax::class);
             $this->_aViewData['oxajax'] = $oUserMainAjax->getColumns();
 
@@ -111,7 +111,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         //allow admin information edit only for MALL admins
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
-            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+            $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
             // checkbox handling
             if (!isset($aParams['oxuser__oxactive'])) {
@@ -126,7 +126,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             }
 
             //setting new password
-            if (($sNewPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("newPassword"))) {
+            if (($sNewPass = Registry::getRequest()->getRequestEscapedParameter("newPassword"))) {
                 $oUser->setPassword($sNewPass);
             }
 

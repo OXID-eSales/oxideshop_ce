@@ -13,7 +13,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
-use OxidEsales\Eshop\Core\Request;
 use Exception;
 use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
 use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
@@ -194,9 +193,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function login()
     {
-        $sUser = Registry::getConfig()->getRequestParameter('lgn_usr');
-        $sPassword = Registry::getConfig()->getRequestParameter('lgn_pwd', true);
-        $sCookie = Registry::getConfig()->getRequestParameter('lgn_cook');
+        $sUser = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $sPassword = Registry::getRequest()->getRequestParameter('lgn_pwd');
+        $sCookie = Registry::getRequest()->getRequestEscapedParameter('lgn_cook');
 
         $this->setLoginStatus(USER_LOGIN_FAIL);
 
@@ -265,7 +264,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function login_noredirect() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
-        $blAgb = Registry::getConfig()->getRequestParameter('ord_agb');
+        $blAgb = Registry::getRequest()->getRequestEscapedParameter('ord_agb');
 
         if ($this->getParent()->isEnabledPrivateSales() && $blAgb !== null && ($oUser = $this->getUser())) {
             if ($blAgb) {
@@ -346,7 +345,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
 
             // redirecting if user logs out in SSL mode
-            if (Registry::getConfig()->getRequestParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
                 Registry::getUtils()->redirect($this->_getLogoutLink());
             }
         }
@@ -416,22 +415,22 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
+        if ($blActiveLogin && !Registry::getRequest()->getRequestEscapedParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
             Registry::getUtilsView()->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
             return false;
         }
 
         // collecting values to check
-        $sUser = $oConfig->getRequestParameter('lgn_usr');
+        $sUser = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
 
         // first pass
-        $sPassword = $oConfig->getRequestParameter('lgn_pwd', true);
+        $sPassword = Registry::getRequest()->getRequestParameter('lgn_pwd');
 
         // second pass
-        $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
+        $sPassword2 = Registry::getRequest()->getRequestParameter('lgn_pwd2');
 
-        $aInvAdress = $oConfig->getRequestParameter('invadr', true);
+        $aInvAdress = Registry::getRequest()->getRequestParameter('invadr');
 
         $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
         $aInvAdress = $this->trimAddress($aInvAdress);
@@ -489,7 +488,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
 
             // assigning to newsletter
-            $blOptin = Registry::getConfig()->getRequestParameter('blnewssubscribed');
+            $blOptin = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
             if ($blOptin && $iSubscriptionStatus == 1) {
                 // if user was assigned to newsletter
                 // and is creating account with newsletter checked,
@@ -528,7 +527,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             // order remark
             //V #427: order remark for new users
-            $sOrderRemark = Registry::getConfig()->getRequestParameter('order_remark', true);
+            $sOrderRemark = Registry::getRequest()->getRequestParameter('order_remark');
             if ($sOrderRemark) {
                 Registry::getSession()->setVariable('ordrem', $sOrderRemark);
             }
@@ -536,7 +535,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // send register eMail
         //TODO: move into user
-        if ((int) Registry::getConfig()->getRequestParameter('option') == 3) {
+        if ((int) Registry::getRequest()->getRequestEscapedParameter('option') == 3) {
             $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             if ($blActiveLogin) {
                 $oxEMail->sendRegisterConfirmEmail($oUser);
@@ -595,8 +594,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
-        $request = oxNew(Request::class);
-        $addressId = $request->getRequestParameter('oxaddressid');
+        $addressId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
 
         $address = oxNew(Address::class);
         $address->load($addressId);
@@ -642,7 +640,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $oSession = Registry::getSession();
 
-        $blShow = Registry::getConfig()->getRequestParameter('blshowshipaddress');
+        $blShow = Registry::getRequest()->getRequestEscapedParameter('blshowshipaddress');
         if (!isset($blShow)) {
             $blShow = $oSession->getVariable('blshowshipaddress');
         }
@@ -683,7 +681,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aDelAdress = $this->trimAddress($aDelAdress);
 
         // if user company name, user name and additional info has special chars
-        $aInvAdress = Registry::getConfig()->getRequestParameter('invadr', true);
+        $aInvAdress = Registry::getRequest()->getRequestParameter('invadr');
         $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
         $aInvAdress = $this->trimAddress($aInvAdress);
 
@@ -700,7 +698,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
-            if (($blOptin = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($blOptin = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed')) === null) {
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
             // check if email address changed, if so, force check newsletter subscription settings.
@@ -731,7 +729,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->resetPermissions();
 
         // order remark
-        $sOrderRemark = Registry::getConfig()->getRequestParameter('order_remark', true);
+        $sOrderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
             $session->setVariable('ordrem', $sOrderRemark);
@@ -757,9 +755,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if user company name, user name and additional info has special chars
-        $blShowShipAddressParameter = Registry::getConfig()->getRequestParameter('blshowshipaddress');
+        $blShowShipAddressParameter = Registry::getRequest()->getRequestEscapedParameter('blshowshipaddress');
         $blShowShipAddressVariable = Registry::getSession()->getVariable('blshowshipaddress');
-        $sDeliveryAddressParameter = Registry::getConfig()->getRequestParameter('deladr', true);
+        $sDeliveryAddressParameter = Registry::getRequest()->getRequestParameter('deladr', true);
         $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : [];
         $aDelAdress = $aDeladr;
 
@@ -785,27 +783,27 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
 
         $sLogoutLink = $oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl();
         $sLogoutLink .= 'cl=' . $oConfig->getRequestControllerId() . $this->getParent()->getDynUrlParams();
-        if ($sParam = $oConfig->getRequestParameter('anid')) {
+        if ($sParam = Registry::getRequest()->getRequestEscapedParameter('anid')) {
             $sLogoutLink .= '&amp;anid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('cnid')) {
+        if ($sParam = Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             $sLogoutLink .= '&amp;cnid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('mnid')) {
+        if ($sParam = Registry::getRequest()->getRequestEscapedParameter('mnid')) {
             $sLogoutLink .= '&amp;mnid=' . $sParam;
         }
-        if ($sParam = basename($oConfig->getRequestParameter('tpl'))) {
+        if ($sParam = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
             $sLogoutLink .= '&amp;tpl=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('oxloadid')) {
+        if ($sParam = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
             $sLogoutLink .= '&amp;oxloadid=' . $sParam;
         }
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        if ($sParam = $oConfig->getRequestParameter('recommid')) {
+        if ($sParam = Registry::getRequest()->getRequestEscapedParameter('recommid')) {
             $sLogoutLink .= '&amp;recommid=' . $sParam;
         }
         // END deprecated
@@ -843,7 +841,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $sSu = Registry::getSession()->getVariable('su');
 
-        if (!$sSu && ($sSuNew = Registry::getConfig()->getRequestParameter('su'))) {
+        if (!$sSu && ($sSuNew = Registry::getRequest()->getRequestEscapedParameter('su'))) {
             Registry::getSession()->setVariable('su', $sSuNew);
         }
     }
@@ -854,7 +852,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function setRecipient()
     {
         $sRe = Registry::getSession()->getVariable('re');
-        if (!$sRe && ($sReNew = Registry::getConfig()->getRequestParameter('re'))) {
+        if (!$sRe && ($sReNew = Registry::getRequest()->getRequestEscapedParameter('re'))) {
             Registry::getSession()->setVariable('re', $sReNew);
         }
     }

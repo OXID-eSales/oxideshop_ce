@@ -7,9 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use Exception;
 use OxidEsales\Eshop\Core\Str;
 use stdClass;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * General utils class
@@ -772,7 +772,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $blCan = null;
         if (
-            ($sPrevId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('preview')) &&
+            ($sPrevId = Registry::getRequest()->getRequestEscapedParameter('preview')) &&
             ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $sTable = getViewName('oxuser');
@@ -850,7 +850,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $sRights);
 
                         // check if this subshop admin is evil.
-                        if ('chshp' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc')) {
+                        if ('chshp' == Registry::getRequest()->getRequestEscapedParameter('fnc')) {
                             // dont allow this call
                             $blIsAuth = false;
                         } else {
@@ -858,7 +858,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
                             $aShopIdVars = ['actshop', 'shp', 'currentadminshop'];
                             foreach ($aShopIdVars as $sShopIdVar) {
-                                if ($sGotShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sShopIdVar)) {
+                                if ($sGotShop = Registry::getRequest()->getRequestEscapedParameter($sShopIdVar)) {
                                     if ($sGotShop != $sRights) {
                                         $blIsAuth = false;
                                         break;
@@ -994,7 +994,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ($blAddRedirectParam && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('redirected')) {
+        if ($blAddRedirectParam && Registry::getRequest()->getRequestEscapedParameter('redirected')) {
             return;
         }
 

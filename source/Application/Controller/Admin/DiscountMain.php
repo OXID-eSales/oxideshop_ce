@@ -8,8 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Exception\InputException;
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -63,7 +62,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
         }
 
-        if (($iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc"))) {
+        if (($iAoc = Registry::getRequest()->getRequestEscapedParameter("aoc"))) {
             if ($iAoc == "1") {
                 $oDiscountMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountMainAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
@@ -117,7 +116,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {
@@ -172,7 +171,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {

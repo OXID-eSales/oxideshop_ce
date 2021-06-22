@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxStr;
+use OxidEsales\Eshop\Core\Registry;
 use Exception;
 use OxidEsales\Eshop\Core\Str;
 
@@ -47,7 +45,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
-            $sUpdateSQL = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("updatesql");
+            $sUpdateSQL = Registry::getRequest()->getRequestEscapedParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {

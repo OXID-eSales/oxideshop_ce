@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 use Exception;
 
 /**
@@ -48,8 +46,8 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $sArtViewName = $this->_getViewName('oxarticles');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchArtId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
         $sQ = "select oxparentid from {$sArtViewName} where oxid = :oxid and oxparentid != '' ";
@@ -83,7 +81,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function removeSel()
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
@@ -93,7 +91,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
 
-        $articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $articleId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $this->onArticleSelectionListChange($articleId);
     }
 
@@ -105,10 +103,10 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function addSel()
     {
         $aAddSel = $this->_getActionIds('oxselectlist.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sSLViewName = $this->_getViewName('oxselectlist');
             $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }

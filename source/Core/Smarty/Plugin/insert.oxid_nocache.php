@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Smarty plugin
  * -------------------------------------------------------------
@@ -24,14 +26,14 @@ function smarty_insert_oxid_nocache($params, &$smarty)
     $smarty->caching = false;
 
     // #1184M - specialchar search
-    $sSearchParamForHTML = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchparam");
-    $sSearchParamForLink = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchparam", true));
+    $sSearchParamForHTML = Registry::getRequest()->getRequestEscapedParameter("searchparam");
+    $sSearchParamForLink = rawurlencode(Registry::getRequest()->getRequestParameter("searchparam"));
     if ($sSearchParamForHTML) {
         $smarty->assign_by_ref("searchparamforhtml", $sSearchParamForHTML);
         $smarty->assign_by_ref("searchparam", $sSearchParamForLink);
     }
 
-    $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchcnid");
+    $sSearchCat = Registry::getRequest()->getRequestEscapedParameter("searchcnid");
     if ($sSearchCat) {
         $smarty->assign_by_ref("searchcnid", rawurldecode($sSearchCat));
     }

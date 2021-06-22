@@ -7,17 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxAddress;
-use oxArticleInputException;
-use oxBasket;
-use oxBasketContentMarkGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
-use oxNoArticleException;
-use oxOrder;
-use oxOutOfStockException;
-use oxRegistry;
-use oxUtilsObject;
 use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 
 /**
@@ -457,7 +448,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function getAddressError()
     {
-        return Registry::getConfig()->getRequestParameter('iAddressError');
+        return Registry::getRequest()->getRequestEscapedParameter('iAddressError');
     }
 
     /**
@@ -555,19 +546,19 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         $blValid = true;
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if ($oConfig->getConfigParam('blConfirmAGB') && !$oConfig->getRequestParameter('ord_agb')) {
+        if ($oConfig->getConfigParam('blConfirmAGB') && !Registry::getRequest()->getRequestEscapedParameter('ord_agb')) {
             $blValid = false;
         }
 
         if ($oConfig->getConfigParam('blEnableIntangibleProdAgreement')) {
             $oBasket = $this->getBasket();
 
-            $blDownloadableProductsAgreement = $oConfig->getRequestParameter('oxdownloadableproductsagreement');
+            $blDownloadableProductsAgreement = Registry::getRequest()->getRequestEscapedParameter('oxdownloadableproductsagreement');
             if ($blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$blDownloadableProductsAgreement) {
                 $blValid = false;
             }
 
-            $blServiceProductsAgreement = $oConfig->getRequestParameter('oxserviceproductsagreement');
+            $blServiceProductsAgreement = Registry::getRequest()->getRequestEscapedParameter('oxserviceproductsagreement');
             if ($blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$blServiceProductsAgreement) {
                 $blValid = false;
             }

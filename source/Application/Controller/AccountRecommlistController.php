@@ -7,11 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use oxObjectException;
-use oxRegistry;
 
 /**
  * Current user recommlist manager.
@@ -185,7 +182,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
 
             if (
                 ($oUser = $this->getUser()) &&
-                ($sRecommId = Registry::getConfig()->getRequestParameter('recommid'))
+                ($sRecommId = Registry::getRequest()->getRequestEscapedParameter('recommid'))
             ) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $sUserIdField = 'oxrecommlists__oxuserid';
@@ -232,9 +229,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim((string) Registry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim((string) Registry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim((string) Registry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim((string) Registry::getRequest()->getRequestParameter('recomm_title'));
+            $sAuthor = trim((string) Registry::getRequest()->getRequestParameter('recomm_author'));
+            $sText = trim((string) Registry::getRequest()->getRequestParameter('recomm_desc'));
 
             $oRecommList->oxrecommlists__oxtitle = new Field($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new Field($sAuthor);
@@ -278,7 +275,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
 
         // deleting on demand
         if (
-            ($sAction = Registry::getConfig()->getRequestParameter('deleteList')) &&
+            ($sAction = Registry::getRequest()->getRequestEscapedParameter('deleteList')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->delete();
@@ -304,7 +301,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         }
 
         if (
-            ($sArtId = Registry::getConfig()->getRequestParameter('aid')) &&
+            ($sArtId = Registry::getRequest()->getRequestEscapedParameter('aid')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->removeArticle($sArtId);

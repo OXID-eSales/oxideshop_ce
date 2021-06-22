@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin user extended settings manager.
@@ -63,7 +62,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             return false;
         }
 
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($soxId != "-1") {
@@ -75,11 +74,11 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         // checkbox handling
         $aParams['oxuser__oxactive'] = $oUser->oxuser__oxactive->value;
 
-        $blNewsParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editnews");
+        $blNewsParams = Registry::getRequest()->getRequestEscapedParameter("editnews");
         if (isset($blNewsParams)) {
             $oNewsSubscription = $oUser->getNewsSubscription();
             $oNewsSubscription->setOptInStatus((int) $blNewsParams);
-            $oNewsSubscription->setOptInEmailStatus((int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("emailfailed"));
+            $oNewsSubscription->setOptInEmailStatus((int) Registry::getRequest()->getRequestEscapedParameter("emailfailed"));
         }
 
         $oUser->assign($aParams);

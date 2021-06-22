@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Currency manager class.
@@ -60,7 +60,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
-        $iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cur');
+        $iCur = Registry::getRequest()->getRequestEscapedParameter('cur');
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         if (isset($iCur)) {

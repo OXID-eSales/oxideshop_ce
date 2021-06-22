@@ -7,12 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use Doctrine\DBAL\Exception\ConnectionException;
-use oxRegistry;
-use oxDb;
-use oxNoJsValidator;
+use OxidEsales\Eshop\Core\Registry;
 use Exception;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
 
 /**
  * Admin article main selectlist manager.
@@ -85,7 +81,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         if (!isset($aParams['active'])) {
             $aParams['active'] = 0;
@@ -458,7 +454,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $result = true;
 
         $oxid = $this->getEditObjectId();
-        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $parameters = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         // if creating new language, checking if language already exists with
         // entered language abbreviation

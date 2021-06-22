@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-use oxUBase;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Starting shop page.
@@ -109,7 +108,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function render()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('showexceptionpage') == '1') {
+        if (Registry::getRequest()->getRequestEscapedParameter('showexceptionpage') == '1') {
             return 'message/exception.tpl';
         }
 

@@ -68,10 +68,10 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
-        $oxidId = Registry::getConfig()->getRequestEscapedParameter('oxid');
-        $synchId = Registry::getConfig()->getRequestEscapedParameter('synchoxid');
+        $oxidId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $synchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         $db = DatabaseProvider::getDb();
-        $this->containerId = Registry::getConfig()->getRequestEscapedParameter('cmpid');
+        $this->containerId = Registry::getRequest()->getRequestEscapedParameter('cmpid');
 
         $articleTable = $this->_getViewName('oxarticles');
         $object2categoryTable = $this->_getViewName('oxobject2category');
@@ -136,7 +136,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         $aChosenArt = $this->_getActionIds('oxaccessoire2article.oxid');
         // removing all
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxaccessoire2article.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
@@ -153,10 +153,10 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }

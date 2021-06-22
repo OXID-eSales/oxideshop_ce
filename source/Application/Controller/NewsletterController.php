@@ -77,7 +77,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function fill()
     {
         // loads submited values
-        $this->_aRegParams = Registry::getConfig()->getRequestParameter("editval");
+        $this->_aRegParams = Registry::getRequest()->getRequestEscapedParameter("editval");
     }
 
     /**
@@ -92,7 +92,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     public function send()
     {
-        $aParams = Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
 
         // loads submited values
@@ -109,7 +109,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             return;
         }
 
-        $blSubscribe = Registry::getConfig()->getRequestParameter("subscribeStatus");
+        $blSubscribe = Registry::getRequest()->getRequestEscapedParameter("subscribeStatus");
 
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->oxuser__oxusername = new Field($aParams['oxuser__oxusername'], Field::T_RAW);
@@ -169,10 +169,10 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         // user exists ?
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        if ($oUser->load(Registry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if (Registry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
+            if (Registry::getRequest()->getRequestEscapedParameter('confirm') == $sConfirmCode) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;
@@ -187,7 +187,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         // existing user ?
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        if ($oUser->load(Registry::getConfig()->getRequestParameter('uid'))) {
+        if ($oUser->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
             $oUser->getNewsSubscription()->setOptInStatus(0);
 
             // removing from group ..

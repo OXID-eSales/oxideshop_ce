@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
@@ -112,7 +113,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         // if user wants to change user name - we must check if passwords are ok before changing
         if (isset($user->oxuser__oxpassword->value) && $user->oxuser__oxpassword->value && $login != $user->oxuser__oxusername->value) {
             // on this case password must be taken directly from request
-            $newPassword = (isset($invAddress['oxuser__oxpassword']) && $invAddress['oxuser__oxpassword']) ? $invAddress['oxuser__oxpassword'] : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('user_password');
+            $newPassword = (isset($invAddress['oxuser__oxpassword']) && $invAddress['oxuser__oxpassword']) ? $invAddress['oxuser__oxpassword'] : Registry::getRequest()->getRequestEscapedParameter('user_password');
             if (!$newPassword) {
                 // 1. user forgot to enter password
                 $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);

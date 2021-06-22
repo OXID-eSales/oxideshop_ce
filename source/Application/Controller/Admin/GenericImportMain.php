@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxStr;
-use oxRegistry;
-use oxAdminDetails;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin general export manager.
@@ -85,7 +83,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
         $this->_sCsvFilePath = null;
 
-        $navigationStep = $config->getRequestParameter('sNavStep');
+        $navigationStep = Registry::getRequest()->getRequestEscapedParameter('sNavStep');
 
         if (!$navigationStep) {
             $navigationStep = 1;
@@ -103,7 +101,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         if ($navigationStep == 2) {
             $noJsValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
             //saving csv field terminator and encloser to config
-            $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
+            $terminator = Registry::getRequest()->getRequestEscapedParameter('sGiCsvFieldTerminator');
             if ($terminator && !$noJsValidator->isValid($terminator)) {
                 $this->setErrorToView($terminator);
             } else {
@@ -111,7 +109,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 $config->saveShopConfVar('str', 'sGiCsvFieldTerminator', $terminator);
             }
 
-            $encloser = $config->getRequestParameter('sGiCsvFieldEncloser');
+            $encloser = Registry::getRequest()->getRequestEscapedParameter('sGiCsvFieldEncloser');
             if ($encloser && !$noJsValidator->isValid($encloser)) {
                 $this->setErrorToView($encloser);
             } else {
@@ -119,7 +117,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 $config->saveShopConfVar('str', 'sGiCsvFieldEncloser', $encloser);
             }
 
-            $type = $config->getRequestParameter('sType');
+            $type = Registry::getRequest()->getRequestEscapedParameter('sType');
             $importObject = $genericImport->getImportObject($type);
             $this->_aViewData['sType'] = $type;
             $this->_aViewData['sImportTable'] = $importObject->getBaseTableName();
@@ -128,8 +126,8 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         }
 
         if ($navigationStep == 3) {
-            $csvFields = $config->getRequestParameter('aCsvFields');
-            $type = $config->getRequestParameter('sType');
+            $csvFields = Registry::getRequest()->getRequestEscapedParameter('aCsvFields');
+            $type = Registry::getRequest()->getRequestEscapedParameter('sType');
 
             $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
             $genericImport->setImportType($type);
@@ -146,7 +144,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             $this->_deleteCsvFile();
 
             //check if repeating import - then forsing first step
-            if ($config->getRequestParameter('iRepeatImport')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('iRepeatImport')) {
                 $this->_aViewData['iRepeatImport'] = 1;
                 $navigationStep = 1;
             }
@@ -184,7 +182,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _getCsvFieldsNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blCsvContainsHeader = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blContainsHeader');
+        $blCsvContainsHeader = Registry::getRequest()->getRequestEscapedParameter('blContainsHeader');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $this->_getUploadedCsvFilePath();
 
@@ -260,7 +258,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         if ($iNavStep == 3) {
             $blIsEmpty = true;
-            $aCsvFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aCsvFields');
+            $aCsvFields = Registry::getRequest()->getRequestEscapedParameter('aCsvFields');
             foreach ($aCsvFields as $sValue) {
                 if ($sValue) {
                     $blIsEmpty = false;

@@ -165,6 +165,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\ViewConfig::getSessionId()`, use `\OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget()`.
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars`, use ModuleConfigurationDaoBridgeInterface.
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_loadMetadataConfVars`, use ModuleConfigurationDaoBridgeInterface.
+- `OxidEsales\Eshop\Core\Config::getRequestParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()`.
+- `OxidEsales\Eshop\Core\Config::getRequestEscapedParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()`.
+- `OxidEsales\Eshop\Core\Config::getRequestRawParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestParameter()`.
 - LDAP functionality:
     - Function:
         - `OxidEsales\Eshop\Application\Model\User::_getShopSelect()`

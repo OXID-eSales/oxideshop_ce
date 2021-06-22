@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -46,10 +47,8 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
     {
-        //$aParams = ( isset($aParams) ) ? $aParams : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter( 'oxwparams' );
-
-        if (!isset($viewsChain) && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent')) {
-            $viewsChain = explode("|", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent'));
+        if (!isset($viewsChain) && Registry::getRequest()->getRequestEscapedParameter('oxwparent')) {
+            $viewsChain = explode("|", Registry::getRequest()->getRequestEscapedParameter('oxwparent'));
         }
 
         parent::start($class, $function, $parameters, $viewsChain);

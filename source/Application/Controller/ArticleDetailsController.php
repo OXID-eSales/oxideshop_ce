@@ -204,8 +204,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         $parameters = parent::getNavigationParams();
 
-        $variantSelectionListId = Registry::getConfig()->getRequestParameter('varselid');
-        $selectListParameters = Registry::getConfig()->getRequestParameter('sel');
+        $variantSelectionListId = Registry::getRequest()->getRequestEscapedParameter('varselid');
+        $selectListParameters = Registry::getRequest()->getRequestEscapedParameter('sel');
         if (!$variantSelectionListId && !$selectListParameters) {
             return $parameters;
         }
@@ -247,7 +247,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected function generateViewId()
     {
-        return parent::generateViewId() . '|' . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid') . '|';
+        return parent::generateViewId() . '|' . Registry::getRequest()->getRequestEscapedParameter('anid') . '|';
     }
 
     /**
@@ -272,13 +272,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $this->_sThisTemplate = $article->oxarticles__oxtemplate->value;
         }
 
-        if (($templateName = Registry::getConfig()->getRequestParameter('tpl'))) {
+        if (($templateName = Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
             $this->_sThisTemplate = 'custom/' . basename($templateName);
         }
 
         parent::render();
 
-        $renderPartial = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('renderPartial');
+        $renderPartial = Registry::getRequest()->getRequestEscapedParameter('renderPartial');
         $this->addTplParam('renderPartial', $renderPartial);
 
         switch ($renderPartial) {
@@ -386,7 +386,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $this->canAcceptFormData() &&
             ($user = $this->getUser()) && ($article = $this->getProduct())
         ) {
-            $articleRating = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('artrating');
+            $articleRating = Registry::getRequest()->getRequestEscapedParameter('artrating');
             if ($articleRating !== null) {
                 $articleRating = (int) $articleRating;
             }
@@ -404,7 +404,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 }
             }
 
-            if (($reviewText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($reviewText = trim((string) Registry::getRequest()->getRequestParameter('rvw_txt')))) {
                 $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $review->oxreviews__oxobjectid = new Field($article->getId());
                 $review->oxreviews__oxtype = new Field('oxarticle');
@@ -434,8 +434,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             return;
         }
 
-        $recommendationText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_txt'));
-        $recommendationListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm');
+        $recommendationText = trim((string) Registry::getRequest()->getRequestEscapedParameter('recomm_txt'));
+        $recommendationListId = Registry::getRequest()->getRequestEscapedParameter('recomm');
         $articleId = $this->getProduct()->getId();
 
         if ($articleId) {
@@ -473,7 +473,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             //as blLoadVariants = false affect "ab price" functionality
             $config->setConfigParam('blLoadVariants', true);
 
-            $articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
+            $articleId = Registry::getRequest()->getRequestEscapedParameter('anid');
 
             // object is not yet loaded
             $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -483,7 +483,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $utils->showMessageAndExit('');
             }
 
-            $variantSelectionId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
+            $variantSelectionId = Registry::getRequest()->getRequestEscapedParameter("varselid");
             $variantSelections = $this->_oProduct->getVariantSelections($variantSelectionId);
             if ($variantSelections && $variantSelections['oActiveVariant'] && $variantSelections['blPerfectFit']) {
                 $this->_oProduct = $variantSelections['oActiveVariant'];
@@ -534,7 +534,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $listType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+            $listType = Registry::getRequest()->getRequestEscapedParameter('listtype');
             if ('vendor' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $listType) {
@@ -808,7 +808,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function noIndex()
     {
-        $listType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+        $listType = Registry::getRequest()->getRequestEscapedParameter('listtype');
         if ($listType && ('vendor' == $listType || 'manufacturer' == $listType)) {
             return $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         }
@@ -891,7 +891,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
-        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
+        $parameters = Registry::getRequest()->getRequestEscapedParameter('pa');
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
         if (!isset($parameters['email']) || !$emailValidator->isEmailValid($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
@@ -940,7 +940,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
+            $parameters = Registry::getRequest()->getRequestEscapedParameter('pa');
             $activeCurrency = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $price = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($parameters['price']);
             $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($price, $activeCurrency);
@@ -957,7 +957,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getVariantSelections()
     {
         $article = $this->getProduct();
-        $variantSelectionListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
+        $variantSelectionListId = Registry::getRequest()->getRequestEscapedParameter("varselid");
         if (($articleParent = $this->_getParentProduct($article->oxarticles__oxparentid->value))) {
             return $articleParent->getVariantSelections($variantSelectionListId, $article->getId());
         }
@@ -988,7 +988,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getSearchParamForHtml()
     {
         if ($this->_sSearchParamForHtml === null) {
-            $this->_sSearchParamForHtml = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
+            $this->_sSearchParamForHtml = Registry::getRequest()->getRequestEscapedParameter('searchparam');
         }
 
         return $this->_sSearchParamForHtml;

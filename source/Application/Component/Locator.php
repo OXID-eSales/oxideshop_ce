@@ -236,17 +236,17 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     {
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
             // #1834/1184M - specialchar search
-            $sSearchParam = Registry::getConfig()->getRequestParameter('searchparam', true);
-            $sSearchFormParam = Registry::getConfig()->getRequestParameter('searchparam');
+            $sSearchParam = Registry::getRequest()->getRequestParameter('searchparam');
+            $sSearchFormParam = Registry::getRequest()->getRequestEscapedParameter('searchparam');
             $sSearchLinkParam = rawurlencode($sSearchParam);
 
-            $sSearchCat = Registry::getConfig()->getRequestParameter('searchcnid');
+            $sSearchCat = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
             $sSearchCat = $sSearchCat ? rawurldecode($sSearchCat) : $sSearchCat;
 
-            $sSearchVendor = Registry::getConfig()->getRequestParameter('searchvendor');
+            $sSearchVendor = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
             $sSearchVendor = $sSearchVendor ? rawurldecode($sSearchVendor) : $sSearchVendor;
 
-            $sSearchManufacturer = Registry::getConfig()->getRequestParameter('searchmanufacturer');
+            $sSearchManufacturer = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
             $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
@@ -311,10 +311,10 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             //page number
             $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
-            $sSearchRecomm = Registry::getConfig()->getRequestParameter('searchrecomm', true);
+            $sSearchRecomm = Registry::getRequest()->getRequestParameter('searchrecomm');
 
             if ($sSearchRecomm !== null) {
-                $sSearchFormRecomm = Registry::getConfig()->getRequestParameter('searchrecomm');
+                $sSearchFormRecomm = Registry::getRequest()->getRequestEscapedParameter('searchrecomm');
                 $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
                 $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
             }

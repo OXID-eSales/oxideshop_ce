@@ -7,10 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxException;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
@@ -20,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use Smarty;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * View utility class
@@ -161,7 +160,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         //default
         $destination = 'default';
-        $customDestination = $customDestination ? $customDestination : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('CustomError');
+        $customDestination = $customDestination ? $customDestination : Registry::getRequest()->getRequestEscapedParameter('CustomError');
         if ($useCustomDestination && $customDestination) {
             $destination = $customDestination;
         }
@@ -207,7 +206,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', $sessionErrors);
 
             if ($activeController == '') {
-                $activeController = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actcontrol');
+                $activeController = Registry::getRequest()->getRequestEscapedParameter('actcontrol');
             }
             if ($activeController) {
                 $aControllerErrors[$destination] = $activeController;

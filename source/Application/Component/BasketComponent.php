@@ -219,7 +219,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // fetching item ID
         if (!$sProductId) {
-            $sBasketItemId = Registry::getConfig()->getRequestParameter('bindex');
+            $sBasketItemId = Registry::getRequest()->getRequestEscapedParameter('bindex');
 
             if ($sBasketItemId) {
                 $oBasket = $session->getBasket();
@@ -229,14 +229,14 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
                 $sProductId = isset($oItem) ? $oItem->getProductId() : null;
             } else {
-                $sProductId = Registry::getConfig()->getRequestParameter('aid');
+                $sProductId = Registry::getRequest()->getRequestEscapedParameter('aid');
             }
         }
 
         // fetching other needed info
-        $dAmount = isset($dAmount) ? $dAmount : Registry::getConfig()->getRequestParameter('am');
-        $aSel = isset($aSel) ? $aSel : Registry::getConfig()->getRequestParameter('sel');
-        $aPersParam = $aPersParam ? $aPersParam : Registry::getConfig()->getRequestParameter('persparam');
+        $dAmount = isset($dAmount) ? $dAmount : Registry::getRequest()->getRequestEscapedParameter('am');
+        $aSel = isset($aSel) ? $aSel : Registry::getRequest()->getRequestEscapedParameter('sel');
+        $aPersParam = $aPersParam ? $aPersParam : Registry::getRequest()->getRequestEscapedParameter('persparam');
 
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
@@ -279,17 +279,17 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // setting redirect parameters
         foreach ($this->aRedirectParams as $sParamName) {
-            $sParamVal = Registry::getConfig()->getRequestParameter($sParamName);
+            $sParamVal = Registry::getRequest()->getRequestEscapedParameter($sParamName);
             $sPosition .= $sParamVal ? $sParamName . '=' . $sParamVal . '&' : '';
         }
 
         // special treatment
         // search param
-        $sParam = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
+        $sParam = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
         $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
 
         // current page number
-        $iPageNr = (int) Registry::getConfig()->getRequestParameter('pgNr');
+        $iPageNr = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
@@ -313,7 +313,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function getPersistedParameters($persistedParameters = null)
     {
-        $persistedParameters = ($persistedParameters ?: Registry::getConfig()->getRequestParameter('persparam'));
+        $persistedParameters = ($persistedParameters ?: Registry::getRequest()->getRequestEscapedParameter('persparam'));
         if (!is_array($persistedParameters)) {
             return null;
         }
@@ -341,23 +341,23 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $blOverride = false
     ) {
         // collecting items to add
-        $aProducts = Registry::getConfig()->getRequestParameter('aproducts');
+        $aProducts = Registry::getRequest()->getRequestEscapedParameter('aproducts');
 
         // collecting specified item
-        $sProductId = $sProductId ? $sProductId : Registry::getConfig()->getRequestParameter('aid');
+        $sProductId = $sProductId ? $sProductId : Registry::getRequest()->getRequestEscapedParameter('aid');
         if ($sProductId) {
             // additionally fetching current product info
-            $dAmount = isset($dAmount) ? $dAmount : Registry::getConfig()->getRequestParameter('am');
+            $dAmount = isset($dAmount) ? $dAmount : Registry::getRequest()->getRequestEscapedParameter('am');
 
             // select lists
-            $aSel = isset($aSel) ? $aSel : Registry::getConfig()->getRequestParameter('sel');
+            $aSel = isset($aSel) ? $aSel : Registry::getRequest()->getRequestEscapedParameter('sel');
 
             // persistent parameters
             if (empty($aPersParam)) {
                 $aPersParam = $this->getPersistedParameters();
             }
 
-            $sBasketItemId = Registry::getConfig()->getRequestParameter('bindex');
+            $sBasketItemId = Registry::getRequest()->getRequestEscapedParameter('bindex');
 
             $aProducts[$sProductId] = [
                 'am'           => $dAmount,
@@ -369,7 +369,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         if (is_array($aProducts) && count($aProducts)) {
-            if (Registry::getConfig()->getRequestParameter('removeBtn') !== null) {
+            if (Registry::getRequest()->getRequestEscapedParameter('removeBtn') !== null) {
                 //setting amount to 0 if removing article from basket
                 foreach ($aProducts as $sProductId => $aProduct) {
                     if (isset($aProduct['remove']) && $aProduct['remove']) {
@@ -502,7 +502,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // in Category, only then category is empty ant not equal to default category
         $sDefCat = Registry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
-        $sActCat = Registry::getConfig()->getRequestParameter('cnid');
+        $sActCat = Registry::getRequest()->getRequestEscapedParameter('cnid');
         $oActCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($sActCat && $sActCat != $sDefCat && $oActCat->load($sActCat)) {
             $sActRoot = $oActCat->oxcategories__oxrootid->value;
@@ -527,7 +527,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent($this));
 
         // redirect to basket
-        if (Registry::getConfig()->getRequestParameter("tobasket")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("tobasket")) {
             return "basket";
         } else {
             // clear basket

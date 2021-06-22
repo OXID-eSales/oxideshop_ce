@@ -16,8 +16,6 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use oxpasswordhasher;
-use oxsha512hasher;
 
 /**
  * User manager.
@@ -413,8 +411,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return $this->_sSelAddressId;
         }
 
-        $sAddressId = Registry::getConfig()->getRequestParameter("oxaddressid");
-        if (!$sAddressId && !Registry::getConfig()->getRequestParameter('reloadaddress')) {
+        $sAddressId = Registry::getRequest()->getRequestEscapedParameter("oxaddressid");
+        if (!$sAddressId && !Registry::getRequest()->getRequestEscapedParameter('reloadaddress')) {
             $sAddressId = Registry::getSession()->getVariable("deladrid");
         }
 
@@ -1127,7 +1125,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oInputValidator->checkEmail($this, $sLogin);
 
         // 3. password
-        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) Registry::getConfig()->getRequestParameter('option') == 3));
+        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) Registry::getRequest()->getRequestEscapedParameter('option') == 3));
 
         // 4. required fields
         $oInputValidator->checkRequiredFields($this, $aInvAddress, $aDelAddress);
@@ -1271,7 +1269,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
-            $sAddressId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxaddressid');
+            $sAddressId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
             $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
@@ -1792,7 +1790,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // sets active page
-        $iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
+        $iActPage = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Main Controller class for admin area.
  */
@@ -209,7 +211,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             $myAdminNavig = $this->getNavigation();
 
             // active tab
-            $iActTab = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actedit');
+            $iActTab = Registry::getRequest()->getRequestEscapedParameter('actedit');
             $iActTab = $iActTab ? $iActTab : $this->_iDefEdit;
 
             $sActTab = $iActTab ? "&actedit=$iActTab" : '';
@@ -290,7 +292,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // "save-on-tab"
         if (!isset($this->_aViewData['updatelist'])) {
-            $this->_aViewData['updatelist'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('updatelist');
+            $this->_aViewData['updatelist'] = Registry::getRequest()->getRequestEscapedParameter('updatelist');
         }
 
         return $sReturn;
@@ -499,7 +501,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function chshp()
     {
-        $sActShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('shp');
+        $sActShop = Registry::getRequest()->getRequestEscapedParameter('shp');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $sActShop);
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $sActShop);
     }
@@ -536,7 +538,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function getEditObjectId()
     {
         if (null === ($sId = $this->_sEditObjectId)) {
-            if (null === ($sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid"))) {
+            if (null === ($sId = Registry::getRequest()->getRequestEscapedParameter("oxid"))) {
                 $sId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("saved_oxid");
             }
         }

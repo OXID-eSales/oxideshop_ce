@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin actionss manager.
@@ -48,7 +48,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         parent::render();
 
         // passing display type back to view
-        $this->_aViewData["displaytype"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("displaytype");
+        $this->_aViewData["displaytype"] = Registry::getRequest()->getRequestEscapedParameter("displaytype");
 
         return $this->_sThisTemplate;
     }
@@ -65,7 +65,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sDisplayType = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('displaytype');
+        $sDisplayType = (int) Registry::getRequest()->getRequestEscapedParameter('displaytype');
         $sTable = getViewName("oxactions");
 
         // searching for empty oxfolder fields

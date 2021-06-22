@@ -8,9 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Wrapping;
-use oxList;
-use oxRegistry;
-use oxUBase;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Managing Gift Wrapping
@@ -112,10 +110,10 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function changeWrapping()
     {
-        $aWrapping = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wrapping');
+        $aWrapping = Registry::getRequest()->getRequestEscapedParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $oBasket = $session->getBasket();
             // setting wrapping info
             if (is_array($aWrapping) && count($aWrapping)) {
@@ -127,8 +125,8 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
                 }
             }
 
-            $oBasket->setCardMessage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('giftmessage'));
-            $oBasket->setCardId(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage(Registry::getRequest()->getRequestEscapedParameter('giftmessage'));
+            $oBasket->setCardId(Registry::getRequest()->getRequestEscapedParameter('chosencard'));
             $oBasket->onUpdate();
         }
 

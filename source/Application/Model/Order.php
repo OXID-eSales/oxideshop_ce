@@ -8,12 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxArticleInputException;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use oxNoArticleException;
-use oxOutOfStockException;
-use oxField;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
@@ -1172,7 +1168,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getDelAddressInfo()
     {
         $oDelAdress = null;
-        if (!($soxAddressId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('deladrid'))) {
+        if (!($soxAddressId = Registry::getRequest()->getRequestEscapedParameter('deladrid'))) {
             $soxAddressId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('deladrid');
         }
         if ($soxAddressId) {
@@ -2116,7 +2112,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function validateDeliveryAddress($oUser)
     {
-        $sDelAddressMD5 = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sDeliveryAddressMD5');
+        $sDelAddressMD5 = Registry::getRequest()->getRequestEscapedParameter('sDeliveryAddressMD5');
 
         $sDeliveryAddress = $oUser->getEncodedDeliveryAddress();
 

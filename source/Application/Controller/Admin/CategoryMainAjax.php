@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 
 /**
@@ -55,13 +56,11 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchOxid = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // category selected or not ?
@@ -120,7 +119,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $aArticles = $this->_getActionIds('oxarticles.oxid');
-        $sCategoryID = $myConfig->getRequestParameter('synchoxid');
+        $sCategoryID = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         $sShopID = $myConfig->getShopId();
 
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
@@ -129,7 +128,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             $sArticleTable = $this->_getViewName('oxarticles');
 
             // adding
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('all')) {
                 $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
             }
 
@@ -227,10 +226,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     public function removeArticle()
     {
         $aArticles = $this->_getActionIds('oxarticles.oxid');
-        $sCategoryID = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sCategoryID = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
         // adding
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sArticleTable = $this->_getViewName('oxarticles');
             $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
         }

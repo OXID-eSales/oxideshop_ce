@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Content manager.
@@ -93,7 +91,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getExpanded()
     {
         if (!isset($this->_blExpanded)) {
-            $this->_blExpanded = ($this->getId() == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid'));
+            $this->_blExpanded = ($this->getId() == Registry::getRequest()->getRequestEscapedParameter('oxcid'));
         }
 
         return $this->_blExpanded;

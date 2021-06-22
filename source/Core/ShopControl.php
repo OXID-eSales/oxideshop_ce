@@ -11,10 +11,9 @@ use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use oxOutput;
-use oxSystemComponentException;
 use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
@@ -123,7 +122,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
+            $function = !is_null($function) ? $function : Registry::getRequest()->getRequestEscapedParameter('fnc');
             $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
 
@@ -248,7 +247,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $outputManager = $this->_getOutputManager();
         $outputManager->setCharset($view->getCharSet());
 
-        if ($config->getRequestParameter('renderPartial')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('renderPartial')) {
             $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
             $outputManager->output('errors', $this->_getFormattedErrors($view->getClassKey()));
         }

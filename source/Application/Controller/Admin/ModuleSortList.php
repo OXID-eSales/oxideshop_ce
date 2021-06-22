@@ -97,7 +97,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("noButton")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("noButton")) {
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blSkipDeletedExtChecking", true);
 
             return;

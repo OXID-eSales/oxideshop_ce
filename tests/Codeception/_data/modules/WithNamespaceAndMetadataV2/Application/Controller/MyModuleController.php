@@ -56,7 +56,7 @@ class MyModuleController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getMessage()
     {
-        $this->message = (string) Registry::getConfig()->getRequestParameter('mymodule_message') . ' ' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $this->message = (string) Registry::getRequest()->getRequestEscapedParameter('mymodule_message') . ' ' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         return $this->message;
     }

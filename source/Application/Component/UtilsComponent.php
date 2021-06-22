@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Transparent shop utilities class.
@@ -45,9 +44,9 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // only if enabled and not search engine..
         if ($this->getViewConfig()->getShowCompareList() && !Registry::getUtils()->isSearchEngine()) {
             // #657 special treatment if we want to put on comparelist
-            $blAddCompare = Registry::getConfig()->getRequestParameter('addcompare');
-            $blRemoveCompare = Registry::getConfig()->getRequestParameter('removecompare');
-            $sProductId = $sProductId ? $sProductId : Registry::getConfig()->getRequestParameter('aid');
+            $blAddCompare = Registry::getRequest()->getRequestEscapedParameter('addcompare');
+            $blRemoveCompare = Registry::getRequest()->getRequestEscapedParameter('removecompare');
+            $sProductId = $sProductId ? $sProductId : Registry::getRequest()->getRequestEscapedParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
                 // toggle state in session array
                 $aItems = Registry::getSession()->getVariable('aFiltcompproducts');
@@ -139,10 +138,10 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {
-            $sProductId = ($sProductId) ? $sProductId : Registry::getConfig()->getRequestParameter('itmid');
-            $sProductId = ($sProductId) ? $sProductId : Registry::getConfig()->getRequestParameter('aid');
-            $dAmount = isset($dAmount) ? $dAmount : Registry::getConfig()->getRequestParameter('am');
-            $aSel = $aSel ? $aSel : Registry::getConfig()->getRequestParameter('sel');
+            $sProductId = ($sProductId) ? $sProductId : Registry::getRequest()->getRequestEscapedParameter('itmid');
+            $sProductId = ($sProductId) ? $sProductId : Registry::getRequest()->getRequestEscapedParameter('aid');
+            $dAmount = isset($dAmount) ? $dAmount : Registry::getRequest()->getRequestEscapedParameter('am');
+            $aSel = $aSel ? $aSel : Registry::getRequest()->getRequestEscapedParameter('sel');
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);

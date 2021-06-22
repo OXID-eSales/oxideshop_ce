@@ -7,28 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxActionList;
-use oxAddress;
-use oxArticle;
-use oxCategory;
-use oxCategoryList;
-use oxContent;
-use oxDb;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
-use oxManufacturer;
-use oxManufacturerList;
-use oxPrice;
-use oxRecommList;
-use oxRegistry;
-use oxShop;
-use oxVendor;
-use oxViewConfig;
 use stdClass;
 
 // view indexing state for search engines:
@@ -463,7 +447,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
-            if (Registry::getConfig()->getRequestParameter('_force_no_basket_cmp')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('_force_no_basket_cmp')) {
                 unset(self::$_aCollectedComponentNames['oxcmp_basket']);
             }
         }
@@ -708,7 +692,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getListType()
     {
         if ($this->_sListType == null) {
-            if ($listType = Registry::getConfig()->getRequestParameter('listtype')) {
+            if ($listType = Registry::getRequest()->getRequestEscapedParameter('listtype')) {
                 $this->_sListType = $listType;
             } elseif ($listType = Registry::getConfig()->getGlobalParameter('listtype')) {
                 $this->_sListType = $listType;
@@ -736,7 +720,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $this->_sListDisplayType : 'infogrid';
 
             // writing to session
-            if (Registry::getConfig()->getRequestParameter('ldtype')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('ldtype')) {
                 Registry::getSession()->setVariable('ldtype', $this->_sListDisplayType);
             }
         }
@@ -752,7 +736,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getCustomListDisplayType()
     {
         if ($this->_sCustomListDisplayType == null) {
-            $this->_sCustomListDisplayType = Registry::getConfig()->getRequestParameter('ldtype');
+            $this->_sCustomListDisplayType = Registry::getRequest()->getRequestEscapedParameter('ldtype');
 
             if (!$this->_sCustomListDisplayType) {
                 $this->_sCustomListDisplayType = Registry::getSession()->getVariable('ldtype');
@@ -1157,12 +1141,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blForceNoIndex) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
-        } elseif (Registry::getConfig()->getRequestParameter('cur')) {
+        } elseif (Registry::getRequest()->getRequestEscapedParameter('cur')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
-        } elseif (0 < Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('pgNr')) {
+        } elseif (0 < Registry::getRequest()->getRequestEscapedParameter('pgNr')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } else {
-            switch (Registry::getConfig()->getRequestParameter('fnc')) {
+            switch (Registry::getRequest()->getRequestEscapedParameter('fnc')) {
                 case 'tocomparelist':
                 case 'tobasket':
                     $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
@@ -1227,7 +1211,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $viewConfig = $this->getViewConfig();
         //value from user input
         $session = Registry::getSession();
-        if (($articlesPerPage = (int) Registry::getConfig()->getRequestParameter('_artperpage'))) {
+        if (($articlesPerPage = (int) Registry::getRequest()->getRequestEscapedParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $numberOfCategoryArticles = (in_array($articlesPerPage, $numbersOfCategoryArticles))
                 ? $articlesPerPage
@@ -1376,22 +1360,22 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $config = Registry::getConfig();
         $params['cnid'] = $this->getCategoryId();
-        $params['mnid'] = $config->getRequestParameter('mnid');
+        $params['mnid'] = Registry::getRequest()->getRequestEscapedParameter('mnid');
 
         $params['listtype'] = $this->getListType();
         $params['ldtype'] = $this->getCustomListDisplayType();
         $params['actcontrol'] = $this->getClassKey();
 
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        $params['recommid'] = $config->getRequestParameter('recommid');
+        $params['recommid'] = Registry::getRequest()->getRequestEscapedParameter('recommid');
 
-        $params['searchrecomm'] = $config->getRequestParameter('searchrecomm', true);
+        $params['searchrecomm'] = Registry::getRequest()->getRequestEscapedParameter('searchrecomm', true);
         // END deprecated
-        $params['searchparam'] = $config->getRequestParameter('searchparam', true);
+        $params['searchparam'] = Registry::getRequest()->getRequestEscapedParameter('searchparam', true);
 
-        $params['searchvendor'] = $config->getRequestParameter('searchvendor');
-        $params['searchcnid'] = $config->getRequestParameter('searchcnid');
-        $params['searchmanufacturer'] = $config->getRequestParameter('searchmanufacturer');
+        $params['searchvendor'] = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
+        $params['searchcnid'] = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
+        $params['searchmanufacturer'] = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
 
         $params = array_merge($params, $this->getViewConfig()->getAdditionalNavigationParameters());
 
@@ -1537,17 +1521,17 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 break;
             case 'search':
                 $result .= "&amp;listtype={$listType}";
-                if ($searchParamForLink = rawurlencode($config->getRequestParameter('searchparam', true))) {
+                if ($searchParamForLink = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'))) {
                     $result .= "&amp;searchparam={$searchParamForLink}";
                 }
 
-                if (($var = $config->getRequestParameter('searchcnid', true))) {
+                if (($var = Registry::getRequest()->getRequestParameter('searchcnid'))) {
                     $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
                 }
-                if (($var = $config->getRequestParameter('searchvendor', true))) {
+                if (($var = Registry::getRequest()->getRequestParameter('searchvendor'))) {
                     $result .= '&amp;searchvendor=' . rawurlencode(rawurldecode($var));
                 }
-                if (($var = $config->getRequestParameter('searchmanufacturer', true))) {
+                if (($var = Registry::getRequest()->getRequestParameter('searchmanufacturer'))) {
                     $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
                 }
                 break;
@@ -1661,29 +1645,29 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = Registry::getConfig()->getRequestParameter('cnid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             $url .= "&amp;cnid={$value}";
         }
-        if ($value = Registry::getConfig()->getRequestParameter('mnid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('mnid')) {
             $url .= "&amp;mnid={$value}";
         }
-        if ($value = Registry::getConfig()->getRequestParameter('anid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('anid')) {
             $url .= "&amp;anid={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('page'))) {
+        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('oxloadid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
             $url .= "&amp;oxloadid={$value}";
         }
 
-        $pageNumber = (int) Registry::getConfig()->getRequestParameter('pgNr');
+        $pageNumber = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
         // don't include page number for navigation
         // it will be done in \OxidEsales\Eshop\Application\Controller\FrontendController::generatePageNavigation
         if ($addPageNumber && $pageNumber > 0) {
@@ -1691,28 +1675,28 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         // #1184M - specialchar search
-        if ($value = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true))) {
+        if ($value = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'))) {
             $url .= "&amp;searchparam={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('searchcnid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid')) {
             $url .= "&amp;searchcnid={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('searchvendor')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchvendor')) {
             $url .= "&amp;searchvendor={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('searchmanufacturer')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer')) {
             $url .= "&amp;searchmanufacturer={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('searchrecomm')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchrecomm')) {
             $url .= "&amp;searchrecomm={$value}";
         }
 
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        if ($value = Registry::getConfig()->getRequestParameter('recommid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('recommid')) {
             $url .= "&amp;recommid={$value}";
         }
         // END deprecated
@@ -1744,19 +1728,19 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = basename(Registry::getConfig()->getRequestParameter('page'))) {
+        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
-        if ($value = Registry::getConfig()->getRequestParameter('oxloadid')) {
+        if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
             $url .= "&amp;oxloadid={$value}";
         }
 
-        $pageNumber = (int) Registry::getConfig()->getRequestParameter('pgNr');
+        $pageNumber = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
         if ($pageNumber > 0) {
             $url .= "&amp;pgNr={$pageNumber}";
         }
@@ -1836,7 +1820,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
-            if ($recommendationListId = Registry::getConfig()->getRequestParameter('recommid')) {
+            if ($recommendationListId = Registry::getRequest()->getRequestEscapedParameter('recommid')) {
                 $this->_oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oActiveRecommList->load($recommendationListId);
             }
@@ -1952,23 +1936,23 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sAdditionalParams .= 'cl=' . Registry::getConfig()->getTopActiveView()->getClassKey();
 
             // #1834M - special char search
-            $searchParamForLink = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
+            $searchParamForLink = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
             if (isset($searchParamForLink)) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
             }
-            if (($value = Registry::getConfig()->getRequestParameter('searchcnid'))) {
+            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid'))) {
                 $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = Registry::getConfig()->getRequestParameter('searchvendor'))) {
+            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchvendor'))) {
                 $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = Registry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer'))) {
                 $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = Registry::getConfig()->getRequestParameter('cnid'))) {
+            if (($value = Registry::getRequest()->getRequestEscapedParameter('cnid'))) {
                 $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($value));
             }
-            if (($value = Registry::getConfig()->getRequestParameter('mnid'))) {
+            if (($value = Registry::getRequest()->getRequestEscapedParameter('mnid'))) {
                 $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($value));
             }
 
@@ -2210,7 +2194,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getActPage()
     {
         if ($this->_iActPage === null) {
-            $this->_iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
+            $this->_iActPage = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
         }
 
@@ -2231,7 +2215,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // and we still need some object to mount navigation info
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
-            $vendorId = Registry::getConfig()->getRequestParameter('cnid');
+            $vendorId = Registry::getRequest()->getRequestEscapedParameter('cnid');
             $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
             $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($vendor->load($vendorId)) {
@@ -2256,7 +2240,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // and we still need some object to mount navigation info
         if ($this->_oActManufacturer === null) {
             $this->_oActManufacturer = false;
-            $manufacturerId = Registry::getConfig()->getRequestParameter('mnid');
+            $manufacturerId = Registry::getRequest()->getRequestEscapedParameter('mnid');
             $manufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($manufacturer->load($manufacturerId)) {
                 $this->_oActManufacturer = $manufacturer;
@@ -2455,7 +2439,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($this->_aBlockRedirectParams as $param) {
-            if (Registry::getConfig()->getRequestParameter($param) !== null) {
+            if (Registry::getRequest()->getRequestEscapedParameter($param) !== null) {
                 return false;
             }
         }
@@ -2668,7 +2652,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_blCanAcceptFormData === null) {
             $this->_blCanAcceptFormData = false;
 
-            $formId = Registry::getConfig()->getRequestParameter("uformid");
+            $formId = Registry::getRequest()->getRequestEscapedParameter("uformid");
             $sessionFormId = Registry::getSession()->getVariable("sessionuformid");
 
             // testing if form and session ids matches
@@ -2815,7 +2799,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getInvoiceAddress()
     {
         if ($this->_aInvoiceAddress == null) {
-            $invoiceAddress = Registry::getConfig()->getRequestParameter('invadr');
+            $invoiceAddress = Registry::getRequest()->getRequestEscapedParameter('invadr');
             if ($invoiceAddress) {
                 $this->_aInvoiceAddress = $invoiceAddress;
             }
@@ -2834,8 +2818,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_aDeliveryAddress == null) {
             $config = Registry::getConfig();
             //do not show deladr if address was reloaded
-            if (!$config->getRequestParameter('reloadaddress')) {
-                $this->_aDeliveryAddress = $config->getRequestParameter('deladr');
+            if (!Registry::getRequest()->getRequestEscapedParameter('reloadaddress')) {
+                $this->_aDeliveryAddress = Registry::getRequest()->getRequestEscapedParameter('deladr');
             }
         }
 
@@ -2871,7 +2855,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_sActiveUsername == null) {
             $this->_sActiveUsername = false;
-            $username = Registry::getConfig()->getRequestParameter('lgn_usr');
+            $username = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
             if ($username) {
                 $this->_sActiveUsername = $username;
             } elseif ($user = $this->getUser()) {
@@ -2889,7 +2873,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getWishlistUserId()
     {
-        return Registry::getConfig()->getRequestParameter('wishid');
+        return Registry::getRequest()->getRequestEscapedParameter('wishid');
     }
 
     /**
@@ -3033,7 +3017,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getWishlistName()
     {
         if ($this->getUser()) {
-            $wishId = Registry::getConfig()->getRequestParameter('wishid');
+            $wishId = Registry::getRequest()->getRequestEscapedParameter('wishid');
             $userId = ($wishId) ? $wishId : Registry::getSession()->getVariable('wishid');
             if ($userId) {
                 $wishUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);

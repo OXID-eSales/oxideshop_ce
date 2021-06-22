@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
@@ -1601,7 +1600,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if (self::$_aSelections[$sId]) {
             // marking active from filter
-            $aFilter = ($aFilter === null) ? Registry::getConfig()->getRequestParameter("sel") : $aFilter;
+            $aFilter = ($aFilter === null) ? Registry::getRequest()->getRequestEscapedParameter("sel") : $aFilter;
             if ($aFilter) {
                 $iSelIdx = 0;
                 foreach (self::$_aSelections[$sId] as $oSelection) {
@@ -2326,8 +2325,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $iActPicId = 1;
         $sActPic = $this->getPictureUrl($iActPicId);
 
-        if (Registry::getConfig()->getRequestParameter('actpicid')) {
-            $iActPicId = Registry::getConfig()->getRequestParameter('actpicid');
+        if (Registry::getRequest()->getRequestEscapedParameter('actpicid')) {
+            $iActPicId = Registry::getRequest()->getRequestEscapedParameter('actpicid');
         }
 
         $oStr = Str::getStr();
@@ -2868,7 +2867,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_sMoreDetailLink = Registry::getConfig()->getShopHomeUrl() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
-            if ($sActCat = Registry::getConfig()->getRequestParameter('cnid')) {
+            if ($sActCat = Registry::getRequest()->getRequestEscapedParameter('cnid')) {
                 $this->_sMoreDetailLink .= '&amp;cnid=' . $sActCat;
             }
             $this->_sMoreDetailLink .= '&amp;anid=' . $this->getId();
@@ -2901,13 +2900,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $this->_sToBasketLink .= 'cl=' . $actControllerId;
 
                 // this is not very correct
-                if ($sActCat = Registry::getConfig()->getRequestParameter('cnid')) {
+                if ($sActCat = Registry::getRequest()->getRequestEscapedParameter('cnid')) {
                     $this->_sToBasketLink .= '&amp;cnid=' . $sActCat;
                 }
 
                 $this->_sToBasketLink .= '&amp;fnc=tobasket&amp;aid=' . $this->getId() . '&amp;anid=' . $this->getId();
 
-                if ($sTpl = basename(Registry::getConfig()->getRequestParameter('tpl'))) {
+                if ($sTpl = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
                     $this->_sToBasketLink .= '&amp;tpl=' . $sTpl;
                 }
             }

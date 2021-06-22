@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * User registration window.
@@ -81,7 +79,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      */
     public function getRegistrationError()
     {
-        return Registry::getConfig()->getRequestParameter('newslettererror');
+        return Registry::getRequest()->getRequestEscapedParameter('newslettererror');
     }
 
     /**
@@ -91,7 +89,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      */
     public function getRegistrationStatus()
     {
-        return Registry::getConfig()->getRequestParameter('success');
+        return Registry::getRequest()->getRequestEscapedParameter('success');
     }
 
     /**
@@ -145,7 +143,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      */
     public function getUpdateId()
     {
-        return Registry::getConfig()->getRequestParameter('uid');
+        return Registry::getRequest()->getRequestEscapedParameter('uid');
     }
 
     /**
@@ -155,7 +153,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      */
     public function isConfirmed()
     {
-        return (bool) Registry::getConfig()->getRequestParameter("confirmstate");
+        return (bool) Registry::getRequest()->getRequestEscapedParameter("confirmstate");
     }
 
     /**

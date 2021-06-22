@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
-use oxField;
 
 /**
  * Admin article main payment manager.
@@ -59,7 +58,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             $oPaymentCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentCountryAjax->getColumns();
 
@@ -75,7 +74,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function addcountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("allcountries");
+        $aChosenCntr = Registry::getRequest()->getRequestEscapedParameter("allcountries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
@@ -94,7 +93,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function removecountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("countries");
+        $aChosenCntr = Registry::getRequest()->getRequestEscapedParameter("countries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);

@@ -8,10 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxDb;
-use oxRegistry;
-use oxList;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Recommendation list manager class.
@@ -347,7 +344,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         if ($sSearchStr) {
             // sets active page
-            $iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+            $iActPage = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen

@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class controls article assignment to attributes
@@ -52,8 +50,8 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sArticleTable = $this->_getViewName('oxarticles');
         $sViewName = $this->_getViewName('oxobject2category');
 
-        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchSelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -104,7 +102,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function removeActionArticle()
     {
-        $sActionId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sActionId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         //$sActionId = $this->getConfig()->getConfigParam( 'oxid' );
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -122,8 +120,8 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function setActionArticle()
     {
-        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxarticleid');
-        $sActionId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sArticleId = Registry::getRequest()->getRequestEscapedParameter('oxarticleid');
+        $sActionId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $oDb->Execute(

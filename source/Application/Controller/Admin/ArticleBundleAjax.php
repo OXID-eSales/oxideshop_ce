@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class controls article assignment to attributes
@@ -51,8 +50,8 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchSelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -109,7 +108,7 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid = :oxid ";
         $oDb->Execute(
             $sQ,
-            [':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')]
+            [':oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')]
         );
     }
 
@@ -125,8 +124,8 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $oDb->Execute(
             $sQ,
             [
-                ':oxbundleid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'),
-                ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')
+                ':oxbundleid' => Registry::getRequest()->getRequestEscapedParameter('oxbundleid'),
+                ':oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')
             ]
         );
     }

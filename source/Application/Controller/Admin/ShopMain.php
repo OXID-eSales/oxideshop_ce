@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxException;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article main shop manager.
@@ -52,7 +50,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
             $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
-            $subjLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("subjlang");
+            $subjLang = Registry::getRequest()->getRequestEscapedParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
             }
@@ -72,7 +70,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
-            $this->_aViewData['updatenav'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('updatenav');
+            $this->_aViewData['updatenav'] = Registry::getRequest()->getRequestEscapedParameter('updatenav');
         }
 
         return "shop_main.tpl";
@@ -90,7 +88,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $this->getEditObjectId();
 
-        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $parameters = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $user = $this->getUser();
         $shopId = $this->updateShopIdByUser($user, $shopId, false);
@@ -100,7 +98,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $parameters['oxshops__oxactive'] = (isset($parameters['oxshops__oxactive']) && $parameters['oxshops__oxactive'] == true) ? 1 : 0;
         $parameters['oxshops__oxproductive'] = (isset($parameters['oxshops__oxproductive']) && $parameters['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $subjLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("subjlang");
+        $subjLang = Registry::getRequest()->getRequestEscapedParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
         $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
@@ -118,7 +116,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $shop->assign($parameters);
         $shop->setLanguage($shopLanguageId);
 
-        if (($newSMPTPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxsmtppwd"))) {
+        if (($newSMPTPass = Registry::getRequest()->getRequestEscapedParameter("oxsmtppwd"))) {
             $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 

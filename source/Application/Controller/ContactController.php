@@ -120,7 +120,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getUserData()
     {
         if ($this->_oUserData === null) {
-            $this->_oUserData = Registry::getConfig()->getRequestParameter('editval');
+            $this->_oUserData = Registry::getRequest()->getRequestEscapedParameter('editval');
         }
 
         return $this->_oUserData;
@@ -134,7 +134,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactSubject()
     {
         if ($this->_sContactSubject === null) {
-            $this->_sContactSubject = Registry::getConfig()->getRequestParameter('c_subject');
+            $this->_sContactSubject = Registry::getRequest()->getRequestEscapedParameter('c_subject');
         }
 
         return $this->_sContactSubject;
@@ -148,7 +148,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactMessage()
     {
         if ($this->_sContactMessage === null) {
-            $this->_sContactMessage = Registry::getConfig()->getRequestParameter('c_message');
+            $this->_sContactMessage = Registry::getRequest()->getRequestEscapedParameter('c_message');
         }
 
         return $this->_sContactMessage;

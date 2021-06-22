@@ -40,6 +40,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 
 /**
@@ -354,9 +355,9 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $sPageId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() .
                    $this->_getEmosCl() .
             $sTplName .
-            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid') .
-            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid') .
-            \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
+            Registry::getRequest()->getRequestEscapedParameter('cnid') .
+            Registry::getRequest()->getRequestEscapedParameter('anid') .
+            Registry::getRequest()->getRequestEscapedParameter('option');
 
         return md5($sPageId);
     }
@@ -369,7 +370,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!($sCurrTpl = basename((string)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
+        if (!($sCurrTpl = basename((string)Registry::getRequest()->getRequestEscapedParameter('tpl')))) {
             // in case template was not defined in request
             $sCurrTpl = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getTemplateName();
         }
@@ -429,7 +430,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
             case 'user':
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
-                $sOption = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
+                $sOption = Registry::getRequest()->getRequestEscapedParameter('option');
                 $sOption = (isset($sOption)) ? $sOption : $session->getVariable('option');
 
                 if (isset($sOption) && array_key_exists('user_' . $sOption, $aContent)) {
@@ -441,7 +442,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 }
                 break;
             case 'payment':
-                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('new_user')) {
+                if (Registry::getRequest()->getRequestEscapedParameter('new_user')) {
                     $this->_setUserRegistration($oEmos, $oUser);
                 }
                 break;
@@ -518,7 +519,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
 
         // track logins
         if ('login_noredirect' == $sFunction) {
-            $oEmos->addLogin($oConfig->getRequestParameter('lgn_usr'), $oUser ? '0' : '1');
+            $oEmos->addLogin(Registry::getRequest()->getRequestEscapedParameter('lgn_usr'), $oUser ? '0' : '1');
         }
     }
 
@@ -533,9 +534,9 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     private function _setSearchInformation($oEmos, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iPage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+        $iPage = Registry::getRequest()->getRequestEscapedParameter('pgNr');
         if (!$iPage) {
-            $sSearchParamForLink = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true);
+            $sSearchParamForLink = Registry::getRequest()->getRequestEscapedParameter('searchparam', true);
             $iSearchCount = 0;
             if (($oSmarty->_tpl_vars['oView']) && $oSmarty->_tpl_vars['oView']->getArticleCount()) {
                 $iSearchCount = $oSmarty->_tpl_vars['oView']->getArticleCount();
@@ -595,8 +596,8 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     private function _setUserRegistration($oEmos, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iError = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('newslettererror');
-        $iSuccess = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('success');
+        $iError = Registry::getRequest()->getRequestEscapedParameter('newslettererror');
+        $iSuccess = Registry::getRequest()->getRequestEscapedParameter('success');
 
         if ($iError && $iError < 0) {
             $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', abs($iError));

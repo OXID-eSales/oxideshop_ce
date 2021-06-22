@@ -18,6 +18,7 @@ use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\Facts\Facts;
 use oxRegistry;
@@ -1679,8 +1680,8 @@ class UserComponentTest extends \OxidTestCase
         $userComponent = $this->createPartialMock(modcmp_user::class, [
             'getConfig',
         ]);
-        $configMock = $this->createMock(Config::class);
-        $configMock->method('getRequestParameter')
+       /* $requestMock = $this->createMock(Request::class);
+        $requestMock->method('getRequestEscapedParameter')
             ->withConsecutive(
                 ['anid'],
                 ['cnid'],
@@ -1693,7 +1694,8 @@ class UserComponentTest extends \OxidTestCase
                 null,
                 $remoteUrl
             );
-        Registry::set(Config::class, $configMock);
+        Registry::set(Request::class, $requestMock);*/
+        $this->setRequestParameter('tpl', $remoteUrl);
 
         $logoutLink = $userComponent->getLogoutLink();
 

@@ -52,7 +52,7 @@ class test_module_controller_routing_MyModuleController extends \OxidEsales\Esho
      */
     public function getMessage()
     {
-        $this->message = (string) Registry::getConfig()->getRequestParameter('mymodule_message');
+        $this->message = (string) Registry::getRequest()->getRequestEscapedParameter('mymodule_message');
 
         return $this->message;
     }

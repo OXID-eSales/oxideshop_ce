@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use oxRegistry;
 
 /**
  * Transparent category manager class (executed automatically).
@@ -71,7 +71,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             // building Manufacturer tree
-            $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
+            $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
             $this->_loadManufacturerTree($sActManufacturer);
         }
 
@@ -86,7 +86,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      */
     public function getProduct()
     {
-        if (($sActProduct = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'))) {
+        if (($sActProduct = Registry::getRequest()->getRequestEscapedParameter('anid'))) {
             $oParentView = $this->getParent();
             if (($oProduct = $oParentView->getViewProduct())) {
                 return $oProduct;
@@ -110,9 +110,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      */
     protected function _getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
+        $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
 
-        $sActCat = $sActManufacturer ? null : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
+        $sActCat = $sActManufacturer ? null : Registry::getRequest()->getRequestEscapedParameter('cnid');
 
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
@@ -225,11 +225,11 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSearchPar = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
-        $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
-        $sSearchVnd = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor');
-        $sSearchMan = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchmanufacturer');
-        $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+        $sSearchPar = Registry::getRequest()->getRequestEscapedParameter('searchparam');
+        $sSearchCat = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
+        $sSearchVnd = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
+        $sSearchMan = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
+        $sListType = Registry::getRequest()->getRequestEscapedParameter('listtype');
 
         // search ?
         if ((!$sListType || $sListType == 'search') && ($sSearchPar || $sSearchCat || $sSearchVnd || $sSearchMan)) {

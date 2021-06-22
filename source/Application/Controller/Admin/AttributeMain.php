@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -67,7 +67,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $this->_aViewData["edit"] = $oAttr;
 
-        if ($myConfig->getRequestParameter("aoc")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             $oAttributeMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 
@@ -87,7 +87,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
@@ -122,7 +122,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
@@ -141,7 +141,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oAttr->assign($aParams);
 
         // apply new language
-        $oAttr->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
+        $oAttr->setLanguage(Registry::getRequest()->getRequestEscapedParameter("new_lang"));
         $oAttr->save();
 
         // set oxid if inserted

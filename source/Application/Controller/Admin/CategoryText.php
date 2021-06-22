@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -32,7 +32,7 @@ class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $iCatLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("catlang");
+            $iCatLang = Registry::getRequest()->getRequestEscapedParameter("catlang");
 
             if (!isset($iCatLang)) {
                 $iCatLang = $this->_iEditLang;
@@ -70,10 +70,10 @@ class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-        $iCatLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("catlang");
+        $iCatLang = Registry::getRequest()->getRequestEscapedParameter("catlang");
         $iCatLang = $iCatLang ? $iCatLang : 0;
 
         if ($soxId != "-1") {

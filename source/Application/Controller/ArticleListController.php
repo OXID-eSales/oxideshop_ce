@@ -7,11 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticleList;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
 
 /**
@@ -146,7 +144,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     protected function generateViewId()
     {
-        $categoryId = Registry::getConfig()->getRequestParameter('cnid');
+        $categoryId = Registry::getRequest()->getRequestEscapedParameter('cnid');
         $activePage = $this->getActPage();
         $articlesPerPage = Registry::getSession()->getVariable('_artperpage');
         $listDisplayType = $this->_getListDisplayType();
@@ -214,12 +212,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     protected function getCategoryToRender()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ('oxmore' == $config->getRequestParameter('cnid')) {
+        if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew(Category::class);
@@ -291,7 +287,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $dynamicParameters = parent::getAddUrlParams();
         if (!Registry::getUtils()->seoIsActive()) {
-            $pageNumber = (int) Registry::getConfig()->getRequestParameter('pgNr');
+            $pageNumber = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
             if ($pageNumber > 0) {
                 $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
@@ -338,8 +334,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $baseLanguageId = Registry::getLang()->getBaseLanguage();
         // store this into session
-        $attributeFilter = Registry::getConfig()->getRequestParameter('attrfilter', true);
-        $activeCategory = Registry::getConfig()->getRequestParameter('cnid');
+        $attributeFilter = Registry::getRequest()->getRequestParameter('attrfilter');
+        $activeCategory = Registry::getRequest()->getRequestEscapedParameter('cnid');
 
         if (!empty($attributeFilter)) {
             $sessionFilter = Registry::getSession()->getVariable('session_attrfilter');
@@ -356,7 +352,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function resetFilter()
     {
-        $activeCategory = Registry::getConfig()->getRequestParameter('cnid');
+        $activeCategory = Registry::getRequest()->getRequestEscapedParameter('cnid');
         $sessionFilter = Registry::getSession()->getVariable('session_attrfilter');
 
         unset($sessionFilter[$activeCategory]);
@@ -408,7 +404,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getActPage()
     {
         //Fake oxmore category has no subpages so we can set the page number to zero
-        if ('oxmore' == Registry::get(Request::class)->getRequestParameter('cnid')) {
+        if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             return 0;
         }
 
@@ -687,7 +683,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getTemplateName()
     {
         // assign template name
-        if (($templateName = basename(Registry::getConfig()->getRequestParameter('tpl')))) {
+        if (($templateName = basename(Registry::getRequest()->getRequestEscapedParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $templateName;
         } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
@@ -914,7 +910,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $paths = [];
 
-        if ('oxmore' == Registry::getConfig()->getRequestParameter('cnid')) {
+        if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             $path = [];
             $path['title'] = Registry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',

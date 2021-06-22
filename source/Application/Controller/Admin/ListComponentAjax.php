@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent;
 
@@ -86,7 +87,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $aColumns = $this->_getColNames();
         foreach ($aColumns as $iPos => $aCol) {
             if (isset($aCol[4]) && $aCol[4] == 1 && $sId == $aCol[1] . '.' . $aCol[0]) {
-                return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('_' . $iPos);
+                return Registry::getRequest()->getRequestEscapedParameter('_' . $iPos);
             }
         }
     }
@@ -168,7 +169,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getSortCol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aVisibleNames = $this->_getVisibleColNames();
-        $iCol = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
+        $iCol = Registry::getRequest()->getRequestEscapedParameter('sort');
         $iCol = $iCol ? ((int) str_replace('_', '', $iCol)) : 0;
         $iCol = (!isset($aVisibleNames[$iCol])) ? 0 : $iCol;
 
@@ -188,7 +189,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getColNames($sId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sId === null) {
-            $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cmpid');
+            $sId = Registry::getRequest()->getRequestEscapedParameter('cmpid');
         }
 
         if ($sId && isset($this->_aColumns[$sId])) {
@@ -228,7 +229,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getVisibleColNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aColNames = $this->_getColNames();
-        $aUserCols = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aCols');
+        $aUserCols = Registry::getRequest()->getRequestEscapedParameter('aCols');
         $aVisibleCols = [];
 
         // user defined some cols to load ?
@@ -355,7 +356,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLimit($iStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iLimit = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("results");
+        $iLimit = (int) Registry::getRequest()->getRequestEscapedParameter("results");
         $iLimit = $iLimit ? $iLimit : $this->_iSqlLimit;
 
         return " limit $iStart, $iLimit ";
@@ -370,8 +371,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getFilter() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = '';
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $aFilter = $oConfig->getRequestParameter('aFilter');
+        $aFilter = Registry::getRequest()->getRequestEscapedParameter('aFilter');
         if (is_array($aFilter) && count($aFilter)) {
             $aCols = $this->_getVisibleColNames();
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -451,7 +451,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getSortDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dir');
+        $sDir = Registry::getRequest()->getRequestEscapedParameter('dir');
         if (!in_array($sDir, $this->_aPosDir)) {
             $sDir = $this->_aPosDir[0];
         }
@@ -467,7 +467,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getStartIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('startIndex');
+        return (int) Registry::getRequest()->getRequestEscapedParameter('startIndex');
     }
 
     /**
@@ -536,7 +536,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getViewName($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return getViewName($sTable, \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
+        return getViewName($sTable, Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
     }
 
     /**

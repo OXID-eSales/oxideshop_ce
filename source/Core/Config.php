@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use Exception;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\Facts\Facts;
@@ -656,62 +657,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns value of parameter stored in POST,GET.
-     * For security reasons performed Config->checkParamSpecialChars().
-     * use $raw very carefully if you want to get unescaped
-     * parameter.
-     *
-     * @param string $name Name of parameter.
-     * @param bool   $raw  Get unescaped parameter.
-     *
-     * @deprecated on b-dev (2015-06-10); Use Request::getRequestEscapedParameter().
-     *
-     * @return mixed
-     */
-    public function getRequestParameter($name, $raw = false)
-    {
-        $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
-        return $raw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
-    }
-
-    /**
-     * Returns escaped value of parameter stored in POST,GET.
-     *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
-     *
-     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
-     *
-     * @return mixed
-     */
-    public function getRequestEscapedParameter($name, $defaultValue = null)
-    {
-        return Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestEscapedParameter($name, $defaultValue);
-    }
-
-    /**
-     * Returns raw value of parameter stored in POST,GET.
-     *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
-     *
-     * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
-     *
-     * @return mixed
-     */
-    public function getRequestRawParameter($name, $defaultValue = null)
-    {
-        return Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter($name, $defaultValue);
-    }
-
-    /**
      * Get request 'cl' parameter which is the controller id.
      *
      * @return string|null
      */
     public function getRequestControllerId()
     {
-        return $this->getRequestParameter('cl');
+        return Registry::getRequest()->getRequestEscapedParameter('cl');
     }
 
     /**
@@ -1081,8 +1033,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopCurrency()
     {
-        if ((null === ($curr = $this->getRequestParameter('cur')))) {
-            if (null === ($curr = $this->getRequestParameter('currency'))) {
+        if ((null === ($curr = Registry::getRequest()->getRequestEscapedParameter('cur')))) {
+            if (null === ($curr = Registry::getRequest()->getRequestEscapedParameter('currency'))) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
                 $curr = $session->getVariable('currency');
             }

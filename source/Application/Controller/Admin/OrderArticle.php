@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Admin order article manager.
  * Collects order articles information, updates it on user submit, etc.
@@ -86,7 +88,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function getSearchProductArtNr()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sSearchArtNum');
+        return Registry::getRequest()->getRequestEscapedParameter('sSearchArtNum');
     }
 
     /**
@@ -173,8 +175,8 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function addThisArticle()
     {
-        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
-        $dAmount = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('am');
+        $sOxid = Registry::getRequest()->getRequestEscapedParameter('aid');
+        $dAmount = Registry::getRequest()->getRequestEscapedParameter('am');
         $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
@@ -185,7 +187,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field($oProduct->getId());
                 $oOrderArticle->oxorderarticles__oxartnum = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxartnum->value);
                 $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount);
-                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel'));
+                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(Registry::getRequest()->getRequestEscapedParameter('sel'));
                 $oOrder->recalculateOrder([$oOrderArticle]);
             }
         }
@@ -197,7 +199,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function deleteThisArticle()
     {
         // get article id
-        $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
+        $sOrderArtId = Registry::getRequest()->getRequestEscapedParameter('sArtID');
         $sOrderId = $this->getEditObjectId();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
@@ -220,7 +222,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
+        $sOrderArtId = Registry::getRequest()->getRequestEscapedParameter('sArtID');
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oArticle->load($sOrderArtId);
 
@@ -257,7 +259,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function updateOrder()
     {
-        $aOrderArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aOrderArticles');
+        $aOrderArticles = Registry::getRequest()->getRequestEscapedParameter('aOrderArticles');
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {

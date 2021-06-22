@@ -64,7 +64,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
 
-        $aParams = Registry::getConfig()->getRequestParameter('pa');
+        $aParams = Registry::getRequest()->getRequestEscapedParameter('pa');
         if (!isset($aParams['email']) || !$emailValidator->isEmailValid($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
@@ -137,7 +137,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return Registry::getConfig()->getRequestParameter('pa');
+        return Registry::getRequest()->getRequestEscapedParameter('pa');
     }
 
     /**

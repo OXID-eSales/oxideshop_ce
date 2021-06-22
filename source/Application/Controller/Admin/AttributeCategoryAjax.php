@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 use Exception;
 
 /**
@@ -54,8 +52,8 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');
-        $sDiscountId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchDiscountId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sDiscountId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchDiscountId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDiscountId) {
@@ -88,7 +86,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
     {
         $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
@@ -108,11 +106,11 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
     public function addCatToAttr()
     {
         $aAddCategory = $this->_getActionIds('oxcategories.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         // adding
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
             $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }

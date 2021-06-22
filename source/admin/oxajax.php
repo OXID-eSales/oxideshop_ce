@@ -45,7 +45,7 @@ if ($blAjaxCall) {
         Registry::getUtils()->showMessageAndExit("");
     }
 
-    if ($sContainer = Registry::get(Request::class)->getRequestParameter('container')) {
+    if ($sContainer = Registry::getRequest()->getRequestParameter('container')) {
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
@@ -67,7 +67,7 @@ if ($blAjaxCall) {
         }
 
         $oAjaxComponent->setName($sContainer);
-        $oAjaxComponent->processRequest(Registry::get(Request::class)->getRequestParameter('fnc'));
+        $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
     }
 
     $myConfig->pageClose();

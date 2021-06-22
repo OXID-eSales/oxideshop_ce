@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Current user password change form.
@@ -69,9 +69,9 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
             return;
         }
 
-        $sOldPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_old', true);
-        $sNewPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $sOldPass = Registry::getRequest()->getRequestParameter('password_old');
+        $sNewPass = Registry::getRequest()->getRequestParameter('password_new');
+        $sConfPass = Registry::getRequest()->getRequestParameter('password_new_confirm');
 
         /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
         $oInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();

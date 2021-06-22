@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin voucherserie groups manager.
@@ -41,7 +41,7 @@ class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             $oVoucherSerieGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oVoucherSerieGroupsAjax->getColumns();
 

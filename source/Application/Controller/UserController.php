@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * User details.
@@ -131,7 +130,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     {
         if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $option = Registry::getConfig()->getRequestParameter('option');
+            $option = Registry::getRequest()->getRequestEscapedParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
             if ($option == 2 && !$this->getUser()) {
                 $option = 0;
@@ -156,7 +155,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
                 $orderRemark = Registry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $orderRemark = $config->getRequestParameter('order_remark', true);
+                $orderRemark = Registry::getRequest()->getRequestParameter('order_remark');
             }
 
             $this->_sOrderRemark = $orderRemark ? $config->checkParamSpecialChars($orderRemark) : false;
@@ -173,7 +172,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     public function isNewsSubscribed()
     {
         if ($this->_blNewsSubscribed === null) {
-            if (($isSubscribedToNews = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($isSubscribedToNews = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed')) === null) {
                 $isSubscribedToNews = false;
             }
             if (($user = $this->getUser())) {
@@ -206,7 +205,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function modifyBillAddress()
     {
-        return Registry::getConfig()->getRequestParameter('blnewssubscribed');
+        return Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
     }
 
     /**

@@ -200,10 +200,10 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sid = null;
 
         $forceSidParam = null;
-        if (!in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)) {
-            $forceSidParam = $myConfig->getRequestParameter($this->getForcedName());
+        if (!in_array(Registry::getRequest()->getRequestEscapedParameter('cl'), $this->orderControllers)) {
+            $forceSidParam = Registry::getRequest()->getRequestEscapedParameter($this->getForcedName());
         }
-        $sidParam = $myConfig->getRequestParameter($this->getName());
+        $sidParam = Registry::getRequest()->getRequestEscapedParameter($this->getName());
 
         //forcing sid for SSL<->nonSSL transitions
         if ($forceSidParam) {
@@ -269,7 +269,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getRequestChallengeToken()
     {
-        return preg_replace('/[^a-z0-9]/i', '', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('stoken'));
+        return preg_replace('/[^a-z0-9]/i', '', Registry::getRequest()->getRequestEscapedParameter('stoken'));
     }
 
     /**
@@ -814,7 +814,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _forceSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (!Registry::getUtils()->isSearchEngine()) && (((bool) Registry::getConfig()->getConfigParam('blForceSessionStart')) || Registry::getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
+        return (!Registry::getUtils()->isSearchEngine()) && (((bool) Registry::getConfig()->getConfigParam('blForceSessionStart')) || Registry::getRequest()->getRequestEscapedParameter("su") || $this->_blForceNewSession);
     }
 
     /**
@@ -830,7 +830,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         // special handling only in non-admin mode
         if (!$this->isAdmin()) {
-            if (Registry::getUtils()->isSearchEngine() || $myConfig->getRequestParameter('skipSession')) {
+            if (Registry::getUtils()->isSearchEngine() || Registry::getRequest()->getRequestEscapedParameter('skipSession')) {
                 $blAllowSessionStart = false;
             } elseif (Registry::getUtilsServer()->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
                 $blAllowSessionStart = true;
@@ -840,7 +840,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 // - no cookie set and user executes no session connected action
                 if (
                     !Registry::getUtilsServer()->getOxCookie($this->getName()) &&
-                    !($myConfig->getRequestParameter($this->getName()) || $myConfig->getRequestParameter($this->getForcedName())) &&
+                    !(Registry::getRequest()->getRequestEscapedParameter($this->getName()) || Registry::getRequest()->getRequestEscapedParameter($this->getForcedName())) &&
                     !$this->_isSessionRequiredAction()
                 ) {
                     $blAllowSessionStart = false;
@@ -1040,7 +1040,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _isSessionRequiredAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($this->_getRequireSessionWithParams() as $sParam => $aValues) {
-            $sValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sParam);
+            $sValue = Registry::getRequest()->getRequestEscapedParameter($sParam);
             if (isset($sValue)) {
                 if (is_array($aValues)) {
                     if (isset($aValues[$sValue]) && $aValues[$sValue]) {
@@ -1074,7 +1074,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isValidRemoteAccessToken() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $inputToken = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rtoken');
+        $inputToken = Registry::getRequest()->getRequestEscapedParameter('rtoken');
         $token = $this->getRemoteAccessToken(false);
 
         return !empty($inputToken) ? ($token === $inputToken) : false;

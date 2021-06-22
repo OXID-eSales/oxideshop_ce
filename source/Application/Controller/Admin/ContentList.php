@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin Contents manager.
@@ -49,7 +48,7 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         parent::render();
 
-        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestEscapedParameter("folder");
         $sFolder = $sFolder ? $sFolder : -1;
 
         $this->_aViewData["folder"] = $sFolder;
@@ -70,7 +69,7 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
+        $sFolder = Registry::getRequest()->getRequestEscapedParameter('folder');
         $sViewName = getviewName("oxcontents");
 
         //searchong for empty oxfolder fields

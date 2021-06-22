@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article review manager.
@@ -34,7 +33,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $this->_aViewData["edit"] = $article;
 
         $articleId = $this->getEditObjectId();
-        $reviewId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rev_oxid');
+        $reviewId = Registry::getRequest()->getRequestEscapedParameter('rev_oxid');
         if (isset($articleId) && $articleId != "-1") {
             // load object
             $article->load($articleId);
@@ -113,14 +112,14 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::save();
 
-        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $parameters = Registry::getRequest()->getRequestEscapedParameter("editval");
         // checkbox handling
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
             $parameters['oxreviews__oxactive'] = 0;
         }
 
         $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-        $review->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rev_oxid"));
+        $review->load(Registry::getRequest()->getRequestEscapedParameter("rev_oxid"));
         $review->assign($parameters);
         $review->save();
     }
@@ -132,7 +131,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $this->resetContentCache();
 
-        $reviewId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("rev_oxid");
+        $reviewId = Registry::getRequest()->getRequestEscapedParameter("rev_oxid");
         $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->load($reviewId);
         $review->delete();

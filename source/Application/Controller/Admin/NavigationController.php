@@ -34,13 +34,11 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         parent::render();
         $myUtilsServer = Registry::getUtilsServer();
 
-        $config = Registry::getConfig();
-
-        $sItem = $config->getRequestParameter("item");
+        $sItem = Registry::getRequest()->getRequestEscapedParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = $config->getRequestParameter("favorites");
+            $aFavorites = Registry::getRequest()->getRequestEscapedParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
@@ -54,7 +52,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->_aViewData["sVersion"] = ShopVersion::getVersion();
 
             //checking requirements if this is not nav frame reload
-            if (!$config->getRequestParameter("navReload")) {
+            if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
@@ -79,7 +77,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = $config->getRequestParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = Registry::getRequest()->getRequestEscapedParameter('openHistory');
         }
 
         $blisMallAdmin = Registry::getSession()->getVariable('malladmin');
@@ -95,7 +93,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         $this->_aViewData['shoplist'] = $oShoplist;
-        $this->_aViewData["shopURL"] = $config->getShopURL();
+        $this->_aViewData["shopURL"] = Registry::getConfig()->getShopURL();
 
         return $sItem;
     }
@@ -109,9 +107,9 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         // informing about basefrm parameters
         $this->_aViewData['loadbasefrm'] = true;
-        $this->_aViewData['listview'] = Registry::getConfig()->getRequestParameter('listview');
-        $this->_aViewData['editview'] = Registry::getConfig()->getRequestParameter('editview');
-        $this->_aViewData['actedit'] = Registry::getConfig()->getRequestParameter('actedit');
+        $this->_aViewData['listview'] = Registry::getRequest()->getRequestEscapedParameter('listview');
+        $this->_aViewData['editview'] = Registry::getRequest()->getRequestEscapedParameter('editview');
+        $this->_aViewData['actedit'] = Registry::getRequest()->getRequestEscapedParameter('actedit');
     }
 
     /**
@@ -142,7 +140,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     public function exturl()
     {
         $myUtils = Registry::getUtils();
-        if ($sUrl = Registry::getConfig()->getRequestParameter("url")) {
+        if ($sUrl = Registry::getRequest()->getRequestEscapedParameter("url")) {
             // Caching not allowed, redirecting
             $myUtils->redirect($sUrl, true, 302);
         }

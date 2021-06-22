@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -76,7 +76,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
@@ -99,7 +99,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
+        $iEditLanguage = Registry::getRequest()->getRequestEscapedParameter("editlanguage");
         $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
 
         if ($soxId != "-1") {
@@ -135,14 +135,14 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
         }
 
         $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
-        $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
+        $iEditLanguage = Registry::getRequest()->getRequestEscapedParameter("editlanguage");
 
         if ($soxId != "-1") {
             $oLinks->loadInLang($iEditLanguage, $soxId);
@@ -160,7 +160,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oLinks->assign($aParams);
 
         // apply new language
-        $oLinks->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
+        $oLinks->setLanguage(Registry::getRequest()->getRequestEscapedParameter("new_lang"));
         $oLinks->save();
 
         // set oxid if inserted

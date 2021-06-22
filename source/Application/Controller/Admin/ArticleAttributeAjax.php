@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class controls article assignment to attributes
@@ -42,8 +40,8 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchArtId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         $sAttrViewName = $this->_getViewName('oxattribute');
         $sO2AViewName = $this->_getViewName('oxobject2attribute');
@@ -68,8 +66,8 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function removeAttr()
     {
         $aChosenArt = $this->_getActionIds('oxobject2attribute.oxid');
-        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sO2AViewName = $this->_getViewName('oxobject2attribute');
             $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
@@ -88,9 +86,9 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function addAttr()
     {
         $aAddCat = $this->_getActionIds('oxattribute.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sAttrViewName = $this->_getViewName('oxattribute');
             $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
         }
@@ -118,9 +116,9 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $this->resetContentCache();
 
-        $articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
-        $attributeId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("attr_oxid");
-        $attributeValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("attr_value");
+        $articleId = Registry::getRequest()->getRequestEscapedParameter("oxid");
+        $attributeId = Registry::getRequest()->getRequestEscapedParameter("attr_oxid");
+        $attributeValue = Registry::getRequest()->getRequestEscapedParameter("attr_value");
 
         $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($article->load($articleId)) {
@@ -136,7 +134,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $select = "select * from {$viewName} where {$viewName}.oxobjectid= {$quotedArticleId} and
                             {$viewName}.oxattrid= " . $database->quote($attributeId);
                 $objectToAttribute = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
-                $objectToAttribute->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
+                $objectToAttribute->setLanguage(Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
                 $objectToAttribute->init("oxobject2attribute");
                 if ($objectToAttribute->assignRecord($select)) {
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);

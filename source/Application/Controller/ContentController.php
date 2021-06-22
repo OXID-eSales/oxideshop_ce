@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use oxRegistry;
 
 /**
  * CMS - loads pages and displays it
@@ -113,7 +112,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $this->_sViewId = parent::getViewId() . '|' . Registry::getConfig()->getRequestParameter('oxcid');
+            $this->_sViewId = parent::getViewId() . '|' . Registry::getRequest()->getRequestEscapedParameter('oxcid');
         }
 
         return $this->_sViewId;
@@ -239,7 +238,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) Registry::getConfig()->getRequestParameter('plain');
+        $blPlain = (bool) Registry::getRequest()->getRequestEscapedParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
             if (
@@ -261,7 +260,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return Registry::getConfig()->getRequestParameter('oxcid');
+        return Registry::getRequest()->getRequestEscapedParameter('oxcid');
     }
 
     /**
@@ -273,8 +272,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContentId()
     {
         if ($this->_sContentId === null) {
-            $sContentId = Registry::getConfig()->getRequestParameter('oxcid');
-            $sLoadId = Registry::getConfig()->getRequestParameter('oxloadid');
+            $sContentId = Registry::getRequest()->getRequestEscapedParameter('oxcid');
+            $sLoadId = Registry::getRequest()->getRequestEscapedParameter('oxloadid');
 
             $this->_sContentId = false;
             $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
@@ -337,7 +336,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // assign template name
-        $sTplName = Registry::getConfig()->getRequestParameter('tpl');
+        $sTplName = Registry::getRequest()->getRequestEscapedParameter('tpl');
 
         if ($sTplName) {
             // security fix so that you cant access files from outside template dir

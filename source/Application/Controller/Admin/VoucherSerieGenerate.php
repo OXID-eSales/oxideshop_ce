@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Voucher Serie generator class
@@ -106,7 +105,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
         $iExportedItems = 0;
 
         // file is open
-        $iStart = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
+        $iStart = Registry::getRequest()->getRequestEscapedParameter("iStart");
 
         for ($i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
             if (($iExportedItems = $this->nextTick($i)) === false) {

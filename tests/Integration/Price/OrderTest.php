@@ -13,6 +13,7 @@ use oxOrder;
 use oxOrderArticle;
 use oxRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
+use OxidEsales\Eshop\Core\Registry;
 
 require_once __DIR__ . '/BasketConstruct.php';
 
@@ -238,7 +239,7 @@ class OrderTest extends BaseTestCase
             $orderArticle->oxorderarticles__oxartid = new oxField($product->getId());
             $orderArticle->oxorderarticles__oxartnum = new oxField($product->oxarticles__oxartnum->value);
             $orderArticle->oxorderarticles__oxamount = new oxField($amount);
-            $orderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
+            $orderArticle->oxorderarticles__oxselvariant = new oxField(Registry::getRequest()->getRequestEscapedParameter('sel'));
             $order->recalculateOrder(array($orderArticle));
         }
     }

@@ -265,7 +265,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sMailError === null) {
             $this->_sMailError = false;
-            $this->_sMailError = Registry::getConfig()->getRequestParameter('mailerror');
+            $this->_sMailError = Registry::getRequest()->getRequestEscapedParameter('mailerror');
         }
 
         return $this->_sMailError;

@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages discount users
@@ -58,8 +57,8 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         $sUserTable = $this->_getViewName('oxuser');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sId = $oConfig->getRequestParameter('oxid');
-        $sSynchId = $oConfig->getRequestParameter('synchoxid');
+        $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -93,9 +92,8 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function removeDiscUser()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
-        if ($oConfig->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
@@ -111,9 +109,9 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aChosenUsr = $this->_getActionIds('oxuser.oxid');
-        $soxId = $oConfig->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        if ($oConfig->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sUserTable = $this->_getViewName('oxuser');
             $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }

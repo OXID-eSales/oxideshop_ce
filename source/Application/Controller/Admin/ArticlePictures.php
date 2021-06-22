@@ -8,8 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxField;
 
 /**
  * Admin article picture manager.
@@ -83,7 +81,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($oArticle->load($this->getEditObjectId())) {
-            $oArticle->assign(Registry::getConfig()->getRequestParameter("editval"));
+            $oArticle->assign(Registry::getRequest()->getRequestEscapedParameter("editval"));
             Registry::getUtilsFile()->processFiles($oArticle);
 
             // Show that no new image added
@@ -118,7 +116,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         }
 
         $sOxId = $this->getEditObjectId();
-        $iIndex = Registry::getConfig()->getRequestParameter("masterPicIndex");
+        $iIndex = Registry::getRequest()->getRequestEscapedParameter("masterPicIndex");
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->load($sOxId);

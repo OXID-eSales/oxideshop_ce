@@ -7,7 +7,6 @@
 
 namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
@@ -71,7 +70,6 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      */
     public function getContentCategory()
     {
-        $request = Registry::get(Request::class);
-        return $request->getRequestParameter('oxcid', false);
+        return Registry::getRequest()->getRequestParameter('oxcid', false);
     }
 }

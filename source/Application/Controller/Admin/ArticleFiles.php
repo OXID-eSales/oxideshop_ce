@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
 use Exception;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article files parameters manager.
@@ -64,13 +63,13 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function save()
     {
         // save article changes
-        $aArticleChanges = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+        $aArticleChanges = Registry::getRequest()->getRequestEscapedParameter('editval');
         $oArticle = $this->getArticle();
         $oArticle->assign($aArticleChanges);
         $oArticle->save();
 
         //update article files
-        $aArticleFiles = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('article_files');
+        $aArticleFiles = Registry::getRequest()->getRequestEscapedParameter('article_files');
         if (is_array($aArticleFiles)) {
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
                 $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
@@ -126,7 +125,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $soxId = $this->getEditObjectId();
 
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("newfile");
+        $aParams = Registry::getRequest()->getRequestEscapedParameter("newfile");
         $aParams = $this->_processOptions($aParams);
         $aNewFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("newArticleFile");
 
@@ -174,7 +173,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         $sArticleId = $this->getEditObjectId();
-        $sArticleFileId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fileid');
+        $sArticleFileId = Registry::getRequest()->getRequestEscapedParameter('fileid');
         $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->load($sArticleFileId);
         if ($oArticleFile->hasValidDownloads()) {

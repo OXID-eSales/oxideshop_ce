@@ -9,8 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
 use OxidEsales\Eshop\Core\Registry;
-use oxOrderFileList;
-use oxRegistry;
 
 /**
  * Account article file download page.
@@ -114,6 +112,6 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      */
     public function getDownloadError()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('download_error');
+        return Registry::getRequest()->getRequestEscapedParameter('download_error');
     }
 }

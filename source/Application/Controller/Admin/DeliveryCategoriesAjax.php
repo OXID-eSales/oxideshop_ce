@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages delivery categories
@@ -46,8 +45,8 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         // looking for table/view
         $sCatTable = $this->_getViewName('oxcategories');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sDelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $sSynchDelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
@@ -84,7 +83,7 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         $aChosenCat = $this->_getActionIds('oxobject2delivery.oxid');
 
         // removing all
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
@@ -100,10 +99,10 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     public function addCatToDel()
     {
         $aChosenCat = $this->_getActionIds('oxcategories.oxid');
-        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
+        if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
             $aChosenCat = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }

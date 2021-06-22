@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\TextEditorHandler;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
@@ -55,7 +56,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function getDocumentationLanguageId()
     {
-        $language = \OxidEsales\Eshop\Core\Registry::getLang();
+        $language = Registry::getLang();
         $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
 
         return $languageAbbr === "de" ? 0 : 1;
@@ -251,8 +252,8 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function changeFolder()
     {
-        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('setfolder');
-        $sFolderClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folderclass');
+        $sFolder = Registry::getRequest()->getRequestEscapedParameter('setfolder');
+        $sFolderClass = Registry::getRequest()->getRequestEscapedParameter('folderclass');
 
         if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';

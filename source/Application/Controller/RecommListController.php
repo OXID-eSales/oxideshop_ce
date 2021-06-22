@@ -9,11 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxrecommlist;
-use oxUBase;
-use oxRssFeed;
-use oxField;
 
 /**
  * Article suggestion page.
@@ -183,7 +178,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getAddSeoUrlParams()
     {
         $sAddParams = parent::getAddSeoUrlParams();
-        if ($sParam = Registry::getConfig()->getRequestParameter("searchrecomm", true)) {
+        if ($sParam = Registry::getRequest()->getRequestParameter("searchrecomm")) {
             $sAddParams .= "&amp;searchrecomm=" . rawurlencode($sParam);
         }
 
@@ -206,7 +201,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             ($oRecommList = $this->getActiveRecommList()) && ($oUser = $this->getUser())
         ) {
             //save rating
-            $dRating = Registry::getConfig()->getRequestParameter('recommlistrating');
+            $dRating = Registry::getRequest()->getRequestEscapedParameter('recommlistrating');
             if ($dRating !== null) {
                 $dRating = (int) $dRating;
             }
@@ -223,7 +218,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 }
             }
 
-            if (($sReviewText = trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($sReviewText = trim((string) Registry::getRequest()->getRequestParameter('rvw_txt')))) {
                 $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $oReview->oxreviews__oxobjectid = new Field($oRecommList->getId());
                 $oReview->oxreviews__oxtype = new Field('oxrecommlist');
@@ -244,7 +239,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getNavigationParams()
     {
         $aParams = \OxidEsales\Eshop\Application\Controller\FrontendController::getNavigationParams();
-        $aParams['recommid'] = Registry::getConfig()->getRequestParameter('recommid');
+        $aParams['recommid'] = Registry::getRequest()->getRequestEscapedParameter('recommid');
 
         return $aParams;
     }
@@ -260,7 +255,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $this->_aArticleList = false;
             if ($oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
+                $iActPage = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -414,7 +409,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     {
         if ($this->_sSearch === null) {
             $this->_sSearch = false;
-            if ($sSearch = Registry::getConfig()->getRequestParameter('searchrecomm', false)) {
+            if ($sSearch = Registry::getRequest()->getRequestEscapedParameter('searchrecomm')) {
                 $this->_sSearch = $sSearch;
             }
         }
@@ -460,7 +455,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             return $oActiveRecommList->oxrecommlists__oxtitle->value;
         }
 
-        return Registry::getConfig()->getRequestParameter('searchrecomm');
+        return Registry::getRequest()->getRequestEscapedParameter('searchrecomm');
     }
 
     /**
@@ -535,7 +530,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
         } else {
             $sLink = \OxidEsales\Eshop\Application\Controller\FrontendController::getLink($iLang);
         }
-        $sSearch = Registry::getConfig()->getRequestParameter('searchrecomm');
+        $sSearch = Registry::getRequest()->getRequestEscapedParameter('searchrecomm');
         if ($sSearch) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "searchrecomm={$sSearch}";
         }

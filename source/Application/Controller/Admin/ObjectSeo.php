@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -63,7 +62,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
-            $aSeoData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aSeoData');
+            $aSeoData = Registry::getRequest()->getRequestEscapedParameter('aSeoData');
             $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $iLang = $this->getEditLang();
 

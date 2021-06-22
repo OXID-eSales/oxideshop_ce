@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * pricealarm sending manager.
@@ -39,9 +37,9 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $start = (int) $config->getRequestParameter("iStart");
+        $start = (int) Registry::getRequest()->getRequestEscapedParameter("iStart");
         $limit = $config->getConfigParam('iCntofMails');
-        $activeAlertsAmount = $config->getRequestParameter("iAllCnt");
+        $activeAlertsAmount = Registry::getRequest()->getRequestEscapedParameter("iAllCnt");
         if (!isset($activeAlertsAmount)) {
             $activeAlertsAmount = $this->countActivePriceAlerts();
         }

@@ -2137,12 +2137,39 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             }
         }
 
+        $this->addListIdAndWidgetIdToViewData();
+
         $config = Registry::getConfig();
         $this->_aViewData["defaultLang"] = $config->getConfigParam('sDefaultLang');
         $this->_aViewData["shopURLParam"] = $config->getConfigParam('sShopURL');
-        $this->_aViewData["className"] = $config->getRequestParameter('actcl');
 
         return $this->_sThisTemplate;
+    }
+
+    private function addListIdAndWidgetIdToViewData()
+    {
+        $config = Registry::getConfig();
+
+        $className = $config->getRequestParameter('actcl');
+        $listId = null;
+        $widgetId = null;
+
+        if ($className === 'start' && $config->getConfigParam('blEcondaRecommendationsStart')) {
+            $listId = 'recommendationsStart';
+            $widgetId = $config->getConfigParam('sEcondaWidgetIdStart');
+        } elseif ($className === 'alist' && $config->getConfigParam('blEcondaRecommendationsList')) {
+            $listId = 'recommendationsList';
+            $widgetId = $config->getConfigParam('sEcondaWidgetIdList');
+        } elseif ($className === 'details' && $config->getConfigParam('blEcondaRecommendationsDetails')) {
+            $listId = 'recommendationsDetails';
+            $widgetId = $config->getConfigParam('sEcondaWidgetIdDetails');
+        } elseif ($className === 'basket' && $config->getConfigParam('blEcondaRecommendationsBasket')) {
+            $listId = 'recommendationsBasket';
+            $widgetId = $config->getConfigParam('sEcondaWidgetIdBasket');
+        }
+
+        $this->_aViewData["sListId"] = $listId;
+        $this->_aViewData["sWidgetId"] = $widgetId;
     }
 
     /**

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 class LinksTest extends \OxidTestCase
 {
@@ -22,7 +23,8 @@ class LinksTest extends \OxidTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->_oxLinks = oxNew("oxlinks", getViewName('oxlinks'));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->_oxLinks = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $this->_oxLinks->setId('testlink');
         $this->_oxLinks->oxlinks__oxurl = new oxField('http://www.oxid-esales.com', oxField::T_RAW);
         $this->_oxLinks->Save();
@@ -45,7 +47,8 @@ class LinksTest extends \OxidTestCase
      */
     public function testLoad()
     {
-        $oLink = oxNew("oxlinks", getViewName('oxlinks'));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $oLink = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
         $this->assertEquals('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
     }
@@ -55,7 +58,8 @@ class LinksTest extends \OxidTestCase
      */
     public function testDescWithHtmlEntity()
     {
-        $oLink = oxNew("oxlinks", getViewName('oxlinks'));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $oLink = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
         $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
         $this->_oxLinks->Save();

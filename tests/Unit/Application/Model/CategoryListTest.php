@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use oxCategoryList;
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxRegistry;
 use OxidEsales\EshopCommunity\Application\Model\Category;
 
@@ -208,7 +209,8 @@ class CategoryListTest extends \OxidTestCase
 
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet(null);
 
-        $sViewName = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
         $sExpSnippet = " ( 0 or $sViewName.oxparentid = 'oxrootid' ) ";
 
@@ -229,7 +231,8 @@ class CategoryListTest extends \OxidTestCase
 
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet(null);
 
-        $sViewName = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
         $sExpSnippet = " ( 0 or $sViewName.oxparentid = 'oxrootid' or $sViewName.oxrootid = $sViewName.oxparentid or $sViewName.oxid = $sViewName.oxrootid ) ";
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
@@ -251,7 +254,8 @@ class CategoryListTest extends \OxidTestCase
         $oCat->load($this->_sActCat);
         $sCurSnippet = $this->_oList->UNITgetDepthSqlSnippet($oCat);
 
-        $sViewName = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
         $snippetOxid = $this->getTestConfig()->getShopEdition() === 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
         $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '" . $snippetOxid . "') ) ";
@@ -371,7 +375,8 @@ class CategoryListTest extends \OxidTestCase
 
         $sCurSql = $this->_oList->UNITgetSelectString();
 
-        $sViewName = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
         $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->UNITgetSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
 

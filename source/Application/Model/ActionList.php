@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxDb;
 
@@ -115,8 +116,9 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oUser = ($oUser == null) ? $this->getUser() : $oUser;
-        $sTable = getViewName('oxactions');
-        $sGroupTable = getViewName('oxgroups');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxactions');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
 
         $aIds = [];
         // checking for current session user which gives additional restrictions for user itself, users group and country
@@ -153,7 +155,8 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function fetchExistsActivePromotion()
     {
-        $query = "select 1 from " . getViewName('oxactions') . " 
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $query = "select 1 from " . $tableViewNameGenerator->getViewName('oxactions') . " 
             where oxtype = :oxtype and oxactive = :oxactive and oxshopid = :oxshopid 
             limit 1";
 

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+
 /**
  * Tests for Content_List class
  */
@@ -44,7 +46,8 @@ class ContentListTest extends \OxidTestCase
         }
 
         $this->setRequestParameter("folder", "testFolder");
-        $sViewName = getviewName("oxcontents");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxcontents");
 
         // defining parameters
         $oView = oxNew('Content_List');

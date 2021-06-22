@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -775,7 +776,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             ($sPrevId = Registry::getRequest()->getRequestEscapedParameter('preview')) &&
             ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
-            $sTable = getViewName('oxuser');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sTable = $tableViewNameGenerator->getViewName('oxuser');
             $sQ = "SELECT 1 FROM $sTable WHERE MD5( CONCAT( :adminsid, {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = :previd";
             $blCan = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
                 ':adminsid' => $sAdminSid,

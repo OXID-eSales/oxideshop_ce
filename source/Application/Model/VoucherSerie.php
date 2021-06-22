@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxDb;
 
@@ -67,7 +68,8 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_oGroups === null) {
             $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $this->_oGroups->init('oxgroups');
-            $sViewName = getViewName("oxgroups");
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sViewName = $tableViewNameGenerator->getViewName("oxgroups");
             $sSelect = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where
                          o2g.oxobjectid = :oxobjectid and gr.oxid = o2g.oxgroupsid ";
             $this->_oGroups->selectString($sSelect, [

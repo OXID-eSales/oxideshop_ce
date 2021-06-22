@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxDb;
 
@@ -124,7 +125,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sTable = getViewName('oxdeliveryset');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sQ = "select $sTable.* from $sTable ";
         $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . ' ';
 
@@ -148,9 +150,9 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
         }
 
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -292,7 +294,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadNonRDFaDeliverySetList()
     {
-        $sTable = getViewName('oxdeliveryset');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sSubSql = "SELECT * FROM oxobject2delivery WHERE oxobject2delivery.OXDELIVERYID = $sTable.OXID AND oxobject2delivery.OXTYPE = 'rdfadeliveryset'";
         $this->selectString("SELECT $sTable.* FROM $sTable WHERE NOT EXISTS($sSubSql) AND $sTable.OXACTIVE = 1");
     }
@@ -305,7 +308,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadRDFaDeliverySetList($sDelId = null)
     {
-        $sTable = getViewName('oxdeliveryset');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         if ($sDelId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = :oxdelid ) as $sTable";

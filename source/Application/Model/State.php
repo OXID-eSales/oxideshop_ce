@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * State handler
@@ -61,7 +62,8 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getTitleById($iStateId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT oxtitle FROM " . getViewName("oxstates") . " 
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sQ = "SELECT oxtitle FROM " . $tableViewNameGenerator->getViewName("oxstates") . " 
             WHERE oxid = :oxid";
 
         $sStateTitle = $oDb->getOne($sQ, [

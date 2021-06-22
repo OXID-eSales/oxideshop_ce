@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
@@ -356,7 +357,8 @@ class ArticleSeoTest extends \OxidTestCase
      */
     public function testGetCategoryList()
     {
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
         $sQ = "select oxarticles.oxid from oxarticles left join {$sO2CView} on
                oxarticles.oxid={$sO2CView}.oxobjectid where
                oxarticles.oxactive='1' and {$sO2CView}.oxobjectid is not null";
@@ -451,7 +453,8 @@ class ArticleSeoTest extends \OxidTestCase
      */
     protected function ensureProductIdExists()
     {
-        $objectToCategoryViewName = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $objectToCategoryViewName = $tableViewNameGenerator->getViewName('oxobject2category');
         $query = "select oxarticles.oxid from oxarticles left join {$objectToCategoryViewName} on
                oxarticles.oxid={$objectToCategoryViewName}.oxobjectid where
                oxarticles.oxactive='1' and {$objectToCategoryViewName}.oxobjectid is not null";

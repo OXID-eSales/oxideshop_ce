@@ -11,6 +11,7 @@ use Exception;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxList;
 
 // defining supported link types
@@ -1449,7 +1450,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if (!isset(self::$_aSelList[$sKey])) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sSLViewName = getViewName('oxselectlist');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sSLViewName = $tableViewNameGenerator->getViewName('oxselectlist');
 
             $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
                    where oxobject2selectlist.oxobjectid = :oxobjectid order by oxobject2selectlist.oxsort";
@@ -1568,8 +1570,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sId = $this->getId() . ((int) $iLimit);
         if (!array_key_exists($sId, self::$_aSelections)) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sSLViewName = getViewName('oxselectlist');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sSLViewName = $tableViewNameGenerator->getViewName('oxselectlist');
 
             $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
                    where oxobject2selectlist.oxobjectid = :oxobjectid order by oxobject2selectlist.oxsort";
@@ -1977,8 +1979,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->_blSkipDiscounts = false;
         if (Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->hasSkipDiscountCategories()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sO2CView = getViewName('oxobject2category', $this->getLanguage());
-            $sViewName = getViewName('oxcategories', $this->getLanguage());
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category', $this->getLanguage());
+            $sViewName = $tableViewNameGenerator->getViewName('oxcategories', $this->getLanguage());
             $sSelect = "select 1 from $sO2CView as $sO2CView
                 left join {$sViewName} on {$sViewName}.oxid = $sO2CView.oxcatnid
                 where $sO2CView.oxobjectid = :oxobjectid
@@ -2555,7 +2558,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             // choosing which to get..
             $sOxid = $this->getId();
-            $sViewName = getViewName('oxartextends', $this->getLanguage());
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sViewName = $tableViewNameGenerator->getViewName('oxartextends', $this->getLanguage());
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sDbValue = $oDb->getOne("select oxlongdesc from {$sViewName} where oxid = :oxid", [
@@ -2819,7 +2823,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_aMediaUrls->init("oxmediaurl");
             $this->_aMediaUrls->getBaseObject()->setLanguage($this->getLanguage());
 
-            $sViewName = getViewName("oxmediaurls", $this->getLanguage());
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sViewName = $tableViewNameGenerator->getViewName("oxmediaurls", $this->getLanguage());
             $sQ = "select * from {$sViewName} where oxobjectid = :oxobjectid";
             $this->_aMediaUrls->selectString($sQ, [
                 ':oxobjectid' => $this->getId()
@@ -4175,8 +4180,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _generateSearchStr($sOXID, $blSearchPriceCat = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sCatView = getViewName('oxcategories', $this->getLanguage());
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatView = $tableViewNameGenerator->getViewName('oxcategories', $this->getLanguage());
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         // we do not use lists here as we don't need this overhead right now
         if (!$blSearchPriceCat) {
@@ -4198,7 +4204,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function _generateSearchStrForCustomerBought() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->getViewName();
-        $sOrderArtTable = getViewName('oxorderarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sOrderArtTable = $tableViewNameGenerator->getViewName('oxorderarticles');
 
         // fetching filter params
         $sIn = " '{$this->oxarticles__oxid->value}' ";
@@ -4261,8 +4268,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sCategoryView = getViewName('oxcategories');
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCategoryView = $tableViewNameGenerator->getViewName('oxcategories');
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOXID = $oDb->quote($sOXID);

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Facts\Facts;
 use \oxLinks;
 use \oxAdminView;
@@ -157,7 +158,8 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testGetCategoryTreeUnsettingActiveCategory()
     {
-        $sCatTable = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatTable = $tableViewNameGenerator->getViewName('oxcategories');
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
         $oAdminDetails = oxNew('oxadmindetails');
@@ -176,7 +178,8 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testGetCategoryTreeMarkingActiveCategory()
     {
-        $sCatTable = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatTable = $tableViewNameGenerator->getViewName('oxcategories');
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
         $oAdminDetails = oxNew('oxadmindetails');

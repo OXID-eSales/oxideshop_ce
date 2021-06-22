@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use stdClass;
 
 /**
@@ -56,7 +57,8 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oRet = null;
         if (!empty($sVoucherNr)) {
             $sViewName = $this->getViewName();
-            $sSeriesViewName = getViewName('oxvoucherseries');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sSeriesViewName = $tableViewNameGenerator->getViewName('oxvoucherseries');
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
             $sQ = "select {$sViewName}.* from {$sViewName}, {$sSeriesViewName} where

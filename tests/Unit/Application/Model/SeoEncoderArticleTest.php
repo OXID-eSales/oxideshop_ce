@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use modDB;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Facts\Facts;
 use \oxSeoEncoderArticle;
 use \Exception;
@@ -522,7 +523,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     public function testGetArticleMainUriHasCategory()
     {
-        $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . $tableViewNameGenerator->getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
 
         $oCategory = oxNew("oxCategory");
         $oCategory->load($sMainCatId);
@@ -549,7 +551,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     public function testGetArticleMainUriVariantHasCategory()
     {
-        $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sMainCatId = oxDb::getDb()->getOne("select oxcatnid from " . $tableViewNameGenerator->getViewName("oxobject2category") . " where oxobjectid = '1126' order by oxtime");
 
         $oCategory = oxNew("oxCategory");
         $oCategory->load($sMainCatId);

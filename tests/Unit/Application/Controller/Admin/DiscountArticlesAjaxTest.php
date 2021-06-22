@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
@@ -48,7 +49,8 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testOxid';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sArticleTable = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
 
         $oView = oxNew('discount_articles_ajax');
         $sQuery = "from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
@@ -67,8 +69,9 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sArticleTable = getViewName("oxarticles");
-        $sO2CView = getViewName("oxobject2category");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sO2CView = $tableViewNameGenerator->getViewName("oxobject2category");
 
         $oView = oxNew('discount_articles_ajax');
         $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
@@ -87,7 +90,8 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sArticleTable = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
 
         $oView = oxNew('discount_articles_ajax');
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";

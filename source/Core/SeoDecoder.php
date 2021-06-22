@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Seo encoder base
@@ -186,7 +187,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         ]);
 
         if ('oxarticle' == $aInfo['oxtype']) {
-            $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sMainCatId = $oDb->getOne("select oxcatnid from " . $tableViewNameGenerator->getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
                 ':oxobjectid' => $sObjectId
             ]);
             if ($sMainCatId) {
@@ -296,7 +298,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     protected function _getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sTable = getViewName($sTable, $iLanguage);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName($sTable, $iLanguage);
 
         // first checking of field exists at all
         if ($oDb->getOne("show columns from {$sTable} where field = 'oxseoid'")) {

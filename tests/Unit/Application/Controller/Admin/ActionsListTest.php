@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxTestModules;
 
 /**
@@ -61,7 +62,8 @@ class ActionsListTest extends \OxidTestCase
         }
         $iTime = time();
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{ return ' . $iTime . '; }');
-        $sTable = getViewName("oxactions");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxactions");
         $sNow = date('Y-m-d H:i:s', $iTime);
 
         $oView = oxNew('Actions_List');

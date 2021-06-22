@@ -11,6 +11,7 @@ use \oxField;
 use \Exception;
 use \oxDb;
 use OxidEsales\Eshop\Application\Controller\ArticleListController;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -414,33 +415,13 @@ class AlistTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getConfig'));
+        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class,
+            array('getActiveCategory', 'getConfig'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCat));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('testsuffix', $oListView->getTitleSuffix());
     }
-
-    /**
-     * Test default Sorting
-     *
-     * @return null
-     */
-//    public function testGetDefaultSorting()
-//    {
-//        //$oList = oxNew('aList');
-//
-//        $oCat = oxNew('oxcategory');
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $aSorting = array( 'sortby' => $sArticleTable.'.'.'oxid', 'sortdir' => 'asc' );
-//
-//        $oCat->oxcategories__oxdefsort = new oxField( 'oxid' );
-//        //$oList->setActCategory($oCat);
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//
-//        $this->assertEquals($aSorting ,$oListView->getDefaultSorting());
-//    }
 
     /**
      * Test getDefaultSorting when default sorting is not set
@@ -471,7 +452,8 @@ class AlistTest extends \OxidTestCase
         $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
         $oController->setActiveCategory($oCategory);
 
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $this->assertEquals(array('sortby' => $sArticleTable . '.' . 'testsort', 'sortdir' => "asc"), $oController->getDefaultSorting());
     }
 
@@ -489,7 +471,8 @@ class AlistTest extends \OxidTestCase
         $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(null));
         $oController->setActiveCategory($oCategory);
 
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $this->assertEquals(array('sortby' => $sArticleTable . '.' . 'testsort', 'sortdir' => "asc"), $oController->getDefaultSorting());
     }
 
@@ -509,7 +492,8 @@ class AlistTest extends \OxidTestCase
 
         $oController->setActiveCategory($oCategory);
 
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $this->assertEquals(array('sortby' => $sArticleTable . '.' . 'testsort', 'sortdir' => "asc"), $oController->getDefaultSorting());
     }
 
@@ -528,7 +512,8 @@ class AlistTest extends \OxidTestCase
 
         $oController->setActiveCategory($oCategory);
 
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $this->assertEquals(array('sortby' => $sArticleTable . '.' . 'testsort', 'sortdir' => "desc"), $oController->getDefaultSorting());
     }
 

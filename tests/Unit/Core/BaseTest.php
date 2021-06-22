@@ -13,6 +13,7 @@ use oxBaseHelper;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxUtils;
@@ -1147,7 +1148,8 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = oxNew('oxBase');
         $oBase->init("oxactions");
-        $sView = getViewName("oxactions", -1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName("oxactions", -1);
         $sSelect = $oBase->buildSelectString(array("$sView.oxid" => "oxtopstart"));
         $sSelect = str_replace("  ", " ", $sSelect);
 
@@ -1244,7 +1246,8 @@ class BaseTest extends \OxidTestCase
         $oBase = oxNew('oxBase');
         $oBase->init('oxactions');
 
-        $sView = getViewName('oxactions', -1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions', -1);
         $this->assertEquals("`$sView`.`oxid`, `$sView`.`oxshopid`, `$sView`.`oxtype`, `$sView`.`oxtitle`, `$sView`.`oxtitle_1`, `$sView`.`oxtitle_2`, `$sView`.`oxtitle_3`, `$sView`.`oxlongdesc`, `$sView`.`oxlongdesc_1`, `$sView`.`oxlongdesc_2`, `$sView`.`oxlongdesc_3`, `$sView`.`oxactive`, `$sView`.`oxactivefrom`, `$sView`.`oxactiveto`, `$sView`.`oxpic`, `$sView`.`oxpic_1`, `$sView`.`oxpic_2`, `$sView`.`oxpic_3`, `$sView`.`oxlink`, `$sView`.`oxlink_1`, `$sView`.`oxlink_2`, `$sView`.`oxlink_3`, `$sView`.`oxsort`, `$sView`.`oxtimestamp`", $oBase->getSelectFields());
     }
 

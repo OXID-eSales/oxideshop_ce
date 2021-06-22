@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DOMDocument;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Tests for List_Review class
@@ -63,7 +64,8 @@ class ListReviewTest extends \OxidTestCase
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
@@ -71,7 +73,7 @@ class ListReviewTest extends \OxidTestCase
         $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertFalse((bool) $blCheckForParent);
     }
 
@@ -86,8 +88,9 @@ class ListReviewTest extends \OxidTestCase
         $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
         $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
 
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         // checking if exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
@@ -95,7 +98,7 @@ class ListReviewTest extends \OxidTestCase
         $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
         $this->assertFalse((bool) $blCheckForParent);
     }
 }

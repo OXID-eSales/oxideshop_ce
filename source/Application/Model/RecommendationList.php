@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Recommendation list manager class.
@@ -106,7 +107,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArtView = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
         $sSelect = "select count(distinct $sArtView.oxid) from oxobject2list ";
         $sSelect .= "left join $sArtView on oxobject2list.oxobjectid = $sArtView.oxid ";
         $sSelect .= "where (oxobject2list.oxlistid = '" . $this->getId() . "') ";
@@ -307,7 +309,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $sIds = implode(", ", $aIds);
 
         $aPrevIds = [];
-        $sArtView = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
             if (count($aPrevIds)) {
                 $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";

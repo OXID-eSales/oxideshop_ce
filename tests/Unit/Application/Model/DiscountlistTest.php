@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxField;
 use oxRegistry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+
 
 class DiscountlistTest extends \OxidTestCase
 {
@@ -174,14 +176,15 @@ class DiscountlistTest extends \OxidTestCase
         /** @var oxUtilsDate $oUtils */
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxdiscountlist');
 
         // default oxConfig country check.
-        $sTable = getViewName('oxdiscount');
+        $sTable = $tableViewNameGenerator->getViewName('oxdiscount');
         $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where ( ( $sTable.oxactive = 1 or ( $sTable.oxactivefrom < '" . date('Y-m-d H:i:s', $iCurrTime) . "' and $sTable.oxactiveto > '" . date('Y-m-d H:i:s', $iCurrTime) . "')) ) and (
             select
                 if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
@@ -203,9 +206,10 @@ class DiscountlistTest extends \OxidTestCase
     public function testGetFilterSelectAdminUser()
     {
         $this->setTime(0);
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
@@ -221,7 +225,7 @@ class DiscountlistTest extends \OxidTestCase
         $oList = oxNew('oxdiscountlist');
 
         // default oxConfig country check.
-        $sTable = getViewName('oxdiscount');
+        $sTable = $tableViewNameGenerator->getViewName('oxdiscount');
         $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
             select
                 if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),

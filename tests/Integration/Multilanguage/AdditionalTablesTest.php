@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Class AdditionalTablesTest
@@ -114,10 +115,11 @@ class AdditionalTablesTest extends MultilanguageTestCase
         $sql = "INSERT INTO addtest_set1 (OXID, TITLE_" . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
         oxDb::getDb()->execute($sql);
 
-        $sql = "SELECT TITLE FROM " . getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some additional title', oxDb::getDb()->getOne($sql));
 
-        $sql = "SELECT TITLE FROM " . getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
+        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
     }
 
@@ -143,10 +145,11 @@ class AdditionalTablesTest extends MultilanguageTestCase
         $sql = "INSERT INTO addtest_set1 (OXID, TITLE_" . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
         oxDb::getDb()->execute($sql);
 
-        $sql = "SELECT TITLE FROM " . getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some additional title', oxDb::getDb()->getOne($sql));
 
-        $sql = "SELECT TITLE FROM " . getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
+        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
     }
 

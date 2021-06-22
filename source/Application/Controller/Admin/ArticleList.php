@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Admin article list manager.
@@ -246,7 +247,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $sQ = parent::_buildSelectString($oListObject);
         if ($sQ) {
-            $sTable = getViewName("oxarticles");
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sTable = $tableViewNameGenerator->getViewName("oxarticles");
             $sQ .= " and $sTable.oxparentid = '' ";
 
             $sType = false;
@@ -259,7 +261,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
                 // add category
                 case 'cat':
                     $oStr = Str::getStr();
-                    $sViewName = getViewName("oxobject2category");
+                    $sViewName = $tableViewNameGenerator->getViewName("oxobject2category");
                     $sInsert = "from $sTable left join {$sViewName} on {$sTable}.oxid = {$sViewName}.oxobjectid " .
                                "where {$sViewName}.oxcatnid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sValue) . " and ";
                     $sQ = $oStr->preg_replace("/from\s+$sTable\s+where/i", $sInsert, $sQ);
@@ -291,7 +293,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         // adding folder check
         $sFolder = Registry::getRequest()->getRequestEscapedParameter('folder');
         if ($sFolder && $sFolder != '-1') {
-            $this->_aWhere[getViewName("oxarticles") . ".oxfolder"] = $sFolder;
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $this->_aWhere[$tableViewNameGenerator->getViewName("oxarticles") . ".oxfolder"] = $sFolder;
         }
 
         return $this->_aWhere;

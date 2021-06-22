@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use stdClass;
 use Exception;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Admin article extended parameters manager.
@@ -266,8 +267,8 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $articleTable = getViewName('oxarticles', $this->_iEditLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $articleTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
         $query = "select {$articleTable}.oxtitle, {$articleTable}.oxartnum, {$articleTable}.oxvarselect " .
             "from {$articleTable} where 1 ";
         // #546

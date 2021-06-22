@@ -21,6 +21,7 @@ use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
 use oxLinks;
@@ -393,7 +394,8 @@ class UtfTest extends \OxidTestCase
         $oTestArticle3->save();
 
         $oArtList = new oxArticleList();
-        $oArtList->setCustomSorting(getViewName('oxarticles') . ".oxtitle desc");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $oArtList->setCustomSorting($tableViewNameGenerator->getViewName('oxarticles') . ".oxtitle desc");
         $oArtList->loadSearchIds('testart');
         $aKeys = $oArtList->arrayKeys();
 

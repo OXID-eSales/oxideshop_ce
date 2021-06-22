@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxAdminList;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * user list "view" class.
@@ -51,7 +52,8 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         oxAdminList::render();
 
         $this->_aViewData["menustructure"] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
-        $this->_aViewData["articleListTable"] = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->_aViewData["articleListTable"] = $tableViewNameGenerator->getViewName('oxarticles');
 
         return "list_review.tpl";
     }
@@ -66,7 +68,8 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      */
     protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArtTable = getViewName('oxarticles', $this->_iEditLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
 
         $sQ = "select oxreviews.oxid, oxreviews.oxcreate, oxreviews.oxtext, oxreviews.oxobjectid, {$sArtTable}.oxparentid, {$sArtTable}.oxtitle as oxtitle, {$sArtTable}.oxvarselect as oxvarselect, oxparentarticles.oxtitle as parenttitle, ";
         $sQ .= "concat( {$sArtTable}.oxtitle, if(isnull(oxparentarticles.oxtitle), '', oxparentarticles.oxtitle), {$sArtTable}.oxvarselect) as arttitle from oxreviews ";
@@ -95,7 +98,8 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
     {
         $sSql = parent::_prepareWhereQuery($aWhere, $sSql);
 
-        $sArtTable = getViewName('oxarticles', $this->_iEditLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
         $sArtTitleField = "{$sArtTable}.oxtitle";
 
         // if searching in article title field, updating sql for this case

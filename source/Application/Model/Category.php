@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxField;
 
@@ -809,8 +810,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             return;
         }
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        return $oDb->getOne('select oxrootid from ' . getViewName('oxcategories') . ' where oxid = :oxid', [
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        return $oDb
+            ->getOne('select oxrootid from ' . $tableViewNameGenerator->getViewName('oxcategories') . ' where oxid = :oxid', [
             ':oxid' => $sCategoryId
         ]);
     }

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxField;
@@ -95,9 +96,9 @@ class ArticleMainTest extends \OxidTestCase
     {
         $oDb = oxDb::getDb();
         $oUtils = oxRegistry::getUtilsObject();
-        $iShopId = $this->getConfig()->getShopId();
 
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId', '0', '0');", 'oxobject2category');
         $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId2', '0', '0');", 'oxobject2category');

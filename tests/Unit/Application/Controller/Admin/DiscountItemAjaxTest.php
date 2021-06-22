@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Tests for Discount_Item_Ajax class
@@ -53,8 +54,9 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testOxid';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sArticleTable = getViewName("oxarticles");
-        $sDiscTable = getViewName('oxdiscount');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sDiscTable = $tableViewNameGenerator->getViewName('oxdiscount');
 
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sDiscTable left join $sArticleTable on $sArticleTable.oxid=$sDiscTable.oxitmartid ";
@@ -74,9 +76,10 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', false);
-        $sArticleTable = getViewName("oxarticles");
-        $sO2CView = getViewName("oxobject2category");
-        $sDiscTable = getViewName('oxdiscount');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sO2CView = $tableViewNameGenerator->getViewName("oxobject2category");
+        $sDiscTable = $tableViewNameGenerator->getViewName('oxdiscount');
 
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
@@ -100,9 +103,10 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
-        $sArticleTable = getViewName("oxarticles");
-        $sO2CView = getViewName("oxobject2category");
-        $sDiscTable = getViewName('oxdiscount');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sO2CView = $tableViewNameGenerator->getViewName("oxobject2category");
+        $sDiscTable = $tableViewNameGenerator->getViewName('oxdiscount');
 
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sO2CView left join $sArticleTable on  $sArticleTable.oxid=$sO2CView.oxobjectid ";
@@ -122,8 +126,9 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', false);
-        $sArticleTable = getViewName("oxarticles");
-        $sDiscTable = getViewName('oxdiscount');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sDiscTable = $tableViewNameGenerator->getViewName('oxdiscount');
 
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = '' and $sArticleTable.oxvarcount = 0 and ";
@@ -142,8 +147,9 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setConfigParam('blVariantParentBuyable', true);
-        $sArticleTable = getViewName("oxarticles");
-        $sDiscTable = getViewName('oxdiscount');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sDiscTable = $tableViewNameGenerator->getViewName('oxdiscount');
 
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
@@ -204,7 +210,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
             array('oxstock', 'oxarticles', 0, 0, 0),
             array('oxid', 'oxarticles', 0, 0, 1)
         );
-        $sTableName = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
@@ -231,7 +238,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
             array('oxstock', 'oxarticles', 0, 0, 0),
             array('oxid', 'oxarticles', 0, 0, 1)
         );
-        $sTableName = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0,  IF( $sTableName.oxtitle != '', $sTableName.oxtitle, CONCAT((select oxart.oxtitle from $sTableName as oxart where oxart.oxid = $sTableName.oxparentid),', ',$sTableName.oxvarselect)) as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));

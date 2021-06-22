@@ -17,6 +17,7 @@ DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
 use OxidEsales\Eshop\Core\Field;
@@ -584,8 +585,12 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             } else {
                 $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             }
-
-            $viewName = getViewName($this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $shopId);
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $viewName = $tableViewNameGenerator->getViewName(
+                $this->getCoreTableName(),
+                $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(),
+                $shopId
+            );
             if ($forceCoreTableUsage !== null) {
                 return $viewName;
             }
@@ -1006,7 +1011,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getObjectViewName($table, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return getViewName($table, -1, $shopId);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        return $tableViewNameGenerator->getViewName($table, -1, $shopId);
     }
 
     /**

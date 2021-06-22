@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \stdClass;
 
 /**
@@ -22,8 +23,9 @@ class PriceAlarmListTest extends \OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $sViewName = getViewName("oxpricealarm");
-        $sArtViewName = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxpricealarm");
+        $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
         $sSql = "select {$sViewName}.*, {$sArtViewName}.oxtitle AS articletitle, ";
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
@@ -56,8 +58,9 @@ class PriceAlarmListTest extends \OxidTestCase
     {
         $this->setRequestParameter('where', array("oxpricealarm" => array("oxprice" => 15), "oxarticles" => array("oxprice" => 15)));
 
-        $sViewName = getViewName("oxpricealarm");
-        $sArtViewName = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxpricealarm");
+        $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));

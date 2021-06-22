@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxField;
 use OxidEsales\Eshop\Core\Str;
@@ -141,7 +142,8 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
-        $sAttViewName = getViewName('oxattribute');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sAttViewName = $tableViewNameGenerator->getViewName('oxattribute');
 
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = :oxtitle ", [
             ':oxtitle' => Str::getStr()->strtolower($sSelTitle)

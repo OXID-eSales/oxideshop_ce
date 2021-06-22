@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use stdClass;
 
 /**
@@ -2868,8 +2869,9 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isProductInRootCategory($sProductId, $sRootCatId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sO2CTable = getViewName('oxobject2category');
-        $sCatTable = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CTable = $tableViewNameGenerator->getViewName('oxobject2category');
+        $sCatTable = $tableViewNameGenerator->getViewName('oxcategories');
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sParentId = $oDb->getOne("select oxparentid from oxarticles where oxid = :oxid", [

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Discount list manager.
@@ -136,9 +137,10 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
         }
 
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $sCountrySql = $sCountryId ? "EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
         $sUserSql = $sUserId ? "EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' and oxobject2discount.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
@@ -281,7 +283,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function hasSkipDiscountCategories()
     {
         if ($this->_hasSkipDiscountCategories === null || $this->_blReload) {
-            $sViewName = getViewName('oxcategories');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
             $sQ = "select 1 from {$sViewName} where {$sViewName}.oxactive = 1 and {$sViewName}.oxskipdiscounts = '1' ";
 
             $this->_hasSkipDiscountCategories = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);

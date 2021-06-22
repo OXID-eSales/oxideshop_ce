@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxActions;
 use \oxField;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \stdClass;
 use \oxDb;
 use \oxRegistry;
@@ -214,7 +215,8 @@ class AdminListTest extends \OxidTestCase
         $oLinks = oxNew('oxList');
         $oLinks->init('oxLinks');
 
-        $sTable = getViewName('oxarticles', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxarticles', 1);
 
         $aSorting = array("oxarticles" => array("oxtitle" => "asc"));
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, array("isMultilang", "getLanguage"));
@@ -235,7 +237,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testPrepareOrderByQueryMultipleSort()
     {
-        $sTable = getViewName('oxlinks', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
         $aSorting = array("oxlinks" => array("oxtitle" => "asc", "oxactive" => "asc", "sort" => "asc"));
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, array("isMultilang", "getLanguage"));
@@ -265,7 +268,8 @@ class AdminListTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, array("getBaseObject"));
         $oList->expects($this->any())->method('getBaseObject')->will($this->returnValue($oListObject));
 
-        $sTable = getViewName('oxlinks', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oList);
@@ -299,7 +303,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testPrepareOrderWithOrderType()
     {
-        $sTable = getViewName('oxlinks', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
         $aSorting = array("oxlinks" => array("oxtitle" => "desc"));
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, array("isMultilang", "getLanguage"));
@@ -320,7 +325,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testPrepareOrderMultilanguageField()
     {
-        $sTable = getViewName('oxlinks', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
         $aSorting = array("oxlinks" => array("oxurldesc" => "asc"));
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, array("isMultilang", "getLanguage"));
@@ -341,7 +347,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testPrepareOrderByWithDefinedOrderTable()
     {
-        $sTable = getViewName('oxarticles', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxarticles', 1);
         $aSorting = array("oxarticles" => array("oxtitle" => "asc"));
 
         $oListObject = $this->getMock('oxarticles', array("isMultilang", "getLanguage"));
@@ -362,7 +369,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $sTable = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxactions');
         $sSql = "select `{$sTable}`.`oxid`, `{$sTable}`.`oxshopid`, `{$sTable}`.`oxtype`, `{$sTable}`.`oxtitle`, `{$sTable}`.`oxlongdesc`, `{$sTable}`.`oxactive`, `{$sTable}`.`oxactivefrom`, `{$sTable}`.`oxactiveto`, `{$sTable}`.`oxpic`, `{$sTable}`.`oxlink`, `{$sTable}`.`oxsort`, `{$sTable}`.`oxtimestamp` from {$sTable} where 1 ";
 
         $oAdminList = oxNew('oxAdminList');
@@ -533,7 +541,8 @@ class AdminListTest extends \OxidTestCase
      */
     public function testBuildWhereMultiLang()
     {
-        $sTable = getViewName('oxlinks', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
         $aWhere['oxlinks']['oxurldesc'] = 'oxurldesc';
 
         $aResultWhere["{$sTable}.oxurldesc"] = '%oxurldesc%';
@@ -607,7 +616,8 @@ class AdminListTest extends \OxidTestCase
 
         $this->setRequestParameter('where', $aWhere);
 
-        $sViewName = getViewName('oxlinks');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxlinks');
         $aResultWhere[$sViewName . '.oxshopid'] = '%1%';
         $aResultWhere[$sViewName . '.oxurl'] = '%testurl%';
         $aResultWhere[$sViewName . '.oxurldesc'] = '%oxurldesc%';
@@ -633,8 +643,9 @@ class AdminListTest extends \OxidTestCase
 
         $this->setRequestParameter('where', $aWhere);
 
-        $aResultWhere[getViewName('oxlinks') . '.oxshopid'] = '%1%';
-        $aResultWhere[getViewName('oxactions') . '.oxtitle'] = '%testtitle%';
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $aResultWhere[$tableViewNameGenerator->getViewName('oxlinks') . '.oxshopid'] = '%1%';
+        $aResultWhere[$tableViewNameGenerator->getViewName('oxactions') . '.oxtitle'] = '%testtitle%';
 
         $oLinks = oxNew('oxList');
         $oLinks->init('oxLinks');
@@ -661,7 +672,8 @@ class AdminListTest extends \OxidTestCase
 
         $this->setRequestParameter('where', $aWhere);
 
-        $sTable = getViewName('oxlinks');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxlinks');
         $aResultWhere[$sTable . '.oxshopid'] = '%1%';
         $aResultWhere[$sTable . '.oxurl'] = '%testurl%';
         $aResultWhere[$sTable . '.oxurldesc'] = '%oxurldesc%';
@@ -768,15 +780,11 @@ class AdminListTest extends \OxidTestCase
         $oLinks = oxNew('oxList');
         $oLinks->init('oxLinks');
 
-        $sTable = getViewName('oxlinks');
-
         $aSearchFields = array('oxlinks.oxid' => '1', 'oxshopid' => '2', 'oxarticles.oxtitle' => '3');
         $this->setRequestParameter('where', $aSearchFields);
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->render();
-
-        $aWhere = $oAdminList->getViewDataElement('where');
 
         $aResult = oxNew('oxLinks');
         $aResult->oxlinks__oxid = '1';

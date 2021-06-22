@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 
 class PaymentlistTest extends \OxidTestCase
@@ -597,10 +598,11 @@ class PaymentlistTest extends \OxidTestCase
     // no user passed
     public function testGetFilterSelectNoUser()
     {
-        $sTable = getViewName('oxpayments');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
-        $sPaymentsTable = getViewName('oxpayments');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxpayments');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
+        $sPaymentsTable = $tableViewNameGenerator->getViewName('oxpayments');
 
         $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
         $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";
@@ -631,9 +633,10 @@ class PaymentlistTest extends \OxidTestCase
             $sGroupIds .= "'" . $oGroup->getId() . "'";
         }
 
-        $sTable = getViewName('oxpayments');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxpayments');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
         $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";

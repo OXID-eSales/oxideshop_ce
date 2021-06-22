@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Admin article main manager.
@@ -173,7 +174,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oConfig->getConfigParam('blWarnOnSameArtNums') &&
             $oArticle->oxarticles__oxartnum->value != $aParams['oxarticles__oxartnum']
         ) {
-            $sSelect = "select oxid from " . getViewName('oxarticles');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sSelect = "select oxid from " . $tableViewNameGenerator->getViewName('oxarticles');
             $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']) . "";
             $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']) . "";
             if ($oArticle->assignRecord($sSelect)) {
@@ -383,7 +385,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
 
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
         $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = :oxobjectid";
         $oRs = $oDb->select($sQ, [
             ':oxobjectid' => $sOldId

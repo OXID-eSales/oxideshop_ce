@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use \oxRegistry;
 use \oxTestModules;
@@ -31,7 +32,8 @@ class ActionListTest extends \OxidTestCase
         $sNow = (date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
 
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
@@ -58,7 +60,8 @@ class ActionListTest extends \OxidTestCase
         $sDateFrom = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - 50);
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
 
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
@@ -82,7 +85,8 @@ class ActionListTest extends \OxidTestCase
         $sNow = (date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
 
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
@@ -106,7 +110,8 @@ class ActionListTest extends \OxidTestCase
         $sNow = (date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
 
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
@@ -131,7 +136,8 @@ class ActionListTest extends \OxidTestCase
         $sNow = (date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
 
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
@@ -151,8 +157,9 @@ class ActionListTest extends \OxidTestCase
      */
     public function testGetUserGroupFilter()
     {
-        $sTable = getViewName('oxactions');
-        $sGroupTable = getViewName('oxgroups');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxactions');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
 
         $sGroupSql = "EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' and oxobject2action.OXOBJECTID in (" . implode(', ', array("'id1'", "'id2'", "'id3'")) . ") )";
         $sQ .= " and (
@@ -188,8 +195,9 @@ class ActionListTest extends \OxidTestCase
      */
     public function testGetUserGroupFilterNoUser()
     {
-        $sTable = getViewName('oxactions');
-        $sGroupTable = getViewName('oxgroups');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxactions');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
 
         $sGroupSql = '0';
         $sQ .= " and (
@@ -243,7 +251,8 @@ class ActionListTest extends \OxidTestCase
         $sNow = (date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getRequestTime()));
         $sShopId = $this->getConfig()->getShopId();
 
-        $sView = getViewName('oxactions');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxactions');
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
         $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Order delivery manager.
@@ -469,7 +470,8 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getIdByName($sTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT `oxid` FROM `" . getViewName('oxdelivery') . "` 
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sQ = "SELECT `oxid` FROM `" . $tableViewNameGenerator->getViewName('oxdelivery') . "` 
             WHERE `oxtitle` = :oxtitle";
         $sId = $oDb->getOne($sQ, [
             ':oxtitle' => $sTitle

@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+
 
 /**
  * Admin actionss manager.
@@ -66,7 +68,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
         $sDisplayType = (int) Registry::getRequest()->getRequestEscapedParameter('displaytype');
-        $sTable = getViewName("oxactions");
+        $sTable = $tableViewNameGenerator->getViewName("oxactions");
 
         // searching for empty oxfolder fields
         if ($sDisplayType) {

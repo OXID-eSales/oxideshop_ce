@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxArticle;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \stdClass;
 use \oxField;
@@ -121,7 +122,8 @@ class FunctionsTest extends \OxidTestCase
 
     public function testGetViewName()
     {
-        $this->assertEquals('xxx', getViewName('xxx', 'xxx'));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->assertEquals('xxx', $tableViewNameGenerator->getViewName('xxx', 'xxx'));
     }
 
     public function testError_404_handler()

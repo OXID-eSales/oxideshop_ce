@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use Exception;
 use oxDb;
@@ -206,7 +207,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $this->loadActionArticles('oxnewest', $iLimit);
                 break;
             case 2:
-                $sArticleTable = getViewName('oxarticles');
+                $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+                $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
                 if ($myConfig->getConfigParam('blNewArtByInsert')) {
                     $sType = 'oxinsert';
                 } else {
@@ -247,7 +249,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $this->loadActionArticles('oxtop5', $iLimit);
                 break;
             case 2:
-                $sArticleTable = getViewName('oxarticles');
+                $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+                $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
                 //by default limit 5
                 $sLimit = ($iLimit > 0) ? "limit " . $iLimit : 'limit 5';
@@ -467,7 +470,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
 
-        $sArtView = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
         $sPartial = substr($sSelect, strpos($sSelect, ' from '));
         $sSelect = "select distinct $sArtView.oxid $sPartial ";
 
@@ -488,7 +492,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
-        $sArtView = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
         $sSelect = "select distinct $sArtView.*, oxobject2list.oxdesc from oxobject2list ";
         $sSelect .= "left join $sArtView on oxobject2list.oxobjectid = $sArtView.oxid ";
         $sSelect .= "where (oxobject2list.oxlistid = $sRecommId) " . $sArticlesFilter;
@@ -517,7 +522,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sWhere = $this->_getSearchSelect($sSearchStr);
         }
 
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
         // longdesc field now is kept on different table
         $sDescJoin = $this->getDescriptionJoin();
@@ -527,7 +533,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // must be additional conditions in select if searching in category
         if ($sSearchCat) {
-            $sO2CView = getViewName('oxobject2category');
+            $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
             $sSelect = "select $sArticleTable.oxid from $sO2CView as oxobject2category, $sArticleTable $sDescJoin ";
             $sSelect .= "where oxobject2category.oxcatnid=" . $oDb->quote($sSearchCat) . " and oxobject2category.oxobjectid=$sArticleTable.oxid and ";
         }
@@ -861,8 +867,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sO2CView = getViewName('oxobject2category');
-        $sO2AView = getViewName('oxobject2attribute');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
+        $sO2AView = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
         $sFilter = '';
         $iCnt = 0;
@@ -902,7 +909,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
         $sIds = '';
 
@@ -937,8 +945,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = getViewName('oxarticles');
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         // ----------------------------------
         // sorting
@@ -976,8 +985,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = getViewName('oxarticles');
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
 
         // ----------------------------------
@@ -1105,7 +1115,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
@@ -1129,7 +1140,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
@@ -1255,8 +1267,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $descriptionJoin = '';
         $searchColumns = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSearchCols');
 
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
-            $viewName = getViewName('oxartextends');
+            $viewName = $tableViewNameGenerator->getViewName('oxartextends');
             $descriptionJoin = " LEFT JOIN $viewName ON {$viewName}.oxid={$table}.oxid ";
         }
         return $descriptionJoin;

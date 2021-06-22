@@ -158,27 +158,6 @@ if (!function_exists('getLangTableName')) {
     }
 }
 
-if (!function_exists('getViewName')) {
-
-    /**
-     * Return the view name of the given table if a view exists, otherwise the table name itself
-     *
-     * @param string $table      table name
-     * @param int    $languageId language id [optional]
-     * @param int    $shopId     shop id, otherwise config->myshopid is used [optional]
-     *
-     * @deprecated since v6.0.0 (2016-05-16); Use oxTableViewNameGenerator::getViewName().
-     *
-     * @return string
-     */
-    function getViewName($table, $languageId = null, $shopId = null)
-    {
-        $viewNameGenerator = Registry::get(\OxidEsales\Eshop\Core\TableViewNameGenerator::class);
-
-        return $viewNameGenerator->getViewName($table, $languageId, $shopId);
-    }
-}
-
 if (!function_exists('getRequestUrl')) {
     /**
      * Returns request url, which was executed to render current page view

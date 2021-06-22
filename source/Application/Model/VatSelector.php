@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxObjectException;
 
 /**
@@ -103,7 +104,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sCatT = getViewName('oxcategories');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatT = $tableViewNameGenerator->getViewName('oxcategories');
 
         if ($this->_blCatVatSet === null) {
             $sSelect = "SELECT oxid FROM $sCatT WHERE oxvat IS NOT NULL LIMIT 1";
@@ -117,7 +119,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        $sO2C = getViewName('oxobject2category');
+        $sO2C = $tableViewNameGenerator->getViewName('oxobject2category');
         $sSql = "SELECT c.oxvat
                  FROM $sCatT AS c, $sO2C AS o2c
                  WHERE c.oxid=o2c.oxcatnid AND

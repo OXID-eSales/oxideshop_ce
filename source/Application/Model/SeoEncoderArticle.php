@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxView;
 use oxRegistry;
 use oxUBase;
@@ -261,7 +262,8 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $categoryViewName = getViewName("oxobject2category");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $categoryViewName = $tableViewNameGenerator->getViewName("oxobject2category");
 
         // add main category caching;
         $sQ = "select oxcatnid from " . $categoryViewName . " where oxobjectid = :oxobjectid order by oxtime";

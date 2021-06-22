@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+
 /**
  * Counting utility class
  */
@@ -129,7 +131,8 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // we use distinct if article is assigned to category twice
@@ -318,7 +321,8 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     {
         // loading from cache
         if ($aCatData = $this->_getCatCache()) {
-            $sTable = getViewName('oxcategories');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sTable = $tableViewNameGenerator->getViewName('oxcategories');
             $sSelect = "SELECT $sTable.oxid FROM $sTable WHERE :oxpricefrom >= $sTable.oxpricefrom AND :oxpriceto <= $sTable.oxpriceto ";
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).

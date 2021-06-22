@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+
 /**
  * Admin pricealarm list manager.
  * Performs collection and managing (such as filtering or deleting) function.
@@ -45,7 +47,8 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sViewName = getViewName("oxarticles", (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sDefaultLang"));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxarticles", (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sDefaultLang"));
         $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
         $sSql .= "from oxpricealarm left join {$sViewName} on {$sViewName}.oxid = oxpricealarm.oxartid ";
@@ -62,8 +65,9 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function buildWhere()
     {
         $this->_aWhere = parent::buildWhere();
-        $sViewName = getViewName("oxpricealarm");
-        $sArtViewName = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxpricealarm");
+        $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
         // updating price fields values for correct search in DB
         if (isset($this->_aWhere[$sViewName . '.oxprice'])) {

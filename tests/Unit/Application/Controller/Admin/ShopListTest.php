@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxTestModules;
 
 /**
@@ -53,7 +54,8 @@ class ShopListTest extends \OxidTestCase
         $this->getSession()->setVariable("malladmin", null);
         $this->getSession()->setVariable("actshop", "testShopId");
 
-        $sViewName = getViewName("oxshops");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxshops");
 
         // testing..
         $oView = oxNew('Shop_List');

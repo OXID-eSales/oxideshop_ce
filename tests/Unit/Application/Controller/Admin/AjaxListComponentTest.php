@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxTestModules;
 
 /**
@@ -256,7 +257,9 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxstock', 'oxarticles', 0, 0, 0),
             array('oxid', 'oxarticles', 0, 0, 1)
         );
-        $sTableName = getViewName("oxarticles");
+
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
@@ -314,7 +317,9 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxstock', 'oxarticles', 0, 0, 0),
             array('oxid', 'oxarticles', 0, 0, 1)
         );
-        $sTableName = getViewName("oxarticles");
+
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = "$sTableName.oxartnum like '%a%'  and $sTableName.oxtitle like '%b%'  and $sTableName.oxmpn like '%0%' ";
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));

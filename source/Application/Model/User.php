@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 
 /**
@@ -297,7 +298,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_oUserCountryTitle == null || $sCountryId) {
             $sId = $sCountryId ? $sCountryId : $this->oxuser__oxcountryid->value;
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sViewName = getViewName('oxcountry', $iLang);
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sViewName = $tableViewNameGenerator->getViewName('oxcountry', $iLang);
 
             $countryTitle = $oDb->getOne("select oxtitle from {$sViewName} where oxid = :oxid", [
                 ':oxid' => $sId
@@ -324,7 +326,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getUserCountryId($sCountry = null)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select oxid from " . getviewName("oxcountry") . "
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sQ = "select oxid from " . $tableViewNameGenerator->getViewName("oxcountry") . "
             where oxactive = '1' and oxisoalpha2 = :oxisoalpha2";
         $sCountryId = $oDb->getOne($sQ, [
             ':oxisoalpha2' => $sCountry
@@ -350,7 +353,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sOXID = $this->getId();
         }
 
-        $sViewName = getViewName("oxgroups");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName("oxgroups");
         $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
         $sSelect = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
                      where oxobject2group.oxobjectid = :oxobjectid";

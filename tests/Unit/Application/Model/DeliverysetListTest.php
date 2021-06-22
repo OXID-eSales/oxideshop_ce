@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\DeliverySet;
 use \oxDeliverySetList;
 use \oxDb;
@@ -562,14 +563,15 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetFilterSelectWithoutUser()
     {
         $this->setTime(0);
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
         $sQ = $oList->UNITgetFilterSelect(null, null);
 
-        $sTable = getViewName('oxdeliveryset');
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     0,
@@ -597,14 +599,15 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetFilterSelectWithUser()
     {
         $this->setTime(0);
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
         $sQ = $oList->UNITgetFilterSelect($this->_oUser, '_testCoutntryId');
 
-        $sTable = getViewName('oxdeliveryset');
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID='_testCoutntryId'),
@@ -632,9 +635,10 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetFilterSelectWithUserInGroups()
     {
         $this->setTime(0);
-        $sUserTable = getViewName('oxuser');
-        $sGroupTable = getViewName('oxgroups');
-        $sCountryTable = getViewName('oxcountry');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName('oxuser');
+        $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
+        $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         //create some groups array
         $oGroup = oxNew('oxGroups');
@@ -661,7 +665,8 @@ class DeliverysetListTest extends \OxidTestCase
 
         $sQ = oxRegistry::get("oxDeliverySetList")->UNITgetFilterSelect($oUser, '_testCoutntryId');
 
-        $sTable = getViewName('oxdeliveryset');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . oxRegistry::get("oxDeliverySetList")->getBaseObject()->getSqlActiveSnippet() . " and (
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID='_testCoutntryId'),

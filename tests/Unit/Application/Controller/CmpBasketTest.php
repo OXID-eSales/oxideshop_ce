@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Application\Component\BasketComponent;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use \stdClass;
@@ -62,6 +63,9 @@ class CmpBasketTest extends \OxidTestCase
         $this->assertEquals('ret:getProductId', $oNewItem->sId);
         $this->assertEquals('ret:getAmount', $oNewItem->dAmount);
         $this->assertEquals('ret:getdBundledAmount', $oNewItem->dBundledAmount);
+
+        $test = new BasketComponent();
+        $test->_getItems("dsdsd");
     }
 
     public function testToBasketAddProductsNoBasketMsgAndRedirect()

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Tests for Discount_Main_Ajax class
@@ -48,7 +49,8 @@ class DiscountMainAjaxTest extends \OxidTestCase
      */
     public function testGetQuery()
     {
-        $sTable = getViewName("oxcountry");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
         $sQuery = "from $sTable where $sTable.oxactive = '1'";
@@ -64,7 +66,8 @@ class DiscountMainAjaxTest extends \OxidTestCase
     {
         $sOxid = '_testOxid';
         $this->setRequestParameter("oxid", $sOxid);
-        $sTable = getViewName("oxcountry");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
         $sQuery = "from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
@@ -81,7 +84,8 @@ class DiscountMainAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sTable = getViewName("oxcountry");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
         $sQuery = "from $sTable where $sTable.oxactive = '1' and";

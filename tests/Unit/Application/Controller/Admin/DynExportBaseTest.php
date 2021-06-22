@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DynExportBase;
 use Exception;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
@@ -524,7 +525,8 @@ class DynExportBaseTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         $iRealCnt = $oDb->getOne("select count(*) from ( select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} where {$sArticleTable}.oxid = {$sO2CView}.oxobjectid and {$sArticleTable}.oxparentid = '' and " . $oArticle->getSqlActiveSnippet() . " group by {$sArticleTable}.oxid) AS counttable");
         $iCurrCnt = $oDb->getOne("select count(*) from {$sHeapTable}");
@@ -544,7 +546,8 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("sExportMinStock", 1);
 
         $oDb = oxDb::getDb();
-        $sO2CView = getViewName('oxobject2category');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
 
         $sHeapTable = "testdynexportbasetable";
         $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");

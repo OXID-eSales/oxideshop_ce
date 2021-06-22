@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxField;
 use \oxDb;
@@ -35,7 +36,11 @@ class ArticleListTest extends \OxidTestCase
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oAdminList->expects($this->once())->method('getItemList')->will($this->returnValue(null));
         $aBuildWhere = $oAdminList->buildWhere();
-        $this->assertEquals('oxArticleTestFolderName', $aBuildWhere[getViewName('oxarticles') . '.oxfolder']);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->assertEquals(
+            'oxArticleTestFolderName',
+            $aBuildWhere[$tableViewNameGenerator->getViewName('oxarticles') . '.oxfolder']
+        );
     }
 
     /**
@@ -137,8 +142,9 @@ class ArticleListTest extends \OxidTestCase
      */
     public function testBuildSelectStringCategory()
     {
-        $sTable = getViewName("oxarticles");
-        $sO2CView = getViewName("oxobject2category");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxarticles");
+        $sO2CView = $tableViewNameGenerator->getViewName("oxobject2category");
         $this->setRequestParameter("art_category", "cat@@testCategory");
 
         $oProduct = oxNew('oxArticle');
@@ -156,7 +162,8 @@ class ArticleListTest extends \OxidTestCase
      */
     public function testBuildSelectStringManufacturer()
     {
-        $sTable = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxarticles");
         $this->setRequestParameter("art_category", "mnf@@testManufacturer");
 
         $oProduct = oxNew('oxArticle');
@@ -173,7 +180,8 @@ class ArticleListTest extends \OxidTestCase
      */
     public function testBuildSelectStringVendor()
     {
-        $sTable = getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName("oxarticles");
         $this->setRequestParameter("art_category", "vnd@@testVendor");
 
         $oProduct = oxNew('oxArticle');
@@ -191,7 +199,8 @@ class ArticleListTest extends \OxidTestCase
     public function testBuildWhere()
     {
         $this->setRequestParameter("folder", "testFolder");
-        $sViewName = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sViewName = $tableViewNameGenerator->getViewName('oxarticles');
 
         $oView = oxNew('Article_List');
         $this->assertEquals(array("$sViewName.oxfolder" => "testFolder"), $oView->buildWhere());
@@ -208,7 +217,11 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and " . getViewName('oxarticles') . ".oxparentid = '' ", $oView->UNITbuildSelectString($oProduct));
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->assertEquals(
+            $sQ . " and " . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid = '' ",
+            $oView->UNITbuildSelectString($oProduct)
+        );
     }
 
     /**

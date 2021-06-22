@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
@@ -48,7 +49,8 @@ class DiscountUsersAjaxTest extends \OxidTestCase
      */
     public function testGetQuery()
     {
-        $sUserTable = getViewName("oxuser");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName("oxuser");
 
         $oView = oxNew('discount_users_ajax');
         $sQuery = "from $sUserTable where 1  and oxshopid = '" . $this->getShopId() . "'";
@@ -64,7 +66,8 @@ class DiscountUsersAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sUserTable = getViewName("oxuser");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName("oxuser");
 
         $oView = oxNew('discount_users_ajax');
         $sQuery = "from oxobject2group left join $sUserTable on $sUserTable.oxid = oxobject2group.oxobjectid";
@@ -81,7 +84,8 @@ class DiscountUsersAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $sUserTable = getViewName("oxuser");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sUserTable = $tableViewNameGenerator->getViewName("oxuser");
 
         $oView = oxNew('discount_users_ajax');
         $sQuery = "from $sUserTable where 1  and oxshopid = '" . $this->getShopId() . "'  and";

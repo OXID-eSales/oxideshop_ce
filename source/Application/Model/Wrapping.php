@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxDb;
 
@@ -115,7 +116,8 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         // load wrapping
         $oEntries = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oEntries->init('oxwrapping');
-        $sWrappingViewName = getViewName('oxwrapping');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sWrappingViewName = $tableViewNameGenerator->getViewName('oxwrapping');
         $sSelect = "select * from $sWrappingViewName 
             where $sWrappingViewName.oxactive = :oxactive
               and $sWrappingViewName.oxtype = :oxtype";
@@ -136,7 +138,8 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getWrappingCount($sWrapType)
     {
-        $sWrappingViewName = getViewName('oxwrapping');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sWrappingViewName = $tableViewNameGenerator->getViewName('oxwrapping');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select count(*) from $sWrappingViewName 
             where $sWrappingViewName.oxactive = :oxactive 

@@ -20,6 +20,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Session;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxTestModules;
@@ -421,7 +422,8 @@ class UserComponentTest extends \OxidTestCase
     public function testBlockedUser()
     {
         $myDB = oxDb::getDB();
-        $sTable = getViewName('oxuser');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxuser');
         $iLastCustNr = (int) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $oUser = oxNew('oxuser');
         $salt = md5('salt');

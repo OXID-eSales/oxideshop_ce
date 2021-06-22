@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 
 /**
@@ -101,7 +102,9 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
         $this->_aWhere = parent::buildWhere();
         if (!\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin')) {
             // we only allow to see our shop
-            $this->_aWhere[getViewName("oxshops") . ".oxid"] = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $this->_aWhere[$tableViewNameGenerator->getViewName("oxshops") . ".oxid"]
+                = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
         }
 
         return $this->_aWhere;

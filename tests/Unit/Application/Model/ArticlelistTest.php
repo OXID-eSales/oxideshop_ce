@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
 use modDB;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use oxField;
@@ -49,7 +50,8 @@ final class ArticlelistTest extends \OxidTestCase
      */
     protected function _getArticleTable()
     {
-        return getViewName("oxarticles");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        return $tableViewNameGenerator->getViewName("oxarticles");
     }
 
     /**
@@ -130,8 +132,9 @@ final class ArticlelistTest extends \OxidTestCase
      */
     public function testGetCategorySelectTestingIfAllDataIsProperlyEscaped()
     {
-        $sO2CView = getViewName('oxobject2category');
-        $sO2AView = getViewName('oxobject2attribute');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
+        $sO2AView = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
         $sCatId = "testcatid";
         $aSessionFilter["'\"\"'"] = "'\"\"'";
@@ -178,7 +181,8 @@ final class ArticlelistTest extends \OxidTestCase
      */
     public function testLoadActionArticlesTotalAmount()
     {
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
         $sSql = "SELECT oxactionid, count(*) as cnt FROM `oxactions2article`
                  LEFT JOIN " . $sArticleTable . " ON $sArticleTable.oxid = oxactions2article.oxartid
@@ -208,7 +212,8 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $myDB = $this->getDb();
         $myDB->execute('update oxactions set oxactive=0');
-        $sArticleTable = getViewName('oxarticles');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
         $sSql = "SELECT oxactionid, count(*) as cnt FROM `oxactions2article`
                  LEFT JOIN " . $sArticleTable . " ON $sArticleTable.oxid = oxactions2article.oxartid
@@ -516,8 +521,9 @@ final class ArticlelistTest extends \OxidTestCase
 
         $articleList = $this->getProxyClass('oxArticleList');
 
-        $objectToCategoryView = getViewName('oxobject2category');
-        $objectToAttributeView = getViewName('oxobject2attribute');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $objectToCategoryView = $tableViewNameGenerator->getViewName('oxobject2category');
+        $objectToAttributeView = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
         $result = $articleList->UNITgetFilterIdsSql($categoryId, array("8a142c3ee0edb75d4.80743302" => "Zeiger", "8a142c3e9cd961518.80299776" => "originell"));
 
@@ -978,7 +984,8 @@ EOT;
         $sArticleTable = $this->_getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sAEV = getViewName('oxartextends');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sAEV = $tableViewNameGenerator->getViewName('oxartextends');
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
         $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxlongdesc like";
@@ -1834,7 +1841,8 @@ EOT;
     {
         $oTest = $this->getProxyClass("oxArticleList");
         $this->setLanguage(1);
-        $sView = getViewName('oxarticles', 1);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sView = $tableViewNameGenerator->getViewName('oxarticles', 1);
         $oTest->selectString("select * from $sView where oxid = '2080'");
 
         $expectedArticleTitle = 'Champagne Pliers &amp; Bottle Opener';

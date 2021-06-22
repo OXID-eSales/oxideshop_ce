@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use stdClass;
 
@@ -37,8 +38,9 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $sAttrViewName = getViewName('oxattribute');
-        $sViewName = getViewName('oxobject2attribute');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
+        $sViewName = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
         $oxObjectIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
 
@@ -91,8 +93,9 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         if ($sArticleId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            $sAttrViewName = getViewName('oxattribute');
-            $sViewName = getViewName('oxobject2attribute');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
+            $sViewName = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
             $sSelect = "select {$sAttrViewName}.`oxid`, {$sAttrViewName}.`oxtitle`, o2a.`oxvalue` from {$sViewName} as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
@@ -125,8 +128,9 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         if ($sArtId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            $sAttrViewName = getViewName('oxattribute');
-            $sViewName = getViewName('oxobject2attribute');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
+            $sViewName = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
             $sSelect = "select o2a.*, {$sAttrViewName}.* from $sViewName as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
@@ -174,9 +178,10 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sArtIds .= $oDb->quote($sId);
             }
 
-            $sAttTbl = getViewName('oxattribute', $iLang);
-            $sO2ATbl = getViewName('oxobject2attribute', $iLang);
-            $sC2ATbl = getViewName('oxcategory2attribute', $iLang);
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sAttTbl = $tableViewNameGenerator->getViewName('oxattribute', $iLang);
+            $sO2ATbl = $tableViewNameGenerator->getViewName('oxobject2attribute', $iLang);
+            $sC2ATbl = $tableViewNameGenerator->getViewName('oxcategory2attribute', $iLang);
 
             $sSelect = "SELECT DISTINCT att.oxid, att.oxtitle, o2a.oxvalue " .
                        "FROM $sAttTbl as att, $sO2ATbl as o2a ,$sC2ATbl as c2a " .

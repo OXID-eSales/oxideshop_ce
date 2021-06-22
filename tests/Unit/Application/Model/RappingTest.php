@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxWrapping;
 use \oxField;
 use \oxRegistry;
@@ -45,7 +46,8 @@ class RappingTest extends \OxidTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sTableName = getViewName("oxwrapping");
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $this->sTableName = $tableViewNameGenerator->getViewName("oxwrapping");
 
         // card
         // not active

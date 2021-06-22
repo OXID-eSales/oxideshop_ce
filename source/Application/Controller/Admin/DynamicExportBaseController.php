@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Error constants
@@ -351,8 +352,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sCatView = getViewName('oxcategories', $sLang);
-        $sO2CView = getViewName('oxobject2category', $sLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatView = $tableViewNameGenerator->getViewName('oxcategories', $sLang);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category', $sLang);
 
         //selecting category
         $sQ = "select $sCatView.oxleft, $sCatView.oxright, $sCatView.oxrootid from $sO2CView as oxobject2category left join $sCatView on $sCatView.oxid = oxobject2category.oxcatnid ";
@@ -398,8 +400,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sCatView = getViewName('oxcategories', $sLang);
-        $sO2CView = getViewName('oxobject2category', $sLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sCatView = $tableViewNameGenerator->getViewName('oxcategories', $sLang);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category', $sLang);
 
         //selecting category
         $sQ = "select $sCatView.oxtitle from $sO2CView as oxobject2category left join $sCatView on $sCatView.oxid = oxobject2category.oxcatnid ";
@@ -664,8 +667,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setLanguage($iExpLang);
 
-        $sO2CView = getViewName('oxobject2category', $iExpLang);
-        $sArticleTable = getViewName("oxarticles", $iExpLang);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category', $iExpLang);
+        $sArticleTable = $tableViewNameGenerator->getViewName("oxarticles", $iExpLang);
 
         $insertQuery = "insert into {$sHeapTable} select {$sArticleTable}.oxid from {$sArticleTable}, {$sO2CView} as oxobject2category where ";
         $insertQuery .= $oArticle->getSqlActiveSnippet();
@@ -708,7 +712,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     {
         if (!(Registry::getRequest()->getRequestEscapedParameter("blExportMainVars"))) {
             $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sArticleTable = getViewName('oxarticles');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
             // we need to remove again parent articles so that we only have the variants itself
             $sQ = "select $sHeapTable.oxid from $sHeapTable, $sArticleTable where
@@ -790,7 +795,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         if ($this->_aCatLvlCache === null) {
             $this->_aCatLvlCache = [];
 
-            $sCatView = getViewName('oxcategories');
+            $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+            $sCatView = $tableViewNameGenerator->getViewName('oxcategories');
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             // Load all root cat's == all trees

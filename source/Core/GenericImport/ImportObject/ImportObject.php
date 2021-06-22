@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
  * Main import object - includes basic implementations of methods.
@@ -162,8 +163,9 @@ abstract class ImportObject
     protected function getTableName()
     {
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
 
-        return getViewName($this->tableName, -1, $shopId);
+        return $tableViewNameGenerator->getViewName($this->tableName, -1, $shopId);
     }
 
     /**

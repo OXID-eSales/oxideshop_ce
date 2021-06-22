@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxObjectException;
 
 /**
@@ -180,9 +181,9 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getAvailableInLangs()
     {
         $languages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames();
-
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $objFields = $this->_getTableFields(
-            getViewName($this->_sCoreTable, -1, -1),
+            $tableViewNameGenerator->getViewName($this->_sCoreTable, -1, -1),
             true
         );
         $multiLangFields = [];
@@ -210,7 +211,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // select from non-multilanguage core view (all ml tables joined to one)
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = :oxid";
+        $query = "select * from " . $tableViewNameGenerator->getViewName($this->_sCoreTable, -1, -1) . " where oxid = :oxid";
         $rs = $db->getAll($query, [
             ':oxid' => $this->getId()
         ]);
@@ -529,7 +530,8 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             return parent::_getObjectViewName($table, $shopId);
         }
 
-        return getViewName($table, $this->getLanguage(), $shopId);
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        return $tableViewNameGenerator->getViewName($table, $this->getLanguage(), $shopId);
     }
 
     /**

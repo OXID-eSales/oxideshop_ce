@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 use \oxField;
 use \Exception;
 use \oxDb;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -53,7 +54,8 @@ class UserTest extends \OxidTestCase
     protected function setupUsers()
     {
         $myDB = oxDb::getDB();
-        $sTable = getViewName('oxuser');
+        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $sTable = $tableViewNameGenerator->getViewName('oxuser');
         $iLastCustNr = (int) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $this->_oUser = oxNew('oxuser');
         $this->_oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);

@@ -2150,7 +2150,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $config = Registry::getConfig();
 
-        $className = $config->getRequestParameter('actcl');
+        $className = Registry::getRequest()->getRequestEscapedParameter('actcl');
         $listId = null;
         $widgetId = null;
 

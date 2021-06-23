@@ -946,6 +946,11 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         $this->_aViewData["config"] = Registry::getConfig();
 
+        $config = Registry::getConfig();
+        $this->_aViewData['preview'] = Registry::getRequest()->getRequestEscapedParameter('preview');
+        $this->_aViewData['altImageUrl'] = $config->getConfigParam('sAltImageUrl');
+        $this->_aViewData['SSLAltImageUrl'] = $config->getConfigParam('sSSLAltImageUrl');
+
         return $this->_sThisTemplate;
     }
 

@@ -44,8 +44,7 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
-        $config = Registry::getConfig();
-        $this->_aViewData["deladr"] = $config->getRequestParameter('deladr');
+        $this->_aViewData["deladr"] = Registry::getRequest()->getRequestEscapedParameter('deladr');
 
         return $this->_sThisTemplate;
     }

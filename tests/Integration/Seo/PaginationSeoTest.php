@@ -552,6 +552,36 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return $data;
     }
 
+    /**
+     * Calling not existing pagenumbers must not result in additional entries in oxseo table.
+     *
+     * @dataProvider providerCheckSeoUrl
+     *
+     * @param string $urlToCall           Url to call
+     * @param array  $responseContains    Curl call response must contain.
+     * @param array  $responseNotContains Curl call response must not contain.
+     * @param array  $prepareUrls         To make test cases independent, call this url first.
+     */
+    public function testCheckSeoUrl(
+        $urlToCall,
+        $responseContains,
+        $responseNotContains,
+        $prepareUrls
+    ) {
+        $this->initSeoUrlGeneration();
+
+        foreach ($prepareUrls as $url) {
+            $this->callCurl($url);
+        }
+        $response = $this->callCurl($urlToCall);
+
+        foreach ($responseContains as $checkFor) {
+            $this->assertStringContainsString($checkFor, $response, "Should get $checkFor");
+        }
+        foreach ($responseNotContains as $checkFor) {
+            $this->assertStringNotContainsString($checkFor, $response, "Should not get $checkFor");
+        }
+    }
 
     public function testCreateProductSeoUrlsOnProductListPageRequest()
     {

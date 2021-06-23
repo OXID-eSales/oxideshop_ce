@@ -200,6 +200,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return ['oxhelp' . strtolower($sClass), 'oxhelpdefault'];
     }
 
+    public function getMediaPictureUrl(): string
+    {
+        return Registry::getConfig()->getPictureUrl('media/');
+    }
+
     /**
      * Returns shop help link
      *

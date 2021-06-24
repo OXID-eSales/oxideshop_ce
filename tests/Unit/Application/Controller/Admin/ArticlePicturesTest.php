@@ -178,7 +178,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->UNITdeleteMainIcon($oArticle);
+        $oArtPic->_deleteMainIcon($oArticle);
 
         $this->assertEquals("", $oArticle->oxarticles__oxicon->value);
     }
@@ -199,7 +199,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->UNITdeleteThumbnail($oArticle);
+        $oArtPic->_deleteThumbnail($oArticle);
 
         $this->assertEquals("", $oArticle->oxarticles__oxthumb->value);
     }
@@ -220,7 +220,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->UNITresetMasterPicture($oArticle, 2);
+        $oArtPic->_resetMasterPicture($oArticle, 2);
 
         $this->assertEquals("testPic2.jpg", $oArticle->oxarticles__oxpic2->value);
     }
@@ -244,11 +244,11 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_cleanupCustomFields"));
         $oArtPic->expects($this->never())->method('_cleanupCustomFields');
-        $oArtPic->UNITresetMasterPicture($oArticle, 2);
+        $oArtPic->_resetMasterPicture($oArticle, 2);
 
         $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_cleanupCustomFields"));
         $oArtPic->expects($this->once())->method('_cleanupCustomFields');
-        $oArtPic->UNITresetMasterPicture($oArticle, 1);
+        $oArtPic->_resetMasterPicture($oArticle, 1);
     }
 
     /**
@@ -266,7 +266,7 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
 
-        $oArtPic->UNITcleanupCustomFields($this->_oArticle);
+        $oArtPic->_cleanupCustomFields($this->_oArticle);
 
         $this->assertEquals("", $this->_oArticle->oxarticles__oxicon->value);
         $this->assertEquals("", $this->_oArticle->oxarticles__oxthumb->value);
@@ -287,7 +287,7 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
 
-        $oArtPic->UNITcleanupCustomFields($this->_oArticle);
+        $oArtPic->_cleanupCustomFields($this->_oArticle);
 
         $this->assertEquals("testIcon.jpg", $this->_oArticle->oxarticles__oxicon->value);
         $this->assertEquals("testThumb.jpg", $this->_oArticle->oxarticles__oxthumb->value);

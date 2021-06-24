@@ -184,7 +184,7 @@ class ActionListTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("getUser"));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertEquals($sQ, $oList->UNITgetUserGroupFilter());
+        $this->assertEquals($sQ, $oList->_getUserGroupFilter());
     }
 
     /**
@@ -210,7 +210,7 @@ class ActionListTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("getUser"));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
 
-        $this->assertEquals($sQ, $oList->UNITgetUserGroupFilter());
+        $this->assertEquals($sQ, $oList->_getUserGroupFilter());
     }
 
     /**

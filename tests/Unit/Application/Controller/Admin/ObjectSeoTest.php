@@ -82,7 +82,7 @@ class ObjectSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Object_Seo');
-        $this->assertNull($oView->UNITgetEncoder());
+        $this->assertNull($oView->_getEncoder());
     }
 
     /**
@@ -104,7 +104,7 @@ class ObjectSeoTest extends \OxidTestCase
     public function testGetType()
     {
         $oView = oxNew('Object_Seo');
-        $this->assertNull($oView->UNITgetType());
+        $this->assertNull($oView->_getType());
     }
 
     /**
@@ -115,7 +115,7 @@ class ObjectSeoTest extends \OxidTestCase
     public function testGetStdUrl()
     {
         $oView = oxNew('Object_Seo');
-        $this->assertNull($oView->UNITgetStdUrl("anyid"));
+        $this->assertNull($oView->_getStdUrl("anyid"));
     }
 
     /**
@@ -139,7 +139,7 @@ class ObjectSeoTest extends \OxidTestCase
     public function testGetAltSeoEntryId()
     {
         $oView = oxNew('Object_Seo');
-        $this->assertNull($oView->UNITgetAltSeoEntryId());
+        $this->assertNull($oView->_getAltSeoEntryId());
     }
 
     /**
@@ -151,7 +151,7 @@ class ObjectSeoTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo::class, array("_getType"));
         $oView->expects($this->once())->method('_getType')->will($this->returnValue("testType"));
-        $this->assertEquals("testType", $oView->UNITgetSeoEntryType());
+        $this->assertEquals("testType", $oView->_getSeoEntryType());
     }
 
     /**

@@ -102,7 +102,7 @@ class StartTest extends \OxidTestCase
         $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->UNITprepareMetaKeyword('testlongdesc'), $oStart->UNITprepareMetaKeyword(null));
+        $this->assertEquals($oView->_prepareMetaKeyword('testlongdesc'), $oStart->_prepareMetaKeyword(null));
     }
 
     public function testViewMetaKeywords()
@@ -127,7 +127,7 @@ class StartTest extends \OxidTestCase
         $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->UNITprepareMetaDescription('- testlongdesc'), $oStart->UNITprepareMetaDescription(null));
+        $this->assertEquals($oView->_prepareMetaDescription('- testlongdesc'), $oStart->_prepareMetaDescription(null));
     }
 
     public function testViewMetaDescritpion()

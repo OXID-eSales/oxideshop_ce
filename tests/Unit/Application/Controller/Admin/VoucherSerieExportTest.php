@@ -64,7 +64,7 @@ class VoucherSerieExportTest extends \OxidTestCase
     public function testGetExportFileName()
     {
         $oView = oxNew('VoucherSerie_Export');
-        $oView->UNITgetExportFileName();
+        $oView->_getExportFileName();
 
         $this->assertNotNull(oxRegistry::getSession()->getVariable("sExportFileName"));
     }
@@ -79,7 +79,7 @@ class VoucherSerieExportTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("_getExportFileName"));
         $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
 
-        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
+        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->_getExportFilePath());
     }
 
     /**

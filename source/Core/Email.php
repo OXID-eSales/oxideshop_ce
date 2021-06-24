@@ -290,24 +290,18 @@ class Email extends PHPMailer
      * writing extended classes for testing protected or private methods
      *
      * @param string $method Methods name
-     * @param array  $args   Argument array
-     *
-     * @throws SystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
-     *
-     * @return string
+     * @param array  $arguments Argument array
+     * @return false|mixed
+     * @throws SystemComponentException
      */
-    public function __call($method, $args)
+    public function __call($method, $arguments)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($method, 0, 4) == "UNIT") {
-                $method = str_replace("UNIT", "_", $method);
-            }
-            if (method_exists($this, $method)) {
-                return call_user_func_array([&$this, $method], $args);
-            }
+        if (defined('OXID_PHP_UNIT') && method_exists($this, $method)) {
+            return call_user_func_array([&$this, $method], $arguments);
         }
-
-        throw new SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new SystemComponentException(
+            "Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
+        );
     }
 
     /**

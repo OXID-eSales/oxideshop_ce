@@ -300,7 +300,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test2');
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
+        $this->assertEquals($sExpt, $oMediaUrl->_getYoutubeHtml());
     }
 
     public function testGetYoutubeHtmlWithParams()
@@ -308,7 +308,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test5');
         $sExpt = 'test5<br><iframe width="425" height="344" src="http://www.youtube.com/embed/GQ3AcPEPbH0?loop=1&amp;rel=0" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
+        $this->assertEquals($sExpt, $oMediaUrl->_getYoutubeHtml());
     }
 
     public function testNewYoutubePattern()
@@ -316,6 +316,6 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test6');
         $sExpt = 'test6<br><iframe width="425" height="344" src="http://www.youtube.com/embed/tRCwo6pSHnk" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->UNITgetYoutubeHtml());
+        $this->assertEquals($sExpt, $oMediaUrl->_getYoutubeHtml());
     }
 }

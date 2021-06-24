@@ -60,8 +60,8 @@ class ListReviewTest extends \OxidTestCase
     public function testPrepareWhereQuery()
     {
         $oArtList = oxNew('Article_List');
-        $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
-        $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
+        $sSql = $oArtList->_buildSelectString(oxNew('oxArticle'));
+        $sSql = $oArtList->_prepareWhereQuery(array(), $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -69,8 +69,8 @@ class ListReviewTest extends \OxidTestCase
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
-        $sSql = $oList->UNITbuildSelectString("");
-        $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
+        $sSql = $oList->_buildSelectString("");
+        $sSql = $oList->_prepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
         $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
@@ -85,8 +85,8 @@ class ListReviewTest extends \OxidTestCase
     public function testPrepareWhereQueryCase2()
     {
         $oArtList = oxNew('Article_List');
-        $sSql = $oArtList->UNITbuildSelectString(oxNew('oxArticle'));
-        $sSql = $oArtList->UNITprepareWhereQuery(array(), $sSql);
+        $sSql = $oArtList->_buildSelectString(oxNew('oxArticle'));
+        $sSql = $oArtList->_prepareWhereQuery(array(), $sSql);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         // checking if exists string oxarticle.oxparentid = ''
@@ -94,8 +94,8 @@ class ListReviewTest extends \OxidTestCase
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
-        $sSql = $oList->UNITbuildSelectString("");
-        $sSql = $oList->UNITprepareWhereQuery(array(), $sSql);
+        $sSql = $oList->_buildSelectString("");
+        $sSql = $oList->_prepareWhereQuery(array(), $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
         $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);

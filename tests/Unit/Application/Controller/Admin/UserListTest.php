@@ -133,7 +133,7 @@ class UserListTest extends \OxidTestCase
         $oView->expects($this->any())->method('_isSearchValue')->will($this->returnValue(true));
         $oView->expects($this->any())->method('_processFilter')->will($this->returnValue("testValue"));
         $oView->expects($this->any())->method('_buildFilter')->will($this->returnValue("testFilter"));
-        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery($aWhere, ''));
+        $this->assertEquals($sQ, $oView->_prepareWhereQuery($aWhere, ''));
     }
 
     /**

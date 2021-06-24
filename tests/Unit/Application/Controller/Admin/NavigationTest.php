@@ -208,7 +208,7 @@ class NavigationTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(NavigationController::class, array("_checkVersion"));
         $oView->expects($this->once())->method('_checkVersion')->will($this->returnValue("versionnotice"));
-        $aState = $oView->UNITdoStartUpChecks();
+        $aState = $oView->_doStartUpChecks();
         $this->assertTrue(is_array($aState));
         $this->assertTrue(isset($aState['message']));
         $this->assertTrue(isset($aState['warning']));
@@ -221,7 +221,7 @@ class NavigationTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'translateString', '{ return "current ver.: %s new ver.: %s"; }');
         $controllerMock = new NavigationController();
 
-        $actual =  $controllerMock->UNITcheckVersion();
+        $actual =  $controllerMock->_checkVersion();
 
         $this->assertStringContainsString(ShopVersion::getVersion(), $actual);
         $this->assertStringContainsString($latestVersion, $actual);

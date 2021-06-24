@@ -14,13 +14,6 @@ use Psr\Log\LoggerInterface;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function testCallUnExistingMethod()
-    {
-        $this->expectException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-        $exceptionHandler = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionHandler::class);
-        $exceptionHandler->__NotExistingFunction__();
-    }
-
     /**
      * @dataProvider dataProviderExceptions Provides an OXID eShop style exception and a standard PHP Exception
      *

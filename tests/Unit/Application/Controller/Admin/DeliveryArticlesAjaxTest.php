@@ -107,7 +107,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
     public function testGetQuery()
     {
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = ''", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = ''", trim($oView->_getQuery()));
     }
 
     /**
@@ -120,7 +120,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1", trim($oView->_getQuery()));
     }
 
     /**
@@ -134,7 +134,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = '' and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = '' and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->_getQuery()));
     }
 
     /**
@@ -150,7 +150,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->_getQuery()));
     }
 
     /**
@@ -164,7 +164,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from oxobject2delivery left join " . $this->getArticlesViewTable() . " on " . $this->getArticlesViewTable() . ".oxid=oxobject2delivery.oxobjectid where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = \"oxarticles\"", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from oxobject2delivery left join " . $this->getArticlesViewTable() . " on " . $this->getArticlesViewTable() . ".oxid=oxobject2delivery.oxobjectid where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = \"oxarticles\"", trim($oView->_getQuery()));
     }
 
     /**
@@ -180,7 +180,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticlesViewTable() . " on  " . $this->getArticlesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "'and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticlesViewTable() . " on  " . $this->getArticlesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "'and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->_getQuery()));
     }
 
     /**
@@ -197,7 +197,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('delivery_articles_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticlesViewTable() . " on  ( " . $this->getArticlesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticlesViewTable() . ".oxparentid=" . $this->getObject2CategoryViewTable() . ".oxobjectid)where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "'and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticlesViewTable() . " on  ( " . $this->getArticlesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticlesViewTable() . ".oxparentid=" . $this->getObject2CategoryViewTable() . ".oxobjectid)where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "'and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = \"oxarticles\" )", trim($oView->_getQuery()));
     }
 
     /**

@@ -132,7 +132,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oManufacturerlist->loadManufacturerList();
         $oManufacturer = $oManufacturerlist->current();
 
-        $oManufacturerlist->UNITaddCategoryFields($oManufacturer);
+        $oManufacturerlist->_addCategoryFields($oManufacturer);
 
         // check if category specific fields was added to Manufacturer object
         $this->assertEquals($oManufacturer->getId(), $oManufacturer->oxcategories__oxid->value);
@@ -153,7 +153,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oManufacturerlist = $this->getProxyClass("oxManufacturerlist");
         $oManufacturerlist->loadManufacturerList();
 
-        $oManufacturerlist->UNITSeosetManufacturerData();
+        $oManufacturerlist->_SeosetManufacturerData();
 
         //check if SEO link was added for each Manufacturer item
         foreach ($oManufacturerlist as $sVndId => $value) {

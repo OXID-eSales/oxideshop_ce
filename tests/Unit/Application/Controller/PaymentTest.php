@@ -188,7 +188,7 @@ class PaymentTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blOtherCountryOrder', true);
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITsetDefaultEmptyPayment();
+        $oPayment->_setDefaultEmptyPayment();
         $oEmptyPayment = $oPayment->getEmptyPayment();
 
         $this->assertEquals('oxempty', $oEmptyPayment->getId());
@@ -200,7 +200,7 @@ class PaymentTest extends \OxidTestCase
         $this->setConfigParam('blOtherCountryOrder', false);
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITsetDefaultEmptyPayment();
+        $oPayment->_setDefaultEmptyPayment();
 
         $this->assertEquals(-2, $oPayment->getPaymentError());
     }
@@ -210,7 +210,7 @@ class PaymentTest extends \OxidTestCase
         $this->setSessionParam('payerror', 'test');
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITunsetPaymentErrors();
+        $oPayment->_unsetPaymentErrors();
         $oEmptyPayment = $oPayment->getPaymentError();
 
         $this->assertEquals('test', $oPayment->getPaymentError());
@@ -221,7 +221,7 @@ class PaymentTest extends \OxidTestCase
         $this->setSessionParam('payerrortext', 'test');
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITunsetPaymentErrors();
+        $oPayment->_unsetPaymentErrors();
         $oEmptyPayment = $oPayment->getPaymentErrorText();
 
         $this->assertEquals('test', $oPayment->getPaymentErrorText());
@@ -232,7 +232,7 @@ class PaymentTest extends \OxidTestCase
         $this->setRequestParameter('payerror', 'test');
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITunsetPaymentErrors();
+        $oPayment->_unsetPaymentErrors();
         $oEmptyPayment = $oPayment->getPaymentError();
 
         $this->assertEquals('test', $oPayment->getPaymentError());
@@ -243,7 +243,7 @@ class PaymentTest extends \OxidTestCase
         $this->setRequestParameter('payerrortext', 'test');
 
         $oPayment = oxNew('Payment');
-        $oPayment->UNITunsetPaymentErrors();
+        $oPayment->_unsetPaymentErrors();
         $oEmptyPayment = $oPayment->getPaymentErrorText();
 
         $this->assertEquals('test', $oPayment->getPaymentErrorText());
@@ -604,7 +604,7 @@ class PaymentTest extends \OxidTestCase
         $aData = array("kktype" => null, "kknumber" => null);
         $aKeys = array("kktype", "kknumber");
 
-        $this->assertTrue($oPayment->UNITcheckArrValuesEmpty($aData, $aKeys));
+        $this->assertTrue($oPayment->_checkArrValuesEmpty($aData, $aKeys));
     }
 
     /**
@@ -618,7 +618,7 @@ class PaymentTest extends \OxidTestCase
         $aData = array("kktype" => "vis", "kknumber" => "42222222");
         $aKeys = array("kktype", "kknumber");
 
-        $this->assertFalse($oPayment->UNITcheckArrValuesEmpty($aData, $aKeys));
+        $this->assertFalse($oPayment->_checkArrValuesEmpty($aData, $aKeys));
     }
 
     /**
@@ -631,7 +631,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment = $this->getProxyClass("payment");
         $aKeys = array("kktype", "kknumber");
 
-        $this->assertTrue($oPayment->UNITcheckArrValuesEmpty(null, $aKeys));
+        $this->assertTrue($oPayment->_checkArrValuesEmpty(null, $aKeys));
     }
 
     /**

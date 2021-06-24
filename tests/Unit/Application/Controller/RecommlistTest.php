@@ -68,7 +68,7 @@ class RecommlistTest extends \OxidTestCase
     {
         oxNew('oxArticle');
         $oView = oxNew('RecommList');
-        $this->assertEquals(5, $oView->UNITgetProductLinkType());
+        $this->assertEquals(5, $oView->_getProductLinkType());
     }
 
     /**
@@ -159,7 +159,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecommListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue(oxNew('oxrecommlist')));
 
-        $this->assertEquals("testPageUrl", $oRecommListView->UNITaddPageNrParam(null, 1));
+        $this->assertEquals("testPageUrl", $oRecommListView->_addPageNrParam(null, 1));
     }
 
     public function testGeneratePageNavigationUrlSeoOn()
@@ -187,7 +187,7 @@ class RecommlistTest extends \OxidTestCase
     public function tesGetProductLinkType()
     {
         $oView = oxNew('RecommList');
-        $this->assertEquals(OXARTICLE_LINKTYPE_RECOMM, $oView->UNITgetProductLinkType());
+        $this->assertEquals(OXARTICLE_LINKTYPE_RECOMM, $oView->_getProductLinkType());
     }
 
     public function testGetAddUrlParams()

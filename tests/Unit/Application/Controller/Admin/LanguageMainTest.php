@@ -143,7 +143,7 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals($aRes, $oView->UNITgetLanguageInfo("en"));
+        $this->assertEquals($aRes, $oView->_getLanguageInfo("en"));
     }
 
     /**
@@ -161,7 +161,7 @@ class LanguageMainTest extends \OxidTestCase
 
         $oView = $this->getProxyClass("Language_Main");
 
-        $this->assertEquals($aLangData, $oView->UNITgetLanguages());
+        $this->assertEquals($aLangData, $oView->_getLanguages());
     }
 
     /**
@@ -182,7 +182,7 @@ class LanguageMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
-        $oView->UNITupdateAbbervation("en", "fr");
+        $oView->_updateAbbervation("en", "fr");
 
         $this->assertEquals($aRes, $oView->getNonPublicVar("_aLangData"));
     }
@@ -208,7 +208,7 @@ class LanguageMainTest extends \OxidTestCase
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
-        $oView->UNITsortLangArraysByBaseId("en", "fr");
+        $oView->_sortLangArraysByBaseId("en", "fr");
 
         $this->assertEquals($aRes, $oView->getNonPublicVar("_aLangData"));
     }
@@ -228,7 +228,7 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals($aRes, $oView->UNITassignDefaultLangParams($aLangData));
+        $this->assertEquals($aRes, $oView->_assignDefaultLangParams($aLangData));
     }
 
     /**
@@ -265,7 +265,7 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals(2, $oView->UNITgetAvailableLangBaseId());
+        $this->assertEquals(2, $oView->_getAvailableLangBaseId());
     }
 
     /**
@@ -335,9 +335,9 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertTrue($oView->UNITcheckMultilangFieldsExistsInDb("de"));
-        $this->assertTrue($oView->UNITcheckMultilangFieldsExistsInDb("en"));
-        $this->assertFalse($oView->UNITcheckMultilangFieldsExistsInDb("fr"));
+        $this->assertTrue($oView->_checkMultilangFieldsExistsInDb("de"));
+        $this->assertTrue($oView->_checkMultilangFieldsExistsInDb("en"));
+        $this->assertFalse($oView->_checkMultilangFieldsExistsInDb("fr"));
     }
 
     /**
@@ -352,7 +352,7 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", null);
 
-        $oView->UNITaddNewMultilangFieldsToDb();
+        $oView->_addNewMultilangFieldsToDb();
 
         //no errors should be added to session
         $aEx = oxRegistry::getSession()->getVariable("Errors");
@@ -371,7 +371,7 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", null);
 
-        $oView->UNITaddNewMultilangFieldsToDb();
+        $oView->_addNewMultilangFieldsToDb();
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
@@ -392,9 +392,9 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertTrue($oView->UNITcheckLangExists("de"));
-        $this->assertTrue($oView->UNITcheckLangExists("en"));
-        $this->assertFalse($oView->UNITcheckLangExists("fr"));
+        $this->assertTrue($oView->_checkLangExists("de"));
+        $this->assertTrue($oView->_checkLangExists("en"));
+        $this->assertFalse($oView->_checkLangExists("fr"));
     }
 
     /**
@@ -410,8 +410,8 @@ class LanguageMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals(1, $oView->UNITsortLangParamsByBaseIdCallback($aLangData['params']['en'], $aLangData['params']['de']));
-        $this->assertEquals(-1, $oView->UNITsortLangParamsByBaseIdCallback($aLangData['params']['de'], $aLangData['params']['en']));
+        $this->assertEquals(1, $oView->_sortLangParamsByBaseIdCallback($aLangData['params']['en'], $aLangData['params']['de']));
+        $this->assertEquals(-1, $oView->_sortLangParamsByBaseIdCallback($aLangData['params']['de'], $aLangData['params']['en']));
     }
 
     /**
@@ -427,7 +427,7 @@ class LanguageMainTest extends \OxidTestCase
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_checkLangExists"));
         $oMainLang->expects($this->once())->method('_checkLangExists')->with($this->equalTo("en"))->will($this->returnValue(true));
 
-        $this->assertFalse($oMainLang->UNITvalidateInput());
+        $this->assertFalse($oMainLang->_validateInput());
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
@@ -449,7 +449,7 @@ class LanguageMainTest extends \OxidTestCase
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_checkLangExists"));
         $oMainLang->expects($this->never())->method('_checkLangExists');
 
-        $this->assertFalse($oMainLang->UNITvalidateInput());
+        $this->assertFalse($oMainLang->_validateInput());
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
@@ -471,7 +471,7 @@ class LanguageMainTest extends \OxidTestCase
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_checkLangExists"));
         $oMainLang->expects($this->never())->method('_checkLangExists');
 
-        $this->assertTrue($oMainLang->UNITvalidateInput());
+        $this->assertTrue($oMainLang->_validateInput());
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $this->assertNull($aEx);

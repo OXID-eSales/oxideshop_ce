@@ -193,13 +193,13 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getProduct'));
         $oReview->expects($this->once())->method('getProduct')->will($this->returnValue(true));
 
-        $this->assertEquals('oxarticle', $oReview->UNITgetActiveType());
+        $this->assertEquals('oxarticle', $oReview->_getActiveType());
 
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getProduct', 'getActiveRecommList'));
         $oReview->expects($this->once())->method('getProduct')->will($this->returnValue(false));
         $oReview->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(true));
 
-        $this->assertEquals('oxrecommlist', $oReview->UNITgetActiveType());
+        $this->assertEquals('oxrecommlist', $oReview->_getActiveType());
     }
 
     public function testGetViewId()
@@ -474,7 +474,7 @@ class ReviewTest extends \OxidTestCase
         $oArticle->load('2000');
         $oReview->setNonPublicVar("_oProduct", $oArticle);
 
-        $this->assertEquals('2000', $oReview->UNITgetActiveObject()->getId());
+        $this->assertEquals('2000', $oReview->_getActiveObject()->getId());
     }
 
     public function testGetActiveObjectIfRecommList()
@@ -485,7 +485,7 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array("getProduct", "getActiveRecommList"));
         $oReview->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommtList));
 
-        $this->assertEquals('testid', $oReview->UNITgetActiveObject()->getId());
+        $this->assertEquals('testid', $oReview->_getActiveObject()->getId());
     }
 
     public function testGetCrossSelling()

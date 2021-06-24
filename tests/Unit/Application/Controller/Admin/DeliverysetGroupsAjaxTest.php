@@ -91,7 +91,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
     public function testGetQuery()
     {
         $oView = oxNew('deliveryset_groups_ajax');
-        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1", trim($oView->_getQuery()));
     }
 
     /**
@@ -105,7 +105,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
-        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->_getQuery()));
     }
 
     /**
@@ -119,7 +119,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
-        $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'", trim($oView->_getQuery()));
     }
 
     /**
@@ -135,7 +135,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_groups_ajax');
-        $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg'  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )", trim($oView->_getQuery()));
     }
 
     /**

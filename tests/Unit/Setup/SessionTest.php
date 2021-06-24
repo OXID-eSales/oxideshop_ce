@@ -43,7 +43,7 @@ class SessionTest extends \OxidTestCase
         $oSession->setIsNewSession(true);
         $oSession->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
         $oSession->expects($this->never())->method('_getNewSessionID');
-        $oSession->UNITvalidateSession();
+        $oSession->_validateSession();
     }
 
     /**
@@ -56,7 +56,7 @@ class SessionTest extends \OxidTestCase
         $oSession->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(null));
         $oSession->method('_getNewSessionID')->will($this->returnValue($this->generateUniqueSessionId()));
         $oSession->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
-        $oSession->UNITvalidateSession();
+        $oSession->_validateSession();
     }
 
     /**
@@ -69,7 +69,7 @@ class SessionTest extends \OxidTestCase
         $oSession->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(true));
         $oSession->expects($this->never())->method('_getNewSessionID');
         $oSession->expects($this->never())->method('setSessionParam');
-        $oSession->UNITvalidateSession();
+        $oSession->_validateSession();
     }
 
     /**
@@ -95,7 +95,7 @@ class SessionTest extends \OxidTestCase
         //we need to start a session for this test
         session_start();
 
-        $oSession->UNITgetNewSessionID();
+        $oSession->_getNewSessionID();
         $this->assertSame(true, $oSession->getIsNewSession());
     }
 

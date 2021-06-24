@@ -404,7 +404,7 @@ class ViewTest extends \OxidTestCase
 
         $oView = $this->getMock(BaseController::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
+        $sUrl = $oView->_executeNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
@@ -424,7 +424,7 @@ class ViewTest extends \OxidTestCase
         $oView = $this->getMock(BaseController::class, array('isAdmin'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
         $oView->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
+        $oView->_executeNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 

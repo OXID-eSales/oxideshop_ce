@@ -123,7 +123,7 @@ class VendorlistTest extends \OxidTestCase
         $oVendorlist->loadVendorList();
         $oVendor = $oVendorlist->current();
 
-        $oVendorlist->UNITaddCategoryFields($oVendor);
+        $oVendorlist->_addCategoryFields($oVendor);
 
         // check if category specific fields was added to vendor object
         $this->assertEquals("v_" . $oVendor->getId(), $oVendor->oxcategories__oxid->value);
@@ -147,7 +147,7 @@ class VendorlistTest extends \OxidTestCase
         $oVendorlist = $this->getProxyClass("oxvendorlist");
         $oVendorlist->loadVendorList();
 
-        $oVendorlist->UNITSeosetVendorData();
+        $oVendorlist->_SeosetVendorData();
 
         //check if SEO link was added for each vendor item
         foreach ($oVendorlist as $sVndId => $value) {

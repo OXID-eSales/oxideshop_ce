@@ -64,11 +64,11 @@ class AdminListTest extends \OxidTestCase
     public function testGetUserDefListSize()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(50, $oAdminList->UNITgetUserDefListSize());
+        $this->assertEquals(50, $oAdminList->_getUserDefListSize());
 
         $this->setRequestParameter('viewListSize', 999);
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(999, $oAdminList->UNITgetUserDefListSize());
+        $this->assertEquals(999, $oAdminList->_getUserDefListSize());
     }
 
     /**
@@ -81,12 +81,12 @@ class AdminListTest extends \OxidTestCase
         // testing is config value taken
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, array('getConfig'), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('iAdminListSize', 0);
-        $this->assertEquals(10, $oAdminList->UNITgetViewListSize());
+        $this->assertEquals(10, $oAdminList->_getViewListSize());
 
         // testing if cookie data is used
         $this->getSession()->setVariable('profile', array(1 => 500));
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(500, $oAdminList->UNITgetViewListSize());
+        $this->assertEquals(500, $oAdminList->_getViewListSize());
     }
 
     /**
@@ -97,7 +97,7 @@ class AdminListTest extends \OxidTestCase
     public function testProcessFilter()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals('test string', $oAdminList->UNITprocessFilter('%test  string%'));
+        $this->assertEquals('test string', $oAdminList->_processFilter('%test  string%'));
     }
 
     /**
@@ -108,8 +108,8 @@ class AdminListTest extends \OxidTestCase
     public function testBuildFilter()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(" like '%\'test\'\\\"%' ", $oAdminList->UNITbuildFilter("'test'\"", true));
-        $this->assertEquals(" = 'test' ", $oAdminList->UNITbuildFilter('test', false));
+        $this->assertEquals(" like '%\'test\'\\\"%' ", $oAdminList->_buildFilter("'test'\"", true));
+        $this->assertEquals(" = 'test' ", $oAdminList->_buildFilter('test', false));
     }
 
     /**
@@ -120,8 +120,8 @@ class AdminListTest extends \OxidTestCase
     public function testIsSearchValue()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertTrue($oAdminList->UNITisSearchValue('%test%'));
-        $this->assertFalse($oAdminList->UNITisSearchValue('test'));
+        $this->assertTrue($oAdminList->_isSearchValue('%test%'));
+        $this->assertFalse($oAdminList->_isSearchValue('test'));
     }
 
     /**
@@ -156,7 +156,7 @@ class AdminListTest extends \OxidTestCase
         $sQ = 'SELECT * from oxarticles ORder BY name';
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $oAdminList->UNITcalcListItemsCount($sQ);
+        $oAdminList->_calcListItemsCount($sQ);
 
         $iTotalCount = oxDb::getDb()->getOne('select count(*) from oxarticles');
 
@@ -178,30 +178,30 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->setNonPublicVar('_iListSize', 110);
 
         $sPage = "1 from 7";
-        $oAdminList->UNITsetCurrentListPosition($sPage);
+        $oAdminList->_setCurrentListPosition($sPage);
         $this->assertEquals(0, $oAdminList->getNonPublicVar('_iCurrListPos'));
         $this->assertEquals(0, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "3 from 7";
-        $oAdminList->UNITsetCurrentListPosition($sPage);
+        $oAdminList->_setCurrentListPosition($sPage);
         $this->assertEquals(20, $oAdminList->getNonPublicVar('_iCurrListPos'));
         $this->assertEquals(20, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "7 from 7";
 
-        $oAdminList->UNITsetCurrentListPosition($sPage);
+        $oAdminList->_setCurrentListPosition($sPage);
         $this->assertEquals(60, $oAdminList->getNonPublicVar('_iCurrListPos'));
         $this->assertEquals(60, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "80 from 7";
 
-        $oAdminList->UNITsetCurrentListPosition($sPage);
+        $oAdminList->_setCurrentListPosition($sPage);
         $this->assertEquals(100, $oAdminList->getNonPublicVar('_iCurrListPos'));
         $this->assertEquals(100, $oAdminList->getNonPublicVar('_iOverPos'));
 
 
         $sPage = '';
-        $oAdminList->UNITsetCurrentListPosition($sPage);
+        $oAdminList->_setCurrentListPosition($sPage);
         $this->assertEquals(10, $oAdminList->getNonPublicVar('_iCurrListPos'));
     }
 
@@ -227,7 +227,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->_prepareOrderByQuery('')));
     }
 
     /**
@@ -249,7 +249,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`, `$sTable`.`oxactive` desc , `$sTable`.`sort`", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`, `$sTable`.`oxactive` desc , `$sTable`.`sort`", trim($oAdminList->_prepareOrderByQuery('')));
     }
 
     /**
@@ -274,7 +274,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oList);
         $oAdminList->setNonPublicVar('_sDefSortField', 'oxactive');
-        $sResultSql = $oAdminList->UNITprepareOrderByQuery('');
+        $sResultSql = $oAdminList->_prepareOrderByQuery('');
 
         $this->assertEquals("order by `$sTable`.`oxactive` desc", trim($sResultSql));
     }
@@ -291,7 +291,7 @@ class AdminListTest extends \OxidTestCase
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oLinks);
-        $sResultSql = $oAdminList->UNITprepareOrderByQuery('');
+        $sResultSql = $oAdminList->_prepareOrderByQuery('');
 
         $this->assertEquals('', trim($sResultSql));
     }
@@ -315,7 +315,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle` desc", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle` desc", trim($oAdminList->_prepareOrderByQuery('')));
     }
 
     /**
@@ -337,7 +337,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxurldesc`", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxurldesc`", trim($oAdminList->_prepareOrderByQuery('')));
     }
 
     /**
@@ -359,7 +359,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->UNITprepareOrderByQuery('')));
+        $this->assertEquals("order by `$sTable`.`oxtitle`", trim($oAdminList->_prepareOrderByQuery('')));
     }
 
     /**
@@ -374,7 +374,7 @@ class AdminListTest extends \OxidTestCase
         $sSql = "select `{$sTable}`.`oxid`, `{$sTable}`.`oxshopid`, `{$sTable}`.`oxtype`, `{$sTable}`.`oxtitle`, `{$sTable}`.`oxlongdesc`, `{$sTable}`.`oxactive`, `{$sTable}`.`oxactivefrom`, `{$sTable}`.`oxactiveto`, `{$sTable}`.`oxpic`, `{$sTable}`.`oxlink`, `{$sTable}`.`oxsort`, `{$sTable}`.`oxtimestamp` from {$sTable} where 1 ";
 
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals($sSql, $oAdminList->UNITbuildSelectString(new oxActions()));
+        $this->assertEquals($sSql, $oAdminList->_buildSelectString(new oxActions()));
     }
 
     /**
@@ -385,7 +385,7 @@ class AdminListTest extends \OxidTestCase
     public function testBuildSelectStringWithoutParams()
     {
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITbuildSelectString(null);
+        $sResultSql = $oAdminList->_buildSelectString(null);
 
         $this->assertEquals('', $sResultSql);
     }
@@ -401,7 +401,7 @@ class AdminListTest extends \OxidTestCase
         $aWhere['oxid'] = 'testId';
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         //setting spacing to 1 space
         $sResultSql = strtolower(trim($sResultSql));
@@ -423,7 +423,7 @@ class AdminListTest extends \OxidTestCase
         $aWhere['oxid'] = 'testid';
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         //setting spacing to 1 space
         $sResultSql = strtolower(trim($sResultSql));
@@ -447,7 +447,7 @@ class AdminListTest extends \OxidTestCase
         oxRegistry::getLang()->setBaseLanguage(1);
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         //setting spacing to 1 space
         $sResultSql = strtolower(trim($sResultSql));
@@ -468,7 +468,7 @@ class AdminListTest extends \OxidTestCase
         $aWhere['oxtitle'] = '';
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         //setting spacing to 1 space
         $sResultSql = strtolower(trim($sResultSql));
@@ -489,7 +489,7 @@ class AdminListTest extends \OxidTestCase
         $aWhere['oxtitle'] = '%0%';
 
         $oAdminList = $this->getProxyClass('oxAdminList');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         //setting spacing to 1 space
         $sResultSql = strtolower(trim($sResultSql));
@@ -517,7 +517,7 @@ class AdminListTest extends \OxidTestCase
 
         $aWhere['oxtitle'] = '';
         $oAdminList = $this->getProxyClass('order_list');
-        $sResultSql = $oAdminList->UNITprepareWhereQuery($aWhere, '');
+        $sResultSql = $oAdminList->_prepareWhereQuery($aWhere, '');
 
         $sSql = " and ( oxorder.oxfolder = 'Neu' )";
         $this->assertEquals($sSql, $sResultSql);
@@ -531,7 +531,7 @@ class AdminListTest extends \OxidTestCase
     public function testChangeselect()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals('xxx', $oAdminList->UNITchangeselect('xxx'));
+        $this->assertEquals('xxx', $oAdminList->_changeselect('xxx'));
     }
 
     /**
@@ -703,7 +703,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_iListSize', 1000);
         $oAdminList->setNonPublicVar('_iCurrListPos', 50);
-        $oAdminList->UNITsetListNavigationParams();
+        $oAdminList->_setListNavigationParams();
 
         $aViewData = $oAdminList->getViewData();
 
@@ -741,7 +741,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, array('getNavigation'));
         $oAdminList->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $oAdminList->UNITsetupNavigation('xxx');
+        $oAdminList->_setupNavigation('xxx');
         $this->assertEquals('editnavi', $oAdminList->getViewDataElement('editnavi'));
         $this->assertEquals('actlocation', $oAdminList->getViewDataElement('actlocation'));
         $this->assertEquals('default_edit', $oAdminList->getViewDataElement('default_edit'));
@@ -761,12 +761,12 @@ class AdminListTest extends \OxidTestCase
 
         //setting active tab 1
         $this->setRequestParameter('actedit', 1);
-        $oAdminList->UNITsetupNavigation('xxx');
+        $oAdminList->_setupNavigation('xxx');
         $this->assertEquals('1', $oAdminList->getViewDataElement('actedit'));
 
         //creating new item (oxid = -1)
         $this->setRequestParameter('oxid', -1);
-        $oAdminList->UNITsetupNavigation('xxx');
+        $oAdminList->_setupNavigation('xxx');
         $this->assertEquals('0', $oAdminList->getViewDataElement('actedit'));
     }
 
@@ -823,7 +823,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         foreach ($aDates as $aDate) {
             list($sInput, $sResult, $blFldType) = $aDate;
-            $this->assertEquals($sResult, $oAdminList->UNITconvertToDBDate($sInput, $blFldType));
+            $this->assertEquals($sResult, $oAdminList->_convertToDBDate($sInput, $blFldType));
         }
     }
 
@@ -843,7 +843,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         foreach ($aDates as $aDate) {
             list($sInput, $sResult) = $aDate;
-            $this->assertEquals($sResult, $oAdminList->UNITconvertDate($sInput));
+            $this->assertEquals($sResult, $oAdminList->_convertDate($sInput));
         }
     }
 
@@ -864,7 +864,7 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         foreach ($aDates as $aDate) {
             list($sInput, $sResult) = $aDate;
-            $this->assertEquals($sResult, $oAdminList->UNITconvertTime($sInput));
+            $this->assertEquals($sResult, $oAdminList->_convertTime($sInput));
         }
     }
 

@@ -26,7 +26,7 @@ class RemarkTest extends \OxidTestCase
         parent::setUp();
         $this->_iNow = time();
         $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
-        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime($this->_iNow);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->setTime($this->_iNow);
 
         $this->_oRemark = oxNew('oxremark');
         $this->_oRemark->oxremark__oxtext = new oxField('Test', oxField::T_RAW);
@@ -77,7 +77,7 @@ class RemarkTest extends \OxidTestCase
         $iNow = time();
 
         $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
-        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime($iNow);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->setTime($iNow);
 
         $oRemark = oxNew('oxremark');
         $oRemark->load($this->_oRemark->oxremark__oxid->value);

@@ -251,7 +251,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", null);
-        $this->assertTrue($oView->UNITrearrangeFields("test", 0));
+        $this->assertTrue($oView->_rearrangeFields("test", 0));
     }
 
     /**
@@ -264,7 +264,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", array(1));
-        $this->assertTrue($oView->UNITrearrangeFields("test", -1));
+        $this->assertTrue($oView->_rearrangeFields("test", -1));
         $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
@@ -278,7 +278,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", array(1));
-        $this->assertTrue($oView->UNITrearrangeFields("test", 1));
+        $this->assertTrue($oView->_rearrangeFields("test", 1));
         $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
@@ -292,7 +292,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", array(1, 2));
-        $this->assertFalse($oView->UNITrearrangeFields(1, 1));
+        $this->assertFalse($oView->_rearrangeFields(1, 1));
     }
 
     /**
@@ -305,7 +305,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", array(1, 2, 3));
-        $this->assertFalse($oView->UNITrearrangeFields(1, 2));
+        $this->assertFalse($oView->_rearrangeFields(1, 2));
     }
 
     /**
@@ -318,7 +318,7 @@ class SelectListMainTest extends \OxidTestCase
         // defining parameters
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", array(1, 2, 3));
-        $this->assertFalse($oView->UNITrearrangeFields(2, 0));
+        $this->assertFalse($oView->_rearrangeFields(2, 0));
     }
 
 

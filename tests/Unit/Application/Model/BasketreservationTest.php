@@ -38,7 +38,7 @@ class BasketreservationTest extends \OxidTestCase
         $basketReservation = $this->getMock(BasketReservation::class, array('getUtilsObjectInstance'));
         $basketReservation->expects($this->any())->method('getUtilsObjectInstance')->willReturn($utilsObjectMock);
 
-        $this->assertEquals('newvarval', $basketReservation->UNITgetReservationsId());
+        $this->assertEquals('newvarval', $basketReservation->_getReservationsId());
     }
 
     /**
@@ -62,7 +62,7 @@ class BasketreservationTest extends \OxidTestCase
 
         $oR = oxNew('oxBasketReservation');
 
-        $this->assertEquals('oldvarval', $oR->UNITgetReservationsId());
+        $this->assertEquals('oldvarval', $oR->_getReservationsId());
     }
 
     /**
@@ -85,7 +85,7 @@ class BasketreservationTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxuserbasket', $oUO);
 
         $oR = oxNew('oxBasketReservation');
-        $this->assertSame($oUO, $oR->UNITloadReservations('p:basketId'));
+        $this->assertSame($oUO, $oR->_loadReservations('p:basketId'));
     }
 
     /**
@@ -108,7 +108,7 @@ class BasketreservationTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxuserbasket', $oUO);
 
         $oR = oxNew('oxBasketReservation');
-        $this->assertSame($oUO, $oR->UNITloadReservations('p:basketId'));
+        $this->assertSame($oUO, $oR->_loadReservations('p:basketId'));
 
         $this->assertEquals('reservations', $oUO->oxuserbaskets__oxtitle->value);
         $this->assertEquals('p:basketId', $oUO->oxuserbaskets__oxuserid->value);
@@ -172,7 +172,7 @@ class BasketreservationTest extends \OxidTestCase
         $oR = oxNew('oxBasketReservation');
         $oR->setR('asdasd');
 
-        $this->assertEquals('asdasd', $oR->UNITgetReservedItems());
+        $this->assertEquals('asdasd', $oR->_getReservedItems());
     }
 
     /**
@@ -186,7 +186,7 @@ class BasketreservationTest extends \OxidTestCase
         $oR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservations'));
         $oR->expects($this->exactly(1))->method('getReservations')->will($this->returnValue(null));
 
-        $this->assertEquals(array(), $oR->UNITgetReservedItems());
+        $this->assertEquals(array(), $oR->_getReservedItems());
     }
 
     /**
@@ -229,7 +229,7 @@ class BasketreservationTest extends \OxidTestCase
         $oR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservations'));
         $oR->expects($this->exactly(1))->method('getReservations')->will($this->returnValue($oBasket));
 
-        $this->assertEquals(array('2000' => 2, '1126' => 3), $oR->UNITgetReservedItems());
+        $this->assertEquals(array('2000' => 2, '1126' => 3), $oR->_getReservedItems());
     }
 
     /**
@@ -246,7 +246,7 @@ class BasketreservationTest extends \OxidTestCase
         $oR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('getReservations'));
         $oR->expects($this->exactly(1))->method('getReservations')->will($this->returnValue($oBasket));
 
-        $this->assertEquals(array(), $oR->UNITgetReservedItems());
+        $this->assertEquals(array(), $oR->_getReservedItems());
     }
 
     /**
@@ -286,7 +286,7 @@ class BasketreservationTest extends \OxidTestCase
         $oR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('_getReservedItems'));
         $oR->expects($this->exactly(1))->method('_getReservedItems')->will($this->returnValue(array('2000' => 5)));
 
-        $this->assertEquals(array('2000' => 4, '1126' => -1), $oR->UNITbasketDifference($oBasket));
+        $this->assertEquals(array('2000' => 4, '1126' => -1), $oR->_basketDifference($oBasket));
     }
 
     /**
@@ -307,7 +307,7 @@ class BasketreservationTest extends \OxidTestCase
         $oA->expects($this->exactly(1))->method('reduceStock')->with($this->equalTo(8), $this->equalTo(false))->will($this->returnValue(5));
         oxTestModules::addModuleObject('oxarticle', $oA);
 
-        $oR->UNITreserveArticles(array('1126' => 0, '2000' => -8));
+        $oR->_reserveArticles(array('1126' => 0, '2000' => -8));
     }
 
     /**

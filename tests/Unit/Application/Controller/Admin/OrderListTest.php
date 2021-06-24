@@ -48,15 +48,15 @@ class OrderListTest extends \OxidTestCase
 
         $this->setRequestParameter("addsearch", "oxorderarticles");
         $oView = oxNew('order_list');
-        $sQ = $oView->UNITbuildSelectString($oListObject);
+        $sQ = $oView->_buildSelectString($oListObject);
         $this->assertTrue(strpos($sQ, "oxorder where oxorder.oxpaid like " . $oDb->quote("%oxorderarticles%") . " and ") !== false);
 
         $this->setRequestParameter("addsearchfld", "oxorderarticles");
-        $sQ = $oView->UNITbuildSelectString($oListObject);
+        $sQ = $oView->_buildSelectString($oListObject);
         $this->assertTrue(strpos($sQ, "oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like " . $oDb->quote("%oxorderarticles%") . " or oxorderarticles.oxtitle like " . $oDb->quote("%oxorderarticles%") . " ) and ") !== false);
 
         $this->setRequestParameter("addsearchfld", "oxpayments");
-        $sQ = $oView->UNITbuildSelectString($oListObject);
+        $sQ = $oView->_buildSelectString($oListObject);
         $this->assertTrue(strpos($sQ, "oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like " . $oDb->quote("%oxorderarticles%") . " and ") !== false);
     }
 
@@ -73,7 +73,7 @@ class OrderListTest extends \OxidTestCase
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
         $oOrderList = oxNew('order_list');
-        $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
+        $sQ = $oOrderList->_prepareWhereQuery(array(), "");
         $this->assertEquals($sExpQ, $sQ);
     }
 
@@ -91,7 +91,7 @@ class OrderListTest extends \OxidTestCase
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
         $oOrderList = oxNew('order_list');
-        $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
+        $sQ = $oOrderList->_prepareWhereQuery(array(), "");
         $this->assertEquals($sExpQ, $sQ);
     }
 }

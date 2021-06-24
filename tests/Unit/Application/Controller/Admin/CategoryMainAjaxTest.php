@@ -101,7 +101,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
     public function testGetQuery()
     {
         $oView = oxNew('category_main_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " join " . $this->getArticleViewTable() . "  on  " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid  where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '' and " . $this->getArticleViewTable() . ".oxid is not null", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " join " . $this->getArticleViewTable() . "  on  " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid  where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '' and " . $this->getArticleViewTable() . ".oxid is not null", trim($oView->_getQuery()));
     }
 
     /**
@@ -123,7 +123,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
         $sQuery .= "  where " . $sO2CView . ".oxcatnid = '_testOxid' and " . $sArticleTable . ".oxid is not null";
         $sQuery .= "  and " . $sArticleTable . ".oxid not in ( select $sArticleTable.oxid from $sO2CView left join $sArticleTable ";
         $sQuery .= "on  $sArticleTable.oxid=$sO2CView.oxobjectid  where $sO2CView.oxcatnid =  '_testSynchoxid' and " . $sArticleTable . ".oxid is not null )";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**
@@ -137,7 +137,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('category_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1", trim($oView->_getQuery()));
     }
 
     /**
@@ -228,7 +228,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
         $oDb->execute($sQ);
 
         $oView = oxNew('category_main_ajax');
-        $oView->UNITupdateOxTime($oDb->quote($sOxid));
+        $oView->_updateOxTime($oDb->quote($sOxid));
         $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2category where oxtime=0 and oxobjectid = '$sOxid'"));
     }
 }

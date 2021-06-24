@@ -35,7 +35,7 @@ class PriceAlarmListTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('PriceAlarm_List');
-        $this->assertEquals($sSql, $oView->UNITbuildSelectString(new stdClass()));
+        $this->assertEquals($sSql, $oView->_buildSelectString(new stdClass()));
     }
 
     /**

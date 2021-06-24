@@ -50,7 +50,7 @@ class UtilsServerTest extends \OxidTestCase
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
+        $this->assertFalse($oUtilsServer->_mustSaveToSession());
     }
 
     /**
@@ -66,7 +66,7 @@ class UtilsServerTest extends \OxidTestCase
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
+        $this->assertFalse($oUtilsServer->_mustSaveToSession());
     }
 
     /**
@@ -88,10 +88,10 @@ class UtilsServerTest extends \OxidTestCase
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals('ssl', $oUtilsServer->UNITgetSessionCookieKey(true));
-        $this->assertEquals('nossl', $oUtilsServer->UNITgetSessionCookieKey(true));
-        $this->assertEquals('nossl', $oUtilsServer->UNITgetSessionCookieKey(false));
-        $this->assertEquals('ssl', $oUtilsServer->UNITgetSessionCookieKey(false));
+        $this->assertEquals('ssl', $oUtilsServer->_getSessionCookieKey(true));
+        $this->assertEquals('nossl', $oUtilsServer->_getSessionCookieKey(true));
+        $this->assertEquals('nossl', $oUtilsServer->_getSessionCookieKey(false));
+        $this->assertEquals('ssl', $oUtilsServer->_getSessionCookieKey(false));
     }
 
     /**
@@ -104,8 +104,8 @@ class UtilsServerTest extends \OxidTestCase
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_mustSaveToSession", "_getSessionCookieKey"));
         $oUtilsServer->expects($this->any())->method('_mustSaveToSession')->will($this->returnValue(true));
         $oUtilsServer->expects($this->any())->method('_getSessionCookieKey')->will($this->returnValue("key"));
-        $oUtilsServer->UNITsaveSessionCookie("var1", "val1", 123, "path1", "domain1");
-        $oUtilsServer->UNITsaveSessionCookie("var2", "val2", 321, "path2", "domain2");
+        $oUtilsServer->_saveSessionCookie("var1", "val1", 123, "path1", "domain1");
+        $oUtilsServer->_saveSessionCookie("var2", "val2", 321, "path2", "domain2");
 
         $aVal = array("key" => array("var1" => array("value" => "val1", "expire" => 123, "path" => "path1", "domain" => "domain1"),
                                      "var2" => array("value" => "val2", "expire" => 321, "path" => "path2", "domain" => "domain2")));
@@ -149,7 +149,7 @@ class UtilsServerTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("aCookiePaths", array($sShopId => 'somepath'));
 
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals('somepath', $oUtilsServer->UNITgetCookiePath(""));
+        $this->assertEquals('somepath', $oUtilsServer->_getCookiePath(""));
     }
 
     public function testGetCookieDomainWhenACookieDomainsIssetup(): void
@@ -158,14 +158,14 @@ class UtilsServerTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("aCookieDomains", array($sShopId => 'somedomain'));
 
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals('somedomain', $oUtilsServer->UNITgetCookieDomain(""));
+        $this->assertEquals('somedomain', $oUtilsServer->_getCookieDomain(""));
     }
 
     public function testGetCookiePath()
     {
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals("xxx", $oUtilsServer->UNITgetCookiePath("xxx"));
-        $this->assertEquals("", $oUtilsServer->UNITgetCookiePath(null));
+        $this->assertEquals("xxx", $oUtilsServer->_getCookiePath("xxx"));
+        $this->assertEquals("", $oUtilsServer->_getCookiePath(null));
     }
 
     /**
@@ -181,13 +181,6 @@ class UtilsServerTest extends \OxidTestCase
 
     public function testGetCookie()
     {
-        // $sName = null
-        /*  $aCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie();
-  var_dump($_COOKIE);
-  var_dump($aCookie);
-          $this->assertTrue((isset($aCookie) && ($aCookie[0] == null)));
-          $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));*/
-
         $aC = $_COOKIE;
         $e = null;
         try {

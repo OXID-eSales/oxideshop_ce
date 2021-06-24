@@ -23,7 +23,7 @@ class CreditsTest extends \OxidTestCase
     public function testGetSeoObjectId()
     {
         $oView = oxNew('Credits');
-        $this->assertEquals("oxcredits", $oView->UNITgetSeoObjectId());
+        $this->assertEquals("oxcredits", $oView->_getSeoObjectId());
     }
 
     /**

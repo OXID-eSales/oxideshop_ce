@@ -987,8 +987,8 @@ class DiscountTest extends \OxidTestCase
         $sQ2 = " and oxobjectid = 'ProductId'";
 
         $oDiscount = oxNew('oxDiscount');
-        $this->assertEquals($sQ1, $oDiscount->UNITgetProductCheckQuery($oProduct1));
-        $this->assertEquals($sQ2, $oDiscount->UNITgetProductCheckQuery($oProduct2));
+        $this->assertEquals($sQ1, $oDiscount->_getProductCheckQuery($oProduct1));
+        $this->assertEquals($sQ2, $oDiscount->_getProductCheckQuery($oProduct2));
     }
 
     /**

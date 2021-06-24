@@ -52,7 +52,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, array("getVendorUri"));
         $oEncoder->expects($this->once())->method('getVendorUri')->will($this->returnValue("vendorUri"));
 
-        $this->assertEquals("vendorUri", $oEncoder->UNITgetAltUri('1126', 0));
+        $this->assertEquals("vendorUri", $oEncoder->_getAltUri('1126', 0));
     }
 
     public function testGetVendorUrlExistingVendor()

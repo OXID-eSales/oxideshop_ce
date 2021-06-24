@@ -84,13 +84,13 @@ class UserbasketitemTest extends \OxidTestCase
 
         $sValue = '<script>alert("oxid");</script>';
 
-        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxsellist', $sValue);
+        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxsellist', $sValue);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
-        $oUserBasketItem->UNITsetFieldData('oxsellist', $sValue);
+        $oUserBasketItem->_setFieldData('oxsellist', $sValue);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
-        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxtestfield', $sValue);
+        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxtestfield', $sValue);
         $this->assertEquals(htmlentities($sValue, ENT_QUOTES, 'UTF-8'), $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
-        $oUserBasketItem->UNITsetFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
+        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
     }
 

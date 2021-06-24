@@ -200,7 +200,7 @@ class AlistTest extends \OxidTestCase
         $oListView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
         $oListView->expects($this->once())->method('getAddSeoUrlParams')->will($this->returnValue('testSeoParams'));
 
-        $oListView->UNITprocessListArticles();
+        $oListView->_processListArticles();
     }
 
     /**
@@ -215,7 +215,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals(3, $oListView->UNITgetProductLinkType());
+        $this->assertEquals(3, $oListView->_getProductLinkType());
 
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('isPriceCategory'));
@@ -223,7 +223,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals(0, $oListView->UNITgetProductLinkType());
+        $this->assertEquals(0, $oListView->_getProductLinkType());
     }
 
     /**
@@ -260,7 +260,7 @@ class AlistTest extends \OxidTestCase
 
         try {
             $oListView = oxNew('aList');
-            $oListView->UNITloadArticles($oCategory);
+            $oListView->_loadArticles($oCategory);
         } catch (Exception $oExcp) {
             $this->assertEquals('10100', $oExcp->getMessage());
 
@@ -394,7 +394,7 @@ class AlistTest extends \OxidTestCase
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue('getActiveCategory'));
 
-        $this->assertEquals('getActiveCategory', $oListView->UNITgetSubject(oxRegistry::getLang()->getBaseLanguage()));
+        $this->assertEquals('getActiveCategory', $oListView->_getSubject(oxRegistry::getLang()->getBaseLanguage()));
     }
 
     /**
@@ -610,7 +610,7 @@ class AlistTest extends \OxidTestCase
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getCatTreePath'));
         $oListView->expects($this->any())->method('getCatTreePath')->will($this->returnValue($aPath));
 
-        $this->assertEquals(strtolower('testTitle, testTitle'), $oListView->UNITgetCatPathString());
+        $this->assertEquals(strtolower('testTitle, testTitle'), $oListView->_getCatPathString());
     }
 
     /**
@@ -642,7 +642,7 @@ class AlistTest extends \OxidTestCase
         $sMeta = 'sCatPathString - testtitle, testtitle';
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->UNITprepareMetaDescription($sMeta), $oListView->UNITcollectMetaDescription(false));
+        $this->assertEquals($oView->_prepareMetaDescription($sMeta), $oListView->_collectMetaDescription(false));
     }
 
     /**
@@ -667,7 +667,7 @@ class AlistTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
         $oListView->expects($this->any())->method('_getCatPathString')->will($this->returnValue($sCatPathString));
 
-        $this->assertEquals('test', $oListView->UNITcollectMetaKeyword(null));
+        $this->assertEquals('test', $oListView->_collectMetaKeyword(null));
     }
 
     /**
@@ -691,7 +691,7 @@ class AlistTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
         $oListView->expects($this->any())->method('_getCatPathString')->will($this->returnValue($sCatPathString));
 
-        $this->assertEquals('test', $oListView->UNITcollectMetaKeyword(null));
+        $this->assertEquals('test', $oListView->_collectMetaKeyword(null));
     }
 
     /**
@@ -735,7 +735,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals($sUrl, $oListView->UNITaddPageNrParam($sUrl, 0, 0));
+        $this->assertEquals($sUrl, $oListView->_addPageNrParam($sUrl, 0, 0));
     }
 
     /**
@@ -754,7 +754,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals($sUrl . "?pgNr=1", $oListView->UNITaddPageNrParam($sUrl, 1, 0));
+        $this->assertEquals($sUrl . "?pgNr=1", $oListView->_addPageNrParam($sUrl, 1, 0));
     }
 
     /**
@@ -771,7 +771,7 @@ class AlistTest extends \OxidTestCase
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue(null));
 
-        $this->assertEquals($sUrl . "&amp;pgNr=10", $oListView->UNITaddPageNrParam($sUrl, 10, 0));
+        $this->assertEquals($sUrl . "&amp;pgNr=10", $oListView->_addPageNrParam($sUrl, 10, 0));
     }
 
     /**
@@ -807,7 +807,7 @@ class AlistTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oListView->expects($this->any())->method('getCategoryTree')->will($this->returnValue($oCategoryTree));
 
-        $this->assertEquals('parent_category, current_category, sub_category_1, nada, fedia', $oListView->UNITprepareMetaKeyword(null));
+        $this->assertEquals('parent_category, current_category, sub_category_1, nada, fedia', $oListView->_prepareMetaKeyword(null));
     }
 
     /**
@@ -834,7 +834,7 @@ class AlistTest extends \OxidTestCase
         //expected string changed due to #2776
         $this->assertEquals(
             $sExpect,
-            $oListView->UNITprepareMetaDescription(null, 1024, false)
+            $oListView->_prepareMetaDescription(null, 1024, false)
         );
     }
 

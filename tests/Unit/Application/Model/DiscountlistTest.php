@@ -110,14 +110,14 @@ class DiscountlistTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, array('selectString', '_getFilterSelect'));
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('_getFilterSelect');
-        $oList->UNITgetList($oUser);
+        $oList->_getList($oUser);
     }
 
     // testing returned data
     public function testGetListDataCheckNoUser()
     {
         $oList = oxNew('oxdiscountlist');
-        $oList->UNITgetList();
+        $oList->_getList();
 
         // checking using demo data
         $this->assertEquals(1, $oList->count());
@@ -133,7 +133,7 @@ class DiscountlistTest extends \OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         $oList = oxNew('oxdiscountlist');
-        $oList->UNITgetList($oUser);
+        $oList->_getList($oUser);
 
         // checking using demo data
         $this->assertEquals(1, $oList->count());
@@ -199,7 +199,7 @@ class DiscountlistTest extends \OxidTestCase
             )";
         $sQ .= " order by $sTable.oxsort ";
 
-        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect(null)));
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->_getFilterSelect(null)));
     }
 
     // admin user
@@ -240,7 +240,7 @@ class DiscountlistTest extends \OxidTestCase
             )";
         $sQ .= " order by $sTable.oxsort ";
 
-        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->UNITgetFilterSelect($oUser)));
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->_getFilterSelect($oUser)));
     }
 
     /**

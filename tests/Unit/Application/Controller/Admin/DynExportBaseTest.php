@@ -438,11 +438,11 @@ class DynExportBaseTest extends \OxidTestCase
     public function testUnHtmlEntities()
     {
         $oView = oxNew('DynExportBase');
-        $this->assertEquals("&", $oView->UNITunHtmlEntities("&amp;"));
-        $this->assertEquals("\"", $oView->UNITunHtmlEntities("&quot;"));
-        $this->assertEquals(">", $oView->UNITunHtmlEntities("&gt;"));
-        $this->assertEquals("<", $oView->UNITunHtmlEntities("&lt;"));
-        $this->assertEquals("test", $oView->UNITunHtmlEntities("test"));
+        $this->assertEquals("&", $oView->_unHtmlEntities("&amp;"));
+        $this->assertEquals("\"", $oView->_unHtmlEntities("&quot;"));
+        $this->assertEquals(">", $oView->_unHtmlEntities("&gt;"));
+        $this->assertEquals("<", $oView->_unHtmlEntities("&lt;"));
+        $this->assertEquals("test", $oView->_unHtmlEntities("test"));
     }
 
     /**
@@ -454,7 +454,7 @@ class DynExportBaseTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('DynExportBase');
-        $this->assertEquals("tmp_" . str_replace("0", "", md5(oxRegistry::getSession()->getId())), $oView->UNITgetHeapTableName());
+        $this->assertEquals("tmp_" . str_replace("0", "", md5(oxRegistry::getSession()->getId())), $oView->_getHeapTableName());
     }
 
     /**
@@ -466,8 +466,8 @@ class DynExportBaseTest extends \OxidTestCase
     {
         // defining parameters
         $oView = oxNew('DynExportBase');
-        $this->assertEquals("DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci", $oView->UNITgenerateTableCharSet(5));
-        $this->assertEquals("", $oView->UNITgenerateTableCharSet(3));
+        $this->assertEquals("DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci", $oView->_generateTableCharSet(5));
+        $this->assertEquals("", $oView->_generateTableCharSet(3));
     }
 
     /**
@@ -482,7 +482,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sTableCharset = "DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci";
 
         $oView = oxNew('DynExportBase');
-        $this->assertTrue($oView->UNITcreateHeapTable($sHeapTable, $sTableCharset));
+        $this->assertTrue($oView->_createHeapTable($sHeapTable, $sTableCharset));
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(*) from {$sHeapTable}"));
     }
 
@@ -497,9 +497,9 @@ class DynExportBaseTest extends \OxidTestCase
 
         // defining parameters
         $oView = oxNew('DynExportBase');
-        $this->assertNull($oView->UNITgetCatAdd(array()));
-        $this->assertNull($oView->UNITgetCatAdd("something"));
-        $this->assertEquals($sQ, $oView->UNITgetCatAdd(array("catId1", "catId2", "catId3")));
+        $this->assertNull($oView->_getCatAdd(array()));
+        $this->assertNull($oView->_getCatAdd("something"));
+        $this->assertEquals($sQ, $oView->_getCatAdd(array("catId1", "catId2", "catId3")));
     }
 
     /**
@@ -521,7 +521,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
 
         $oView = oxNew('DynExportBase');
-        $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
+        $this->assertTrue($oView->_insertArticles($sHeapTable, $sCatAdd));
 
         $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
@@ -555,7 +555,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sCatAdd = "and ( oxobject2category.oxcatnid = '" . $oDb->getOne("select oxcatnid from $sO2CView where oxobjectid='1126'") . "')";
 
         $oView = oxNew('DynExportBase');
-        $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
+        $this->assertTrue($oView->_insertArticles($sHeapTable, $sCatAdd));
 
         $oArticle = oxNew('oxArticle');
         $sArticleTable = $oArticle->getViewName();
@@ -588,7 +588,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oDb->execute($sQ);
 
         $oView = oxNew('DynExportBase');
-        $oView->UNITremoveParentArticles($sHeapTable);
+        $oView->_removeParentArticles($sHeapTable);
 
         $sQ1 = "select count(*) from ( select oxid from oxarticles where oxparentid != '') as toptable";
         $sQ2 = "select count(*) from {$sHeapTable}";
@@ -611,7 +611,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("sExportCustomHeader", "testHeader");
 
         $oView = oxNew('DynExportBase');
-        $oView->UNITsetSessionParams();
+        $oView->_setSessionParams();
 
         $this->assertEquals("123", oxRegistry::getSession()->getVariable("sExportDelCost"));
         $this->assertEquals("123", oxRegistry::getSession()->getVariable("sExportMinPrice"));
@@ -629,7 +629,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testLoadRootCats()
     {
         $oView = oxNew('DynExportBase');
-        $aCats = $oView->UNITloadRootCats();
+        $aCats = $oView->_loadRootCats();
 
         $aCatIds = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("select oxid from oxcategories");
         foreach ($aCatIds as $aCatInfo) {
@@ -655,7 +655,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oArticle->expects($this->once())->method('getCategoryIds')->will($this->returnValue(array()));
 
         $oView = oxNew('DynExportBase');
-        $this->assertEquals("", $oView->UNITfindDeepestCatPath($oArticle));
+        $this->assertEquals("", $oView->_findDeepestCatPath($oArticle));
     }
 
     /**
@@ -686,7 +686,7 @@ class DynExportBaseTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_loadRootCats"));
         $oView->expects($this->once())->method('_loadRootCats')->will($this->returnValue($aCache));
-        $this->assertEquals("cat1/cat2/cat3", $oView->UNITfindDeepestCatPath($oArticle));
+        $this->assertEquals("cat1/cat2/cat3", $oView->_findDeepestCatPath($oArticle));
     }
 
     /**
@@ -763,7 +763,7 @@ class DynExportBaseTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("getCategoryString"));
         $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue("testCat"));
-        $oView->UNITsetCampaignDetailLink($oArticle);
+        $oView->_setCampaignDetailLink($oArticle);
     }
 
     /**

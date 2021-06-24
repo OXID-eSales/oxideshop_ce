@@ -427,7 +427,7 @@ class UtfTest extends \OxidTestCase
         $oArticle->save();
 
         $oBasketItem = new oxBasketItem();
-        $oBasketItem->UNITsetArticle('_testArticle');
+        $oBasketItem->_setArticle('_testArticle');
 
         $this->assertEquals("agentūrų Литовские, für", $oBasketItem->getTitle());
         $this->assertEquals("für", $oBasketItem->getVarSelect());
@@ -904,7 +904,7 @@ class UtfTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
 
-        $oUserpayment = $oOrder->UNITsetPayment('oxiddebitnote');
+        $oUserpayment = $oOrder->_setPayment('oxiddebitnote');
 
         $sValue = "lsbankname__Bank name@@lsblz__12345678@@lsktonr__123456789@@lsktoinhaber__Hans Mustermann@@";
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
@@ -1127,7 +1127,7 @@ class UtfTest extends \OxidTestCase
         $expectedArticle->description = "&lt;img src=&#039;" . $articleMock->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;" . $shortDescription;
         $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($expectedArticle), $rssFeed->UNITgetArticleItems($articleList));
+        $this->assertEquals(array($expectedArticle), $rssFeed->_getArticleItems($articleList));
     }
 
     public function testOxRssFeedPrepareFeedName()
@@ -1141,7 +1141,7 @@ class UtfTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals($sValue . '/Test', $oRss->UNITprepareFeedName('Test'));
+        $this->assertEquals($sValue . '/Test', $oRss->_prepareFeedName('Test'));
     }
 
     public function testOxRssFeedLoadSearchArticles()
@@ -1191,7 +1191,7 @@ class UtfTest extends \OxidTestCase
         // setting english language as base
         $oSearch->setLanguage(1);
 
-        $sFix = $oSearch->UNITgetWhere($sValue);
+        $sFix = $oSearch->_getWhere($sValue);
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));
@@ -1590,7 +1590,7 @@ class UtfTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getCatTreePath'));
         $oView->expects($this->once())->method('getCatTreePath')->will($this->returnValue(array($oCat)));
 
-        $this->assertEquals($sResult, $oView->UNITgetCatPathString());
+        $this->assertEquals($sResult, $oView->_getCatPathString());
     }
 
     public function testaListCollectMetaDescription()
@@ -1618,7 +1618,7 @@ class UtfTest extends \OxidTestCase
         $sMeta = 'sCatPathString - ' . $sValue;
 
         $oView = new oxubase();
-        $this->assertEquals($oView->UNITprepareMetaDescription($sMeta . ", " . $sValue), $oListView->UNITcollectMetaDescription(false));
+        $this->assertEquals($oView->_prepareMetaDescription($sMeta . ", " . $sValue), $oListView->_collectMetaDescription(false));
     }
 
     public function testaListPrepareMetaDescription()
@@ -1635,7 +1635,7 @@ class UtfTest extends \OxidTestCase
         $sDescription = "agentūЛитовfür     . " . $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
 
         $oView = new oxubase();
-        $this->assertEquals($sDescription, $oListView->UNITprepareMetaDescription(false));
+        $this->assertEquals($sDescription, $oListView->_prepareMetaDescription(false));
     }
 
     public function testaListPrepareMetaKeyword()
@@ -1666,7 +1666,7 @@ class UtfTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oListView->expects($this->any())->method('getCategoryTree')->will($this->returnValue($oCategoryTree));
 
-        $this->assertEquals('agentū, литовfür, parent_category, current_category, sub_category_1, nada, fedia', $oListView->UNITprepareMetaKeyword(null));
+        $this->assertEquals('agentū, литовfür, parent_category, current_category, sub_category_1, nada, fedia', $oListView->_prepareMetaKeyword(null));
     }
 
     public function testaListCollectMetaKeyword()
@@ -1683,7 +1683,7 @@ class UtfTest extends \OxidTestCase
         $oView->expects($this->once())->method('_getCatPathString')->will($this->returnValue(''));
         $oView->expects($this->once())->method('_prepareMetaDescription')->with($this->equalTo($sResult), $this->equalTo(-1), $this->equalTo(false))->will($this->returnValue($sResult));
 
-        $this->assertEquals('agentū, литовfür, test, best, nest, fest', $oView->UNITcollectMetaKeyword(array()));
+        $this->assertEquals('agentū, литовfür, test, best, nest, fest', $oView->_collectMetaKeyword(array()));
     }
 
     public function testDetailsSettingKeywordsAndDescriptionInRender()
@@ -1710,7 +1710,7 @@ class UtfTest extends \OxidTestCase
         $sDesc = "&nbsp; \" " . '\'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;";
 
         $oView = new oxubase();
-        $sResult = $oView->UNITprepareMetaDescription($sDesc);
+        $sResult = $oView->_prepareMetaDescription($sDesc);
 
         $this->assertEquals("&quot; &#039; : ! ?", $sResult);
     }
@@ -1721,7 +1721,7 @@ class UtfTest extends \OxidTestCase
         $sResult = 'agentū Л итовfür test best nest fest test';
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->UNITprepareMetaDescription($sValue));
+        $this->assertEquals($sResult, $oView->_prepareMetaDescription($sValue));
     }
 
     public function testuBasePrepareKeyword()
@@ -1732,7 +1732,7 @@ class UtfTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('aSkipTags', array('agentūЛитовfür'));
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->UNITprepareMetaKeyword($sValue));
+        $this->assertEquals($sResult, $oView->_prepareMetaKeyword($sValue));
     }
 
     public function testuBaseRemoveDuplicatedWords()
@@ -1741,7 +1741,7 @@ class UtfTest extends \OxidTestCase
         $sResult = 'agentū, лито, вfü, r, test, best, nest, fest';
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->UNITremoveDuplicatedWords($sValue));
+        $this->assertEquals($sResult, $oView->_removeDuplicatedWords($sValue));
     }
 
     public function testOxEmailIncludeImages(): void
@@ -1761,7 +1761,7 @@ class UtfTest extends \OxidTestCase
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
         $oEmail->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
-        $oEmail->UNITincludeImages(__DIR__ . "/Fixtures", null, null, $this->getConfig()->getImageDir());
+        $oEmail->_includeImages(__DIR__ . "/Fixtures", null, null, $this->getConfig()->getImageDir());
     }
 
     public function testOxEmailSetBody()

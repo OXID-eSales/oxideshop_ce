@@ -383,25 +383,25 @@ class VoucherExcludeTest extends \OxidTestCase
         // Regular
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_000');
-        $this->assertFalse($oVoucher->UNITisProductVoucher());
+        $this->assertFalse($oVoucher->_isProductVoucher());
 
         // Product
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_111');
-        $this->assertTrue($oVoucher->UNITisProductVoucher());
+        $this->assertTrue($oVoucher->_isProductVoucher());
 
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_222');
-        $this->assertTrue($oVoucher->UNITisProductVoucher());
+        $this->assertTrue($oVoucher->_isProductVoucher());
 
         // Category
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_333');
-        $this->assertFalse($oVoucher->UNITisProductVoucher());
+        $this->assertFalse($oVoucher->_isProductVoucher());
 
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_444');
-        $this->assertFalse($oVoucher->UNITisProductVoucher());
+        $this->assertFalse($oVoucher->_isProductVoucher());
     }
 
     /**
@@ -414,25 +414,25 @@ class VoucherExcludeTest extends \OxidTestCase
         // Regular
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_000');
-        $this->assertFalse($oVoucher->UNITisCategoryVoucher());
+        $this->assertFalse($oVoucher->_isCategoryVoucher());
 
         // Product
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_111');
-        $this->assertFalse($oVoucher->UNITisCategoryVoucher());
+        $this->assertFalse($oVoucher->_isCategoryVoucher());
 
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_222');
-        $this->assertFalse($oVoucher->UNITisCategoryVoucher());
+        $this->assertFalse($oVoucher->_isCategoryVoucher());
 
         // Category
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_333');
-        $this->assertTrue($oVoucher->UNITisCategoryVoucher());
+        $this->assertTrue($oVoucher->_isCategoryVoucher());
 
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->load('test_444');
-        $this->assertTrue($oVoucher->UNITisCategoryVoucher());
+        $this->assertTrue($oVoucher->_isCategoryVoucher());
     }
 
     /**
@@ -536,7 +536,7 @@ class VoucherExcludeTest extends \OxidTestCase
         $oVoucher->load('test_222');
 
         $oSeries = $oVoucher->getSerie();
-        $oDiscount = $oVoucher->UNITgetSerieDiscount();
+        $oDiscount = $oVoucher->_getSerieDiscount();
 
         $sDiscountType = $oSeries->oxvoucherseries__oxdiscounttype->value == 'percent' ? '%' : 'abs';
 
@@ -594,13 +594,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 100;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('111');
@@ -644,13 +644,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 10;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('222');
@@ -694,13 +694,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 30;
         $iTotalBasket = 551;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('333');
@@ -744,13 +744,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 40;
         $iTotalBasket = 501;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('444');
@@ -794,13 +794,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 15;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('555');
@@ -844,13 +844,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 2;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('666');
@@ -894,13 +894,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 120;
         $iTotalBasket = 551;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('777');
@@ -944,13 +944,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 140;
         $iTotalBasket = 501;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
 
         $oBasket->addVoucher('888');
@@ -988,13 +988,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 250;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1033,13 +1033,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 450;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1072,13 +1072,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetSessionBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getSessionBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 50;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1107,13 +1107,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 100;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1142,13 +1142,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 10;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1177,13 +1177,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 30;
         $iTotalBasket = 551;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1212,13 +1212,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 40;
         $iTotalBasket = 501;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1247,13 +1247,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 15;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1282,13 +1282,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 2;
         $iTotalBasket = 751;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetProductDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getProductDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1317,13 +1317,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 120;
         $iTotalBasket = 551;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 
@@ -1352,13 +1352,13 @@ class VoucherExcludeTest extends \OxidTestCase
             )
         );
 
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetOrderBasketItems());
-        $this->assertEquals($aExpItems, $oVoucher->UNITgetBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getOrderBasketItems());
+        $this->assertEquals($aExpItems, $oVoucher->_getBasketItems());
 
         $iExpDiscount = 140;
         $iTotalBasket = 501;
 
-        $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscountValue($iTotalBasket));
+        $this->assertEquals($iExpDiscount, $oVoucher->_getCategoryDiscountValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
 }

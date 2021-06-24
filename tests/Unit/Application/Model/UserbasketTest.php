@@ -159,12 +159,12 @@ class UserbasketTest extends \OxidTestCase
      * Testing if after user basket create oxcreate field contains date
      * of creation (M:1710)
      */
-    public function testInsert_creationTime()
+    public function testInsertCreationTime(): void
     {
         $iTime = 999991;
 
         $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
-        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime($iTime);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->setTime($iTime);
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->setId("_testUserBasketId");
@@ -291,7 +291,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->UNITcreateItem($sArtId, null);
+        $oItem = $oBasket->_createItem($sArtId, null);
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -307,7 +307,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->UNITcreateItem($sArtId, array(0 => '1'));
+        $oItem = $oBasket->_createItem($sArtId, array(0 => '1'));
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -321,7 +321,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->UNITcreateItem($sArtId, null, array('param' => 'test'));
+        $oItem = $oBasket->_createItem($sArtId, null, array('param' => 'test'));
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -368,8 +368,8 @@ class UserbasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxUserBasket');
 
-        $this->assertEquals(md5("123" . '|' . serialize(array(0 => '0')) . '|' . serialize(null)), $oBasket->UNITgetItemKey("123"));
-        $this->assertEquals(md5("123" . '|' . serialize(array("b")) . '|' . serialize('xxx')), $oBasket->UNITgetItemKey("123", array("b"), 'xxx'));
+        $this->assertEquals(md5("123" . '|' . serialize(array(0 => '0')) . '|' . serialize(null)), $oBasket->_getItemKey("123"));
+        $this->assertEquals(md5("123" . '|' . serialize(array("b")) . '|' . serialize('xxx')), $oBasket->_getItemKey("123", array("b"), 'xxx'));
     }
 
     public function testGetItemCount()

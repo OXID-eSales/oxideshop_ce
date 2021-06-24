@@ -69,7 +69,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $sQuery = 'from ' . $this->getArticleViewTable() . ' where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and 1 ';
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxvendorid != '_testSyncOxId'";
         $sQuery = trim(preg_replace("/\s+/", " ", $sQuery));
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
     /**
@@ -84,7 +84,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $oView = oxNew('vendor_main_ajax');
         $sQuery = 'from ' . $this->getArticleViewTable() . ' where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and 1';
         $sQuery = preg_replace("/\s+/", " ", $sQuery);
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
     /**
@@ -106,7 +106,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = '' ";
         $sQuery = trim(preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
     /**
@@ -127,7 +127,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $sQuery .= 'where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '_testVendorId' and " . $this->getArticleViewTable() . ".oxvendorid != '_testSyncOxId' ";
         $sQuery = trim(preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
     /**
@@ -147,7 +147,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = ''";
         $sQuery = trim(preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
     /**
@@ -166,7 +166,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $sQuery = "from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxvendorid = '_testVendorId' ";
         $sQuery = trim(preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->UNITgetQuery())));
+        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim($oView->_getQuery())));
     }
 
 
@@ -178,7 +178,7 @@ class VendorMainAjaxTest extends \OxidTestCase
     public function testAddFilter()
     {
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("", trim($oView->UNITaddFilter('')));
+        $this->assertEquals("", trim($oView->_addFilter('')));
     }
 
     /**
@@ -191,7 +191,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $this->setConfigParam("blVariantsSelection", false);
 
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("select * from oxarticles", trim($oView->UNITaddFilter('select * from oxarticles')));
+        $this->assertEquals("select * from oxarticles", trim($oView->_addFilter('select * from oxarticles')));
     }
 
     /**
@@ -204,7 +204,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $this->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("select * from oxarticles group by " . $this->getArticleViewTable() . ".oxid", trim($oView->UNITaddFilter('select * from oxarticles')));
+        $this->assertEquals("select * from oxarticles group by " . $this->getArticleViewTable() . ".oxid", trim($oView->_addFilter('select * from oxarticles')));
     }
 
     /**

@@ -55,7 +55,7 @@ class WidgetControlTest extends \OxidTestCase
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("getConfig"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $oControl->UNITrunLast();
+        $oControl->_runLast();
 
         $template = $this->getContainer()->get(TemplateRendererInterface::class);
 
@@ -72,7 +72,7 @@ class WidgetControlTest extends \OxidTestCase
     public function testInitializeViewObject()
     {
         $oControl = oxNew("oxWidgetControl");
-        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
+        $oView = $oControl->_initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
 
         //checking widget object
         $this->assertEquals("oxwCookieNote", $oView->getClassKey());
@@ -92,7 +92,7 @@ class WidgetControlTest extends \OxidTestCase
     public function testInitializeViewObject_hasViewChain()
     {
         $oControl = oxNew("oxWidgetControl");
-        $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
+        $oView = $oControl->_initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
 
         //checking widget object
         $this->assertEquals("oxwCookieNote", $oView->getClassKey());

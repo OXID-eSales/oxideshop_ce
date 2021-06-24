@@ -182,7 +182,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
         //*start* snippet from oxorder::getShippingSetList
         $orderMain = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Order::class);
         $orderMain->load($this->testOrderId);
-        $orderBasket = $orderMain->UNITgetOrderBasket();
+        $orderBasket = $orderMain->_getOrderBasket();
 
         $orderArticles = $orderMain->getOrderArticles();
 

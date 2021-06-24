@@ -76,6 +76,6 @@ class ExceptionErrorTest extends \OxidTestCase
         $this->getSession()->setVariable("Errors", "testValue");
 
         $oErr = $this->getProxyClass("exceptionError");
-        $this->assertEquals("testValue", $oErr->UNITgetErrors());
+        $this->assertEquals("testValue", $oErr->_getErrors());
     }
 }

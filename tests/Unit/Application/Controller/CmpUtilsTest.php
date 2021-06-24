@@ -138,7 +138,7 @@ class CmpUtilsTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("getUser"));
         $oCmp->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oCmp->UNITtoList('testList', '1126', 999, 'sel');
+        $oCmp->_toList('testList', '1126', 999, 'sel');
     }
 
     /**

@@ -53,7 +53,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array("getContentUri"));
         $oEncoder->expects($this->once())->method('getContentUri')->will($this->returnValue("contentUri"));
 
-        $this->assertEquals("contentUri", $oEncoder->UNITgetAltUri('1126', 0));
+        $this->assertEquals("contentUri", $oEncoder->_getAltUri('1126', 0));
     }
 
     /**

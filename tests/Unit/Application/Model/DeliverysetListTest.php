@@ -424,7 +424,7 @@ class DeliverysetListTest extends \OxidTestCase
             ->will($this->returnValue('SELECT 1'))
             ->with(null, '_testHomeCountryId');
 
-        $oDelSetList->UNITgetList(null, null);
+        $oDelSetList->_getList(null, null);
     }
 
     /**
@@ -443,7 +443,7 @@ class DeliverysetListTest extends \OxidTestCase
             ->with($this->_oUser, 'a7c40f6323c4bfb36.59919433');
 
         $oDelSetList->setUser($this->_oUser);
-        $oDelSetList->UNITgetList(null, null);
+        $oDelSetList->_getList(null, null);
     }
 
     /**
@@ -460,7 +460,7 @@ class DeliverysetListTest extends \OxidTestCase
             ->will($this->returnValue('SELECT 1'))
             ->with($this->_oUser, '_testHomeCountryId');
 
-        $oDelSetList->UNITgetList($this->_oUser, '_testHomeCountryId');
+        $oDelSetList->_getList($this->_oUser, '_testHomeCountryId');
     }
 
     /**
@@ -477,7 +477,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->once())->method('rewind');
 
         // testing
-        $oList->UNITgetList(null, null);
+        $oList->_getList(null, null);
     }
 
     // when user is passed by param
@@ -496,7 +496,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->once())->method('rewind');
 
         // testing
-        $oList->UNITgetList(null, null);
+        $oList->_getList(null, null);
     }
 
     // when user and country ar set
@@ -511,8 +511,8 @@ class DeliverysetListTest extends \OxidTestCase
 
         // testing
         $oList->setHomeCountry(array('_testHomeCountryId'));
-        $oList->UNITgetList($this->_oUser, '_testHomeCountryId');
-        $oList->UNITgetList($this->_oUser, '_testHomeCountryId');
+        $oList->_getList($this->_oUser, '_testHomeCountryId');
+        $oList->_getList($this->_oUser, '_testHomeCountryId');
     }
 
     // when user and country ar set
@@ -526,8 +526,8 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->exactly(2))->method('rewind');
 
         // testing
-        $oList->UNITgetList($this->_oUser, '_testHomeCountryId');
-        $oList->UNITgetList($this->_oUser, 'a7c40f6323c4bfb36.59919433');
+        $oList->_getList($this->_oUser, '_testHomeCountryId');
+        $oList->_getList($this->_oUser, 'a7c40f6323c4bfb36.59919433');
     }
 
     /**
@@ -537,7 +537,7 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetListTestingResultsNoInput()
     {
         $oList = oxNew('oxDeliverySetList');
-        $oList->UNITgetList(null, null);
+        $oList->_getList(null, null);
 
         $this->assertEquals(3, count($oList->aList));
         $this->assertArrayHasKey('oxidstandard', $oList->aList);
@@ -549,7 +549,7 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetListTestingResultsPassingOnlyCountryId()
     {
         $oList = oxNew('oxDeliverySetList');
-        $oList->UNITgetList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
+        $oList->_getList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
 
         $this->assertEquals(3, count($oList->aList));
         $this->assertArrayHasKey('oxidstandard', $oList->aList);
@@ -569,7 +569,7 @@ class DeliverysetListTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
-        $sQ = $oList->UNITgetFilterSelect(null, null);
+        $sQ = $oList->_getFilterSelect(null, null);
 
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
@@ -605,7 +605,7 @@ class DeliverysetListTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
-        $sQ = $oList->UNITgetFilterSelect($this->_oUser, '_testCoutntryId');
+        $sQ = $oList->_getFilterSelect($this->_oUser, '_testCoutntryId');
 
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
@@ -663,7 +663,7 @@ class DeliverysetListTest extends \OxidTestCase
                 $this->returnValue('_testUserId')
             );
 
-        $sQ = oxRegistry::get("oxDeliverySetList")->UNITgetFilterSelect($oUser, '_testCoutntryId');
+        $sQ = oxRegistry::get("oxDeliverySetList")->_getFilterSelect($oUser, '_testCoutntryId');
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');

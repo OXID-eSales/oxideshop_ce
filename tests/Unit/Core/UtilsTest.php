@@ -886,11 +886,11 @@ class UtilsTest extends \OxidTestCase
         $aParams = array('string' => 'someString', 'bool1' => false, 'bool2' => true, 'int' => 1234, 'float' => 123.45, 'negfloat' => -123.45);
 
         $sReturnURL = "http://www.url.com?string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals($sReturnURL, $oUtils->UNITaddUrlParameters($sURL, $aParams));
+        $this->assertEquals($sReturnURL, $oUtils->_addUrlParameters($sURL, $aParams));
 
         $sURL = 'http://www.url.com/index.php?cl=aaa';
         $sReturnURL = "http://www.url.com/index.php?cl=aaa&string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals($sReturnURL, $oUtils->UNITaddUrlParameters($sURL, $aParams));
+        $this->assertEquals($sReturnURL, $oUtils->_addUrlParameters($sURL, $aParams));
     }
 
     public function testOxMimeContentType()
@@ -1234,7 +1234,7 @@ class UtilsTest extends \OxidTestCase
             fclose($hFile);
 
             $oUtils = oxNew('oxUtils');
-            $this->assertEquals("test", $oUtils->UNITreadFile($sFilePath));
+            $this->assertEquals("test", $oUtils->_readFile($sFilePath));
 
             return;
         }
@@ -1255,7 +1255,7 @@ class UtilsTest extends \OxidTestCase
             fclose($hFile);
 
             $oUtils = oxNew('oxUtils');
-            $this->assertEquals("test123", $oUtils->UNITincludeFile($sFilePath));
+            $this->assertEquals("test123", $oUtils->_includeFile($sFilePath));
 
             return;
         }
@@ -1278,8 +1278,8 @@ class UtilsTest extends \OxidTestCase
                 ["serialize" => false]
             );
 
-        $this->assertEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));
-        $this->assertNotEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));
+        $this->assertEquals(serialize(123), $oUtils->_processCache(123, 123));
+        $this->assertNotEquals(serialize(123), $oUtils->_processCache(123, 123));
     }
 
     /**

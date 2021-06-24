@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Facts\Facts;
-use oxSystemComponentException;
 
 class Core
 {
@@ -44,25 +44,19 @@ class Core
      * Only used for convenience in UNIT tests by doing so we avoid
      * writing extended classes for testing protected or private methods
      *
-     * @param string $sMethod Methods name
-     * @param array  $aArgs   Argument array
-     *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
-     *
-     * @return string
+     * @param string $method Methods name
+     * @param array  $arguments Argument array
+     * @return false|mixed
+     * @throws SystemComponentException
      */
-    public function __call($sMethod, $aArgs)
+    public function __call($method, $arguments)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
-            }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
-            }
+        if (defined('OXID_PHP_UNIT') && method_exists($this, $method)) {
+            return call_user_func_array([& $this, $method], $arguments);
         }
-
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new SystemComponentException(
+            "Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
+        );
     }
 
     /**

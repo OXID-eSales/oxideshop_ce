@@ -58,7 +58,7 @@ class AttributeOrderAjaxTest extends \OxidTestCase
         $oView = oxNew('attribute_order_ajax');
         $sViewTable = $this->getVieTableName();
 
-        $this->assertEquals("from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->UNITgetQuery()));
+        $this->assertEquals("from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->_getQuery()));
     }
 
     /**
@@ -69,7 +69,7 @@ class AttributeOrderAjaxTest extends \OxidTestCase
     public function testGetSorting()
     {
         $oView = oxNew('attribute_order_ajax');
-        $this->assertEquals("order by oxcategory2attribute.oxsort", trim($oView->UNITgetSorting()));
+        $this->assertEquals("order by oxcategory2attribute.oxsort", trim($oView->_getSorting()));
     }
 
     /**

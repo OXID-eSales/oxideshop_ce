@@ -79,7 +79,7 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         // testing..
         $oView = oxNew('Tools_List');
-        $this->assertTrue($oView->UNITprepareSQL($sSQL, $iSQLlen));
+        $this->assertTrue($oView->_prepareSQL($sSQL, $iSQLlen));
         $this->assertTrue(isset($oView->aSQLs));
     }
 

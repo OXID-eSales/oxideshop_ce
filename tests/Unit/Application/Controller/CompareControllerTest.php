@@ -253,11 +253,11 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $cl = oxTestModules::addFunction('compare', '_getArticlesPerPage', '{return $this->_iArticlesPerPage;}');
         $oCompare = new $cl();
 
-        $oCompare->UNITsetArticlesPerPage(5);
+        $oCompare->_setArticlesPerPage(5);
         $this->assertEquals(5, $oCompare->_getArticlesPerPage());
-        $oCompare->UNITsetArticlesPerPage(50);
+        $oCompare->_setArticlesPerPage(50);
         $this->assertEquals(50, $oCompare->_getArticlesPerPage());
-        $oCompare->UNITsetArticlesPerPage(-50);
+        $oCompare->_setArticlesPerPage(-50);
         $this->assertEquals(-50, $oCompare->_getArticlesPerPage());
     }
 
@@ -293,7 +293,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oArtList = oxNew('oxArticleList');
         $oArtList->loadIds(array_keys($aItems));
 
-        $oResList = $oSubj->UNITchangeArtListOrder($aItems, $oArtList);
+        $oResList = $oSubj->_changeArtListOrder($aItems, $oArtList);
 
         $this->assertArrayHasKey("1126", $oResList);
         $this->assertArrayNotHasKey("nonExistingVal", $oResList);

@@ -524,7 +524,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->UNITloadVarsFromDB($sShopId, array($sVar));
+        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
 
         $this->assertEquals(($sVal == 'true' || $sVal == '1'), $oConfig->getConfigParam($sVar));
     }
@@ -542,7 +542,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->UNITloadVarsFromDB($sShopId, array($sVar));
+        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
 
         $this->assertEquals(unserialize($sVal), $oConfig->getConfigParam($sVar));
     }
@@ -560,7 +560,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->UNITloadVarsFromDB($sShopId, array($sVar));
+        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
 
         $this->assertEquals($sVal, $oConfig->getConfigParam($sVar));
     }
@@ -572,7 +572,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         $sShopId = $oConfig->getBaseShopId();
 
-        $oConfig->UNITloadVarsFromDB($sShopId, array(time()));
+        $oConfig->_loadVarsFromDB($sShopId, array(time()));
 
         $this->assertNull($oConfig->getConfigParam('nonExistingParameter'));
     }

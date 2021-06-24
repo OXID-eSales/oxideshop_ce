@@ -111,7 +111,7 @@ final class UtilsPicTest extends \OxidTestCase
         $config = $this->createConfiguredMock(Config::class, ['isDemoShop' => true]);
         Registry::set(Config::class, $config);
 
-        $result = (new UtilsPic())->UNITdeletePicture($this->testPicture, __DIR__);
+        $result = (new UtilsPic())->_deletePicture($this->testPicture, __DIR__);
 
         $this->assertFileExists($testPicturePath);
         $this->assertFalse($result);
@@ -122,7 +122,7 @@ final class UtilsPicTest extends \OxidTestCase
         $placeholderPicturePath = Path::join(__DIR__, $this->testPicturePlaceholder);
         touch($placeholderPicturePath);
 
-        $result = (new UtilsPic())->UNITdeletePicture($this->testPicturePlaceholder, __DIR__);
+        $result = (new UtilsPic())->_deletePicture($this->testPicturePlaceholder, __DIR__);
 
         $this->assertFileExists($placeholderPicturePath);
         $this->assertFalse($result);
@@ -133,7 +133,7 @@ final class UtilsPicTest extends \OxidTestCase
         $placeholderPictureIcoPath = Path::join(__DIR__, $this->testPicturePlaceholderIco);
         touch($placeholderPictureIcoPath);
 
-        $result = (new UtilsPic())->UNITdeletePicture($this->testPicturePlaceholderIco, __DIR__);
+        $result = (new UtilsPic())->_deletePicture($this->testPicturePlaceholderIco, __DIR__);
 
         $this->assertFileExists($placeholderPictureIcoPath);
         $this->assertFalse($result);
@@ -143,7 +143,7 @@ final class UtilsPicTest extends \OxidTestCase
     {
         $nonExistingDirectory = Path::join('non', 'existing', 'directory');
 
-        $result = (new UtilsPic())->UNITdeletePicture('some-filename.jpg', $nonExistingDirectory);
+        $result = (new UtilsPic())->_deletePicture('some-filename.jpg', $nonExistingDirectory);
 
         $this->assertFalse($result);
     }
@@ -154,7 +154,7 @@ final class UtilsPicTest extends \OxidTestCase
         $testPicturePath = Path::join($masterPicturesPath, $this->testPicture);
         touch($testPicturePath);
 
-        $result = (new UtilsPic())->UNITdeletePicture($this->testPicture, $masterPicturesPath);
+        $result = (new UtilsPic())->_deletePicture($this->testPicture, $masterPicturesPath);
 
         $this->assertFileDoesNotExist($testPicturePath);
         $this->assertTrue($result);
@@ -187,7 +187,7 @@ final class UtilsPicTest extends \OxidTestCase
         $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->method('fetchIsImageDeletable')->willReturn($response);
 
-        $this->assertEquals($expectedResult, $utilsPicMock->UNITisPicDeletable($filename, 'test', 'file'));
+        $this->assertEquals($expectedResult, $utilsPicMock->_isPicDeletable($filename, 'test', 'file'));
     }
 
     /**
@@ -198,7 +198,7 @@ final class UtilsPicTest extends \OxidTestCase
         $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->expects($this->never())->method('fetchIsImageDeletable');
 
-        $this->assertEquals(false, $utilsPicMock->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
+        $this->assertEquals(false, $utilsPicMock->_isPicDeletable('nopic.jpg', 'test', 'file'));
     }
 
     /**
@@ -309,7 +309,7 @@ final class UtilsPicTest extends \OxidTestCase
         $iImageOriginalWidth = $aImageSizeOriginal[0];
         $iImageOriginalHeight = $aImageSizeOriginal[1];
         //actual test
-        if (!($myUtils->UNITresizeGif($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $iImageOriginalWidth, $iImageOriginalHeight, $gdver, false))) {
+        if (!($myUtils->_resizeGif($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $iImageOriginalWidth, $iImageOriginalHeight, $gdver, false))) {
             $this->fail("Failed to call resizeGIF()");
         }
         if (!is_file($sDir . $sTestImageFileResized)) {

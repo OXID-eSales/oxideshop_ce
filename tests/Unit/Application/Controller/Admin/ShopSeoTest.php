@@ -66,7 +66,7 @@ class ShopSeoTest extends \OxidTestCase
         // testing..
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sActSeoObject", $sObjectId);
-        $oView->UNITloadActiveUrl($iShopId);
+        $oView->_loadActiveUrl($iShopId);
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -76,7 +76,7 @@ class ShopSeoTest extends \OxidTestCase
 
         //
         $oView->setNonPublicVar("_sActSeoObject", null);
-        $oView->UNITloadActiveUrl($iShopId);
+        $oView->_loadActiveUrl($iShopId);
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -139,7 +139,7 @@ class ShopSeoTest extends \OxidTestCase
                 ['seourl2']
             );
 
-        $oView->UNITprocessUrls($aUrls);
+        $oView->_processUrls($aUrls);
     }
 
     /**
@@ -151,7 +151,7 @@ class ShopSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_Seo');
-        $this->assertEquals("&amp;", $oView->UNITcleanupUrl("&amp;&amp;&&"));
+        $this->assertEquals("&amp;", $oView->_cleanupUrl("&amp;&amp;&&"));
     }
 
     /**

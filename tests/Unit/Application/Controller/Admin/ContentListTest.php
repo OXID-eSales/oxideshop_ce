@@ -51,7 +51,7 @@ class ContentListTest extends \OxidTestCase
 
         // defining parameters
         $oView = oxNew('Content_List');
-        $sResQ = $oView->UNITprepareWhereQuery(array(), "");
+        $sResQ = $oView->_prepareWhereQuery(array(), "");
 
         $sQ = " and {$sViewName}.oxfolder = 'testFolder'";
 

@@ -42,7 +42,7 @@ class CategoryUpdateTest extends \OxidTestCase
         oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
         $oView = oxNew('Category_Update');
-        $this->assertTrue($oView->UNITgetCategoryList() instanceof CategoryList);
+        $this->assertTrue($oView->_getCategoryList() instanceof CategoryList);
     }
 
     /**

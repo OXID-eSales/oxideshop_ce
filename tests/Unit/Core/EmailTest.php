@@ -458,7 +458,7 @@ final class EmailTest extends \OxidTestCase
         $email = oxNew('oxEmail');
         $email->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
 
-        $email->UNITincludeImages(
+        $email->_includeImages(
             $myConfig->getImageDir(),
             $myConfig->getImageUrl(isAdmin()),
             $myConfig->getPictureUrl(null),
@@ -623,21 +623,21 @@ final class EmailTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $email = oxNew("oxemail");
-        $this->assertTrue($email->UNITgetUseInlineImages());
+        $this->assertTrue($email->_getUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", false);
         $email = oxNew("oxemail");
-        $this->assertFalse($email->UNITgetUseInlineImages());
+        $this->assertFalse($email->_getUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
         $email = oxNew("oxemail");
-        $this->assertTrue($email->UNITgetUseInlineImages());
+        $this->assertTrue($email->_getUseInlineImages());
     }
 
     public function testSetGetUseInlineImages()
     {
         $this->email->setUseInlineImages(true);
-        $this->assertTrue($this->email->UNITgetUseInlineImages());
+        $this->assertTrue($this->email->_getUseInlineImages());
     }
 
     public function testAddAttachment()
@@ -708,21 +708,21 @@ final class EmailTest extends \OxidTestCase
     public function testAddUserInfoOrderEmail()
     {
         $order = oxNew("oxorder");
-        $this->assertEquals($order, $this->email->UNITaddUserInfoOrderEmail($order));
+        $this->assertEquals($order, $this->email->_addUserInfoOrderEmail($order));
     }
 
     public function testAddUserRegisterEmail()
     {
-        $this->assertEquals($this->user, $this->email->UNITaddUserRegisterEmail($this->user));
+        $this->assertEquals($this->user, $this->email->_addUserRegisterEmail($this->user));
     }
 
     public function testAddForgotPwdEmail()
     {
-        $this->assertEquals($this->shop, $this->email->UNITaddForgotPwdEmail($this->shop));
+        $this->assertEquals($this->shop, $this->email->_addForgotPwdEmail($this->shop));
     }
     public function testAddNewsletterDBOptInMail()
     {
-        $this->assertEquals($this->user, $this->email->UNITaddNewsletterDbOptInMail($this->user));
+        $this->assertEquals($this->user, $this->email->_addNewsletterDbOptInMail($this->user));
     }
 
     public function testClearMailer()
@@ -731,7 +731,7 @@ final class EmailTest extends \OxidTestCase
         $this->email->setReplyTo('testuser@testuser.com', 'testUser');
         $this->email->ErrorInfo = 'testErrorMessage';
 
-        $this->email->UNITclearMailer();
+        $this->email->_clearMailer();
 
         $this->assertEquals(array(), $this->email->getRecipient());
         $this->assertEquals(array(), $this->email->getReplyTo());
@@ -746,7 +746,7 @@ final class EmailTest extends \OxidTestCase
         $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
         //with no params must get default shop values
-        $email->UNITsetMailParams();
+        $email->_setMailParams();
 
         $this->assertEquals('orderemail@orderemail.nl', $email->getFrom());
         $this->assertEquals('testShopName', $email->getFromName());
@@ -767,7 +767,7 @@ final class EmailTest extends \OxidTestCase
         $oShop->oxshops__oxsmtpuser = new oxField('testSmtpUser2', oxField::T_RAW);
         $oShop->oxshops__oxsmtppwd = new oxField('testSmtpPassword2', oxField::T_RAW);
 
-        $email->UNITsetMailParams($oShop);
+        $email->_setMailParams($oShop);
 
         $this->assertEquals('orderemail2@orderemail2.nl', $email->getFrom());
         $this->assertEquals('testShopName2', $email->getFromName());
@@ -779,21 +779,21 @@ final class EmailTest extends \OxidTestCase
 
     public function testGetShopWhenShopIsNotSet()
     {
-        $this->assertEquals($this->getConfig()->getActiveShop(), $this->email->UNITgetShop());
+        $this->assertEquals($this->getConfig()->getActiveShop(), $this->email->_getShop());
     }
 
     public function testGetShopWithShopId()
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->email->UNITgetShop(null, $sShopId);
+        $oShop = $this->email->_getShop(null, $sShopId);
         $this->assertEquals($sShopId, $oShop->getShopId());
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oShop->getLanguage());
     }
 
     public function testGetShopWithLanguageId()
     {
-        $oShop = $this->email->UNITgetShop(1);
+        $oShop = $this->email->_getShop(1);
         $this->assertEquals(1, $oShop->getLanguage());
         $this->assertEquals($this->getConfig()->getShopId(), $oShop->getShopId());
     }
@@ -804,15 +804,15 @@ final class EmailTest extends \OxidTestCase
 
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->email->UNITgetShop(1, $sShopId);
+        $oShop = $this->email->_getShop(1, $sShopId);
         $this->assertEquals(1, $oShop->getLanguage());
         $this->assertEquals($sShopId, $oShop->getShopId());
-        $this->assertEquals($this->shop, $this->email->UNITgetShop());
+        $this->assertEquals($this->shop, $this->email->_getShop());
     }
 
     public function testSetSmtpAuthInfo()
     {
-        $this->email->UNITsetSmtpAuthInfo('testUserName', 'testPassword');
+        $this->email->_setSmtpAuthInfo('testUserName', 'testPassword');
 
         $this->assertEquals('testUserName', $this->email->Username);
         $this->assertEquals('testPassword', $this->email->Password);
@@ -820,7 +820,7 @@ final class EmailTest extends \OxidTestCase
 
     public function testSetSmtpDebug()
     {
-        $this->email->UNITsetSmtpDebug(true);
+        $this->email->_setSmtpDebug(true);
         $this->assertTrue($this->email->SMTPDebug);
     }
 
@@ -828,7 +828,7 @@ final class EmailTest extends \OxidTestCase
     {
         $this->email->setBody('testbody 55 €'); //with euro sign
         $this->email->setAltBody('testaltbody 55 €'); //with euro sign
-        $this->email->UNITmakeOutputProcessing();
+        $this->email->_makeOutputProcessing();
 
         $this->assertEquals('testbody 55 €', $this->email->getBody());
         $this->assertEquals('testaltbody 55 €', $this->email->getAltBody());
@@ -860,19 +860,19 @@ final class EmailTest extends \OxidTestCase
     public function testGetNewsSubsLink()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
-        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX'));
+        $this->assertEquals($sUrl, $this->email->_getNewsSubsLink('XXXX'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX'));
+        $this->assertEquals($sUrl, $this->email->_getNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
-        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertEquals($sUrl, $this->email->_getNewsSubsLink('XXXX', 'AAAA'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertEquals($sUrl, $this->email->_getNewsSubsLink('XXXX', 'AAAA'));
     }
 
     public function testSetSmtpProtocol()
@@ -882,9 +882,9 @@ final class EmailTest extends \OxidTestCase
             ->method('set')
             ->withConsecutive(['SMTPSecure', 'ssl'], ['SMTPSecure', 'tls']);
 
-        $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('ssl://hostname:23'));
-        $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('tls://hostname:23'));
-        $this->assertEquals("ssx://hostname:23", $email->UNITsetSmtpProtocol('ssx://hostname:23'));
+        $this->assertEquals("hostname:23", $email->_setSmtpProtocol('ssl://hostname:23'));
+        $this->assertEquals("hostname:23", $email->_setSmtpProtocol('tls://hostname:23'));
+        $this->assertEquals("ssx://hostname:23", $email->_setSmtpProtocol('ssx://hostname:23'));
     }
 
     public function testSendOrderEmailToOwnerCorrectSenderReceiver()

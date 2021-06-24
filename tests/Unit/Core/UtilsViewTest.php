@@ -379,8 +379,8 @@ class UtilsViewTest extends \OxidTestCase
 
         $oUtilsView = oxNew('oxUtilsView');
         Registry::set(Config::class, $config);
-        $oUtilsView->UNITfillCommonSmartyProperties($smarty);
-        $oUtilsView->UNITsmartyCompileCheck($smarty);
+        $oUtilsView->_fillCommonSmartyProperties($smarty);
+        $oUtilsView->_smartyCompileCheck($smarty);
 
         foreach ($smartyCheckArray as $varName => $varValue) {
             $this->assertTrue(isset($smarty->$varName));
@@ -428,8 +428,8 @@ class UtilsViewTest extends \OxidTestCase
 
         $oUtilsView = oxNew('oxUtilsView');
         Registry::set(Config::class, $config);
-        $oUtilsView->UNITfillCommonSmartyProperties($smarty);
-        $oUtilsView->UNITsmartyCompileCheck($smarty);
+        $oUtilsView->_fillCommonSmartyProperties($smarty);
+        $oUtilsView->_smartyCompileCheck($smarty);
 
         foreach ($smartyCheckArray as $sVarName => $sVarValue) {
             $this->assertTrue(isset($smarty->$sVarName));
@@ -470,8 +470,8 @@ class UtilsViewTest extends \OxidTestCase
 
         $oUtilsView = oxNew('oxUtilsView');
         Registry::set(Config::class, $config);
-        $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
-        $oUtilsView->UNITsmartyCompileCheck($oSmarty);
+        $oUtilsView->_fillCommonSmartyProperties($oSmarty);
+        $oUtilsView->_smartyCompileCheck($oSmarty);
 
         foreach ($aCheck as $sVarName => $sVarValue) {
             $this->assertTrue(isset($oSmarty->$sVarName));
@@ -516,8 +516,8 @@ class UtilsViewTest extends \OxidTestCase
 
         $oUtilsView = oxNew('oxUtilsView');
         Registry::set(Config::class, $config);
-        $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
-        $oUtilsView->UNITsmartyCompileCheck($oSmarty);
+        $oUtilsView->_fillCommonSmartyProperties($oSmarty);
+        $oUtilsView->_smartyCompileCheck($oSmarty);
 
         foreach ($aCheck as $sVarName => $sVarValue) {
             $this->assertTrue(isset($oSmarty->$sVarName));
@@ -570,15 +570,15 @@ class UtilsViewTest extends \OxidTestCase
 
         $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
         Registry::set(Config::class, $config);
-        $utilsView->UNITfillCommonSmartyProperties($smarty);
-        $utilsView->UNITsmartyCompileCheck($smarty);
+        $utilsView->_fillCommonSmartyProperties($smarty);
+        $utilsView->_smartyCompileCheck($smarty);
 
         $smarty = new \smarty();
         $mockedConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isProductiveMode']);
         $mockedConfig->expects($this->any())->method('isProductiveMode')->will($this->returnValue(true));
         $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
         Registry::set(Config::class, $mockedConfig);
-        $utilsView->UNITsmartyCompileCheck($smarty);
+        $utilsView->_smartyCompileCheck($smarty);
         $this->assertFalse($smarty->compile_check);
     }
 
@@ -608,7 +608,7 @@ class UtilsViewTest extends \OxidTestCase
         oxTestModules::addFunction('oxModulelist', 'getActiveModuleInfo', '{ return true; }');
         $oUV = $this->getProxyClass('oxUtilsView');
 
-        $this->assertTrue($oUV->UNITgetActiveModuleInfo());
+        $this->assertTrue($oUV->_getActiveModuleInfo());
     }
 
     /**

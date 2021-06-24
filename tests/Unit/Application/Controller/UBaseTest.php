@@ -103,7 +103,7 @@ class UBaseTest extends \OxidTestCase
             $sCmpName          => 1
         );
         $oView = oxNew('oxUBase');
-        $this->assertEquals($aComponentNames, $oView->UNITgetComponentNames());
+        $this->assertEquals($aComponentNames, $oView->_getComponentNames());
     }
 
     /**
@@ -426,7 +426,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->setConfigParam('aNrofSearchArticles', 'xxx');
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(10, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -443,7 +443,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 200);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -464,7 +464,7 @@ class UBaseTest extends \OxidTestCase
         $this->setSessionParam("_artperpage", 20);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $this->assertEquals(10, $config->getConfigParam('iNrofCatArticles'));
         $this->assertEquals(array(10), $config->getConfigParam('aNrofCatArticles'));
@@ -480,7 +480,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 30);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -500,7 +500,7 @@ class UBaseTest extends \OxidTestCase
         $this->setSessionParam("_artperpage", 26);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -521,7 +521,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->setConfigParam('aNrofCatArticles', null);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -544,7 +544,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', null);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(2, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -564,7 +564,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 2);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(2, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -584,7 +584,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 2);
 
         $oView = oxNew('oxubase');
-        $oView->UNITsetNrOfArtPerPage();
+        $oView->_setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(10, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -637,7 +637,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = '<div>Test  <b>5er</b>  Edelstahl-Messerset.&nbsp;</div>';
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc);
+        $sResult = $oView->_prepareMetaDescription($sDesc);
 
         $this->assertEquals("Test 5er Edelstahl-Messerset.", $sResult);
     }
@@ -650,7 +650,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = '<div>Test  5er  Edelstahl-Messerset.&nbsp;';
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc, 12, false);
+        $sResult = $oView->_prepareMetaDescription($sDesc, 12, false);
 
         $this->assertEquals("Test 5er Ede", $sResult);
     }
@@ -663,7 +663,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "&nbsp; \" ' : ! ? \n \r \t 	    ;";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc);
+        $sResult = $oView->_prepareMetaDescription($sDesc);
 
         $this->assertEquals("&quot; &#039; : ! ?", $sResult);
     }
@@ -677,7 +677,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "Lady Gaga, Pokerface.";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc);
+        $sResult = $oView->_prepareMetaDescription($sDesc);
 
         $this->assertEquals("Lady Gaga, Pokerface.", $sResult);
     }
@@ -690,7 +690,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "aa bb aa cc aa";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc, -1, true);
+        $sResult = $oView->_prepareMetaDescription($sDesc, -1, true);
 
         $this->assertEquals("aa, bb, cc", $sResult);
     }
@@ -703,7 +703,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "aa bb aa cc aa";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaDescription($sDesc, -1, false);
+        $sResult = $oView->_prepareMetaDescription($sDesc, -1, false);
 
         $this->assertEquals("aa bb aa cc aa", $sResult);
     }
@@ -728,7 +728,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = '<div>aaa  <b>bbb</b> ,ccc.&nbsp;</div>';
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaKeyword($sDesc);
+        $sResult = $oView->_prepareMetaKeyword($sDesc);
 
         $this->assertEquals("aaa, bbb, ccc", $sResult);
     }
@@ -744,7 +744,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = 'aaa bbb ccc ddd';
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaKeyword($sDesc);
+        $sResult = $oView->_prepareMetaKeyword($sDesc);
 
         $this->assertEquals("aaa, bbb, ddd", $sResult);
     }
@@ -758,7 +758,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "Lady Gaga, Gaga, Lady, Pokerface.";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaKeyword($sDesc);
+        $sResult = $oView->_prepareMetaKeyword($sDesc);
 
         $this->assertEquals("lady, gaga, pokerface", $sResult);
     }
@@ -773,7 +773,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = "Lady Gaga, Pokerface realy realy...";
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITprepareMetaKeyword($sDesc, false);
+        $sResult = $oView->_prepareMetaKeyword($sDesc, false);
 
         $this->assertEquals("Lady Gaga, Pokerface realy realy...", $sResult);
     }
@@ -789,7 +789,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxubase');
         foreach ($aIn as $sIn => $sOut) {
-            $this->assertEquals($sOut, $oView->UNITremoveDuplicatedWords($sIn));
+            $this->assertEquals($sOut, $oView->_removeDuplicatedWords($sIn));
         }
     }
 
@@ -801,7 +801,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = array('aaa', 'ccc', 'bbb', 'ccc', 'ddd', 'ccc');
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->UNITremoveDuplicatedWords($sDesc);
+        $sResult = $oView->_removeDuplicatedWords($sDesc);
 
         $this->assertEquals("aaa, ccc, bbb, ddd", $sResult);
     }
@@ -929,7 +929,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('oxloadid', 'testcontent');
         $this->setRequestParameter('pgNr', 100);
 
-        $this->assertEquals('cl=testclass&amp;fnc=testfnc&amp;page=testpage&amp;tpl=testtpl.tpl&amp;oxloadid=testcontent&amp;pgNr=100', $oView->UNITgetSeoRequestParams());
+        $this->assertEquals('cl=testclass&amp;fnc=testfnc&amp;page=testpage&amp;tpl=testtpl.tpl&amp;oxloadid=testcontent&amp;pgNr=100', $oView->_getSeoRequestParams());
     }
 
     public function testGetSimilarRecommListIds()
@@ -1253,7 +1253,7 @@ class UBaseTest extends \OxidTestCase
         $sExpUrl = 'cl=testclass&amp;fnc=testfunc&amp;cnid=catid&amp;mnid=manId&amp;anid=artid&amp;page=2&amp;tpl=test&amp;oxloadid=test&amp;pgNr=2' .
             '&amp;searchparam=test&amp;searchcnid=searchcat&amp;searchvendor=searchven' .
             '&amp;searchmanufacturer=searchman&amp;searchrecomm=searchrec&amp;recommid=recid';
-        $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams());
+        $this->assertEquals($sExpUrl, $oView->_getRequestParams());
     }
 
     public function testGetRequestParamsSkipFnc()
@@ -1265,7 +1265,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'manId');
 
         $sExpUrl = 'cl=testclass&amp;cnid=catid&amp;mnid=manId';
-        $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams());
+        $this->assertEquals($sExpUrl, $oView->_getRequestParams());
     }
 
     public function testGetRequestParamsSkipFnc2()
@@ -1277,7 +1277,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'manId');
 
         $sExpUrl = 'cl=testclass&amp;cnid=catid&amp;mnid=manId';
-        $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams());
+        $this->assertEquals($sExpUrl, $oView->_getRequestParams());
     }
 
     public function testGetRequestParamsWithoutPageNr()
@@ -1288,7 +1288,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('pgNr', '2');
 
         $sExpUrl = 'cl=testclass&amp;cnid=catid';
-        $this->assertEquals($sExpUrl, $oView->UNITgetRequestParams(false));
+        $this->assertEquals($sExpUrl, $oView->_getRequestParams(false));
     }
 
     public function testNoIndex()
@@ -1352,14 +1352,14 @@ class UBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter('fnc', 'something');
         $oUBase = oxNew('oxubase');
-        $this->assertFalse($oUBase->UNITcanRedirect());
+        $this->assertFalse($oUBase->_canRedirect());
     }
 
     public function testCanRedirectTrue()
     {
         $this->setRequestParameter('cl', 'details');
         $oUBase = oxNew('oxubase');
-        $this->assertTrue($oUBase->UNITcanRedirect());
+        $this->assertTrue($oUBase->_canRedirect());
     }
 
     public function testProcessRequestCanRedirect()
@@ -1374,7 +1374,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         try {
-            $oUBase->UNITprocessRequest();
+            $oUBase->_processRequest();
         } catch (Exception $oEx) {
             $this->assertEquals($this->getConfig()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test');
 
@@ -1387,7 +1387,7 @@ class UBaseTest extends \OxidTestCase
     public function testForceNoIndex()
     {
         $oView = oxNew('oxubase');
-        $oView->UNITforceNoIndex();
+        $oView->_forceNoIndex();
         $this->assertEquals(2, $oView->noIndex());
     }
 
@@ -1406,7 +1406,7 @@ class UBaseTest extends \OxidTestCase
         $this->setConfigParam('blSeoLogging', 1);
 
         try {
-            $oUBase->UNITprocessRequest();
+            $oUBase->_processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test');
@@ -1434,7 +1434,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->once())->method('noIndex')->will($this->returnValue(VIEW_INDEXSTATE_NOINDEXFOLLOW));
 
         try {
-            $oUBase->UNITprocessRequest();
+            $oUBase->_processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test');
@@ -1467,7 +1467,7 @@ class UBaseTest extends \OxidTestCase
         $userBase->expects($this->once())->method('_forceNoIndex');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $userBase->UNITprocessRequest();
+        $userBase->_processRequest();
 
         $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . '1' . $sLangId);
@@ -1496,7 +1496,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->once())->method('_forceNoIndex');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $oUBase->UNITprocessRequest();
+        $oUBase->_processRequest();
 
         $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $shopId = $this->getShopId();
@@ -1588,23 +1588,23 @@ class UBaseTest extends \OxidTestCase
     public function testAddPageNrParamFirstPage()
     {
         $oUBase = $this->getProxyClass('oxubase');
-        $this->assertEquals("aaa", $oUBase->UNITaddPageNrParam("aaa", 0));
+        $this->assertEquals("aaa", $oUBase->_addPageNrParam("aaa", 0));
 
-        $this->assertEquals("aaa?bb", $oUBase->UNITaddPageNrParam("aaa?bb&amp;pgNr=2", 0));
-        $this->assertEquals("aaa?param=value", $oUBase->UNITaddPageNrParam("aaa?pgNr=11&amp;param=value", 0));
-        $this->assertEquals("aaa?", $oUBase->UNITaddPageNrParam("aaa?pgNr=11", 0));
-        $this->assertEquals("aaa?bb&amp;param=value", $oUBase->UNITaddPageNrParam("aaa?bb&amp;pgNr=99&amp;param=value", 0));
+        $this->assertEquals("aaa?bb", $oUBase->_addPageNrParam("aaa?bb&amp;pgNr=2", 0));
+        $this->assertEquals("aaa?param=value", $oUBase->_addPageNrParam("aaa?pgNr=11&amp;param=value", 0));
+        $this->assertEquals("aaa?", $oUBase->_addPageNrParam("aaa?pgNr=11", 0));
+        $this->assertEquals("aaa?bb&amp;param=value", $oUBase->_addPageNrParam("aaa?bb&amp;pgNr=99&amp;param=value", 0));
     }
 
     public function testAddPageNrParam()
     {
         $oUBase = $this->getProxyClass('oxubase');
 
-        $this->assertEquals("aaa?bb&amp;pgNr=2", $oUBase->UNITaddPageNrParam("aaa?bb", 2));
+        $this->assertEquals("aaa?bb&amp;pgNr=2", $oUBase->_addPageNrParam("aaa?bb", 2));
 
-        $this->assertEquals("aaa?bb&amp;pgNr=1", $oUBase->UNITaddPageNrParam("aaa?bb&amp;pgNr=2", 1));
-        $this->assertEquals("aaa?pgNr=11&amp;param=value", $oUBase->UNITaddPageNrParam("aaa?pgNr=13&amp;param=value", 11));
-        $this->assertEquals("aaa?bb&amp;pgNr=919&amp;param=value", $oUBase->UNITaddPageNrParam("aaa?bb&amp;pgNr=155&amp;param=value", 919));
+        $this->assertEquals("aaa?bb&amp;pgNr=1", $oUBase->_addPageNrParam("aaa?bb&amp;pgNr=2", 1));
+        $this->assertEquals("aaa?pgNr=11&amp;param=value", $oUBase->_addPageNrParam("aaa?pgNr=13&amp;param=value", 11));
+        $this->assertEquals("aaa?bb&amp;pgNr=919&amp;param=value", $oUBase->_addPageNrParam("aaa?bb&amp;pgNr=155&amp;param=value", 919));
     }
 
     public function testSetGetRootVendor()
@@ -2385,7 +2385,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->once())->method('_forceNoIndex');
 
         try {
-            $oUBase->UNITprocessRequest();
+            $oUBase->_processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test: ' . $oEx->getMessage());

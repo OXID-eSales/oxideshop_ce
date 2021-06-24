@@ -55,7 +55,7 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $oView = oxNew('discount_articles_ajax');
         $sQuery = "from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxarticles'";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**
@@ -78,7 +78,7 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sQuery .= " where $sO2CView.oxcatnid = '_testOxid' and $sArticleTable.oxid is not null  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**
@@ -97,7 +97,7 @@ class DiscountArticlesAjaxTest extends \OxidTestCase
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxarticles'  )";
-        $this->assertEquals($sQuery, trim($oView->UNITgetQuery()));
+        $this->assertEquals($sQuery, trim($oView->_getQuery()));
     }
 
     /**

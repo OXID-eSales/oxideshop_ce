@@ -629,39 +629,39 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass('order');
 
         // set no param
-        $res = $oOrder->UNITgetNextStep(null);
+        $res = $oOrder->_getNextStep(null);
         $this->assertEquals("thankyou", $res);
 
         // email error
-        $res = $oOrder->UNITgetNextStep(0);
+        $res = $oOrder->_getNextStep(0);
         $this->assertEquals("thankyou?mailerror=1", $res);
 
         // if success
-        $res = $oOrder->UNITgetNextStep(1);
+        $res = $oOrder->_getNextStep(1);
         $this->assertEquals("thankyou", $res);
 
         // no authentication
-        $res = $oOrder->UNITgetNextStep(2);
+        $res = $oOrder->_getNextStep(2);
         $this->assertEquals("payment?payerror=2", $res);
 
         // reload blocker activ
-        $res = $oOrder->UNITgetNextStep(3);
+        $res = $oOrder->_getNextStep(3);
         $this->assertEquals("thankyou", $res);
 
         // reload blocker activ
-        $res = $oOrder->UNITgetNextStep(8);
+        $res = $oOrder->_getNextStep(8);
         $this->assertEquals("order", $res);
 
         // other payment error
-        $res = $oOrder->UNITgetNextStep(6);
+        $res = $oOrder->_getNextStep(6);
         $this->assertEquals("payment?payerror=6", $res);
 
         // address changed
-        $res = $oOrder->UNITgetNextStep(7);
+        $res = $oOrder->_getNextStep(7);
         $this->assertEquals("order?iAddressError=1", $res);
 
         // error text
-        $res = $oOrder->UNITgetNextStep("Test Error");
+        $res = $oOrder->_getNextStep("Test Error");
         $this->assertEquals("payment?payerror=-1&payerrortext=Test+Error", $res);
     }
 

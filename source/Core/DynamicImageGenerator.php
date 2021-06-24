@@ -59,6 +59,8 @@ namespace {
 }
 namespace OxidEsales\EshopCommunity\Core {
 
+    use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+
     /**
      * Image generator class
      */
@@ -147,24 +149,18 @@ namespace OxidEsales\EshopCommunity\Core {
          * writing extended classes for testing protected or private methods
          *
          * @param string $method Methods name
-         * @param array  $args   Argument array
-         *
-         * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
-         *
-         * @return string
+         * @param array  $arguments Argument array
+         * @return false|mixed
+         * @throws SystemComponentException
          */
-        public function __call($method, $args)
+        public function __call($method, $arguments)
         {
-            if (defined('OXID_PHP_UNIT')) {
-                if (substr($method, 0, 4) == "UNIT") {
-                    $method = str_replace("UNIT", "_", $method);
-                }
-                if (method_exists($this, $method)) {
-                    return call_user_func_array([& $this, $method], $args);
-                }
+            if (defined('OXID_PHP_UNIT') && method_exists($this, $method)) {
+                return call_user_func_array([& $this, $method], $arguments);
             }
-
-            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+            throw new SystemComponentException(
+                "Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
+            );
         }
 
         /**

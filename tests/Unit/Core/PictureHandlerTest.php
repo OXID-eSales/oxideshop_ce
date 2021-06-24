@@ -62,9 +62,9 @@ final class PictureHandlerTest extends \OxidTestCase
     {
         $oPicHandler = $this->getProxyClass('oxPictureHandler');
 
-        $this->assertEquals('testPic_p1.jpg', $oPicHandler->UNITgetBaseMasterImageFileName("testPic_p1.jpg"));
-        $this->assertEquals('testPic2.jpg', $oPicHandler->UNITgetBaseMasterImageFileName("testPic2.jpg"));
-        $this->assertEquals('testPic3.jpg', $oPicHandler->UNITgetBaseMasterImageFileName("bla/testPic3.jpg"));
+        $this->assertEquals('testPic_p1.jpg', $oPicHandler->_getBaseMasterImageFileName("testPic_p1.jpg"));
+        $this->assertEquals('testPic2.jpg', $oPicHandler->_getBaseMasterImageFileName("testPic2.jpg"));
+        $this->assertEquals('testPic3.jpg', $oPicHandler->_getBaseMasterImageFileName("bla/testPic3.jpg"));
     }
 
     /**

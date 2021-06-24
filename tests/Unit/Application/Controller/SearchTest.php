@@ -57,7 +57,7 @@ class SearchTest extends \OxidTestCase
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
-        $oSearchView->UNITprocessListArticles();
+        $oSearchView->_processListArticles();
     }
 
     /**
@@ -83,7 +83,7 @@ class SearchTest extends \OxidTestCase
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
-        $oSearchView->UNITprocessListArticles();
+        $oSearchView->_processListArticles();
     }
 
     public function testGetArticleList()
@@ -232,9 +232,9 @@ class SearchTest extends \OxidTestCase
     public function testIsSearchClass()
     {
         $this->setRequestParameter('cl', 'ysearchcnid');
-        $this->assertEquals(false, oxNew('search')->UNITisSearchClass());
+        $this->assertEquals(false, oxNew('search')->_isSearchClass());
         $this->setRequestParameter('cl', 'search');
-        $this->assertEquals(true, oxNew('search')->UNITisSearchClass());
+        $this->assertEquals(true, oxNew('search')->_isSearchClass());
     }
 
     public function testGetSearchManufacturer()
@@ -280,7 +280,7 @@ class SearchTest extends \OxidTestCase
     public function testCanRedirect()
     {
         $oSearch = oxNew('search');
-        $this->assertFalse($oSearch->UNITcanRedirect());
+        $this->assertFalse($oSearch->_canRedirect());
     }
 
     public function testGetArticleCount()

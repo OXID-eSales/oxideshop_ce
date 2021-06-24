@@ -634,7 +634,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->addToBasket('1126', 2);
         $oBasket->addToBasket('1127', 2);
 
-        $oBasket->UNITsave();
+        $oBasket->_save();
 
         $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser($oUser);
@@ -1063,7 +1063,7 @@ class BasketTest extends \OxidTestCase
         // first bundle is added separatelly
         $this->assertEquals(2, count($oBasket->getContents()));
 
-        $oBasket->UNITclearBundles();
+        $oBasket->_clearBundles();
 
         // first bundle is added separatelly
         $oItem2 = $oBasket->getContents();
@@ -1081,7 +1081,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
-        $this->assertEquals(array(), $oBasket->UNITgetArticleBundles($oItem));
+        $this->assertEquals(array(), $oBasket->_getArticleBundles($oItem));
     }
 
     /**
@@ -1097,7 +1097,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(array('xxx' => 1), $oBasket->UNITgetArticleBundles($oItem));
+        $this->assertEquals(array('xxx' => 1), $oBasket->_getArticleBundles($oItem));
     }
 
     /**
@@ -1110,7 +1110,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
-        $this->assertEquals(array(), $oBasket->UNITgetItemBundles($oItem));
+        $this->assertEquals(array(), $oBasket->_getItemBundles($oItem));
     }
 
     /**
@@ -1123,7 +1123,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = $this->createBasketWithNoDiscounts();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(array(), $oBasket->UNITgetItemBundles($oItem));
+        $this->assertEquals(array(), $oBasket->_getItemBundles($oItem));
     }
 
     /**
@@ -1143,7 +1143,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals($aArray, $oBasket->UNITgetItemBundles($oItem, $aArray));
+        $this->assertEquals($aArray, $oBasket->_getItemBundles($oItem, $aArray));
     }
 
     /**
@@ -1158,7 +1158,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(array('xxx' => (double) 6), $oBasket->UNITgetItemBundles($oItem, $aArray));
+        $this->assertEquals(array('xxx' => (double) 6), $oBasket->_getItemBundles($oItem, $aArray));
     }
 
     /**
@@ -1173,7 +1173,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = $this->getProxyClass("oxbasket");
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals($aArray, $oBasket->UNITgetBasketBundles());
+        $this->assertEquals($aArray, $oBasket->_getBasketBundles());
     }
 
     // has no bundle items
@@ -1181,7 +1181,7 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = $this->createBasketWithNoDiscounts();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(array(), $oBasket->UNITgetBasketBundles());
+        $this->assertEquals(array(), $oBasket->_getBasketBundles());
     }
 
     /**
@@ -1204,7 +1204,7 @@ class BasketTest extends \OxidTestCase
         // testing
         $oBasket->setBasket(array($oBasketItem));
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITaddBundles();
+        $oBasket->_addBundles();
         $this->assertTrue($oBasketItem->isDiscountArticle());
     }
 
@@ -1229,7 +1229,7 @@ class BasketTest extends \OxidTestCase
         // testing
         $oBasket->setBasket(array($oBasketItem));
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITaddBundles();
+        $oBasket->_addBundles();
         $this->assertFalse($oBasketItem->isDiscountArticle());
     }
 
@@ -1254,7 +1254,7 @@ class BasketTest extends \OxidTestCase
         // testing
         $oBasket->setBasket(array($oBasketItem));
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITaddBundles();
+        $oBasket->_addBundles();
         $this->assertFalse($oBasketItem->isDiscountArticle());
     }
 
@@ -1278,7 +1278,7 @@ class BasketTest extends \OxidTestCase
         // testing
         $oBasket->setBasket(array($oBasketItem));
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITaddBundles();
+        $oBasket->_addBundles();
     }
 
     /**
@@ -1327,7 +1327,7 @@ class BasketTest extends \OxidTestCase
         // testing
         $oBasket->setBasket(array($oBasketItem, $oBasketItem2));
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITaddBundles();
+        $oBasket->_addBundles();
     }
 
     /**
@@ -1345,7 +1345,7 @@ class BasketTest extends \OxidTestCase
         $oBasketItem->expects($this->any())->method('isBundle')->will($this->returnValue(true));
         $oBasketItem->init($this->oArticle->getId(), 1);
         $oBasket->setBasket(array($oBasketItem));
-        $oBasket->UNITcalcItemsPrice();
+        $oBasket->_calcItemsPrice();
         $aBasketContents = $oBasket->getVar('aBasketContents');
         foreach ($aBasketContents as $oBasketItem) {
             $this->assertEquals(0, $oBasketItem->getPrice()->getBruttoPrice());
@@ -1366,7 +1366,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = new modForTestAddBundles();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
-        $oBasket->UNITcalcItemsPrice();
+        $oBasket->_calcItemsPrice();
 
         $this->assertEquals(1, $oBasket->getVar('iProductsCnt'));
         $this->assertEquals(10, $oBasket->getVar('dItemsCnt'));
@@ -1431,7 +1431,7 @@ class BasketTest extends \OxidTestCase
         $aDiscounts['2'] = $oDiscount2;
         $aItemDiscounts['1'] = $oDiscount3;
         $oBasket = oxNew('oxbasket');
-        $aReturn = $oBasket->UNITmergeDiscounts($aDiscounts, $aItemDiscounts);
+        $aReturn = $oBasket->_mergeDiscounts($aDiscounts, $aItemDiscounts);
         $aDiscounts['1'] = $oDiscount4;
         $this->assertEquals($aDiscounts, $aReturn);
     }
@@ -1449,7 +1449,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser(false);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
-        $oPrice = $oBasket->UNITcalcDeliveryCost();
+        $oPrice = $oBasket->_calcDeliveryCost();
 
         $this->assertEquals(0, $oPrice->getVat());
         $this->assertEquals(0, $oPrice->getBruttoPrice());
@@ -1628,7 +1628,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setNonPublicVar('_aVouchers', $aV);
         $oBasket->setNonPublicVar('_oTotalDiscount', oxNew('oxprice'));
         $this->assertNull($oBasket->getVoucherDiscount());
-        $oBasket->UNITcalcVoucherDiscount();
+        $oBasket->_calcVoucherDiscount();
         $aVouch = $oBasket->getVouchers();
         $this->assertEquals(10, end($aVouch)->dVoucherdiscount);
         $this->assertEquals(40, $oBasket->getVoucherDiscount()->getBruttoPrice());
@@ -1658,7 +1658,7 @@ class BasketTest extends \OxidTestCase
         $aV = $oBasket->getVouchers();
         $this->assertEquals(4, count($aV));
 
-        $oBasket->UNITcalcVoucherDiscount();
+        $oBasket->_calcVoucherDiscount();
 
         $aV = $oBasket->getVouchers();
         $this->assertEquals(0, count($aV));
@@ -1688,7 +1688,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setNonPublicVar('_aVouchers', $aV);
         $oBasket->setNonPublicVar('_oTotalDiscount', oxNew('oxprice'));
         $oBasket->setSkipVouchersChecking(true);
-        $oBasket->UNITcalcVoucherDiscount();
+        $oBasket->_calcVoucherDiscount();
 
         $this->assertFalse(oxVoucherHelper::$blCheckWasPerformed);
     }
@@ -1724,7 +1724,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setCardId($sCardId);
         $oBasket->calculateBasket(false);
 
-        $oWrapPrice = $oBasket->UNITcalcBasketWrapping();
+        $oWrapPrice = $oBasket->_calcBasketWrapping();
 
         // wrapping
         $this->assertEquals((5 * 5) * 1.19, $oWrapPrice->getBruttoPrice());
@@ -1732,7 +1732,7 @@ class BasketTest extends \OxidTestCase
         $this->assertEquals(19, (int) $oWrapPrice->getVat());
 
         // gift card
-        $oCardPrice = $oBasket->UNITcalcBasketGiftCard();
+        $oCardPrice = $oBasket->_calcBasketGiftCard();
         $this->assertEquals(11.9, $oCardPrice->getBruttoPrice());
         $this->assertEquals(10, $oCardPrice->getNettoPrice());
         $this->assertEquals(19, (int) $oCardPrice->getVat());
@@ -1762,7 +1762,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->calculateBasket(false);
         $oBasket->setPayment('oxidcashondel');
 
-        $oPayCost = $oBasket->UNITcalcPaymentCost(false, false);
+        $oPayCost = $oBasket->_calcPaymentCost(false, false);
 
         $this->assertEquals(7.5, $oPayCost->getBruttoPrice());
         $this->assertTrue(7.5 > $oPayCost->getNettoPrice());
@@ -1784,7 +1784,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->calculateBasket(false);
         $oBasket->setPayment('oxidcashondel');
 
-        $oPayCost = $oBasket->UNITcalcPaymentCost(false, false);
+        $oPayCost = $oBasket->_calcPaymentCost(false, false);
 
         $this->assertEquals(8.93, $oPayCost->getBruttoPrice());
         $this->assertEquals(7.5, $oPayCost->getNettoPrice());
@@ -2123,7 +2123,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setBasketUser(false);
 
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', true);
-        $oBasket->UNITsave();
+        $oBasket->_save();
     }
 
     /**
@@ -2171,7 +2171,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket->addToBasket('1127', 10, 'testSel', 'testPersParam');
 
-        $oBasket->UNITsave();
+        $oBasket->_save();
     }
 
     /**
@@ -2191,7 +2191,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getBasketUser'));
         $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
-        $oBasket->UNITdeleteSavedBasket();
+        $oBasket->_deleteSavedBasket();
     }
 
     /**
@@ -2205,7 +2205,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser(false);
-        $this->assertNull($oBasket->UNITfindDelivCountry());
+        $this->assertNull($oBasket->_findDelivCountry());
     }
 
     /**
@@ -2220,7 +2220,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser(false);
-        $this->assertEquals('_xxx', $oBasket->UNITfindDelivCountry());
+        $this->assertEquals('_xxx', $oBasket->_findDelivCountry());
     }
 
     /**
@@ -2235,7 +2235,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser($oUser);
-        $this->assertEquals($oUser->oxuser__oxcountryid->value, $oBasket->UNITfindDelivCountry());
+        $this->assertEquals($oUser->oxuser__oxcountryid->value, $oBasket->_findDelivCountry());
     }
 
     /**
@@ -2252,7 +2252,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setBasketUser($oUser);
 
         $this->getConfig()->setGlobalParameter('delcountryid', '_yyy');
-        $this->assertEquals('_yyy', $oBasket->UNITfindDelivCountry());
+        $this->assertEquals('_yyy', $oBasket->_findDelivCountry());
     }
 
     /**
@@ -2270,7 +2270,7 @@ class BasketTest extends \OxidTestCase
 
         $this->getConfig()->setGlobalParameter('delcountryid', null);
         $this->getSession()->setVariable('deladrid', $this->oDelAdress->getId());
-        $this->assertEquals('_xxx', $oBasket->UNITfindDelivCountry());
+        $this->assertEquals('_xxx', $oBasket->_findDelivCountry());
     }
 
     /**
@@ -2702,7 +2702,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aItemDiscounts', array($oDiscount1));
         $oBasket->setNonPublicVar('_aDiscounts', array($oDiscount2));
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $this->assertEquals($aDiscounts, $oBasket->getDiscounts());
     }
@@ -2720,7 +2720,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aItemDiscounts', array());
         $oBasket->setNonPublicVar('_aDiscounts', array($oDiscount2));
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $this->assertSame([], $oBasket->getDiscounts());
     }
@@ -2742,7 +2742,7 @@ class BasketTest extends \OxidTestCase
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aItemDiscounts', array($oDiscount1));
         $oBasket->setNonPublicVar('_aDiscounts', array());
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $this->assertEquals($aDiscounts, $oBasket->getDiscounts());
     }
@@ -2876,7 +2876,7 @@ class BasketTest extends \OxidTestCase
         $oPriceList->addToPriceList($oPrice);
 
         $aDiscounts = $oBasket->setNonPublicVar('_oDiscountProductsPriceList', $oPriceList);
-        $oBasket->UNITcalcBasketDiscount();
+        $oBasket->_calcBasketDiscount();
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
@@ -2916,7 +2916,7 @@ class BasketTest extends \OxidTestCase
         $oPriceList->addToPriceList($oPrice);
 
         $aDiscounts = $oBasket->setNonPublicVar('_oDiscountProductsPriceList', $oPriceList);
-        $oBasket->UNITcalcBasketDiscount();
+        $oBasket->_calcBasketDiscount();
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
@@ -2943,7 +2943,7 @@ class BasketTest extends \OxidTestCase
         $oPriceList->addToPriceList($oPrice);
 
         $aDiscounts = $oBasket->setNonPublicVar('_oDiscountProductsPriceList', $oPriceList);
-        $oBasket->UNITcalcBasketDiscount();
+        $oBasket->_calcBasketDiscount();
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
@@ -2973,7 +2973,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
@@ -2998,7 +2998,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
@@ -3008,7 +3008,7 @@ class BasketTest extends \OxidTestCase
         unset($aDiscounts[0]);
 
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
@@ -3033,7 +3033,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oBasket->setTotalDiscount(100);
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
@@ -3051,7 +3051,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
-        $oBasket->UNITcalcBasketTotalDiscount();
+        $oBasket->_calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
@@ -3090,10 +3090,10 @@ class BasketTest extends \OxidTestCase
         $arr1 = array('a' => 1, 'b' => 4, 'g' => 's', 'ds' => 'aaa');
         $arr2 = array('a' => 1, 'c' => 222, 'g' => 's', 'ds' => 'aaa');
         $oBasket->setNonPublicVar('_aBasketContents', $arr1);
-        $oBasket->UNITchangeBasketItemKey('b', 'c', 222);
+        $oBasket->_changeBasketItemKey('b', 'c', 222);
         $this->assertEquals($arr2, $oBasket->getNonPublicVar('_aBasketContents'));
         $arr2 = array('a' => 1, 'c' => 222, 'g' => 's', 'dsa' => null);
-        $oBasket->UNITchangeBasketItemKey('ds', 'dsa');
+        $oBasket->_changeBasketItemKey('ds', 'dsa');
         $this->assertEquals($arr2, $oBasket->getNonPublicVar('_aBasketContents'));
     }
 
@@ -3740,7 +3740,7 @@ class BasketTest extends \OxidTestCase
         $oPriceList->addToPriceList($oPrice);
 
         $aDiscounts = $oBasket->setNonPublicVar('_oDiscountProductsPriceList', $oPriceList);
-        $oBasket->UNITcalcBasketDiscount();
+        $oBasket->_calcBasketDiscount();
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
@@ -3779,7 +3779,7 @@ class BasketTest extends \OxidTestCase
         $oPriceList->addToPriceList($oPrice);
 
         $aDiscounts = $oBasket->setNonPublicVar('_oDiscountProductsPriceList', $oPriceList);
-        $oBasket->UNITcalcBasketDiscount();
+        $oBasket->_calcBasketDiscount();
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
@@ -3874,12 +3874,12 @@ class BasketTest extends \OxidTestCase
         $oBasket = oxNew('oxBasket');
 
         // regular product
-        $this->assertTrue($oBasket->UNITisProductInRootCategory($sProductId, $sRootCatId), "first fail");
-        $this->assertFalse($oBasket->UNITisProductInRootCategory($sProductId, "anycategory"), "first fail");
+        $this->assertTrue($oBasket->_isProductInRootCategory($sProductId, $sRootCatId), "first fail");
+        $this->assertFalse($oBasket->_isProductInRootCategory($sProductId, "anycategory"), "first fail");
 
         // variant
-        $this->assertTrue($oBasket->UNITisProductInRootCategory($sVariantId, $sRootCatId), "first fail");
-        $this->assertFalse($oBasket->UNITisProductInRootCategory($sVariantId, "anycategory"), "first fail");
+        $this->assertTrue($oBasket->_isProductInRootCategory($sVariantId, $sRootCatId), "first fail");
+        $this->assertFalse($oBasket->_isProductInRootCategory($sVariantId, "anycategory"), "first fail");
     }
 
     /**

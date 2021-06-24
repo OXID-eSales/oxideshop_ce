@@ -176,7 +176,7 @@ class MdvariantTest extends \OxidTestCase
         $oVariant1->setName("testas1");
         $oVariant1->setId("testId1");
 
-        $this->_oSubj->UNITaddMdSubvariant($oVariant1);
+        $this->_oSubj->_addMdSubvariant($oVariant1);
 
         $this->assertEquals($oVariant1, $this->_oSubj->getMdSubvariantByName("testas1"));
     }
@@ -302,14 +302,14 @@ class MdvariantTest extends \OxidTestCase
      */
     public function testIsFixedPrice()
     {
-        $this->assertFalse($this->_oSubj->UNITisFixedPrice());
-        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->UNITisFixedPrice());
-        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->UNITisFixedPrice());
-        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->UNITisFixedPrice());
-        $this->assertFalse($this->_oSubj->getMdSubvariantByName("Red")->UNITisFixedPrice());
-        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("M")->UNITisFixedPrice());
-        $this->assertFalse($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->UNITisFixedPrice());
-        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->UNITisFixedPrice());
+        $this->assertFalse($this->_oSubj->_isFixedPrice());
+        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->_isFixedPrice());
+        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->_isFixedPrice());
+        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->_isFixedPrice());
+        $this->assertFalse($this->_oSubj->getMdSubvariantByName("Red")->_isFixedPrice());
+        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("M")->_isFixedPrice());
+        $this->assertFalse($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->_isFixedPrice());
+        $this->assertTrue($this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->_isFixedPrice());
     }
 
     /**

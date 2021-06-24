@@ -103,7 +103,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // defining parameters
         $oView = oxNew('Content_Main');
-        $this->assertNull($oView->UNITprepareIdent(false));
+        $this->assertNull($oView->_prepareIdent(false));
     }
 
     /**
@@ -115,7 +115,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // defining parameters
         $oView = oxNew('Content_Main');
-        $this->assertEquals("aaabbb", $oView->UNITprepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
+        $this->assertEquals("aaabbb", $oView->_prepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
     }
 
     /**
@@ -127,7 +127,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertTrue($oView->UNITcheckIdent("", ""));
+        $this->assertTrue($oView->_checkIdent("", ""));
     }
 
     /**
@@ -139,6 +139,6 @@ class ContentMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertTrue($oView->UNITcheckIdent("oxstartmetadescription", ""));
+        $this->assertTrue($oView->_checkIdent("oxstartmetadescription", ""));
     }
 }

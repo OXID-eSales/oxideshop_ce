@@ -201,7 +201,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
     }
 
     /**
@@ -241,7 +241,7 @@ class RssfeedTest extends \OxidTestCase
         $oSArt->description = "&lt;img src=&#039;" . $oParentArt->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;";
         $oSArt->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSArt), $oRss->UNITgetArticleItems($oArr));
+        $this->assertEquals(array($oSArt), $oRss->_getArticleItems($oArr));
     }
 
     public function testGetArticleItemsDescriptionParsedWithSmarty()
@@ -287,7 +287,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
     }
 
     public function testGetArticleItemsWithNoArticlePrice()
@@ -345,7 +345,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
     }
 
     public function testGetArticleItemsDiffCurrency()
@@ -403,7 +403,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->isGuidPermalink = true;
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
     }
 
     public function testPrepareUrlSeoOff()
@@ -417,7 +417,7 @@ class RssfeedTest extends \OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1extra', $oRss->UNITprepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
+        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1extra', $oRss->_prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
     }
 
     public function testPrepareUrlSeoOn()
@@ -437,7 +437,7 @@ class RssfeedTest extends \OxidTestCase
 
         Registry::set(Config::class, $oCfg);
 
-        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->UNITprepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
+        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->_prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
     }
 
     public function testPrepareFeedName()
@@ -450,7 +450,7 @@ class RssfeedTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('Test Shop/Test', $oRss->UNITprepareFeedName('Test'));
+        $this->assertEquals('Test Shop/Test', $oRss->_prepareFeedName('Test'));
     }
 
 
@@ -920,7 +920,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = 'desctitle2';
 
         $oRss = oxNew('oxRssFeed');
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetRecommListItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getRecommListItems($oArr));
     }
 
     public function testGetRecommListsTitle()

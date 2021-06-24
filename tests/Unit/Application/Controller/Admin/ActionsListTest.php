@@ -70,14 +70,14 @@ class ActionsListTest extends \OxidTestCase
 
         $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' ";
         $this->setRequestParameter('displaytype', 1);
-        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
+        $this->assertEquals($sQ, $oView->_prepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactivefrom > '$sNow' ";
         $this->setRequestParameter('displaytype', 2);
-        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
+        $this->assertEquals($sQ, $oView->_prepareWhereQuery(array(), ""));
 
         $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' ";
         $this->setRequestParameter('displaytype', 3);
-        $this->assertEquals($sQ, $oView->UNITprepareWhereQuery(array(), ""));
+        $this->assertEquals($sQ, $oView->_prepareWhereQuery(array(), ""));
     }
 }

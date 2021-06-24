@@ -117,7 +117,7 @@ class OrderAddressTest extends \OxidTestCase
         $aOutData["oxorder__oxdelsal"] = "";
 
         $oView = oxNew('Order_Address');
-        $aInData = $oView->UNITprocessAddress($aInData, "oxorder__oxdel", array("oxorder__oxdelsal"));
+        $aInData = $oView->_processAddress($aInData, "oxorder__oxdel", array("oxorder__oxdelsal"));
 
         $this->assertEquals($aOutData, $aInData);
     }

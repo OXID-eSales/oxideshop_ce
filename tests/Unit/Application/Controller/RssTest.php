@@ -28,7 +28,7 @@ class RssTest extends \OxidTestCase
     public function testProcessOutput()
     {
         $oRss = oxNew('rss');
-        $this->assertEquals("äöüÄÖÜß", $oRss->UNITprocessOutput('&auml;&ouml;&uuml;&Auml;&Ouml;&Uuml;&szlig;'));
+        $this->assertEquals("äöüÄÖÜß", $oRss->_processOutput('&auml;&ouml;&uuml;&Auml;&Ouml;&Uuml;&szlig;'));
     }
 
     public function testInit()
@@ -45,7 +45,7 @@ class RssTest extends \OxidTestCase
 
     public function testGetRssFeed()
     {
-        $rssFeed = oxNew('rss')->UNITgetRssFeed();
+        $rssFeed = oxNew('rss')->_getRssFeed();
         $this->assertInstanceOf(RssFeed::class, $rssFeed);
     }
 

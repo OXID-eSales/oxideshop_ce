@@ -12,30 +12,15 @@ use \oxField;
 use \oxDb;
 use \oxTestModules;
 
-/**
- * Testing oxseoencodercategory class
- */
 class SeoEncoderCategoryTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        //echo $this->getName()."\n";
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         modDB::getInstance()->cleanup();
@@ -47,14 +32,6 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $this->cleanUpTable('oxcategories');
 
         parent::tearDown();
-    }
-
-    public function __SaveToDbCreatesGoodMd5Callback($sSQL)
-    {
-        $this->aSQL[] = $sSQL;
-        if ($this->aRET && isset($this->aRET[count($this->aSQL) - 1])) {
-            return $this->aRET[count($this->aSQL) - 1];
-        }
     }
 
     /**
@@ -69,7 +46,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getCategoryUri"));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("categoryUri"));
 
-        $this->assertEquals("categoryUri", $oEncoder->UNITgetAltUri('1126', 0));
+        $this->assertEquals("categoryUri", $oEncoder->_getAltUri('1126', 0));
     }
 
     /**
@@ -107,10 +84,10 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83b6e585c9.63147165' : '8a142c3e4143562a5.46426637';
-        $subCategoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
-        $categoryLink = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Wohnen/' : 'Geschenke/';
-        $subCategoryLink = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Wohnen/Uhren/' : 'Geschenke/Wohnen/Uhren/';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab83b6e585c9.63147165' : '8a142c3e4143562a5.46426637';
+        $subCategoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
+        $categoryLink = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Wohnen/' : 'Geschenke/';
+        $subCategoryLink = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Wohnen/Uhren/' : 'Geschenke/Wohnen/Uhren/';
 
         $shopUrl = $this->getConfig()->getShopUrl();
         $subCategory = oxNew('oxCategory');
@@ -136,7 +113,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $categoryTree->buildTree(null);
         $categoryTree->rewind();
         $categoryTree->next();
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Sie/' : 'Geschenke/';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Fuer-Sie/' : 'Geschenke/';
         $this->assertEquals($this->getConfig()->getShopUrl() . $link, $categoryTree->current()->getLink());
     }
 
@@ -181,8 +158,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Ihn/Buecher/' : 'Geschenke/Fantasy/';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Fuer-Ihn/Buecher/' : 'Geschenke/Fantasy/';
 
         $category = oxNew('oxCategory');
         $category->load($categoryId);
@@ -195,8 +172,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/For-Him/Books/' : 'en/Gifts/Fantasy/';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'en/For-Him/Books/' : 'en/Gifts/Fantasy/';
 
         $category = oxNew('oxCategory');
         $category->loadInLang(1, $categoryId);
@@ -212,8 +189,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'Fuer-Ihn/Buecher/' : 'Geschenke/Fantasy/';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Fuer-Ihn/Buecher/' : 'Geschenke/Fantasy/';
 
         $category = oxNew('oxCategory');
         $category->loadInLang(1, $categoryId);
@@ -226,8 +203,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/For-Him/Books/' : 'en/Gifts/Fantasy/';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab838094a7d2.59137554' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'en/For-Him/Books/' : 'en/Gifts/Fantasy/';
 
         $category = oxNew('oxCategory');
         $category->loadInLang(0, $categoryId);
@@ -258,8 +235,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
 
         $oCategory = oxNew('oxCategory');
         $oCategory->loadInLang(1, $categoryId);
@@ -272,8 +249,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
+        $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
 
         $category = oxNew('oxCategory');
         $category->loadInLang(0, $categoryId);
@@ -287,8 +264,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
      */
     public function testMarkRelatedAsExpired()
     {
-        $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
-        $subCategoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab841af13e46.42570689' : '8a142c3e44ea4e714.31136811';
+        $categoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
+        $subCategoryId = $this->getTestConfig()->getShopEdition() === 'EE' ? '30e44ab841af13e46.42570689' : '8a142c3e44ea4e714.31136811';
         $articleId = 'testArt';
 
         $object2Category = oxNew('oxObject2Category');

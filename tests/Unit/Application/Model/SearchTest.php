@@ -643,7 +643,7 @@ class SearchTest extends UnitTestCase
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
         Registry::set(Config::class, $oConfig);
-        $sQ = $oSearch->UNITgetWhere($sSearchString, $iLanguage = 0);
+        $sQ = $oSearch->_getWhere($sSearchString, $iLanguage = 0);
 
         $this->assertEquals($sFix, $sQ);
     }
@@ -658,7 +658,7 @@ class SearchTest extends UnitTestCase
         /** @var Search $search */
         $search = oxNew('oxSearch');
         $search->setLanguage(1);
-        $where = $search->UNITgetWhere('a');
+        $where = $search->_getWhere('a');
 
         $this->assertEquals($expectedWhere, $where);
     }
@@ -668,7 +668,7 @@ class SearchTest extends UnitTestCase
     {
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->UNITgetSearchSelect('x', 'xxx'));
+        $this->assertNull($oSearch->_getSearchSelect('x', 'xxx'));
     }
 
     public function testGetSearchSelectIllegalVendor()
@@ -680,7 +680,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->UNITgetSearchSelect('x', $sIDCat, 'yyy'));
+        $this->assertNull($oSearch->_getSearchSelect('x', $sIDCat, 'yyy'));
     }
 
     public function testGetSearchSelectIllegalManufacturer()
@@ -692,14 +692,14 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->UNITgetSearchSelect('x', $sIDCat, false, 'yyy'));
+        $this->assertNull($oSearch->_getSearchSelect('x', $sIDCat, false, 'yyy'));
     }
 
     public function testGetSearchSelectNoSearchConditions()
     {
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->UNITgetSearchSelect());
+        $this->assertNull($oSearch->_getSearchSelect());
     }
 
     public function testGetSearchSelectPassingAllWhatIsNeeded()
@@ -738,7 +738,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->UNITgetSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->_getSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -785,7 +785,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->UNITgetSearchSelect('a', '_testCat', null, null, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->_getSearchSelect('a', '_testCat', null, null, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -824,7 +824,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sFix = $oSearch->UNITgetSearchSelect('xxx');
+        $sFix = $oSearch->_getSearchSelect('xxx');
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));
@@ -848,7 +848,7 @@ class SearchTest extends UnitTestCase
         // setting english language as base
         $oSearch->setLanguage(1);
 
-        $sFix = $oSearch->UNITgetWhere('xxx');
+        $sFix = $oSearch->_getWhere('xxx');
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));

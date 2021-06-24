@@ -154,8 +154,8 @@ class ContentTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcontent');
         $oObj->disableLazyLoading();
-        $oObj->UNITsetFieldData("oxid", "asd< as");
-        $oObj->UNITsetFieldData("oxcOntent", "asd< as");
+        $oObj->_setFieldData("oxid", "asd< as");
+        $oObj->_setFieldData("oxcOntent", "asd< as");
         $this->assertEquals('asd&lt; as', $oObj->oxcontents__oxid->value);
         $this->assertEquals('asd< as', $oObj->oxcontents__oxcontent->value);
     }

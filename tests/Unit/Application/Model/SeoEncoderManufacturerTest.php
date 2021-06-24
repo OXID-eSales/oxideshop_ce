@@ -53,7 +53,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, array("getManufacturerUri"));
         $oEncoder->expects($this->once())->method('getManufacturerUri')->will($this->returnValue("manufacturerUri"));
 
-        $this->assertEquals("manufacturerUri", $oEncoder->UNITgetAltUri('1126', 0));
+        $this->assertEquals("manufacturerUri", $oEncoder->_getAltUri('1126', 0));
     }
 
     public function testGetManufacturerUrlExistingManufacturer()

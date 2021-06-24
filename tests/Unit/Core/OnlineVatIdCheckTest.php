@@ -40,20 +40,20 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '231450866';
 
         $oOnlineVatCheck = oxNew('oxOnlineVatIdCheck');
-        if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
+        if (!$oOnlineVatCheck->_isServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
 
-        $blRet = $oOnlineVatCheck->UNITcheckOnline($oCheckVat);
-        if ('MS_UNAVAILABLE' == $oOnlineVatCheck->UNITgetError()) {
+        $blRet = $oOnlineVatCheck->_checkOnline($oCheckVat);
+        if ('MS_UNAVAILABLE' == $oOnlineVatCheck->_getError()) {
             ini_set('default_socket_timeout', $iTime);
             $this->markTestSkipped('member state is unavailable');
         }
-        if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->UNITgetError()) {
+        if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->_getError()) {
             ini_set('default_socket_timeout', $iTime);
             $this->markTestSkipped('The SOAP service is unavailable, try again later');
         }
-        $this->assertTrue($blRet, 'Got error: ' . $oOnlineVatCheck->UNITgetError());
+        $this->assertTrue($blRet, 'Got error: ' . $oOnlineVatCheck->_getError());
         ini_set('default_socket_timeout', $iTime);
     }
 
@@ -74,11 +74,11 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '111111';
 
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
-        if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
+        if (!$oOnlineVatCheck->_isServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
 
-        $this->assertFalse($oOnlineVatCheck->UNITcheckOnline($oCheckVat));
+        $this->assertFalse($oOnlineVatCheck->_checkOnline($oCheckVat));
         ini_set('default_socket_timeout', $iTime);
         $this->assertEquals('INVALID_INPUT', $oOnlineVatCheck->getNonPublicVar('_sError'));
     }
@@ -97,16 +97,16 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oCheckVat->vatNumber = '111111';
 
         $oOnlineVatCheck = $this->getProxyClass('oxOnlineVatIdCheck');
-        if (!$oOnlineVatCheck->UNITisServiceAvailable()) {
+        if (!$oOnlineVatCheck->_isServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
-        if ('MS_UNAVAILABLE' == $oOnlineVatCheck->UNITgetError()) {
+        if ('MS_UNAVAILABLE' == $oOnlineVatCheck->_getError()) {
             $this->markTestSkipped('member state is unavailable');
         }
-        if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->UNITgetError()) {
+        if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->_getError()) {
             $this->markTestSkipped('The SOAP service is unavailable, try again later');
         }
-        $this->assertFalse($oOnlineVatCheck->UNITcheckOnline($oCheckVat));
+        $this->assertFalse($oOnlineVatCheck->_checkOnline($oCheckVat));
         if ('SERVER_BUSY' !== $oOnlineVatCheck->getNonPublicVar('_sError')) {
             $this->assertNull($oOnlineVatCheck->getNonPublicVar('_sError'));
         }
@@ -120,7 +120,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $oOnlineVatIdCheck = $this->getMock($this->getProxyClassName("oxOnlineVatIdCheck"), array("_isServiceAvailable"));
         $oOnlineVatIdCheck->expects($this->once())->method('_isServiceAvailable')->will($this->returnValue(false));
 
-        $this->assertEquals(false, $oOnlineVatIdCheck->UNITcheckOnline(new stdClass()));
+        $this->assertEquals(false, $oOnlineVatIdCheck->_checkOnline(new stdClass()));
         $this->assertEquals("SERVICE_UNREACHABLE", $oOnlineVatIdCheck->getError());
     }
 

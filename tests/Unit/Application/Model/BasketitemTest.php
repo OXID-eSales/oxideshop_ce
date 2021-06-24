@@ -175,10 +175,10 @@ class BasketitemTest extends \OxidTestCase
         $oOrderArticle->expects($this->once())->method('getProductId')->will($this->returnValue("sProductId"));
         $oOrderArticle->oxorderarticles__oxtitle = new oxField("oxarticles__oxtitle");
         $oOrderArticle->oxorderarticles__oxordershopid = new oxField("sNativeShopId");
-        $oOrderArticle->UNITsetArticleParams();
+        $oOrderArticle->_setArticleParams();
 
         $oBasketItem = $this->getProxyClass("oxbasketitem");
-        $oBasketItem->UNITsetFromOrderArticle($oOrderArticle);
+        $oBasketItem->_setFromOrderArticle($oOrderArticle);
 
         $this->assertEquals($oOrderArticle, $oBasketItem->getNonPublicVar("_oArticle"));
         $this->assertEquals("sProductId", $oBasketItem->getNonPublicVar("_sProductId"));
@@ -311,7 +311,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
 
-        $oBasketItem->UNITsetArticle($article->getId());
+        $oBasketItem->_setArticle($article->getId());
         $oBasketItem->setAmount(10, true, 'testItemKey');
         $this->assertEquals(10, $oBasketItem->getAmount());
 
@@ -701,7 +701,7 @@ class BasketitemTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         // initiating product
-        $oBasketItem->UNITsetArticle("testId");
+        $oBasketItem->_setArticle("testId");
         $this->assertEquals($sIconUrl, $oBasketItem->getIconUrl());
     }
 
@@ -1028,7 +1028,7 @@ class BasketitemTest extends \OxidTestCase
         $article->save();
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($article));
-        $oBasketItem->UNITsetArticle($article->getId());
+        $oBasketItem->_setArticle($article->getId());
 
         $this->assertEquals("title, var1", $oBasketItem->getTitle());
         $this->assertEquals("var1", $oBasketItem->getVarSelect());
@@ -1047,7 +1047,7 @@ class BasketitemTest extends \OxidTestCase
         $article->save();
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($article));
-        $oBasketItem->UNITsetArticle($article->getId());
+        $oBasketItem->_setArticle($article->getId());
 
         $this->assertEquals("0", $oBasketItem->getVarSelect());
     }

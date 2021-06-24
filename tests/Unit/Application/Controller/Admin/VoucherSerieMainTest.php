@@ -181,7 +181,7 @@ class VoucherSerieMainTest extends \OxidTestCase
         $this->getSession()->setVariable("voucherid", "_testvoucherserie");
 
         $oView = oxNew('VoucherSerie_Main');
-        $oVoucherSerie = $oView->UNITgetVoucherSerie();
+        $oVoucherSerie = $oView->_getVoucherSerie();
 
         $this->assertNotNull($oVoucherSerie);
         $this->assertEquals("_testvoucherserie", $oVoucherSerie->getId());

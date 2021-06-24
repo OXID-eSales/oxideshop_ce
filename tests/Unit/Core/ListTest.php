@@ -349,7 +349,7 @@ class ListTest extends \OxidTestCase
         $oListObjectMock->expects($this->once())->method('assign')->with($aDbFields);
 
         $oSubj = $this->getProxyClass("oxList");
-        $oSubj->UNITassignElement($oListObjectMock, $aDbFields);
+        $oSubj->_assignElement($oListObjectMock, $aDbFields);
     }
 
     /**
@@ -365,10 +365,10 @@ class ListTest extends \OxidTestCase
         $oSubj = $this->getProxyClass("oxList");
 
         $oSubj->setNonPublicVar("_sCoreTable", "");
-        $this->assertEquals($sFieldName, $oSubj->UNITgetFieldLongName($sFieldName));
+        $this->assertEquals($sFieldName, $oSubj->_getFieldLongName($sFieldName));
 
         $oSubj->setNonPublicVar("_sCoreTable", $sCoreTable);
-        $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->UNITgetFieldLongName($sFieldName));
+        $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->_getFieldLongName($sFieldName));
     }
 
     public function testUnsetForeach()

@@ -16,7 +16,7 @@ class StrTest extends \OxidTestCase
     {
         $oStr = $this->getProxyClass('oxStr');
 
-        $this->assertTrue($oStr->UNITgetStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
+        $this->assertTrue($oStr->_getStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
     }
 
     public function testGetStr()

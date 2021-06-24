@@ -35,7 +35,7 @@ class UtilsFileTest extends \OxidTestCase
         $sFilePath = $this->getConfig()->getPictureDir(false) . "/master/product/1/";
 
         $oUtilsFile = oxNew('oxUtilsFile');
-        $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->UNITgetUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
+        $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->_getUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
     }
 
     public function testGetImageSize()
@@ -48,19 +48,19 @@ class UtilsFileTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("sThumbnailsize", '100*100');
 
         // details img size
-        $this->assertEquals(array(251, 201), $oUtilsFile->UNITgetImageSize(null, 1, 'aDetailImageSizes'));
+        $this->assertEquals(array(251, 201), $oUtilsFile->_getImageSize(null, 1, 'aDetailImageSizes'));
 
         // details img size
-        $this->assertEquals(array(253, 203), $oUtilsFile->UNITgetImageSize(null, 3, 'aDetailImageSizes'));
+        $this->assertEquals(array(253, 203), $oUtilsFile->_getImageSize(null, 3, 'aDetailImageSizes'));
 
         // zoom img size
-        $this->assertEquals(array(450, 450), $oUtilsFile->UNITgetImageSize(null, 2, 'sZoomImageSize'));
+        $this->assertEquals(array(450, 450), $oUtilsFile->_getImageSize(null, 2, 'sZoomImageSize'));
 
         // thumbnail img size
-        $this->assertEquals(array(100, 100), $oUtilsFile->UNITgetImageSize(null, null, 'sThumbnailsize'));
+        $this->assertEquals(array(100, 100), $oUtilsFile->_getImageSize(null, null, 'sThumbnailsize'));
 
         // non existing img type size
-        $this->assertNull($oUtilsFile->UNITgetImageSize('nonexisting', '666', 'nonexisting'));
+        $this->assertNull($oUtilsFile->_getImageSize('nonexisting', '666', 'nonexisting'));
     }
 
     public function testCheckFile()

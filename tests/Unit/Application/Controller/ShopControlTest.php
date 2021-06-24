@@ -286,8 +286,8 @@ class ShopControlTest extends \OxidTestCase
         $oUtilsView->expects($this->once())->method('getSmarty')->will($this->returnValue($oSmarty));
         oxTestModules::addModuleObject("oxUtilsView", $oUtilsView);
 
-        $oControl->UNITrender($oView);
-        \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $oControl->UNITgetErrors('oxubase'));
+        $oControl->_render($oView);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $oControl->_getErrors('oxubase'));
         $this->assertTrue($aViewData["Errors"]["default"][0] instanceof ExceptionToDisplay);
 
         /**
@@ -331,7 +331,7 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->any())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->atLeastOnce())->method('_executeMaintenanceTasks');
 
-        $oControl->UNITprocess($controllerClassName, null);
+        $oControl->_process($controllerClassName, null);
     }
 
     public function testProcessJson()
@@ -368,7 +368,7 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->any())->method('_getErrors')->will($this->returnValue(array()));
         $oControl->expects($this->atLeastOnce())->method('_executeMaintenanceTasks');
 
-        $oControl->UNITprocess($controllerClassName, null);
+        $oControl->_process($controllerClassName, null);
     }
 
     public function testProcessJsonWithErrors()
@@ -437,7 +437,7 @@ class ShopControlTest extends \OxidTestCase
 
         $oControl->expects($this->any())->method('_getErrors')->will($this->returnValue($aErrors));
 
-        $oControl->UNITprocess($controllerClassName, null);
+        $oControl->_process($controllerClassName, null);
     }
 
     /**
@@ -455,7 +455,7 @@ class ShopControlTest extends \OxidTestCase
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array("isAdmin", '_getOutputManager'), array(), '', false);
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oControl->expects($this->never())->method('_getOutputManager')->will($this->returnValue($oOut));
-        $oControl->UNITstartMonitor();
+        $oControl->_startMonitor();
         $oControl->stopMonitoring();
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('output'));
@@ -465,7 +465,7 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oControl->expects($this->once())->method('_getOutputManager')->will($this->returnValue($oOut));
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
-        $oControl->UNITstartMonitor();
+        $oControl->_startMonitor();
         $oControl->stopMonitoring();
     }
 
@@ -478,31 +478,31 @@ class ShopControlTest extends \OxidTestCase
         $oConfigFile = oxRegistry::get('oxConfigFile');
 
         $oConfigFile->iDebug = -1;
-        $this->assertTrue($oControl->UNITisDebugMode());
+        $this->assertTrue($oControl->_isDebugMode());
 
         $oConfigFile->iDebug = 0;
-        $this->assertFalse($oControl->UNITisDebugMode());
+        $this->assertFalse($oControl->_isDebugMode());
     }
 
     public function testGetErrors()
     {
         $this->setSessionParam('Errors', null);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array(), $oControl->_getErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
-        $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array(), $oControl->_getErrors('start'));
 
         $this->setSessionParam('Errors', array());
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array(), $oControl->_getErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
-        $this->assertEquals(array(), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array(), $oControl->_getErrors('start'));
 
         $this->setSessionParam('Errors', array('asd' => 'asd'));
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array('asd' => 'asd'), $oControl->_getErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
-        $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array('asd' => 'asd'), $oControl->_getErrors('start'));
     }
 
     public function testGetErrorsForActController()
@@ -510,9 +510,9 @@ class ShopControlTest extends \OxidTestCase
         $this->setSessionParam('Errors', array('asd' => 'asd'));
         $this->setSessionParam('ErrorController', array('asd' => 'start'));
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array('asd' => 'asd'), $oControl->_getErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('Errors'));
-        $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array('asd' => 'asd'), $oControl->_getErrors('start'));
         $this->assertEquals(array(), $this->getSessionParam('ErrorController'));
     }
 
@@ -521,16 +521,16 @@ class ShopControlTest extends \OxidTestCase
         $this->setSessionParam('Errors', array('asd' => 'asd'));
         $this->setSessionParam('ErrorController', array('asd' => 'oxwidget'));
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(array('asd' => 'asd'), $oControl->UNITgetErrors('start'));
+        $this->assertEquals(array('asd' => 'asd'), $oControl->_getErrors('start'));
         $this->assertEquals(array('asd' => 'asd'), $this->getSessionParam('Errors'));
     }
 
     public function testGetOutputManager()
     {
         $oControl = oxNew('oxShopControl');
-        $oOut = $oControl->UNITgetOutputManager();
+        $oOut = $oControl->_getOutputManager();
         $this->assertTrue($oOut instanceof Output);
-        $oOut1 = $oControl->UNITgetOutputManager();
+        $oOut1 = $oControl->_getOutputManager();
         $this->assertSame($oOut, $oOut1);
     }
 
@@ -547,7 +547,7 @@ class ShopControlTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxarticlelist', $oList);
 
         $oControl = oxNew("oxShopControl");
-        $oControl->UNITexecuteMaintenanceTasks();
+        $oControl->_executeMaintenanceTasks();
     }
 
     /**

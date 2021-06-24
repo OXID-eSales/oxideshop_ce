@@ -36,33 +36,6 @@ class ExceptionHandler
     }
 
     /**
-     * Only used for convenience in UNIT tests by doing so we avoid
-     * writing extended classes for testing protected or private methods
-     *
-     * @param string $sMethod Methods name
-     * @param array  $aArgs   Argument array
-     *
-     * @throws SystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
-     *
-     * @return string
-     */
-    public function __call($sMethod, $aArgs)
-    {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
-            }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
-            }
-        }
-
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
-            "Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL
-        );
-    }
-
-    /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
      * @param \Throwable $exception exception object

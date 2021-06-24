@@ -119,7 +119,7 @@ class LoginTest extends \OxidTestCase
     {
         $oLogin = $this->getProxyClass('login');
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = "en-US,en;q=0.8,fr-ca;q=0.5,fr;q=0.3;";
-        $this->assertEquals("en", $oLogin->UNITgetBrowserLanguage());
+        $this->assertEquals("en", $oLogin->_getBrowserLanguage());
     }
 
     /**
@@ -158,7 +158,7 @@ class LoginTest extends \OxidTestCase
         $oLogin = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class, array('_getBrowserLanguage'));
         $oLogin->expects($this->once())->method('_getBrowserLanguage')->will($this->returnValue('de'));
 
-        $this->assertEquals($aLanguages, $oLogin->UNITgetAvailableLanguages());
+        $this->assertEquals($aLanguages, $oLogin->_getAvailableLanguages());
     }
 
     /**
@@ -195,7 +195,7 @@ class LoginTest extends \OxidTestCase
         $oLogin = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class, array('_getBrowserLanguage'));
         $oLogin->expects($this->once())->method('_getBrowserLanguage')->will($this->returnValue('en'));
 
-        $this->assertEquals($aLanguages, $oLogin->UNITgetAvailableLanguages());
+        $this->assertEquals($aLanguages, $oLogin->_getAvailableLanguages());
     }
 
     /**
@@ -235,7 +235,7 @@ class LoginTest extends \OxidTestCase
 
         // DE lang id
         $_COOKIE["oxidadminlanguage"] = 0;
-        $aLangs = $oLogin->UNITgetAvailableLanguages();
+        $aLangs = $oLogin->_getAvailableLanguages();
         $this->assertEquals($aLanguages, $aLangs);
     }
 
@@ -258,7 +258,7 @@ class LoginTest extends \OxidTestCase
     public function testAuthorize()
     {
         $oView = oxNew('Login');
-        $this->assertTrue($oView->UNITauthorize());
+        $this->assertTrue($oView->_authorize());
     }
 
     /**

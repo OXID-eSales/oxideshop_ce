@@ -362,9 +362,9 @@ class BaseTest extends \OxidTestCase
         $oBase->init('oxsomething');
 
         // adding some test fields ..
-        $oBase->UNITaddField('oxfield1', 1, 'datetime');
-        $oBase->UNITaddField('oxfield2', 1, 'timestamp');
-        $oBase->UNITaddField('oxfield3', 1, 'date');
+        $oBase->_addField('oxfield1', 1, 'datetime');
+        $oBase->_addField('oxfield2', 1, 'timestamp');
+        $oBase->_addField('oxfield3', 1, 'date');
 
         $this->assertEquals('ggg', $oBase->save());
 
@@ -674,7 +674,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $this->assertEquals("oxtesttable__oxtestfield", $oBase->UNITgetFieldLongName('oxtestfield'));
+        $this->assertEquals("oxtesttable__oxtestfield", $oBase->_getFieldLongName('oxtestfield'));
     }
 
     /**
@@ -697,7 +697,7 @@ class BaseTest extends \OxidTestCase
         $base->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
 
         $expectedOxid = "oxid = 'test1'";
-        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields());
+        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields());
     }
 
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOff()
@@ -711,7 +711,7 @@ class BaseTest extends \OxidTestCase
         $shopId = $this->getUpdateShopId();
 
         $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1'";
-        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields(false));
+        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields(false));
     }
 
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOn()
@@ -725,7 +725,7 @@ class BaseTest extends \OxidTestCase
 
         $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
         $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = ''";
-        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields());
+        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields());
     }
 
     /**
@@ -1013,7 +1013,7 @@ class BaseTest extends \OxidTestCase
         $this->assertFalse(isset($aFieldNames['oxtitle']));
         $rs = array("oxid" => "oxtopstart", "oxtitle" => "Startseite unten");
         foreach ($rs as $name => $value) {
-            $oBase->UNITsetFieldData($name, $value);
+            $oBase->_setFieldData($name, $value);
         }
         //standard field
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
@@ -1666,7 +1666,7 @@ class BaseTest extends \OxidTestCase
         $base->init($table);
         $base->$field1 = new oxField($val1, oxField::T_RAW);
 
-        $return = $base->UNITinsert();
+        $return = $base->_insert();
 
         $count = (int) oxDb::getDb()->getOne(
             "select count(*) from `$table` where $col1 = '$val1'"
@@ -1722,7 +1722,7 @@ class BaseTest extends \OxidTestCase
         }
 
         $oBase = oxNew('oxBase');
-        $sResult = $oBase->UNITgetObjectViewName("oxarticles");
+        $sResult = $oBase->_getObjectViewName("oxarticles");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
@@ -1736,7 +1736,7 @@ class BaseTest extends \OxidTestCase
         }
 
         $oBase = oxNew('oxBase');
-        $sResult = $oBase->UNITgetObjectViewName("oxarticles", "1");
+        $sResult = $oBase->_getObjectViewName("oxarticles", "1");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
@@ -1749,7 +1749,7 @@ class BaseTest extends \OxidTestCase
         $table = 'oxactions';
         $base = oxNew('oxBase');
 
-        $sResult = $base->UNITgetObjectViewName($table, $shopId);
+        $sResult = $base->_getObjectViewName($table, $shopId);
 
         $this->assertSame("oxv_$table", $sResult);
     }
@@ -1765,7 +1765,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init('oxactions');
         $aExpectedFields = array('oxid' => 0, 'oxshopid' => 0, 'oxtype' => 0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive' => 0, 'oxactivefrom' => 0, 'oxactiveto' => 0, 'oxpic' => 0, 'oxpic_1' => 0, 'oxpic_2' => 0, 'oxpic_3' => 0, 'oxlink' => 0, 'oxlink_1' => 0, 'oxlink_2' => 0, 'oxlink_3' => 0, 'oxsort' => 0, 'oxtimestamp' => 0);
 
-        $this->assertEquals($aExpectedFields, $oBase->UNITgetAllFields(true));
+        $this->assertEquals($aExpectedFields, $oBase->_getAllFields(true));
     }
 
     /**
@@ -1777,7 +1777,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         //should not throw any error
-        $oBase->UNITgetAllFields();
+        $oBase->_getAllFields();
     }
 
     /**
@@ -1789,7 +1789,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->UNITaddField('oxtestfield', 1);
+        $oBase->_addField('oxtestfield', 1);
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1806,7 +1806,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->UNITaddField('oxtestfield', 1, null, 20);
+        $oBase->_addField('oxtestfield', 1, null, 20);
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1825,7 +1825,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->UNITaddField('oxtestfield', 1, 'datetime');
+        $oBase->_addField('oxtestfield', 1, 'datetime');
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1994,9 +1994,9 @@ class BaseTest extends \OxidTestCase
     public function testIsInList()
     {
         $oSubj = $this->getProxyClass('oxBase');
-        $this->assertFalse($oSubj->UNITisInList());
+        $this->assertFalse($oSubj->_isInList());
         $oSubj->setNonPublicVar("_blIsInList", true);
-        $this->assertTrue($oSubj->UNITisInList());
+        $this->assertTrue($oSubj->_isInList());
     }
 
     /**

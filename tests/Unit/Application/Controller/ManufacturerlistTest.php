@@ -186,7 +186,7 @@ class ManufacturerlistTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getActManufacturer"));
         $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $this->assertEquals("testLink", $oView->UNITaddPageNrParam("testUrl", 1));
+        $this->assertEquals("testLink", $oView->_addPageNrParam("testUrl", 1));
     }
 
     /**
@@ -198,7 +198,7 @@ class ManufacturerlistTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getActManufacturer"));
         $oView->expects($this->never())->method('getActManufacturer');
-        $oView->UNITaddPageNrParam("testUrl", 1);
+        $oView->_addPageNrParam("testUrl", 1);
     }
 
     /**
@@ -242,7 +242,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getActManufacturer"));
         $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue("testActManufacturer"));
 
-        $this->assertEquals("testActManufacturer", $oView->UNITgetSubject(0));
+        $this->assertEquals("testActManufacturer", $oView->_getSubject(0));
     }
 
     /**
@@ -253,7 +253,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
 
         $oListView = oxNew('manufacturerlist');
-        $this->assertEquals(2, $oListView->UNITgetProductLinkType());
+        $this->assertEquals(2, $oListView->_getProductLinkType());
     }
 
     /**

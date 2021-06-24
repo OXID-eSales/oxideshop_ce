@@ -78,15 +78,15 @@ class ContentTest extends \OxidTestCase
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->UNITcanShowContent("oxagb"));
-        $this->assertTrue($oView->UNITcanShowContent("oxrightofwithdrawal"));
-        $this->assertTrue($oView->UNITcanShowContent("oximpressum"));
-        $this->assertFalse($oView->UNITcanShowContent("testcontentident"));
+        $this->assertTrue($oView->_canShowContent("oxagb"));
+        $this->assertTrue($oView->_canShowContent("oxrightofwithdrawal"));
+        $this->assertTrue($oView->_canShowContent("oximpressum"));
+        $this->assertFalse($oView->_canShowContent("testcontentident"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getUser", "isEnabledPrivateSales"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
-        $this->assertTrue($oView->UNITcanShowContent("testcontentident"));
+        $this->assertTrue($oView->_canShowContent("testcontentident"));
     }
 
     /**
@@ -114,7 +114,7 @@ class ContentTest extends \OxidTestCase
         $this->setRequestParameter('oxcid', 'testseoobjectid');
 
         $oContentView = oxNew('content');
-        $this->assertEquals('testseoobjectid', $oContentView->UNITgetSeoObjectId());
+        $this->assertEquals('testseoobjectid', $oContentView->_getSeoObjectId());
     }
 
     /**
@@ -189,7 +189,7 @@ class ContentTest extends \OxidTestCase
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->UNITprepareMetaKeyword('testtitle'), $oContentView->UNITprepareMetaKeyword(null));
+        $this->assertEquals($oView->_prepareMetaKeyword('testtitle'), $oContentView->_prepareMetaKeyword(null));
     }
 
     /**
@@ -207,7 +207,7 @@ class ContentTest extends \OxidTestCase
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->UNITprepareMetaDescription('testtitle'), $oContentView->UNITprepareMetaDescription(null));
+        $this->assertEquals($oView->_prepareMetaDescription('testtitle'), $oContentView->_prepareMetaDescription(null));
     }
 
     /**
@@ -367,7 +367,7 @@ class ContentTest extends \OxidTestCase
     {
         $this->setRequestParameter('tpl', 'test.tpl');
         $oObj = $this->getProxyClass("content");
-        $this->assertEquals('message/test.tpl', $oObj->UNITgetTplName());
+        $this->assertEquals('message/test.tpl', $oObj->_getTplName());
     }
 
     /**
@@ -396,7 +396,7 @@ class ContentTest extends \OxidTestCase
     {
         $this->setRequestParameter('tpl', '2eb46767947d21851.22681675');
         $oObj = $this->getProxyClass("content");
-        $this->assertNull($oObj->UNITgetTplName());
+        $this->assertNull($oObj->_getTplName());
     }
 
     public function testContentNotFound()

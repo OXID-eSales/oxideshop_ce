@@ -205,7 +205,7 @@ class OrderarticleTest extends \OxidTestCase
     {
         $oOrderArticle = oxNew('oxOrderArticle');
 
-        $oArticle = $oOrderArticle->UNITgetOrderArticle("1126");
+        $oArticle = $oOrderArticle->_getOrderArticle("1126");
         $this->assertTrue($oArticle instanceof article);
         $this->assertTrue($oArticle->getLoadParentData());
     }
@@ -622,8 +622,8 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStock()
     {
-        $this->assertEquals(6, $this->_oOrderArticle->UNITgetArtStock(-4, false));
-        $this->assertEquals(15, $this->_oOrderArticle->UNITgetArtStock(5, false));
+        $this->assertEquals(6, $this->_oOrderArticle->_getArtStock(-4, false));
+        $this->assertEquals(15, $this->_oOrderArticle->_getArtStock(5, false));
     }
 
     /*
@@ -631,7 +631,7 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStockWithNotAllowNegativeValue()
     {
-        $this->assertEquals(0, $this->_oOrderArticle->UNITgetArtStock(-17, false));
+        $this->assertEquals(0, $this->_oOrderArticle->_getArtStock(-17, false));
     }
 
     /*
@@ -639,7 +639,7 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStockWithAllowNegativeValue()
     {
-        $this->assertEquals(-7, $this->_oOrderArticle->UNITgetArtStock(-17, true));
+        $this->assertEquals(-7, $this->_oOrderArticle->_getArtStock(-17, true));
     }
 
     /**
@@ -786,7 +786,7 @@ class OrderarticleTest extends \OxidTestCase
         $now = date('Y-m-d H:i:s', time());
         $oOrderArticle = $this->getProxyClass('oxOrderArticle');
         $oOrderArticle->setId('_testOrderArticleId2');
-        $oOrderArticle->UNITinsert();
+        $oOrderArticle->_insert();
         $sOxid = oxDb::getDb()->getOne("Select oxid from oxorderarticles where oxid = '_testOrderArticleId2'");
         $this->assertEquals('_testOrderArticleId2', $sOxid);
         $this->assertTrue($oOrderArticle->oxorderarticles__oxtimestamp->value >= $now);

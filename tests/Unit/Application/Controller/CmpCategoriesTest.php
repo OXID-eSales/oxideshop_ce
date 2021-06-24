@@ -246,7 +246,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter('mnid', null);
         $this->setRequestParameter('cnid', null);
 
-        $this->assertEquals('default category', $o->UNITgetActCat());
+        $this->assertEquals('default category', $o->_getActCat());
     }
 
     public function testGetActCatLoadDefaultoxroot()
@@ -265,7 +265,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter('mnid', null);
         $this->setRequestParameter('cnid', null);
 
-        $this->assertSame(null, $o->UNITgetActCat());
+        $this->assertSame(null, $o->_getActCat());
     }
 
     public function testGetActCatWithProduct()
@@ -281,7 +281,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'mnid');
         $this->setRequestParameter('cnid', 'cnid');
 
-        $this->assertSame(null, $o->UNITgetActCat());
+        $this->assertSame(null, $o->_getActCat());
     }
 
     public function testGetActCatWithProductAltBranches()
@@ -297,7 +297,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter('mnid', '');
         $this->setRequestParameter('cnid', 'cnid');
 
-        $this->assertSame(null, $o->UNITgetActCat());
+        $this->assertSame(null, $o->_getActCat());
     }
 
     public function testLoadCategoryTree()
@@ -315,7 +315,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $o->setParent($oParent);
 
-        $this->assertNull($o->UNITloadCategoryTree("act cat"));
+        $this->assertNull($o->_loadCategoryTree("act cat"));
     }
 
     public function testLoadManufacturerTreeIsNotNeeded()
@@ -328,7 +328,7 @@ class CmpCategoriesTest extends \OxidTestCase
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
-        $this->assertNull($o->UNITloadManufacturerTree("act Manufacturer"));
+        $this->assertNull($o->_loadManufacturerTree("act Manufacturer"));
     }
 
     public function testLoadManufacturerTree()
@@ -362,7 +362,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $o->setParent($oParent);
 
-        $this->assertNull($o->UNITloadManufacturerTree("act Manufacturer"));
+        $this->assertNull($o->_loadManufacturerTree("act Manufacturer"));
     }
 
     public function testRenderEverythingOff()
@@ -432,7 +432,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $o = $this->getMock($sClass, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $o->UNIT_oMoreCat = "more category";
+        $o->__oMoreCat = "more category";
         $o->setParent($oParent);
         $o->setCategoryTree($oCTree);
 
@@ -458,7 +458,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testVendorId"));
+        $this->assertEquals("testCatId", $oCmp->_addAdditionalParams(oxNew('oxarticle'), "testCatId", "testManId", "testVendorId"));
     }
 
     /**
@@ -485,7 +485,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, "testCatId", "testManId", "testVendorId"));
+        $this->assertEquals("testManId", $oCmp->_addAdditionalParams($oProduct, "testCatId", "testManId", "testVendorId"));
     }
 
     /**
@@ -511,7 +511,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("v_testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, "v_testVendorId", "testManId", "v_testVendorId"));
+        $this->assertEquals("v_testVendorId", $oCmp->_addAdditionalParams($oProduct, "v_testVendorId", "testManId", "v_testVendorId"));
     }
 
     /**
@@ -536,7 +536,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testCatId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
+        $this->assertEquals("testCatId", $oCmp->_addAdditionalParams($oProduct, null, null, null));
     }
 
     /**
@@ -562,7 +562,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testManId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
+        $this->assertEquals("testManId", $oCmp->_addAdditionalParams($oProduct, null, null, null));
     }
 
     /**
@@ -589,6 +589,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\CategoriesComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method("getParent")->will($this->returnValue($oParent));
-        $this->assertEquals("testVendorId", $oCmp->UNITaddAdditionalParams($oProduct, null, null, null));
+        $this->assertEquals("testVendorId", $oCmp->_addAdditionalParams($oProduct, null, null, null));
     }
 }

@@ -67,9 +67,9 @@ class VarianthandlerTest extends \OxidTestCase
         $oValue->value = '';
 
         $oVariantHandler = oxNew("oxVariantHandler");
-        $this->assertEquals(10, $oVariantHandler->UNITgetValuePrice($oValue, 10));
+        $this->assertEquals(10, $oVariantHandler->_getValuePrice($oValue, 10));
         $oValue->priceUnit = '%';
-        $this->assertEquals(1, $oVariantHandler->UNITgetValuePrice($oValue, 10));
+        $this->assertEquals(1, $oVariantHandler->_getValuePrice($oValue, 10));
 
         $oValue = new stdClass();
         $oValue->price = -10;
@@ -77,7 +77,7 @@ class VarianthandlerTest extends \OxidTestCase
         $oValue->priceUnit = '%';
         $oValue->name = 'red';
         $oValue->value = '';
-        $this->assertEquals(-1, $oVariantHandler->UNITgetValuePrice($oValue, 10));
+        $this->assertEquals(-1, $oVariantHandler->_getValuePrice($oValue, 10));
     }
 
     public function testAssignValues()
@@ -103,7 +103,7 @@ class VarianthandlerTest extends \OxidTestCase
         $oArticle->load('2000');
 
         $oVariantHandler = oxNew("oxVariantHandler");
-        $aVar = $oVariantHandler->UNITassignValues($aValues, oxNew('oxArticleList'), $oArticle, array('en', 'de'));
+        $aVar = $oVariantHandler->_assignValues($aValues, oxNew('oxArticleList'), $oArticle, array('en', 'de'));
         $oRez = $myDB->select("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
@@ -179,7 +179,7 @@ class VarianthandlerTest extends \OxidTestCase
                          'oxarticles__oxisconfigurable' => "1",
         );
         $oVariantHandler = oxNew("oxVariantHandler");
-        $sVariantId = $oVariantHandler->UNITcreateNewVariant($aParams, "_testArt");
+        $sVariantId = $oVariantHandler->_createNewVariant($aParams, "_testArt");
         $oVariant = oxNew("oxArticle");
         $oVariant->load($sVariantId);
         $this->assertEquals("_testVar", $sVariantId);
@@ -307,7 +307,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         // no filter
         $aFilter = array();
-        $this->assertEquals(array($aArray, null, false), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aArray, null, false), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
 
         // filter 1
         // expected result
@@ -329,7 +329,7 @@ class VarianthandlerTest extends \OxidTestCase
         $aResult["test4"][] = array('name' => '', 'disabled' => false, 'active' => false, 'hash' => md5(''));
 
         $aFilter = array(md5('a1'), '', '');
-        $this->assertEquals(array($aResult, "test1", false), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aResult, "test1", false), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
 
         // filter 2
         // expected result
@@ -351,7 +351,7 @@ class VarianthandlerTest extends \OxidTestCase
         $aResult["test4"][] = array('name' => '', 'disabled' => true, 'active' => false, 'hash' => md5(''));
 
         $aFilter = array('', md5('b1'));
-        $this->assertEquals(array($aResult, "test1", false), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aResult, "test1", false), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
 
         // filter 3
         // expected result
@@ -374,7 +374,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         $aFilter = array(md5('a1'), md5('b1'));
 
-        $this->assertEquals(array($aResult, "test1", false), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aResult, "test1", false), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
 
         // filter 4
         // expected result
@@ -397,7 +397,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         $aFilter = array(md5('a1'), md5('b2'));
 
-        $this->assertEquals(array($aResult, "test2", false), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aResult, "test2", false), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
 
         // filter 5
         // expected result
@@ -420,7 +420,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         $aFilter = array(md5('a2'), md5('b2'), md5('c3'));
 
-        $this->assertEquals(array($aResult, "test3", true), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
+        $this->assertEquals(array($aResult, "test3", true), $oHandler->_applyVariantSelectionsFilter($aArray, $aFilter));
     }
 
     /**
@@ -443,7 +443,7 @@ class VarianthandlerTest extends \OxidTestCase
         $aSelections["test3"][] = array('name' => '', 'disabled' => true, 'active' => false, 'hash' => md5(''));
 
         $oHandler = oxNew('oxVariantHandler');
-        $aList = $oHandler->UNITbuildVariantSelectionsList($aVarSelects, $aSelections);
+        $aList = $oHandler->_buildVariantSelectionsList($aVarSelects, $aSelections);
 
         // testing
         $this->assertNotNull($aList);

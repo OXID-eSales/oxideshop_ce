@@ -166,7 +166,7 @@ class NewssubscribedTest extends \OxidTestCase
         $oNewsSubscribed->setWasSubscribed(false);
 
         $sUnsubscribeDate = $oNewsSubscribed->oxnewssubscribed__oxunsubscribed->value;
-        $oNewsSubscribed->UNITupdate();
+        $oNewsSubscribed->_update();
 
         // reloading and testing
         $oNewsSubscribed = oxNew('oxnewssubscribed');

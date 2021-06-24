@@ -136,7 +136,7 @@ class ArticleSeoTest extends \OxidTestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Article_Seo');
-        $this->assertTrue($oView->UNITgetEncoder() instanceof SeoEncoderArticle);
+        $this->assertTrue($oView->_getEncoder() instanceof SeoEncoderArticle);
     }
 
 
@@ -162,7 +162,7 @@ class ArticleSeoTest extends \OxidTestCase
         $oArticle->oxarticles__oxvendorid = new oxField("_test1");
 
         $oView = oxNew('Article_Seo');
-        $aList = $oView->UNITgetVendorList($oArticle);
+        $aList = $oView->_getVendorList($oArticle);
 
         $this->assertTrue(is_array($aList));
 
@@ -184,7 +184,7 @@ class ArticleSeoTest extends \OxidTestCase
         $oArticle->oxarticles__oxmanufacturerid = new oxField("_test1");
 
         $oView = oxNew('Article_Seo');
-        $aList = $oView->UNITgetManufacturerList($oArticle);
+        $aList = $oView->_getManufacturerList($oArticle);
 
         $this->assertTrue(is_array($aList));
 
@@ -267,7 +267,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId"));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue(999));
-        $this->assertEquals(999, $oView->UNITgetAltSeoEntryId());
+        $this->assertEquals(999, $oView->_getAltSeoEntryId());
     }
 
     /**
@@ -287,7 +287,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $view = oxNew("Article_Seo");
 
-        $this->assertEquals('oxarticle', $view->UNITgetSeoEntryType());
+        $this->assertEquals('oxarticle', $view->_getSeoEntryType());
     }
 
     /**
@@ -296,7 +296,7 @@ class ArticleSeoTest extends \OxidTestCase
     public function testGetType()
     {
         $oView = oxNew('Article_Seo');
-        $this->assertEquals('oxarticle', $oView->UNITgetType());
+        $this->assertEquals('oxarticle', $oView->_getType());
     }
 
     /**
@@ -379,7 +379,7 @@ class ArticleSeoTest extends \OxidTestCase
         $iCount = $oDb->getOne($sQ);
 
         $oView = oxNew('Article_Seo');
-        $aList = $oView->UNITgetCategoryList($oProduct);
+        $aList = $oView->_getCategoryList($oProduct);
 
         // must be have few assignments
         $this->assertTrue($iCount > 0);

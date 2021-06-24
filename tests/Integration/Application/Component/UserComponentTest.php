@@ -504,7 +504,7 @@ class UserComponentTest extends \OxidTestCase
         $oUser->expects($this->atLeastOnce())->method('isLoadedFromCookie')->will($this->returnValue("testUser"));
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser'));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
-        $oUserView->UNITloadSessionUser();
+        $oUserView->_loadSessionUser();
     }
 
     /**
@@ -517,7 +517,7 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getSession', 'getUser'));
         $oUserView->expects($this->never())->method('getSession');
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(false));
-        $this->assertNull($oUserView->UNITloadSessionUser());
+        $this->assertNull($oUserView->_loadSessionUser());
     }
 
     /**
@@ -597,7 +597,7 @@ class UserComponentTest extends \OxidTestCase
             ->method('getLoginStatus')
             ->willReturn(1);
 
-        $this->assertEquals('payment', $userComponent->UNITafterLogin($user));
+        $this->assertEquals('payment', $userComponent->_afterLogin($user));
     }
 
     /**
@@ -613,7 +613,7 @@ class UserComponentTest extends \OxidTestCase
 
         try {
             $oUserView = oxNew('oxcmp_user');
-            $oUserView->UNITafterLogin($oUser);
+            $oUserView->_afterLogin($oUser);
         } catch (Exception $oE) {
             if ($oE->getCode() === 123) {
                 return;
@@ -657,7 +657,7 @@ class UserComponentTest extends \OxidTestCase
         $session->setBasket($oBasket);
 
         $oUserView = oxNew(\OxidEsales\Eshop\Application\Component\UserComponent::class);
-        $oUserView->UNITafterLogout();
+        $oUserView->_afterLogout();
 
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->assertNull($session->getVariable('paymentid'));
@@ -1223,7 +1223,7 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('deladr', $aRawVal);
         $this->setRequestParameter('blshowshipaddress', true);
         $oUserView = $this->getProxyClass("oxcmp_user");
-        $this->assertEquals($aRawVal, $oUserView->UNITgetDelAddressData());
+        $this->assertEquals($aRawVal, $oUserView->_getDelAddressData());
     }
 
     /**
@@ -1236,7 +1236,7 @@ class UserComponentTest extends \OxidTestCase
         $aRawVal = array('oxaddress__oxsal' => 'MSR');
         $this->setRequestParameter('deladr', $aRawVal);
         $oUserView = $this->getProxyClass("oxcmp_user");
-        $this->assertEquals(array(), $oUserView->UNITgetDelAddressData());
+        $this->assertEquals(array(), $oUserView->_getDelAddressData());
     }
 
     public function testChangeUserBillingAddress()
@@ -1389,7 +1389,7 @@ class UserComponentTest extends \OxidTestCase
         $oView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(null));
         $oView->expects($this->atLEastOnce())->method('getParent')->will($this->returnValue($oTestView));
 
-        $oView->UNITcheckPsState();
+        $oView->_checkPsState();
     }
 
     /**

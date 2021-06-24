@@ -149,12 +149,12 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("somelisttype"));
         $oDetailsView->expects($this->never())->method('getDynUrlParams');
-        $this->assertNull($oDetailsView->UNITgetAddUrlParams());
+        $this->assertNull($oDetailsView->_getAddUrlParams());
 
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('getDynUrlParams')->will($this->returnValue("searchparams"));
-        $this->assertEquals("searchparams", $oDetailsView->UNITgetAddUrlParams());
+        $this->assertEquals("searchparams", $oDetailsView->_getAddUrlParams());
     }
 
     /**
@@ -172,7 +172,7 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView->expects($this->once())->method('getLinkType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('_getAddUrlParams')->will($this->returnValue("searchparams"));
 
-        $oDetailsView->UNITprocessProduct($oProduct);
+        $oDetailsView->_processProduct($oProduct);
     }
 
     /**
@@ -224,7 +224,7 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $oProduct = $oDetailsView->UNITgetParentProduct('1126');
+        $oProduct = $oDetailsView->_getParentProduct('1126');
         $this->assertTrue($oProduct instanceof article);
         $this->assertEquals('1126', $oProduct->getId());
     }
@@ -658,9 +658,9 @@ class DetailsTest extends \OxidTestCase
         $sKeywords .= ", Geschenke, Bar-Equipment";
 
         $oView = oxNew('oxUBase');
-        $sTestKeywords = $oView->UNITprepareMetaKeyword($sKeywords, true) . ", testvalue1, testvalue2, testvalue3";
+        $sTestKeywords = $oView->_prepareMetaKeyword($sKeywords, true) . ", testvalue1, testvalue2, testvalue3";
 
-        $this->assertEquals($sTestKeywords, $oDetails->UNITprepareMetaKeyword(null));
+        $this->assertEquals($sTestKeywords, $oDetails->_prepareMetaKeyword(null));
     }
 
     /**
@@ -678,7 +678,7 @@ class DetailsTest extends \OxidTestCase
         $sMeta = $oProduct->oxarticles__oxtitle->value . ' - ' . $oProduct->getLongDescription();
 
         $oView = oxNew('oxUBase');
-        $this->assertEquals($oView->UNITprepareMetaDescription($sMeta, 200, false), $oDetails->UNITprepareMetaDescription(null));
+        $this->assertEquals($oView->_prepareMetaDescription($sMeta, 200, false), $oDetails->_prepareMetaDescription(null));
     }
 
     /**
@@ -702,7 +702,7 @@ class DetailsTest extends \OxidTestCase
         $sMeta = 'Title - parsed description';
 
         $oView = oxNew('oxUBase');
-        $this->assertEquals($oView->UNITprepareMetaDescription($sMeta, 200, false), $oDetails->UNITprepareMetaDescription(null));
+        $this->assertEquals($oView->_prepareMetaDescription($sMeta, 200, false), $oDetails->_prepareMetaDescription(null));
     }
 
     /**

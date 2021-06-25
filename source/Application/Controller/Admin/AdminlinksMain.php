@@ -105,8 +105,8 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         $iEditLanguage = Registry::getRequest()->getRequestEscapedParameter("editlanguage");
-        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, $tableViewNameGenerator->getViewName('oxlinks'));
 
         if ($soxId != "-1") {
             //$oLinks->load( $soxId );

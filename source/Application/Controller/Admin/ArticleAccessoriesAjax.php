@@ -190,9 +190,9 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function sortAccessoriesList()
     {
-        $oxidRelationId = Registry::getConfig()->getRequestEscapedParameter('oxid');
-        $selectedIdForSort = Registry::getConfig()->getRequestEscapedParameter('sortoxid');
-        $sortDirection = Registry::getConfig()->getRequestEscapedParameter('direction');
+        $oxidRelationId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $selectedIdForSort = Registry::getRequest()->getRequestEscapedParameter('sortoxid');
+        $sortDirection = Registry::getRequest()->getRequestEscapedParameter('direction');
 
         $accessoriesList = oxNew(ListModel::class);
         $accessoriesList->init("oxbase", "oxaccessoire2article");

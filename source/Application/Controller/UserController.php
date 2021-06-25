@@ -100,7 +100,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             }
         }
 
-        $this->_aViewData["deladr"] = $config->getRequestParameter('deladr');
+        $this->_aViewData["deladr"] = Registry::getRequest()->getRequestParameter('deladr');
 
         parent::render();
 

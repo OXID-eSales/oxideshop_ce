@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
-
 /**
  * Admin actionss manager.
  * Sets list template, list object class ('oxactions') and default sorting
@@ -68,6 +67,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
         $sDisplayType = (int) Registry::getRequest()->getRequestEscapedParameter('displaytype');
+        $tableViewNameGenerator = new TableViewNameGenerator();
         $sTable = $tableViewNameGenerator->getViewName("oxactions");
 
         // searching for empty oxfolder fields

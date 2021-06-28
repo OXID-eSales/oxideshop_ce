@@ -50,7 +50,7 @@ function _groupExp(el) {
                     <dl>
                         <dt>
                             [{block name="admin_module_config_var_types"}]
-                            
+
                             [{if $var_type == 'bool'}]
                                 [{block name="admin_module_config_var_type_bool"}]
                                 <input type=hidden name="confbools[[{$module_var}]]" value=false>
@@ -82,10 +82,10 @@ function _groupExp(el) {
                                 [{/block}]
                             [{elseif $var_type == 'password'}]
                                 [{block name="admin_module_config_var_type_password"}]
-                                <input class="password_input" type="password" style="width: 250px;" name="confpassword[[{$module_var}]]" data-empty="[{if $confpassword.$module_var}]false[{else}]true[{/if}]" data-errorMessage="[{oxmultilang ident="MODULE_PASSWORDS_DO_NOT_MATCH"}]" [{$readonly}] title="[{oxmultilang ident="MODULE_REPEAT_PASSWORD"}]">
+                                <input class="password_input" type="password" style="width: 250px;" name="confpassword[[{$module_var}]]" data-empty="[{if $confpassword.$module_var}]false[{else}]true[{/if}]" data-errormessage="[{oxmultilang ident="MODULE_PASSWORDS_DO_NOT_MATCH"}]" [{$readonly}] title="[{oxmultilang ident="MODULE_REPEAT_PASSWORD"}]">
                                 [{/block}]
                             [{/if}]
-                            
+
                             [{/block}]
                             [{oxinputhelp ident="HELP_SHOP_MODULE_`$module_var`"}]
                         </dt>

@@ -42,7 +42,7 @@ class OnlineModuleVersionNotifierCaller extends \OxidEsales\Eshop\Core\OnlineCal
      *
      * @return string XML document tag name.
      */
-    protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::XML_DOCUMENT_NAME;
     }
@@ -52,7 +52,7 @@ class OnlineModuleVersionNotifierCaller extends \OxidEsales\Eshop\Core\OnlineCal
      *
      * @return string Web service url.
      */
-    protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::WEB_SERVICE_URL;
     }

@@ -316,10 +316,10 @@ class InternationalTest extends AcceptanceTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->type("voucherNr", "222222");
         $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
-        $this->_continueToNextStep(2);
+        $this->continueToNextStep(2);
         $this->assertEquals("Test S&H set [EN] šųößлы", $this->getSelectedLabel("sShipSet"));
         $this->selectAndWait("sShipSet", "label=Standard");
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         //Order Step4
         //rights of withdrawal
         $this->assertElementPresent("//form[@id='orderConfirmAgbTop']//a[text()='Terms and Conditions']");
@@ -328,12 +328,12 @@ class InternationalTest extends AcceptanceTestCase
         $this->clickAndWait("//tr[@id='cartItem_1']/td/a");
         $this->assertEquals("Test product 1 [EN] šųößлы", $this->getText("//h1"));
         $this->openBasket();
-        $this->_continueToNextStep(3);
+        $this->continueToNextStep(3);
 
         $this->clickAndWait("//tr[@id='cartItem_2']/td[2]//a");
         $this->assertEquals("Test product 2 [EN] šųößлы var2 [EN] šųößлы", $this->getText("//h1"));
         $this->openBasket();
-        $this->_continueToNextStep(3);
+        $this->continueToNextStep(3);
         //submit without checkbox
         $this->click("//form[@id='orderConfirmAgbTop']//button");
         $this->waitForText("%READ_AND_CONFIRM_TERMS%");
@@ -437,7 +437,7 @@ class InternationalTest extends AcceptanceTestCase
      *
      * @param int $iSteps
      */
-    private function _continueToNextStep($iSteps = 1)
+    private function continueToNextStep($iSteps = 1)
     {
         for ($i = 1; $i <= $iSteps; $i++) {
             $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");

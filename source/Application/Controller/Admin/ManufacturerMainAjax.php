@@ -53,13 +53,13 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // looking for table/view
-        $articlesViewName = $this->_getViewName('oxarticles');
-        $objectToCategoryViewName = $this->_getViewName('oxobject2category');
+        $articlesViewName = $this->getViewName('oxarticles');
+        $objectToCategoryViewName = $this->getViewName('oxobject2category');
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $manufacturerId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -91,11 +91,11 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $articleViewName = $this->_getViewName('oxarticles');
-        $query = parent::_addFilter($query);
+        $articleViewName = $this->getViewName('oxarticles');
+        $query = parent::addFilter($query);
 
         // display variants or not ?
         $query .= $config->getConfigParam('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';
@@ -109,12 +109,12 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     public function removeManufacturer()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $articleIds = $this->_getActionIds('oxarticles.oxid');
+        $articleIds = $this->getActionIds('oxarticles.oxid');
         $manufacturerId = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter("all")) {
-            $articleViewTable = $this->_getViewName('oxarticles');
-            $articleIds = $this->_getAll($this->_addFilter("select $articleViewTable.oxid " . $this->_getQuery()));
+            $articleViewTable = $this->getViewName('oxarticles');
+            $articleIds = $this->getAll($this->addFilter("select $articleViewTable.oxid " . $this->getQuery()));
         }
 
         if (is_array($articleIds) && !empty($articleIds)) {
@@ -147,12 +147,12 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $articleIds = $this->_getActionIds('oxarticles.oxid');
+        $articleIds = $this->getActionIds('oxarticles.oxid');
         $manufacturerId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $articleViewName = $this->_getViewName('oxarticles');
-            $articleIds = $this->_getAll($this->_addFilter("select $articleViewName.oxid " . $this->_getQuery()));
+            $articleViewName = $this->getViewName('oxarticles');
+            $articleIds = $this->getAll($this->addFilter("select $articleViewName.oxid " . $this->getQuery()));
         }
 
         if ($manufacturerId && $manufacturerId != "-1" && is_array($articleIds)) {

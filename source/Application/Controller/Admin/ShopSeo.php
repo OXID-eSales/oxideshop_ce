@@ -50,7 +50,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $this->_aViewData['aStaticUrls'] = $oList;
 
         // loading active url info
-        $this->_loadActiveUrl($oShop->getId());
+        $this->loadActiveUrl($oShop->getId());
 
         return "shop_seo.tpl";
     }
@@ -60,7 +60,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @param int $iShopId active shop id
      */
-    protected function _loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActObject = null;
         if ($this->_sActSeoObject) {
@@ -106,7 +106,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
 
             // saving static url changes
             if (is_array($aStaticUrl = Registry::getRequest()->getRequestEscapedParameter('aStaticUrl'))) {
-                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
+                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
             }
         }
     }
@@ -118,15 +118,15 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return array
      */
-    protected function _processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($aUrls['oxseo__oxstdurl']) && $aUrls['oxseo__oxstdurl']) {
-            $aUrls['oxseo__oxstdurl'] = $this->_cleanupUrl($aUrls['oxseo__oxstdurl']);
+            $aUrls['oxseo__oxstdurl'] = $this->cleanupUrl($aUrls['oxseo__oxstdurl']);
         }
 
         if (isset($aUrls['oxseo__oxseourl']) && is_array($aUrls['oxseo__oxseourl'])) {
             foreach ($aUrls['oxseo__oxseourl'] as $iPos => $sUrl) {
-                $aUrls['oxseo__oxseourl'][$iPos] = $this->_cleanupUrl($sUrl);
+                $aUrls['oxseo__oxseourl'][$iPos] = $this->cleanupUrl($sUrl);
             }
         }
 
@@ -140,7 +140,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return string
      */
-    protected function _cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // replacing &amp; to & or removing double &&
         while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {

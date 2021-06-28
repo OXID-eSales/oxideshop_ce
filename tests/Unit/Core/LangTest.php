@@ -1603,7 +1603,7 @@ class LangTest extends \OxidTestCase
     {
         $oDb = oxDb::getDb();
 
-        $this->_setBaseShopLanguageParameters();
+        $this->setBaseShopLanguageParameters();
 
         // disable language config parameter because we are testing each language parameter separately
         $oDb->execute("delete from `oxconfig` WHERE `oxvarname` = '{$sLanguageParamNameDisabled}' ");
@@ -1622,7 +1622,7 @@ class LangTest extends \OxidTestCase
     /**
      *
      */
-    private function _setBaseShopLanguageParameters()
+    private function setBaseShopLanguageParameters()
     {
         $aLanguages = array(
             'de' => 'Deutch',

@@ -112,7 +112,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     public function load($sOxid)
     {
         if ($sOxid == 'root') {
-            return $this->_setRootObjectData();
+            return $this->setRootObjectData();
         }
 
         return parent::load($sOxid);
@@ -123,7 +123,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @return bool
      */
-    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setId('root');
         $this->oxvendor__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

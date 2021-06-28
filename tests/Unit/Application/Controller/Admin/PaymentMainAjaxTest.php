@@ -53,18 +53,18 @@ class PaymentMainAjaxTest extends \OxidTestCase
     }
 
     /**
-     * PaymentMainAjax::_getQuery() test case
+     * PaymentMainAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxgroups_de", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentMainAjax::_getQuery() test case
+     * PaymentMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -74,11 +74,11 @@ class PaymentMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentMainAjax::_getQuery() test case
+     * PaymentMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -88,11 +88,11 @@ class PaymentMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentMainAjax::_getQuery() test case
+     * PaymentMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -104,7 +104,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid and  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid and  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim($oView->getQuery()));
     }
 
     /**

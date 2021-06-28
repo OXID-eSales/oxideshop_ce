@@ -144,7 +144,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function sortByIds($aIds)
     {
         $this->_aOrderMap = array_flip($aIds);
-        uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
+        uksort($this->_aArray, [$this, 'sortByOrderMapCallback']);
     }
 
     /**
@@ -157,7 +157,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return int
      */
-    protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($this->_aOrderMap[$key1])) {
             if (isset($this->_aOrderMap[$key2])) {
@@ -402,9 +402,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadCategoryIds($sCatId, $aSessionFilter)
     {
         $sArticleTable = $this->getBaseObject()->getViewName();
-        $sSelect = $this->_getCategorySelect($sArticleTable . '.oxid as oxid', $sCatId, $aSessionFilter);
+        $sSelect = $this->getCategorySelect($sArticleTable . '.oxid as oxid', $sCatId, $aSessionFilter);
 
-        $this->_createIdListFromSql($sSelect);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -420,13 +420,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sArticleFields = $this->getBaseObject()->getSelectFields();
 
-        $sSelect = $this->_getCategorySelect($sArticleFields, $sCatId, $aSessionFilter);
+        $sSelect = $this->getCategorySelect($sArticleFields, $sCatId, $aSessionFilter);
 
         // calc count - we can not use count($this) here as we might have paging enabled
         // #1970C - if any filters are used, we can not use cached category article count
         $iArticleCount = null;
         if ($aSessionFilter) {
-            $iArticleCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
+            $iArticleCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($this->getCategoryCountSelect($sCatId, $aSessionFilter));
         }
 
         if ($iLimit = (int) $iLimit) {
@@ -453,7 +453,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadRecommArticles($sRecommId, $sArticlesFilter = null)
     {
-        $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
+        $sSelect = $this->getArticleSelect($sRecommId, $sArticlesFilter);
         $this->selectString($sSelect);
     }
 
@@ -467,14 +467,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadRecommArticleIds($sRecommId, $sArticlesFilter)
     {
-        $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
+        $sSelect = $this->getArticleSelect($sRecommId, $sArticlesFilter);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
         $sPartial = substr($sSelect, strpos($sSelect, ' from '));
         $sSelect = "select distinct $sArtView.oxid $sPartial ";
 
-        $this->_createIdListFromSql($sSelect);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -487,7 +487,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
@@ -518,7 +518,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sWhere = null;
 
         if ($sSearchStr) {
-            $sWhere = $this->_getSearchSelect($sSearchStr);
+            $sWhere = $this->getSearchSelect($sSearchStr);
         }
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -553,7 +553,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sSelect .= " order by {$this->_sCustomSorting} ";
         }
 
-        $this->_createIdListFromSql($sSelect);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -564,8 +564,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadPriceIds($dPriceFrom, $dPriceTo)
     {
-        $sSelect = $this->_getPriceSelect($dPriceFrom, $dPriceTo);
-        $this->_createIdListFromSql($sSelect);
+        $sSelect = $this->getPriceSelect($dPriceFrom, $dPriceTo);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -580,7 +580,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory = null)
     {
-        $sSelect = $this->_getPriceSelect($dPriceFrom, $dPriceTo);
+        $sSelect = $this->getPriceSelect($dPriceFrom, $dPriceTo);
 
         startProfile("loadPriceArticles");
         $this->selectString($sSelect);
@@ -600,8 +600,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadVendorIDs($sVendorId)
     {
-        $sSelect = $this->_getVendorSelect($sVendorId);
-        $this->_createIdListFromSql($sSelect);
+        $sSelect = $this->getVendorSelect($sVendorId);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -611,8 +611,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadManufacturerIDs($sManufacturerId)
     {
-        $sSelect = $this->_getManufacturerSelect($sManufacturerId);
-        $this->_createIdListFromSql($sSelect);
+        $sSelect = $this->getManufacturerSelect($sManufacturerId);
+        $this->createIdListFromSql($sSelect);
     }
 
     /**
@@ -626,7 +626,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadVendorArticles($sVendorId, $oVendor = null)
     {
-        $sSelect = $this->_getVendorSelect($sVendorId);
+        $sSelect = $this->getVendorSelect($sVendorId);
         $this->selectString($sSelect);
 
         return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($sVendorId);
@@ -643,7 +643,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadManufacturerArticles($sManufacturerId, $oManufacturer = null)
     {
-        $sSelect = $this->_getManufacturerSelect($sManufacturerId);
+        $sSelect = $this->getManufacturerSelect($sManufacturerId);
         $this->selectString($sSelect);
 
         return \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId);
@@ -792,7 +792,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $blUpdated = false;
 
-        if ($blForceUpdate || $this->_canUpdatePrices()) {
+        if ($blForceUpdate || $this->canUpdatePrices()) {
             // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -842,7 +842,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sSql SQL select
      */
-    protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
@@ -862,7 +862,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
@@ -903,11 +903,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
-        $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
+        $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->getFilterIdsSql($sCatId, $aFilter));
         $sIds = '';
 
         if ($aIds) {
@@ -938,7 +938,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -956,7 +956,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sFilterSql = '';
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         if ($aSessionFilter && isset($aSessionFilter[$sCatId][$iLang])) {
-            $sFilterSql = $this->_getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
+            $sFilterSql = $this->getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -977,7 +977,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -989,7 +989,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sFilterSql = '';
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         if ($aSessionFilter && isset($aSessionFilter[$sCatId][$iLang])) {
-            $sFilterSql = $this->_getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
+            $sFilterSql = $this->getFilterSql($sCatId, $aSessionFilter[$sCatId][$iLang]);
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -1009,7 +1009,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if it has string at all
         if (!$sSearchString || !str_replace(' ', '', $sSearchString)) {
@@ -1076,7 +1076,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
@@ -1104,7 +1104,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -1128,7 +1128,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -1150,7 +1150,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return bool
      */
-    protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blCan = false;

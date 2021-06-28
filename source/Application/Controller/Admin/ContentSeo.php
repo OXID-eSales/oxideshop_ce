@@ -19,7 +19,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxcontent';
     }
@@ -29,7 +29,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderContent
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class);
     }
@@ -43,7 +43,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     {
         $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($oContent->load($this->getEditObjectId())) {
-            return $this->_getEncoder()->getContentUri($oContent, $this->getEditLang());
+            return $this->getEncoder()->getContentUri($oContent, $this->getEditLang());
         }
     }
 }

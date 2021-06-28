@@ -524,7 +524,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
             $shopId = $config->getShopId();
 
-            $ids = $this->_getActiveModuleInfo();
+            $ids = $this->getActiveModuleInfo();
 
             $activeModulesId = array_keys($ids);
             $activeThemeIds = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemesList();
@@ -547,7 +547,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aActiveModuleInfo === null) {
             $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
@@ -805,7 +805,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $moduleOverridesTemplate = false;
 
-        $ids = $this->_getActiveModuleInfo();
+        $ids = $this->getActiveModuleInfo();
         if (count($ids)) {
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
             $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();

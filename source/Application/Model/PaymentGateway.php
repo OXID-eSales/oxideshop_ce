@@ -67,7 +67,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
         $this->_iLastErrorNo = null;
         $this->_sLastError = null;
 
-        if (!$this->_isActive()) {
+        if (!$this->isActive()) {
             return true; // fake yes
         }
 
@@ -105,7 +105,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blActive;
     }

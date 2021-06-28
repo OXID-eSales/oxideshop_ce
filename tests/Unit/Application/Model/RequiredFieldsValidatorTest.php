@@ -59,7 +59,7 @@ class RequiredFieldsValidatorTest extends \OxidTestCase
         $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields($aRequiredFields);
 
-        $this->assertSame($blResult, $oAddressValidator->validateFields($this->_createObject($aFields)));
+        $this->assertSame($blResult, $oAddressValidator->validateFields($this->createObject($aFields)));
     }
 
     /**
@@ -72,7 +72,7 @@ class RequiredFieldsValidatorTest extends \OxidTestCase
         $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields(array());
 
-        $this->assertTrue($oAddressValidator->validateFields($this->_createObject($aFields)));
+        $this->assertTrue($oAddressValidator->validateFields($this->createObject($aFields)));
     }
 
     /**
@@ -87,7 +87,7 @@ class RequiredFieldsValidatorTest extends \OxidTestCase
 
         $oAddressValidator = oxNew('oxRequiredFieldsValidator');
         $oAddressValidator->setRequiredFields($aRequiredFields);
-        $oAddressValidator->validateFields($this->_createObject($aFields));
+        $oAddressValidator->validateFields($this->createObject($aFields));
 
         $this->assertEquals($aInvalidFields, $oAddressValidator->getInvalidFields());
     }
@@ -97,7 +97,7 @@ class RequiredFieldsValidatorTest extends \OxidTestCase
      *
      * @return oxBase
      */
-    private function _createObject($aData)
+    private function createObject($aData)
     {
         $oObject = oxNew('oxBase');
         foreach ($aData as $sKey => $sValue) {

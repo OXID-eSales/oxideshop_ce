@@ -191,7 +191,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             return;
         }
 
-        if (!$this->_validateTermsAndConditions()) {
+        if (!$this->validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
 
             return;
@@ -216,7 +216,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
                 $oUser->onOrderExecute($oBasket, $iSuccess);
 
                 // proceeding to next view
-                return $this->_getNextStep($iSuccess);
+                return $this->getNextStep($iSuccess);
             } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $oEx) {
                 $oEx->setDestination('basket');
                 Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'basket');
@@ -492,7 +492,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return  string  $sNextStep  partial parameter url for next step
      */
-    protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sNextStep = 'thankyou';
 
@@ -539,7 +539,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return bool
      */
-    protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blValid = true;
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

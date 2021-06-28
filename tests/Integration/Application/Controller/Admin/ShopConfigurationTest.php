@@ -32,10 +32,10 @@ final class ShopConfigurationTest extends UnitTestCase
         $_POST['confstrs'] = ['stringSetting' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
-            ->setMethods(['_getModuleForConfigVars'])
+            ->setMethods(['getModuleForConfigVars'])
             ->disableOriginalConstructor()
             ->getMock();
-        $shopConfigurationController->method('_getModuleForConfigVars')->willReturn('module:testModuleId');
+        $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
         $container = ContainerFactory::getInstance()->getContainer();
@@ -54,10 +54,10 @@ final class ShopConfigurationTest extends UnitTestCase
         $_POST['confstrs'] = ['nonExisting' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
-            ->setMethods(['_getModuleForConfigVars'])
+            ->setMethods(['getModuleForConfigVars'])
             ->disableOriginalConstructor()
             ->getMock();
-        $shopConfigurationController->method('_getModuleForConfigVars')->willReturn('module:testModuleId');
+        $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
         $container = ContainerFactory::getInstance()->getContainer();

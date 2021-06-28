@@ -192,7 +192,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
         }
 
         if (($oRevUser = $this->getReviewUser()) && $this->canAcceptFormData()) {
-            if (($oActObject = $this->_getActiveObject()) && ($sType = $this->_getActiveType())) {
+            if (($oActObject = $this->getActiveObject()) && ($sType = $this->getActiveType())) {
                 if (($dRating = Registry::getRequest()->getRequestEscapedParameter('rating')) === null) {
                     $dRating = Registry::getRequest()->getRequestEscapedParameter('artrating');
                 }
@@ -273,7 +273,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return object
      */
-    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oActObject === null) {
             $this->_oActObject = false;
@@ -295,7 +295,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return string
      */
-    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getProduct()) {
             return 'oxarticle';
@@ -342,11 +342,11 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         if ($this->_blRate === null) {
             $this->_blRate = false;
-            if (($oActObject = $this->_getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
+            if (($oActObject = $this->getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
                 $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blRate = $oRating->allowRating(
                     $oRevUser->getId(),
-                    $this->_getActiveType(),
+                    $this->getActiveType(),
                     $oActObject->getId()
                 );
             }
@@ -364,7 +364,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         if ($this->_aReviews === null) {
             $this->_aReviews = false;
-            if ($oObject = $this->_getActiveObject()) {
+            if ($oObject = $this->getActiveObject()) {
                 $this->_aReviews = $oObject->getReviews();
             }
         }

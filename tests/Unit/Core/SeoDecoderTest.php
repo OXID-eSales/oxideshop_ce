@@ -77,10 +77,10 @@ class SeoDecoderTest extends \OxidTestCase
         $sDeAltUrl = 'de/seo_category/SEO_subcategory/';
 
         $oDecoder = oxNew('oxSeoDecoder');
-        $this->assertEquals(md5(strtolower($sDeUrl)), $oDecoder->_getIdent($sDeUrl));
-        $this->assertEquals(md5(strtolower($sEnUrl)), $oDecoder->_getIdent($sEnUrl));
-        $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->_getIdent($sDeAltUrl));
-        $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->_getIdent($sDeAltUrl, true));
+        $this->assertEquals(md5(strtolower($sDeUrl)), $oDecoder->getIdent($sDeUrl));
+        $this->assertEquals(md5(strtolower($sEnUrl)), $oDecoder->getIdent($sEnUrl));
+        $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->getIdent($sDeAltUrl));
+        $this->assertEquals(md5(strtolower($sDeAltUrl)), $oDecoder->getIdent($sDeAltUrl, true));
     }
 
     private function regenerateViews()

@@ -96,7 +96,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oVariant->oxarticles__oxpricea = new oxField(12, oxField::T_RAW);
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertEquals(12, $oVariant->_getGroupPrice());
+        $this->assertEquals(12, $oVariant->getGroupPrice());
     }
 
     /**
@@ -113,7 +113,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oVariant->oxarticles__oxpriceb = new oxField(12, oxField::T_RAW);
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertEquals(12, $oVariant->_getGroupPrice());
+        $this->assertEquals(12, $oVariant->getGroupPrice());
     }
 
     /**
@@ -132,7 +132,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oVariant->oxarticles__oxpricec = new oxField(12, oxField::T_RAW);
         $oVariant->oxarticles__oxprice = new oxField(15, oxField::T_RAW);
 
-        $this->assertEquals(12, $oVariant->_getGroupPrice());
+        $this->assertEquals(12, $oVariant->getGroupPrice());
     }
 
     /**
@@ -152,11 +152,11 @@ class SimpleVariantTest extends \OxidTestCase
         $oVariant->oxarticles__oxprice->value = 15;
 
         $this->getConfig()->setConfigParam('blOverrideZeroABCPrices', false);
-        $this->assertEquals(0, $oVariant->_getGroupPrice());
+        $this->assertEquals(0, $oVariant->getGroupPrice());
 
         $this->getConfig()->setConfigParam('blOverrideZeroABCPrices', true);
         $oVariant->oxarticles__oxprice->value = 15;
-        $this->assertEquals(15, $oVariant->_getGroupPrice());
+        $this->assertEquals(15, $oVariant->getGroupPrice());
     }
 
     public function testGetBaseSeoLink()

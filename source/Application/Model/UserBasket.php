@@ -62,7 +62,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return mixed
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // marking basket as not new any more
         $this->_blNewBasket = false;
@@ -76,7 +76,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $this->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
 
-        return parent::_insert();
+        return parent::insert();
     }
 
     /**
@@ -126,7 +126,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (is_array($aItems)) {
             foreach ($aItems as $sId => $oItem) {
                 $oArticle = $oItem->getArticle($sId);
-                $aRes[$this->_getItemKey($oArticle->getId(), $oItem->getSelList(), $oItem->getPersParams())] = $oArticle;
+                $aRes[$this->getItemKey($oArticle->getId(), $oItem->getSelList(), $oItem->getPersParams())] = $oArticle;
             }
         }
 
@@ -171,7 +171,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         ]);
 
         foreach ($oItems as $oItem) {
-            $sKey = $this->_getItemKey($oItem->oxuserbasketitems__oxartid->value, $oItem->getSelList(), $oItem->getPersParams());
+            $sKey = $this->getItemKey($oItem->oxuserbasketitems__oxartid->value, $oItem->getSelList(), $oItem->getPersParams());
             $this->_aBasketItems[$sKey] = $oItem;
         }
 
@@ -187,7 +187,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return \OxidEsales\Eshop\Application\Model\UserBasketItem
      */
-    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -225,7 +225,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         // loading basket item list
         $aItems = $this->getItems();
-        $sItemKey = $this->_getItemKey($sProductId, $aSelList, $aPersParams);
+        $sItemKey = $this->getItemKey($sProductId, $aSelList, $aPersParams);
         $oItem = null;
         // returning existing item
         if (isset($aItems[$sProductId])) {
@@ -233,7 +233,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         } elseif (isset($aItems[$sItemKey])) {
             $oItem = $aItems[$sItemKey];
         } else {
-            $oItem = $this->_createItem($sProductId, $aSelList, $aPersParams);
+            $oItem = $this->createItem($sProductId, $aSelList, $aPersParams);
         }
 
         return $oItem;
@@ -248,7 +248,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 
@@ -295,14 +295,14 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
             if (!$dAmount) {
                 // amount = 0 removes the item
                 $oUserBasketItem->delete();
-                if (isset($this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)])) {
-                    unset($this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)]);
+                if (isset($this->_aBasketItems[$this->getItemKey($sProductId, $aSel, $aPersParam)])) {
+                    unset($this->_aBasketItems[$this->getItemKey($sProductId, $aSel, $aPersParam)]);
                 }
             } else {
                 $oUserBasketItem->oxuserbasketitems__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUserBasketItem->save();
 
-                $this->_aBasketItems[$this->_getItemKey($sProductId, $aSel, $aPersParam)] = $oUserBasketItem;
+                $this->_aBasketItems[$this->getItemKey($sProductId, $aSel, $aPersParam)] = $oUserBasketItem;
             }
 
             //update timestamp

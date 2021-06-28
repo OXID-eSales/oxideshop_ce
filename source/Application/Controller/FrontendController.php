@@ -437,7 +437,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return array
      */
-    protected function _getComponentNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getComponentNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
@@ -463,18 +463,18 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * redirects to it. If no alternative path was found - 404 header is emitted
      * and page is rendered
      */
-    protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $utils = Registry::getUtils();
         $requestUrl = Registry::get(Request::class)->getRequestUrl();
         // non admin, request is not empty and was not processed by seo engine
         if (!isSearchEngineUrl() && $utils->seoIsActive() && $requestUrl) {
             // fetching standard url and looking for it in seo table
-            if ($this->_canRedirect() && ($redirectUrl = Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
+            if ($this->canRedirect() && ($redirectUrl = Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
                 $utils->redirect(Registry::getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
-                $this->_forceNoIndex();
+                $this->forceNoIndex();
 
                 if (Registry::getConfig()->getConfigParam('blSeoLogging')) {
                     $shopId = Registry::getConfig()->getShopId();
@@ -498,14 +498,14 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function init()
     {
-        $this->_processRequest();
+        $this->processRequest();
 
         // storing current view
         $shouldInitialize = $this->shouldInitializeComponents();
 
         // init all components if there are any
         if ($this->_blLoadComponents) {
-            foreach ($this->_getComponentNames() as $componentName => $isNotCacheable) {
+            foreach ($this->getComponentNames() as $componentName => $isNotCacheable) {
                 // do not override initiated components
                 if (!isset($this->_oaComponents[$componentName])) {
                     // component objects MUST be created to support user called functions
@@ -1003,9 +1003,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string
      */
-    protected function _getMetaFromSeo($dataType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMetaFromSeo($dataType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $seoObjectId = $this->_getSeoObjectId();
+        $seoObjectId = $this->getSeoObjectId();
         $baseLanguageId = Registry::getLang()->getBaseLanguage();
         $shopId = Registry::getConfig()->getShopId();
 
@@ -1024,7 +1024,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string
      */
-    protected function _getMetaFromContent($metaIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMetaFromContent($metaIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($metaIdent) {
             $content = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
@@ -1048,12 +1048,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sMetaKeywords = false;
 
             // set special meta keywords ?
-            if (($keywords = $this->_getMetaFromSeo('oxkeywords'))) {
+            if (($keywords = $this->getMetaFromSeo('oxkeywords'))) {
                 $this->_sMetaKeywords = $keywords;
-            } elseif (($keywords = $this->_getMetaFromContent($this->_sMetaKeywordsIdent))) {
-                $this->_sMetaKeywords = $this->_prepareMetaKeyword($keywords, false);
+            } elseif (($keywords = $this->getMetaFromContent($this->_sMetaKeywordsIdent))) {
+                $this->_sMetaKeywords = $this->prepareMetaKeyword($keywords, false);
             } else {
-                $this->_sMetaKeywords = $this->_prepareMetaKeyword(false, true);
+                $this->_sMetaKeywords = $this->prepareMetaKeyword(false, true);
             }
         }
 
@@ -1071,12 +1071,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sMetaDescription = false;
 
             // set special meta description ?
-            if (($description = $this->_getMetaFromSeo('oxdescription'))) {
+            if (($description = $this->getMetaFromSeo('oxdescription'))) {
                 $this->_sMetaDescription = $description;
-            } elseif (($description = $this->_getMetaFromContent($this->_sMetaDescriptionIdent))) {
-                $this->_sMetaDescription = $this->_prepareMetaDescription($description);
+            } elseif (($description = $this->getMetaFromContent($this->_sMetaDescriptionIdent))) {
+                $this->_sMetaDescription = $this->prepareMetaDescription($description);
             } else {
-                $this->_sMetaDescription = $this->_prepareMetaDescription(false);
+                $this->_sMetaDescription = $this->prepareMetaDescription(false);
             }
         }
 
@@ -1121,7 +1121,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Forces output no index meta data for current view
      */
-    protected function _forceNoIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function forceNoIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_blForceNoIndex = true;
     }
@@ -1175,7 +1175,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Sets number of articles per page to config value
      */
-    protected function _setNrOfArtPerPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setNrOfArtPerPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = Registry::getConfig();
 
@@ -1230,7 +1230,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Override this function to return object it which is used to identify its seo meta info
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -1243,7 +1243,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return  string  $string    converted string
      */
-    protected function _prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($meta) {
             $stringModifier = Str::getStr();
@@ -1267,7 +1267,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
             // removing duplicate words
             if ($removeDuplicatedWords) {
-                $meta = $this->_removeDuplicatedWords($meta, Registry::getConfig()->getConfigParam('aSkipTags'));
+                $meta = $this->removeDuplicatedWords($meta, Registry::getConfig()->getConfigParam('aSkipTags'));
             }
 
             // some special cases
@@ -1289,12 +1289,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string of keywords separated by comma
      */
-    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $string = $this->_prepareMetaDescription($keywords, -1, false);
+        $string = $this->prepareMetaDescription($keywords, -1, false);
 
         if ($removeDuplicatedWords) {
-            $string = $this->_removeDuplicatedWords($string, Registry::getConfig()->getConfigParam('aSkipTags'));
+            $string = $this->removeDuplicatedWords($string, Registry::getConfig()->getConfigParam('aSkipTags'));
         }
 
         return trim($string);
@@ -1308,7 +1308,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string of words separated by comma
      */
-    protected function _removeDuplicatedWords($input, $skipTags = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function removeDuplicatedWords($input, $skipTags = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $stringModifier = Str::getStr();
         if (is_array($input)) {
@@ -1488,7 +1488,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return object
      */
-    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -1545,17 +1545,17 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $config = Registry::getConfig();
 
         if (Registry::getUtils()->seoIsActive()) {
-            if ($displayObj = $this->_getSubject($languageId)) {
+            if ($displayObj = $this->getSubject($languageId)) {
                 $url = $displayObj->getLink($languageId);
             } else {
                 $encoder = Registry::getSeoEncoder();
-                $constructedUrl = $config->getShopHomeUrl($languageId) . $this->_getSeoRequestParams();
+                $constructedUrl = $config->getShopHomeUrl($languageId) . $this->getSeoRequestParams();
                 $url = $encoder->getStaticUrl($constructedUrl, $languageId);
             }
         }
 
         if (!$url) {
-            $constructedUrl = $config->getShopCurrentURL($languageId) . $this->_getRequestParams();
+            $constructedUrl = $config->getShopCurrentURL($languageId) . $this->getRequestParams();
             $url = Registry::getUtilsUrl()->processUrl($constructedUrl, true, null, $languageId);
         }
 
@@ -1572,7 +1572,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getLink($languageId = null)
     {
-        return $this->_addPageNrParam($this->getBaseLink($languageId), $this->getActPage(), $languageId);
+        return $this->addPageNrParam($this->getBaseLink($languageId), $this->getActPage(), $languageId);
     }
 
     /**
@@ -1610,7 +1610,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string
      */
-    protected function _getRequestParams($addPageNumber = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRequestParams($addPageNumber = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $class = $this->getClassKey();
         $function = $this->getFncName();
@@ -1699,7 +1699,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string
      */
-    protected function _getSeoRequestParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoRequestParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $class = $this->getClassKey();
         $function = $this->getFncName();
@@ -1905,7 +1905,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $viewConfig = parent::addGlobalParams($shop);
 
-        $this->_setNrOfArtPerPage();
+        $this->setNrOfArtPerPage();
 
         return $viewConfig;
     }
@@ -1956,7 +1956,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function generatePageNavigationUrl()
     {
-        return Registry::getConfig()->getShopHomeUrl() . $this->_getRequestParams(false);
+        return Registry::getConfig()->getShopHomeUrl() . $this->getRequestParams(false);
     }
 
     /**
@@ -1968,7 +1968,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string
      */
-    protected function _addPageNrParam($url, $page, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($url, $page, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($page) {
             if ((strpos($url, 'pgNr='))) {
@@ -2058,26 +2058,26 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         if ($activePage > 0) {
-            $pageNavigation->previousPage = $this->_addPageNrParam($url, $activePage - 1);
+            $pageNavigation->previousPage = $this->addPageNrParam($url, $activePage - 1);
         }
 
         if ($activePage < $pageNavigation->NrOfPages - 1) {
-            $pageNavigation->nextPage = $this->_addPageNrParam($url, $activePage + 1);
+            $pageNavigation->nextPage = $this->addPageNrParam($url, $activePage + 1);
         }
 
         if ($pageNavigation->NrOfPages > 1) {
             for ($i = 1; $i < $pageNavigation->NrOfPages + 1; $i++) {
                 if ($i == 1 || $i == $pageNavigation->NrOfPages || ($i >= $startNo && $i <= $finishNo)) {
                     $page = new stdClass();
-                    $page->url = $this->_addPageNrParam($url, $i - 1);
+                    $page->url = $this->addPageNrParam($url, $i - 1);
                     $page->selected = ($i == $pageNavigation->actPage) ? 1 : 0;
                     $pageNavigation->changePage[$i] = $page;
                 }
             }
 
             // first/last one
-            $pageNavigation->firstpage = $this->_addPageNrParam($url, 0);
-            $pageNavigation->lastpage = $this->_addPageNrParam($url, $pageNavigation->NrOfPages - 1);
+            $pageNavigation->firstpage = $this->addPageNrParam($url, 0);
+            $pageNavigation->lastpage = $this->addPageNrParam($url, $pageNavigation->NrOfPages - 1);
         }
 
         stopProfile('generatePageNavigation');
@@ -2421,7 +2421,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return bool
      */
-    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($this->_aBlockRedirectParams as $param) {
             if (Registry::getRequest()->getRequestEscapedParameter($param) !== null) {

@@ -40,7 +40,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $this->_aViewData["edit"] = $oUser;
         }
 
-        if (!$this->_allowAdminEdit($soxId)) {
+        if (!$this->allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
 
@@ -58,7 +58,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
 
         $soxId = $this->getEditObjectId();
 
-        if (!$this->_allowAdminEdit($soxId)) {
+        if (!$this->allowAdminEdit($soxId)) {
             return false;
         }
 

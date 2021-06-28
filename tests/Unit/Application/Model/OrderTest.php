@@ -660,7 +660,7 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals('Beer homebrew kit CHEERS!', $oOrderArticle->oxorderarticles__oxtitle->value);
     }
 
-    private function _insertTestOrder($sId = '_testOrderId')
+    private function insertTestOrder($sId = '_testOrderId')
     {
         $myConfig = $this->getConfig();
 
@@ -679,7 +679,7 @@ class OrderTest extends \OxidTestCase
         $this->_oOrder->save();
     }
 
-    private function _insertTestOrderArticle($sOrdArtId = '_testOrderArticleId', $sArtId = '_testArticleId')
+    private function insertTestOrderArticle($sOrdArtId = '_testOrderArticleId', $sArtId = '_testArticleId')
     {
         $oOrderArticle = oxNew("oxOrderArticle");
         $oOrderArticle->setId($sOrdArtId);
@@ -694,7 +694,7 @@ class OrderTest extends \OxidTestCase
         return $oOrderArticle;
     }
 
-    private function _insertTestArticle()
+    private function insertTestArticle()
     {
         $myConfig = $this->getConfig();
 
@@ -710,9 +710,9 @@ class OrderTest extends \OxidTestCase
 
     public function testAddOrderArticlesToBasket()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle();
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle();
         $oOrderArticle->load($oOrderArticle->getId());
         $oOrderArticle->oxorderarticles__oxwrapid = new oxField("xxx", oxField::T_RAW);
 
@@ -747,9 +747,9 @@ class OrderTest extends \OxidTestCase
 
     public function testAddOrderArticlesToBasketUsesVouchersDiscount()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle();
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle();
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
 
         $oUser = oxNew('oxuser', 'core');
@@ -806,11 +806,11 @@ class OrderTest extends \OxidTestCase
     //#M525 orderdate must be the same as it was
     public function testRecalculateOrderDoNotChangeSomeData()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
-        $oOrderArticle2 = $this->_insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
+        $oOrderArticle2 = $this->insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
         $oOrderArticles['_testOrderArticleId2'] = $oOrderArticle2;
 
         $oUser = oxNew('oxuser');
@@ -837,10 +837,10 @@ class OrderTest extends \OxidTestCase
 
     public function testRecalculateOrderChangingProductsAmount()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
-        $oOrderArticle2 = $this->_insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
+        $oOrderArticle2 = $this->insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
 
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
@@ -884,11 +884,11 @@ class OrderTest extends \OxidTestCase
 
     public function testRecalculateOrderCancellingProducts()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
-        $oOrderArticle2 = $this->_insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
+        $oOrderArticle2 = $this->insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
         $oOrderArticles['_testOrderArticleId2'] = $oOrderArticle2;
 
         $oUser = oxNew('oxuser');
@@ -930,11 +930,11 @@ class OrderTest extends \OxidTestCase
 
     public function testRecalculateOrderCancellingAndDeletingProducts()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
-        $oOrderArticle2 = $this->_insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
+        $oOrderArticle2 = $this->insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
         $oOrderArticles['_testOrderArticleId2'] = $oOrderArticle2;
 
         $oUser = oxNew('oxuser');
@@ -972,9 +972,9 @@ class OrderTest extends \OxidTestCase
         $oDB = oxDb::getDb();
         $myConfig = $this->getConfig();
 
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle();
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle();
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
 
         $oUser = oxNew('oxuser');
@@ -1021,9 +1021,9 @@ class OrderTest extends \OxidTestCase
 
     public function testRecalculateOrderUpdatesArticleStockInfo()
     {
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
-        $oOrderArticle = $this->_insertTestOrderArticle();
+        $this->insertTestOrder();
+        $this->insertTestArticle();
+        $oOrderArticle = $this->insertTestOrderArticle();
 
         // update articles stock
         $oOrderArticle->setNewAmount($oOrderArticle->oxorderarticles__oxamount->value + 5);
@@ -1049,10 +1049,10 @@ class OrderTest extends \OxidTestCase
     {
         $oDB = oxDb::getDb();
 
-        $this->_insertTestOrder();
-        $this->_insertTestArticle();
+        $this->insertTestOrder();
+        $this->insertTestArticle();
 
-        $oOrderArticle = $this->_insertTestOrderArticle();
+        $oOrderArticle = $this->insertTestOrderArticle();
         $oOrderArticle->setNewAmount(27);
         $this->assertEquals("25", $oOrderArticle->oxorderarticles__oxamount->value);
 
@@ -1378,7 +1378,7 @@ class OrderTest extends \OxidTestCase
 
     public function testAssign()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = oxNew('oxorder');
         $oOrder->load("_testOrderId");
@@ -1392,7 +1392,7 @@ class OrderTest extends \OxidTestCase
      */
     public function testAssignSetsBillCountryAndDeliveryCountryTitle()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getCountryTitle'));
 
@@ -1407,7 +1407,7 @@ class OrderTest extends \OxidTestCase
 
     public function testAssignResults()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = oxNew('oxorder');
         $oOrder->assign(array('oxtotalordersum' => 999, 'oxstorno' => 0, 'oxorderdate' => '2008-01-01 01:01:01', 'oxsenddate' => '2009-02-02 02:02:02', 'oxbillcountryid' => 'a7c40f631fc920687.20179984', 'oxdelcountryid' => 'a7c40f631fc920687.20179984'));
@@ -1429,7 +1429,7 @@ class OrderTest extends \OxidTestCase
     // #FS1967
     public function testAssignResultsCanceledOrder()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = oxNew('oxorder');
         $oOrder->assign(array('oxtotalordersum' => 999, 'oxstorno' => 1, 'oxorderdate' => '2008-01-01 01:01:01', 'oxsenddate' => '2009-02-02 02:02:02', 'oxbillcountryid' => 'a7c40f631fc920687.20179984', 'oxdelcountryid' => 'a7c40f631fc920687.20179984'));
@@ -1450,7 +1450,7 @@ class OrderTest extends \OxidTestCase
 
     public function testLoadLoadsDeliverySet()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         //insert test delivery set
         $oDelSet = oxNew('oxDeliverySet');
@@ -1467,7 +1467,7 @@ class OrderTest extends \OxidTestCase
 
     public function testLoadLoadsPaymentType()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         //insert test delivery set
         $oPayment = oxNew('oxUserPayment');
@@ -1482,7 +1482,7 @@ class OrderTest extends \OxidTestCase
 
     public function testLoadLoadsGiftCard()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         //insert test delivery set
         $oWrapping = oxNew('oxWrapping');
@@ -1806,7 +1806,7 @@ class OrderTest extends \OxidTestCase
 
     public function testSetOrderStatus()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load("_testOrderId");
@@ -1827,7 +1827,7 @@ class OrderTest extends \OxidTestCase
 
     public function testUpdateOrderDate()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
         \OxidEsales\Eshop\Core\Registry::getUtilsDate()->setTime(100);
@@ -2306,7 +2306,7 @@ class OrderTest extends \OxidTestCase
 
     public function testGetGatewayPayment()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iPayment_blActive', false);
@@ -2780,7 +2780,7 @@ class OrderTest extends \OxidTestCase
 
     public function testUpdate()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load("_testOrderId");
         $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field("2007/07/07 00:00:00", \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2793,7 +2793,7 @@ class OrderTest extends \OxidTestCase
     public function testDelete()
     {
         $oDB = oxDb::getDb();
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
@@ -2819,7 +2819,7 @@ class OrderTest extends \OxidTestCase
     public function testDeleteRemovesUserPaymentInfo()
     {
         $oDB = oxDb::getDb();
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
@@ -2845,7 +2845,7 @@ class OrderTest extends \OxidTestCase
     public function testDeleteRestoresArticleStockInfoForNonCanceledOrderArticles()
     {
         $oDB = oxDb::getDb();
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
@@ -2894,7 +2894,7 @@ class OrderTest extends \OxidTestCase
     public function testDeleteDoesNotRestoresArticleWhenStockUsageIsOff()
     {
         $oDB = oxDb::getDb();
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
@@ -2943,7 +2943,7 @@ class OrderTest extends \OxidTestCase
     public function testDeleteWithSelectedOrderId()
     {
         $oDB = oxDb::getDb();
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
@@ -2972,7 +2972,7 @@ class OrderTest extends \OxidTestCase
 
     public function testGetInvoiceNum()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId');
@@ -2985,8 +2985,8 @@ class OrderTest extends \OxidTestCase
 
     public function testGetNextBillNum()
     {
-        $this->_insertTestOrder('_testOrderId');
-        $this->_insertTestOrder('_testOrderId1');
+        $this->insertTestOrder('_testOrderId');
+        $this->insertTestOrder('_testOrderId1');
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId');
@@ -3004,7 +3004,7 @@ class OrderTest extends \OxidTestCase
 
     public function testVoucherNrList()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oVoucher = oxNew('oxVoucher');
         $oVoucher->oxvouchers__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -3162,7 +3162,7 @@ class OrderTest extends \OxidTestCase
 
     public function testCheckOrderExist()
     {
-        $this->_insertTestOrder();
+        $this->insertTestOrder();
 
         $oOrder = $this->getProxyClass("oxOrder");
 

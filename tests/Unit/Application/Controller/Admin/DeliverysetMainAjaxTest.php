@@ -54,18 +54,18 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DeliverysetMainAjax::_getQuery() test case
+     * DeliverysetMainAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetMainAjax::_getQuery() test case
+     * DeliverysetMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -75,11 +75,11 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetMainAjax::_getQuery() test case
+     * DeliverysetMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -89,11 +89,11 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetMainAjax::_getQuery() test case
+     * DeliverysetMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -105,7 +105,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim($oView->getQuery()));
     }
 
     /**

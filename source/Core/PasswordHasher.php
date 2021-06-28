@@ -28,7 +28,7 @@ class PasswordHasher
      *
      * @return \OxidEsales\Eshop\Core\Hasher
      */
-    protected function _getHasher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHasher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_ohasher;
     }
@@ -53,6 +53,6 @@ class PasswordHasher
      */
     public function hash($sPassword, $sSalt)
     {
-        return $this->_getHasher()->hash($sPassword . $sSalt);
+        return $this->getHasher()->hash($sPassword . $sSalt);
     }
 }

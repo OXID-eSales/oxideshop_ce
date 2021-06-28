@@ -44,7 +44,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return md5(strtolower($sSeoUrl));
     }
@@ -70,7 +70,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         list($seoUrl, $pageNumber) = $this->extractPageNumberFromSeoUrl($seoUrl);
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
-        $key = $this->_getIdent($seoUrl);
+        $key = $this->getIdent($seoUrl);
         $urlParameters = false;
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -99,7 +99,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @access         public
      * @return string || false
      */
-    protected function _decodeOldUrl($seoUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function decodeOldUrl($seoUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $stringObject = Str::getStr();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -113,7 +113,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         //extract page number from seo url
         list($seoUrl, $pageNumber) = $this->extractPageNumberFromSeoUrl($seoUrl);
 
-        $key = $this->_getIdent($seoUrl, true);
+        $key = $this->getIdent($seoUrl, true);
 
         $url = false;
         $resultSet = $database->select("select oxobjectid, oxlang from oxseohistory where oxident = :oxident and oxshopid = :oxshopid limit 1", [
@@ -131,10 +131,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             );
 
             // fetching new url
-            $url = $this->_getSeoUrl($resultSet->fields['oxobjectid'], $resultSet->fields['oxlang'], $shopId);
+            $url = $this->getSeoUrl($resultSet->fields['oxobjectid'], $resultSet->fields['oxlang'], $shopId);
 
             // appending with $_SERVER["QUERY_STRING"]
-            $url = $this->_addQueryString($url);
+            $url = $this->addQueryString($url);
         }
         if ($url && !is_null($pageNumber)) {
             $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl($url, ['pgNr' => $pageNumber]);
@@ -150,7 +150,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"]) {
             $sUrl = rtrim($sUrl, "&?");
@@ -173,7 +173,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSeoUrl($sObjectId, $iLang, $iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoUrl($sObjectId, $iLang, $iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid order by oxparams limit 1", [
@@ -224,15 +224,15 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         }
 
         $sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
-        if (($sParams = $this->_getParams($sRequest, $sPath))) {
+        if (($sParams = $this->getParams($sRequest, $sPath))) {
             // in case SEO url is actual
             if (is_array($aGet = $this->decodeUrl($sParams))) {
                 $_GET = array_merge($aGet, $_GET);
                 \OxidEsales\Eshop\Core\Registry::getLang()->resetBaseLanguage();
-            } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
+            } elseif (($sRedirectUrl = $this->decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
-            } elseif (($sRedirectUrl = $this->_decodeSimpleUrl($sParams))) {
+            } elseif (($sRedirectUrl = $this->decodeSimpleUrl($sParams))) {
                 // old type II seo urls
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } else {
@@ -251,7 +251,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sLastParam = trim($sParams, '/');
 
@@ -263,14 +263,14 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
             // article ?
             if (strpos($sLastParam, '.htm') !== false) {
-                $sUrl = $this->_getObjectUrl($sLastParam, 'oxarticles', $iLanguage, 'oxarticle');
+                $sUrl = $this->getObjectUrl($sLastParam, 'oxarticles', $iLanguage, 'oxarticle');
             } else {
                 // category ?
-                if (!($sUrl = $this->_getObjectUrl($sLastParam, 'oxcategories', $iLanguage, 'oxcategory'))) {
+                if (!($sUrl = $this->getObjectUrl($sLastParam, 'oxcategories', $iLanguage, 'oxcategory'))) {
                     // maybe manufacturer ?
-                    if (!($sUrl = $this->_getObjectUrl($sLastParam, 'oxmanufacturers', $iLanguage, 'oxmanufacturer'))) {
+                    if (!($sUrl = $this->getObjectUrl($sLastParam, 'oxmanufacturers', $iLanguage, 'oxmanufacturer'))) {
                         // then maybe vendor ?
-                        $sUrl = $this->_getObjectUrl($sLastParam, 'oxvendor', $iLanguage, 'oxvendor');
+                        $sUrl = $this->getObjectUrl($sLastParam, 'oxvendor', $iLanguage, 'oxvendor');
                     }
                 }
             }
@@ -289,7 +289,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -320,7 +320,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return array $aParams extracted params
      */
-    protected function _getParams($sRequest, $sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParams($sRequest, $sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oStr = Str::getStr();
 

@@ -114,7 +114,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      */
     public function getStatus()
     {
-        if ($oSerie = $this->_getVoucherSerie()) {
+        if ($oSerie = $this->getVoucherSerie()) {
             return $oSerie->countVouchers();
         }
     }
@@ -132,7 +132,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      *
      * @return \OxidEsales\Eshop\Application\Model\VoucherSerie
      */
-    protected function _getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oVoucherSerie == null) {
             $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);

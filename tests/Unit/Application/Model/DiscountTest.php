@@ -91,13 +91,13 @@ class DiscountTest extends \OxidTestCase
 {
     protected function tearDown(): void
     {
-        $this->_removeDiscounts();
+        $this->removeDiscounts();
         $this->cleanUpTable('oxdiscount');
         $this->cleanUpTable('oxobject2discount');
         parent::tearDown();
     }
 
-    protected function _removeDiscounts()
+    protected function removeDiscounts()
     {
         $myDB = oxDb::getDb();
 

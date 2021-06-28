@@ -52,7 +52,7 @@ class CategorySeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Category_Seo');
-        $this->assertEquals('oxcategory', $oView->_getType());
+        $this->assertEquals('oxcategory', $oView->getType());
     }
 
     /**
@@ -80,14 +80,14 @@ class CategorySeoTest extends \OxidTestCase
     }
 
     /**
-     * Category_Seo::_getEncoder() test case
+     * Category_Seo::getEncoder() test case
      *
      * @return null
      */
     public function testGetEncoder()
     {
         $oView = oxNew('Category_Seo');
-        $this->assertTrue($oView->_getEncoder() instanceof SeoEncoderCategory);
+        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderCategory);
     }
 
     /**
@@ -145,9 +145,9 @@ class CategorySeoTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getCategoryUri"));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("CategoryUri"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, array("getEditObjectId", "_getEncoder"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, array("getEditObjectId", "getEncoder"));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
+        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
         $this->assertEquals("CategoryUri", $oView->getEntryUri());
     }
 

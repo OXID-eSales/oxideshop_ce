@@ -24,7 +24,7 @@ class PasswordSaltGeneratorTest extends \OxidTestCase
      */
     public function testSaltLength($blIsOpenSslRandomBytesGeneratorAvailable)
     {
-        $oOpenSSLFunctionalityChecker = $this->_getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
+        $oOpenSSLFunctionalityChecker = $this->getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
         $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $this->assertSame(32, strlen($oGenerator->generate()));
     }
@@ -34,7 +34,7 @@ class PasswordSaltGeneratorTest extends \OxidTestCase
      */
     public function testGeneratedSaltShouldBeUnique($blIsOpenSslRandomBytesGeneratorAvailable)
     {
-        $oOpenSSLFunctionalityChecker = $this->_getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
+        $oOpenSSLFunctionalityChecker = $this->getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
         $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $aSalts = array();
 
@@ -54,7 +54,7 @@ class PasswordSaltGeneratorTest extends \OxidTestCase
      *
      * @return oxOpenSSLFunctionalityChecker
      */
-    private function _getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable)
+    private function getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable)
     {
         if ($blIsOpenSslRandomBytesGeneratorAvailable) {
             $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');

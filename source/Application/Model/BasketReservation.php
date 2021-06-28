@@ -39,7 +39,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getReservationsId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReservationsId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('basketReservationToken');
         if (!$sId) {
@@ -58,7 +58,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Application\Model\UserBasket
      */
-    protected function _loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
         $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
@@ -85,11 +85,11 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
             return $this->_oReservations;
         }
 
-        if (!$sBasketId = $this->_getReservationsId()) {
+        if (!$sBasketId = $this->getReservationsId()) {
             return null;
         }
 
-        $this->_oReservations = $this->_loadReservations($sBasketId);
+        $this->_oReservations = $this->loadReservations($sBasketId);
 
         return $this->_oReservations;
     }
@@ -99,7 +99,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getReservedItems() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReservedItems() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($this->_aCurrentlyReserved)) {
             return $this->_aCurrentlyReserved;
@@ -130,7 +130,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function getReservedAmount($sArticleId)
     {
-        $aCurrentlyReserved = $this->_getReservedItems();
+        $aCurrentlyReserved = $this->getReservedItems();
         if (isset($aCurrentlyReserved[$sArticleId])) {
             return $aCurrentlyReserved[$sArticleId];
         }
@@ -145,9 +145,9 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aDiff = $this->_getReservedItems();
+        $aDiff = $this->getReservedItems();
         // refreshing history
         foreach ($oBasket->getContents() as $oItem) {
             $sProdId = $oItem->getProductId();
@@ -168,7 +168,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @see oxBasketReservation::_basketDifference
      */
-    protected function _reserveArticles($aBasketDiff) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function reserveArticles($aBasketDiff) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blAllowNegativeStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowNegativeStock');
 
@@ -193,7 +193,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     public function reserveBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         if (!$this->isAdmin()) {
-            $this->_reserveArticles($this->_basketDifference($oBasket));
+            $this->reserveArticles($this->basketDifference($oBasket));
         }
     }
 
@@ -246,7 +246,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function discardReservations()
     {
-        foreach (array_keys($this->_getReservedItems()) as $sArticleId) {
+        foreach (array_keys($this->getReservedItems()) as $sArticleId) {
             $this->discardArticleReservation($sArticleId);
         }
         if ($this->_oReservations) {

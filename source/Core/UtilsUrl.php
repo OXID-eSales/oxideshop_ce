@@ -327,7 +327,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         if (is_null($sUrlHost)) {
             $blCurrent = true;
         } else {
-            $aHosts = $this->_getHosts();
+            $aHosts = $this->getHosts();
 
             foreach ($aHosts as $sHost) {
                 if ($sHost === $sUrlHost) {
@@ -499,7 +499,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl   url to extract
      * @param array  $aHosts hosts array
      */
-    protected function _addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
             if (!in_array($sHost, $aHosts)) {
@@ -514,12 +514,12 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * @param array $aLanguageUrls array of language urls to extract
      * @param array $aHosts        hosts array
      */
-    protected function _addLanguageHost($aLanguageUrls, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addLanguageHost($aLanguageUrls, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
         if (isset($aLanguageUrls[$iLanguageId])) {
-            $this->_addHost($aLanguageUrls[$iLanguageId], $aHosts);
+            $this->addHost($aLanguageUrls[$iLanguageId], $aHosts);
         }
     }
 
@@ -528,24 +528,24 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getHosts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHosts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aHosts === null) {
             $this->_aHosts = [];
             $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-            $this->_addMallHosts($this->_aHosts);
+            $this->addMallHosts($this->_aHosts);
 
             // language url
-            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
-            $this->_addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
+            $this->addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
+            $this->addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
             // current url
-            $this->_addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
-            $this->_addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
+            $this->addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
+            $this->addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
 
             if ($this->isAdmin()) {
-                $this->_addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
+                $this->addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
             }
         }
 
@@ -557,7 +557,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aHosts hosts array
      */
-    protected function _addMallHosts(&$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addMallHosts(&$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 

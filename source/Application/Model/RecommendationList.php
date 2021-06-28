@@ -91,7 +91,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     public function getArtCount()
     {
         $iCnt = 0;
-        $sSelect = $this->_getArticleSelect();
+        $sSelect = $this->getArticleSelect();
         if ($sSelect) {
             $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
         }
@@ -104,7 +104,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
@@ -283,7 +283,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             if ($oRecommList->count()) {
                 startProfile('_loadFirstArticles');
 
-                $this->_loadFirstArticles($oRecommList, $aArticleIds);
+                $this->loadFirstArticles($oRecommList, $aArticleIds);
 
                 stopProfile('_loadFirstArticles');
 
@@ -301,7 +301,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
      */
-    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
@@ -354,7 +354,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
-            $sSelect = $this->_getSearchSelect($sSearchStr);
+            $sSelect = $this->getSearchSelect($sSearchStr);
             $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
             $oRecommList->selectString($sSelect);
 
@@ -372,7 +372,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     public function getSearchRecommListCount($sSearchStr)
     {
         $iCnt = 0;
-        $sSelect = $this->_getSearchSelect($sSearchStr);
+        $sSelect = $this->getSearchSelect($sSearchStr);
         if ($sSelect) {
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
@@ -389,7 +389,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");

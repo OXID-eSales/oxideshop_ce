@@ -160,7 +160,7 @@ class UserpaymentTest extends \OxidTestCase
     /**
      * Inserting test orders
      */
-    protected function _insertTestOrders($aUserPaymentId, $sUserId)
+    protected function insertTestOrders($aUserPaymentId, $sUserId)
     {
         $oDb = oxDb::getDb();
 
@@ -184,7 +184,7 @@ class UserpaymentTest extends \OxidTestCase
     public function testGetPaymentByPaymentType()
     {
         // inserting few test orders
-        $this->_insertTestOrders(array('_testOxId5', '_testOxId4', '_testOxId3', '_testOxId2', '_testOxId'), '_testUserId');
+        $this->insertTestOrders(array('_testOxId5', '_testOxId4', '_testOxId3', '_testOxId2', '_testOxId'), '_testUserId');
 
         $oUser = oxNew('oxUser');
         $oUser->setId('_testUserId');

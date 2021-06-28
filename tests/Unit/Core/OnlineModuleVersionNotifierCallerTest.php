@@ -28,7 +28,7 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oNotifier->call($this->_getRequest());
+        $oNotifier->call($this->getRequest());
 
         $this->assertSame('https://omvn.oxid-esales.com/check.php', $oCurl->getUrl());
     }
@@ -39,14 +39,14 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
         $oCurl->expects($this->once())->method('execute');
-        $oCurl->expects($this->once())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $this->_getExpectedXml())));
+        $oCurl->expects($this->once())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $this->getExpectedXml())));
         /** @var oxCurl $oCurl */
 
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oNotifier->doRequest($this->_getRequest());
+        $oNotifier->doRequest($this->getRequest());
     }
 
     /**
@@ -54,7 +54,7 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
      *
      * @return string
      */
-    protected function _getExpectedXml()
+    protected function getExpectedXml()
     {
         $sXml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
         $sXml .= '<omvnRequest>';
@@ -77,7 +77,7 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
      *
      * @return oxOnlineModulesNotifierRequest
      */
-    protected function _getRequest()
+    protected function getRequest()
     {
         $oRequest = oxNew('oxOnlineModulesNotifierRequest');
         $oRequest->edition = 'CE';

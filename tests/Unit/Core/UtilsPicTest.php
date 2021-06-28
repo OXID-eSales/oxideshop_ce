@@ -42,10 +42,10 @@ final class UtilsPicTest extends \OxidTestCase
         $sTestImageFileSmallResizedJPG = "test_smallresized.jpg";
 
         // actual test
-        $this->assertTrue($this->_resizeImageTest($sTestImageFileJPG, $sTestImageFileResizedJPG));
+        $this->assertTrue($this->resizeImageTest($sTestImageFileJPG, $sTestImageFileResizedJPG));
 
         // do not resize smaller pics
-        $this->assertFalse($this->_resizeImageTest($sTestImageFileJPGSmall, $sTestImageFileSmallResizedJPG));
+        $this->assertFalse($this->resizeImageTest($sTestImageFileJPGSmall, $sTestImageFileSmallResizedJPG));
 
         $sTestImageFileGIF = "test.gif";
         $sTestImageFileGIFSmall = "test_smaller.gif";
@@ -53,10 +53,10 @@ final class UtilsPicTest extends \OxidTestCase
         $sTestImageFileSmallResizedGIF = "test_smallresized.gif";
 
         // actual test
-        $this->assertTrue($this->_resizeImageTest($sTestImageFileGIF, $sTestImageFileResizedGIF));
+        $this->assertTrue($this->resizeImageTest($sTestImageFileGIF, $sTestImageFileResizedGIF));
 
         // do not resize smaller pics
-        $this->assertFalse($this->_resizeImageTest($sTestImageFileGIFSmall, $sTestImageFileSmallResizedGIF));
+        $this->assertFalse($this->resizeImageTest($sTestImageFileGIFSmall, $sTestImageFileSmallResizedGIF));
 
         $sTestImageFilePNG = "test.png";
         $sTestImageFilePNGSmall = "test_smaller.png";
@@ -64,16 +64,16 @@ final class UtilsPicTest extends \OxidTestCase
         $sTestImageFileSmallResizedPNG = "test_smallresized.png";
 
         // actual test
-        $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG));
+        $this->assertTrue($this->resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG));
 
         // do not resize smaller pics
-        $this->assertFalse($this->_resizeImageTest($sTestImageFilePNGSmall, $sTestImageFileSmallResizedPNG));
+        $this->assertFalse($this->resizeImageTest($sTestImageFilePNGSmall, $sTestImageFileSmallResizedPNG));
 
         // resizing according to height param
-        $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
+        $this->assertTrue($this->resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
     }
 
-    protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
+    protected function resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
         $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
@@ -111,7 +111,7 @@ final class UtilsPicTest extends \OxidTestCase
         $config = $this->createConfiguredMock(Config::class, ['isDemoShop' => true]);
         Registry::set(Config::class, $config);
 
-        $result = (new UtilsPic())->_deletePicture($this->testPicture, __DIR__);
+        $result = (new UtilsPic())->deletePicture($this->testPicture, __DIR__);
 
         $this->assertFileExists($testPicturePath);
         $this->assertFalse($result);
@@ -122,7 +122,7 @@ final class UtilsPicTest extends \OxidTestCase
         $placeholderPicturePath = Path::join(__DIR__, $this->testPicturePlaceholder);
         touch($placeholderPicturePath);
 
-        $result = (new UtilsPic())->_deletePicture($this->testPicturePlaceholder, __DIR__);
+        $result = (new UtilsPic())->deletePicture($this->testPicturePlaceholder, __DIR__);
 
         $this->assertFileExists($placeholderPicturePath);
         $this->assertFalse($result);
@@ -133,7 +133,7 @@ final class UtilsPicTest extends \OxidTestCase
         $placeholderPictureIcoPath = Path::join(__DIR__, $this->testPicturePlaceholderIco);
         touch($placeholderPictureIcoPath);
 
-        $result = (new UtilsPic())->_deletePicture($this->testPicturePlaceholderIco, __DIR__);
+        $result = (new UtilsPic())->deletePicture($this->testPicturePlaceholderIco, __DIR__);
 
         $this->assertFileExists($placeholderPictureIcoPath);
         $this->assertFalse($result);
@@ -143,7 +143,7 @@ final class UtilsPicTest extends \OxidTestCase
     {
         $nonExistingDirectory = Path::join('non', 'existing', 'directory');
 
-        $result = (new UtilsPic())->_deletePicture('some-filename.jpg', $nonExistingDirectory);
+        $result = (new UtilsPic())->deletePicture('some-filename.jpg', $nonExistingDirectory);
 
         $this->assertFalse($result);
     }
@@ -154,7 +154,7 @@ final class UtilsPicTest extends \OxidTestCase
         $testPicturePath = Path::join($masterPicturesPath, $this->testPicture);
         touch($testPicturePath);
 
-        $result = (new UtilsPic())->_deletePicture($this->testPicture, $masterPicturesPath);
+        $result = (new UtilsPic())->deletePicture($this->testPicture, $masterPicturesPath);
 
         $this->assertFileDoesNotExist($testPicturePath);
         $this->assertTrue($result);
@@ -187,7 +187,7 @@ final class UtilsPicTest extends \OxidTestCase
         $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->method('fetchIsImageDeletable')->willReturn($response);
 
-        $this->assertEquals($expectedResult, $utilsPicMock->_isPicDeletable($filename, 'test', 'file'));
+        $this->assertEquals($expectedResult, $utilsPicMock->isPicDeletable($filename, 'test', 'file'));
     }
 
     /**
@@ -198,7 +198,7 @@ final class UtilsPicTest extends \OxidTestCase
         $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->expects($this->never())->method('fetchIsImageDeletable');
 
-        $this->assertEquals(false, $utilsPicMock->_isPicDeletable('nopic.jpg', 'test', 'file'));
+        $this->assertEquals(false, $utilsPicMock->isPicDeletable('nopic.jpg', 'test', 'file'));
     }
 
     /**
@@ -289,13 +289,13 @@ final class UtilsPicTest extends \OxidTestCase
         $sTestImageFileResizedGIF = "test_resized_ResizeGIF.gif";
 
         // actual test
-        $this->assertTrue($this->_resizeGIFTest($sTestImageFileGIF, $sTestImageFileResizedGIF));
+        $this->assertTrue($this->resizeGIFTest($sTestImageFileGIF, $sTestImageFileResizedGIF));
 
         // checking if works with "gd 1"
-        $this->assertTrue($this->_resizeGIFTest($sTestImageFileGIF, $sTestImageFileResizedGIF, 1));
+        $this->assertTrue($this->resizeGIFTest($sTestImageFileGIF, $sTestImageFileResizedGIF, 1));
     }
 
-    protected function _resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
+    protected function resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
         $myUtils = oxNew('oxUtilsPic');
         $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
@@ -309,7 +309,7 @@ final class UtilsPicTest extends \OxidTestCase
         $iImageOriginalWidth = $aImageSizeOriginal[0];
         $iImageOriginalHeight = $aImageSizeOriginal[1];
         //actual test
-        if (!($myUtils->_resizeGif($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $iImageOriginalWidth, $iImageOriginalHeight, $gdver, false))) {
+        if (!($myUtils->resizeGif($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $iImageOriginalWidth, $iImageOriginalHeight, $gdver, false))) {
             $this->fail("Failed to call resizeGIF()");
         }
         if (!is_file($sDir . $sTestImageFileResized)) {

@@ -284,9 +284,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     public function init($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blBundle = null)
     {
-        $this->_setArticle($sProductID);
+        $this->setArticle($sProductID);
         $this->setAmount($dAmount);
-        $this->_setSelectList($aSel);
+        $this->setSelectList($aSel);
         $this->setPersParams($aPersParam);
         $this->setBundle($blBundle);
         $this->setLanguageId(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
@@ -305,9 +305,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     public function initFromOrderArticle($oOrderArticle)
     {
-        $this->_setFromOrderArticle($oOrderArticle);
+        $this->setFromOrderArticle($oOrderArticle);
         $this->setAmount($oOrderArticle->oxorderarticles__oxamount->value);
-        $this->_setSelectList($oOrderArticle->getOrderArticleSelectList());
+        $this->setSelectList($oOrderArticle->getOrderArticleSelectList());
         $this->setPersParams($oOrderArticle->getPersParams());
         $this->setBundle($oOrderArticle->isBundle());
     }
@@ -719,7 +719,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @throws oxNoArticleException exception
      */
-    protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
@@ -757,7 +757,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
      */
-    protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // overriding whole article
         $this->_oArticle = $oOrderArticle;
@@ -778,7 +778,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aSelList item select lists
      */
-    protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();
@@ -1011,7 +1011,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         // #0003777: reload content on language change
         if ($iOldLang !== null && $iOldLang != $iLanguageId) {
             try {
-                $this->_setArticle($this->getProductId());
+                $this->setArticle($this->getProductId());
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {

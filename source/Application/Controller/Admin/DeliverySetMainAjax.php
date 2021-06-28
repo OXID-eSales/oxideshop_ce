@@ -39,13 +39,13 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sDeliveryViewName = $this->_getViewName('oxdelivery');
+        $sDeliveryViewName = $this->getViewName('oxdelivery');
 
         // category selected or not ?
         if (!$sId) {
@@ -68,9 +68,9 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     public function removeFromSet()
     {
-        $aRemoveGroups = $this->_getActionIds('oxdel2delset.oxid');
+        $aRemoveGroups = $this->getActionIds('oxdel2delset.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxdel2delset.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxdel2delset.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxdel2delset where oxdel2delset.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
@@ -85,13 +85,13 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     public function addToSet()
     {
-        $aChosenSets = $this->_getActionIds('oxdelivery.oxid');
+        $aChosenSets = $this->getActionIds('oxdelivery.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sDeliveryViewName = $this->_getViewName('oxdelivery');
-            $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
+            $sDeliveryViewName = $this->getViewName('oxdelivery');
+            $aChosenSets = $this->getAll($this->addFilter("select $sDeliveryViewName.oxid " . $this->getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).

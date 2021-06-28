@@ -24,7 +24,7 @@ class Encryptor
     {
         $string = "ox{$string}id";
 
-        $key = $this->_formKey($key, $string);
+        $key = $this->formKey($key, $string);
 
         $string = $string ^ $key;
         $string = base64_encode($string);
@@ -41,7 +41,7 @@ class Encryptor
      *
      * @return string
      */
-    protected function _formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $key = '_' . $key;
         $keyLength = (strlen($string) / strlen($key)) + 5;

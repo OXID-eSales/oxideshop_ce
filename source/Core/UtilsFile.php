@@ -144,7 +144,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @param integer $iNewFilesCounter New files count.
      */
-    protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_iNewFilesCounter = (int) $iNewFilesCounter;
     }
@@ -265,7 +265,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sValue) {
             // add type to name
@@ -289,7 +289,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
                 }
 
-                $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
+                $sValue = $this->getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
             }
         }
 
@@ -303,7 +303,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
@@ -320,7 +320,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return array|null
      */
-    protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
 
@@ -378,7 +378,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 $sType = $aFiletype[0];
 
                 $sValue = strtolower($sValue);
-                $sImagePath = $this->_getImagePath($sType);
+                $sImagePath = $this->getImagePath($sType);
 
                 // Should translate error to user if file was uploaded
                 if (UPLOAD_ERR_OK !== $iError && UPLOAD_ERR_NO_FILE !== $iError) {
@@ -388,7 +388,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 }
 
                 // checking file type and building final file name
-                if ($sSource && ($sValue = $this->_prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique))) {
+                if ($sSource && ($sValue = $this->prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique))) {
                     // moving to tmp folder for processing as safe mode or spec. open_basedir setup
                     // usually does not allow file modification in php's temp folder
                     $sProcessPath = $sTmpFolder . basename($sSource);
@@ -411,7 +411,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
-            $this->_setNewFilesCounter($iNewFilesCounter);
+            $this->setNewFilesCounter($iNewFilesCounter);
         }
 
         return $oObject;
@@ -500,7 +500,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
-        $sFileName = $this->_getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);
+        $sFileName = $this->getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);
 
         $destination = Path::join($sBasePath, $sUploadPath, $sFileName);
         if ($this->uploadMasterImage($aFileInfo['tmp_name'], $destination)) {
@@ -518,7 +518,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool $unique
      * @return string
      */
-    protected function _getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$unique) {
             return "$filename$suffix.$extension";

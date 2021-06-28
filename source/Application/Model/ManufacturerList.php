@@ -103,7 +103,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
         $this->_oRoot->load("root");
 
         //category fields
-        $this->_addCategoryFields($this->_oRoot);
+        $this->addCategoryFields($this->_oRoot);
         $this->_aPath[] = $this->_oRoot;
 
         foreach ($this as $sVndId => $oManufacturer) {
@@ -112,13 +112,13 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $this->setClickManufacturer($oManufacturer);
             }
 
-            $this->_addCategoryFields($oManufacturer);
+            $this->addCategoryFields($oManufacturer);
             if ($sActCat == $oManufacturer->oxmanufacturers__oxid->value) {
                 $this->_aPath[] = $oManufacturer;
             }
         }
 
-        $this->_seoSetManufacturerData();
+        $this->seoSetManufacturerData();
     }
 
     /**
@@ -146,7 +146,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param object $oManufacturer manufacturer object
      */
-    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
@@ -180,7 +180,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Processes manufacturer category URLs
      */
-    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

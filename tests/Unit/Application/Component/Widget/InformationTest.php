@@ -28,7 +28,7 @@ class InformationTest extends \OxidTestCase
      */
     public function testGetServicesList_ChecksServicesCount()
     {
-        $aServicesList = $this->_getServicesList();
+        $aServicesList = $this->getServicesList();
         $this->assertEquals(6, count($aServicesList));
     }
 
@@ -37,7 +37,7 @@ class InformationTest extends \OxidTestCase
      *
      * @return array
      */
-    protected function _getServicesList()
+    protected function getServicesList()
     {
         $oInformation = oxNew('oxwInformation');
         $aServicesList = $oInformation->getServicesList();

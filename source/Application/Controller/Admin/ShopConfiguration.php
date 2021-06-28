@@ -51,7 +51,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $this->_aViewData["edit"] = $shop = $this->_getEditShop($soxId);
+            $this->_aViewData["edit"] = $shop = $this->getEditShop($soxId);
 
             try {
                 // category choosen as default
@@ -77,7 +77,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             }
         }
 
-        $dbVariables = $this->loadConfVars($soxId, $this->_getModuleForConfigVars());
+        $dbVariables = $this->loadConfVars($soxId, $this->getModuleForConfigVars());
         $confVars = $dbVariables['vars'];
         $confVars['str']['sVersion'] = $config->getConfigParam('sVersion');
 
@@ -124,7 +124,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '';
     }
@@ -223,8 +223,8 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 list($name, $type, $value, $constraint, $grouping) = $rs->fields;
-                $configurationVariables[$type][$name] = $this->_unserializeConfVar($type, $name, $value);
-                $constraints[$name] = $this->_parseConstraint($type, $constraint);
+                $configurationVariables[$type][$name] = $this->unserializeConfVar($type, $name, $value);
+                $constraints[$name] = $this->parseConstraint($type, $constraint);
                 if ($grouping) {
                     if (!isset($groupings[$grouping])) {
                         $groupings[$grouping] = [$name => $type];
@@ -267,7 +267,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return mixed
      */
-    protected function _parseConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function parseConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         switch ($type) {
             case "select":
@@ -285,7 +285,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _serializeConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function serializeConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         switch ($type) {
             case "select":
@@ -304,7 +304,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return mixed
      */
-    public function _unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $str = Str::getStr();
         $data = null;
@@ -328,7 +328,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 if (in_array($name, $this->_aSkipMultiline)) {
                     $data = unserialize($value);
                 } else {
-                    $data = $str->htmlentities($this->_arrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->arrayToMultiline(unserialize($value)));
                 }
                 break;
 
@@ -336,7 +336,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 if (in_array($name, $this->_aSkipMultiline)) {
                     $data = unserialize($value);
                 } else {
-                    $data = $str->htmlentities($this->_aarrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->aarrayToMultiline(unserialize($value)));
                 }
                 break;
         }
@@ -354,7 +354,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    public function _serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $data = $value;
 
@@ -372,12 +372,12 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
             case "arr":
                 if (!is_array($value)) {
-                    $data = $this->_multilineToArray($value);
+                    $data = $this->multilineToArray($value);
                 }
                 break;
 
             case "aarr":
-                $data = $this->_multilineToAarray($value);
+                $data = $this->multilineToAarray($value);
                 break;
         }
 
@@ -391,7 +391,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return implode("\n", (array) $input);
     }
@@ -403,7 +403,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function _multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $array = explode("\n", $multiline);
         if (is_array($array)) {
@@ -425,7 +425,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($input)) {
             $multiline = '';
@@ -447,7 +447,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function _multilineToAarray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function multilineToAarray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $string = Str::getStr();
         $array = [];
@@ -489,9 +489,9 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     private function saveSetting(string $configName, string $existingConfigType, $configValue): void
     {
         $shopId = $this->getEditObjectId();
-        $module = $this->_getModuleForConfigVars();
+        $module = $this->getModuleForConfigVars();
         $config = $this->getConfig();
-        $preparedConfigValue = $this->_serializeConfVar($existingConfigType, $configName, $configValue);
+        $preparedConfigValue = $this->serializeConfVar($existingConfigType, $configName, $configValue);
         if (strpos($module, 'module:') !== false) {
             $moduleId = explode(':', $module)[1];
             $moduleSettingBridge = ContainerFactory::getInstance()

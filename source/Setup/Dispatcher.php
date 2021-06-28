@@ -20,7 +20,7 @@ class Dispatcher extends Core
     public function run()
     {
         // choosing which controller action must be executed
-        $sAction = $this->_chooseCurrentAction();
+        $sAction = $this->chooseCurrentAction();
 
         // executing action which returns name of template to render
         /** @var Controller $oController */
@@ -42,7 +42,7 @@ class Dispatcher extends Core
      *
      * @return string|null
      */
-    protected function _chooseCurrentAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function chooseCurrentAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");

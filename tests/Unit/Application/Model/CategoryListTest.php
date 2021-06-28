@@ -378,7 +378,7 @@ class CategoryListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
-        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->_getSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
+        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->getSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
 
         $this->assertStringContainsString($sExpSql, $sCurSql);
     }
@@ -948,7 +948,7 @@ class CategoryListTest extends \OxidTestCase
         // holding number - show if all tests for N bit set are OK
         $iTrue = 3;
         foreach ($aData as $aLine) {
-            $r = $this->_checkData($aLine[0], $aLine[1], $aLine[2]);
+            $r = $this->checkData($aLine[0], $aLine[1], $aLine[2]);
             if (!($r & 1) && ($iTrue & 1)) {
                 $iTrue &= ~1;
             }
@@ -991,7 +991,7 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return array
      */
-    protected function _parseData($s)
+    protected function parseData($s)
     {
         $a = explode('|', $s);
         $b = array();
@@ -1011,9 +1011,9 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return int
      */
-    protected function _checkData($s, $l, $r)
+    protected function checkData($s, $l, $r)
     {
-        $a = $this->_parseData($s);
+        $a = $this->parseData($s);
         $g = 255;
         $i = 0;
         foreach ($a as $alr) {

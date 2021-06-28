@@ -42,34 +42,34 @@ class BasketConstruct
         $this->setOptions($options);
 
         // categories preparation
-        $this->_createCategories($categories);
+        $this->createCategories($categories);
 
         // article preparation, returns data required for adding to basket
-        $articlesForBasket = $this->_getArticles($articles);
+        $articlesForBasket = $this->createArticles($articles);
 
         // create & set discounts
-        $this->_setDiscounts($discounts);
+        $this->createDiscounts($discounts);
 
         // create & set wrappings
-        $wrapping = $this->_setWrappings($costs['wrapping'] ?? null);
+        $wrapping = $this->setWrappings($costs['wrapping'] ?? null);
 
         // create & set delivery costs
-        $delivery = $this->_setDeliveryCosts($costs['delivery'] ?? null);
+        $delivery = $this->setDeliveryCosts($costs['delivery'] ?? null);
 
         // create & set payment costs
-        $payment = $this->_setPayments($costs['payment'] ?? null);
+        $payment = $this->setPayments($costs['payment'] ?? null);
 
         // create & set vouchers
-        $voucherIDs = $this->_setVouchers($costs['voucherserie'] ?? null);
+        $voucherIDs = $this->setVouchers($costs['voucherserie'] ?? null);
 
         // basket preparation
         $basket = oxNew('oxBasket');
 
         // setup and login user for basket
         if (empty($userData)) {
-            $userData = $this->_getDefaultUserData();
+            $userData = $this->getDefaultUserData();
         }
-        $user = $this->_createUser($userData);
+        $user = $this->createUser($userData);
 
         $this->oUser = $user;
         $basket->setBasketUser($user);
@@ -131,7 +131,7 @@ class BasketConstruct
      *
      * @return oxUser
      */
-    protected function _createUser($userData)
+    protected function createUser($userData)
     {
         $user = $this->createObj($userData, "oxuser", "oxuser");
 
@@ -143,7 +143,7 @@ class BasketConstruct
      *
      * @param array $categories category data
      */
-    protected function _createCategories($categories)
+    protected function createCategories($categories)
     {
         $categories = (array) $categories;
         foreach ($categories as $categoryData) {
@@ -167,7 +167,7 @@ class BasketConstruct
      *
      * @return array $aResult of id's and basket amounts of created articles
      */
-    protected function _getArticles($articles)
+    protected function createArticles($articles)
     {
         $result = array();
         $articles = (array) $articles;
@@ -182,13 +182,13 @@ class BasketConstruct
             }
             $article->save();
             if (isset($articleData['scaleprices']) && $articleData['scaleprices']) {
-                $this->_createScalePrices(array($articleData['scaleprices']));
+                $this->createScalePrices(array($articleData['scaleprices']));
             }
             if (isset($articleData['field2shop']) && $articleData['field2shop']) {
-                $this->_createField2Shop($article, $articleData['field2shop']);
+                $this->createField2Shop($article, $articleData['field2shop']);
             }
             if (isset($articleData['inheritToShops']) && $articleData['inheritToShops']) {
-                $this->_inheritToShops($article, $articleData['inheritToShops']);
+                $this->inheritToShops($article, $articleData['inheritToShops']);
             }
             $result[$outerKey]['id'] = $articleData['oxid'];
             $result[$outerKey]['amount'] = $articleData['amount'] ?? null;
@@ -202,7 +202,7 @@ class BasketConstruct
      *
      * @param array $scalePrices of scale prices needed db fields
      */
-    protected function _createScalePrices($scalePrices)
+    protected function createScalePrices($scalePrices)
     {
         $this->createObj2Obj($scalePrices, "oxprice2article");
     }
@@ -213,7 +213,7 @@ class BasketConstruct
      * @param object $oObject Object to inherit
      * @param array  $aShops  Array of shop ids
      */
-    protected function _inheritToShops($oObject, $aShops)
+    protected function inheritToShops($oObject, $aShops)
     {
         $objectId = $oObject->getId();
         $objectTable = $oObject->getCoreTableName();
@@ -229,7 +229,7 @@ class BasketConstruct
      * @param oxArticle $article Article data
      * @param array     $options Options
      */
-    protected function _createField2Shop($article, $options)
+    protected function createField2Shop($article, $options)
     {
         $field2Shop = oxNew("oxField2Shop");
         $field2Shop->setProductData($article);
@@ -250,7 +250,7 @@ class BasketConstruct
      *
      * @param array $discounts discount data
      */
-    protected function _setDiscounts($discounts)
+    protected function createDiscounts($discounts)
     {
         $discounts = (array) $discounts;
         foreach ($discounts as $discountData) {
@@ -284,7 +284,7 @@ class BasketConstruct
      *
      * @return array of wrapping id's
      */
-    protected function _setWrappings($wrappings)
+    protected function setWrappings($wrappings)
     {
         $result = array();
         $wrappings = (array) $wrappings;
@@ -317,7 +317,7 @@ class BasketConstruct
      *
      * @return array of delivery id's
      */
-    protected function _setDeliveryCosts($deliveryCosts)
+    protected function setDeliveryCosts($deliveryCosts)
     {
         if (empty($deliveryCosts)) {
             return null;
@@ -368,7 +368,7 @@ class BasketConstruct
      *
      * @return array of payment id's
      */
-    protected function _setPayments($payments)
+    protected function setPayments($payments)
     {
         $result = array();
         $payments = (array) $payments;
@@ -395,7 +395,7 @@ class BasketConstruct
      *
      * @return array of voucher id's
      */
-    protected function _setVouchers($voucherSeries)
+    protected function setVouchers($voucherSeries)
     {
         $voucherIDs = array();
         $voucherSeries = (array) $voucherSeries;
@@ -425,7 +425,7 @@ class BasketConstruct
     /**
      * @return array
      */
-    protected function _getDefaultUserData()
+    protected function getDefaultUserData()
     {
         return array(
             'oxrights'      => 'malladmin',
@@ -460,7 +460,7 @@ class BasketConstruct
      */
     public function getArticles($articles)
     {
-        return $this->_getArticles($articles);
+        return $this->createArticles($articles);
     }
 
     /**
@@ -491,7 +491,7 @@ class BasketConstruct
      */
     public function setDiscounts($discounts)
     {
-        $this->_setDiscounts($discounts);
+        $this->createDiscounts($discounts);
     }
 
     /**
@@ -501,7 +501,7 @@ class BasketConstruct
      */
     public function setCategories($categories)
     {
-        $this->_createCategories($categories);
+        $this->createCategories($categories);
     }
 
     /**

@@ -81,18 +81,18 @@ class CategoryOrderAjaxTest extends \OxidTestCase
     }
 
     /**
-     * CategoryOrderAjax::_getQuery() test case
+     * CategoryOrderAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where  1 = 0", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where  1 = 0", trim($oView->getQuery()));
     }
 
     /**
-     * CategoryOrderAjax::_getQuery() test case
+     * CategoryOrderAjax::getQuery() test case
      *
      * @return null
      */
@@ -103,11 +103,11 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $sArticleTable = $this->getArticleViewTable();
 
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("from " . $sArticleTable . " where  $sArticleTable.oxid in ( '_testOxid1', '_testOxid2' )", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $sArticleTable . " where  $sArticleTable.oxid in ( '_testOxid1', '_testOxid2' )", trim($oView->getQuery()));
     }
 
     /**
-     * CategoryOrderAjax::_getQuery() test case
+     * CategoryOrderAjax::getQuery() test case
      *
      * @return null
      */
@@ -124,7 +124,7 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $sReturn .= " and $sArticleTable.oxid not in ( '_testOxid1', '_testOxid2' )";
 
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals($sReturn, trim($oView->_getQuery()));
+        $this->assertEquals($sReturn, trim($oView->getQuery()));
     }
 
     /**
@@ -137,7 +137,7 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("order by _0 asc", trim($oView->_getSorting()));
+        $this->assertEquals("order by _0 asc", trim($oView->getSorting()));
     }
 
     /**
@@ -151,7 +151,7 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $aOxid = array('_testOxid1', '_testOxid2');
         $this->setSessionParam("neworder_sess", $aOxid);
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("order by  $sArticleTable.oxid='_testOxid2' ,  $sArticleTable.oxid='_testOxid1'", trim($oView->_getSorting()));
+        $this->assertEquals("order by  $sArticleTable.oxid='_testOxid2' ,  $sArticleTable.oxid='_testOxid1'", trim($oView->getSorting()));
     }
 
     /**

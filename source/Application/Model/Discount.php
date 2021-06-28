@@ -184,7 +184,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sArticleId = $oArticle->getProductId();
 
         if (!isset($this->_aHasArticleDiscounts[$sArticleId])) {
-            $blResult = $this->_isArticleAssigned($oArticle) || $this->_isCategoriesAssigned($oArticle->getCategoryIds());
+            $blResult = $this->isArticleAssigned($oArticle) || $this->isCategoriesAssigned($oArticle->getCategoryIds());
 
             $this->_aHasArticleDiscounts[$sArticleId] = $blResult;
         }
@@ -215,7 +215,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         // check if this article is assigned
         $sQ = "select 1 from oxobject2discount 
             where oxdiscountid = :oxdiscountid and oxtype = :oxtype ";
-        $sQ .= $this->_getProductCheckQuery($oArticle);
+        $sQ .= $this->getProductCheckQuery($oArticle);
         $params = [
             ':oxdiscountid' => $this->oxdiscount__oxid->value,
             ':oxtype' => 'oxarticles'
@@ -223,7 +223,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         if (!($blOk = (bool)$oDb->getOne($sQ, $params))) {
             // checking article category
-            $blOk = $this->_checkForArticleCategories($oArticle);
+            $blOk = $this->checkForArticleCategories($oArticle);
         }
 
         return $blOk;
@@ -342,14 +342,14 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select 1 from oxobject2discount where oxdiscountid = :oxdiscountid";
-        $sQ .= $this->_getProductCheckQuery($oArticle);
+        $sQ .= $this->getProductCheckQuery($oArticle);
         $params = [
             ':oxdiscountid' => $this->getId()
         ];
 
         if (!($blOk = (bool)$oDb->getOne($sQ, $params))) {
             // additional checks for amounts and other dependencies
-            $blOk = $this->_checkForArticleCategories($oArticle);
+            $blOk = $this->checkForArticleCategories($oArticle);
         }
 
         return $blOk;
@@ -525,7 +525,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if article is in some assigned category
         $aCatIds = $oArticle->getCategoryIds();
@@ -557,7 +557,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
@@ -577,7 +577,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -585,7 +585,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 from oxobject2discount
                 where oxdiscountid = :oxdiscountid 
                     and oxtype = :oxtype ";
-        $sQ .= $this->_getProductCheckQuery($oArticle);
+        $sQ .= $this->getProductCheckQuery($oArticle);
         $params = [
             ':oxdiscountid' => $this->oxdiscount__oxid->value,
             ':oxtype' => 'oxarticles'
@@ -601,7 +601,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($aCategoryIds)) {
             return false;

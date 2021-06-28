@@ -86,7 +86,7 @@ class ShopViewValidatorTest extends \OxidTestCase
      */
     public function testGetInvalidViews()
     {
-        $aAllShopViews = $this->_getShopViews();
+        $aAllShopViews = $this->getShopViews();
 
         $aAllViews = $aAllShopViews['baseshop'];
         $aAllShopLanguageIds = $aLanguageIds = array(0 => 'de', 1 => 'en');
@@ -112,7 +112,7 @@ class ShopViewValidatorTest extends \OxidTestCase
     /**
      * @return array
      */
-    private function _getShopViews()
+    private function getShopViews()
     {
         return array(
             'baseshop'  => array(

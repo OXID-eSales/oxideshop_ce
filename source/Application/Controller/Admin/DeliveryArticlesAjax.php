@@ -51,15 +51,15 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $request = \OxidEsales\Eshop\Core\Registry::getRequest();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // looking for table/view
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sArtTable = $this->getViewName('oxarticles');
+        $sO2CView = $this->getViewName('oxobject2category');
 
         $sDelId = $request->getRequestParameter('oxid');
         $sSynchDelId = $request->getRequestParameter('synchoxid');
@@ -91,31 +91,14 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Adds filter SQL to current query
-     *
-     * @param string $sQ query to add filter condition
-     *
-     * @return string
-     */
-    /*protected function _addFilter( $sQ ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
-
-        // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam( 'blVariantsSelection' ) ? ' group by '.$sArtTable.'.oxid ' : '';
-        return $sQ;
-    }*/
-
-    /**
      * Removes article from delivery configuration
      */
     public function removeArtFromDel()
     {
-        $aChosenArt = $this->_getActionIds('oxobject2delivery.oxid');
+        $aChosenArt = $this->getActionIds('oxobject2delivery.oxid');
         // removing all
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = parent::_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete oxobject2delivery.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
@@ -128,13 +111,13 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function addArtToDel()
     {
-        $aChosenArt = $this->_getActionIds('oxarticles.oxid');
+        $aChosenArt = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aChosenArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $sArtTable = $this->getViewName('oxarticles');
+            $aChosenArt = $this->getAll($this->addFilter("select $sArtTable.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {

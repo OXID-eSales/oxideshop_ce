@@ -40,10 +40,10 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
-        $sCountryTable = $this->_getViewName('oxcountry');
+        $sCountryTable = $this->getViewName('oxcountry');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCountryId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchCountryId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -71,12 +71,12 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function addPayCountry()
     {
-        $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
+        $aChosenCntr = $this->getActionIds('oxcountry.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sCountryTable = $this->_getViewName('oxcountry');
-            $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
+            $sCountryTable = $this->getViewName('oxcountry');
+            $aChosenCntr = $this->getAll($this->addFilter("select $sCountryTable.oxid " . $this->getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
@@ -95,9 +95,9 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function removePayCountry()
     {
-        $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
+        $aChosenCntr = $this->getActionIds('oxobject2payment.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2payment.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
             $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";

@@ -61,7 +61,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         //#533 user profile
         $this->addTplParam("profiles", \OxidEsales\Eshop\Core\Registry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
 
-        $aLanguages = $this->_getAvailableLanguages();
+        $aLanguages = $this->getAvailableLanguages();
         $this->addTplParam("aLanguages", $aLanguages);
 
         // setting templates language to selected language id
@@ -180,7 +180,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return boolean
      */
-    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return true;
     }
@@ -200,10 +200,10 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
-        $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
+        $sDefLang = $sDefLang ? $sDefLang : $this->getBrowserLanguage();
 
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
         foreach ($aLanguages as $oLang) {
@@ -218,7 +218,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }

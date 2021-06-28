@@ -384,41 +384,41 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("itemsPager");
         $this->selectDropDown("itemsPerPage", "1");
         $this->selectDropDown("viewOptions", "%line%");
-        $this->_checkNavigation('itemsPager', true, false);
+        $this->checkNavigation('itemsPager', true, false);
 
         //pagination on top
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='2']");
-        $this->_checkNavigation('itemsPager', false, true);
+        $this->checkNavigation('itemsPager', false, true);
 
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='%PREVIOUS%']");
-        $this->_checkNavigation('itemsPager', true, false);
+        $this->checkNavigation('itemsPager', true, false);
 
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='%NEXT%']");
-        $this->_checkNavigation('itemsPager', false, true);
+        $this->checkNavigation('itemsPager', false, true);
 
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='1']");
-        $this->_checkNavigation('itemsPager', true, false);
+        $this->checkNavigation('itemsPager', true, false);
 
         //testing bottom pagination
         $this->clickAndWait("//div[@id='itemsPagerbottom']/a[text()='2']");
-        $this->_checkNavigation('itemsPagerbottom', false, true);
+        $this->checkNavigation('itemsPagerbottom', false, true);
 
         $this->clickAndWait("//div[@id='itemsPagerbottom']/a[text()='%PREVIOUS%']");
-        $this->_checkNavigation('itemsPagerbottom', true, false);
+        $this->checkNavigation('itemsPagerbottom', true, false);
 
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='%NEXT%']");
-        $this->_checkNavigation('itemsPagerbottom', false, true);
+        $this->checkNavigation('itemsPagerbottom', false, true);
 
         $this->clickAndWait("//div[@id='itemsPager']/a[text()='1']");
-        $this->_checkNavigation('itemsPagerbottom', true, false);
+        $this->checkNavigation('itemsPagerbottom', true, false);
 
-        $this->_checkIfPossibleToBuyItemFromList(' %TO_CART%');
+        $this->checkIfPossibleToBuyItemFromList(' %TO_CART%');
 
         $this->selectDropDown("viewOptions", "%infogrid%");
-        $this->_checkIfPossibleToBuyItemFromList('%TO_CART%');
+        $this->checkIfPossibleToBuyItemFromList('%TO_CART%');
 
         $this->selectDropDown("viewOptions", "%grid%");
-        $this->_checkIfPossibleToBuyItemFromList();
+        $this->checkIfPossibleToBuyItemFromList();
 
         $this->clickAndWait("moreSubCat_1");
         $this->assertEquals("%YOU_ARE_HERE%: / Test category 0 [EN] šÄßüл / Test category 1 [EN] šÄßüл", $this->getText("breadCrumb"));
@@ -592,7 +592,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %BY_MANUFACTURER% / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Manufacturer description [EN] šÄßüл", $this->getText("catDesc"));
-        $this->_checkArticleList();
+        $this->checkArticleList();
 
         //going to vendor root by path link (you are here)
         $this->clickAndWait("//nav[@id='breadCrumb']/a[1]");
@@ -605,7 +605,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %BY_MANUFACTURER% / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Manufacturer description [EN] šÄßüл", $this->getText("catDesc"));
-        $this->_checkArticleList();
+        $this->checkArticleList();
 
         //manufacturers tree is disabled
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadManufacturerTree" => array("type" => "bool", "value" => "false")));
@@ -629,7 +629,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %BY_VENDOR% / Distributor [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Distributor [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Distributor description [EN] šÄßüл", $this->getText("catDesc"));
-        $this->_checkArticleList();
+        $this->checkArticleList();
 
         //going to vendor root by path link (you are here)
         $this->clickAndWait("//nav[@id='breadCrumb']/a[1]");
@@ -641,7 +641,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %BY_VENDOR% / Distributor [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Distributor [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Distributor description [EN] šÄßüл", $this->getText("catDesc"));
-        $this->_checkArticleList();
+        $this->checkArticleList();
 
         //disabling vendor tree
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadVendorTree" => array("type" => "bool", "value" => "false")));
@@ -732,11 +732,11 @@ class NavigationFrontendTest extends FrontendTestCase
 
         //top navigation testing
         $this->selectDropDown("sortItems", "", "li[4]");
-        $this->_checkSortedListEn();
+        $this->checkSortedListEn();
         $this->assertElementNotPresent("//ul[@id='searchList']/li[5]");
 
         $this->selectDropDown("sortItems", "", "li[2]"); //title desc
-        $this->_checkSortedListEn('titleDesc');
+        $this->checkSortedListEn('titleDesc');
 
         //adding additional column for sorting
         $this->callShopSC("oxConfig", null, null, array("aSortCols" => array("type" => "arr", "value" => serialize(array("oxtitle", "oxvarminprice", "oxartnum")))));
@@ -745,10 +745,10 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->switchLanguage("Deutsch");
 
         $this->selectDropDown("sortItems", "", "li[3]"); //title asc
-        $this->_checkSortedListDe('titleAsc');
+        $this->checkSortedListDe('titleAsc');
 
         $this->selectDropDown("sortItems", "", "li[5]"); //artnum asc
-        $this->_checkSortedListDe();
+        $this->checkSortedListDe();
     }
 
     /**
@@ -765,7 +765,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("itemsPager");
 
         $this->selectDropDown("itemsPerPage", "2");
-        $this->_checkFilter();
+        $this->checkFilter();
         $this->assertElementPresent("itemsPager");
         $this->assertElementPresent("//ul[@id='searchList']/li[1]");
         $this->assertElementPresent("//ul[@id='searchList']/li[2]");
@@ -1261,7 +1261,7 @@ class NavigationFrontendTest extends FrontendTestCase
      * @param $iStatus
      * @return array
      */
-    protected function _userData($iStatus)
+    protected function userData($iStatus)
     {
         $aSubscribedUserData = array(
             'OXSAL' => 'MRS',
@@ -1277,9 +1277,9 @@ class NavigationFrontendTest extends FrontendTestCase
     /**
      * Check article list element.
      */
-    private function _checkArticleList()
+    private function checkArticleList()
     {
-        $this->_checkFilter();
+        $this->checkFilter();
         $this->assertElementPresent("//ul[@id='productList']/li[1]");
         $this->assertElementPresent("//ul[@id='productList']/li[4]");
         $this->assertElementNotPresent("//ul[@id='productList']/li[5]");
@@ -1288,7 +1288,7 @@ class NavigationFrontendTest extends FrontendTestCase
     /**
      * Checks filter.
      */
-    private function _checkFilter()
+    private function checkFilter()
     {
         $this->assertElementPresent("viewOptions");
         $this->assertElementPresent("itemsPerPage");
@@ -1302,12 +1302,12 @@ class NavigationFrontendTest extends FrontendTestCase
      * @param $blButtonNextIsVisible
      * @param $blButtonPreviousIsVisible
      */
-    private function _checkNavigation($sNavigationId, $blButtonNextIsVisible, $blButtonPreviousIsVisible)
+    private function checkNavigation($sNavigationId, $blButtonNextIsVisible, $blButtonPreviousIsVisible)
     {
         $this->assertElementPresent("//div[@id='$sNavigationId']//a[text()='1']");
         $this->assertElementPresent("//div[@id='$sNavigationId']//a[text()='2']");
-        $this->_checkNextPreviousButtons($sNavigationId, $blButtonNextIsVisible, '%NEXT%');
-        $this->_checkNextPreviousButtons($sNavigationId, $blButtonPreviousIsVisible, '%PREVIOUS%');
+        $this->checkNextPreviousButtons($sNavigationId, $blButtonNextIsVisible, '%NEXT%');
+        $this->checkNextPreviousButtons($sNavigationId, $blButtonPreviousIsVisible, '%PREVIOUS%');
         $this->assertElementPresent("productList_1");
         $this->assertElementNotPresent("//ul[@id='productList']/li[2]");
     }
@@ -1319,7 +1319,7 @@ class NavigationFrontendTest extends FrontendTestCase
      * @param $blButtonVisible
      * @param $sButtonName
      */
-    private function _checkNextPreviousButtons($sNavigationId, $blButtonVisible, $sButtonName)
+    private function checkNextPreviousButtons($sNavigationId, $blButtonVisible, $sButtonName)
     {
         if ($blButtonVisible) {
             $this->assertElementPresent("//div[@id='$sNavigationId']//a[text()='$sButtonName']");
@@ -1333,7 +1333,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @param null $sButtonText
      */
-    private function _checkIfPossibleToBuyItemFromList($sButtonText = null)
+    private function checkIfPossibleToBuyItemFromList($sButtonText = null)
     {
         $this->assertElementNotPresent("amountToBasket_productList_1");
         $this->assertElementNotPresent("//form[@name='tobasket.productList_1']//input[@name='aid' and @value='1000']");
@@ -1349,7 +1349,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @param $sEmail
      */
-    private function _unsubscribeByEmail($sEmail)
+    private function unsubscribeByEmail($sEmail)
     {
         $this->clickAndWait("//div[@id='panel']/div[1]//button[text()='Subscribe']");
         $this->assertEquals("%YOU_ARE_HERE%: / %STAY_INFORMED%", $this->getText("breadCrumb"));
@@ -1367,7 +1367,7 @@ class NavigationFrontendTest extends FrontendTestCase
     /**
      * Adds subscription info to fields and asserts.
      */
-    private function _typeInfoForSubscription()
+    private function typeInfoForSubscription()
     {
         $this->type("//div[@id='panel']//input[@name='editval[oxuser__oxusername]']", "example01@oxid-esales.dev");
         $this->clickAndWait("//div[@id='panel']/div[1]//button[text()='%SUBSCRIBE%']");
@@ -1384,7 +1384,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @param null $sSortType
      */
-    private function _checkSortedListEn($sSortType = null)
+    private function checkSortedListEn($sSortType = null)
     {
         $aArticlesTitles = array(
             "Test product 1 [EN] šÄßüл",
@@ -1396,7 +1396,7 @@ class NavigationFrontendTest extends FrontendTestCase
             rsort($aArticlesTitles);
         }
 
-        $this->_runSortAsserts($aArticlesTitles);
+        $this->runSortAsserts($aArticlesTitles);
     }
 
     /**
@@ -1404,7 +1404,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @param null $sSortType
      */
-    private function _checkSortedListDe($sSortType = null)
+    private function checkSortedListDe($sSortType = null)
     {
         $aArticlesTitles = array(
             "[DE 4] Test product 0 šÄßüл",
@@ -1416,7 +1416,7 @@ class NavigationFrontendTest extends FrontendTestCase
             sort($aArticlesTitles);
         }
 
-        $this->_runSortAsserts($aArticlesTitles);
+        $this->runSortAsserts($aArticlesTitles);
     }
 
     /**
@@ -1424,7 +1424,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @param $aArticlesTitles
      */
-    private function _runSortAsserts($aArticlesTitles)
+    private function runSortAsserts($aArticlesTitles)
     {
         $this->assertEquals($aArticlesTitles[0], $this->getText("searchList_1"));
         $this->assertEquals($aArticlesTitles[1], $this->getText("searchList_2"));

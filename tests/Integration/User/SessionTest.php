@@ -34,7 +34,7 @@ class SessionTest extends UnitTestCase
         oxRegistry::getSession()->delBasket();
 
         $this->setConfigParam('blPerfNoBasketSaving', false);
-        $this->_createUsers();
+        $this->createUsers();
     }
 
     /**
@@ -297,7 +297,7 @@ class SessionTest extends UnitTestCase
     /**
      * Test helper inserts new user
      */
-    private function _createUsers()
+    private function createUsers()
     {
         $firstUser = array(
             'oxuser__oxactive'    => new oxField('1', oxField::T_RAW),
@@ -337,8 +337,8 @@ class SessionTest extends UnitTestCase
         $secondUser['oxuser__oxfname'] = new oxField('Foo', oxField::T_RAW);
         $secondUser['oxuser__oxlname'] = new oxField('Bla', oxField::T_RAW);
 
-        $this->_insertUser($firstUser);
-        $this->_insertUser($secondUser);
+        $this->insertUser($firstUser);
+        $this->insertUser($secondUser);
     }
 
     /**
@@ -348,7 +348,7 @@ class SessionTest extends UnitTestCase
      *
      * @return string
      */
-    private function _insertUser($data)
+    private function insertUser($data)
     {
         $userOxid = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
@@ -371,7 +371,7 @@ class SessionTest extends UnitTestCase
      *
      * @return oxBasket
      */
-    private function _getFilledBasketForUser($user, $articleId)
+    private function getFilledBasketForUser($user, $articleId)
     {
         $basket = oxnew('oxBasket');
         $basket->setBasketUser($user);
@@ -406,7 +406,7 @@ class SessionTest extends UnitTestCase
         $userComponent->login();
 
         $user = $userComponent->getUser();
-        $basket = $this->_getFilledBasketForUser($user, $articleId);
+        $basket = $this->getFilledBasketForUser($user, $articleId);
         oxRegistry::getSession()->setBasket($basket);
 
         $this->setRequestParameter('stoken', Registry::getSession()->getSessionChallengeToken());

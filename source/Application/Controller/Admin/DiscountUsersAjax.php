@@ -50,11 +50,11 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $sUserTable = $this->_getViewName('oxuser');
+        $sUserTable = $this->getViewName('oxuser');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -91,9 +91,9 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function removeDiscUser()
     {
-        $aRemoveGroups = $this->_getActionIds('oxobject2discount.oxid');
+        $aRemoveGroups = $this->getActionIds('oxobject2discount.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2discount.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
@@ -107,12 +107,12 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     public function addDiscUser()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $aChosenUsr = $this->_getActionIds('oxuser.oxid');
+        $aChosenUsr = $this->getActionIds('oxuser.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sUserTable = $this->_getViewName('oxuser');
-            $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
+            $sUserTable = $this->getViewName('oxuser');
+            $aChosenUsr = $this->getAll($this->addFilter("select $sUserTable.oxid " . $this->getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {

@@ -353,7 +353,7 @@ class ListTest extends \OxidTestCase
     }
 
     /**
-     * Testing oxList::_getFieldLongName()
+     * Testing oxList::getFieldLongName()
      *
      * @return null
      */
@@ -365,10 +365,10 @@ class ListTest extends \OxidTestCase
         $oSubj = $this->getProxyClass("oxList");
 
         $oSubj->setNonPublicVar("_sCoreTable", "");
-        $this->assertEquals($sFieldName, $oSubj->_getFieldLongName($sFieldName));
+        $this->assertEquals($sFieldName, $oSubj->getFieldLongName($sFieldName));
 
         $oSubj->setNonPublicVar("_sCoreTable", $sCoreTable);
-        $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->_getFieldLongName($sFieldName));
+        $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->getFieldLongName($sFieldName));
     }
 
     public function testUnsetForeach()

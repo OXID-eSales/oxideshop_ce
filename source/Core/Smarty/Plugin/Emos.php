@@ -249,7 +249,7 @@ class Emos
      */
     public function toString()
     {
-        $this->_prepareScript();
+        $this->prepareScript();
 
         return $this->_sPrescript .
                $this->_sIncScript .
@@ -325,7 +325,7 @@ class Emos
     public function addSearch($sQueryString, $iNumberOfHits)
     {
         // #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped
-        $this->_searchQuery = $this->_emos_DataFormat($sQueryString);
+        $this->_searchQuery = $this->emos_DataFormat($sQueryString);
         $this->_searchNumberOfHits = $iNumberOfHits;
     }
 
@@ -390,7 +390,7 @@ class Emos
 
         $aBasketItems = [];
         foreach ($aBasket as $oItem) {
-            $oItem = $this->_emos_ItemFormat($oItem);
+            $oItem = $this->emos_ItemFormat($oItem);
             $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
                 $oItem->price, $oItem->productGroup, $oItem->quantity,
                 $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
@@ -406,7 +406,7 @@ class Emos
      */
     public function addDetailView($oItem)
     {
-        $this->_setEmosECPageArray($oItem, "view");
+        $this->setEmosECPageArray($oItem, "view");
     }
 
     /**
@@ -416,7 +416,7 @@ class Emos
      */
     public function removeFromBasket($oItem)
     {
-        $this->_setEmosECPageArray($oItem, "c_rmv");
+        $this->setEmosECPageArray($oItem, "c_rmv");
     }
 
     /**
@@ -426,7 +426,7 @@ class Emos
      */
     public function addToBasket($oItem)
     {
-        $this->_setEmosECPageArray($oItem, "c_add");
+        $this->setEmosECPageArray($oItem, "c_add");
     }
 
     /**
@@ -441,7 +441,7 @@ class Emos
      */
     public function addEmosBillingPageArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
     {
-        $this->_setEmosBillingArray($sBillingId, $sCustomerNumber, $iTotal, $sCountry, $sCip, $sCity);
+        $this->setEmosBillingArray($sBillingId, $sCustomerNumber, $iTotal, $sCountry, $sCip, $sCity);
     }
 
     /**
@@ -454,15 +454,15 @@ class Emos
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
      */
-    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
         $sCustomerNumber = md5($sCustomerNumber);
 
-        $sCountry = $this->_emos_DataFormat($sCountry);
-        $sCip = $this->_emos_DataFormat($sCip) ;
-        $sCity = $this->_emos_DataFormat($sCity);
+        $sCountry = $this->emos_DataFormat($sCountry);
+        $sCip = $this->emos_DataFormat($sCip) ;
+        $sCity = $this->emos_DataFormat($sCity);
 
         /* get a / separated location stzring for later drilldown */
         $ort = "";
@@ -491,9 +491,9 @@ class Emos
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
      */
-    protected function _setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oItem = $this->_emos_ItemFormat($oItem);
+        $oItem = $this->emos_ItemFormat($oItem);
 
         $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
             $oItem->price, $oItem->productGroup,
@@ -508,14 +508,14 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
+    protected function emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oItem->productId = $this->_emos_DataFormat($oItem->productId);
-        $oItem->productName = $this->_emos_DataFormat($oItem->productName);
-        $oItem->productGroup = $this->_emos_DataFormat($oItem->productGroup);
-        $oItem->variant1 = $this->_emos_DataFormat($oItem->variant1);
-        $oItem->variant2 = $this->_emos_DataFormat($oItem->variant2);
-        $oItem->variant3 = $this->_emos_DataFormat($oItem->variant3);
+        $oItem->productId = $this->emos_DataFormat($oItem->productId);
+        $oItem->productName = $this->emos_DataFormat($oItem->productName);
+        $oItem->productGroup = $this->emos_DataFormat($oItem->productGroup);
+        $oItem->variant1 = $this->emos_DataFormat($oItem->variant1);
+        $oItem->variant2 = $this->emos_DataFormat($oItem->variant2);
+        $oItem->variant3 = $this->emos_DataFormat($oItem->variant3);
 
         return $oItem;
     }
@@ -527,7 +527,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
+    protected function emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         //null check
         if (is_null($sStr)) {
@@ -569,7 +569,7 @@ class Emos
     /**
      * formats up the connector script in a Econda ver 2 JS format
      */
-    public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
@@ -580,21 +580,21 @@ class Emos
         $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;
 
-        $this->_sPostscript .= $this->_addJsFormat("content", $this->_content);
-        $this->_sPostscript .= $this->_addJsFormat("orderProcess", $this->_orderProcess);
-        $this->_sPostscript .= $this->_addJsFormat("siteid", $this->_siteid);
-        $this->_sPostscript .= $this->_addJsFormat("langid", $this->_langid);
-        $this->_sPostscript .= $this->_addJsFormat("countryid", $this->_countryid);
-        $this->_sPostscript .= $this->_addJsFormat("pageId", $this->_pageid);
-        $this->_sPostscript .= $this->_addJsFormat("scontact", $this->_scontact);
-        $this->_sPostscript .= $this->_addJsFormat("download", $this->_download);
-        $this->_sPostscript .= $this->_addJsFormat("billing", [$this->_billing]);
+        $this->_sPostscript .= $this->addJsFormat("content", $this->_content);
+        $this->_sPostscript .= $this->addJsFormat("orderProcess", $this->_orderProcess);
+        $this->_sPostscript .= $this->addJsFormat("siteid", $this->_siteid);
+        $this->_sPostscript .= $this->addJsFormat("langid", $this->_langid);
+        $this->_sPostscript .= $this->addJsFormat("countryid", $this->_countryid);
+        $this->_sPostscript .= $this->addJsFormat("pageId", $this->_pageid);
+        $this->_sPostscript .= $this->addJsFormat("scontact", $this->_scontact);
+        $this->_sPostscript .= $this->addJsFormat("download", $this->_download);
+        $this->_sPostscript .= $this->addJsFormat("billing", [$this->_billing]);
 
-        $this->_sPostscript .= $this->_addJsFormat("search", [[$this->_searchQuery, $this->_searchNumberOfHits]]);
-        $this->_sPostscript .= $this->_addJsFormat("register", [[$this->_registerUser, $this->_registerResult]]);
-        $this->_sPostscript .= $this->_addJsFormat("login", [[$this->_loginUser, $this->_loginResult]]);
+        $this->_sPostscript .= $this->addJsFormat("search", [[$this->_searchQuery, $this->_searchNumberOfHits]]);
+        $this->_sPostscript .= $this->addJsFormat("register", [[$this->_registerUser, $this->_registerResult]]);
+        $this->_sPostscript .= $this->addJsFormat("login", [[$this->_loginUser, $this->_loginResult]]);
 
-        $this->_sPostscript .= $this->_addJsFormat("ec_Event", $this->_ecEvent);
+        $this->_sPostscript .= $this->addJsFormat("ec_Event", $this->_ecEvent);
 
         $this->_sPostscript .= $this->_tab . 'window.emosPropertiesEvent(emospro);' . $this->_br;
         $this->_sPostscript .= '//-->' . $this->_br . '</script>' . $this->_br;
@@ -608,7 +608,7 @@ class Emos
      *
      * @return string
      */
-    protected function _addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get the first non array $mContents element
         $mVal = $mContents;
@@ -620,7 +620,7 @@ class Emos
             return;
         }
 
-        $sEncoded = $this->_jsEncode(($mContents));
+        $sEncoded = $this->jsEncode(($mContents));
 
         return $this->_tab . 'emospro.' . $sVarName . ' = ' . $sEncoded . ';' . $this->_br;
     }
@@ -632,7 +632,7 @@ class Emos
      *
      * @return string
      */
-    protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return json_encode($mContents);
     }

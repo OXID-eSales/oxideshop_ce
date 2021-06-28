@@ -73,7 +73,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
         $oOrderFileList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
-        $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
+        $this->_oOrderFilesList = $this->prepareForTemplate($oOrderFileList);
 
         return $this->_oOrderFilesList;
     }
@@ -85,7 +85,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oOrderArticles = [];
 

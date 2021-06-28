@@ -39,13 +39,13 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        $sPayTable = $this->_getViewName('oxpayments');
+        $sPayTable = $this->getViewName('oxpayments');
 
         // category selected or not ?
         if (!$sId) {
@@ -68,9 +68,9 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function removePayFromSet()
     {
-        $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
+        $aChosenCntr = $this->getActionIds('oxobject2payment.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2payment.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
             $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
@@ -85,13 +85,13 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function addPayToSet()
     {
-        $aChosenSets = $this->_getActionIds('oxpayments.oxid');
+        $aChosenSets = $this->getActionIds('oxpayments.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sPayTable = $this->_getViewName('oxpayments');
-            $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
+            $sPayTable = $this->getViewName('oxpayments');
+            $aChosenSets = $this->getAll($this->addFilter("select $sPayTable.oxid " . $this->getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).

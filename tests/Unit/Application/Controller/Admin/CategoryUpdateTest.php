@@ -27,13 +27,13 @@ class CategoryUpdateTest extends \OxidTestCase
         $oCategoryList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array("getUpdateInfo"));
         $oCategoryList->expects($this->once())->method('getUpdateInfo');
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryUpdate::class, array("_getCategoryList"));
-        $oView->expects($this->once())->method('_getCategoryList')->will($this->returnValue($oCategoryList));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryUpdate::class, array("getCategoryList"));
+        $oView->expects($this->once())->method('getCategoryList')->will($this->returnValue($oCategoryList));
         $oView->getCatListUpdateInfo();
     }
 
     /**
-     * Category_Update::_getCategoryList() test case
+     * Category_Update::getCategoryList() test case
      *
      * @return null
      */
@@ -42,7 +42,7 @@ class CategoryUpdateTest extends \OxidTestCase
         oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
         $oView = oxNew('Category_Update');
-        $this->assertTrue($oView->_getCategoryList() instanceof CategoryList);
+        $this->assertTrue($oView->getCategoryList() instanceof CategoryList);
     }
 
     /**

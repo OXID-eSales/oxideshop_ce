@@ -63,20 +63,20 @@ class ArticleMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxarticle', 'save', '{ return true; }');
         $this->getConfig()->setConfigParam("blDisableDublArtOnCopy", true);
 
-        $aTasks = array("_copyCategories", "_copyAttributes", "_copySelectlists",
-                        "_copyCrossseling", "_copyAccessoires", "_copyStaffelpreis",
-                        "_copyArtExtends");
+        $aTasks = array("copyCategories", "copyAttributes", "copySelectlists",
+                        "copyCrossseling", "copyAccessoires", "copyStaffelpreis",
+                        "copyArtExtends");
 
         $aTasks[] = "resetContentCache";
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, $aTasks);
-        $oView->expects($this->once())->method('_copyCategories');
-        $oView->expects($this->once())->method('_copyAttributes');
-        $oView->expects($this->once())->method('_copySelectlists');
-        $oView->expects($this->once())->method('_copyCrossseling');
-        $oView->expects($this->once())->method('_copyAccessoires');
-        $oView->expects($this->once())->method('_copyStaffelpreis');
-        $oView->expects($this->once())->method('_copyArtExtends');
+        $oView->expects($this->once())->method('copyCategories');
+        $oView->expects($this->once())->method('copyAttributes');
+        $oView->expects($this->once())->method('copySelectlists');
+        $oView->expects($this->once())->method('copyCrossseling');
+        $oView->expects($this->once())->method('copyAccessoires');
+        $oView->expects($this->once())->method('copyStaffelpreis');
+        $oView->expects($this->once())->method('copyArtExtends');
 
         $oView->expects($this->once())->method('resetContentCache');
 
@@ -104,7 +104,7 @@ class ArticleMainTest extends \OxidTestCase
         $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId2', '0', '0');", 'oxobject2category');
         $this->addTeardownSql("delete from `{$sO2CView}` where OXOBJECTID = '_testArtId'");
         $oView = oxNew('Article_Main');
-        $oView->_copyCategories("_testArtId", "_testArtId2");
+        $oView->copyCategories("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from {$sO2CView} where oxobjectid = '_testArtId2'"));
     }
@@ -125,7 +125,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );");
 
         $oView = oxNew('Article_Main');
-        $oView->_copyAttributes("_testArtId", "_testArtId2");
+        $oView->copyAttributes("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2attribute where oxobjectid = '_testArtId2'"));
     }
@@ -146,7 +146,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId', 0);");
 
         $oView = oxNew('Article_Main');
-        $oView->_copySelectlists("_testArtId", "_testArtId2");
+        $oView->copySelectlists("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2selectlist where oxobjectid = '_testArtId2'"));
     }
@@ -167,7 +167,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testObjId');");
 
         $oView = oxNew('Article_Main');
-        $oView->_copyFiles("_testArtId", "_testArtId2");
+        $oView->copyFiles("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("SELECT COUNT(*) FROM `oxfiles` WHERE `oxartid` = '_testArtId2'"));
     }
@@ -188,7 +188,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
 
         $oView = oxNew('Article_Main');
-        $oView->_copyCrossseling("_testArtId", "_testArtId2");
+        $oView->copyCrossseling("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxobject2article where oxarticlenid = '_testArtId2'"));
     }
@@ -209,7 +209,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('" . $oUtils->generateUId() . "', '_testObjId', '_testArtId', 0);");
 
         $oView = oxNew('Article_Main');
-        $oView->_copyAccessoires("_testArtId", "_testArtId2");
+        $oView->copyAccessoires("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxaccessoire2article where oxarticlenid = '_testArtId2'"));
     }
@@ -230,7 +230,7 @@ class ArticleMainTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('" . $oUtils->generateUId() . "', '{$iShopId}', '_testArtId', 0.5, 0, 4, 5);");
 
         $oView = oxNew('Article_Main');
-        $oView->_copyStaffelpreis("_testArtId", "_testArtId2");
+        $oView->copyStaffelpreis("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxprice2article where oxartid = '_testArtId2'"));
     }
@@ -246,13 +246,13 @@ class ArticleMainTest extends \OxidTestCase
 
         try {
             $oView = oxNew('Article_Main');
-            $oView->_copyArtExtends("old", "new");
+            $oView->copyArtExtends("old", "new");
         } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Main::_copyArtExtends()");
+            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Main::copyArtExtends()");
 
             return;
         }
-        $this->fail("error in Article_Main::_copyArtExtends()");
+        $this->fail("error in Article_Main::copyArtExtends()");
     }
 
     /**
@@ -356,7 +356,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing Article_Main::_getTitle()
+     * Testing Article_Main::getTitle()
      *
      * @return null
      */
@@ -373,8 +373,8 @@ class ArticleMainTest extends \OxidTestCase
         $oO2->oxarticles__oxvarselect->expects($this->once())->method('__get')->will($this->returnValue("oxvarselect"));
 
         $oView = oxNew('Article_Main');
-        $this->assertEquals("oxtitle", $oView->_getTitle($oO1));
-        $this->assertEquals("oxvarselect", $oView->_getTitle($oO2));
+        $this->assertEquals("oxtitle", $oView->getTitle($oO1));
+        $this->assertEquals("oxvarselect", $oView->getTitle($oO2));
     }
 
     /**
@@ -521,7 +521,7 @@ class ArticleMainTest extends \OxidTestCase
     }
 
     /**
-     * Testing article_main::_formJumpList();
+     * Testing article_main::formJumpList();
      *
      * @return null
      */
@@ -555,14 +555,14 @@ class ArticleMainTest extends \OxidTestCase
                        array("testId1", " -- testTitle"),
                        array("testId2", " -- testTitle"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("_getTitle"));
-        $oView->expects($this->atLeastOnce())->method('_getTitle')->will($this->returnValue("testTitle"));
-        $oView->_formJumpList($oArticle, $oParentArticle);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("getTitle"));
+        $oView->expects($this->atLeastOnce())->method('getTitle')->will($this->returnValue("testTitle"));
+        $oView->formJumpList($oArticle, $oParentArticle);
         $this->assertEquals($aData, $oView->getViewDataElement("thisvariantlist"));
     }
 
     /**
-     * Testing article_main::_formJumpList();
+     * Testing article_main::formJumpList();
      *
      * @return null
      */
@@ -586,9 +586,9 @@ class ArticleMainTest extends \OxidTestCase
                        array("testId1", " - testTitle"),
                        array("testId2", " - testTitle"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("_getTitle"));
-        $oView->expects($this->atLeastOnce())->method('_getTitle')->will($this->returnValue("testTitle"));
-        $oView->_formJumpList($oArticle, null);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, array("getTitle"));
+        $oView->expects($this->atLeastOnce())->method('getTitle')->will($this->returnValue("testTitle"));
+        $oView->formJumpList($oArticle, null);
         $this->assertEquals($aData, $oView->getViewDataElement("thisvariantlist"));
     }
 

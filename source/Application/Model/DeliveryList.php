@@ -121,7 +121,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         if (($sUserId . $sCountryId . $sDelSet) !== $this->_sUserId) {
-            $this->selectString($this->_getFilterSelect($oUser, $sCountryId, $sDelSet));
+            $this->selectString($this->getFilterSelect($oUser, $sCountryId, $sDelSet));
             $this->_sUserId = $sUserId . $sCountryId . $sDelSet;
         }
 
@@ -139,7 +139,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 

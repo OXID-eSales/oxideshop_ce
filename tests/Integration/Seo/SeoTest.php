@@ -44,10 +44,10 @@ class SeoTest extends \OxidTestCase
     {
         oxRegistry::getConfig()->setConfigParam('blEnableSeoCache', false);
         $aCategories = array('_test1' => 0, '_test2' => time());
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
-        $this->_addSeoEntries($aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addSeoEntries($aCategories);
         $this->getConfig()->setAdminMode(true);
 
         $sArticleSeo = 'this/there/then.html';
@@ -87,10 +87,10 @@ class SeoTest extends \OxidTestCase
     public function testArticleSeoAfterArticleNameChange()
     {
         $aCategories = array('_test3' => 0, '_test4' => time());
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
-        $this->_addSeoEntries($aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addSeoEntries($aCategories);
         $this->getConfig()->setAdminMode(true);
 
         $sArticleSeo = 'this/there/then.html';
@@ -124,9 +124,9 @@ class SeoTest extends \OxidTestCase
     public function testArticleSeoAfterCategoryNameChangeFixedArticleSeo()
     {
         $aCategories = array('_test5' => 0, '_test6' => time());
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
         $aSeoData = array(
             'oxseourl' => 'this/there/'
         );
@@ -193,9 +193,9 @@ class SeoTest extends \OxidTestCase
     public function testArticleSeoAfterCategorySeoChange()
     {
         $aCategories = array('_test7' => 0, '_test8' => time());
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
 
         $aSeoData = array(
             'oxseourl' => 'this/there/'
@@ -267,9 +267,9 @@ class SeoTest extends \OxidTestCase
     public function testArticleSeoAfterCategorySeoChangeOnFixedArticle()
     {
         $aCategories = array('_test9' => 0, '_test10' => time());
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
 
         $aSeoData = array(
             'oxseourl' => 'this/there/'
@@ -342,9 +342,9 @@ class SeoTest extends \OxidTestCase
     public function testArticleSeoAfterCategoryIsRemoved()
     {
         $aCategories = array('_test3' => 0);
-        $this->_addCategories($aCategories);
-        $this->_addArticle();
-        $this->_addArticlesToCategories(array('_testid'), $aCategories);
+        $this->addCategories($aCategories);
+        $this->addArticle();
+        $this->addArticlesToCategories(array('_testid'), $aCategories);
 
         $sArticleSeo = 'testCategory1/testArticle.html';
         $sCurrentSeo = oxRegistry::getConfig()->getShopUrl() . $sArticleSeo;
@@ -370,17 +370,17 @@ class SeoTest extends \OxidTestCase
      *
      * @param array $aCategories array of categories to add seo for
      */
-    protected function _addSeoEntries(array $aCategories)
+    protected function addSeoEntries(array $aCategories)
     {
         foreach ($aCategories as $sCategoryId => $sTime) {
             $sQ = "replace into oxseo (`OXOBJECTID`,`OXIDENT`,`OXSHOPID`,`OXLANG`,`OXSEOURL`,`OXTYPE`,`OXFIXED`,`OXPARAMS`) " .
-                   "values ('{$sCategoryId}','{$sCategoryId}','{$this->_getShopId()}','0','this/there/','oxcategory','0','')";
+                   "values ('{$sCategoryId}','{$sCategoryId}','{$this->getBaseShopId()}','0','this/there/','oxcategory','0','')";
 
             $this->addToDatabase($sQ, 'oxseo');
         }
         $sParam = key($aCategories);
         $sQ = "replace into oxseo (`OXOBJECTID`,`OXIDENT`,`OXSHOPID`,`OXLANG`,`OXSEOURL`,`OXTYPE`,`OXFIXED`,`OXPARAMS`) " .
-               "values ('_testid','_testIndent3','{$this->_getShopId()}','0','this/there/then.html','oxarticle','0','{$sParam}')";
+               "values ('_testid','_testIndent3','{$this->getBaseShopId()}','0','this/there/then.html','oxarticle','0','{$sParam}')";
 
         $this->addToDatabase($sQ, 'oxseo');
     }
@@ -390,7 +390,7 @@ class SeoTest extends \OxidTestCase
      *
      * @param array $aCategoryIds array of categories to be added
      */
-    protected function _addCategories(array $aCategoryIds)
+    protected function addCategories(array $aCategoryIds)
     {
         foreach ($aCategoryIds as $sId => $sTime) {
             $sQ = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
@@ -403,10 +403,10 @@ class SeoTest extends \OxidTestCase
     /**
      * Add single article
      */
-    protected function _addArticle()
+    protected function addArticle()
     {
         $sQ = "Insert into oxarticles (oxid, oxshopid, oxtitle, oxprice)
-                values ('_testid', '{$this->_getShopId()}', '_testArticle', '125')";
+                values ('_testid', '{$this->getBaseShopId()}', '_testArticle', '125')";
         $this->addToDatabase($sQ, 'oxarticles');
     }
 
@@ -416,7 +416,7 @@ class SeoTest extends \OxidTestCase
      * @param array $aArticles   Article id array
      * @param array $aCategories Category id array
      */
-    protected function _addArticlesToCategories(array $aArticles, array $aCategories)
+    protected function addArticlesToCategories(array $aArticles, array $aCategories)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         foreach ($aArticles as $sArticle) {
@@ -438,7 +438,7 @@ class SeoTest extends \OxidTestCase
      *
      * @return string
      */
-    protected function _getShopId()
+    protected function getBaseShopId()
     {
         return ShopIdCalculator::BASE_SHOP_ID;
     }

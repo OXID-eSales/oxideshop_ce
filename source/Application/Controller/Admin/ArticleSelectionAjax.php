@@ -39,10 +39,10 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSLViewName = $this->_getViewName('oxselectlist');
-        $sArtViewName = $this->_getViewName('oxarticles');
+        $sSLViewName = $this->getViewName('oxselectlist');
+        $sArtViewName = $this->getViewName('oxarticles');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -79,9 +79,9 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function removeSel()
     {
-        $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
+        $aChosenArt = $this->getActionIds('oxobject2selectlist.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2selectlist.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
@@ -101,13 +101,13 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function addSel()
     {
-        $aAddSel = $this->_getActionIds('oxselectlist.oxid');
+        $aAddSel = $this->getActionIds('oxselectlist.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sSLViewName = $this->_getViewName('oxselectlist');
-            $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
+            $sSLViewName = $this->getViewName('oxselectlist');
+            $aAddSel = $this->getAll($this->addFilter("select $sSLViewName.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {

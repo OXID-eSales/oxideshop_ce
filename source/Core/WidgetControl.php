@@ -54,13 +54,13 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         parent::start($class, $function, $parameters, $viewsChain);
 
         //perform tasks that should be done at the end of widget processing
-        $this->_runLast();
+        $this->runLast();
     }
 
     /**
      * Runs actions that should be performed at the controller finish.
      */
-    protected function _runLast() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function runLast() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -90,7 +90,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
-    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeViewsIds = $config->getActiveViewsIds();
@@ -115,7 +115,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
             }
         }
 
-        $widgetViewObject = parent::_initializeViewObject($class, $function, $parameters, null);
+        $widgetViewObject = parent::initializeViewObject($class, $function, $parameters, null);
 
         if (!is_a($widgetViewObject, WidgetController::class)) {
             /** @var ObjectException $exception */

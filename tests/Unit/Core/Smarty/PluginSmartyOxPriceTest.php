@@ -30,8 +30,8 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
      */
     public function pricesAsObjects()
     {
-        $oEURCurrency = $this->_getEurCurrency();
-        $oUSDCurrency = $this->_getUsdCurrency();
+        $oEURCurrency = $this->getEurCurrency();
+        $oUSDCurrency = $this->getUsdCurrency();
         $oEmptyCurrency = new stdClass();
 
         return array(
@@ -67,7 +67,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
      */
     public function testNoCurrencyObjectAsParameterButInConfig()
     {
-        $this->_setCurrencies(array('EUR@ 1.00@ ,@ #@ €@ 2'));
+        $this->setCurrencies(array('EUR@ 1.00@ ,@ #@ €@ 2'));
 
         $oSmarty = new Smarty();
 
@@ -83,7 +83,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
      *
      * @param array $aCurrencies The currencies we want to set.
      */
-    protected function _setCurrencies($aCurrencies)
+    protected function setCurrencies($aCurrencies)
     {
         if (!empty($aCurrencies) || is_null($aCurrencies)) {
             $oConfig = Registry::getConfig();
@@ -99,9 +99,9 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
      */
     public function pricesAsFloats()
     {
-        $oEURCurrency = $this->_getEurCurrency();
-        $oUSDCurrency = $this->_getUsdCurrency();
-        $oEURCurrencyZero = $this->_getEurCurrencyZeroDecimal();
+        $oEURCurrency = $this->getEurCurrency();
+        $oUSDCurrency = $this->getUsdCurrency();
+        $oEURCurrencyZero = $this->getEurCurrencyZeroDecimal();
         $oEmptyCurrency = new stdClass();
 
         return array(
@@ -143,9 +143,9 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
      */
     public function pricesNullPrices()
     {
-        $oEURCurrency = $this->_getEurCurrency();
-        $oUSDCurrency = $this->_getUsdCurrency();
-        $oEURCurrencyZero = $this->_getEurCurrencyZeroDecimal();
+        $oEURCurrency = $this->getEurCurrency();
+        $oUSDCurrency = $this->getUsdCurrency();
+        $oEURCurrencyZero = $this->getEurCurrencyZeroDecimal();
         $oEmptyCurrency = new stdClass();
 
         return array(
@@ -181,7 +181,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
     /**
      * @return stdClass
      */
-    protected function _getUsdCurrency()
+    protected function getUsdCurrency()
     {
         $oUSDCurrency = new stdClass();
         $oUSDCurrency->dec = '.';
@@ -196,7 +196,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
     /**
      * @return stdClass
      */
-    protected function _getEurCurrency()
+    protected function getEurCurrency()
     {
         $oEURCurrency = new stdClass();
         $oEURCurrency->dec = ',';
@@ -210,7 +210,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
     /**
      * @return stdClass
      */
-    protected function _getEurCurrencyZeroDecimal()
+    protected function getEurCurrencyZeroDecimal()
     {
         $oEURCurrency = new stdClass();
         $oEURCurrency->dec = ',';

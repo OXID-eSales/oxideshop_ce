@@ -226,7 +226,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         }
 
         // processing list articles
-        $this->_processListArticles();
+        $this->processListArticles();
 
         return $this->_sThisTemplate;
     }
@@ -235,7 +235,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
@@ -286,7 +286,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return object
      */
-    protected function _isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
@@ -348,7 +348,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
-            if ($this->_isSearchClass()) {
+            if ($this->isSearchClass()) {
                 $this->_sSearchParamForHtml = Registry::getRequest()->getRequestEscapedParameter('searchparam');
             }
         }
@@ -365,7 +365,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
-            if ($this->_isSearchClass()) {
+            if ($this->isSearchClass()) {
                 $this->_sSearchParam = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
             }
         }
@@ -382,7 +382,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_sSearchCatId === null) {
             $this->_sSearchCatId = false;
-            if ($this->_isSearchClass()) {
+            if ($this->isSearchClass()) {
                 $this->_sSearchCatId = rawurldecode(Registry::getRequest()->getRequestEscapedParameter('searchcnid'));
             }
         }
@@ -399,7 +399,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_sSearchVendor === null) {
             $this->_sSearchVendor = false;
-            if ($this->_isSearchClass()) {
+            if ($this->isSearchClass()) {
                 // searching in vendor #671
                 $this->_sSearchVendor = rawurldecode(Registry::getRequest()->getRequestEscapedParameter('searchvendor'));
             }
@@ -417,7 +417,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_sSearchManufacturer === null) {
             $this->_sSearchManufacturer = false;
-            if ($this->_isSearchClass()) {
+            if ($this->isSearchClass()) {
                 // searching in Manufacturer #671
                 $sManufacturerParameter = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
                 $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
@@ -486,7 +486,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return bool
      */
-    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return false;
     }

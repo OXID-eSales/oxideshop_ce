@@ -112,18 +112,18 @@ class RssfeedTest extends \OxidTestCase
 
         $start = time();
         $got = $oRss->p_getLastBuildDate('asdasd', array());
-        $this->assertTrue($this->_checkDate('D, d M Y H:i:s O', $start, time(), $got));
+        $this->assertTrue($this->checkDate('D, d M Y H:i:s O', $start, time(), $got));
 
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return array("content" => array("lastBuildDate" => $aA[0], "asd"=>"a"));}');
         $start = time();
         $got = $oRss->p_getLastBuildDate('asd', array());
-        $this->assertTrue($this->_checkDate('D, d M Y H:i:s O', $start, time(), $got));
+        $this->assertTrue($this->checkDate('D, d M Y H:i:s O', $start, time(), $got));
 
 
         $this->assertEquals('asdid', $oRss->p_getLastBuildDate('asd', array("lastBuildDate" => 'asd', 'asd' => 'a')));
     }
 
-    private function _checkDate($format, $timestart, $timeend, $got)
+    private function checkDate($format, $timestart, $timeend, $got)
     {
         for ($t = $timestart; $t <= $timeend; $t++) {
             if (date($format, $t) == $got) {

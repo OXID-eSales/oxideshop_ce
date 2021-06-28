@@ -20,7 +20,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -41,7 +41,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
             $iLang = $oCont->getLanguage();
         }
         //load details link from DB
-        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
+        if ($blRegenerate || !($sSeoUrl = $this->loadFromDb('oxContent', $oCont->getId(), $iLang))) {
             if ($iLang != $oCont->getLanguage()) {
                 $sId = $oCont->getId();
                 $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
@@ -62,10 +62,10 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
                 }
             }
 
-            $sSeoUrl .= $this->_prepareTitle($oCont->oxcontents__oxtitle->value, false, $oCont->getLanguage()) . '/';
-            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oCont->getId(), $iLang);
+            $sSeoUrl .= $this->prepareTitle($oCont->oxcontents__oxtitle->value, false, $oCont->getLanguage()) . '/';
+            $sSeoUrl = $this->processSeoUrl($sSeoUrl, $oCont->getId(), $iLang);
 
-            $this->_saveToDb('oxcontent', $oCont->getId(), $oCont->getBaseStdLink($iLang), $sSeoUrl, $iLang);
+            $this->saveToDb('oxcontent', $oCont->getId(), $oCont->getBaseStdLink($iLang), $sSeoUrl, $iLang);
         }
 
         return $sSeoUrl;
@@ -85,7 +85,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
             $iLang = $oCont->getLanguage();
         }
 
-        return $this->_getFullUrl($this->getContentUri($oCont, $iLang), $iLang);
+        return $this->getFullUrl($this->getContentUri($oCont, $iLang), $iLang);
     }
 
     /**
@@ -115,7 +115,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);

@@ -92,7 +92,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
         if (isset($offset)) {
             $this->_aArray[$offset] = & $oBase;
         } else {
-            $sLongFieldName = $this->_getFieldLongName('oxid');
+            $sLongFieldName = $this->getFieldLongName('oxid');
             if (isset($oBase->$sLongFieldName->value)) {
                 $sOxid = $oBase->$sLongFieldName->value;
                 $this->_aArray[$sOxid] = & $oBase;
@@ -379,7 +379,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
             while (!$rs->EOF) {
                 $oListObject = clone $oSaved;
 
-                $this->_assignElement($oListObject, $rs->fields);
+                $this->assignElement($oListObject, $rs->fields);
 
                 $this->add($oListObject);
 
@@ -415,7 +415,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
 
             foreach ($aData as $aItem) {
                 $oListObject = clone $oSaved;
-                $this->_assignElement($oListObject, $aItem);
+                $this->assignElement($oListObject, $aItem);
                 if ($oListObject->getId()) {
                     $this->_aArray[$oListObject->getId()] = $oListObject;
                 } else {
@@ -448,7 +448,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function containsFieldValue($oVal, $sFieldName)
     {
-        $sFieldName = $this->_getFieldLongName($sFieldName);
+        $sFieldName = $this->getFieldLongName($sFieldName);
         foreach ($this->_aArray as $obj) {
             if ($obj->{$sFieldName}->value == $oVal) {
                 return true;
@@ -483,7 +483,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param BaseModel $oListObject List object (the one derived from BaseModel)
      * @param array     $aDbFields   An array holding db field values (normally the result of \OxidEsales\Eshop\Core\DatabaseProvider::Execute())
      */
-    protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oListObject->assign($aDbFields);
     }
@@ -495,7 +495,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return string
      */
-    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sCoreTable) {
             return $this->_sCoreTable . '__' . $sFieldName;

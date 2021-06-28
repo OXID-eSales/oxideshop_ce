@@ -250,7 +250,7 @@ class BasketTest extends \OxidTestCase
             $sName == 'testBasketCalculationWithSpecUseCaseDescribedAboveJustDiscountIsAppliedByPrice' ||
             $sName == 'testUpdateBasketTwoProductsWithSameSelectionList'
         ) {
-            $this->_prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove();
+            $this->prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove();
         }
 
         $this->blPerfLoadSelectLists = $this->getConfig()->getConfigParam('bl_perfLoadSelectLists');
@@ -330,7 +330,7 @@ class BasketTest extends \OxidTestCase
             $sName == 'testBasketCalculationWithSpecUseCaseDescribedAboveJustDiscountIsAppliedByPrice' ||
             $sName == 'testUpdateBasketTwoProductsWithSameSelectionList'
         ) {
-            $this->_cleanupDataAfterTestBasketCalculationWithSpecUseCaseDescribedAbove();
+            $this->cleanupDataAfterTestBasketCalculationWithSpecUseCaseDescribedAbove();
         }
 
         $this->cleanUpTable('oxdiscount');
@@ -358,7 +358,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function _prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove()
+    protected function prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove()
     {
         oxDb::getDb()->execute('delete from oxuserbaskets');
         oxDb::getDb()->execute('delete from oxuserbasketitems');
@@ -386,7 +386,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function _cleanupDataAfterTestBasketCalculationWithSpecUseCaseDescribedAbove()
+    protected function cleanupDataAfterTestBasketCalculationWithSpecUseCaseDescribedAbove()
     {
         $this->cleanUpTable('oxselectlist');
         $this->cleanUpTable('oxobject2selectlist');

@@ -137,7 +137,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
         // processing list articles
-        $this->_processListArticles();
+        $this->processListArticles();
 
         return $this->_sThisTemplate;
     }
@@ -147,7 +147,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return OXARTICLE_LINKTYPE_RECOMM;
     }
@@ -480,7 +480,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList())) {
             if ($iPage) {
@@ -488,7 +488,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 $sUrl = $oRecomm->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;

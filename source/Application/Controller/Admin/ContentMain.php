@@ -97,11 +97,11 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         if (isset($aParams['oxcontents__oxloadid'])) {
-            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
+            $aParams['oxcontents__oxloadid'] = $this->prepareIdent($aParams['oxcontents__oxloadid']);
         }
 
         // check if loadid is unique
-        if ($this->_checkIdent($aParams['oxcontents__oxloadid'], $soxId)) {
+        if ($this->checkIdent($aParams['oxcontents__oxloadid'], $soxId)) {
             // loadid already used, display error message
             $this->_aViewData["blLoadError"] = true;
 
@@ -162,7 +162,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
         if (isset($aParams['oxcontents__oxloadid'])) {
-            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
+            $aParams['oxcontents__oxloadid'] = $this->prepareIdent($aParams['oxcontents__oxloadid']);
         }
 
         // checkbox handling
@@ -196,7 +196,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sIdent) {
             return Str::getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
@@ -211,7 +211,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return null
      */
-    protected function _checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();

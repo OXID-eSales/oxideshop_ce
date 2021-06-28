@@ -58,11 +58,11 @@ class PaymentCountryAjaxTest extends \OxidTestCase
     public function testGetQuery()
     {
         $oView = oxNew('payment_country_ajax');
-        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1'", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentCountryAjax::_getQuery() test case
+     * PaymentCountryAjax::getQuery() test case
      *
      * @return null
      */
@@ -72,11 +72,11 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_country_ajax');
-        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentCountryAjax::_getQuery() test case
+     * PaymentCountryAjax::getQuery() test case
      *
      * @return null
      */
@@ -86,11 +86,11 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('payment_country_ajax');
-        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry'", trim($oView->getQuery()));
     }
 
     /**
-     * PaymentCountryAjax::_getQuery() test case
+     * PaymentCountryAjax::getQuery() test case
      *
      * @return null
      */
@@ -102,7 +102,7 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_country_ajax');
-        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '" . $sOxid . "' and oxobject2payment.oxtype = 'oxcountry' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '" . $sSynchoxid . "' and oxobject2payment.oxtype = 'oxcountry' )", trim($oView->getQuery()));
     }
 
     /**

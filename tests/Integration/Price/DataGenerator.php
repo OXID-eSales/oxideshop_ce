@@ -117,7 +117,7 @@ class DataGenerator extends \OxidTestCase
     /**
      * Cleans up database tables.
      */
-    protected function _cleanUpCalcDb()
+    protected function cleanUpCalcDb()
     {
         $this->truncateTable("oxarticles");
         $this->truncateTable("oxdiscount");
@@ -137,7 +137,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @return array of different vats
      */
-    protected function _getVatSet()
+    protected function getVatSet()
     {
         return array(
             27, 25.5, 25, 24, 23, 22, 21, 21.2, 20,
@@ -153,7 +153,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @return resource
      */
-    protected function _createFile($sFilename)
+    protected function createFile($sFilename)
     {
         return fopen($this->sFilepath . $sFilename, "w");
     }
@@ -166,7 +166,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @return mixed
      */
-    protected function _writeToFile($rHandle, $aData)
+    protected function writeToFile($rHandle, $aData)
     {
         $sStart = "<?php\r";
         $sStart .= "\$aData = ";
@@ -188,11 +188,11 @@ class DataGenerator extends \OxidTestCase
         }
         for ($i = 1; $i <= $this->iVariants; $i++) {
             parent::setUp();
-            $this->_cleanUpCalcDb();
-            $aData = $this->_generateData($i);
+            $this->cleanUpCalcDb();
+            $aData = $this->generateData($i);
             $sFilename = "{$this->sCaseName}{$i}.php";
-            $rHandle = $this->_createFile($sFilename);
-            $this->_writeToFile($rHandle, $aData);
+            $rHandle = $this->createFile($sFilename);
+            $this->writeToFile($rHandle, $aData);
             print("o-");
             parent::tearDown();
         }
@@ -205,7 +205,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @return array $aData of basket data and expectations
      */
-    protected function _generateData($i)
+    protected function generateData($i)
     {
         $oUtil = oxRegistry::getUtilsObject();
         // init result array
@@ -222,7 +222,7 @@ class DataGenerator extends \OxidTestCase
         // get different vat count
         $iDiffVatCount = rand($this->iDiffVatCountMin, $this->iDiffVatCountMax);
         // get $iDiffVatCount vats from vat set
-        $aVats = array_rand($this->_getVatSet(), $iDiffVatCount);
+        $aVats = array_rand($this->getVatSet(), $iDiffVatCount);
         // create articles array
         for ($i = 0; $i < $iRandArtCount; $i++) {
             $aArticle = array();
@@ -243,15 +243,15 @@ class DataGenerator extends \OxidTestCase
         }
         if ($this->blGenDiscounts) {
             // create discount array
-            $aData['discounts'] = $this->_generateDiscounts($aData);
+            $aData['discounts'] = $this->generateDiscounts($aData);
         }
         if (!empty($this->aGenCosts)) {
             // create costs array
-            $aData['costs'] = $this->_generateCosts($aData);
+            $aData['costs'] = $this->generateCosts($aData);
         }
         if ($this->blGenVouchers) {
             // create voucher discounts
-            $aData['costs']['voucherserie'] = $this->_generateVouchers($aData);
+            $aData['costs']['voucherserie'] = $this->generateVouchers($aData);
         }
         // create options array
         $aData['options'] = array();
@@ -259,7 +259,7 @@ class DataGenerator extends \OxidTestCase
         $aData['options']['config']['blShowNetPrice'] = $this->blShowNetPrice;
         $aData['options']['activeCurrencyRate'] = $this->activeCurrencyRate;
         // create expected array
-        $aData['expected'] = $this->_gatherExpectedData($aData);
+        $aData['expected'] = $this->gatherExpectedData($aData);
 
         return $aData;
     }
@@ -269,7 +269,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @param array $aData
      */
-    protected function _generateVouchers($aData)
+    protected function generateVouchers($aData)
     {
         $aVouchers = array();
         for ($i = 0; $i < $this->iVouseries; $i++) {
@@ -289,7 +289,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @param array $aData
      */
-    protected function _generateCosts($aData)
+    protected function generateCosts($aData)
     {
         $aCosts = array();
         foreach ($this->aGenCosts as $aCostData) {
@@ -358,7 +358,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @param array $aData
      */
-    protected function _generateDiscounts($aData)
+    protected function generateDiscounts($aData)
     {
         $aDiscounts = array();
         for ($i = 0; $i < $this->iDisVariants; $i++) {
@@ -395,7 +395,7 @@ class DataGenerator extends \OxidTestCase
      *
      * @return array $aExpected of expected data
      */
-    protected function _gatherExpectedData($aTestCase)
+    protected function gatherExpectedData($aTestCase)
     {
         // load calculated basket
         $oBasketConstruct = new BasketConstruct();
@@ -456,7 +456,7 @@ class DataGenerator extends \OxidTestCase
     /**
      * Generating sql dump of required tables (oxarticles)
      */
-    protected function _generateSqlDump()
+    protected function generateSqlDump()
     {
         $dbhost = $this->getConfigParam("dbHost");
         $dbport = $this->getConfigParam("dbPort");

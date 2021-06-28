@@ -114,7 +114,7 @@ class ContentTest extends \OxidTestCase
         $this->setRequestParameter('oxcid', 'testseoobjectid');
 
         $oContentView = oxNew('content');
-        $this->assertEquals('testseoobjectid', $oContentView->_getSeoObjectId());
+        $this->assertEquals('testseoobjectid', $oContentView->getSeoObjectId());
     }
 
     /**
@@ -189,7 +189,7 @@ class ContentTest extends \OxidTestCase
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->_prepareMetaKeyword('testtitle'), $oContentView->_prepareMetaKeyword(null));
+        $this->assertEquals($oView->prepareMetaKeyword('testtitle'), $oContentView->prepareMetaKeyword(null));
     }
 
     /**
@@ -207,7 +207,7 @@ class ContentTest extends \OxidTestCase
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
-        $this->assertEquals($oView->_prepareMetaDescription('testtitle'), $oContentView->_prepareMetaDescription(null));
+        $this->assertEquals($oView->prepareMetaDescription('testtitle'), $oContentView->prepareMetaDescription(null));
     }
 
     /**

@@ -133,7 +133,7 @@ class Curl
         if (is_null($this->_sQuery)) {
             $query = "";
             if ($params = $this->getParameters()) {
-                $params = $this->_prepareQueryParameters($params);
+                $params = $this->prepareQueryParameters($params);
                 $query = http_build_query($params, "", "&");
             }
             $this->setQuery($query);
@@ -277,14 +277,14 @@ class Curl
      */
     public function execute()
     {
-        $this->_setOptions();
+        $this->setOptions();
 
         $response = $this->executeCurl();
-        $this->_saveStatusCode();
+        $this->saveStatusCode();
 
-        $curlErrorNumber = $this->_getErrorNumber();
+        $curlErrorNumber = $this->getErrorNumber();
 
-        $this->_close();
+        $this->close();
 
         if ($curlErrorNumber) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
@@ -331,7 +331,7 @@ class Curl
      *
      * @param resource $rCurl curl.
      */
-    protected function _setResource($rCurl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setResource($rCurl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_rCurl = $rCurl;
     }
@@ -341,10 +341,10 @@ class Curl
      *
      * @return resource
      */
-    protected function _getResource() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getResource() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_null($this->_rCurl)) {
-            $this->_setResource(curl_init());
+            $this->setResource(curl_init());
         }
 
         return $this->_rCurl;
@@ -353,22 +353,22 @@ class Curl
     /**
      * Set Curl Options
      */
-    protected function _setOptions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setOptions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_null($this->getHeader())) {
-            $this->_setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
+            $this->setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
         }
-        $this->_setOpt(CURLOPT_URL, $this->getUrl());
+        $this->setOpt(CURLOPT_URL, $this->getUrl());
 
         if ($this->getMethod() == "POST") {
-            $this->_setOpt(CURLOPT_POST, 1);
-            $this->_setOpt(CURLOPT_POSTFIELDS, $this->getQuery());
+            $this->setOpt(CURLOPT_POST, 1);
+            $this->setOpt(CURLOPT_POSTFIELDS, $this->getQuery());
         }
 
         $options = $this->getOptions();
         if (count($options)) {
             foreach ($options as $name => $mValue) {
-                $this->_setOpt(constant($name), $mValue);
+                $this->setOpt(constant($name), $mValue);
             }
         }
     }
@@ -386,10 +386,10 @@ class Curl
     /**
      * Wrapper function to be mocked for testing.
      */
-    protected function _close() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function close() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        curl_close($this->_getResource());
-        $this->_setResource(null);
+        curl_close($this->getResource());
+        $this->setResource(null);
     }
 
     /**
@@ -398,9 +398,9 @@ class Curl
      * @param string $name  curl option name to set value to.
      * @param string $value curl option value to set.
      */
-    protected function _setOpt($name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setOpt($name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        curl_setopt($this->_getResource(), $name, $value);
+        curl_setopt($this->getResource(), $name, $value);
     }
 
     /**
@@ -408,17 +408,17 @@ class Curl
      *
      * @return int
      */
-    protected function _getErrorNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getErrorNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return curl_errno($this->_getResource());
+        return curl_errno($this->getResource());
     }
 
     /**
      * Sets current request HTTP status code.
      */
-    protected function _saveStatusCode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveStatusCode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_sStatusCode = curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
+        $this->_sStatusCode = curl_getinfo($this->getResource(), CURLINFO_HTTP_CODE);
     }
 
     /**
@@ -428,7 +428,7 @@ class Curl
      *
      * @return array
      */
-    protected function _prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return array_map([$this, '_htmlDecode'], array_filter($params));
     }
@@ -440,10 +440,10 @@ class Curl
      *
      * @return string
      */
-    protected function _htmlDecode($mParam) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function htmlDecode($mParam) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($mParam)) {
-            $mParam = $this->_prepareQueryParameters($mParam);
+            $mParam = $this->prepareQueryParameters($mParam);
         } else {
             $mParam = html_entity_decode(stripslashes($mParam), ENT_QUOTES, $this->getConnectionCharset());
         }

@@ -49,7 +49,7 @@ class DiagnosticsTest extends \OxidTestCase
     /**
      * Setting up test for getShopDetails
      */
-    protected function _setUpTestGetShopDetails()
+    protected function setUpTestGetShopDetails()
     {
         $oDb = oxDb::getDb();
         $oDb->execute("DELETE FROM `oxshops` WHERE `oxid` > 1");
@@ -89,7 +89,7 @@ class DiagnosticsTest extends \OxidTestCase
      */
     public function testGetShopDetails()
     {
-        $this->_setUpTestGetShopDetails();
+        $this->setUpTestGetShopDetails();
 
         $oDiagnostics = new \OxidEsales\Eshop\Application\Model\Diagnostics();
 

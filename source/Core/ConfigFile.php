@@ -19,7 +19,7 @@ class ConfigFile
      */
     public function __construct($fileName)
     {
-        $this->_loadVars($fileName);
+        $this->loadVars($fileName);
     }
 
     /**
@@ -75,7 +75,7 @@ class ConfigFile
     public function setFile($fileName)
     {
         if (is_readable($fileName)) {
-            $this->_loadVars($fileName);
+            $this->loadVars($fileName);
         }
     }
     /**
@@ -86,7 +86,7 @@ class ConfigFile
      *
      * @param string $fileName Configuration file name
      */
-    private function _loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         include $fileName;
     }

@@ -668,7 +668,7 @@ class SearchTest extends UnitTestCase
     {
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->_getSearchSelect('x', 'xxx'));
+        $this->assertNull($oSearch->getSearchSelect('x', 'xxx'));
     }
 
     public function testGetSearchSelectIllegalVendor()
@@ -680,7 +680,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->_getSearchSelect('x', $sIDCat, 'yyy'));
+        $this->assertNull($oSearch->getSearchSelect('x', $sIDCat, 'yyy'));
     }
 
     public function testGetSearchSelectIllegalManufacturer()
@@ -692,14 +692,14 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->_getSearchSelect('x', $sIDCat, false, 'yyy'));
+        $this->assertNull($oSearch->getSearchSelect('x', $sIDCat, false, 'yyy'));
     }
 
     public function testGetSearchSelectNoSearchConditions()
     {
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $this->assertNull($oSearch->_getSearchSelect());
+        $this->assertNull($oSearch->getSearchSelect());
     }
 
     public function testGetSearchSelectPassingAllWhatIsNeeded()
@@ -738,7 +738,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->_getSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->getSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -785,7 +785,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->_getSearchSelect('a', '_testCat', null, null, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->getSearchSelect('a', '_testCat', null, null, "$sArticleTable.oxtitle");
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -824,7 +824,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sFix = $oSearch->_getSearchSelect('xxx');
+        $sFix = $oSearch->getSearchSelect('xxx');
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));

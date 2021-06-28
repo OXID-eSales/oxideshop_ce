@@ -292,7 +292,7 @@ class PaymentTest extends \OxidTestCase
     /**
      * Inserting test orders
      */
-    protected function _insertTestOrders($aUserPaymentId, $sUserId)
+    protected function insertTestOrders($aUserPaymentId, $sUserId)
     {
         $oDb = oxDb::getDb();
 
@@ -312,7 +312,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueIfDebitNoteIsSet()
     {
-        $this->_insertTestOrders(array('_testOxId3', '_testOxId2', '_testOxId'), "oxdefaultadmin");
+        $this->insertTestOrders(array('_testOxId3', '_testOxId2', '_testOxId'), "oxdefaultadmin");
         $this->setSessionParam('dynvalue', array('lsbankname' => ''));
 
         $oUser = oxNew('oxuser');
@@ -455,13 +455,13 @@ class PaymentTest extends \OxidTestCase
         $this->assertEquals('newShipping', $oBasket->getShippingId());
     }
 
-    protected function _checkInArrayRecursive($needle, $haystack)
+    protected function checkInArrayRecursive($needle, $haystack)
     {
         foreach ($haystack as $v) {
             if ($needle == $v) {
                 return true;
             } elseif (is_array($v)) {
-                return $this->_checkInArrayRecursive($needle, $v);
+                return $this->checkInArrayRecursive($needle, $v);
             }
         }
 

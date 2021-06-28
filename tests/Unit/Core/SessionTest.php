@@ -141,7 +141,7 @@ class testSession extends oxSession
      *
      * @return null
      */
-    protected function _sessionStart()
+    protected function sessionStart()
     {
         //return @session_start();
     }
@@ -1179,11 +1179,11 @@ class SessionTest extends \OxidTestCase
         $this->assertEquals('', $this->getSession()->getVariable('sess_stoken'));
         $this->assertEquals('', $oSession->getRequestChallengeToken());
 
-        $oSession->_initNewSessionChallenge();
+        $oSession->initNewSessionChallenge();
         $s1 = $this->getSession()->getVariable('sess_stoken');
         $this->assertNotEquals('', $s1);
 
-        $oSession->_initNewSessionChallenge();
+        $oSession->initNewSessionChallenge();
         $s2 = $this->getSession()->getVariable('sess_stoken');
         $this->assertNotEquals('', $s2);
         $this->assertNotEquals($s1, $s2);

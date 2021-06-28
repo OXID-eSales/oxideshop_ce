@@ -22,7 +22,7 @@ class Decryptor
      */
     public function decrypt($string, $key)
     {
-        $key = $this->_formKey($key, $string);
+        $key = $this->formKey($key, $string);
 
         $string = substr($string, 3);
         $string = str_replace('!', '=', $string);
@@ -40,7 +40,7 @@ class Decryptor
      *
      * @return string
      */
-    protected function _formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $key = '_' . $key;
         $keyLength = (strlen($string) / strlen($key)) + 5;

@@ -60,12 +60,12 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         //loading languages info from config
-        $this->_aLangData = $this->_getLanguages();
+        $this->_aLangData = $this->getLanguages();
 
         if (isset($sOxId) && $sOxId != "-1") {
             //checking if translations files exists
-            $this->_checkLangTranslations($sOxId);
-            $this->_aViewData["edit"] = $this->_getLanguageInfo($sOxId);
+            $this->checkLangTranslations($sOxId);
+            $this->_aViewData["edit"] = $this->getLanguageInfo($sOxId);
         }
 
         return "language_main.tpl";
@@ -96,9 +96,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         //loading languages info from config
-        $this->_aLangData = $this->_getLanguages();
+        $this->_aLangData = $this->getLanguages();
         //checking input errors
-        if (!$this->_validateInput()) {
+        if (!$this->validateInput()) {
             return;
         }
 
@@ -113,7 +113,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $aParams['abbr'] = $sOxId;
             } else {
-                $this->_updateAbbervation($sOxId, $aParams['abbr']);
+                $this->updateAbbervation($sOxId, $aParams['abbr']);
                 $sOxId = $aParams['abbr'];
                 $this->setEditObjectId($sOxId);
 
@@ -124,7 +124,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         // if adding new language, setting lang id to abbervation
         if ($blNewLanguage = ($sOxId == -1)) {
             $sOxId = $aParams['abbr'];
-            $this->_aLangData['params'][$sOxId]['baseId'] = $this->_getAvailableLangBaseId();
+            $this->_aLangData['params'][$sOxId]['baseId'] = $this->getAvailableLangBaseId();
             $this->setEditObjectId($sOxId);
         }
 
@@ -138,7 +138,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         //if setting lang as default
         if ($aParams['default'] == '1') {
-            $this->_setDefaultLang($sOxId);
+            $this->setDefaultLang($sOxId);
         }
 
         //updating language urls
@@ -147,7 +147,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $this->_aLangData['sslUrls'][$iBaseId] = $aParams['basesslurl'];
 
         //sort parameters, urls and languages arrays by language base id
-        $this->_sortLangArraysByBaseId();
+        $this->sortLangArraysByBaseId();
 
         $this->_aViewData["updatelist"] = "1";
 
@@ -160,8 +160,8 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             //checking if added language already has created multilang fields
             //with new base ID - if not, creating new fields
             if ($blNewLanguage) {
-                if (!$this->_checkMultilangFieldsExistsInDb($sOxId)) {
-                    $this->_addNewMultilangFieldsToDb();
+                if (!$this->checkMultilangFieldsExistsInDb($sOxId)) {
+                    $this->addNewMultilangFieldsToDb();
                 } else {
                     $blViewError = true;
                 }
@@ -182,7 +182,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _getLanguageInfo($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLanguageInfo($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefaultLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultLang');
 
@@ -201,7 +201,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param array $aLangData languages parameters array
      */
-    protected function _setLanguages($aLangData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLanguages($aLangData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aLangData = $aLangData;
     }
@@ -213,7 +213,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _getLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangData['params'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLangData['lang'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguages');
@@ -222,7 +222,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         // empty languages parameters array - creating new one with default values
         if (!is_array($aLangData['params'])) {
-            $aLangData['params'] = $this->_assignDefaultLangParams($aLangData['lang']);
+            $aLangData['params'] = $this->assignDefaultLangParams($aLangData['lang']);
         }
 
         return $aLangData;
@@ -234,7 +234,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string $sOldId old ID
      * @param string $sNewId new ID
      */
-    protected function _updateAbbervation($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateAbbervation($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach (array_keys($this->_aLangData) as $sTypeKey) {
             if (is_array($this->_aLangData[$sTypeKey]) && count($this->_aLangData[$sTypeKey]) > 0) {
@@ -257,13 +257,13 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Sort languages, languages parameters, urls, ssl urls arrays according
      * base land ID
      */
-    protected function _sortLangArraysByBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortLangArraysByBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aUrls = [];
         $aSslUrls = [];
         $aLanguages = [];
 
-        uasort($this->_aLangData['params'], [$this, '_sortLangParamsByBaseIdCallback']);
+        uasort($this->_aLangData['params'], [$this, 'sortLangParamsByBaseIdCallback']);
 
         foreach ($this->_aLangData['params'] as $sAbbr => $aParams) {
             $iId = (int) $aParams['baseId'];
@@ -284,7 +284,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _assignDefaultLangParams($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignDefaultLangParams($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aParams = [];
         $iBaseId = 0;
@@ -305,7 +305,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param string $sOxId language abbervation
      */
-    protected function _setDefaultLang($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaultLang($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefaultId = $this->_aLangData['params'][$sOxId]['baseId'];
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sDefaultLang', $sDefaultId);
@@ -316,7 +316,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return int
      */
-    protected function _getAvailableLangBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAvailableLangBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aBaseId = [];
         foreach ($this->_aLangData['params'] as $aLang) {
@@ -344,7 +344,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param string $sOxId language abbervation
      */
-    protected function _checkLangTranslations($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkLangTranslations($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -364,7 +364,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return bool
      */
-    protected function _checkMultilangFieldsExistsInDb($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkMultilangFieldsExistsInDb($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iBaseId = $this->_aLangData['params'][$sOxId]['baseId'];
         $sTable = getLangTableName('oxarticles', $iBaseId);
@@ -381,7 +381,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function _addNewMultilangFieldsToDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addNewMultilangFieldsToDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //creating new multilingual fields with new id over whole DB
         $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
@@ -409,7 +409,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return bool
      */
-    protected function _checkLangExists($sAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkLangExists($sAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAbbrs = array_keys($this->_aLangData['lang']);
 
@@ -425,7 +425,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return bool
      */
-    protected function _sortLangParamsByBaseIdCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortLangParamsByBaseIdCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return ($oLang1['baseId'] < $oLang2['baseId']) ? -1 : 1;
     }
@@ -435,7 +435,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return bool
      */
-    protected function _validateInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $result = true;
 
@@ -444,7 +444,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         // if creating new language, checking if language already exists with
         // entered language abbreviation
-        if (($oxid == -1) && $this->_checkLangExists($parameters['abbr'])) {
+        if (($oxid == -1) && $this->checkLangExists($parameters['abbr'])) {
             $this->addDisplayException('LANGUAGE_ALREADYEXISTS_ERROR');
             $result = false;
         }

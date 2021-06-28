@@ -124,7 +124,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
@@ -167,7 +167,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function loadByIdent($loadId, $onlyActive = false)
     {
-        return $this->assignContentData($this->_loadFromDb($loadId), $onlyActive);
+        return $this->assignContentData($this->loadFromDb($loadId), $onlyActive);
     }
 
     /**
@@ -349,14 +349,14 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sLoweredFieldName = strtolower($sFieldName);
         if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
-        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+        return parent::setFieldData($sFieldName, $sValue, $iDataType);
     }
 
     /**
@@ -366,7 +366,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return mixed
      */
-    protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->{$sFieldName}->value;
     }
@@ -435,7 +435,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function setType($sValue)
     {
-        $this->_setFieldData('oxcontents__oxtype', $sValue);
+        $this->setFieldData('oxcontents__oxtype', $sValue);
     }
 
     /**
@@ -455,7 +455,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function setTitle($sValue)
     {
-        $this->_setFieldData('oxcontents__oxtitle', $sValue);
+        $this->setFieldData('oxcontents__oxtitle', $sValue);
     }
 
     /**

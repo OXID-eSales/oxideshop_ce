@@ -102,7 +102,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = $this->_getParams();
+            $aParams = $this->getParams();
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
@@ -120,7 +120,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         if ($this->_oArticle === null) {
             $this->_oArticle = false;
-            $aParams = $this->_getParams();
+            $aParams = $this->getParams();
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load($aParams['aid']);
             $this->_oArticle = $oArticle;
@@ -134,7 +134,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      *
      * @return array
      */
-    private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Registry::getRequest()->getRequestEscapedParameter('pa');
     }

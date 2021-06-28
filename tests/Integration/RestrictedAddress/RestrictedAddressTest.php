@@ -62,7 +62,7 @@ class RestrictedAddressTest extends \OxidTestCase
     public function test_configCalled_notAccessed()
     {
         $sShopUrl = $this->getConfig()->getShopMainUrl();
-        $sResult = $this->_getPageResult('/config.inc.php');
+        $sResult = $this->getPageResult('/config.inc.php');
         $sLocation = "Location: " . $sShopUrl . "index.php\r\n";
         $this->assertStringContainsString($sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.');
     }
@@ -87,7 +87,7 @@ class RestrictedAddressTest extends \OxidTestCase
      */
     public function testCheckForbiddenFilesAccessibility($sFilePath)
     {
-        $sResultPage = $this->_getPageResult($sFilePath);
+        $sResultPage = $this->getPageResult($sFilePath);
 
         $this->assertStringContainsString('Forbidden', $sResultPage, 'User should see forbidden page message.');
     }
@@ -107,7 +107,7 @@ class RestrictedAddressTest extends \OxidTestCase
      */
     public function testCheckAllowedFilesAccessibility($sFilePath)
     {
-        $sResultPage = $this->_getPageResult($sFilePath);
+        $sResultPage = $this->getPageResult($sFilePath);
 
         $this->assertStringNotContainsString('Forbidden', $sResultPage, "User shouldn't see forbidden page message.");
     }
@@ -131,7 +131,7 @@ class RestrictedAddressTest extends \OxidTestCase
      *
      * @return string
      */
-    private function _getPageResult($sFilePath)
+    private function getPageResult($sFilePath)
     {
         $sShopUrl = $this->getConfig()->getShopMainUrl();
         $sResultPage = $this->callPage($sShopUrl . $sFilePath);

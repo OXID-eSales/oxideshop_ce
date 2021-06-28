@@ -40,7 +40,7 @@ class NavigationTree extends Base
      * @param string $parentXPath parent xpath
      * @param string $childXPath  child xpath from parent
      */
-    protected function _cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query($parentXPath);
@@ -59,7 +59,7 @@ class NavigationTree extends Base
      *
      * @param DomDocument $dom where to add links
      */
-    protected function _addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
         $xPath = new DomXPath($dom);
@@ -86,7 +86,7 @@ class NavigationTree extends Base
      * @param string      $menuFile which file to load
      * @param DomDocument $dom      where to load
      */
-    protected function _loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $merge = false;
         $domFile = new DomDocument();
@@ -112,7 +112,7 @@ class NavigationTree extends Base
         }
 
         if ($merge) {
-            $this->_merge($domFile, $dom);
+            $this->merge($domFile, $dom);
         }
     }
 
@@ -121,9 +121,9 @@ class NavigationTree extends Base
      *
      * @param object $dom dom element to add links
      */
-    protected function _sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $url = $this->_getAdminUrl();
+        $url = $this->getAdminUrl();
         $xPath = new DomXPath($dom);
         $str = Str::getStr();
         foreach (['url', 'link'] as $attrType) {
@@ -142,7 +142,7 @@ class NavigationTree extends Base
      *
      * @param object $dom DOMDocument
      */
-    protected function _checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query('//*[@rights or @norights]');
@@ -152,7 +152,7 @@ class NavigationTree extends Base
             if (($req = $node->getAttribute('rights'))) {
                 $perms = explode(',', $req);
                 foreach ($perms as $perm) {
-                    if ($perm && !$this->_hasRights($perm)) {
+                    if ($perm && !$this->hasRights($perm)) {
                         $node->parentNode->removeChild($node);
                     }
                 }
@@ -160,7 +160,7 @@ class NavigationTree extends Base
             } elseif (($noReq = $node->getAttribute('norights'))) {
                 $perms = explode(',', $noReq);
                 foreach ($perms as $perm) {
-                    if ($perm && $this->_hasRights($perm)) {
+                    if ($perm && $this->hasRights($perm)) {
                         $node->parentNode->removeChild($node);
                     }
                 }
@@ -173,7 +173,7 @@ class NavigationTree extends Base
      *
      * @param DOMDocument $dom document to check group
      */
-    protected function _checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query("//*[@nogroup or @group]");
@@ -183,7 +183,7 @@ class NavigationTree extends Base
             if (($req = $node->getAttribute('group'))) {
                 $perms = explode(',', $req);
                 foreach ($perms as $perm) {
-                    if ($perm && !$this->_hasGroup($perm)) {
+                    if ($perm && !$this->hasGroup($perm)) {
                         $node->parentNode->removeChild($node);
                     }
                 }
@@ -191,7 +191,7 @@ class NavigationTree extends Base
             } elseif (($noReq = $node->getAttribute('nogroup'))) {
                 $perms = explode(',', $noReq);
                 foreach ($perms as $perm) {
-                    if ($perm && $this->_hasGroup($perm)) {
+                    if ($perm && $this->hasGroup($perm)) {
                         $node->parentNode->removeChild($node);
                     }
                 }
@@ -206,7 +206,7 @@ class NavigationTree extends Base
      *
      * @return null
      */
-    protected function _checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             // nothing to check for non demo shop
@@ -244,7 +244,7 @@ class NavigationTree extends Base
      * @param object $domElemTo   DOMElement
      * @param object $domElemFrom DOMElement
      */
-    protected function _copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($domElemFrom->attributes as $attr) {
             $domElemTo->setAttribute($attr->nodeName, $attr->nodeValue);
@@ -260,7 +260,7 @@ class NavigationTree extends Base
      * @param object $domDocTo    node to append child
      * @param string $queryStart  node query
      */
-    protected function _mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($domElemFrom->childNodes as $fromNode) {
             if ($fromNode->nodeType === XML_ELEMENT_NODE) {
@@ -278,10 +278,10 @@ class NavigationTree extends Base
                     $curNode = $curNode->item(0);
 
                     // if found copy all attributes and check childnodes
-                    $this->_copyAttributes($curNode, $fromNode);
+                    $this->copyAttributes($curNode, $fromNode);
 
                     if ($fromNode->childNodes->length) {
-                        $this->_mergeNodes($curNode, $fromNode, $xPathTo, $domDocTo, $query);
+                        $this->mergeNodes($curNode, $fromNode, $xPathTo, $domDocTo, $query);
                     }
                 }
             }
@@ -294,10 +294,10 @@ class NavigationTree extends Base
      * @param DomDocument $domNew what to merge
      * @param DomDocument $dom    where to merge
      */
-    protected function _merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $xPath = new DOMXPath($dom);
-        $this->_mergeNodes($dom->documentElement, $domNew->documentElement, $xPath, $dom, '/OX');
+        $this->mergeNodes($dom->documentElement, $domNew->documentElement, $xPath, $dom, '/OX');
     }
 
     /**
@@ -374,7 +374,7 @@ class NavigationTree extends Base
      *
      * @return array
      */
-    protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getContainer()
             ->get('oxid_esales.templating.admin.navigation.file.locator')
@@ -388,7 +388,7 @@ class NavigationTree extends Base
      *
      * @return string
      */
-    protected function _processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $cacheContents;
     }
@@ -398,12 +398,12 @@ class NavigationTree extends Base
      *
      * @return DOMDocument
      */
-    protected function _getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oInitialDom === null) {
             $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
 
-            if (is_array($filesToLoad = $this->_getMenuFiles())) {
+            if (is_array($filesToLoad = $this->getMenuFiles())) {
                 // now checking if xml files are newer than cached file
                 $reload = false;
                 $templateLanguageCode = $this->getTemplateLanguageCode();
@@ -428,23 +428,23 @@ class NavigationTree extends Base
                     $this->_oInitialDom->appendChild(new DOMElement('OX'));
 
                     foreach ($filesToLoad as $dynPath) {
-                        $this->_loadFromFile($dynPath, $this->_oInitialDom);
+                        $this->loadFromFile($dynPath, $this->_oInitialDom);
                     }
 
                     // adds links to menu items
-                    $this->_addLinks($this->_oInitialDom);
+                    $this->addLinks($this->_oInitialDom);
 
                     // writing to cache
                     $myOxUtlis->toFileCache($cacheName, $this->_oInitialDom->saveXML());
                 } else {
-                    $cacheContents = $this->_processCachedFile($cacheContents);
+                    $cacheContents = $this->processCachedFile($cacheContents);
                     // loading from cached file
                     $this->_oInitialDom->preserveWhiteSpace = false;
                     $this->_oInitialDom->loadXML($cacheContents);
                 }
 
                 // add session params
-                $this->_sessionizeLocalUrls($this->_oInitialDom);
+                $this->sessionizeLocalUrls($this->_oInitialDom);
             }
         }
 
@@ -459,22 +459,22 @@ class NavigationTree extends Base
     public function getDomXml()
     {
         if ($this->_oDom === null) {
-            $this->_oDom = clone $this->_getInitialDom();
+            $this->_oDom = clone $this->getInitialDom();
 
             // removes items denied by user group
-            $this->_checkGroups($this->_oDom);
+            $this->checkGroups($this->_oDom);
 
             // removes items denied by user rights
-            $this->_checkRights($this->_oDom);
+            $this->checkRights($this->_oDom);
 
             // removes items marked as not visible
             $this->removeInvisibleMenuNodes($this->_oDom);
 
             // check config params
-            $this->_checkDemoShopDenials($this->_oDom);
+            $this->checkDemoShopDenials($this->_oDom);
             $this->onGettingDomXml();
-            $this->_cleanEmptyParents($this->_oDom, '//SUBMENU[@id][@list]', 'TAB');
-            $this->_cleanEmptyParents($this->_oDom, '//MAINMENU[@id]', 'SUBMENU');
+            $this->cleanEmptyParents($this->_oDom, '//SUBMENU[@id][@list]', 'TAB');
+            $this->cleanEmptyParents($this->_oDom, '//MAINMENU[@id]', 'SUBMENU');
         }
 
         return $this->_oDom;
@@ -570,7 +570,7 @@ class NavigationTree extends Base
      *
      * @return string
      */
-    protected function _getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -590,7 +590,7 @@ class NavigationTree extends Base
      *
      * @return bool
      */
-    protected function _hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getUser()->oxuser__oxrights->value == $rights;
     }
@@ -602,7 +602,7 @@ class NavigationTree extends Base
      *
      * @return bool
      */
-    protected function _hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getUser()->inGroup($groupId);
     }
@@ -616,7 +616,7 @@ class NavigationTree extends Base
      */
     public function getClassId($className)
     {
-        $xPath = new DOMXPath($this->_getInitialDom());
+        $xPath = new DOMXPath($this->getInitialDom());
         $nodeList = $xPath->query("//*[@cl='{$className}' or @list='{$className}']");
         if ($nodeList->length && ($firstItem = $nodeList->item(0))) {
             return $firstItem->getAttribute('id');

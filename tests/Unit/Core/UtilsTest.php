@@ -211,7 +211,7 @@ class UtilsTest extends \OxidTestCase
         $oObject->value = 'oneValue';
         $aShouldBe[] = $oObject;
 
-        $dPrice = str_replace('.', ',', $this->_alterPrice(12.41, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
+        $dPrice = str_replace('.', ',', $this->alterPrice(12.41, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
 
         $oObject = new stdClass();
         $oObject->price = '12.41';
@@ -221,7 +221,7 @@ class UtilsTest extends \OxidTestCase
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
-        $dPrice = str_replace('.', ',', $this->_alterPrice(5.99, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
+        $dPrice = str_replace('.', ',', $this->alterPrice(5.99, $iVatModifier, $blShowNetPrice, $blEnterNetPrice));
 
         $oObject = new stdClass();
         $oObject->price = '-5.99';
@@ -244,7 +244,7 @@ class UtilsTest extends \OxidTestCase
      *
      *
      */
-    protected function _alterPrice($dPrice, $iVatModifier, $blShowNetPrice, $blEnterNetPrice)
+    protected function alterPrice($dPrice, $iVatModifier, $blShowNetPrice, $blEnterNetPrice)
     {
         if ($blEnterNetPrice && !$blShowNetPrice) {
             $dPrice *= $iVatModifier;

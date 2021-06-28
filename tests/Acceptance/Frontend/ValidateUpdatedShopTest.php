@@ -28,15 +28,15 @@ class ValidateUpdatedShopTest extends FrontendTestCase
 
         $this->openShop();
 
-        $this->_checkIfStartPageCorrect($oPage);
+        $this->checkIfStartPageCorrect($oPage);
 
-        $this->_openCategory($oPage);
+        $this->openCategory($oPage);
 
-        $this->_checkIfCategoryCorrect($oPage);
+        $this->checkIfCategoryCorrect($oPage);
 
-        $this->_openDetailPage($oPage);
+        $this->openDetailPage($oPage);
 
-        $this->_openOrderHistory($oMinkSession);
+        $this->openOrderHistory($oMinkSession);
     }
 
     /**
@@ -58,7 +58,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->_checkIfMiniBasketContainsProducts(1);
+        $this->checkIfMiniBasketContainsProducts(1);
 
         $this->addToBasket("1001");
 
@@ -78,7 +78,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
     /**
      * @param $oPage
      */
-    private function _checkIfStartPageCorrect($oPage)
+    private function checkIfStartPageCorrect($oPage)
     {
         $this->assertTrue($oPage->has('xpath', '//p[@id=\'languageTrigger\']//*[text()=\'English\']'), 'Start page should be in english. Contain link - about us.');
         $this->assertFalse($oPage->hasLink('Test category 0 [DE] šÄßüл', 'Start page should be in english. Dos not contain category link translated in germany.'));
@@ -87,7 +87,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
     /**
      * @param $oPage
      */
-    private function _openCategory($oPage)
+    private function openCategory($oPage)
     {
         $oPage->clickLink('Test category 0 [EN] šÄßüл');
         $oH1 = $oPage->find('xpath', '//h1[contains(.,"Test category 0 [EN] šÄßüл")]');
@@ -97,7 +97,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
     /**
      * @param $oPage
      */
-    private function _checkIfCategoryCorrect($oPage)
+    private function checkIfCategoryCorrect($oPage)
     {
         $oMenuSelectedCategory = $oPage->find('xpath', "//ul[@id='tree']/li/a");
         $this->assertEquals('Test category 0 [EN] šÄßüл', $oMenuSelectedCategory->getText(), 'Main menu should be selected category.');
@@ -109,7 +109,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
     /**
      * @param $oPage
      */
-    private function _openDetailPage($oPage)
+    private function openDetailPage($oPage)
     {
         $oPage->clickLink('productList_1');
     }
@@ -119,7 +119,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
      *
      * @param \Behat\Mink\Session $oMinkSession
      */
-    private function _openOrderHistory($oMinkSession)
+    private function openOrderHistory($oMinkSession)
     {
         $oMinkSession->visit(shopURL . "en/order-history/");
         $oPage = $oMinkSession->getPage();
@@ -138,7 +138,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
         $this->checkForErrors();
     }
 
-    private function _checkIfMiniBasketContainsProducts($iAmount)
+    private function checkIfMiniBasketContainsProducts($iAmount)
     {
         $this->click("//div[@id='miniBasket']/img");
         $this->waitForItemAppear("basketFlyout");

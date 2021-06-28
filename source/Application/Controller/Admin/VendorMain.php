@@ -41,7 +41,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $this->_aViewData["edit"] = $oVendor;
 
             // category tree
-            $this->_createCategoryTree("artcattree");
+            $this->createCategoryTree("artcattree");
 
             //Disable editing for derived articles
             if ($oVendor->isDerived()) {

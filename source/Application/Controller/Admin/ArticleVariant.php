@@ -77,7 +77,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
 
             if ($oArticle->oxarticles__oxparentid->value) {
-                $this->_aViewData["parentarticle"] = $this->_getProductParent($oArticle->oxarticles__oxparentid->value);
+                $this->_aViewData["parentarticle"] = $this->getProductParent($oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
                 $this->_aViewData["issubvariant"] = 1;
                 // A. disable variant information editing for variant
@@ -135,7 +135,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $aParams['oxarticles__oxactive'] = 0;
         }
 
-        if (!$this->_isAnythingChanged($oArticle, $aParams)) {
+        if (!$this->isAnythingChanged($oArticle, $aParams)) {
             return;
         }
 
@@ -147,7 +147,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oArticle->resetRemindStatus();
 
         if ($sOXID == "-1") {
-            if ($oParent = $this->_getProductParent($oArticle->oxarticles__oxparentid->value)) {
+            if ($oParent = $this->getProductParent($oArticle->oxarticles__oxparentid->value)) {
                 // assign field from parent for new variant
                 // #4406
                 $oArticle->oxarticles__oxisconfigurable = new \OxidEsales\Eshop\Core\Field($oParent->oxarticles__oxisconfigurable->value);
@@ -166,7 +166,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool
      */
-    protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aData)) {
             return true;
@@ -187,7 +187,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             $this->_oProductParent === null ||

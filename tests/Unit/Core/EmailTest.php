@@ -882,9 +882,9 @@ final class EmailTest extends \OxidTestCase
             ->method('set')
             ->withConsecutive(['SMTPSecure', 'ssl'], ['SMTPSecure', 'tls']);
 
-        $this->assertEquals("hostname:23", $email->_setSmtpProtocol('ssl://hostname:23'));
-        $this->assertEquals("hostname:23", $email->_setSmtpProtocol('tls://hostname:23'));
-        $this->assertEquals("ssx://hostname:23", $email->_setSmtpProtocol('ssx://hostname:23'));
+        $this->assertEquals("hostname:23", $email->setSmtpProtocol('ssl://hostname:23'));
+        $this->assertEquals("hostname:23", $email->setSmtpProtocol('tls://hostname:23'));
+        $this->assertEquals("ssx://hostname:23", $email->setSmtpProtocol('ssx://hostname:23'));
     }
 
     public function testSendOrderEmailToOwnerCorrectSenderReceiver()

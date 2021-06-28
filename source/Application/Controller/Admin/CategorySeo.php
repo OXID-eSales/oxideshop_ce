@@ -29,7 +29,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
             $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oCategory->save();
 
-            $this->_getEncoder()->markRelatedAsExpired($oCategory);
+            $this->getEncoder()->markRelatedAsExpired($oCategory);
         }
 
         return parent::save();
@@ -40,7 +40,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderCategory
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
@@ -60,7 +60,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxcategory';
     }
@@ -87,7 +87,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
     {
         $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
-            return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
+            return $this->getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }
     }
 }

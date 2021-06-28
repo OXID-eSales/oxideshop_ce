@@ -157,7 +157,7 @@ class SepaIBANValidatorTest extends \OxidTestCase
     /**
      * @return array
      */
-    protected function _getTestCodeLengths()
+    protected function getTestCodeLengths()
     {
         return array(
             'AL' => 28,

@@ -53,10 +53,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sArticleTable = $this->getViewName('oxarticles');
+        $sO2CView = $this->getViewName('oxobject2category');
 
         $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchOxid = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -93,10 +93,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $sArtTable = $this->getViewName('oxarticles');
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
@@ -116,22 +116,22 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $aArticles = $this->_getActionIds('oxarticles.oxid');
+        $aArticles = $this->getActionIds('oxarticles.oxid');
         $sCategoryID = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         $sShopID = $myConfig->getShopId();
 
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
         try {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sArticleTable = $this->_getViewName('oxarticles');
+            $sArticleTable = $this->getViewName('oxarticles');
 
             // adding
             if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-                $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
+                $aArticles = $this->getAll($this->addFilter("select $sArticleTable.oxid " . $this->getQuery()));
             }
 
             if (is_array($aArticles)) {
-                $sO2CView = $this->_getViewName('oxobject2category');
+                $sO2CView = $this->getViewName('oxobject2category');
 
                 $oNew = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
                 $sProdIds = "";
@@ -158,7 +158,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 }
 
                 // updating oxtime values
-                $this->_updateOxTime($sProdIds);
+                $this->updateOxTime($sProdIds);
 
                 $this->resetArtSeoUrl($aArticles);
                 $this->resetCounter("catArticle", $sCategoryID);
@@ -176,10 +176,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @param string $sProdIds product ids: "id1", "id2", "id3"
      */
-    protected function _updateOxTime($sProdIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateOxTime($sProdIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sProdIds) {
-            $sO2CView = $this->_getViewName('oxobject2category');
+            $sO2CView = $this->getViewName('oxobject2category');
             $sSqlShopFilter = $this->getUpdateOxTimeQueryShopFilter();
             $sSqlWhereShopFilter = $this->getUpdateOxTimeSqlWhereFilter();
             $sQ = "update oxobject2category set oxtime = 0 where oxid in (
@@ -222,13 +222,13 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function removeArticle()
     {
-        $aArticles = $this->_getActionIds('oxarticles.oxid');
+        $aArticles = $this->getActionIds('oxarticles.oxid');
         $sCategoryID = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArticleTable = $this->_getViewName('oxarticles');
-            $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
+            $sArticleTable = $this->getViewName('oxarticles');
+            $aArticles = $this->getAll($this->addFilter("select $sArticleTable.oxid " . $this->getQuery()));
         }
 
         // adding
@@ -264,7 +264,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $db->execute($sQ);
 
         // updating oxtime values
-        $this->_updateOxTime($prodIds);
+        $this->updateOxTime($prodIds);
     }
 
     /**

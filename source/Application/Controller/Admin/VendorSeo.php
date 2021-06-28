@@ -38,7 +38,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderVendor
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
     }
@@ -71,7 +71,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxvendor';
     }
@@ -85,7 +85,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     {
         $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         if ($oVendor->load($this->getEditObjectId())) {
-            return $this->_getEncoder()->getVendorUri($oVendor, $this->getEditLang());
+            return $this->getEncoder()->getVendorUri($oVendor, $this->getEditLang());
         }
     }
 }

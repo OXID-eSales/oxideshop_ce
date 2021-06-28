@@ -57,7 +57,7 @@ class UserAddressListTest extends \OxidTestCase
     {
         $sUserId = 'oxdefaultadmin';
         oxRegistry::getLang()->setBaseLanguage($iLanguageId, self::AUSTRIA_ID);
-        $sAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
+        $sAddressId = $this->createAddress($sUserId, self::AUSTRIA_ID);
 
         $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
@@ -72,8 +72,8 @@ class UserAddressListTest extends \OxidTestCase
     public function testLoadCheckSeveralAddress()
     {
         $sUserId = 'oxdefaultadmin';
-        $sAustriaAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
-        $sGermanyAddressId = $this->_createAddress($sUserId, self::GERMANY_ID);
+        $sAustriaAddressId = $this->createAddress($sUserId, self::AUSTRIA_ID);
+        $sGermanyAddressId = $this->createAddress($sUserId, self::GERMANY_ID);
 
         $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
@@ -89,7 +89,7 @@ class UserAddressListTest extends \OxidTestCase
      *
      * @return string
      */
-    private function _createAddress($sUserId, $sCountryId)
+    private function createAddress($sUserId, $sCountryId)
     {
         $sOXID = '__testAddress' . $this->_iAddressCounter;
         $this->_iAddressCounter++;

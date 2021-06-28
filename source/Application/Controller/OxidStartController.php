@@ -28,7 +28,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
             return;
         }
 
-        $oSystemEventHandler = $this->_getSystemEventHandler();
+        $oSystemEventHandler = $this->getSystemEventHandler();
         $oSystemEventHandler->onShopStart();
     }
 
@@ -67,7 +67,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      */
     public function pageClose()
     {
-        $systemEventHandler = $this->_getSystemEventHandler();
+        $systemEventHandler = $this->getSystemEventHandler();
         $systemEventHandler->onShopEnd();
 
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -106,7 +106,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      *
      * @return SystemEventHandler
      */
-    protected function _getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
     }

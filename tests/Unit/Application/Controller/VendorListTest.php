@@ -143,13 +143,13 @@ class VendorListTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\VendorListController::class, array("getActVendor"));
         $oView->expects($this->once())->method('getActVendor')->will($this->returnValue("testActVendor"));
 
-        $this->assertEquals("testActVendor", $oView->_getSubject(0));
+        $this->assertEquals("testActVendor", $oView->getSubject(0));
     }
 
     public function testProcessListArticles()
     {
         $oListView = oxNew('VendorList');
-        $this->assertEquals(1, $oListView->_getProductLinkType());
+        $this->assertEquals(1, $oListView->getProductLinkType());
     }
 
     public function testGetSubCatList()
@@ -310,7 +310,7 @@ class VendorListTest extends \OxidTestCase
         $oVendor->load($sVendorId);
         $oVendorList = $this->getProxyClass("VendorList");
         $oVendorList->setNonPublicVar("_oActVendor", $oVendor);
-        $this->assertEquals($sRez, $oVendorList->_addPageNrParam('aa', 2));
+        $this->assertEquals($sRez, $oVendorList->addPageNrParam('aa', 2));
     }
 
     public function testAddPageNrParam()
@@ -320,7 +320,7 @@ class VendorListTest extends \OxidTestCase
         $oVendorList = $this->getMock(\OxidEsales\Eshop\Application\Controller\VendorListController::class, array("getActVendor"));
         $oVendorList->expects($this->atLeastOnce())->method('getActVendor')->will($this->returnValue(null));
 
-        $this->assertEquals("aaaa?pgNr=2", $oVendorList->_addPageNrParam('aaaa', 2));
+        $this->assertEquals("aaaa?pgNr=2", $oVendorList->addPageNrParam('aaaa', 2));
     }
 
     public function testSetGetItemSorting()

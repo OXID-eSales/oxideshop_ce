@@ -32,7 +32,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      */
     public function getServicesKeys()
     {
-        $oContentList = $this->_getContentList();
+        $oContentList = $this->getContentList();
 
         return $oContentList->getServiceKeys();
     }
@@ -44,7 +44,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      */
     public function getServicesList()
     {
-        $oContentList = $this->_getContentList();
+        $oContentList = $this->getContentList();
         $oContentList->loadServices();
 
         return $oContentList;
@@ -55,7 +55,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      *
      * @return \OxidEsales\Eshop\Application\Model\ContentList
      */
-    protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_oContentList) {
             $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);

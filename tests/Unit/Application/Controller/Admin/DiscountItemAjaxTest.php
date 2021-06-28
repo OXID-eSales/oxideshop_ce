@@ -44,7 +44,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DiscountItemAjax::_getQuery() test case
+     * DiscountItemAjax::getQuery() test case
      *
      * @return null
      */
@@ -61,11 +61,11 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $oView = oxNew('discount_item_ajax');
         $sQuery = "from $sDiscTable left join $sArticleTable on $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " where $sDiscTable.oxid = '_testOxid' and $sDiscTable.oxitmartid != ''";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountItemAjax::_getQuery() test case
+     * DiscountItemAjax::getQuery() test case
      *
      * @return null
      */
@@ -87,12 +87,12 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sQuery .= "$sArticleTable.oxvarcount = 0 and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
 
     /**
-     * DiscountItemAjax::_getQuery() test case
+     * DiscountItemAjax::getQuery() test case
      *
      * @return null
      */
@@ -113,11 +113,11 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sQuery .= " where $sO2CView.oxcatnid = '_testOxid' and $sArticleTable.oxid is not null  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountItemAjax::_getQuery() test case
+     * DiscountItemAjax::getQuery() test case
      *
      * @return null
      */
@@ -134,11 +134,11 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = '' and $sArticleTable.oxvarcount = 0 and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountItemAjax::_getQuery() test case
+     * DiscountItemAjax::getQuery() test case
      *
      * @return null
      */
@@ -155,7 +155,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sQuery = "from $sArticleTable where 1 and $sArticleTable.oxparentid = ''  and ";
         $sQuery .= " $sArticleTable.oxid not in (  select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
         $sQuery .= " and $sDiscTable.oxid = '_testSynchoxid' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
@@ -192,7 +192,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DiscountItemAjax::_getQueryCols() test case
+     * DiscountItemAjax::getQueryCols() test case
      *
      * @return null
      */
@@ -216,11 +216,11 @@ class DiscountItemAjaxTest extends \OxidTestCase
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
         $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
-        $this->assertEquals($sQ, $oComponent->_getQueryCols());
+        $this->assertEquals($sQ, $oComponent->getQueryCols());
     }
 
     /**
-     * DiscountItemAjax::_getQueryCols() test case
+     * DiscountItemAjax::getQueryCols() test case
      *
      * @return null
      */
@@ -244,6 +244,6 @@ class DiscountItemAjaxTest extends \OxidTestCase
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
         $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
-        $this->assertEquals($sQ, $oComponent->_getQueryCols());
+        $this->assertEquals($sQ, $oComponent->getQueryCols());
     }
 }

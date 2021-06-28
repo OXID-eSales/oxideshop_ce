@@ -367,7 +367,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $session->getBasket();
 
-            $this->_setWrappingInfo($oBasket, Registry::getRequest()->getRequestEscapedParameter('wrapping'));
+            $this->setWrappingInfo($oBasket, Registry::getRequest()->getRequestEscapedParameter('wrapping'));
 
             $oBasket->setCardMessage(Registry::getRequest()->getRequestEscapedParameter('giftmessage'));
             $oBasket->setCardId(Registry::getRequest()->getRequestEscapedParameter('chosencard'));
@@ -412,7 +412,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
      */
-    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aWrapping) && count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

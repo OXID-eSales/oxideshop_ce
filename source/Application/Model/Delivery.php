@@ -287,7 +287,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
             // if article is free shipping, price for delivery will be not calculated
             if (!$this->_blFreeShipping) {
-                $oPrice->add($this->_getCostSum());
+                $oPrice->add($this->getCostSum());
             }
             $this->setDeliveryPrice($oPrice);
         }
@@ -411,7 +411,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         //#M1130: Single article in Basket, checked as free shipping, is not buyable (step 3 no payments found)
-        if (!$blForBasket && $blUse && ($this->_checkDeliveryAmount($aggregatedDeliveryAmount) || $this->_blFreeShipping)) {
+        if (!$blForBasket && $blUse && ($this->checkDeliveryAmount($aggregatedDeliveryAmount) || $this->_blFreeShipping)) {
             $blForBasket = true;
         }
 
@@ -443,7 +443,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return boolean
      */
-    protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
@@ -573,7 +573,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float|int
      */
-    protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dAmount = 0;
 
@@ -593,11 +593,11 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float
      */
-    protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getAddSumType() == 'abs') {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
-            $dPrice = $this->getAddSum() * $oCur->rate * $this->_getMultiplier();
+            $dPrice = $this->getAddSum() * $oCur->rate * $this->getMultiplier();
         } else {
             $dPrice = $this->_dPrice / 100 * $this->getAddSum();
         }
@@ -617,7 +617,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $result = false;
         if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
-            if (!$this->_blFreeShipping && $this->_checkDeliveryAmount($artAmount)) {
+            if (!$this->_blFreeShipping && $this->checkDeliveryAmount($artAmount)) {
                 $result = true;
             }
         }

@@ -99,7 +99,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $myConfig->setConfigParam('blAdmin', true);
         $this->setAdminMode(true);
 
-        if ($oShop = $this->_getEditShop($myConfig->getShopId())) {
+        if ($oShop = $this->getEditShop($myConfig->getShopId())) {
             // passing shop info
             $this->_sShopTitle = $oShop->oxshops__oxname->getRawValue();
         }
@@ -112,7 +112,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
      */
-    protected function _getEditShop($sShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEditShop($sShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_oEditShop) {
             $this->_oEditShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
@@ -135,7 +135,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function init()
     {
         // authorization check
-        if (!$this->_authorize()) {
+        if (!$this->authorize()) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php?cl=login', true, 302);
             exit('Authorization error occurred!');
         }
@@ -192,7 +192,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function _getServiceProtocol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getServiceProtocol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? 'https' : 'http';
     }
@@ -202,7 +202,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sNode active view id
      */
-    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // navigation according to class
         if ($sNode) {
@@ -215,7 +215,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             $sActTab = $iActTab ? "&actedit=$iActTab" : '';
 
             // store navigation history
-            $this->_addNavigationHistory($sNode);
+            $this->addNavigationHistory($sNode);
 
             // list url
             $this->_aViewData['listurl'] = $myAdminNavig->getListUrl($sNode) . $sActTab;
@@ -230,7 +230,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sNode active view id
      */
-    protected function _addNavigationHistory($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addNavigationHistory($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
@@ -261,7 +261,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         // sets up navigation data
-        $this->_setupNavigation(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId());
+        $this->setupNavigation(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId());
 
         // active object id
         $sOxId = $this->getEditObjectId();
@@ -276,7 +276,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         // loading active shop
         if ($sActShopId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop')) {
             // load object
-            $this->_aViewData['actshopobj'] = $this->_getEditShop($sActShopId);
+            $this->_aViewData['actshopobj'] = $this->getEditShop($sActShopId);
         }
 
         // add language data to all templates
@@ -285,7 +285,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->_aViewData['languages'] = $oLang->getLanguageArray($iLanguage);
 
         // setting maximum upload size
-        list($this->_aViewData['iMaxUploadFileSize'], $this->_aViewData['sMaxFormattedFileSize']) = $this->_getMaxUploadFileInfo(@ini_get("upload_max_filesize"));
+        list($this->_aViewData['iMaxUploadFileSize'], $this->_aViewData['sMaxFormattedFileSize']) = $this->getMaxUploadFileInfo(@ini_get("upload_max_filesize"));
 
         // "save-on-tab"
         if (!isset($this->_aViewData['updatelist'])) {
@@ -303,7 +303,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return array
      */
-    protected function _getMaxUploadFileInfo( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMaxUploadFileInfo( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $maxFileSize,
         $isFormatted = false
     ) {
@@ -404,7 +404,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return bool
      */
-    protected function _allowAdminEdit($sUserId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function allowAdminEdit($sUserId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return true;
     }
@@ -416,7 +416,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return boolean
      */
-    protected function _getCountryByCode($sCountryCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCountryByCode($sCountryCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //default country
         $sCountry = 'international';
@@ -454,7 +454,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return boolean
      */
-    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         return (bool) (

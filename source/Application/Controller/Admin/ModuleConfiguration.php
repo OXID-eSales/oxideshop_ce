@@ -129,10 +129,10 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 foreach ($moduleConfiguration->getModuleSettings() as $moduleSetting) {
                     if ($moduleSetting->getName() === $name) {
                         if ($moduleSetting->getType() === 'aarr') {
-                            $value = $this->_multilineToAarray($value);
+                            $value = $this->multilineToAarray($value);
                         }
                         if ($moduleSetting->getType() === 'arr') {
-                            $value = $this->_multilineToArray($value);
+                            $value = $this->multilineToArray($value);
                         }
                         if ($moduleSetting->getType() === 'bool') {
                             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
@@ -191,10 +191,10 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             if ($setting->getValue() !== null) {
                 switch ($setting->getType()) {
                     case 'arr':
-                        $value = $this->_arrayToMultiline($setting->getValue());
+                        $value = $this->arrayToMultiline($setting->getValue());
                         break;
                     case 'aarr':
-                        $value = $this->_aarrayToMultiline($setting->getValue());
+                        $value = $this->aarrayToMultiline($setting->getValue());
                         break;
                     case 'bool':
                         $value = filter_var($setting->getValue(), FILTER_VALIDATE_BOOLEAN);

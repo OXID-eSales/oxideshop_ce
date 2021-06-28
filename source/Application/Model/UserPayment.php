@@ -99,9 +99,9 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blRet = parent::_insert();
+        $blRet = parent::insert();
 
         return $blRet;
     }

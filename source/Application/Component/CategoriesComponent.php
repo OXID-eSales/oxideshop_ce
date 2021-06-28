@@ -67,16 +67,16 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
             return;
         }
 
-        $sActCat = $this->_getActCat();
+        $sActCat = $this->getActCat();
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             // building Manufacturer tree
             $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
-            $this->_loadManufacturerTree($sActManufacturer);
+            $this->loadManufacturerTree($sActManufacturer);
         }
 
         // building category tree for all purposes (nav, search and simple category trees)
-        $this->_loadCategoryTree($sActCat);
+        $this->loadCategoryTree($sActCat);
     }
 
     /**
@@ -107,7 +107,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string
      */
-    protected function _getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
 
@@ -122,7 +122,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
             $sActVendor = (Str::getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
-            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
+            $sActCat = $this->addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }
 
         // Checking for the default category
@@ -143,7 +143,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActCat active category id
      */
-    protected function _loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree */
         $oCategoryTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
@@ -164,7 +164,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActManufacturer active Manufacturer id
      */
-    protected function _loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
@@ -219,7 +219,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string $sActCat
      */
-    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSearchPar = Registry::getRequest()->getRequestEscapedParameter('searchparam');
         $sSearchCat = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
@@ -244,7 +244,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
             } elseif ($sActCat && $oProduct->isAssignedToCategory($sActCat)) {
                 // category ?
             } else {
-                list($sListType, $sActCat) = $this->_getDefaultParams($oProduct);
+                list($sListType, $sActCat) = $this->getDefaultParams($oProduct);
             }
         }
 
@@ -263,7 +263,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return array
      */
-    protected function _getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sListType = null;
         $aArticleCats = $oProduct->getCategoryIds(true);

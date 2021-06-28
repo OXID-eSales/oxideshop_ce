@@ -61,7 +61,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         if ($this->_blReload || $sUserId !== $this->_sUserId) {
             // loading list
-            $this->selectString($this->_getFilterSelect($oUser));
+            $this->selectString($this->getFilterSelect($oUser));
 
             // setting list proterties
             $this->_blReload = false; // reload marker
@@ -106,7 +106,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oBaseObject = $this->getBaseObject();
 

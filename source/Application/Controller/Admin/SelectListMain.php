@@ -51,7 +51,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             // generating category tree for select list
             // A. hack - passing language by post as lists uses only language passed by POST/GET/SESSION
             $_POST["language"] = $this->_iEditLang;
-            $this->_createCategoryTree("artcattree", $sOxId);
+            $this->createCategoryTree("artcattree", $sOxId);
 
             // load object
             $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
@@ -262,7 +262,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
             $this->aFieldArray[] = $oField;
             if ($iPos = Registry::getRequest()->getRequestEscapedParameter("sAddFieldPos")) {
-                if ($this->_rearrangeFields($oField, $iPos - 1)) {
+                if ($this->rearrangeFields($oField, $iPos - 1)) {
                     return;
                 }
             }
@@ -298,7 +298,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                         $this->aFieldArray[$sKey]->price = Registry::getRequest()->getRequestEscapedParameter("sAddFieldPriceMod");
                         $this->aFieldArray[$sKey]->priceUnit = Registry::getRequest()->getRequestEscapedParameter("sAddFieldPriceModUnit");
                         if ($iPos = Registry::getRequest()->getRequestEscapedParameter("sAddFieldPos")) {
-                            if ($this->_rearrangeFields($this->aFieldArray[$sKey], $iPos - 1)) {
+                            if ($this->rearrangeFields($this->aFieldArray[$sKey], $iPos - 1)) {
                                 return;
                             }
                         }
@@ -319,7 +319,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool - true if failed.
      */
-    protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!isset($this->aFieldArray) || !is_array($this->aFieldArray)) {
             return true;

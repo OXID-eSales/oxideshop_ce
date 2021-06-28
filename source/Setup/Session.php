@@ -48,14 +48,14 @@ class Session extends Core
         ini_set('session.use_cookies', 0);
 
         // initialize session
-        $this->_startSession();
-        $this->_initSessionData();
+        $this->startSession();
+        $this->initSessionData();
     }
 
     /**
      * Start session
      */
-    protected function _startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         session_name($this->_sSessionName);
 
@@ -72,7 +72,7 @@ class Session extends Core
         }
 
         session_start();
-        $sSid = $this->_validateSession();
+        $sSid = $this->validateSession();
         $this->setSid($sSid);
     }
 
@@ -81,12 +81,12 @@ class Session extends Core
      *
      * @return string Session ID
      */
-    protected function _validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getIsNewSession() === true) {
             $this->setSessionParam('setup_session', true);
         } elseif ($this->getSessionParam('setup_session') !== true) {
-            $sNewSid = $this->_getNewSessionID();
+            $sNewSid = $this->getNewSessionID();
             session_write_close();
 
             session_id($sNewSid);
@@ -102,7 +102,7 @@ class Session extends Core
      *
      * @return string
      */
-    protected function _getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         session_regenerate_id(false);
         $this->setIsNewSession(true);
@@ -134,7 +134,7 @@ class Session extends Core
     /**
      * Initializes setup session data array
      */
-    protected function _initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
@@ -175,7 +175,7 @@ class Session extends Core
      *
      * @return array
      */
-    protected function &_getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function &getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $_SESSION;
     }
@@ -205,7 +205,7 @@ class Session extends Core
      */
     public function getSessionParam($sParamName)
     {
-        $aSessionData = & $this->_getSessionData();
+        $aSessionData = & $this->getSessionData();
         if (isset($aSessionData[$sParamName])) {
             return $aSessionData[$sParamName];
         }
@@ -219,7 +219,7 @@ class Session extends Core
      */
     public function setSessionParam($sParamName, $sParamValue)
     {
-        $aSessionData = & $this->_getSessionData();
+        $aSessionData = & $this->getSessionData();
         $aSessionData[$sParamName] = $sParamValue;
     }
 }

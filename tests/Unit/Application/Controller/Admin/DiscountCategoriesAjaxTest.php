@@ -48,7 +48,7 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DiscountCategoriesAjax::_getQuery() test case
+     * DiscountCategoriesAjax::getQuery() test case
      *
      * @return null
      */
@@ -59,11 +59,11 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_categories_ajax');
         $sQuery = "from $sCategoryTable";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountCategoriesAjax::_getQuery() test case
+     * DiscountCategoriesAjax::getQuery() test case
      *
      * @return null
      */
@@ -81,11 +81,11 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcategories'  and ";
         $sQuery .= " $sCategoryTable.oxid not in (  select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountCategoriesAjax::_getQuery() test case
+     * DiscountCategoriesAjax::getQuery() test case
      *
      * @return null
      */
@@ -100,7 +100,7 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $sQuery = "from $sCategoryTable where ";
         $sQuery .= " $sCategoryTable.oxid not in (  select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**

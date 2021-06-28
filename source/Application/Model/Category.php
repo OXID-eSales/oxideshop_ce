@@ -212,7 +212,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return array
      */
-    protected function _loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = $this->buildSelectString(["`{$this->getViewName()}`.`oxid`" => $sOXID]);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
@@ -229,7 +229,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function load($sOXID)
     {
-        $aData = $this->_loadFromDb($sOXID);
+        $aData = $this->loadFromDb($sOXID);
 
         if ($aData) {
             $this->assign($aData);
@@ -837,7 +837,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
@@ -879,7 +879,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $this->oxcategories__oxleft = new \OxidEsales\Eshop\Core\Field($oParent->oxcategories__oxright->value, \OxidEsales\Eshop\Core\Field::T_RAW);
             $this->oxcategories__oxright = new \OxidEsales\Eshop\Core\Field($oParent->oxcategories__oxright->value + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-            return parent::_insert();
+            return parent::insert();
         } else {
             // root entry
             if (!$this->getId()) {
@@ -890,7 +890,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $this->oxcategories__oxleft = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
             $this->oxcategories__oxright = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-            return parent::_insert();
+            return parent::insert();
         }
     }
 
@@ -899,10 +899,10 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setUpdateSeo(true);
-        $this->_setUpdateSeoOnFieldChange('oxtitle');
+        $this->setUpdateSeoOnFieldChange('oxtitle');
 
         // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
         // No need to explicitly force master here.
@@ -915,7 +915,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
         }
 
-        $blRes = parent::_update();
+        $blRes = parent::update();
 
         // #872C - need to update category tree oxleft and oxright values (nested sets),
         // then sub trees are moved inside one root, or to another root.
@@ -1024,7 +1024,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return null
      */
-    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
         $fieldNameIndex2 = $fieldName[2];
@@ -1035,7 +1035,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             }
         }
 
-        return parent::_setFieldData($fieldName, $value, $dataType);
+        return parent::setFieldData($fieldName, $value, $dataType);
     }
 
     /**

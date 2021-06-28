@@ -195,7 +195,7 @@ class CategoryMainTest extends \OxidTestCase
     }
 
     /**
-     * Category_Main::_deleteCatPicture() test case - deleting invalid field
+     * Category_Main::deleteCatPicture() test case - deleting invalid field
      *
      * @return null
      */
@@ -209,12 +209,12 @@ class CategoryMainTest extends \OxidTestCase
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
-        $oView->_deleteCatPicture($this->_oCategory, 'oxtitle');
+        $oView->deleteCatPicture($this->_oCategory, 'oxtitle');
         $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "));
     }
 
     /**
-     * Category_Main::_deleteCatPicture() test case - deleting thumb
+     * Category_Main::deleteCatPicture() test case - deleting thumb
      *
      * @return null
      */
@@ -228,12 +228,12 @@ class CategoryMainTest extends \OxidTestCase
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
-        $oView->_deleteCatPicture($this->_oCategory, 'oxpromoicon');
+        $oView->deleteCatPicture($this->_oCategory, 'oxpromoicon');
         $this->assertEquals('', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "));
     }
 
     /**
-     * Category_Main::_deleteCatPicture() test case - deleting thumb
+     * Category_Main::deleteCatPicture() test case - deleting thumb
      *
      * @return null
      */
@@ -247,12 +247,12 @@ class CategoryMainTest extends \OxidTestCase
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
-        $oView->_deleteCatPicture($this->_oCategory, 'oxthumb');
+        $oView->deleteCatPicture($this->_oCategory, 'oxthumb');
         $this->assertEquals('', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "));
     }
 
     /**
-     * Category_Main::_deleteCatPicture() test case - deleting icon
+     * Category_Main::deleteCatPicture() test case - deleting icon
      *
      * @return null
      */
@@ -266,7 +266,7 @@ class CategoryMainTest extends \OxidTestCase
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
-        $oView->_deleteCatPicture($this->_oCategory, 'oxicon');
+        $oView->deleteCatPicture($this->_oCategory, 'oxicon');
         $this->assertEquals('', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "));
     }
 

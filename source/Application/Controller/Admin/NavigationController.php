@@ -55,7 +55,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
-                    $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
+                    $this->_aViewData['aMessage'] = $this->doStartUpChecks();
                 }
             } else {
                 //removing reload param to force requirements checking next time
@@ -154,7 +154,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return array
      */
-    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $messages = [];
         $session = Registry::getSession();
@@ -175,7 +175,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         // version check
         if (Registry::getConfig()->getConfigParam('blCheckForUpdates')) {
-            if ($sVersionNotice = $this->_checkVersion()) {
+            if ($sVersionNotice = $this->checkVersion()) {
                 $messages['message'] .= $sVersionNotice;
             }
         }
@@ -200,7 +200,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $edition = (new Facts())->getEdition();
         $query = 'https://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

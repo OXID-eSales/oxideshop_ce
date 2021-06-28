@@ -31,10 +31,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function getCatArticleCount($sCatId)
     {
         // current status unique ident
-        $sActIdent = $this->_getUserViewId();
+        $sActIdent = $this->getUserViewId();
 
         // loading from cache
-        $aCatData = $this->_getCatCache();
+        $aCatData = $this->getCatCache();
 
         if (!$aCatData || !isset($aCatData[$sCatId][$sActIdent])) {
             $iCnt = $this->setCatArticleCount($aCatData, $sCatId, $sActIdent);
@@ -57,10 +57,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function getPriceCatArticleCount($sCatId, $dPriceFrom, $dPriceTo)
     {
         // current status unique ident
-        $sActIdent = $this->_getUserViewId();
+        $sActIdent = $this->getUserViewId();
 
         // loading from cache
-        $aCatData = $this->_getCatCache();
+        $aCatData = $this->getCatCache();
 
         if (!$aCatData || !isset($aCatData[$sCatId][$sActIdent])) {
             $iCnt = $this->setPriceCatArticleCount($aCatData, $sCatId, $sActIdent, $dPriceFrom, $dPriceTo);
@@ -81,10 +81,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function getVendorArticleCount($sVendorId)
     {
         // current category unique ident
-        $sActIdent = $this->_getUserViewId();
+        $sActIdent = $this->getUserViewId();
 
         // loading from cache
-        $aVendorData = $this->_getVendorCache();
+        $aVendorData = $this->getVendorCache();
 
         if (!$aVendorData || !isset($aVendorData[$sVendorId][$sActIdent])) {
             $iCnt = $this->setVendorArticleCount($aVendorData, $sVendorId, $sActIdent);
@@ -105,10 +105,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function getManufacturerArticleCount($sManufacturerId)
     {
         // current category unique ident
-        $sActIdent = $this->_getUserViewId();
+        $sActIdent = $this->getUserViewId();
 
         // loading from cache
-        $aManufacturerData = $this->_getManufacturerCache();
+        $aManufacturerData = $this->getManufacturerCache();
         if (!$aManufacturerData || !isset($aManufacturerData[$sManufacturerId][$sActIdent])) {
             $iCnt = $this->setManufacturerArticleCount($aManufacturerData, $sManufacturerId, $sActIdent);
         } else {
@@ -145,7 +145,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             ':oxcatnid' => $sCatId
         ]);
 
-        $this->_setCatCache($aCache);
+        $this->setCatCache($aCache);
 
         return $aCache[$sCatId][$sActIdent];
     }
@@ -182,7 +182,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         $aCache[$sCatId][$sActIdent] = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect, $params);
 
-        $this->_setCatCache($aCache);
+        $this->setCatCache($aCache);
 
         return $aCache[$sCatId][$sActIdent];
     }
@@ -215,7 +215,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             $aCache[$sKey][$sActIdent] = $sValue;
         }
 
-        $this->_setVendorCache($aCache);
+        $this->setVendorCache($aCache);
 
         return isset($aCache[$sCatId][$sActIdent]) ? $aCache[$sCatId][$sActIdent] : 0;
     }
@@ -287,7 +287,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         $aCache[$sMnfId][$sActIdent] = (int) $iValue;
 
-        $this->_setManufacturerCache($aCache);
+        $this->setManufacturerCache($aCache);
 
         return $aCache[$sMnfId][$sActIdent];
     }
@@ -304,10 +304,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', '');
         } else {
             // loading from cache
-            $aCatData = $this->_getCatCache();
+            $aCatData = $this->getCatCache();
             if (isset($aCatData[$sCatId])) {
                 unset($aCatData[$sCatId]);
-                $this->_setCatCache($aCatData);
+                $this->setCatCache($aCatData);
             }
         }
     }
@@ -320,7 +320,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function resetPriceCatArticleCount($iPrice)
     {
         // loading from cache
-        if ($aCatData = $this->_getCatCache()) {
+        if ($aCatData = $this->getCatCache()) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sTable = $tableViewNameGenerator->getViewName('oxcategories');
             $sSelect = "SELECT $sTable.oxid FROM $sTable WHERE :oxpricefrom >= $sTable.oxpricefrom AND :oxpriceto <= $sTable.oxpriceto ";
@@ -339,7 +339,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
                 }
 
                 // writing back to cache
-                $this->_setCatCache($aCatData);
+                $this->setCatCache($aCatData);
             }
         }
     }
@@ -356,10 +356,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', '');
         } else {
             // loading from cache
-            $aVendorData = $this->_getVendorCache();
+            $aVendorData = $this->getVendorCache();
             if (isset($aVendorData[$sVendorId])) {
                 unset($aVendorData[$sVendorId]);
-                $this->_setVendorCache($aVendorData);
+                $this->setVendorCache($aVendorData);
             }
         }
     }
@@ -376,10 +376,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', '');
         } else {
             // loading from cache
-            $aManufacturerData = $this->_getManufacturerCache();
+            $aManufacturerData = $this->getManufacturerCache();
             if (isset($aManufacturerData[$sManufacturerId])) {
                 unset($aManufacturerData[$sManufacturerId]);
-                $this->_setManufacturerCache($aManufacturerData);
+                $this->setManufacturerCache($aManufacturerData);
             }
         }
     }
@@ -389,7 +389,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getCatCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -415,7 +415,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setCatCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setCatCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', $aCache);
@@ -426,7 +426,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setVendorCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setVendorCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
@@ -437,7 +437,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setManufacturerCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setManufacturerCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
@@ -448,7 +448,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getVendorCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -473,7 +473,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getManufacturerCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -500,7 +500,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getUserViewId($blReset = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUserViewId($blReset = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sUserViewId != null && !$blReset) {
             return $this->_sUserViewId;

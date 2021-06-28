@@ -125,7 +125,7 @@ class ArticleReviewTest extends \OxidTestCase
     }
 
     /**
-     * Article_Review::_getReviewList() test case
+     * Article_Review::getReviewList() test case
      *
      * @return null
      */
@@ -136,14 +136,14 @@ class ArticleReviewTest extends \OxidTestCase
             'replace into oxreviews (OXID, OXACTIVE, OXOBJECTID, OXTYPE, OXTEXT, OXUSERID, OXCREATE, OXLANG, OXRATING)
                         values ("_test_i2", 1, "' . $articleVariantId . '", "oxarticle", "aa", "' . oxADMIN_LOGIN . '", "0000-00-00 00:00:00", "0", "3")'
         );
-        oxTestModules::publicize('article_review', '_getReviewList');
+        oxTestModules::publicize('article_review', 'getReviewList');
         $o = oxNew('article_review');
         $oA = oxNew('oxArticle');
         $oA->load($this->getTestArticleId());
         $this->getConfig()->setConfigParam('blShowVariantReviews', false);
-        $this->assertEquals(1, count($o->p_getReviewList($oA)));
+        $this->assertEquals(1, count($o->pgetReviewList($oA)));
         $this->getConfig()->setConfigParam('blShowVariantReviews', true);
-        $this->assertEquals(2, count($o->p_getReviewList($oA)));
+        $this->assertEquals(2, count($o->pgetReviewList($oA)));
     }
 
     /**

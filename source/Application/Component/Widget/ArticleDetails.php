@@ -225,13 +225,13 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return Article
      */
-    protected function _getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
             $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if (($oProduct->load($sParentId))) {
-                $this->_processProduct($oProduct);
+                $this->processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
             }
         }
@@ -244,7 +244,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return string|null
      */
-    protected function _getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -256,10 +256,10 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @param object $oProduct Product to process.
      */
-    protected function _processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oProduct->setLinkType($this->getLinkType());
-        if ($sAddParams = $this->_getAddUrlParams()) {
+        if ($sAddParams = $this->getAddUrlParams()) {
             $oProduct->appendLink($sAddParams);
         }
     }
@@ -402,7 +402,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
             // setting link type for variants ..
             foreach ($this->_aVariantList as $oVariant) {
-                $this->_processProduct($oVariant);
+                $this->processProduct($oVariant);
             }
         }
 
@@ -697,7 +697,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getProduct();
     }
@@ -829,7 +829,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         // finding parent
         $oProduct = $this->getProduct();
         $sParentIdField = 'oxarticles__oxparentid';
-        if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
+        if (($oParent = $this->getParentProduct($oProduct->$sParentIdField->value))) {
             $sVarSelId = Registry::getRequest()->getRequestEscapedParameter("varselid");
 
             return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
@@ -889,7 +889,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             }
         }
         if (!$this->_blIsInitialized) {
-            $this->_additionalChecksForArticle($myUtils, $myConfig);
+            $this->additionalChecksForArticle($myUtils, $myConfig);
         }
 
         return $this->_oProduct;
@@ -898,7 +898,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Set item sorting for widget based of retrieved parameters.
      */
-    protected function _setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
@@ -931,7 +931,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         } else {
             $oCategory->load($sCatId);
         }
-        $this->_setSortingParameters();
+        $this->setSortingParameters();
 
         $this->setActiveCategory($oCategory);
 
@@ -972,13 +972,13 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param Utils  $myUtils  General utils.
      * @param Config $myConfig Main shop configuration.
      */
-    protected function _additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blContinue = true;
         if (!$this->_oProduct->isVisible()) {
             $blContinue = false;
         } elseif ($this->_oProduct->oxarticles__oxparentid->value) {
-            $oParent = $this->_getParentProduct($this->_oProduct->oxarticles__oxparentid->value);
+            $oParent = $this->getParentProduct($this->_oProduct->oxarticles__oxparentid->value);
             if (!$oParent || !$oParent->isVisible()) {
                 $blContinue = false;
             }
@@ -989,7 +989,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $myUtils->showMessageAndExit('');
         }
 
-        $this->_processProduct($this->_oProduct);
+        $this->processProduct($this->_oProduct);
         $this->_blIsInitialized = true;
     }
 

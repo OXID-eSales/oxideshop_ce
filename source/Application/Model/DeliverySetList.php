@@ -102,7 +102,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
                 }
             }
 
-            $this->selectString($this->_getFilterSelect($oUser, $sCountryId));
+            $this->selectString($this->getFilterSelect($oUser, $sCountryId));
             $this->_sUserId = $sUserId;
             $this->_sCountryId = $sCountryId;
         }
@@ -121,7 +121,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');

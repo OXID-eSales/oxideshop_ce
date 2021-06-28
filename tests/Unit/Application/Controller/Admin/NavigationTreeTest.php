@@ -504,7 +504,7 @@ class NavigationTreeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function _checkDemoShopDenialsInMenuXml($oDom, $iNeedCnt)
+    protected function checkDemoShopDenialsInMenuXml($oDom, $iNeedCnt)
     {
         $oXPath = new DomXPath($oDom);
         $oNodeList = $oXPath->query("//*[@disableForDemoShop]");
@@ -527,9 +527,9 @@ class NavigationTreeTest extends \OxidTestCase
     public function testcheckDemoShopDenialsDefaultMenuXml()
     {
         $oNavTree = oxNew('oxNavigationTree');
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 4);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 4);
     }
 
     /**
@@ -540,7 +540,7 @@ class NavigationTreeTest extends \OxidTestCase
     public function testcheckDemoShopDenialsDefaultNormal()
     {
         $oNavTree = oxNew('oxNavigationTree');
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
         $oXPath = new DomXPath($oDom);
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
@@ -548,7 +548,7 @@ class NavigationTreeTest extends \OxidTestCase
         }
 
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 4);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 4);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(false));
@@ -556,7 +556,7 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->_checkDemoShopDenials($oDom);
 
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 4);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 4);
     }
 
     /**
@@ -567,14 +567,14 @@ class NavigationTreeTest extends \OxidTestCase
     public function testcheckDemoShopDenialsDefaultDemo()
     {
         $oNavTree = oxNew('oxNavigationTree');
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
         $oXPath = new DomXPath($oDom);
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '1');
         }
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 4, '1');
+        $this->checkDemoShopDenialsInMenuXml($oDom, 4, '1');
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(true));
@@ -582,7 +582,7 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->_checkDemoShopDenials($oDom);
 
         // removed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 0);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 0);
     }
 
     /**
@@ -593,14 +593,14 @@ class NavigationTreeTest extends \OxidTestCase
     public function testcheckDemoShopDenialsInverseNormal()
     {
         $oNavTree = oxNew('oxNavigationTree');
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
         $oXPath = new DomXPath($oDom);
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '0');
         }
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 0);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 0);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(false));
@@ -608,7 +608,7 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->_checkDemoShopDenials($oDom);
 
         // removed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 0);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 0);
     }
 
     /**
@@ -619,14 +619,14 @@ class NavigationTreeTest extends \OxidTestCase
     public function testcheckDemoShopDenialsInverseDemo()
     {
         $oNavTree = oxNew('oxNavigationTree');
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
         $oXPath = new DomXPath($oDom);
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '0');
         }
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 0);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 0);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(true));
@@ -634,7 +634,7 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->_checkDemoShopDenials($oDom);
 
         // not changed
-        $this->_checkDemoShopDenialsInMenuXml($oDom, 0);
+        $this->checkDemoShopDenialsInMenuXml($oDom, 0);
     }
 
     /**
@@ -643,7 +643,7 @@ class NavigationTreeTest extends \OxidTestCase
      *
      * @return object | null
      */
-    protected function _getDomXml()
+    protected function getDomXml()
     {
         $adminViewsDirectory = $this->getTestConfig()->getShopPath() . '/Application/views/admin';
 
@@ -679,7 +679,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     public function testCleanEmptyParents()
     {
-        $oDom = $this->_getDomXml();
+        $oDom = $this->getDomXml();
 
         $oXPath = new DomXPath($oDom);
         $oNodeList = $oXPath->query("//SUBMENU[@id='mxcoresett']");

@@ -57,29 +57,29 @@ class VoucherSerieExportTest extends \OxidTestCase
     }
 
     /**
-     * VoucherSerie_Export::_getExportFileName() test case
+     * VoucherSerie_Export::getExportFileName() test case
      *
      * @return null
      */
     public function testGetExportFileName()
     {
         $oView = oxNew('VoucherSerie_Export');
-        $oView->_getExportFileName();
+        $oView->getExportFileName();
 
         $this->assertNotNull(oxRegistry::getSession()->getVariable("sExportFileName"));
     }
 
     /**
-     * VoucherSerie_Export::_getExportFilePath() test case
+     * VoucherSerie_Export::getExportFilePath() test case
      *
      * @return null
      */
     public function testGetExportFilePath()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("_getExportFileName"));
-        $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("getExportFileName"));
+        $oView->expects($this->once())->method('getExportFileName')->will($this->returnValue("testName"));
 
-        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->_getExportFilePath());
+        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->getExportFilePath());
     }
 
     /**

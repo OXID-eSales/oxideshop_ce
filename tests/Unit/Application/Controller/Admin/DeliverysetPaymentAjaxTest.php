@@ -68,18 +68,18 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DeliverysetPaymentAjax::_getQuery() test case
+     * DeliverysetPaymentAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('deliveryset_payment_ajax');
-        $this->assertEquals("from oxv_oxpayments_de where 1", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxpayments_de where 1", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetPaymentAjax::_getQuery() test case
+     * DeliverysetPaymentAjax::getQuery() test case
      *
      * @return null
      */
@@ -89,11 +89,11 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
-        $this->assertEquals("from oxv_oxpayments_de where 1 and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxpayments_de where 1 and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetPaymentAjax::_getQuery() test case
+     * DeliverysetPaymentAjax::getQuery() test case
      *
      * @return null
      */
@@ -103,11 +103,11 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
-        $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetPaymentAjax::_getQuery() test case
+     * DeliverysetPaymentAjax::getQuery() test case
      *
      * @return null
      */
@@ -119,7 +119,7 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_payment_ajax');
-        $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sOxid . "' and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )", trim($oView->getQuery()));
     }
 
     /**

@@ -48,7 +48,7 @@ final class ArticlelistTest extends \OxidTestCase
      *
      * @return string
      */
-    protected function _getArticleTable()
+    protected function getArticleTable()
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         return $tableViewNameGenerator->getViewName("oxarticles");
@@ -59,7 +59,7 @@ final class ArticlelistTest extends \OxidTestCase
      *
      * @return string
      */
-    protected function _getO2CTable()
+    protected function getO2CTable()
     {
         $sO2CTable = $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
 
@@ -438,8 +438,8 @@ final class ArticlelistTest extends \OxidTestCase
 
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
-        $sO2CTable = $this->_getO2CTable();
+        $sArticleTable = $this->getArticleTable();
+        $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
@@ -467,8 +467,8 @@ final class ArticlelistTest extends \OxidTestCase
 
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
-        $sO2CTable = $this->_getO2CTable();
+        $sArticleTable = $this->getArticleTable();
+        $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable ON
@@ -494,8 +494,8 @@ final class ArticlelistTest extends \OxidTestCase
 
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
-        $sO2CTable = $this->_getO2CTable();
+        $sArticleTable = $this->getArticleTable();
+        $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
@@ -550,7 +550,7 @@ final class ArticlelistTest extends \OxidTestCase
      */
     public function testLoadCategoryIds()
     {
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
 
         //$oTest = $this->getProxyClass('oxArticleList');
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_createIdListFromSql', '_getCategorySelect'));
@@ -625,7 +625,7 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_getCategorySelect', 'selectString'));
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
 
         $oTest->expects($this->once())->method('_getCategorySelect')
             ->with($this->equalTo("`$sArticleTable`.`oxid`"), $this->equalTo('testCat'), $this->equalTo(array(1)))
@@ -645,7 +645,7 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('_getCategorySelect', 'selectString'));
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
 
         $oTest->expects($this->once())->method('_getCategorySelect')
             ->with($this->equalTo("`$sArticleTable`.`oxid`"), $this->equalTo('testCat'), $this->equalTo(array(1)))
@@ -665,7 +665,7 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $articleList = $this->getProxyClass('oxArticleList');
 
-        $articleTable = $this->_getArticleTable();
+        $articleTable = $this->getArticleTable();
 
         $expectedSql = <<<EOT
             AND
@@ -725,7 +725,7 @@ EOT;
         $this->setConfigParam('blSearchUseAND', 1);
         $articleList = $this->getProxyClass('oxArticleList');
 
-        $articleTable = $this->_getArticleTable();
+        $articleTable = $this->getArticleTable();
 
         $expectedSql = <<<EOT
             AND
@@ -772,7 +772,7 @@ EOT;
         $this->setConfigParam('blSearchUseAND', 1);
         $articleList = $this->getProxyClass('oxArticleList');
 
-        $articleTable = $this->_getArticleTable();
+        $articleTable = $this->getArticleTable();
 
         $expectedSql = <<<EOT
             AND
@@ -817,7 +817,7 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
@@ -844,7 +844,7 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
         $this->setLanguage(1);
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
@@ -872,8 +872,8 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
-        $sO2CTable = $this->_getO2CTable();
+        $sArticleTable = $this->getArticleTable();
+        $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
@@ -900,7 +900,7 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
@@ -926,7 +926,7 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
@@ -952,8 +952,8 @@ EOT;
         $this->setConfigParam('aSearchCols', array('oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum'));
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
-        $sO2CTable = $this->_getO2CTable();
+        $sArticleTable = $this->getArticleTable();
+        $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
@@ -981,7 +981,7 @@ EOT;
         $this->setTime(100);
         $this->setConfigParam('aSearchCols', array('oxlongdesc'));
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -1027,7 +1027,7 @@ EOT;
         $iPrice1 = 12;
         $iPrice2 = 15;
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
@@ -1055,7 +1055,7 @@ EOT;
         $iPrice1 = 12;
         $iPrice2 = 15;
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
@@ -1244,7 +1244,7 @@ EOT;
     {
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $this->setConfigParam('iNrofNewcomerArticles', 4);
@@ -1291,7 +1291,7 @@ EOT;
     {
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $this->setConfigParam('iNrofNewcomerArticles', 4);
@@ -1364,7 +1364,7 @@ EOT;
     public function testLoadTop5ArticlesSelect()
     {
         $this->setTime(100);
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
@@ -1389,7 +1389,7 @@ EOT;
     public function testLoadTop5ArticlesSelect10()
     {
         $this->setTime(100);
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
@@ -1415,7 +1415,7 @@ EOT;
     {
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxvendorid = 'testVendor'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
@@ -1439,7 +1439,7 @@ EOT;
     {
         $this->setTime(100);
 
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxmanufacturerid = 'testManufacturer'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
@@ -1610,7 +1610,7 @@ EOT;
      */
     public function testLoadIds()
     {
-        $sArticleTable = $this->_getArticleTable();
+        $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
 
@@ -2036,7 +2036,7 @@ EOT;
      *
      * @return int
      */
-    protected function _insertTestProducts()
+    protected function insertTestProducts()
     {
         $iTime = time();
 
@@ -2165,7 +2165,7 @@ EOT;
      */
     public function testupdateUpcomingPricesDb()
     {
-        $iTime = $this->_insertTestProducts();
+        $iTime = $this->insertTestProducts();
 
         $this->setConfigParam("blUseCron", false);
         $this->setConfigParam("iTimeToUpdatePrices", false);
@@ -2212,7 +2212,7 @@ EOT;
      */
     public function testupdateUpcomingPricesCron()
     {
-        $iTime = $this->_insertTestProducts();
+        $iTime = $this->insertTestProducts();
 
         $this->setConfigParam("blUseCron", false);
         $this->setConfigParam("iTimeToUpdatePrices", null);

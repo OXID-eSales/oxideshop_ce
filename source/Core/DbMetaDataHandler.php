@@ -215,7 +215,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCreateTableSetSql($table, $lang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCreateTableSetSql($table, $lang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableSet = getLangTableName($table, $lang);
 
@@ -640,7 +640,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         $tableSet = getLangTableName($table, $languageId);
         if (!$this->tableExists($tableSet)) {
-            $sql[] = $this->_getCreateTableSetSql($table, $languageId);
+            $sql[] = $this->getCreateTableSetSql($table, $languageId);
         }
 
         if (is_array($fields) && count($fields) > 0) {

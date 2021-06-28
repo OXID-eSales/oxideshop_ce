@@ -23,9 +23,9 @@ class LoginTest extends UserTestCase
      */
     public function testRehashingPasswordWorksOnLoginWithOldPassword()
     {
-        $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
+        $oUser = $this->createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
 
-        $result = $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+        $result = $this->login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
 
         $this->assertSame('payment', $result);
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
@@ -44,8 +44,8 @@ class LoginTest extends UserTestCase
         $salt = '';
         $passwordHash = $this->get(PasswordServiceBridgeInterface::class)->hash($this->_sDefaultUserPassword, 'PASSWORD_BCRYPT');
 
-        $oUser = $this->_createUser($this->_sDefaultUserName, $passwordHash, $salt);
-        $this->_login();
+        $oUser = $this->createUser($this->_sDefaultUserName, $passwordHash, $salt);
+        $this->login();
 
         $oUser->load($oUser->getId());
 
@@ -75,9 +75,9 @@ class LoginTest extends UserTestCase
      */
     public function testNotSuccessfulLogin($sUserName, $sEncodedPassword, $sSalt)
     {
-        $oUser = $this->_createUser($sUserName, $sEncodedPassword, $sSalt);
+        $oUser = $this->createUser($sUserName, $sEncodedPassword, $sSalt);
         $sPasswordWrong = 'wrong_password';
-        $this->_login($sUserName, $sPasswordWrong);
+        $this->login($sUserName, $sPasswordWrong);
 
         $oUser->load($oUser->getId());
 
@@ -93,7 +93,7 @@ class LoginTest extends UserTestCase
      *
      * @return oxUser
      */
-    private function _createUser($sUserName, $sEncodedPassword, $sSalt)
+    private function createUser($sUserName, $sEncodedPassword, $sSalt)
     {
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);

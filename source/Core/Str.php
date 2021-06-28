@@ -41,7 +41,7 @@ class Str
     {
         if (!isset(self::$_oHandler)) {
             //let's init now non-static instance of oxStr to get the instance of str handler
-            self::$_oHandler = oxNew(\OxidEsales\Eshop\Core\Str::class)->_getStrHandler();
+            self::$_oHandler = oxNew(\OxidEsales\Eshop\Core\Str::class)->getStrHandler();
         }
 
         return self::$_oHandler;
@@ -54,7 +54,7 @@ class Str
      *
      * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      */
-    protected function _getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (function_exists('mb_strlen')) {
             return oxNew(\OxidEsales\Eshop\Core\StrMb::class);

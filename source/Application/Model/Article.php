@@ -493,7 +493,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->$sName = parent::__get($sName);
         if ($this->$sName) {
             // since the field could have been loaded via lazy loading
-            $this->_assignParentFieldValue($sName);
+            $this->assignParentFieldValue($sName);
         }
 
         return $this->$sName;
@@ -523,7 +523,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function isInList()
     {
-        return $this->_isInList();
+        return $this->isInList();
     }
 
     /**
@@ -674,7 +674,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getSqlActiveSnippet($blForceCoreTable = null)
     {
-        return "( {$this->_createSqlActiveSnippet($blForceCoreTable)} ) ";
+        return "( {$this->createSqlActiveSnippet($blForceCoreTable)} ) ";
     }
 
     /**
@@ -695,7 +695,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _createSqlActiveSnippet($forceCoreTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createSqlActiveSnippet($forceCoreTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if article is still active
         $sQ = $this->getActiveCheckQuery($forceCoreTable);
@@ -849,7 +849,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if ($this->_fPricePerUnit == null) {
             if ($oPrice = $this->getUnitPrice()) {
-                if ($dPrice = $this->_getPriceForView($oPrice)) {
+                if ($dPrice = $this->getPriceForView($oPrice)) {
                     $this->_fPricePerUnit = Registry::getLang()->formatCurrency($dPrice);
                 }
             }
@@ -890,7 +890,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sPrice = '';
         if ($oPrice = $this->getMinPrice()) {
-            $dPrice = $this->_getPriceForView($oPrice);
+            $dPrice = $this->getPriceForView($oPrice);
             $sPrice = Registry::getLang()->formatCurrency($dPrice);
         }
 
@@ -908,7 +908,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sPrice = '';
         if ($oPrice = $this->getVarMinPrice()) {
-            $dPrice = $this->_getPriceForView($oPrice);
+            $dPrice = $this->getPriceForView($oPrice);
             $sPrice = Registry::getLang()->formatCurrency($dPrice);
         }
 
@@ -927,12 +927,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $oPrice = null;
-        $dPrice = $this->_calculateVarMinPrice();
+        $dPrice = $this->calculateVarMinPrice();
 
-        $oPrice = $this->_getPriceObject();
+        $oPrice = $this->getPriceObject();
         $oPrice->setPrice($dPrice);
 
-        $this->_calculatePrice($oPrice);
+        $this->calculatePrice($oPrice);
 
         return $oPrice;
     }
@@ -942,11 +942,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _calculateVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calculateVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dPrice = $this->getVarMinRawPrice();
 
-        return $this->_preparePrice($dPrice, $this->getArticleVat());
+        return $this->preparePrice($dPrice, $this->getArticleVat());
     }
 
     /**
@@ -966,11 +966,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $dPrice = $this->getVarMinRawPrice();
         }
 
-        $dPrice = $this->_prepareModifiedPrice($dPrice);
+        $dPrice = $this->prepareModifiedPrice($dPrice);
 
-        $oPrice = $this->_getPriceObject();
+        $oPrice = $this->getPriceObject();
         $oPrice->setPrice($dPrice);
-        $this->_calculatePrice($oPrice);
+        $this->calculatePrice($oPrice);
 
         return $oPrice;
     }
@@ -980,9 +980,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _prepareModifiedPrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareModifiedPrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
+        $dPrice = $this->preparePrice($dPrice, $this->getArticleVat());
 
         return $dPrice;
     }
@@ -1090,17 +1090,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return;
         }
 
-        $this->_assignParentFieldValues();
-        $this->_assignNotBuyableParent();
+        $this->assignParentFieldValues();
+        $this->assignNotBuyableParent();
 
         // assign only for a first load time
         if (!$this->isLoaded()) {
-            $this->_setShopValues($this);
+            $this->setShopValues($this);
         }
 
-        $this->_assignStock();
-        $this->_assignDynImageDir();
-        $this->_assignComparisonListFlag();
+        $this->assignStock();
+        $this->assignDynImageDir();
+        $this->assignComparisonListFlag();
 
         stopProfile('articleAssign');
     }
@@ -1108,7 +1108,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
-    protected function _setShopValues($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setShopValues($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -1127,12 +1127,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // A. #1325 resetting to avoid problems when reloading (details etc)
         $this->_blNotBuyableParent = false;
 
-        $aData = $this->_loadData($sOXID);
+        $aData = $this->loadData($sOXID);
 
         if ($aData) {
             $this->assign($aData);
 
-            $this->_saveSortingFieldValuesOnLoad();
+            $this->saveSortingFieldValuesOnLoad();
 
             $this->_iStockStatusOnLoad = $this->_iStockStatus;
 
@@ -1151,9 +1151,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _loadData($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadData($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_loadFromDb($articleId);
+        return $this->loadFromDb($articleId);
     }
 
     /**
@@ -1354,13 +1354,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sAttribs = '';
         $iCnt = 0;
-        $this->_getAttribsString($sAttribs, $iCnt);
+        $this->getAttribsString($sAttribs, $iCnt);
 
         if (!$sAttribs) {
             return null;
         }
 
-        $aList = $this->_getSimList($sAttribs, $iCnt);
+        $aList = $this->getSimList($sAttribs, $iCnt);
 
         if (count($aList)) {
             uasort($aList, function ($a, $b) {
@@ -1370,7 +1370,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 return ($a->cnt < $b->cnt) ? -1 : 1;
             });
 
-            $sSearch = $this->_generateSimListSearchStr($sArticleTable, $aList);
+            $sSearch = $this->generateSimListSearchStr($sArticleTable, $aList);
 
             $oSimilarlist = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oSimilarlist->setSqlLimit(0, $myConfig->getConfigParam('iNrofSimilarArticles'));
@@ -1394,7 +1394,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // selecting products that fits
-        $sQ = $this->_generateSearchStrForCustomerBought();
+        $sQ = $this->generateSearchStrForCustomerBought();
 
         $oArticles = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArticles->setSqlLimit(0, $myConfig->getConfigParam('iNrofCustomerWhoArticles'));
@@ -1420,7 +1420,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($this->_oAmountPriceInfo === null) {
             $this->_oAmountPriceInfo = [];
             if (count(($aAmPriceList = $this->buildAmountPriceList()->getArray()))) {
-                $this->_oAmountPriceInfo = $this->_fillAmountPriceList($aAmPriceList);
+                $this->_oAmountPriceInfo = $this->fillAmountPriceList($aAmPriceList);
             }
         }
 
@@ -1622,7 +1622,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getFullVariants($blRemoveNotOrderables = true, $blForceCoreTable = null)
     {
-        return $this->_loadVariantList(false, $blRemoveNotOrderables, $blForceCoreTable);
+        return $this->loadVariantList(false, $blRemoveNotOrderables, $blForceCoreTable);
     }
 
     /**
@@ -1636,7 +1636,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getVariants($blRemoveNotOrderables = true, $blForceCoreTable = null)
     {
-        return $this->_loadVariantList($this->_isInList(), $blRemoveNotOrderables, $blForceCoreTable);
+        return $this->loadVariantList($this->isInList(), $blRemoveNotOrderables, $blForceCoreTable);
     }
 
     /**
@@ -1710,7 +1710,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 startProfile('getCategory');
                 $oStr = Str::getStr();
                 $sWhere = $oCategory->getSqlActiveSnippet();
-                $sSelect = $this->_generateSearchStr($sOXID);
+                $sSelect = $this->generateSearchStr($sOXID);
                 $sSelect .= ($oStr->strstr(
                     $sSelect,
                     'where'
@@ -1718,7 +1718,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
                 // category not found ?
                 if (!$oCategory->assignRecord($sSelect)) {
-                    $sSelect = $this->_generateSearchStr($sOXID, true);
+                    $sSelect = $this->generateSearchStr($sOXID, true);
                     $sSelect .= ($oStr->strstr($sSelect, 'where') ? ' and ' : ' where ') . $sWhere . " limit 1";
 
                     // looking for price category
@@ -1751,11 +1751,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sArticleId = $this->getId();
 
         if (!isset(self::$_aArticleCats[$sArticleId]) || $blSkipCache) {
-            $sSql = $this->_getCategoryIdsSelect($blActCats);
-            $aCategoryIds = $this->_selectCategoryIds($sSql, 'oxcatnid');
+            $sSql = $this->getCategoryIdsSelect($blActCats);
+            $aCategoryIds = $this->selectCategoryIds($sSql, 'oxcatnid');
 
             $sSql = $this->getSqlForPriceCategories();
-            $aPriceCategoryIds = $this->_selectCategoryIds($sSql, 'oxid');
+            $aPriceCategoryIds = $this->selectCategoryIds($sSql, 'oxid');
 
             self::$_aArticleCats[$sArticleId] = array_unique(array_merge($aCategoryIds, $aPriceCategoryIds));
         }
@@ -1778,7 +1778,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sVendorId) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         } elseif (!$blShopCheck && $this->oxarticles__oxvendorid->value) {
-            $oVendor = $this->_createMultilanguageVendorObject();
+            $oVendor = $this->createMultilanguageVendorObject();
             $sVendorId = $this->oxarticles__oxvendorid->value;
         }
         if ($sVendorId && $oVendor && $oVendor->load($sVendorId) && $oVendor->oxvendor__oxactive->value) {
@@ -1791,7 +1791,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * @return \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
-    protected function _createMultilanguageVendorObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createMultilanguageVendorObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oVendor = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
         $oVendor->init('oxvendor');
@@ -1886,7 +1886,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sSelect = $this->_generateSelectCatStr($sOXID, $sCatId);
+        $sSelect = $this->generateSelectCatStr($sOXID, $sCatId);
         $sOXID = $oDb->getOne($sSelect);
         // article is assigned to passed category!
         if (isset($sOXID) && $sOXID) {
@@ -1897,7 +1897,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (Registry::getConfig()->getConfigParam('bl_perfLoadPrice') && $this->_blLoadPrice) {
             $dPriceFromTo = $this->getPrice()->getBruttoPrice();
             if ($dPriceFromTo > 0) {
-                $sSelect = $this->_generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo);
+                $sSelect = $this->generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo);
                 $sOXID = $oDb->getOne($sSelect);
                 // article is assigned to passed category!
                 if (isset($sOXID) && $sOXID) {
@@ -1925,15 +1925,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return $this->_oTPrice;
         }
 
-        $oPrice = $this->_getPriceObject();
+        $oPrice = $this->getPriceObject();
 
         $dBasePrice = $this->oxarticles__oxtprice->value;
-        $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
+        $dBasePrice = $this->preparePrice($dBasePrice, $this->getArticleVat());
 
         $oPrice->setPrice($dBasePrice);
 
-        $this->_applyVat($oPrice, $this->getArticleVat());
-        $this->_applyCurrency($oPrice);
+        $this->applyVAT($oPrice, $this->getArticleVat());
+        $this->applyCurrency($oPrice);
 
         if ($this->isParentNotBuyable()) {
             // if parent article is not buyable then compare agains min article variant price
@@ -2022,7 +2022,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // GroupPrice or DB price ajusted by AmountPrice
-        $dPrice = $this->_getModifiedAmountPrice($dAmount);
+        $dPrice = $this->getModifiedAmountPrice($dAmount);
 
         return $dPrice;
     }
@@ -2034,9 +2034,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _getModifiedAmountPrice($amount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModifiedAmountPrice($amount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_getAmountPrice($amount);
+        return $this->getAmountPrice($amount);
     }
 
     /**
@@ -2058,9 +2058,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($dAmount != 1 || $this->_oPrice === null) {
             // module
             $dBasePrice = $this->getBasePrice($dAmount);
-            $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
+            $dBasePrice = $this->preparePrice($dBasePrice, $this->getArticleVat());
 
-            $oPrice = $this->_getPriceObject();
+            $oPrice = $this->getPriceObject();
 
             $oPrice->setPrice($dBasePrice);
 
@@ -2069,7 +2069,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 return $this->_oPrice = $oPrice;
             }
 
-            $this->_calculatePrice($oPrice);
+            $this->calculatePrice($oPrice);
             if ($dAmount != 1) {
                 return $oPrice;
             }
@@ -2116,13 +2116,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $oUser = $oBasket->getBasketUser();
         $this->setArticleUser($oUser);
 
-        $oBasketPrice = $this->_getPriceObject($oBasket->isCalculationModeNetto());
+        $oBasketPrice = $this->getPriceObject($oBasket->isCalculationModeNetto());
 
         // get base price
         $dBasePrice = $this->getBasePrice($dAmount);
 
-        $dBasePrice = $this->_modifySelectListPrice($dBasePrice, $aSelList);
-        $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat(), $oBasket->isCalculationModeNetto());
+        $dBasePrice = $this->modifySelectListPrice($dBasePrice, $aSelList);
+        $dBasePrice = $this->preparePrice($dBasePrice, $this->getArticleVat(), $oBasket->isCalculationModeNetto());
 
         // applying select list price
 
@@ -2130,7 +2130,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $oBasketPrice->setPrice($dBasePrice);
 
         $dVat = Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class)->getBasketItemVat($this, $oBasket);
-        $this->_calculatePrice($oBasketPrice, $dVat);
+        $this->calculatePrice($oBasketPrice, $dVat);
 
         // returning final price object
         return $oBasketPrice;
@@ -2159,15 +2159,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $database->startTransaction();
         try {
             // #2339 delete first variants before deleting parent product
-            $this->_deleteVariantRecords($sOXID);
+            $this->deleteVariantRecords($sOXID);
             $this->load($sOXID);
-            $this->_deletePics();
-            $this->_onChangeResetCounts($sOXID, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
+            $this->deletePics();
+            $this->onChangeResetCounts($sOXID, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value);
 
             // delete self
             $deleted = parent::delete($sOXID);
 
-            $this->_deleteRecords($sOXID);
+            $this->deleteRecords($sOXID);
 
             Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->onDeleteArticle($this);
 
@@ -2280,10 +2280,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function save()
     {
-        $this->_assignParentDependFields();
+        $this->assignParentDependFields();
         $blRet = parent::save();
         // saving long description
-        $this->_saveArtLongDesc();
+        $this->saveArtLongDesc();
 
         return $blRet;
     }
@@ -2434,25 +2434,25 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
             //if we have parent id then update stock
             if ($parentArticleId) {
-                $this->_onChangeUpdateStock($parentArticleId);
+                $this->onChangeUpdateStock($parentArticleId);
             }
         }
         //if we have parent id then update count
         //update count even if blUseStock is not active
         if ($parentArticleId) {
-            $this->_onChangeUpdateVarCount($parentArticleId);
+            $this->onChangeUpdateVarCount($parentArticleId);
         }
 
         $sId = ($parentArticleId) ? $parentArticleId : $articleId;
-        $this->_setVarMinMaxPrice($sId);
+        $this->setVarMinMaxPrice($sId);
 
-        $this->_updateParentDependFields();
+        $this->updateParentDependFields();
 
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
         if ($action === ACTION_UPDATE_STOCK) {
-            $this->_assignStock();
-            $this->_onChangeStockResetCount($articleId);
+            $this->assignStock();
+            $this->onChangeStockResetCount($articleId);
         }
 
         $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent($this));
@@ -2980,7 +2980,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         // module
         if ($oPrice = $this->getTPrice()) {
-            if ($dPrice = $this->_getPriceForView($oPrice)) {
+            if ($dPrice = $this->getPriceForView($oPrice)) {
                 return Registry::getLang()->formatCurrency($dPrice);
             }
         }
@@ -2996,7 +2996,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getFPrice()
     {
         if ($oPrice = $this->getPrice()) {
-            $dPrice = $this->_getPriceForView($oPrice);
+            $dPrice = $this->getPriceForView($oPrice);
 
             return Registry::getLang()->formatCurrency($dPrice);
         }
@@ -3081,7 +3081,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if ($iIndex) {
             $sImgName = false;
-            if (!$this->_isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
+            if (!$this->isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
                 $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
             }
 
@@ -3104,13 +3104,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sImgName = false;
         $sDirname = "product/1/";
-        if ($iIndex && !$this->_isFieldEmpty("oxarticles__oxpic{$iIndex}")) {
+        if ($iIndex && !$this->isFieldEmpty("oxarticles__oxpic{$iIndex}")) {
             $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
             $sDirname = "product/{$iIndex}/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxicon")) {
+        } elseif (!$this->isFieldEmpty("oxarticles__oxicon")) {
             $sImgName = basename($this->oxarticles__oxicon->value);
             $sDirname = "product/icon/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxpic1")) {
+        } elseif (!$this->isFieldEmpty("oxarticles__oxpic1")) {
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
@@ -3132,10 +3132,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sImgName = false;
         $sDirname = "product/1/";
-        if (!$this->_isFieldEmpty("oxarticles__oxthumb")) {
+        if (!$this->isFieldEmpty("oxarticles__oxthumb")) {
             $sImgName = basename($this->oxarticles__oxthumb->value);
             $sDirname = "product/thumb/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxpic1")) {
+        } elseif (!$this->isFieldEmpty("oxarticles__oxpic1")) {
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
@@ -3154,7 +3154,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getZoomPictureUrl($iIndex = '')
     {
         $iIndex = (int) $iIndex;
-        if ($iIndex > 0 && !$this->_isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
+        if ($iIndex > 0 && !$this->isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
             $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
             $sSize = Registry::getConfig()->getConfigParam("sZoomImageSize");
 
@@ -3174,7 +3174,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function applyVats(\OxidEsales\Eshop\Core\Price $oPrice)
     {
-        $this->_applyVAT($oPrice, $this->getArticleVat());
+        $this->applyVAT($oPrice, $this->getArticleVat());
     }
 
     /**
@@ -3227,7 +3227,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function updateVariantsRemind()
     {
         // check if it is parent article
-        if (!$this->isVariant() && $this->_hasAnyVariant()) {
+        if (!$this->isVariant() && $this->hasAnyVariant()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sUpdate = "update oxarticles
                         set oxremindactive = :oxremindactive
@@ -3311,7 +3311,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (!$sFields) {
             $sFields = 'oxid';
         }
-        $sSelectWhere = "select $sFields from " . $this->_getObjectViewName('oxcategories') . " where";
+        $sSelectWhere = "select $sFields from " . $this->getObjectViewName('oxcategories') . " where";
         $sQuotedPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->oxarticles__oxprice->value);
 
         return "$sSelectWhere oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice"
@@ -3363,7 +3363,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $quotedPrice = $database->quote($this->oxarticles__oxprice->value);
         $quotedCategoryId = $database->quote($categoryPriceId);
 
-        $query = "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$quotedCategoryId and"
+        $query = "select 1 from " . $this->getObjectViewName('oxcategories') . " where oxid=$quotedCategoryId and"
                  . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $quotedPrice and oxpriceto >= $quotedPrice)"
                  . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $quotedPrice)"
                  . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $quotedPrice)"
@@ -3548,7 +3548,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array|\OxidEsales\Eshop\Application\Model\SimpleVariantList|\OxidEsales\Eshop\Application\Model\ArticleList
      */
-    protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $variants = [];
         if (($articleId = $this->getId())) {
@@ -3579,7 +3579,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $this->_aVariantsWithNotOrderables[$cacheKey] = &$variants;
             }
 
-            if (($this->_blHasVariants = $this->_hasAnyVariant($forceCoreTableUsage))) {
+            if (($this->_blHasVariants = $this->hasAnyVariant($forceCoreTableUsage))) {
                 //load simple variants for lists
                 if ($loadSimpleVariants) {
                     $variants = oxNew(\OxidEsales\Eshop\Application\Model\SimpleVariantList::class);
@@ -3631,7 +3631,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _selectCategoryIds($query, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function selectCategoryIds($query, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aResult = $oDb->getAll($query);
@@ -3653,16 +3653,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _getCategoryIdsSelect($blActCats = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryIdsSelect($blActCats = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sO2CView = $this->_getObjectViewName('oxobject2category');
-        $sCatView = $this->_getObjectViewName('oxcategories');
+        $sO2CView = $this->getObjectViewName('oxobject2category');
+        $sCatView = $this->getObjectViewName('oxcategories');
 
         $sArticleIdSql = 'oxobject2category.oxobjectid=' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getId());
         if ($this->getParentId()) {
             $sArticleIdSql = '(' . $sArticleIdSql . ' or oxobject2category.oxobjectid=' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getParentId()) . ')';
         }
-        $sActiveCategorySql = $blActCats ? $this->_getActiveCategorySelectSnippet() : '';
+        $sActiveCategorySql = $blActCats ? $this->getActiveCategorySelectSnippet() : '';
 
         $sSelect = "select
                         oxobject2category.oxcatnid as oxcatnid
@@ -3679,9 +3679,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _getActiveCategorySelectSnippet() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveCategorySelectSnippet() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sCatView = $this->_getObjectViewName('oxcategories');
+        $sCatView = $this->getObjectViewName('oxcategories');
 
         return "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
     }
@@ -3694,15 +3694,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _calculatePrice($oPrice, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calculatePrice($oPrice, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // apply VAT only if configuration requires it
         if (isset($dVat) || !Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
-            $this->_applyVAT($oPrice, isset($dVat) ? $dVat : $this->getArticleVat());
+            $this->applyVAT($oPrice, isset($dVat) ? $dVat : $this->getArticleVat());
         }
 
         // apply currency
-        $this->_applyCurrency($oPrice);
+        $this->applyCurrency($oPrice);
         // apply discounts
         if (!$this->skipDiscounts()) {
             $oDiscountList = Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class);
@@ -3725,7 +3725,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _hasAnyVariant($blForceCoreTable = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasAnyVariant($blForceCoreTable = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($sId = $this->getId())) {
             if ($this->oxarticles__oxshopid->value == Registry::getConfig()->getShopId()) {
@@ -3747,7 +3747,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _isStockStatusChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isStockStatusChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_iStockStatus != $this->_iStockStatusOnLoad;
     }
@@ -3757,9 +3757,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _isVisibilityChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isVisibilityChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
+        return $this->isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
     }
 
     /**
@@ -3767,7 +3767,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _saveArtLongDesc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveArtLongDesc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (in_array("oxlongdesc", $this->_aSkipSaveFields)) {
             return;
@@ -3789,14 +3789,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oArtExt = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
             $oArtExt->setEnableMultilang(false);
             $oArtExt->init('oxartextends');
-            $aObjFields = $oArtExt->_getAllFields(true);
+            $aObjFields = $oArtExt->getAllFields(true);
             if (!$oArtExt->load($this->getId())) {
                 $oArtExt->setId($this->getId());
             }
 
             foreach ($aObjFields as $sKey => $sValue) {
                 if (preg_match('/^oxlongdesc(_(\d{1,2}))?$/', $sKey)) {
-                    $sField = $this->_getFieldLongName($sKey);
+                    $sField = $this->getFieldLongName($sKey);
 
                     if (isset($this->$sField)) {
                         $sLongDesc = null;
@@ -3806,7 +3806,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                             $sLongDesc = $this->$sField->value;
                         }
                         if (isset($sLongDesc)) {
-                            $sAEField = $oArtExt->_getFieldLongName($sKey);
+                            $sAEField = $oArtExt->getFieldLongName($sKey);
                             $oArtExt->$sAEField = new \OxidEsales\Eshop\Core\Field($sLongDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
                         }
                     }
@@ -3819,14 +3819,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Removes object data fields (oxarticles__oxtimestamp, oxarticles__oxparentid, oxarticles__oxinsert).
      */
-    protected function _skipSaveFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function skipSaveFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSkipSaveFields = [];
 
         $this->_aSkipSaveFields[] = 'oxtimestamp';
         // $this->_aSkipSaveFields[] = 'oxlongdesc';
         $this->_aSkipSaveFields[] = 'oxinsert';
-        $this->_addSkippedSaveFieldsForMapping();
+        $this->addSkippedSaveFieldsForMapping();
 
         if (!$this->_blAllowEmptyParentId && (!isset($this->oxarticles__oxparentid->value) || $this->oxarticles__oxparentid->value == '')) {
             $this->_aSkipSaveFields[] = 'oxparentid';
@@ -3842,7 +3842,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array $aDiscounts
      */
-    protected function _mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aItemDiscounts as $sKey => $oDiscount) {
             // add prices of the same discounts
@@ -3861,9 +3861,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sPriceSufix = $this->_getUserPriceSufix();
+        $sPriceSufix = $this->getUserPriceSufix();
         $sVarName = "oxarticles__oxprice{$sPriceSufix}";
         $dPrice = $this->$sVarName->value;
 
@@ -3883,11 +3883,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _getAmountPrice($amount = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAmountPrice($amount = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile("_getAmountPrice");
 
-        $dPrice = $this->_getGroupPrice();
+        $dPrice = $this->getGroupPrice();
         $oAmtPrices = $this->buildAmountPriceList();
         foreach ($oAmtPrices as $oAmPrice) {
             if (
@@ -3912,7 +3912,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _modifySelectListPrice($dPrice, $aChosenList = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function modifySelectListPrice($dPrice, $aChosenList = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         // #690
@@ -3941,24 +3941,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _fillAmountPriceList($aAmPriceList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function fillAmountPriceList($aAmPriceList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oLang = Registry::getLang();
 
         // trying to find lowest price value
         foreach ($aAmPriceList as $sId => $oItem) {
             /** @var \OxidEsales\Eshop\Core\Price $oItemPrice */
-            $oItemPrice = $this->_getPriceObject();
+            $oItemPrice = $this->getPriceObject();
             if ($oItem->oxprice2article__oxaddabs->value) {
                 $dBasePrice = $oItem->oxprice2article__oxaddabs->value;
-                $dBasePrice = $this->_prepareModifiedPrice($dBasePrice);
+                $dBasePrice = $this->prepareModifiedPrice($dBasePrice);
 
                 $oItemPrice->setPrice($dBasePrice);
-                $this->_calculatePrice($oItemPrice);
+                $this->calculatePrice($oItemPrice);
             } else {
-                $dBasePrice = $this->_getGroupPrice();
+                $dBasePrice = $this->getGroupPrice();
 
-                $dBasePrice = $this->_prepareModifiedPrice($dBasePrice);
+                $dBasePrice = $this->prepareModifiedPrice($dBasePrice);
 
                 $oItemPrice->setPrice($dBasePrice);
                 $oItemPrice->subtractPercent($oItem->oxprice2article__oxaddperc->value);
@@ -4029,7 +4029,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param double                       $dVat   VAT percent
      */
-    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
@@ -4047,7 +4047,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
      */
-    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$oCur) {
             $oCur = Registry::getConfig()->getActShopCurrencyObject();
@@ -4062,7 +4062,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sAttributeSql Attribute selection snippet
      * @param int    $iCnt          The number of selected attributes
      */
-    protected function _getAttribsString(&$sAttributeSql, &$iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAttribsString(&$sAttributeSql, &$iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // we do not use lists here as we don't need this overhead right now
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4091,7 +4091,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _getSimList($sAttributeSql, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSimList($sAttributeSql, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #523A
         $iAttrPercent = Registry::getConfig()->getConfigParam('iAttributesPercent') / 100;
@@ -4127,7 +4127,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _generateSimListSearchStr($sArticleTable, $aList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateSimListSearchStr($sArticleTable, $aList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFieldList = $this->getSelectFields();
         $aList = array_slice($aList, 0, Registry::getConfig()->getConfigParam('iNrofSimilarArticles'));
@@ -4150,7 +4150,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _generateSearchStr($sOXID, $blSearchPriceCat = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateSearchStr($sOXID, $blSearchPriceCat = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sCatView = $tableViewNameGenerator->getViewName('oxcategories', $this->getLanguage());
@@ -4172,7 +4172,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _generateSearchStrForCustomerBought() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateSearchStrForCustomerBought() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->getViewName();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -4236,7 +4236,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    protected function _generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sCategoryView = $tableViewNameGenerator->getViewName('oxcategories');
@@ -4278,7 +4278,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $oAmPriceList->load($this);
 
                 // prepare abs prices if currently having percentages
-                $oBasePrice = $this->_getGroupPrice();
+                $oBasePrice = $this->getGroupPrice();
                 foreach ($oAmPriceList as $oAmPrice) {
                     if ($oAmPrice->oxprice2article__oxaddperc->value) {
                         $oAmPrice->oxprice2article__oxaddabs = new \OxidEsales\Eshop\Core\Field(
@@ -4302,7 +4302,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _isFieldEmpty($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isFieldEmpty($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $mValue = $this->$sFieldName->value;
 
@@ -4357,13 +4357,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _assignParentFieldValue($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignParentFieldValue($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!($oParentArticle = $this->getParentArticle())) {
             return;
         }
 
-        $sCopyFieldName = $this->_getFieldLongName($sFieldName);
+        $sCopyFieldName = $this->getFieldLongName($sFieldName);
 
         // assigning only these which parent article has
         if ($oParentArticle->$sCopyFieldName != null) {
@@ -4378,12 +4378,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
 
             //skip picture parent value assignment in case master image is set for variant
-            if ($this->_isFieldEmpty($sCopyFieldName) && $this->_isImageField($sCopyFieldName) && $this->_hasMasterImage(1)) {
+            if ($this->isFieldEmpty($sCopyFieldName) && $this->isImageField($sCopyFieldName) && $this->hasMasterImage(1)) {
                 return;
             }
 
             //COPY THE VALUE
-            if ($this->_isFieldEmpty($sCopyFieldName)) {
+            if ($this->isFieldEmpty($sCopyFieldName)) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }
         }
@@ -4396,7 +4396,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _isImageField($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isImageField($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
             $sFieldName,
@@ -4407,14 +4407,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Assigns parent field values to article
      */
-    protected function _assignParentFieldValues() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignParentFieldValues() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile('articleAssignParentInternal');
         if ($this->oxarticles__oxparentid->value) {
             // yes, we are in fact a variant
             if (!$this->isAdmin() || ($this->_blLoadParentData && $this->isAdmin())) {
                 foreach ($this->_aFieldNames as $sFieldName => $sVal) {
-                    $this->_assignParentFieldValue($sFieldName);
+                    $this->assignParentFieldValue($sFieldName);
                 }
             }
         }
@@ -4424,7 +4424,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * if we have variants then depending on config option the parent may be non buyable
      */
-    protected function _assignNotBuyableParent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignNotBuyableParent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
@@ -4437,7 +4437,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Assigns stock status to article
      */
-    protected function _assignStock() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignStock() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         // -----------------------------------
@@ -4511,7 +4511,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * assigns dynimagedir to article
      */
-    protected function _assignDynImageDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignDynImageDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
 
@@ -4526,7 +4526,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Adds a flag if article is on comparisonlist.
      */
-    protected function _assignComparisonListFlag() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignComparisonListFlag() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #657 add a flag if article is on comparisonlist
 
@@ -4543,7 +4543,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set oxinsert
         $sNow = date('Y-m-d H:i:s', Registry::getUtilsDate()->getTime());
@@ -4552,7 +4552,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->oxarticles__oxsubclass = new \OxidEsales\Eshop\Core\Field('oxarticle');
         }
 
-        return parent::_insert();
+        return parent::insert();
     }
 
     /**
@@ -4560,14 +4560,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setUpdateSeo(true);
-        $this->_setUpdateSeoOnFieldChange('oxtitle');
+        $this->setUpdateSeoOnFieldChange('oxtitle');
 
-        $this->_skipSaveFields();
+        $this->skipSaveFields();
 
-        return parent::_update();
+        return parent::update();
     }
 
     /**
@@ -4577,7 +4577,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return int
      */
-    protected function _deleteRecords($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteRecords($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -4634,7 +4634,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         ]);
 
         //delete the record
-        foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {
+        foreach ($this->getLanguageSetTables("oxartextends") as $sSetTbl) {
             $oDb->execute("delete from $sSetTbl where oxid = :articleId", [
                 ':articleId' => $articleId
             ]);
@@ -4657,7 +4657,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sOXID Article ID
      */
-    protected function _deleteVariantRecords($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteVariantRecords($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sOXID) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4680,7 +4680,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Delete pics
      */
-    protected function _deletePics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deletePics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         $oPictureHandler = Registry::getPictureHandler();
@@ -4705,7 +4705,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sVendorId       Vendor ID
      * @param string $sManufacturerId Manufacturer ID
      */
-    protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsCount = Registry::getUtilsCount();
 
@@ -4729,7 +4729,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $parentId product parent id
      */
-    protected function _onChangeUpdateStock($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function onChangeUpdateStock($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4766,7 +4766,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if ($this->oxarticles__oxstockflag->value == 2 && $oldStock xor $stock) {
                 //means the stock status could be changed (oxstock turns from 0 to 1 or from 1 to 0)
                 // so far we leave it like this but later we could move all count resets to one or two functions
-                $this->_onChangeResetCounts($parentId, $vendorId, $manufacturerId);
+                $this->onChangeResetCounts($parentId, $vendorId, $manufacturerId);
             }
         }
     }
@@ -4776,7 +4776,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sOxid product id
      */
-    protected function _onChangeStockResetCount($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function onChangeStockResetCount($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
 
@@ -4784,7 +4784,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $myConfig->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2 &&
             ($this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value) <= 0
         ) {
-            $this->_onChangeResetCounts(
+            $this->onChangeResetCounts(
                 $sOxid,
                 $this->oxarticles__oxvendorid->value,
                 $this->oxarticles__oxmanufacturerid->value
@@ -4797,7 +4797,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $parentId Parent ID
      */
-    protected function _onChangeUpdateVarCount($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function onChangeUpdateVarCount($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4820,7 +4820,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sParentId Parent ID
      */
-    protected function _setVarMinMaxPrice($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setVarMinMaxPrice($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -4869,7 +4869,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _hasMasterImage($iIndex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasMasterImage($iIndex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
 
@@ -4899,7 +4899,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
@@ -4918,13 +4918,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _getPriceObject($blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceObject($blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Core\Price $oPrice */
         $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
         if ($blCalculationModeNetto === null) {
-            $blCalculationModeNetto = $this->_isPriceViewModeNetto();
+            $blCalculationModeNetto = $this->isPriceViewModeNetto();
         }
 
         if ($blCalculationModeNetto) {
@@ -4943,9 +4943,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _getPriceForView($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceForView($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_isPriceViewModeNetto()) {
+        if ($this->isPriceViewModeNetto()) {
             $dPrice = $oPrice->getNettoPrice();
         } else {
             $dPrice = $oPrice->getBruttoPrice();
@@ -4964,10 +4964,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
-    protected function _preparePrice($dPrice, $dVat, $blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function preparePrice($dPrice, $dVat, $blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($blCalculationModeNetto === null) {
-            $blCalculationModeNetto = $this->_isPriceViewModeNetto();
+            $blCalculationModeNetto = $this->isPriceViewModeNetto();
         }
 
         $oCurrency = Registry::getConfig()->getActShopCurrencyObject();
@@ -4988,7 +4988,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _getUserPriceSufix() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUserPriceSufix() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPriceSuffix = '';
         $oUser = $this->getArticleUser();
@@ -5070,13 +5070,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _getVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_dVarMaxPrice === null) {
-            $dPrice = $this->_getShopVarMaxPrice();
+            $dPrice = $this->getShopVarMaxPrice();
 
             if (is_null($dPrice)) {
-                $sPriceSuffix = $this->_getUserPriceSufix();
+                $sPriceSuffix = $this->getUserPriceSufix();
                 if ($sPriceSuffix === '') {
                     $dPrice = $this->oxarticles__oxvarmaxprice->value;
                 } else {
@@ -5109,7 +5109,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double|null
      */
-    protected function _getShopVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -5120,7 +5120,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double|null
      */
-    protected function _getShopVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -5132,7 +5132,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _loadFromDb($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = $this->buildSelectString([$this->getViewName() . ".oxid" => $articleId]);
 
@@ -5155,11 +5155,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return bool
      */
-    protected function _updateParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        foreach ($this->_getCopyParentFields() as $sField) {
+        foreach ($this->getCopyParentFields() as $sField) {
             $sValue = isset($this->$sField->value) ? $this->$sField->value : 0;
             $sSqlSets[] = '`' . str_replace('oxarticles__', '', $sField) . '` = ' . $oDb->quote($sValue);
         }
@@ -5176,7 +5176,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _getCopyParentFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCopyParentFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_aCopyParentField;
     }
@@ -5184,11 +5184,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Set parent field value to child - variants
      */
-    protected function _assignParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sParent = $this->getParentArticle();
         if ($sParent) {
-            foreach ($this->_getCopyParentFields() as $sField) {
+            foreach ($this->getCopyParentFields() as $sField) {
                 $this->$sField = new \OxidEsales\Eshop\Core\Field($sParent->$sField->value);
             }
         }
@@ -5197,13 +5197,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Saves values of sorting fields on article load.
      */
-    protected function _saveSortingFieldValuesOnLoad() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveSortingFieldValuesOnLoad() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSortingFields = Registry::getConfig()->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];
 
         foreach ($aSortingFields as $sField) {
-            $sFullField = $this->_getFieldLongName($sField);
+            $sFullField = $this->getFieldLongName($sField);
             $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
         }
     }

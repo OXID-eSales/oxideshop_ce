@@ -30,7 +30,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         $aViewData = $this->getViewData();
 
         //add all exceptions to display
-        $aErrors = $this->_getErrors();
+        $aErrors = $this->getErrors();
 
         if (is_array($aErrors) && count($aErrors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $aErrors);
@@ -47,7 +47,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
 

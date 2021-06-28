@@ -69,7 +69,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrofCatArticles * $this->iActPage, $iNrofCatArticles);
 
-        $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, $sSortBy);
+        $sSelect = $this->getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, $sSortBy);
         if ($sSelect) {
             $oArtList->selectString($sSelect);
         }
@@ -90,7 +90,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
     public function getSearchArticleCount($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false)
     {
         $iCnt = 0;
-        $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, false);
+        $sSelect = $this->getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, false);
         if ($sSelect) {
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -113,7 +113,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
             //no search string
@@ -181,7 +181,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
         $sWhere = null;
         if ($sSearchParamForQuery) {
-            $sWhere = $this->_getWhere($sSearchParamForQuery);
+            $sWhere = $this->getWhere($sSearchParamForQuery);
         }
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -241,7 +241,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

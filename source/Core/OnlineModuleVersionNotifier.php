@@ -52,8 +52,8 @@ class OnlineModuleVersionNotifier
             return;
         }
 
-        $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
-        $oOMNCaller->doRequest($this->_formRequest());
+        $oOMNCaller = $this->getOnlineModuleNotifierCaller();
+        $oOMNCaller->doRequest($this->formRequest());
     }
 
     /**
@@ -61,7 +61,7 @@ class OnlineModuleVersionNotifier
      *
      * @return null
      */
-    protected function _prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $preparedModules = [];
 
@@ -94,12 +94,12 @@ class OnlineModuleVersionNotifier
      *
      * @return \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
      */
-    protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRequestParams = new \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest();
 
         $oRequestParams->modules = new stdClass();
-        $oRequestParams->modules->module = $this->_prepareModulesInformation();
+        $oRequestParams->modules->module = $this->prepareModulesInformation();
 
         return $oRequestParams;
     }
@@ -109,7 +109,7 @@ class OnlineModuleVersionNotifier
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
      */
-    protected function _getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_oCaller;
     }

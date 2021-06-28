@@ -116,7 +116,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function assign($dbRecord)
     {
         parent::assign($dbRecord);
-        $this->_setArticleParams();
+        $this->setArticleParams();
     }
 
     /**
@@ -137,7 +137,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseStock')) {
             // get real article stock count
-            $iStockCount = $this->_getArtStock($dAddAmount, $blAllowNegativeStock);
+            $iStockCount = $this->getArtStock($dAddAmount, $blAllowNegativeStock);
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
@@ -160,7 +160,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return double
      */
-    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -222,7 +222,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFieldName = strtolower($sFieldName);
         switch ($sFieldName) {
@@ -236,7 +236,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
                 break;
         }
 
-        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+        return parent::setFieldData($sFieldName, $sValue, $iDataType);
     }
 
     /**
@@ -288,7 +288,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
      */
-    protected function _setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // creating needed fields
         $this->oxarticles__oxstock = $this->oxorderarticles__oxamount;
@@ -346,7 +346,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return \OxidEsales\Eshop\Application\Model\Article|false
      */
-    protected function _getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oOrderArticle === null) {
             $this->_oOrderArticle = false;
@@ -372,7 +372,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function getSelectLists($sKeyPrefix = null)
     {
         $aSelLists = [];
-        if ($oArticle = $this->_getOrderArticle()) {
+        if ($oArticle = $this->getOrderArticle()) {
             $aSelLists = $oArticle->getSelectLists();
         }
 
@@ -396,7 +396,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
             $aRet = [];
 
-            if ($oArticle = $this->_getOrderArticle($sArtId)) {
+            if ($oArticle = $this->getOrderArticle($sArtId)) {
                 $aList = explode(", ", $sOrderArtSelList);
                 $oStr = Str::getStr();
 
@@ -455,7 +455,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function getBasketPrice($dAmount, $aSelList, $oBasket)
     {
-        $oArticle = $this->_getOrderArticle();
+        $oArticle = $this->getOrderArticle();
 
         if ($oArticle) {
             return $oArticle->getBasketPrice($dAmount, $aSelList, $oBasket);
@@ -485,7 +485,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function getCategoryIds($blActCats = false, $blSkipCache = false)
     {
         $aCatIds = [];
-        if ($oOrderArticle = $this->_getOrderArticle()) {
+        if ($oOrderArticle = $this->getOrderArticle()) {
             $aCatIds = $oOrderArticle->getCategoryIds($blActCats, $blSkipCache);
         }
 
@@ -653,7 +653,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             }
 
             // seting downloadable products article files
-            $this->_setOrderFiles();
+            $this->setOrderFiles();
 
             // marking object as "non new" disable further stock changes
             $this->setIsNewOrderItem(false);
@@ -759,13 +759,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iInsertTime = time();
         $now = date('Y-m-d H:i:s', $iInsertTime);
         $this->oxorderarticles__oxtimestamp = new \OxidEsales\Eshop\Core\Field($now);
 
-        return parent::_insert();
+        return parent::insert();
     }
 
 
@@ -799,7 +799,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Set order files
      */
-    public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oArticle = $this->getArticle();
 

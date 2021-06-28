@@ -157,7 +157,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getMainIconName($sMasterImageFile)
     {
-        return $this->_getBaseMasterImageFileName($sMasterImageFile);
+        return $this->getBaseMasterImageFileName($sMasterImageFile);
     }
 
     /**
@@ -192,7 +192,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return basename($sMasterImageFile);
     }
@@ -236,7 +236,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // custom server as image storage?
         if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile, $blSSL)) {
@@ -309,7 +309,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     {
         $sUrl = null;
         if ($sPath && $sFile && ($aSize = $this->getImageSize($sSize, $sIndex))) {
-            $aPicInfo = $this->_getPictureInfo("master/" . ($sAltPath ? $sAltPath : $sPath), $sFile, $this->isAdmin(), $bSsl);
+            $aPicInfo = $this->getPictureInfo("master/" . ($sAltPath ? $sAltPath : $sPath), $sFile, $this->isAdmin(), $bSsl);
             if ($aPicInfo['url'] && $aSize[0] && $aSize[1]) {
                 $sDirName = "{$aSize[0]}_{$aSize[1]}_" . \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultImageQuality');
                 $sUrl = str_replace("/master/" . ($sAltPath ? $sAltPath : $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);

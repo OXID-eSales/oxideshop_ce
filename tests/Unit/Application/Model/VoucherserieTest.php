@@ -58,7 +58,7 @@ class VoucherserieTest extends \OxidTestCase
 
         $this->_aIds[] = $oSerie->getId();
 
-        $this->_addAdditionalInfo();
+        $this->addAdditionalInfo();
     }
 
     /**
@@ -73,7 +73,7 @@ class VoucherserieTest extends \OxidTestCase
             $oSerie->delete($sOxid);
         }
 
-        $this->_remAdditionalInfo();
+        $this->remAdditionalInfo();
 
         $this->cleanUpTable('oxvouchers');
 
@@ -83,7 +83,7 @@ class VoucherserieTest extends \OxidTestCase
     /**
      * Adding/removing test data
      */
-    protected function _addAdditionalInfo()
+    protected function addAdditionalInfo()
     {
         $myUtils = oxRegistry::getUtils();
         $aGroupsToAdd = array('oxidsmallcust', 'oxidmiddlecust', 'oxidgoodcust');
@@ -127,7 +127,7 @@ class VoucherserieTest extends \OxidTestCase
         }
     }
 
-    protected function _remAdditionalInfo()
+    protected function remAdditionalInfo()
     {
         $myDB = oxDb::getDb();
 

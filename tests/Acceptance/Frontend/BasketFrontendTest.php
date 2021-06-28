@@ -20,13 +20,13 @@ class BasketFrontendTest extends FrontendTestCase
     public function testFrontendVATOptions()
     {
         //enabling config (Display shipping costs as net price and VAT (instead of gross) in shopping cart and invoice)
-        $this->_setShopParam("blShowVATForDelivery", "true");
+        $this->setShopParam("blShowVATForDelivery", "true");
 
         //enabling config (Display VAT contained in Payment Method Charges in Shopping Cart and Invoice)
-        $this->_setShopParam("blShowVATForPayCharge", "true");
+        $this->setShopParam("blShowVATForPayCharge", "true");
 
         //enabling config (Display VAT contained in Gift Wrappings and Greeting Cards in Shopping Cart and Invoice)
-        $this->_setShopParam("blShowVATForWrapping", "true");
+        $this->setShopParam("blShowVATForWrapping", "true");
 
         $this->clearCache();
         $this->addToBasket("1000", 3);
@@ -66,10 +66,10 @@ class BasketFrontendTest extends FrontendTestCase
     {
         //TODO: Selenium refactor to remove SQL's executions
         $this->executeSql("UPDATE `oxdelivery` SET `OXTITLE_1` = `OXTITLE` WHERE `OXTITLE_1` = '';");
-        $this->_createOrder();
+        $this->createOrder();
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->_openOrderHistoryPage();
+        $this->openOrderHistoryPage();
 
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_ORDER%", $this->getText("//h1"));
         $this->assertEquals("%NOT_SHIPPED_YET%", $this->getText("accOrderStatus_12"));
@@ -88,7 +88,7 @@ class BasketFrontendTest extends FrontendTestCase
     public function testFrontendDisabledVouchers()
     {
         //disabling option (Use vouchers)
-        $this->_setShopParam("bl_showVouchers", "false", "theme:azure");
+        $this->setShopParam("bl_showVouchers", "false", "theme:azure");
 
         $this->clearCache();
         $this->addToBasket("1000");
@@ -167,27 +167,27 @@ class BasketFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->addToBasket("1000", 3);
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->assertEquals("Germany", $this->getSelectedLabel("invadr[oxuser__oxcountryid]"));
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->assertEquals("%SELECTED_SHIPPING_CARRIER%:", $this->getText("//h3"));
         $this->assertElementPresent("sShipSet");
         $this->clickAndWait("link=%STEPS_SEND%");
         $this->select("invadr[oxuser__oxcountryid]", "label=Spain");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->assertEquals("%PAYMENT_INFORMATION%", $this->getText("//h3"));
         $this->assertTextPresent("Currently we have no shipping method set up for this country.");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->assertEquals("%SHIPPING_CARRIER% %EDIT%", $this->getText($this->clearString("orderShipping")));
         $this->assertEquals("%PAYMENT_METHOD% %EDIT% Empty", $this->getText($this->clearString("orderPayment")));
-        $this->_confirmAndOrder();
+        $this->confirmAndOrder();
         $sMessage = sprintf(self::translate("%REGISTERED_YOUR_ORDER%"), 12);
         $this->assertTextPresent($sMessage);
     }
@@ -204,7 +204,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         //Order Step1
         //checking if order via option 1 (without password) can be disabled
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         //option 1 is available
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
@@ -213,10 +213,10 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertElementPresent("optionLogin");
 
         //checking on option 'Disable order without registration.'
-        $this->_setShopParam("blOrderDisWithoutReg", "true");
+        $this->setShopParam("blOrderDisWithoutReg", "true");
         $this->clickAndWait("link=%STEPS_BASKET%");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         //Order step2
         //option 1 is not available
@@ -235,7 +235,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%BILLING_ADDRESS%");
         $this->assertTextPresent("%SHIPPING_ADDRESS%");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
     }
@@ -252,8 +252,8 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         //Order Step1
-        $this->_enterCouponCode("222222");
-        $this->_continueToNextStep();
+        $this->enterCouponCode("222222");
+        $this->continueToNextStep();
         //Order step2
 
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
@@ -278,12 +278,12 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("1980", $this->getValue("invadr[oxuser__oxbirthdate][year]"));
         $this->assertEquals("off", $this->getValue("subscribeNewsletter"));
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         $this->clickAndWait("link=%STEPS_SEND%");
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         //Order Step3
         $this->assertEquals("%SELECT_SHIPPING_METHOD%:", $this->getText("deliveryHeader"));
         $this->assertEquals("%PAYMENT_METHOD%", $this->getText("paymentHeader"));
@@ -304,7 +304,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("%CHARGES%: 1,50 €", $this->getText("shipSetCost"));
         $this->click("payment_testpayment");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER%", $this->getText("breadCrumb"));
         $this->clickAndWait("link=%STEPS_PAY%");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
@@ -325,8 +325,8 @@ class BasketFrontendTest extends FrontendTestCase
         $this->addToBasket("1001");
         $this->addToBasket("1000");
 
-        $this->_continueToNextStep(3);
-        $this->_confirmAndOrder();
+        $this->continueToNextStep(3);
+        $this->confirmAndOrder();
 
         //Load "Customers who bought this product also purchased..."  is ON
         //TODO: Selenium refactor with basket construct
@@ -345,9 +345,9 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
         $this->openBasket();
 
-        $this->_continueToNextStep(3);
+        $this->continueToNextStep(3);
 
-        $this->_confirmAndOrder();
+        $this->confirmAndOrder();
         $this->assertEquals("%WHO_BOUGHT_ALSO_BOUGHT%:", $this->clearString($this->getText("//h1")));
         $this->assertElementPresent("//ul[@id='alsoBoughtThankyou']/li[1]");
         //fix it in future: mouseOver effect is not working after latest jQuery update. use mouse over when working solution will be find
@@ -357,7 +357,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         //turning Load "Customers who bought this product also purchased..." OFF
 
-        $this->_setShopParam("bl_perfLoadCustomerWhoBoughtThis", "false");
+        $this->setShopParam("bl_perfLoadCustomerWhoBoughtThis", "false");
 
         $this->clearCache();
         $this->openShop();
@@ -374,8 +374,8 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("alsoBought");
         $this->openBasket();
 
-        $this->_continueToNextStep(3);
-        $this->_confirmAndOrder();
+        $this->continueToNextStep(3);
+        $this->confirmAndOrder();
         $this->assertElementNotPresent("//h1[text()='%CUSTOMERS_ALSO_BOUGHT%:']");
         $this->assertElementNotPresent("alsoBoughtThankyou");
     }
@@ -388,7 +388,7 @@ class BasketFrontendTest extends FrontendTestCase
     public function testFrontendDisabledGiftWrapping()
     {
         //disabling option in admin (Use gift wrapping)
-        $this->_setShopParam("bl_showGiftWrapping", "false", "theme:azure");
+        $this->setShopParam("bl_showGiftWrapping", "false", "theme:azure");
 
         $this->clearCache();
         $this->addToBasket("1001");
@@ -407,7 +407,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->addToBasket("1001");
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
         $this->type("deladr[oxaddress__oxfname]", "name");
@@ -418,9 +418,9 @@ class BasketFrontendTest extends FrontendTestCase
         $this->type("deladr[oxaddress__oxcity]", "city");
         $this->select("delCountrySelect", "label=Germany");
 
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         $this->click("payment_oxidcashondel");
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
 
         //Order Step4
         $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222", true);
@@ -432,9 +432,9 @@ class BasketFrontendTest extends FrontendTestCase
         $this->close();
         $this->selectWindow(null);
         // submit
-        $this->_confirmAndOrder();
+        $this->confirmAndOrder();
         //delivery country was changed and we are redirected to payment step
-        $this->_continueToNextStep();
+        $this->continueToNextStep();
         $this->assertTextNotPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
         //changing billing address once more
         $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222", true);
@@ -447,11 +447,11 @@ class BasketFrontendTest extends FrontendTestCase
         $this->selectWindow(null);
 
         // submit
-        $this->_confirmAndOrder();
+        $this->confirmAndOrder();
 
         $this->assertTextPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
 
-        $this->_confirmAndOrder();
+        $this->confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
     }
 
@@ -469,7 +469,7 @@ class BasketFrontendTest extends FrontendTestCase
     /**
      * Creates user order.
      */
-    protected function _createOrder()
+    protected function createOrder()
     {
         $aOrderParams = array(
             'oxordernr' => 12,
@@ -502,7 +502,7 @@ class BasketFrontendTest extends FrontendTestCase
     /**
      * Opens order history page directly.
      */
-    private function _openOrderHistoryPage()
+    private function openOrderHistoryPage()
     {
         $sUrl = shopURL . "en/order-history/";
         if (isSUBSHOP) {
@@ -512,30 +512,11 @@ class BasketFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Sets article stock and optional stock flag
-     *
-     * @param string $sArticleId
-     * @param int $iStock
-     * @param int $iStockFlag  optional
-     */
-    private function _setArticleStock($sArticleId, $iStock, $iStockFlag = null)
-    {
-        $aArticleParams = array( "oxstock" => $iStock );
-
-        if (!is_null($iStockFlag)) {
-            $aArticleParams = array_merge($aArticleParams, array("oxstockflag" => $iStockFlag));
-        }
-
-        $this->_saveArticle($sArticleId, $aArticleParams, 1);
-    }
-
-
-    /**
      * @param string $sArticleId
      * @param array  $aArticleParams
      * @param null   $iShopId
      */
-    private function _saveArticle($sArticleId, $aArticleParams, $iShopId = null)
+    private function saveArticle($sArticleId, $aArticleParams, $iShopId = null)
     {
         $this->callShopSC("oxArticle", "save", $sArticleId, $aArticleParams, null, $iShopId);
     }
@@ -545,7 +526,7 @@ class BasketFrontendTest extends FrontendTestCase
      *
      * @param int $iSteps
      */
-    private function _continueToNextStep($iSteps = 1)
+    private function continueToNextStep($iSteps = 1)
     {
         for ($i = 1; $i <= $iSteps; $i++) {
             $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
@@ -557,7 +538,7 @@ class BasketFrontendTest extends FrontendTestCase
      * @param string $sParamValue
      * @param null $sModule  optional
      */
-    private function _setShopParam($sParamName, $sParamValue, $sModule = null)
+    private function setShopParam($sParamName, $sParamValue, $sModule = null)
     {
         $aParams = array("type" => "bool", "value" => $sParamValue);
 
@@ -571,7 +552,7 @@ class BasketFrontendTest extends FrontendTestCase
     /**
      * @param $sCouponCode
      */
-    private function _enterCouponCode($sCouponCode)
+    private function enterCouponCode($sCouponCode)
     {
         $this->type("voucherNr", $sCouponCode);
         $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
@@ -580,7 +561,7 @@ class BasketFrontendTest extends FrontendTestCase
     /**
      * Checks box to confirm terms and conditions and confirms order
      */
-    private function _confirmAndOrder()
+    private function confirmAndOrder()
     {
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
@@ -591,12 +572,12 @@ class BasketFrontendTest extends FrontendTestCase
         $this->clickAndWait("link=%STEPS_BASKET%");
 
         if ($this->getText("//tr[@id='cartItem_1']/td[7]") != "0%") {
-            $this->_continueToNextStep();
+            $this->continueToNextStep();
 
             $this->select("invadr[oxuser__oxcountryid]", "label=Belgium");
             $this->type("invadr[oxuser__oxustid]", "BE0410521222");
 
-            $this->_continueToNextStep();
+            $this->continueToNextStep();
 
             // If online VAT ID validator isn't available an message VAT_MESSAGE_ID_NOT_VALID appears
             // but it is ignored and after next step basket would have wrong VAT numbers.

@@ -107,16 +107,16 @@ class VoucherSerieMainTest extends \OxidTestCase
     public function testGetStatus()
     {
         // no series..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
-        $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue(false));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("getVoucherSerie"));
+        $oView->expects($this->once())->method('getVoucherSerie')->will($this->returnValue(false));
         $this->assertNull($oView->getStatus());
 
         // with serie..
         $oSerie = $this->getMock(\OxidEsales\Eshop\Application\Model\VoucherSerie::class, array("countVouchers"));
         $oSerie->expects($this->once())->method('countVouchers')->will($this->returnValue("testCountVouchers"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
-        $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue($oSerie));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("getVoucherSerie"));
+        $oView->expects($this->once())->method('getVoucherSerie')->will($this->returnValue($oSerie));
         $this->assertEquals("testCountVouchers", $oView->getStatus());
     }
 
@@ -181,7 +181,7 @@ class VoucherSerieMainTest extends \OxidTestCase
         $this->getSession()->setVariable("voucherid", "_testvoucherserie");
 
         $oView = oxNew('VoucherSerie_Main');
-        $oVoucherSerie = $oView->_getVoucherSerie();
+        $oVoucherSerie = $oView->getVoucherSerie();
 
         $this->assertNotNull($oVoucherSerie);
         $this->assertEquals("_testvoucherserie", $oVoucherSerie->getId());

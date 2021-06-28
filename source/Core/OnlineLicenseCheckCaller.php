@@ -42,7 +42,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      */
     public function doRequest(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest)
     {
-        return $this->_formResponse($this->call($oRequest));
+        return $this->formResponse($this->call($oRequest));
     }
 
     /**
@@ -52,11 +52,11 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string
      */
-    protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRequest->keys = null;
 
-        return parent::_formEmail($oRequest);
+        return parent::formEmail($oRequest);
     }
 
     /**
@@ -68,7 +68,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
-    protected function _formResponse($sRawResponse) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formResponse($sRawResponse) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Core\UtilsXml $oUtilsXml */
         $oUtilsXml = \OxidEsales\Eshop\Core\Registry::getUtilsXml();
@@ -106,7 +106,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string XML document tag name.
      */
-    protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::XML_DOCUMENT_NAME;
     }
@@ -116,7 +116,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string Web service url.
      */
-    protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::WEB_SERVICE_URL;
     }

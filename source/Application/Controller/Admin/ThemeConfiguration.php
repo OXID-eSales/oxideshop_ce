@@ -42,7 +42,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
             $this->_aViewData["oTheme"] = $oTheme;
 
             try {
-                $aDbVariables = $this->loadConfVars($sShopId, $this->_getModuleForConfigVars());
+                $aDbVariables = $this->loadConfVars($sShopId, $this->getModuleForConfigVars());
                 $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
                 $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
                 foreach ($this->_aConfParams as $sType => $sParam) {
@@ -64,7 +64,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sTheme === null) {
             $this->_sTheme = $this->getEditObjectId();
@@ -84,7 +84,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         $sShopId = $myConfig->getShopId();
 
-        $sModule = $this->_getModuleForConfigVars();
+        $sModule = $this->getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = Registry::getRequest()->getRequestEscapedParameter($sParam);
@@ -93,7 +93,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
                     $myConfig->saveShopConfVar(
                         $sType,
                         $sName,
-                        $this->_serializeConfVar($sType, $sName, $sValue),
+                        $this->serializeConfVar($sType, $sName, $sValue),
                         $sShopId,
                         $sModule
                     );

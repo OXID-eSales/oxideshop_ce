@@ -191,7 +191,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getHelpContentIdents() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHelpContentIdents() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sClass = $this->getActiveClassName();
 
@@ -212,7 +212,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_sHelpPageLink === null) {
             $this->_sHelpPageLink = "";
-            $aContentIdents = $this->_getHelpContentIdents();
+            $aContentIdents = $this->getHelpContentIdents();
             $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             foreach ($aContentIdents as $sIdent) {
                 if ($oContent->loadByIdent($sIdent, true)) {
@@ -1219,10 +1219,10 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $aModuleVersions = Registry::getConfig()->getConfigParam('aModuleVersions');
 
         if (is_array($aModuleVersions)) {
-            $blModuleIsActive = $this->_moduleExists($sModuleId, $aModuleVersions);
+            $blModuleIsActive = $this->moduleExists($sModuleId, $aModuleVersions);
 
             if ($blModuleIsActive) {
-                $blModuleIsActive = $this->isModuleEnabled($sModuleId) && $this->_isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
+                $blModuleIsActive = $this->isModuleEnabled($sModuleId) && $this->isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
             }
         }
 
@@ -1361,7 +1361,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function _moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (in_array($sModuleId, array_keys($aModuleVersions)));
     }
@@ -1393,7 +1393,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blModuleIsActive = true;
 

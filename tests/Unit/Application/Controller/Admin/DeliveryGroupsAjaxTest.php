@@ -68,18 +68,18 @@ class DeliveryGroupsAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DeliveryGroupssAjax::_getQuery() test case
+     * DeliveryGroupssAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('delivery_groups_ajax');
-        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryGroupssAjax::_getQuery() test case
+     * DeliveryGroupssAjax::getQuery() test case
      *
      * @return null
      */
@@ -89,11 +89,11 @@ class DeliveryGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_groups_ajax');
-        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxgroups' )", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxgroups' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryGroupssAjax::_getQuery() test case
+     * DeliveryGroupssAjax::getQuery() test case
      *
      * @return null
      */
@@ -103,11 +103,11 @@ class DeliveryGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('delivery_groups_ajax');
-        $this->assertEquals("from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxgroups'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxgroups'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryGroupssAjax::_getQuery() test case
+     * DeliveryGroupssAjax::getQuery() test case
      *
      * @return null
      */
@@ -119,7 +119,7 @@ class DeliveryGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_groups_ajax');
-        $this->assertEquals("from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxgroups'  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxgroups' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxgroups'  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery left join " . $this->getGroupsViewTable() . " on " . $this->getGroupsViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxgroups' )", trim($oView->getQuery()));
     }
 
     /**

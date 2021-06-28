@@ -54,7 +54,7 @@ class Validator
 
         $blParamsCountMatch = count($aExpectedBlocks) == count($aBlocksToCheck);
 
-        return $blParamsCountMatch && $this->_checkBlockValues($aExpectedBlocks, $aBlocksToCheck);
+        return $blParamsCountMatch && $this->checkBlockValues($aExpectedBlocks, $aBlocksToCheck);
     }
 
     /**
@@ -175,10 +175,10 @@ class Validator
      *
      * @return bool
      */
-    protected function _checkBlockValues($aExpectedBlocks, $aBlocksToCheck)
+    protected function checkBlockValues($aExpectedBlocks, $aBlocksToCheck)
     {
         foreach ($aExpectedBlocks as $aValues) {
-            if (!$this->_matchingBlockExists($aValues, $aBlocksToCheck)) {
+            if (!$this->matchingBlockExists($aValues, $aBlocksToCheck)) {
                 return false;
             };
         }
@@ -192,10 +192,10 @@ class Validator
      *
      * @return bool
      */
-    protected function _matchingBlockExists($aBlockValues, $aBlocks)
+    protected function matchingBlockExists($aBlockValues, $aBlocks)
     {
         foreach ($aBlocks as $aBlock) {
-            if (!$this->_matchBlocks($aBlockValues, $aBlock)) {
+            if (!$this->matchBlocks($aBlockValues, $aBlock)) {
                 continue;
             }
 
@@ -211,7 +211,7 @@ class Validator
      *
      * @return bool
      */
-    protected function _matchBlocks($aBlockValues, $aBlock)
+    protected function matchBlocks($aBlockValues, $aBlock)
     {
         foreach ($aBlockValues as $sValue) {
             if (!in_array($sValue, $aBlock)) {

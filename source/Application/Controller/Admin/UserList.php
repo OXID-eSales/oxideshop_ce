@@ -58,7 +58,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
                 $user->blacklist = "1";
             }
             $user->blPreventDelete = false;
-            if (!$this->_allowAdminEdit($itemId)) {
+            if (!$this->allowAdminEdit($itemId)) {
                 $user->blPreventDelete = true;
             }
         }
@@ -73,7 +73,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      */
     public function deleteEntry()
     {
-        if ($this->_allowAdminEdit($this->getEditObjectId())) {
+        if ($this->allowAdminEdit($this->getEditObjectId())) {
             $this->_oList = null;
 
             return parent::deleteEntry();
@@ -90,18 +90,18 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @return string
      */
-    public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $nameWhere = null;
         if (isset($whereQuery['oxuser.oxlname']) && ($name = $whereQuery['oxuser.oxlname'])) {
             // check if this is search string (contains % sign at begining and end of string)
-            $isSearchValue = $this->_isSearchValue($name);
-            $name = $this->_processFilter($name);
+            $isSearchValue = $this->isSearchValue($name);
+            $name = $this->processFilter($name);
             $nameWhere['oxuser.oxfname'] = $nameWhere['oxuser.oxlname'] = $name;
 
             unset($whereQuery['oxuser.oxlname']);
         }
-        $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
+        $query = parent::prepareWhereQuery($whereQuery, $fullQuery);
 
         if ($nameWhere) {
             $values = explode(' ', $name);
@@ -117,14 +117,14 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
                     //for search in same field for different values using AND
                     $queryBoolAction = ' or ';
 
-                    $query .= $this->_buildFilter($value, $isSearchValue);
+                    $query .= $this->buildFilter($value, $isSearchValue);
 
                     // trying to search spec chars in search value
                     // if found, add cleaned search value to search sql
                     $uml = $utilsString->prepareStrForSearch($value);
                     if ($uml) {
                         $query .= " or {$fieldName} ";
-                        $query .= $this->_buildFilter($uml, $isSearchValue);
+                        $query .= $this->buildFilter($uml, $isSearchValue);
                     }
                 }
             }

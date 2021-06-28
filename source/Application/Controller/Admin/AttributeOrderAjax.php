@@ -31,9 +31,9 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSelTable = $this->_getViewName('oxattribute');
+        $sSelTable = $this->getViewName('oxattribute');
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
         return " from $sSelTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sSelTable.oxid " .
@@ -45,7 +45,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'order by oxcategory2attribute.oxsort ';
     }
@@ -92,11 +92,11 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             }
         }
 
-        $sQAdd = $this->_getQuery();
+        $sQAdd = $this->getQuery();
 
-        $sQ = 'select ' . $this->_getQueryCols() . $sQAdd;
+        $sQ = 'select ' . $this->getQueryCols() . $sQAdd;
         $sCountQ = 'select count( * ) ' . $sQAdd;
 
-        $this->_outputResponse($this->_getData($sCountQ, $sQ));
+        $this->outputResponse($this->getData($sCountQ, $sQ));
     }
 }

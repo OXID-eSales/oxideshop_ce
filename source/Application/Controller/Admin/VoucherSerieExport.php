@@ -50,10 +50,10 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
         parent::__construct();
 
         // export file name
-        $this->sExportFileName = $this->_getExportFileName();
+        $this->sExportFileName = $this->getExportFileName();
 
         // set generic frame template
-        $this->_sFilePath = $this->_getExportFilePath();
+        $this->_sFilePath = $this->getExportFilePath();
     }
 
     /**
@@ -81,7 +81,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getExportFileName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getExportFileName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
@@ -98,9 +98,9 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getExportFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getExportFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/export/" . $this->_getExportFileName();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/export/" . $this->getExportFileName();
     }
 
     /**
@@ -114,7 +114,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
         $oUtils->setHeader("Expires: 0");
         $oUtils->setHeader("Content-Disposition: attachment; filename=vouchers.csv");
         $oUtils->setHeader("Content-Type: application/csv");
-        $sFile = $this->_getExportFilePath();
+        $sFile = $this->getExportFilePath();
         if (file_exists($sFile) && is_readable($sFile)) {
             readfile($sFile);
         }
@@ -166,7 +166,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $iExported = false;
 
-        if ($oSerie = $this->_getVoucherSerie()) {
+        if ($oSerie = $this->getVoucherSerie()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
             $sSelect = "select oxvouchernr from oxvouchers where oxvoucherserieid = :oxvoucherserieid";

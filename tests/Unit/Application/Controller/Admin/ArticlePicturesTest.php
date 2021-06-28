@@ -90,8 +90,8 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_deleteThumbnail", "_deleteMasterPicture"));
-        $oArtPic->expects($this->never())->method('_deleteThumbnail');
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteThumbnail", "_deleteMasterPicture"));
+        $oArtPic->expects($this->never())->method('deleteThumbnail');
         $oArtPic->expects($this->never())->method('_deleteMasterPicture');
 
         $this->_oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
@@ -111,8 +111,8 @@ class ArticlePicturesTest extends \OxidTestCase
         $this->setRequestParameter("masterPicIndex", "TH");
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_deleteMainIcon", "_deleteMasterPicture"));
-        $oArtPic->expects($this->never())->method('_deleteMainIcon');
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteMainIcon", "_deleteMasterPicture"));
+        $oArtPic->expects($this->never())->method('deleteMainIcon');
         $oArtPic->expects($this->never())->method('_deleteMasterPicture');
 
         $this->_oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
@@ -132,9 +132,9 @@ class ArticlePicturesTest extends \OxidTestCase
         $this->setRequestParameter("masterPicIndex", "2");
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_deleteMainIcon", "_deleteThumbnail"));
-        $oArtPic->expects($this->never())->method('_deleteMainIcon');
-        $oArtPic->expects($this->never())->method('_deleteThumbnail');
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteMainIcon", "deleteThumbnail"));
+        $oArtPic->expects($this->never())->method('deleteMainIcon');
+        $oArtPic->expects($this->never())->method('deleteThumbnail');
 
         $this->_oArticle->oxarticles__oxpic2 = new oxField("testPic2.jpg");
         $this->_oArticle->save();
@@ -163,7 +163,7 @@ class ArticlePicturesTest extends \OxidTestCase
     }
 
     /**
-     * Article_Pictures::_deleteMainIcon()
+     * Article_Pictures::deleteMainIcon()
      */
     public function testDeleteMainIcon()
     {
@@ -178,13 +178,13 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->_deleteMainIcon($oArticle);
+        $oArtPic->deleteMainIcon($oArticle);
 
         $this->assertEquals("", $oArticle->oxarticles__oxicon->value);
     }
 
     /**
-     * Article_Pictures::_deleteThumbnail()
+     * Article_Pictures::deleteThumbnail()
      */
     public function testDeleteThumbnail()
     {
@@ -199,7 +199,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->_deleteThumbnail($oArticle);
+        $oArtPic->deleteThumbnail($oArticle);
 
         $this->assertEquals("", $oArticle->oxarticles__oxthumb->value);
     }
@@ -242,17 +242,17 @@ class ArticlePicturesTest extends \OxidTestCase
 
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_cleanupCustomFields"));
-        $oArtPic->expects($this->never())->method('_cleanupCustomFields');
-        $oArtPic->_resetMasterPicture($oArticle, 2);
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("cleanupCustomFields"));
+        $oArtPic->expects($this->never())->method('cleanupCustomFields');
+        $oArtPic->resetMasterPicture($oArticle, 2);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_cleanupCustomFields"));
-        $oArtPic->expects($this->once())->method('_cleanupCustomFields');
-        $oArtPic->_resetMasterPicture($oArticle, 1);
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("cleanupCustomFields"));
+        $oArtPic->expects($this->once())->method('cleanupCustomFields');
+        $oArtPic->resetMasterPicture($oArticle, 1);
     }
 
     /**
-     * Article_Pictures::_cleanupCustomFields()
+     * Article_Pictures::cleanupCustomFields()
      *
      * @return null
      */
@@ -266,14 +266,14 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
 
-        $oArtPic->_cleanupCustomFields($this->_oArticle);
+        $oArtPic->cleanupCustomFields($this->_oArticle);
 
         $this->assertEquals("", $this->_oArticle->oxarticles__oxicon->value);
         $this->assertEquals("", $this->_oArticle->oxarticles__oxthumb->value);
     }
 
     /**
-     * Article_Pictures::_cleanupCustomFields() - when custom fields are not empty
+     * Article_Pictures::cleanupCustomFields() - when custom fields are not empty
      *
      * @return null
      */
@@ -287,7 +287,7 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
 
-        $oArtPic->_cleanupCustomFields($this->_oArticle);
+        $oArtPic->cleanupCustomFields($this->_oArticle);
 
         $this->assertEquals("testIcon.jpg", $this->_oArticle->oxarticles__oxicon->value);
         $this->assertEquals("testThumb.jpg", $this->_oArticle->oxarticles__oxthumb->value);

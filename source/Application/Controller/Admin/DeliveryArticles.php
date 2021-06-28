@@ -30,7 +30,7 @@ class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $soxId = $this->getEditObjectId();
 
         if (isset($soxId) && $soxId != "-1") {
-            $this->_createCategoryTree("artcattree");
+            $this->createCategoryTree("artcattree");
 
             // load object
             $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);

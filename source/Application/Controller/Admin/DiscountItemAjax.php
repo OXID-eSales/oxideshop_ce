@@ -46,13 +46,13 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
-        $sDiscTable = $this->_getViewName('oxdiscount');
+        $sArticleTable = $this->getViewName('oxarticles');
+        $sO2CView = $this->getViewName('oxobject2category');
+        $sDiscTable = $this->getViewName('oxdiscount');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchOxid = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -105,7 +105,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     public function removeDiscArt()
     {
         $soxId = Registry::getRequest()->getRequestEscapedParameter('oxid');
-        $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
+        $aChosenArt = $this->getActionIds('oxdiscount.oxitmartid');
         if (is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = :oxid and oxitmartid = :oxitmartid";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
@@ -120,7 +120,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     public function addDiscArt()
     {
-        $aChosenArt = $this->_getActionIds('oxarticles.oxid');
+        $aChosenArt = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = :oxitmartid where oxid = :oxid";
@@ -137,19 +137,19 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();
 
         $sQ = '';
         $blSep = false;
-        $aVisiblecols = $this->_getVisibleColNames();
+        $aVisiblecols = $this->getVisibleColNames();
         foreach ($aVisiblecols as $iCnt => $aCol) {
             if ($blSep) {
                 $sQ .= ', ';
             }
-            $sViewTable = $this->_getViewName($aCol[1]);
+            $sViewTable = $this->getViewName($aCol[1]);
             // multilanguage
 
             $sCol = $aCol[0];
@@ -164,7 +164,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             $blSep = true;
         }
 
-        $aIdentCols = $this->_getIdentColNames();
+        $aIdentCols = $this->getIdentColNames();
         foreach ($aIdentCols as $iCnt => $aCol) {
             if ($blSep) {
                 $sQ .= ', ';
@@ -172,7 +172,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
             // multilanguage
             $sCol = $aCol[0];
-            $sQ .= $this->_getViewName($aCol[1]) . '.' . $sCol . ' as _' . $iCnt;
+            $sQ .= $this->getViewName($aCol[1]) . '.' . $sCol . ' as _' . $iCnt;
         }
 
         return " $sQ ";

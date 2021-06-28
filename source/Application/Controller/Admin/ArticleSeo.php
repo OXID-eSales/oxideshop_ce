@@ -115,15 +115,15 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
             $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oProduct->load($this->getEditObjectId());
 
-            if ($oCatList = $this->_getCategoryList($oProduct)) {
+            if ($oCatList = $this->getCategoryList($oProduct)) {
                 $this->_aSelectionList["oxcategory"][$this->_iEditLang] = $oCatList;
             }
 
-            if ($oVndList = $this->_getVendorList($oProduct)) {
+            if ($oVndList = $this->getVendorList($oProduct)) {
                 $this->_aSelectionList["oxvendor"][$this->_iEditLang] = $oVndList;
             }
 
-            if ($oManList = $this->_getManufacturerList($oProduct)) {
+            if ($oManList = $this->getManufacturerList($oProduct)) {
                 $this->_aSelectionList["oxmanufacturer"][$this->_iEditLang] = $oManList;
             }
         }
@@ -138,7 +138,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sMainCatId = false;
         if ($oMainCat = $oArticle->getCategory()) {
@@ -185,7 +185,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oArticle->oxarticles__oxvendorid->value) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -202,7 +202,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
@@ -279,7 +279,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return null
      */
-    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getEditObjectId();
     }
@@ -289,7 +289,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxarticle';
     }
@@ -311,7 +311,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderArticle
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }
@@ -326,7 +326,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $product = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         if ($product->load($this->getEditObjectId())) {
-            $seoEncoder = $this->_getEncoder();
+            $seoEncoder = $this->getEncoder();
 
             switch ($this->getActCatType()) {
                 case 'oxvendor':
@@ -362,7 +362,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sId = $this->_getSaveObjectId();
+        $sId = $this->getSaveObjectId();
         $iLang = (int) $this->getEditLang();
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sParam = $this->processParam($this->getActCatId());

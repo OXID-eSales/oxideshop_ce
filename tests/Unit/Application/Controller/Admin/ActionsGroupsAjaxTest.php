@@ -118,18 +118,18 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
     }
 
     /**
-     * ActionsArticleAjax::_getQuery() test case
+     * ActionsArticleAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals('from oxv_oxgroups_de where 1', trim($oView->_getQuery()));
+        $this->assertEquals('from oxv_oxgroups_de where 1', trim($oView->getQuery()));
     }
 
     /**
-     * ActionsArticleAjax::_getQuery() test case
+     * ActionsArticleAjax::getQuery() test case
      *
      * @return null
      */
@@ -139,11 +139,11 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals("from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim($oView->getQuery()));
     }
 
     /**
-     * ActionsArticleAjax::_getQuery() test case
+     * ActionsArticleAjax::getQuery() test case
      *
      * @return null
      */
@@ -153,11 +153,11 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'", trim($oView->getQuery()));
     }
 
     /**
-     * ActionsArticleAjax::_getQuery() test case
+     * ActionsArticleAjax::getQuery() test case
      *
      * @return null
      */
@@ -169,6 +169,6 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim($oView->getQuery()));
     }
 }

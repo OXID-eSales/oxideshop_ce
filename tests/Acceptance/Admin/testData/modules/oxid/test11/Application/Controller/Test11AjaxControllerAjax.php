@@ -33,12 +33,12 @@ class Test11AjaxControllerAjax extends \OxidEsales\Eshop\Application\Controller\
         $response = 'test_11_ajax_controller successfully called';
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'testModule11AjaxCalledSuccessfully', $response);
 
-        $this->_outputResponse('test_11_ajax_controller successfully called');
+        $this->outputResponse('test_11_ajax_controller successfully called');
     }
 
     public function getFeedback()
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'testModule11AjaxCalledSuccessfully', '');
-        $this->_output('test_11_ajax_controller getFeedback');
+        $this->output('test_11_ajax_controller getFeedback');
     }
 }

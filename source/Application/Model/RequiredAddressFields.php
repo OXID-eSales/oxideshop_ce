@@ -77,7 +77,7 @@ class RequiredAddressFields
     {
         $aRequiredFields = $this->getRequiredFields();
 
-        return $this->_filterFields($aRequiredFields, 'oxuser__');
+        return $this->filterFields($aRequiredFields, 'oxuser__');
     }
 
     /**
@@ -89,7 +89,7 @@ class RequiredAddressFields
     {
         $aRequiredFields = $this->getRequiredFields();
 
-        return $this->_filterFields($aRequiredFields, 'oxaddress__');
+        return $this->filterFields($aRequiredFields, 'oxaddress__');
     }
 
     /**
@@ -100,7 +100,7 @@ class RequiredAddressFields
      *
      * @return mixed
      */
-    private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {

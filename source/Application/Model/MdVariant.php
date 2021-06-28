@@ -165,7 +165,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $oNewSubvariant->setName($sName);
         $oNewSubvariant->setId(md5($sName . $this->getId()));
         $oNewSubvariant->setParentId($this->getId());
-        $this->_addMdSubvariant($oNewSubvariant);
+        $this->addMdSubvariant($oNewSubvariant);
 
         return $oNewSubvariant;
     }
@@ -279,7 +279,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
 
         $sFromPrefix = '';
 
-        if (!$this->_isFixedPrice()) {
+        if (!$this->isFixedPrice()) {
             $sFromPrefix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRICE_FROM') . ' ';
         }
 
@@ -361,7 +361,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\MdVariant $oSubvariant Subvariant
      */
-    protected function _addMdSubvariant($oSubvariant) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addMdSubvariant($oSubvariant) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSubvariants[$oSubvariant->getId()] = $oSubvariant;
     }
@@ -371,7 +371,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isFixedPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isFixedPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dPrice = $this->getDPrice();
         $aVariants = $this->getMdSubvariants();
@@ -383,7 +383,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
             if (!is_null($dVariantPrice) && $dVariantPrice != $dPrice) {
                 return false;
             }
-            if (!$oVariant->_isFixedPrice()) {
+            if (!$oVariant->isFixedPrice()) {
                 return false;
             }
         }

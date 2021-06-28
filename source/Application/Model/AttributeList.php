@@ -49,7 +49,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect .= "where {$sViewName}.oxobjectid in ( " . $oxObjectIdsSql . " ) ";
         $sSelect .= "order by {$sViewName}.oxpos, $sAttrViewName.oxpos";
 
-        return $this->_createAttributeListFromSql($sSelect);
+        return $this->createAttributeListFromSql($sSelect);
     }
 
     /**
@@ -59,7 +59,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
@@ -109,7 +109,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $aParentAttributes = $oDb->getAll($sSelect, [
                     ':oxobjectid' => $sParentId
                 ]);
-                $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
+                $aAttributes = $this->mergeAttributes($aAttributes, $aParentAttributes);
             }
 
             $this->assignArray($aAttributes);
@@ -144,7 +144,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $aParentAttributes = $oDb->getAll($sSelect, [
                     ':oxobjectid' => $sParentId
                 ]);
-                $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
+                $aAttributes = $this->mergeAttributes($aAttributes, $aParentAttributes);
             }
 
             $this->assignArray($aAttributes);
@@ -223,7 +223,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (count($aParentAttributes)) {
             $aAttrIds = [];

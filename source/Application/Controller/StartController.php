@@ -141,7 +141,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sMeta &&
@@ -152,7 +152,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $sMeta = $oArt->oxarticles__oxtitle->value . ' - ' . $oDescField->value;
         }
 
-        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::prepareMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -165,7 +165,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sKeywords &&
@@ -176,7 +176,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $sKeywords = $oDescField->value;
         }
 
-        return parent::_prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
+        return parent::prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
     }
 
     /**
@@ -184,7 +184,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blLoadActions === null) {
             $this->_blLoadActions = false;
@@ -205,7 +205,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_aTopArticleList === null) {
             $this->_aTopArticleList = false;
-            if ($this->_getLoadActionsParam()) {
+            if ($this->getLoadActionsParam()) {
                 // start list
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXTOPSTART');
@@ -228,7 +228,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_aNewArticleList === null) {
             $this->_aNewArticleList = [];
-            if ($this->_getLoadActionsParam()) {
+            if ($this->getLoadActionsParam()) {
                 // newest articles
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadNewestArticles();
@@ -250,7 +250,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_oFirstArticle === null) {
             $this->_oFirstArticle = false;
-            if ($this->_getLoadActionsParam()) {
+            if ($this->getLoadActionsParam()) {
                 // top articles ( big one )
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXFIRSTSTART');
@@ -289,7 +289,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_oCatOfferArtList === null) {
             $this->_oCatOfferArtList = [];
-            if ($this->_getLoadActionsParam()) {
+            if ($this->getLoadActionsParam()) {
                 // "category offer" articles
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXCATOFFER');

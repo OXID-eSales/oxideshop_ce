@@ -23,7 +23,7 @@ class RequiredFieldValidator
     {
         $blValid = true;
         if (is_array($sFieldValue)) {
-            $blValid = $this->_validateFieldValueArray($sFieldValue);
+            $blValid = $this->validateFieldValueArray($sFieldValue);
         } else {
             if (!trim($sFieldValue)) {
                 $blValid = false;
@@ -40,7 +40,7 @@ class RequiredFieldValidator
      *
      * @return bool
      */
-    private function _validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blValid = true;
         foreach ($aFieldValues as $sValue) {

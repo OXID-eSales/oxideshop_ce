@@ -42,7 +42,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $oxId = $this->getEditObjectId();
 
-        $this->_createCategoryTree("artcattree");
+        $this->createCategoryTree("artcattree");
 
         // all categories
         if (isset($oxId) && $oxId != "-1") {

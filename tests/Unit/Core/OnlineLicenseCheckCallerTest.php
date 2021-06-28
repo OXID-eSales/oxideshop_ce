@@ -29,7 +29,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oRequest = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class, array(), array(), '', false);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
         /** @var oxCurl $oCurl */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
@@ -53,7 +53,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
         $oCurl->expects($this->once())->method('setParameters')->with(array('xmlRequest' => 'formed_xml'));
         /** @var oxCurl $oCurl */
 
@@ -109,7 +109,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oExpectedResponse->message = 'ACK';
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->_getValidResponseXml()));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
         /** @var oxCurl $oCurl */
 
         $oSimpleXml = $this->getMock('oxSimpleXml');
@@ -172,7 +172,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
     /**
      * @return oxOnlineCaller
      */
-    protected function _getValidResponseXml()
+    protected function getValidResponseXml()
     {
         $sResponse = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
         $sResponse .= '<olc>';

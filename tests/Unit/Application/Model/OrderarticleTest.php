@@ -622,8 +622,8 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStock()
     {
-        $this->assertEquals(6, $this->_oOrderArticle->_getArtStock(-4, false));
-        $this->assertEquals(15, $this->_oOrderArticle->_getArtStock(5, false));
+        $this->assertEquals(6, $this->_oOrderArticle->getArtStock(-4, false));
+        $this->assertEquals(15, $this->_oOrderArticle->getArtStock(5, false));
     }
 
     /*
@@ -631,7 +631,7 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStockWithNotAllowNegativeValue()
     {
-        $this->assertEquals(0, $this->_oOrderArticle->_getArtStock(-17, false));
+        $this->assertEquals(0, $this->_oOrderArticle->getArtStock(-17, false));
     }
 
     /*
@@ -639,7 +639,7 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetArtStockWithAllowNegativeValue()
     {
-        $this->assertEquals(-7, $this->_oOrderArticle->_getArtStock(-17, true));
+        $this->assertEquals(-7, $this->_oOrderArticle->getArtStock(-17, true));
     }
 
     /**

@@ -40,13 +40,13 @@ class DeliverySetCountryAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        $sCountryTable = $this->_getViewName('oxcountry');
+        $sCountryTable = $this->getViewName('oxcountry');
 
         // category selected or not ?
         if (!$sId) {
@@ -74,10 +74,10 @@ class DeliverySetCountryAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function removeCountryFromSet()
     {
-        $aChosenCntr = $this->_getActionIds('oxobject2delivery.oxid');
+        $aChosenCntr = $this->getActionIds('oxobject2delivery.oxid');
         // removing all
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2delivery.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
             $sChosenCountries = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr));
@@ -91,13 +91,13 @@ class DeliverySetCountryAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function addCountryToSet()
     {
-        $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
+        $aChosenCntr = $this->getActionIds('oxcountry.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sCountryTable = $this->_getViewName('oxcountry');
-            $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
+            $sCountryTable = $this->getViewName('oxcountry');
+            $aChosenCntr = $this->getAll($this->addFilter("select $sCountryTable.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {

@@ -70,7 +70,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
             // generating category tree for select list
-            $this->_createCategoryTree("artcattree", $soxId);
+            $this->createCategoryTree("artcattree", $soxId);
 
             $oActionsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class);
             $this->_aViewData['oxajax'] = $oActionsMainAjax->getColumns();
@@ -86,7 +86,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                     switch ($iAoc) {
                         case 'article':
                             // generating category tree for select list
-                            $this->_createCategoryTree("artcattree", $soxId);
+                            $this->createCategoryTree("artcattree", $soxId);
 
                             if ($oArticle = $oPromotion->getBannerArticle()) {
                                 $this->_aViewData['actionarticle_artnum'] = $oArticle->oxarticles__oxartnum->value;

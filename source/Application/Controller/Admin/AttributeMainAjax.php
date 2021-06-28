@@ -52,14 +52,14 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sArticleTable = $this->_getViewName('oxarticles');
-        $sOCatView = $this->_getViewName('oxobject2category');
-        $sOAttrView = $this->_getViewName('oxobject2attribute');
+        $sArticleTable = $this->getViewName('oxarticles');
+        $sOCatView = $this->getViewName('oxobject2category');
+        $sOAttrView = $this->getViewName('oxobject2attribute');
 
         $sDelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchDelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -100,13 +100,13 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
-            $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
+            $sQ .= ' group by ' . $this->getViewName('oxarticles') . '.oxid ';
 
             $oStr = Str::getStr();
             if ($oStr->strpos($sQ, "select count( * ) ") === 0) {
@@ -122,12 +122,12 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function removeAttrArticle()
     {
-        $aChosenCat = $this->_getActionIds('oxobject2attribute.oxid');
+        $aChosenCat = $this->getActionIds('oxobject2attribute.oxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sO2AttributeView = $this->_getViewName('oxobject2attribute');
+            $sO2AttributeView = $this->getViewName('oxobject2attribute');
 
-            $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete $sO2AttributeView.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
             $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
@@ -141,13 +141,13 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function addAttrArticle()
     {
-        $aAddArticle = $this->_getActionIds('oxarticles.oxid');
+        $aAddArticle = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArticleTable = $this->_getViewName('oxarticles');
-            $aAddArticle = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
+            $sArticleTable = $this->getViewName('oxarticles');
+            $aAddArticle = $this->getAll($this->addFilter("select $sArticleTable.oxid " . $this->getQuery()));
         }
 
         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);

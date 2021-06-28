@@ -13,7 +13,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 class ActionsOrderAjaxTest extends \OxidTestCase
 {
     /**
-     * ActionsOrderAjax::_getQuery() test case
+     * ActionsOrderAjax::getQuery() test case
      *
      * @return null
      */
@@ -25,7 +25,7 @@ class ActionsOrderAjaxTest extends \OxidTestCase
 
         $sViewTable = $this->getSelectListViewTable();
 
-        $this->assertEquals("from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->_getQuery()));
+        $this->assertEquals("from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim($oView->getQuery()));
     }
 
     /**
@@ -36,7 +36,7 @@ class ActionsOrderAjaxTest extends \OxidTestCase
     public function testGetSorting()
     {
         $oView = oxNew('actions_order_ajax');
-        $this->assertEquals("order by oxobject2selectlist.oxsort", trim($oView->_getSorting()));
+        $this->assertEquals("order by oxobject2selectlist.oxsort", trim($oView->getSorting()));
     }
 
     /**

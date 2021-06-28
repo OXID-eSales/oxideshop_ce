@@ -45,7 +45,7 @@ class DiscountUsersAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DiscountUsersAjax::_getQuery() test case
+     * DiscountUsersAjax::getQuery() test case
      */
     public function testGetQuery()
     {
@@ -54,11 +54,11 @@ class DiscountUsersAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_users_ajax');
         $sQuery = "from $sUserTable where 1  and oxshopid = '" . $this->getShopId() . "'";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountUsersAjax::_getQuery() test case
+     * DiscountUsersAjax::getQuery() test case
      */
     public function testGetQueryOxid()
     {
@@ -74,11 +74,11 @@ class DiscountUsersAjaxTest extends \OxidTestCase
         $sQuery .= " where oxobject2group.oxgroupsid = '_testOxid' and $sUserTable.oxshopid = '" . $this->getShopId() . "'  and";
         $sQuery .= " $sUserTable.oxid not in ( select $sUserTable.oxid from oxobject2discount, $sUserTable where $sUserTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxuser' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**
-     * DiscountUsersAjax::_getQuery() test case
+     * DiscountUsersAjax::getQuery() test case
      */
     public function testGetQuerySynchoxid()
     {
@@ -91,7 +91,7 @@ class DiscountUsersAjaxTest extends \OxidTestCase
         $sQuery = "from $sUserTable where 1  and oxshopid = '" . $this->getShopId() . "'  and";
         $sQuery .= " $sUserTable.oxid not in ( select $sUserTable.oxid from oxobject2discount, $sUserTable where $sUserTable.oxid=oxobject2discount.oxobjectid ";
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxuser' )";
-        $this->assertEquals($sQuery, trim($oView->_getQuery()));
+        $this->assertEquals($sQuery, trim($oView->getQuery()));
     }
 
     /**

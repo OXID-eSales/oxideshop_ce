@@ -44,7 +44,7 @@ class modForTestInitLoadingPriority extends oxConfig
 {
     public $iDebug;
 
-    protected function _loadVarsFromDb($sShopID, $aOnlyVars = null, $sModule = '')
+    protected function loadVarsFromDb($sShopID, $aOnlyVars = null, $sModule = '')
     {
         $this->_setConfVarFromDb("iDebug", "str", 33);
 
@@ -228,7 +228,7 @@ class ConfigTest extends \OxidTestCase
         return $res;
     }
 
-    private function _getOutPath($oConfig, $sTheme = null, $blAbsolute = true)
+    private function getOutPath($oConfig, $sTheme = null, $blAbsolute = true)
     {
         $sShop = $blAbsolute ? $oConfig->getConfigParam('sShopDir') : "";
 
@@ -243,7 +243,7 @@ class ConfigTest extends \OxidTestCase
         return $sShop . 'out/' . $sTheme;
     }
 
-    private function _getViewsPath($oConfig, $sTheme = null, $blAbsolute = true)
+    private function getViewsPath($oConfig, $sTheme = null, $blAbsolute = true)
     {
         $sShop = $blAbsolute ? $oConfig->getConfigParam('sShopDir') : "";
 
@@ -524,7 +524,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
+        $oConfig->loadVarsFromDb($sShopId, array($sVar));
 
         $this->assertEquals(($sVal == 'true' || $sVal == '1'), $oConfig->getConfigParam($sVar));
     }
@@ -542,7 +542,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
+        $oConfig->loadVarsFromDb($sShopId, array($sVar));
 
         $this->assertEquals(unserialize($sVal), $oConfig->getConfigParam($sVar));
     }
@@ -560,7 +560,7 @@ class ConfigTest extends \OxidTestCase
         $sQ = 'select oxvarvalue from oxconfig where oxshopid="' . $sShopId . '" and oxvarname="' . $sVar . '" and oxmodule=""';
         $sVal = oxDb::getDb()->getOne($sQ);
 
-        $oConfig->_loadVarsFromDB($sShopId, array($sVar));
+        $oConfig->loadVarsFromDb($sShopId, array($sVar));
 
         $this->assertEquals($sVal, $oConfig->getConfigParam($sVar));
     }
@@ -572,7 +572,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         $sShopId = $oConfig->getBaseShopId();
 
-        $oConfig->_loadVarsFromDB($sShopId, array(time()));
+        $oConfig->loadVarsFromDb($sShopId, array(time()));
 
         $this->assertNull($oConfig->getConfigParam('nonExistingParameter'));
     }
@@ -1060,14 +1060,14 @@ class ConfigTest extends \OxidTestCase
     public function testGetResourceUrlExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, 'admin', false) . "src/";
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, 'admin', false) . "src/";
         $this->assertEquals($sDir, $oConfig->getResourceUrl('', true));
     }
 
     public function testGetResourceUrlNonAdminExpectsDefault()
     {
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, null, false) . "src/";
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, null, false) . "src/";
         $this->assertEquals($sDir, $oConfig->getResourceUrl());
     }
 
@@ -1079,7 +1079,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $sDir = $this->_getViewsPath($oConfig);
+        $sDir = $this->getViewsPath($oConfig);
         $sDir .= 'tpl/';
 
         $this->assertEquals($sDir, $oConfig->getTemplateDir());
@@ -1089,7 +1089,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $sDir = $this->_getViewsPath($oConfig, 'admin') . 'tpl/';
+        $sDir = $this->getViewsPath($oConfig, 'admin') . 'tpl/';
         $this->assertEquals($sDir, $oConfig->getTemplateDir(true));
     }
 
@@ -1101,7 +1101,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getViewsPath($oConfig, null, false);
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getViewsPath($oConfig, null, false);
         $sDir .= 'tpl/';
 
         $this->assertEquals($sDir, $oConfig->getTemplateUrl());
@@ -1111,7 +1111,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getViewsPath($oConfig, 'admin', false) . 'tpl/';
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getViewsPath($oConfig, 'admin', false) . 'tpl/';
         $this->assertEquals($sDir, $oConfig->getTemplateUrl(null, true));
     }
 
@@ -1126,7 +1126,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
         $oConfig->init();
 
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, null, false) . 'src/';
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, null, false) . 'src/';
         $this->assertEquals($sDir, $oConfig->getResourceUrl());
     }
 
@@ -1146,7 +1146,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $sDir = $this->_getViewsPath($oConfig) . 'tpl/page/shop/start.tpl';
+        $sDir = $this->getViewsPath($oConfig) . 'tpl/page/shop/start.tpl';
 
         $this->assertEquals($sDir, $oConfig->getTemplatePath('page/shop/start.tpl', false));
     }
@@ -1155,7 +1155,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $sDir = $this->_getViewsPath($oConfig, 'admin') . 'tpl/start.tpl';
+        $sDir = $this->getViewsPath($oConfig, 'admin') . 'tpl/start.tpl';
         $this->assertEquals($sDir, $oConfig->getTemplatePath('start.tpl', true));
     }
 
@@ -1206,7 +1206,7 @@ class ConfigTest extends \OxidTestCase
 
         $oConfig->init();
 
-        $sDir = $this->_getOutPath($oConfig) . 'img/';
+        $sDir = $this->getOutPath($oConfig) . 'img/';
         $this->assertEquals($sDir, $oConfig->getImageDir());
     }
 
@@ -1220,8 +1220,8 @@ class ConfigTest extends \OxidTestCase
         oxRegistry::getLang()->setTplLanguage(4);
 
         $oConfig->init();
-        $sLangDir = $this->_getOutPath($oConfig) . 'img/';
-        $sNoLangDir = $this->_getOutPath($oConfig) . 'img/';
+        $sLangDir = $this->getOutPath($oConfig) . 'img/';
+        $sNoLangDir = $this->getOutPath($oConfig) . 'img/';
         $failed = false;
 
         try {
@@ -1236,7 +1236,7 @@ class ConfigTest extends \OxidTestCase
         if (is_dir(realpath($sLangDir))) {
             rmdir($sLangDir);
         }*/
-        $sD = $this->_getOutPath($oConfig) . '/4';
+        $sD = $this->getOutPath($oConfig) . '/4';
         if (is_dir(realpath($sD))) {
             rmdir($sD);
         }
@@ -1353,7 +1353,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->setConfigParam('blNativeImages', true);
 
         $sUrl = $oConfig->getConfigParam('sSSLShopURL') ? $oConfig->getConfigParam('sSSLShopURL') : $oConfig->getConfigParam('sShopURL');
-        $sUrl .= $this->_getOutPath($oConfig, null, false) . 'img/';
+        $sUrl .= $this->getOutPath($oConfig, null, false) . 'img/';
         $this->assertEquals($sUrl, $oConfig->getImageUrl());
     }
 
@@ -1364,7 +1364,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
 
         $sUrl = $oConfig->getConfigParam('sShopURL');
-        $sUrl .= $this->_getOutPath($oConfig, null, false) . 'img/';
+        $sUrl .= $this->getOutPath($oConfig, null, false) . 'img/';
 
         $this->assertEquals($sUrl, $oConfig->getImageUrl());
     }
@@ -1396,7 +1396,7 @@ class ConfigTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, null, false) . 'img/';
+        $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, null, false) . 'img/';
 
         $this->assertEquals($sDir, $oConfig->getImageUrl());
     }
@@ -1822,7 +1822,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
 
-        $sOutDir = $sTestDir . $this->_getOutPath($oConfig, 'test4', false);
+        $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test1', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . '1/de/test1/text.txt', $sDir);
@@ -1839,7 +1839,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
 
-        $sOutDir = $sTestDir . $this->_getOutPath($oConfig, 'test4', false);
+        $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test2', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . '1/test2/text.txt', $sDir);
@@ -1856,7 +1856,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
 
-        $sOutDir = $sTestDir . $this->_getOutPath($oConfig, 'test4', false);
+        $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test2a', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . 'de/test2a/text.txt', $sDir);
@@ -1873,7 +1873,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
 
-        $sOutDir = $sTestDir . $this->_getOutPath($oConfig, 'test4', false);
+        $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test3', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . 'test3/text.txt', $sDir);
@@ -1890,7 +1890,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
         $oConfig->init();
 
-        $sOutDir = $sTestDir . $this->_getOutPath($oConfig, 'test4', false);
+        $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test4', false, 0, 1, 'test4');
         $this->assertEquals($sOutDir . 'text.txt', $sDir);

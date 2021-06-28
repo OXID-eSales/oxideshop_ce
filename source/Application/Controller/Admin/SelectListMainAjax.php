@@ -60,13 +60,13 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // looking for table/view
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sArtTable = $this->getViewName('oxarticles');
+        $sO2CView = $this->getViewName('oxobject2category');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchSelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -102,10 +102,10 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function removeArtFromSel()
     {
-        $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
+        $aChosenArt = $this->getActionIds('oxobject2selectlist.oxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete oxobject2selectlist.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
@@ -120,12 +120,12 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function addArtToSel()
     {
-        $aAddArticle = $this->_getActionIds('oxarticles.oxid');
+        $aAddArticle = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aAddArticle = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $sArtTable = $this->getViewName('oxarticles');
+            $aAddArticle = $this->getAll(parent::addFilter("select $sArtTable.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {

@@ -242,9 +242,9 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sQ = parent::_buildSelectString($oListObject);
+        $sQ = parent::buildSelectString($oListObject);
         if ($sQ) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sTable = $tableViewNameGenerator->getViewName("oxarticles");

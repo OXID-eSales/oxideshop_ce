@@ -1010,9 +1010,9 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
         $oDelivery->oxdelivery__oxparam = new oxField(80);
         $oDelivery->oxdelivery__oxparamend = new oxField(100);
-        $this->assertFalse($oDelivery->_checkDeliveryAmount(50));
-        $this->assertTrue($oDelivery->_checkDeliveryAmount(81));
-        $this->assertFalse($oDelivery->_checkDeliveryAmount(110));
+        $this->assertFalse($oDelivery->checkDeliveryAmount(50));
+        $this->assertTrue($oDelivery->checkDeliveryAmount(81));
+        $this->assertFalse($oDelivery->checkDeliveryAmount(110));
 
         $this->getConfig()->setActShopCurrency(2);
         $oDelivery = oxNew('oxDelivery');
@@ -1020,9 +1020,9 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
         $oDelivery->oxdelivery__oxparam = new oxField(80); // eur
         $oDelivery->oxdelivery__oxparamend = new oxField(100); // eur
-        $this->assertFalse($oDelivery->_checkDeliveryAmount(81)); // chf -> 55.1 eur
-        $this->assertTrue($oDelivery->_checkDeliveryAmount(120)); // chf -> 81 eur
-        $this->assertFalse($oDelivery->_checkDeliveryAmount(161)); // chf -> 110 eur
+        $this->assertFalse($oDelivery->checkDeliveryAmount(81)); // chf -> 55.1 eur
+        $this->assertTrue($oDelivery->checkDeliveryAmount(120)); // chf -> 81 eur
+        $this->assertFalse($oDelivery->checkDeliveryAmount(161)); // chf -> 110 eur
     }
 
     public function testIsDeliveryRuleFitByArticle()

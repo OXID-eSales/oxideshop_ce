@@ -66,9 +66,9 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
+        $sQ = parent::prepareWhereQuery($aWhere, $sqlFull);
         $sFolder = Registry::getRequest()->getRequestEscapedParameter('folder');
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName("oxcontents");

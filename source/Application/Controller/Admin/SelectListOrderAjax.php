@@ -34,9 +34,9 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSelTable = $this->_getViewName('oxselectlist');
+        $sSelTable = $this->getViewName('oxselectlist');
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
@@ -48,7 +48,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'order by oxobject2selectlist.oxsort ';
     }
@@ -98,11 +98,11 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         }
 
-        $sQAdd = $this->_getQuery();
+        $sQAdd = $this->getQuery();
 
-        $sQ = 'select ' . $this->_getQueryCols() . $sQAdd;
+        $sQ = 'select ' . $this->getQueryCols() . $sQAdd;
         $sCountQ = 'select count( * ) ' . $sQAdd;
 
-        $this->_outputResponse($this->_getData($sCountQ, $sQ));
+        $this->outputResponse($this->getData($sCountQ, $sQ));
     }
 }

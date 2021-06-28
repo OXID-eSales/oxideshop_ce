@@ -18,32 +18,32 @@ class UserRegistrationAdminTest extends AdminTestCase
      */
     public function testUserDisplayed()
     {
-        $aUserData = $this->_getUserData('1');
+        $aUserData = $this->getUserData('1');
         $sUserId = $this->callShopSC('oxuser', 'save', null, $aUserData);
 
-        $aAddressData = $this->_getAddressData('1');
+        $aAddressData = $this->getAddressData('1');
         $aAddressData['oxuserid'] = $sUserId;
         $this->callShopSC('oxaddress', 'save', null, $aAddressData);
 
         $this->loginAdmin("Administer Users", "Users");
         $this->openListItem("link=" . $aUserData['oxusername'], "where[oxuser][oxusername]");
 
-        $this->_assertUserDisplayed($aUserData);
+        $this->assertUserDisplayed($aUserData);
 
         $this->openTab("Extended");
 
-        $this->_assertUserExtendedInfoDisplayed($aUserData);
+        $this->assertUserExtendedInfoDisplayed($aUserData);
 
         $this->openTab("Addresses");
 
-        $this->_assertUserAddressDisplayed($aAddressData);
+        $this->assertUserAddressDisplayed($aAddressData);
     }
 
     /**
      * @param string $sId
      * @return array
      */
-    protected function _getUserData($sId)
+    protected function getUserData($sId)
     {
         $aData = array(
             "oxusername" => "example01@oxid-esa...",
@@ -54,7 +54,7 @@ class UserRegistrationAdminTest extends AdminTestCase
             "oxbirthdate" => rand(1960, 2000) . '-' . rand(10, 12) . '-' . rand(10, 28),
         );
 
-        $aAddressData = $this->_getAddressData($sId);
+        $aAddressData = $this->getAddressData($sId);
 
         return array_merge($aData, $aAddressData);
     }
@@ -62,7 +62,7 @@ class UserRegistrationAdminTest extends AdminTestCase
     /**
      * @return array
      */
-    protected function _getAddressData()
+    protected function getAddressData()
     {
         $aData = array(
             "oxfname" => "user1 name_šÄßüл",
@@ -84,7 +84,7 @@ class UserRegistrationAdminTest extends AdminTestCase
     /**
      * @param $aUserData
      */
-    protected function _assertUserDisplayed($aUserData)
+    protected function assertUserDisplayed($aUserData)
     {
         $this->assertEquals("on", $this->getValue("editval[oxuser__oxactive]"));
         $this->assertTextPresent($aUserData['oxpassword'] ? "Yes" : "No", "Password not set");
@@ -111,7 +111,7 @@ class UserRegistrationAdminTest extends AdminTestCase
     /**
      * @param $aUserData
      */
-    protected function _assertUserExtendedInfoDisplayed($aUserData)
+    protected function assertUserExtendedInfoDisplayed($aUserData)
     {
         $this->assertEquals($aUserData['oxprivfon'], $this->getValue('editval[oxuser__oxprivfon]'), "Failed on editval[oxuser__oxprivfon]");
         $this->assertEquals($aUserData['oxmobfon'], $this->getValue('editval[oxuser__oxmobfon]'), "Failed on editval[oxuser__oxmobfon]");
@@ -120,7 +120,7 @@ class UserRegistrationAdminTest extends AdminTestCase
     /**
      * @param $aAddressData
      */
-    protected function _assertUserAddressDisplayed($aAddressData)
+    protected function assertUserAddressDisplayed($aAddressData)
     {
         $sAddressId = $aAddressData['oxfname'] . ' ' . $aAddressData['oxlname'] . ', ' .
                       $aAddressData['oxstreet'] . ', ' . $aAddressData['oxcity'];

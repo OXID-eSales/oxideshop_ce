@@ -123,15 +123,15 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         if ($iIndex == "ICO") {
             // deleting main icon
-            $this->_deleteMainIcon($oArticle);
+            $this->deleteMainIcon($oArticle);
         } elseif ($iIndex == "TH") {
             // deleting thumbnail
-            $this->_deleteThumbnail($oArticle);
+            $this->deleteThumbnail($oArticle);
         } else {
             $iIndex = (int) $iIndex;
             if ($iIndex > 0) {
                 // deleting master picture
-                $this->_resetMasterPicture($oArticle, $iIndex, true);
+                $this->resetMasterPicture($oArticle, $iIndex, true);
             }
         }
 
@@ -146,7 +146,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * @param int                                         $iIndex         master picture index
      * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
      */
-    protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canResetMasterPicture($oArticle, $iIndex)) {
             if (!$oArticle->isDerived()) {
@@ -165,7 +165,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
 
             if ($iIndex == 1) {
-                $this->_cleanupCustomFields($oArticle);
+                $this->cleanupCustomFields($oArticle);
             }
         }
     }
@@ -175,7 +175,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canDeleteMainIcon($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -193,7 +193,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canDeleteThumbnail($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -212,7 +212,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sIcon = $oArticle->oxarticles__oxicon->value;
         $sThumb = $oArticle->oxarticles__oxthumb->value;

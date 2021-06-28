@@ -45,12 +45,12 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sCatTable = $this->_getViewName('oxcategories');
+        $sCatTable = $this->getViewName('oxcategories');
         $sDiscountId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchDiscountId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
@@ -83,10 +83,10 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      */
     public function removeCatFromAttr()
     {
-        $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
+        $aChosenCat = $this->getActionIds('oxcategory2attribute.oxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxcategory2attribute.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
             $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
@@ -104,14 +104,14 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      */
     public function addCatToAttr()
     {
-        $aAddCategory = $this->_getActionIds('oxcategories.oxid');
+        $aAddCategory = $this->getActionIds('oxcategories.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sCatTable = $this->_getViewName('oxcategories');
-            $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
+            $sCatTable = $this->getViewName('oxcategories');
+            $aAddCategory = $this->getAll($this->addFilter("select $sCatTable.oxid " . $this->getQuery()));
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {

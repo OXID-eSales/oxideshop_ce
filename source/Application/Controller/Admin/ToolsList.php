@@ -46,7 +46,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
             $sUpdateSQL = Registry::getRequest()->getRequestEscapedParameter("updatesql");
-            $sUpdateSQLFile = $this->_processFiles();
+            $sUpdateSQLFile = $this->processFiles();
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
                 if (isset($sUpdateSQL) && strlen($sUpdateSQL)) {
@@ -59,7 +59,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             $sUpdateSQL = trim(stripslashes($sUpdateSQL));
             $oStr = Str::getStr();
             $iLen = $oStr->strlen($sUpdateSQL);
-            if ($this->_prepareSQL($sUpdateSQL, $iLen)) {
+            if ($this->prepareSQL($sUpdateSQL, $iLen)) {
                 $aQueries = $this->aSQLs;
                 $this->_aViewData["aQueries"] = [];
                 $aPassedQueries = [];
@@ -122,7 +122,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function _processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
@@ -166,7 +166,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function _prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sStrStart = "";
         $blString = false;

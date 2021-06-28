@@ -35,7 +35,7 @@ class UtilsFileTest extends \OxidTestCase
         $sFilePath = $this->getConfig()->getPictureDir(false) . "/master/product/1/";
 
         $oUtilsFile = oxNew('oxUtilsFile');
-        $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->_getUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
+        $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->getUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
     }
 
     public function testGetImageSize()
@@ -48,19 +48,19 @@ class UtilsFileTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("sThumbnailsize", '100*100');
 
         // details img size
-        $this->assertEquals(array(251, 201), $oUtilsFile->_getImageSize(null, 1, 'aDetailImageSizes'));
+        $this->assertEquals(array(251, 201), $oUtilsFile->getImageSize(null, 1, 'aDetailImageSizes'));
 
         // details img size
-        $this->assertEquals(array(253, 203), $oUtilsFile->_getImageSize(null, 3, 'aDetailImageSizes'));
+        $this->assertEquals(array(253, 203), $oUtilsFile->getImageSize(null, 3, 'aDetailImageSizes'));
 
         // zoom img size
-        $this->assertEquals(array(450, 450), $oUtilsFile->_getImageSize(null, 2, 'sZoomImageSize'));
+        $this->assertEquals(array(450, 450), $oUtilsFile->getImageSize(null, 2, 'sZoomImageSize'));
 
         // thumbnail img size
-        $this->assertEquals(array(100, 100), $oUtilsFile->_getImageSize(null, null, 'sThumbnailsize'));
+        $this->assertEquals(array(100, 100), $oUtilsFile->getImageSize(null, null, 'sThumbnailsize'));
 
         // non existing img type size
-        $this->assertNull($oUtilsFile->_getImageSize('nonexisting', '666', 'nonexisting'));
+        $this->assertNull($oUtilsFile->getImageSize('nonexisting', '666', 'nonexisting'));
     }
 
     public function testCheckFile()
@@ -136,34 +136,34 @@ class UtilsFileTest extends \OxidTestCase
         $sTargetFilePathCVS = $sTargetDir . DIRECTORY_SEPARATOR . "deeper" . DIRECTORY_SEPARATOR . "CVS";
 
         //test with textfile
-        if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
+        if ($this->prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathText), is_file($sTargetFilePathText));
-            $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
+            $this->cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
         }
 
         //test with nopic.jpg
-        if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic)) {
+        if ($this->prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopic), is_file($sTargetFilePathnopic));
-            $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic, $sTargetFilePathnopic);
+            $this->cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic, $sTargetFilePathnopic);
         }
 
         //test with nopic_ico.jpg
-        if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco)) {
+        if ($this->prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopicIco), is_file($sTargetFilePathnopicIco));
-            $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco, $sTargetFilePathnopicIco);
+            $this->cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco, $sTargetFilePathnopicIco);
         }
 
         //test with textfile and sub folder with CVS file
-        if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
-            $this->_prepareCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS);
+        if ($this->prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
+            $this->prepareCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS);
 
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathCVS), is_file($sTargetFilePathCVS));
-            $this->_cleanupCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS, $sTargetFilePathCVS);
-            $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
+            $this->cleanupCopyDir($sSourceDeeperDir, $sTargetDeeperDir, $sSourceFilePathCVS, $sTargetFilePathCVS);
+            $this->cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
         }
     }
 
@@ -178,14 +178,14 @@ class UtilsFileTest extends \OxidTestCase
         if (mkdir($sDir) && mkdir($sDir . DIRECTORY_SEPARATOR . $sSubDir) && is_dir($sDir) && is_dir($sDir . addslashes(DIRECTORY_SEPARATOR) . $sSubDir)) {
             $hFileHandle = fopen($sDir . DIRECTORY_SEPARATOR . $sFileName, 'w');
             if (!$hFileHandle) {
-                $this->_cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir);
+                $this->cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir);
                 $this->fail('Failed to create file!');
             }
         } else {
-            $this->_cleanupDeleteDir(null, $sDir, $sFileName, $sSubDir);
+            $this->cleanupDeleteDir(null, $sDir, $sFileName, $sSubDir);
             $this->fail('Failed to set up test dirs');
         }
-        $this->_cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir);
+        $this->cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir);
     }
 
 
@@ -303,7 +303,7 @@ class UtilsFileTest extends \OxidTestCase
 
     // 20070720-AS - End setup
     // 20070720-AS - assure generated file exists and it's handle is closed before deleting
-    protected function _cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir)
+    protected function cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir)
     {
         if (($hFileHandle != null) && (fclose($hFileHandle))) {
             $blDeleted = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->deleteDir($sDir); //actual test
@@ -322,7 +322,7 @@ class UtilsFileTest extends \OxidTestCase
     /**
      * creates directory and file for copyDirTest
      */
-    protected function _prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath)
+    protected function prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath)
     {
 
         // try to create source dir
@@ -352,7 +352,7 @@ class UtilsFileTest extends \OxidTestCase
         return true;
     }
 
-    protected function _cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath, $sTargetFilePath)
+    protected function cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath, $sTargetFilePath)
     {
         //try to remove dir and delete files
         if (file_exists($sTargetFilePath) && unlink($sTargetFilePath)) {

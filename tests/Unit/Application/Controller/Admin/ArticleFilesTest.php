@@ -341,7 +341,7 @@ class ArticleFilesTest extends \OxidTestCase
     }
 
     /**
-     * Test for Article_Files::_processOptions()
+     * Test for Article_Files::processOptions()
      *
      * @return null
      */
@@ -356,7 +356,7 @@ class ArticleFilesTest extends \OxidTestCase
         $aResults["oxfiles__oxmaxunregdownloads"] = -1;
         $aResults["oxfiles__oxmaxdownloads"] = -1;
         $oView = $this->getProxyClass("Article_Files");
-        $this->assertEquals($aResults, $oView->_processOptions($aParams));
+        $this->assertEquals($aResults, $oView->processOptions($aParams));
     }
 
     /**

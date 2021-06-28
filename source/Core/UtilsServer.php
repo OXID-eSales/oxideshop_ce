@@ -54,7 +54,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
         if ($blToSession && !$this->isAdmin()) {
-            $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
+            $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
         if (defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
@@ -68,8 +68,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $sName,
             $sValue,
             $iExpire,
-            $this->_getCookiePath($sPath),
-            $this->_getCookieDomain($sDomain),
+            $this->getCookiePath($sPath),
+            $this->getCookieDomain($sDomain),
             $blSecure,
             $blHttpOnly
         );
@@ -82,7 +82,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blSaveToSession === null) {
             $this->_blSaveToSession = false;
@@ -112,7 +112,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSsl = \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl();
         $sKey = $blSsl ? 'nossl' : 'ssl';
@@ -133,13 +133,13 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
      */
-    protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_mustSaveToSession()) {
+        if ($this->mustSaveToSession()) {
             $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
 
             $aSessionCookies = (array) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
-            $aSessionCookies[$this->_getSessionCookieKey(false)][$sName] = $aCookieData;
+            $aSessionCookies[$this->getSessionCookieKey(false)][$sName] = $aCookieData;
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
         }
@@ -151,7 +151,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function loadSessionCookies()
     {
         if (($aSessionCookies = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName))) {
-            $sKey = $this->_getSessionCookieKey(true);
+            $sKey = $this->getSessionCookieKey(true);
             if (isset($aSessionCookies[$sKey])) {
                 // writing session data to cookies
                 foreach ($aSessionCookies[$sKey] as $sName => $aCookieData) {
@@ -176,7 +176,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aCookiePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCookiePaths')) {
             // in case user wants to have shop specific setup
@@ -198,7 +198,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDomain = $sDomain ? $sDomain : "";
 

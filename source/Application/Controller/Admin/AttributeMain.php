@@ -36,7 +36,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         // copy this tree for our article choose
         if (isset($soxId) && $soxId != "-1") {
             // generating category tree for select list
-            $this->_createCategoryTree("artcattree", $soxId);
+            $this->createCategoryTree("artcattree", $soxId);
             // load object
             $oAttr->loadInLang($this->_iEditLang, $soxId);
 

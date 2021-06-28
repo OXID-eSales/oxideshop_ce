@@ -94,7 +94,7 @@ class LanguageListTest extends \OxidTestCase
         $oLang2->default = false;
 
         $oView = oxNew('Language_List');
-        $this->assertEquals(array($oLang1, $oLang2), $oView->_getLanguagesList());
+        $this->assertEquals(array($oLang1, $oLang2), $oView->getLanguagesList());
     }
 
     /**
@@ -110,20 +110,20 @@ class LanguageListTest extends \OxidTestCase
         $oLang1->sort = 'EN';
         $oLang2 = new stdClass();
         $oLang2->sort = 'DE';
-        $this->assertEquals(1, $oView->_sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertEquals(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 'DE';
         $oLang2 = new stdClass();
         $oLang2->sort = 'EN';
-        $this->assertEquals(-1, $oView->_sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertEquals(-1, $oView->sortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 1;
         $oLang2 = new stdClass();
         $oLang2->sort = 2;
         $oView->setNonPublicVar("_sDefSortOrder", "desc");
-        $this->assertEquals(1, $oView->_sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertEquals(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
     }
 
     /**
@@ -138,7 +138,7 @@ class LanguageListTest extends \OxidTestCase
 
         try {
             $oView = oxNew('Language_List');
-            $oView->_resetMultiLangDbFields(3);
+            $oView->resetMultiLangDbFields(3);
         } catch (Exception $oExcp) {
             $this->assertEquals("addErrorToDisplay", $oExcp->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
 
@@ -157,6 +157,6 @@ class LanguageListTest extends \OxidTestCase
         oxTestModules::addFunction('oxDbMetaDataHandler', 'resetLanguage', '{}');
 
         $oView = oxNew('Language_List');
-        $this->assertNull($oView->_resetMultiLangDbFields(3));
+        $this->assertNull($oView->resetMultiLangDbFields(3));
     }
 }

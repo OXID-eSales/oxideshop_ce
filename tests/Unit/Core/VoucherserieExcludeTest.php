@@ -22,10 +22,10 @@ class VoucherserieExcludeTest extends \OxidTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->_insertData();
+        $this->insertData();
     }
 
-    protected function _insertData()
+    protected function insertData()
     {
         $sShopIdFields = "`OXSHOPID`";
         $sShopIdValues = ShopIdCalculator::BASE_SHOP_ID;

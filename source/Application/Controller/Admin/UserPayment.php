@@ -74,7 +74,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $this->_aViewData["userpayments"] = $this->getUserPayments();
         $sOxId = $this->getEditObjectId();
 
-        if (!$this->_allowAdminEdit($sOxId)) {
+        if (!$this->allowAdminEdit($sOxId)) {
             $this->_aViewData['readonly'] = true;
         }
 
@@ -89,7 +89,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        if ($this->_allowAdminEdit($soxId)) {
+        if ($this->allowAdminEdit($soxId)) {
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
             $aDynvalues = Registry::getRequest()->getRequestEscapedParameter("dynvalue");
 
@@ -115,7 +115,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
         $soxId = $this->getEditObjectId();
-        if ($this->_allowAdminEdit($soxId)) {
+        if ($this->allowAdminEdit($soxId)) {
             if ($aParams['oxuserpayments__oxid'] != "-1") {
                 $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
                 if ($oAdress->load($aParams['oxuserpayments__oxid'])) {

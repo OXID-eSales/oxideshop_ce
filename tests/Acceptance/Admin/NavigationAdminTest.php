@@ -18,9 +18,9 @@ class NavigationAdminTest extends AdminTestCase
      */
     public function testFrontendNewsletterAdmin()
     {
-        $aUserData = $this->_getUserData();
+        $aUserData = $this->getUserData();
         $sUserId = $this->callShopSC('oxuser', 'save', null, $aUserData);
-        $aSubscriberInfo = $this->_getSubscriberInfo($sUserId);
+        $aSubscriberInfo = $this->getSubscriberInfo($sUserId);
         $this->callShopSC('oxNewsSubscribed', 'save', null, $aSubscriberInfo);
 
         //checking if user was created
@@ -39,7 +39,7 @@ class NavigationAdminTest extends AdminTestCase
     /**
      * @return array
      */
-    protected function _getUserData()
+    protected function getUserData()
     {
         $aData = array(
             "oxusername" => "example01@oxid-esales.dev",
@@ -57,7 +57,7 @@ class NavigationAdminTest extends AdminTestCase
      * @param $sUserId
      * @return array
      */
-    protected function _getSubscriberInfo($sUserId)
+    protected function getSubscriberInfo($sUserId)
     {
         $aParameters = array(
             'OXSAL' => 'MRS',

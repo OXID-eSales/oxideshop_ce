@@ -100,7 +100,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
-        $this->_toList('noticelist', $sProductId, $dAmount, $aSel);
+        $this->toList('noticelist', $sProductId, $dAmount, $aSel);
     }
 
     /**
@@ -121,7 +121,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // only if enabled
         if ($this->getViewConfig()->getShowWishlist()) {
-            $this->_toList('wishlist', $sProductId, $dAmount, $aSel);
+            $this->toList('wishlist', $sProductId, $dAmount, $aSel);
         }
     }
 
@@ -133,7 +133,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
      */
-    protected function _toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {

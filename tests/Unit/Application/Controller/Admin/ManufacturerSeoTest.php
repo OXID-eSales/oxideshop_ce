@@ -74,18 +74,18 @@ class ManufacturerSeoTest extends \OxidTestCase
     }
 
     /**
-     * Manufacturer_Seo::_getEncoder() test case
+     * Manufacturer_Seo::getEncoder() test case
      *
      * @return null
      */
     public function testGetEncoder()
     {
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertTrue($oView->_getEncoder() instanceof SeoEncoderManufacturer);
+        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderManufacturer);
     }
 
     /**
-     * Manufacturer_Seo::_getEncoder() test case
+     * Manufacturer_Seo::getEncoder() test case
      *
      * @return null
      */
@@ -96,7 +96,7 @@ class ManufacturerSeoTest extends \OxidTestCase
     }
 
     /**
-     * Manufacturer_Seo::_getEncoder() test case
+     * Manufacturer_Seo::getEncoder() test case
      *
      * @return null
      */
@@ -125,7 +125,7 @@ class ManufacturerSeoTest extends \OxidTestCase
     }
 
     /**
-     * Manufacturer_Seo::_getEncoder() test case
+     * Manufacturer_Seo::getEncoder() test case
      *
      * @return null
      */
@@ -139,9 +139,9 @@ class ManufacturerSeoTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, array("getManufacturerUri"));
         $oEncoder->expects($this->once())->method('getManufacturerUri')->will($this->returnValue("ManufacturerUri"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, array("getEditObjectId", "_getEncoder"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, array("getEditObjectId", "getEncoder"));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
+        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
         $this->assertEquals("ManufacturerUri", $oView->getEntryUri());
     }
 

@@ -68,7 +68,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
-        if (!$this->_allowAdminEdit($soxId)) {
+        if (!$this->allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
 
@@ -82,7 +82,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        if ($this->_allowAdminEdit($this->getEditObjectId())) {
+        if ($this->allowAdminEdit($this->getEditObjectId())) {
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
             $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] == "-1") {
@@ -104,7 +104,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function delAddress()
     {
         $this->_blDelete = false;
-        if ($this->_allowAdminEdit($this->getEditObjectId())) {
+        if ($this->allowAdminEdit($this->getEditObjectId())) {
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
             if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] != "-1") {
                 $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);

@@ -107,10 +107,10 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
                     $this->getArticleList();
 
                     // checking if requested page is correct
-                    $this->_checkRequestedPage();
+                    $this->checkRequestedPage();
 
                     // processing list articles
-                    $this->_processListArticles();
+                    $this->processListArticles();
                 }
             }
         }
@@ -123,7 +123,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return OXARTICLE_LINKTYPE_MANUFACTURER;
     }
@@ -135,7 +135,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function _loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sManufacturerId = $oManufacturer->getId();
 
@@ -144,7 +144,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
+        $oArtList->setSqlLimit($iNrofCatArticles * $this->getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
         // load the articles
@@ -161,7 +161,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oManufacturer = $this->getActManufacturer())) {
             return $oManufacturer->getId();
@@ -178,7 +178,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
@@ -187,7 +187,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
             }
         }
 
-        return parent::_addPageNrParam($sUrl, $iPage, $iLang);
+        return parent::addPageNrParam($sUrl, $iPage, $iLang);
     }
 
     /**
@@ -252,7 +252,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 $oManufacturer = $this->getActManufacturer();
                 if ($oManufacturer && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
-                    list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oManufacturer);
+                    list($aArticleList, $iAllArtCnt) = $this->loadArticles($oManufacturer);
                     if ($iAllArtCnt) {
                         $this->_aArticleList = $aArticleList;
                     }
@@ -343,16 +343,16 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Calls and returns result of parent:: _collectMetaKeyword();
+     * Calls and returns result of parent:: collectMetaKeyword();
      *
      * @param mixed $aCatPath                category path
      * @param bool  $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return parent::_collectMetaKeyword($aCatPath);
+        return parent::collectMetaKeyword($aCatPath);
     }
 
     /**
@@ -367,9 +367,9 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return  string  $sString    converted string
      */
-    protected function _prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return parent::_collectMetaDescription($aCatPath, $iLength, $blDescTag);
+        return parent::collectMetaDescription($aCatPath, $iLength, $blDescTag);
     }
 
     /**
@@ -380,7 +380,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getActManufacturer();
     }

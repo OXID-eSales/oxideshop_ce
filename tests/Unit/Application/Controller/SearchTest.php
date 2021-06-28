@@ -35,7 +35,7 @@ class SearchTest extends \OxidTestCase
 
 
     /**
-     * search::_processListArticles() when seo is off
+     * search::processListArticles() when seo is off
      *
      * @return null
      */
@@ -57,11 +57,11 @@ class SearchTest extends \OxidTestCase
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
-        $oSearchView->_processListArticles();
+        $oSearchView->processListArticles();
     }
 
     /**
-     * search::_processListArticles() when seo is on
+     * search::processListArticles() when seo is on
      *
      * @return null
      */
@@ -83,7 +83,7 @@ class SearchTest extends \OxidTestCase
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
-        $oSearchView->_processListArticles();
+        $oSearchView->processListArticles();
     }
 
     public function testGetArticleList()
@@ -174,10 +174,10 @@ class SearchTest extends \OxidTestCase
         $n = $this->getMock(
             'search',
             array(
-                           '_processListArticles'
+                           'processListArticles'
                       )
         );
-        $n->expects($this->once())->method('_processListArticles');
+        $n->expects($this->once())->method('processListArticles');
 
         $this->assertEquals('page/search/search.tpl', $n->render());
     }
@@ -210,11 +210,11 @@ class SearchTest extends \OxidTestCase
         $n = $this->getMock(
             'search',
             array(
-                           '_processListArticles',
+                           'processListArticles',
                            'addRssFeed'
                       )
         );
-        $n->expects($this->once())->method('_processListArticles');
+        $n->expects($this->once())->method('processListArticles');
         $n->expects($this->once())->method('addRssFeed')->with($this->equalTo('rss1title'), $this->equalTo('rss1url'), $this->equalTo('searchArticles'));
 
         $this->assertEquals('page/search/search.tpl', $n->render());

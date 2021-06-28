@@ -16,14 +16,14 @@ class CreditsTest extends \OxidTestCase
 {
 
     /**
-     * Test case for Credits::_getSeoObjectId()
+     * Test case for Credits::getSeoObjectId()
      *
      * @return null
      */
     public function testGetSeoObjectId()
     {
         $oView = oxNew('Credits');
-        $this->assertEquals("oxcredits", $oView->_getSeoObjectId());
+        $this->assertEquals("oxcredits", $oView->getSeoObjectId());
     }
 
     /**

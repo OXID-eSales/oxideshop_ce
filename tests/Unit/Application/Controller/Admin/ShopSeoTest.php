@@ -66,7 +66,7 @@ class ShopSeoTest extends \OxidTestCase
         // testing..
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sActSeoObject", $sObjectId);
-        $oView->_loadActiveUrl($iShopId);
+        $oView->loadActiveUrl($iShopId);
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -76,7 +76,7 @@ class ShopSeoTest extends \OxidTestCase
 
         //
         $oView->setNonPublicVar("_sActSeoObject", null);
-        $oView->_loadActiveUrl($iShopId);
+        $oView->loadActiveUrl($iShopId);
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -130,16 +130,16 @@ class ShopSeoTest extends \OxidTestCase
                        'oxseo__oxseourl' => array("seourl1", "seourl2"));
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, array("_cleanupUrl"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, array("cleanupUrl"));
         $oView
-            ->method('_cleanupUrl')
+            ->method('cleanupUrl')
             ->withConsecutive(
                 ['stdurl'],
                 ['seourl1'],
                 ['seourl2']
             );
 
-        $oView->_processUrls($aUrls);
+        $oView->processUrls($aUrls);
     }
 
     /**
@@ -151,7 +151,7 @@ class ShopSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_Seo');
-        $this->assertEquals("&amp;", $oView->_cleanupUrl("&amp;&amp;&&"));
+        $this->assertEquals("&amp;", $oView->cleanupUrl("&amp;&amp;&&"));
     }
 
     /**

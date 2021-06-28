@@ -99,9 +99,9 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
-        $sAttrId = $this->_getAttrId($aSelTitle[0]);
+        $sAttrId = $this->getAttrId($aSelTitle[0]);
         if (!$sAttrId) {
-            $sAttrId = $this->_createAttribute($aSelTitle);
+            $sAttrId = $this->createAttribute($aSelTitle);
         }
         foreach ($aMDVariants as $sVarId => $oValue) {
             if (strpos($sVarId, "mdvar_") === 0) {
@@ -138,7 +138,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return mixed attribute id or false
      */
-    protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -156,7 +156,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string attribute id
      */
-    protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();

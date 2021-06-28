@@ -343,7 +343,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
@@ -372,7 +372,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
@@ -401,7 +401,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // got here from setup dir
         $sScript = $_SERVER['SCRIPT_NAME'];
@@ -425,13 +425,13 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
-            return $this->_getShopHostInfoFromConfig();
+            return $this->getShopHostInfoFromConfig();
         }
 
-        return $this->_getShopHostInfoFromServerVars();
+        return $this->getShopHostInfoFromServerVars();
     }
 
     /**
@@ -440,10 +440,10 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
-            return $this->_getShopSSLHostInfoFromConfig();
+            return $this->getShopSSLHostInfoFromConfig();
         }
 
         return false;
@@ -461,7 +461,7 @@ class SystemRequirements
         $aHostInfo = $this->_getShopHostInfo();
         $iModStat = $this->isModeRewriteExtensionLoaded($aHostInfo);
 
-        $aSSLHostInfo = $this->_getShopSSLHostInfo();
+        $aSSLHostInfo = $this->getShopSSLHostInfo();
         // Don't need to check if mod status is already failed.
         if (0 != $iModStat && $aSSLHostInfo) {
             $iSSLModStat = $this->isModeRewriteExtensionLoaded($aSSLHostInfo);
@@ -692,17 +692,17 @@ class SystemRequirements
         }
 
         if ($sMemLimit) {
-            $sDefLimit = $this->_getMinimumMemoryLimit();
-            $sRecLimit = $this->_getRecommendMemoryLimit();
+            $sDefLimit = $this->getMinimumMemoryLimit();
+            $sRecLimit = $this->getRecommendMemoryLimit();
 
-            $iMemLimit = $this->_getBytes($sMemLimit);
+            $iMemLimit = $this->getBytes($sMemLimit);
 
             if ($iMemLimit === -1) {
                 // -1 is equivalent to no memory limit
                 $iModStat = 2;
             } else {
-                $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
-                $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
+                $iModStat = ($iMemLimit >= $this->getBytes($sDefLimit)) ? 1 : 0;
+                $iModStat = $iModStat ? (($iMemLimit >= $this->getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
         } else {
             $iModStat = -1;
@@ -716,7 +716,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = '';
         foreach ($this->_aException as $sTable => $sColumn) {
@@ -739,7 +739,7 @@ class SystemRequirements
         $sCollation = '';
         $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
-                    and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
+                    and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
         $aRez = DatabaseConnectionProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
@@ -953,7 +953,7 @@ class SystemRequirements
      *
      * @return int
      */
-    protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
@@ -987,7 +987,7 @@ class SystemRequirements
      *
      * @return bool
      */
-    protected function _checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
@@ -1028,7 +1028,7 @@ class SystemRequirements
                 if (isset($analized[$template], $analized[$template][$blockName])) {
                     $blockExistsInTemplate = $analized[$template][$blockName];
                 } else {
-                    $blockExistsInTemplate = $this->_checkTemplateBlock($template, $blockName);
+                    $blockExistsInTemplate = $this->checkTemplateBlock($template, $blockName);
                     $analized[$template][$blockName] = $blockExistsInTemplate;
                 }
 
@@ -1085,7 +1085,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '32M';
     }
@@ -1095,7 +1095,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '60M';
     }

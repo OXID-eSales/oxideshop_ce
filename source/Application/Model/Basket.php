@@ -392,7 +392,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param string $sNewKey new key to place in old one's place
      * @param mixed  $value   (optional)
      */
-    protected function _changeBasketItemKey($sOldKey, $sNewKey, $value = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function changeBasketItemKey($sOldKey, $sNewKey, $value = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         reset($this->_aBasketContents);
         $iOldKeyPlace = 0;
@@ -451,7 +451,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $blOverride = false;
             } else {
                 // value is null - means isset will fail and real values will be filled
-                $this->_changeBasketItemKey($sOldBasketItemId, $sItemId);
+                $this->changeBasketItemKey($sOldBasketItemId, $sItemId);
             }
         }
 
@@ -618,7 +618,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Unsets bundled basket items from basket contents array
      */
-    protected function _clearBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function clearBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         reset($this->_aBasketContents);
         foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
@@ -635,7 +635,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getArticleBundles($oBasketItem) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleBundles($oBasketItem) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aBundles = [];
 
@@ -659,7 +659,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getItemBundles($oBasketItem, $aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItemBundles($oBasketItem, $aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oBasketItem->isBundle()) {
             return [];
@@ -696,7 +696,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getBasketBundles($aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBasketBundles($aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aDiscounts = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->getBasketBundleDiscounts($this, $this->getBasketUser());
 
@@ -725,7 +725,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Iterates through basket contents and adds bundles to items + adds
      * global basket bundles
      */
-    protected function _addBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aBundles = [];
         // iterating through articles and binding bundles
@@ -733,15 +733,15 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             try {
                 // adding discount type bundles
                 if (!$oBasketItem->isDiscountArticle() && !$oBasketItem->isBundle()) {
-                    $aBundles = $this->_getItemBundles($oBasketItem, $aBundles);
+                    $aBundles = $this->getItemBundles($oBasketItem, $aBundles);
                 } else {
                     continue;
                 }
 
                 // adding item type bundles
-                $aArtBundles = $this->_getArticleBundles($oBasketItem);
+                $aArtBundles = $this->getArticleBundles($oBasketItem);
                 // adding bundles to basket
-                $this->_addBundlesToBasket($aArtBundles);
+                $this->addBundlesToBasket($aArtBundles);
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
                 $this->removeItem($key);
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
@@ -752,11 +752,11 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         // adding global basket bundles
-        $aBundles = $this->_getBasketBundles($aBundles);
+        $aBundles = $this->getBasketBundles($aBundles);
 
         // adding all bundles to basket
         if ($aBundles) {
-            $this->_addBundlesToBasket($aBundles);
+            $this->addBundlesToBasket($aBundles);
         }
     }
 
@@ -765,7 +765,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aBundles added bundle articles
      */
-    protected function _addBundlesToBasket($aBundles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addBundlesToBasket($aBundles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aBundles as $sBundleId => $dAmount) {
             if ($dAmount) {
@@ -787,7 +787,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Iterates through basket items and calculates its prices and discounts
      */
-    protected function _calcItemsPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcItemsPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // resetting
         $this->setSkipDiscounts(false);
@@ -873,7 +873,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array $aDiscounts
      */
-    protected function _mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aItemDiscounts as $sKey => $oDiscount) {
             // add prices of the same discounts
@@ -892,7 +892,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _calcDeliveryCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcDeliveryCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oDeliveryPrice !== null) {
             return $this->_oDeliveryPrice;
@@ -921,7 +921,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $aDeliveryList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliveryList::class)->getDeliveryList(
                 $this,
                 $oUser,
-                $this->_findDelivCountry(),
+                $this->findDelivCountry(),
                 $this->getShippingId()
             );
 
@@ -1010,7 +1010,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Performs final sum calculation and rounding.
      */
-    protected function _calcTotalPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcTotalPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // 1. add products price
         $dPrice = $this->_dBruttoSum;
@@ -1068,10 +1068,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Calculates voucher discount
      */
-    protected function _calcVoucherDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcVoucherDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_showVouchers') && ($this->_oVoucherDiscount === null || ($this->_blUpdateNeeded && !$this->isAdmin()))) {
-            $this->_oVoucherDiscount = $this->_getPriceObject();
+            $this->_oVoucherDiscount = $this->getPriceObject();
 
             // calculating price to apply discount
             $dPrice = $this->_oDiscountProductsPriceList->getSum($this->isCalculationModeNetto()) - $this->_oTotalDiscount->getPrice();
@@ -1133,10 +1133,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Performs netto price and VATs calculations including discounts and vouchers.
      */
-    protected function _applyDiscounts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyDiscounts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //apply discounts for brutto price
-        $dDiscountedSum = $this->_getDiscountedProductsSum();
+        $dDiscountedSum = $this->getDiscountedProductsSum();
 
         $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $dVatSum = 0;
@@ -1178,7 +1178,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _getPriceObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
@@ -1194,7 +1194,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads basket discounts and calculates discount values.
      */
-    protected function _calcBasketDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcBasketDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // resetting
         $this->_aDiscounts = [];
@@ -1257,10 +1257,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Calculates total basket discount value.
      */
-    protected function _calcBasketTotalDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcBasketTotalDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oTotalDiscount === null || (!$this->isAdmin())) {
-            $this->_oTotalDiscount = $this->_getPriceObject();
+            $this->_oTotalDiscount = $this->getPriceObject();
 
             if (is_array($this->_aDiscounts)) {
                 foreach ($this->_aDiscounts as $oDiscount) {
@@ -1284,7 +1284,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _calcBasketWrapping() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcBasketWrapping() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oWrappingPrices = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
 
@@ -1310,7 +1310,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _calcBasketGiftCard() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcBasketGiftCard() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oGiftCardPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
@@ -1340,7 +1340,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    protected function _calcPaymentCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function calcPaymentCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // resetting values
         $oPaymentPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
@@ -1406,43 +1406,43 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         $this->_aCosts = [];
 
         //  1. saving basket to the database
-        $this->_save();
+        $this->save();
 
         //  2. remove all bundles
-        $this->_clearBundles();
+        $this->clearBundles();
 
         //  3. generate bundle items
-        $this->_addBundles();
+        $this->addBundles();
 
         //  4. calculating item prices
-        $this->_calcItemsPrice();
+        $this->calcItemsPrice();
 
         //  5. calculating/applying discounts
-        $this->_calcBasketDiscount();
+        $this->calcBasketDiscount();
 
         //  6. calculating basket total discount
-        $this->_calcBasketTotalDiscount();
+        $this->calcBasketTotalDiscount();
 
         //  7. check for vouchers
-        $this->_calcVoucherDiscount();
+        $this->calcVoucherDiscount();
 
         //  8. applies all discounts to pricelist
-        $this->_applyDiscounts();
+        $this->applyDiscounts();
 
         //  9. calculating additional costs:
         //  9.1: delivery
-        $this->setCost('oxdelivery', $this->_calcDeliveryCost());
+        $this->setCost('oxdelivery', $this->calcDeliveryCost());
 
         //  9.2: adding wrapping and gift card costs
-        $this->setCost('oxwrapping', $this->_calcBasketWrapping());
+        $this->setCost('oxwrapping', $this->calcBasketWrapping());
 
-        $this->setCost('oxgiftcard', $this->_calcBasketGiftCard());
+        $this->setCost('oxgiftcard', $this->calcBasketGiftCard());
 
         //  9.3: adding payment cost
-        $this->setCost('oxpayment', $this->_calcPaymentCost());
+        $this->setCost('oxpayment', $this->calcPaymentCost());
 
         //  10. calculate total price
-        $this->_calcTotalPrice();
+        $this->calcTotalPrice();
 
         //  11. formatting discounts
         $this->formatDiscount();
@@ -1674,7 +1674,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Saves existing basket to database
      */
-    protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isSaveToDataBaseEnabled()) {
             if ($oUser = $this->getBasketUser()) {
@@ -1700,7 +1700,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * \OxidEsales\Eshop\Application\Model\Basket::deleteBasket() method which cleans up basket data when
      * user completes order.
      */
-    protected function _deleteSavedBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteSavedBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // deleting basket if session user available
         if ($oUser = $this->getBasketUser()) {
@@ -1718,7 +1718,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _findDelivCountry() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function findDelivCountry() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oUser = $this->getBasketUser();
@@ -1765,7 +1765,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         // merging basket history
-        $this->_deleteSavedBasket();
+        $this->deleteSavedBasket();
     }
 
     /**
@@ -2683,7 +2683,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return double
      */
-    public function _getDiscountedProductsSum()  // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getDiscountedProductsSum()  // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oProductsPrice = $this->getDiscountProductsPrice()) {
             $dPrice = $oProductsPrice->getSum($this->isCalculationModeNetto());
@@ -2805,7 +2805,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             // request category
             if ($oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()) {
                 if ($oCat = $oView->getActiveCategory()) {
-                    if (!$this->_isProductInRootCategory($sProductId, $oCat->oxcategories__oxrootid->value)) {
+                    if (!$this->isProductInRootCategory($sProductId, $oCat->oxcategories__oxrootid->value)) {
                         $oCat = null;
                     } else {
                         $blCanAdd = true;
@@ -2829,7 +2829,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         // avoiding double check..
         if ($blCanAdd === null) {
-            $blCanAdd = $this->_sBasketCategoryId ? $this->_isProductInRootCategory($sProductId, $this->getBasketRootCatId()) : true;
+            $blCanAdd = $this->_sBasketCategoryId ? $this->isProductInRootCategory($sProductId, $this->getBasketRootCatId()) : true;
         }
 
         return $blCanAdd;
@@ -2843,7 +2843,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isProductInRootCategory($sProductId, $sRootCatId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isProductInRootCategory($sProductId, $sRootCatId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sO2CTable = $tableViewNameGenerator->getViewName('oxobject2category');

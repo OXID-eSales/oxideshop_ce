@@ -38,7 +38,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sUrl = $this->oxmediaurls__oxurl->value;
         //youtube link
         if (strpos($sUrl, 'youtube.com') || strpos($sUrl, 'youtu.be')) {
-            return $this->_getYoutubeHtml();
+            return $this->getYoutubeHtml();
         }
 
         //simple link
@@ -117,7 +117,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;

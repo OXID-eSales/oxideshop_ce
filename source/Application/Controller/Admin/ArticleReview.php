@@ -42,7 +42,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
                 $this->_aViewData['readonly'] = true;
             }
 
-            $reviewList = $this->_getReviewList($article);
+            $reviewList = $this->getReviewList($article);
 
             foreach ($reviewList as $review) {
                 if ($review->oxreviews__oxid->value == $reviewId) {
@@ -76,7 +76,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
-    protected function _getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = "select oxreviews.* from oxreviews

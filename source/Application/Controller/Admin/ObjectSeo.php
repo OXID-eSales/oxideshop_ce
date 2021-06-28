@@ -26,7 +26,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         parent::render();
 
-        if ($sType = $this->_getType()) {
+        if ($sType = $this->getType()) {
             $oObject = oxNew($sType);
             if ($oObject->load($this->getEditObjectId())) {
                 $oOtherLang = $oObject->getAvailableInLangs();
@@ -61,7 +61,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function save()
     {
         // saving/updating seo params
-        if (($sOxid = $this->_getSaveObjectId())) {
+        if (($sOxid = $this->getSaveObjectId())) {
             $aSeoData = Registry::getRequest()->getRequestEscapedParameter('aSeoData');
             $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $iLang = $this->getEditLang();
@@ -73,7 +73,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
             $sParams = $this->getAdditionalParamsFromSeoData($aSeoData);
 
-            $oEncoder = $this->_getEncoder();
+            $oEncoder = $this->getEncoder();
             // marking self and page links as expired
             $oEncoder->markAsExpired($sOxid, $iShopId, 1, $iLang, $sParams);
 
@@ -82,15 +82,15 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $sOxid,
                 $iShopId,
                 $iLang,
-                $this->_getStdUrl($sOxid),
+                $this->getStdUrl($sOxid),
                 $aSeoData['oxseourl'],
-                $this->_getSeoEntryType(),
+                $this->getSeoEntryType(),
                 $aSeoData['oxfixed'],
                 trim($aSeoData['oxkeywords']),
                 trim($aSeoData['oxdescription']),
                 $this->processParam($aSeoData['oxparams']),
                 true,
-                $this->_getAltSeoEntryId()
+                $this->getAltSeoEntryId()
             );
         }
     }
@@ -119,7 +119,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      *
      * @return string
      */
-    protected function _getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getEditObjectId();
     }
@@ -133,7 +133,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      */
     public function getEntryMetaData($sMetaType)
     {
-        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), $this->getEditLang());
+        return $this->getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), $this->getEditLang());
     }
 
     /**
@@ -161,7 +161,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Returns url type
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -172,9 +172,9 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      *
      * @return string
      */
-    protected function _getStdUrl($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getStdUrl($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($sType = $this->_getType()) {
+        if ($sType = $this->getType()) {
             $oObject = oxNew($sType);
             if ($oObject->load($sOxid)) {
                 return $oObject->getBaseStdLink($this->getEditLang(), true, false);
@@ -195,7 +195,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Returns alternative seo entry id
      */
-    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -204,9 +204,9 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      *
      * @return string
      */
-    protected function _getSeoEntryType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoEntryType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_getType();
+        return $this->getType();
     }
 
     /**
@@ -224,7 +224,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Returns current object type seo encoder object
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 

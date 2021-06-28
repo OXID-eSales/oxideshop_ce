@@ -51,11 +51,11 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sO2CView = $this->_getViewName('oxobject2category');
+        $sArtTable = $this->getViewName('oxarticles');
+        $sO2CView = $this->getViewName('oxobject2category');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sVendorId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -88,10 +88,10 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $sArtTable = $this->getViewName('oxarticles');
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         $sQ .= \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
@@ -105,11 +105,11 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
     public function removeVendor()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
+        $aRemoveArt = $this->getActionIds('oxarticles.oxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $sArtTable = $this->getViewName('oxarticles');
+            $aRemoveArt = $this->getAll($this->addFilter("select $sArtTable.oxid " . $this->getQuery()));
         }
 
         if (is_array($aRemoveArt)) {
@@ -130,12 +130,12 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $aAddArticle = $this->_getActionIds('oxarticles.oxid');
+        $aAddArticle = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $sArtTable = $this->getViewName('oxarticles');
+            $aAddArticle = $this->getAll($this->addFilter("select $sArtTable.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {

@@ -593,10 +593,10 @@ class InputValidatorTest extends UnitTestCase
 
     public function testValidatePaymentInputData_SepaBankCodeCorrectSepaAccountNumberCorrect_NoError()
     {
-        $sBankCode = $this->_getSepaBankCode();
-        $sAccountNumber = $this->_getSepaAccountNumber();
+        $sBankCode = $this->getSepaBankCode();
+        $sAccountNumber = $this->getSepaAccountNumber();
 
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $this->assertTrue($validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should not appear.');
@@ -605,8 +605,8 @@ class InputValidatorTest extends UnitTestCase
     public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError()
     {
         $sOldAccountNumberTooShort = "12345678";
-        $sOldAccountNumber = $this->_getOldAccountNumber();
-        $sOldBankCode = $this->_getOldBankCode();
+        $sOldAccountNumber = $this->getOldAccountNumber();
+        $sOldBankCode = $this->getOldBankCode();
 
         return [
             [$sOldBankCode, $sOldAccountNumber],
@@ -619,7 +619,7 @@ class InputValidatorTest extends UnitTestCase
      */
     public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError($sBankCode, $sAccountNumber)
     {
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $this->assertTrue($validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should not appear.');
@@ -632,10 +632,10 @@ class InputValidatorTest extends UnitTestCase
     {
         $this->setConfigParam('blSkipDebitOldBankInfo', true);
 
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
-        $this->assertSame($this->_getBankCodeErrorNo(), $validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should appear as old bank information not allowed.');
+        $this->assertSame($this->getBankCodeErrorNo(), $validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should appear as old bank information not allowed.');
     }
 
     public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumber()
@@ -654,28 +654,28 @@ class InputValidatorTest extends UnitTestCase
      */
     public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumber($sAccountNumber)
     {
-        $sBankCode = $this->_getOldBankCode();
+        $sBankCode = $this->getOldBankCode();
 
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $sErrorAccountNumberNo = $this->getAccountNumberErrorNo();
         $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.');
     }
 
     public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberSepaCorrect_ErrorAccountNumber()
     {
-        $sBankCode = $this->_getOldBankCode();
-        $sAccountNumber = $this->_getSepaAccountNumber();
+        $sBankCode = $this->getOldBankCode();
+        $sAccountNumber = $this->getSepaAccountNumber();
 
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $iErrorNumber = $this->_getAccountNumberErrorNo();
+        $iErrorNumber = $this->getAccountNumberErrorNo();
         $this->assertSame($iErrorNumber, $oValidationResult, 'Should validate as bank code error.');
     }
 
@@ -686,11 +686,11 @@ class InputValidatorTest extends UnitTestCase
         $sOldBankCodeWrongFormat = '123A5678';
         $sSepaBankCodeWrong = '123ABCDE';
 
-        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sOldAccountNumber = $this->getOldAccountNumber();
         $sOldAccountNumberTooLong = "12345678901";
         $sOldAccountIncorrectFormat = "ABC1234567";
 
-        $sSepaAccountNumber = $this->_getSepaAccountNumber();
+        $sSepaAccountNumber = $this->getSepaAccountNumber();
         $sSepaAccountNumberWrong = 'NX9386011117947';
 
         return [
@@ -725,12 +725,12 @@ class InputValidatorTest extends UnitTestCase
      */
     public function testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCode($sBankCode, $sAccountNumber)
     {
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
+        $sErrorBankCodeNo = $this->getBankCodeErrorNo();
         $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.');
     }
 
@@ -754,26 +754,26 @@ class InputValidatorTest extends UnitTestCase
      */
     public function testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber($sAccountNumber)
     {
-        $sBankCode = $this->_getSepaBankCode();
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $sBankCode = $this->getSepaBankCode();
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $sErrorNumber = $this->_getAccountNumberErrorNo();
+        $sErrorNumber = $this->getAccountNumberErrorNo();
         $this->assertSame($sErrorNumber, $oValidationResult, 'Should validate as account number error.');
     }
 
     public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrect_ErrorAccountNumber()
     {
-        $sBankCode = $this->_getSepaBankCode();
-        $sAccountNumber = $this->_getOldAccountNumber();
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $sBankCode = $this->getSepaBankCode();
+        $sAccountNumber = $this->getOldAccountNumber();
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $sErrorNumber = $this->_getAccountNumberErrorNo();
+        $sErrorNumber = $this->getAccountNumberErrorNo();
         $this->assertSame($sErrorNumber, $oValidationResult, 'Should validate as bank code error.');
     }
 
@@ -781,37 +781,37 @@ class InputValidatorTest extends UnitTestCase
     {
         $this->setConfigParam('blSkipDebitOldBankInfo', true);
 
-        $sBankCode = $this->_getSepaBankCode();
-        $sAccountNumber = $this->_getOldAccountNumber();
-        $dynValue = $this->_getBankData($sBankCode, $sAccountNumber);
+        $sBankCode = $this->getSepaBankCode();
+        $sAccountNumber = $this->getOldAccountNumber();
+        $dynValue = $this->getBankData($sBankCode, $sAccountNumber);
 
         $validator = oxNew(InputValidator::class);
         $oValidationResult = $validator->validatePaymentInputData("oxiddebitnote", $dynValue);
 
-        $this->assertSame($this->_getAccountNumberErrorNo(), $oValidationResult, 'Error should appear as old bank information not allowed.');
+        $this->assertSame($this->getAccountNumberErrorNo(), $oValidationResult, 'Error should appear as old bank information not allowed.');
     }
 
-    private function _getSepaBankCode(): string
+    private function getSepaBankCode(): string
     {
         return "ASPKAT2L";
     }
 
-    private function _getSepaAccountNumber(): string
+    private function getSepaAccountNumber(): string
     {
         return "MT84MALT011000012345MTLCAST001S";
     }
 
-    private function _getOldBankCode(): string
+    private function getOldBankCode(): string
     {
         return "12345678";
     }
 
-    private function _getOldAccountNumber(): string
+    private function getOldAccountNumber(): string
     {
         return "123456789012";
     }
 
-    private function _getBankData($sBankCode, $sAccountNumber): array
+    private function getBankData($sBankCode, $sAccountNumber): array
     {
         $dynvalue = [
             'lsbankname'   => 'Bank name',
@@ -823,12 +823,12 @@ class InputValidatorTest extends UnitTestCase
         return $dynvalue;
     }
 
-    private function _getAccountNumberErrorNo(): int
+    private function getAccountNumberErrorNo(): int
     {
         return -5;
     }
 
-    private function _getBankCodeErrorNo(): int
+    private function getBankCodeErrorNo(): int
     {
         return -4;
     }

@@ -26,7 +26,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -46,7 +46,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
             $languageId = $vendor->getLanguage();
         }
         // load from db
-        if ($shouldRegenerate || !($seoUrl = $this->_loadFromDb('oxvendor', $vendor->getId(), $languageId))) {
+        if ($shouldRegenerate || !($seoUrl = $this->loadFromDb('oxvendor', $vendor->getId(), $languageId))) {
             if ($languageId != $vendor->getLanguage()) {
                 $vendorId = $vendor->getId();
                 $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -63,11 +63,11 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
                 $seoUrl .= $this->_aRootVendorUri[$languageId];
             }
 
-            $seoUrl .= $this->_prepareTitle($vendor->oxvendor__oxtitle->value, false, $vendor->getLanguage()) . '/';
-            $seoUrl = $this->_processSeoUrl($seoUrl, $vendor->getId(), $languageId);
+            $seoUrl .= $this->prepareTitle($vendor->oxvendor__oxtitle->value, false, $vendor->getLanguage()) . '/';
+            $seoUrl = $this->processSeoUrl($seoUrl, $vendor->getId(), $languageId);
 
             // save to db
-            $this->_saveToDb('oxvendor', $vendor->getId(), $vendor->getBaseStdLink($languageId), $seoUrl, $languageId);
+            $this->saveToDb('oxvendor', $vendor->getId(), $vendor->getBaseStdLink($languageId), $seoUrl, $languageId);
         }
 
         return $seoUrl;
@@ -91,11 +91,11 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $vendor->getBaseStdLink($languageId);
         $parameters = null;
 
-        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $stdUrl = $this->trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getVendorUri($vendor, $languageId);
 
         if ($isFixed === null) {
-            $isFixed = $this->_isFixed('oxvendor', $vendor->getId(), $languageId);
+            $isFixed = $this->isFixed('oxvendor', $vendor->getId(), $languageId);
         }
 
         return $this->assembleFullPageUrl($vendor, 'oxvendor', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
@@ -115,7 +115,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
             $languageId = $vendor->getLanguage();
         }
 
-        return $this->_getFullUrl($this->getVendorUri($vendor, $languageId), $languageId);
+        return $this->getFullUrl($this->getVendorUri($vendor, $languageId), $languageId);
     }
 
     /**
@@ -146,7 +146,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $seoUrl = null;
         $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);

@@ -356,7 +356,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Parse SEO url parameters.
      */
-    protected function _processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
@@ -372,11 +372,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function initVars($shopId)
     {
-        $this->_loadVarsFromFile();
+        $this->loadVarsFromFile();
 
-        $this->_setDefaults();
+        $this->setDefaults();
 
-        $configLoaded = $this->_loadVarsFromDb($shopId);
+        $configLoaded = $this->loadVarsFromDb($shopId);
         // loading shop config
         if (empty($shopId) || !$configLoaded) {
             // if no config values where loaded (some problems with DB), throwing an exception
@@ -389,15 +389,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         // loading theme config options
-        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
 
         // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
         if ($this->getConfigParam('sCustomTheme')) {
-            $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
         // loading all modules config
-        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX . '%');
+        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX . '%');
 
         $this->loadAdditionalConfiguration();
 
@@ -408,7 +408,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
         }
 
-        $this->_loadVarsFromFile();
+        $this->loadVarsFromFile();
     }
 
     /**
@@ -433,9 +433,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
             $this->_oStart->appInit();
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
-            $this->_handleDbConnectionException($exception);
+            $this->handleDbConnectionException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
-            $this->_handleCookieException($exception);
+            $this->handleCookieException($exception);
         }
     }
 
@@ -460,7 +460,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function initializeShop()
     {
-        $this->_processSeoCall();
+        $this->processSeoCall();
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $session->start();
     }
@@ -468,7 +468,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads vars from default config file
      */
-    protected function _loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //config variables from config.inc.php takes priority over the ones loaded from db
         include getShopBasePath() . '/config.inc.php';
@@ -481,13 +481,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $this->sSSLShopURL = $fileUtils->normalizeDir($this->sSSLShopURL);
         $this->sAdminSSLURL = $fileUtils->normalizeDir($this->sAdminSSLURL);
 
-        $this->_loadCustomConfig();
+        $this->loadCustomConfig();
     }
 
     /**
      * Set important defaults.
      */
-    protected function _setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setConfigParam('sTheme', 'azure');
 
@@ -530,7 +530,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads vars from custom config file
      */
-    protected function _loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $custConfig = getShopBasePath() . '/cust_config.inc.php';
         if (is_readable($custConfig)) {
@@ -547,7 +547,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _loadVarsFromDb($shopId, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadVarsFromDb($shopId, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -561,7 +561,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             FROM oxconfig
             WHERE oxshopid = :oxshopid AND oxmodule LIKE :oxmodule
         ";
-        $select .= $this->_getConfigParamsSelectSnippet($onlyVars);
+        $select .= $this->getConfigParamsSelectSnippet($onlyVars);
 
         $result = $db->getAll($select, $params);
 
@@ -570,7 +570,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $varType = $value[1];
             $varVal = $value[2];
 
-            $this->_setConfVarFromDb($varName, $varType, $varVal);
+            $this->setConfVarFromDb($varName, $varType, $varVal);
 
             //setting theme options array
             if ($module) {
@@ -588,7 +588,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $select = '';
         if (is_array($vars) && !empty($vars)) {
@@ -611,7 +611,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
@@ -748,7 +748,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $shopId = $this->calculateActiveShopId();
             $this->setShopId($shopId);
 
-            if (!$this->_isValidShopId($shopId)) {
+            if (!$this->isValidShopId($shopId)) {
                 $shopId = $this->getBaseShopId();
             }
             $this->setShopId($shopId);
@@ -770,7 +770,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if WEB session is SSL.
      */
-    protected function _checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsServer = Registry::getUtilsServer();
         $serverVars = $myUtilsServer->getServerVar();
@@ -805,7 +805,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function isSsl()
     {
         if (is_null($this->_blIsSsl)) {
-            $this->_checkSsl();
+            $this->checkSsl();
         }
 
         return $this->_blIsSsl;
@@ -2057,7 +2057,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
      */
-    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $exceptionHandler = $this->getExceptionHandler();
         $exceptionHandler->handleDatabaseException($exception);
@@ -2068,9 +2068,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
      */
-    protected function _handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_processSeoCall();
+        $this->processSeoCall();
 
         //starting up the session
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -2112,7 +2112,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return !empty($shopId);
     }

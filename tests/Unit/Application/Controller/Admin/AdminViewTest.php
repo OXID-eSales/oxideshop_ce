@@ -306,13 +306,13 @@ class AdminViewTest extends \OxidTestCase
         $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
         $oAView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
-        $this->assertEquals(true, $oAView->_authorize());
+        $this->assertEquals(true, $oAView->authorize());
         
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
         $oAView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
-        $this->assertEquals(false, $oAView->_authorize());
+        $this->assertEquals(false, $oAView->authorize());
     }
 
 

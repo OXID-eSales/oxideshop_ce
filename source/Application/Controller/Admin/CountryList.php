@@ -64,7 +64,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         $aListSorting = parent::getListSorting();
 
         if (array_keys($aListSorting['oxcountry']) === ['oxactive']) {
-            $aListSorting['oxcountry'][$this->_getSecondSortFieldName()] = 'asc';
+            $aListSorting['oxcountry'][$this->getSecondSortFieldName()] = 'asc';
         }
 
         return $aListSorting;
@@ -75,7 +75,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string The name of the field we want to be the second order by argument.
      */
-    protected function _getSecondSortFieldName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSecondSortFieldName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->sSecondDefSortField;
     }

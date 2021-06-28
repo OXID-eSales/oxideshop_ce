@@ -131,7 +131,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array("getProduct"));
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $oProduct = $oDetailsView->_getParentProduct('1126');
+        $oProduct = $oDetailsView->getParentProduct('1126');
         $this->assertTrue($oProduct instanceof Article);
         $this->assertEquals('1126', $oProduct->getId());
     }

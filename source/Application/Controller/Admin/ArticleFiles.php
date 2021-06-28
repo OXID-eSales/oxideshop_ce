@@ -74,7 +74,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
                 $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
                 $oArticleFile->load($sArticleFileId);
-                $aArticleFileUpdate = $this->_processOptions($aArticleFileUpdate);
+                $aArticleFileUpdate = $this->processOptions($aArticleFileUpdate);
                 $oArticleFile->assign($aArticleFileUpdate);
 
                 if ($oArticleFile->isUnderDownloadFolder()) {
@@ -126,7 +126,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->getEditObjectId();
 
         $aParams = Registry::getRequest()->getRequestEscapedParameter("newfile");
-        $aParams = $this->_processOptions($aParams);
+        $aParams = $this->processOptions($aParams);
         $aNewFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("newArticleFile");
 
         //uploading and processing supplied file
@@ -203,7 +203,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aParams)) {
             $aParams = [];

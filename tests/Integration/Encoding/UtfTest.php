@@ -1590,7 +1590,7 @@ class UtfTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getCatTreePath'));
         $oView->expects($this->once())->method('getCatTreePath')->will($this->returnValue(array($oCat)));
 
-        $this->assertEquals($sResult, $oView->_getCatPathString());
+        $this->assertEquals($sResult, $oView->getCatPathString());
     }
 
     public function testaListCollectMetaDescription()
@@ -1610,15 +1610,15 @@ class UtfTest extends \OxidTestCase
 
         $sCatPathString = 'sCatPathString';
 
-        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', '_getCatPathString'));
+        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', 'getCatPathString'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oActCat));
         $oListView->expects($this->any())->method('getArticleList')->will($this->returnValue($oArtList));
-        $oListView->expects($this->any())->method('_getCatPathString')->will($this->returnValue($sCatPathString));
+        $oListView->expects($this->any())->method('getCatPathString')->will($this->returnValue($sCatPathString));
 
         $sMeta = 'sCatPathString - ' . $sValue;
 
         $oView = new oxubase();
-        $this->assertEquals($oView->_prepareMetaDescription($sMeta . ", " . $sValue), $oListView->_collectMetaDescription(false));
+        $this->assertEquals($oView->prepareMetaDescription($sMeta . ", " . $sValue), $oListView->collectMetaDescription(false));
     }
 
     public function testaListPrepareMetaDescription()
@@ -1635,7 +1635,7 @@ class UtfTest extends \OxidTestCase
         $sDescription = "agentūЛитовfür     . " . $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
 
         $oView = new oxubase();
-        $this->assertEquals($sDescription, $oListView->_prepareMetaDescription(false));
+        $this->assertEquals($sDescription, $oListView->prepareMetaDescription(false));
     }
 
     public function testaListPrepareMetaKeyword()
@@ -1666,7 +1666,7 @@ class UtfTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oListView->expects($this->any())->method('getCategoryTree')->will($this->returnValue($oCategoryTree));
 
-        $this->assertEquals('agentū, литовfür, parent_category, current_category, sub_category_1, nada, fedia', $oListView->_prepareMetaKeyword(null));
+        $this->assertEquals('agentū, литовfür, parent_category, current_category, sub_category_1, nada, fedia', $oListView->prepareMetaKeyword(null));
     }
 
     public function testaListCollectMetaKeyword()
@@ -1678,12 +1678,12 @@ class UtfTest extends \OxidTestCase
         $oArt->setArticleLongDesc($sValue);
         $oArtList = new oxlist();
         $oArtList->offsetSet(0, $oArt);
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getArticleList', '_prepareMetaDescription', '_getCatPathString'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getArticleList', 'prepareMetaDescription', 'getCatPathString'));
         $oView->expects($this->once())->method('getArticleList')->will($this->returnValue($oArtList));
-        $oView->expects($this->once())->method('_getCatPathString')->will($this->returnValue(''));
-        $oView->expects($this->once())->method('_prepareMetaDescription')->with($this->equalTo($sResult), $this->equalTo(-1), $this->equalTo(false))->will($this->returnValue($sResult));
+        $oView->expects($this->once())->method('getCatPathString')->will($this->returnValue(''));
+        $oView->expects($this->once())->method('prepareMetaDescription')->with($this->equalTo($sResult), $this->equalTo(-1), $this->equalTo(false))->will($this->returnValue($sResult));
 
-        $this->assertEquals('agentū, литовfür, test, best, nest, fest', $oView->_collectMetaKeyword(array()));
+        $this->assertEquals('agentū, литовfür, test, best, nest, fest', $oView->collectMetaKeyword(array()));
     }
 
     public function testDetailsSettingKeywordsAndDescriptionInRender()
@@ -1710,7 +1710,7 @@ class UtfTest extends \OxidTestCase
         $sDesc = "&nbsp; \" " . '\'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;";
 
         $oView = new oxubase();
-        $sResult = $oView->_prepareMetaDescription($sDesc);
+        $sResult = $oView->prepareMetaDescription($sDesc);
 
         $this->assertEquals("&quot; &#039; : ! ?", $sResult);
     }
@@ -1721,7 +1721,7 @@ class UtfTest extends \OxidTestCase
         $sResult = 'agentū Л итовfür test best nest fest test';
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->_prepareMetaDescription($sValue));
+        $this->assertEquals($sResult, $oView->prepareMetaDescription($sValue));
     }
 
     public function testuBasePrepareKeyword()
@@ -1732,7 +1732,7 @@ class UtfTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('aSkipTags', array('agentūЛитовfür'));
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->_prepareMetaKeyword($sValue));
+        $this->assertEquals($sResult, $oView->prepareMetaKeyword($sValue));
     }
 
     public function testuBaseRemoveDuplicatedWords()

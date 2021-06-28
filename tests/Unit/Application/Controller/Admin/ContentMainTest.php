@@ -62,8 +62,8 @@ class ContentMainTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, array("_checkIdent"));
-            $oView->expects($this->once())->method('_checkIdent')->will($this->returnValue(false));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, array("checkIdent"));
+            $oView->expects($this->once())->method('checkIdent')->will($this->returnValue(false));
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in Content_Main::Save()");
@@ -103,7 +103,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // defining parameters
         $oView = oxNew('Content_Main');
-        $this->assertNull($oView->_prepareIdent(false));
+        $this->assertNull($oView->prepareIdent(false));
     }
 
     /**
@@ -115,7 +115,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // defining parameters
         $oView = oxNew('Content_Main');
-        $this->assertEquals("aaabbb", $oView->_prepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
+        $this->assertEquals("aaabbb", $oView->prepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
     }
 
     /**
@@ -127,7 +127,7 @@ class ContentMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertTrue($oView->_checkIdent("", ""));
+        $this->assertTrue($oView->checkIdent("", ""));
     }
 
     /**
@@ -139,6 +139,6 @@ class ContentMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertTrue($oView->_checkIdent("oxstartmetadescription", ""));
+        $this->assertTrue($oView->checkIdent("oxstartmetadescription", ""));
     }
 }

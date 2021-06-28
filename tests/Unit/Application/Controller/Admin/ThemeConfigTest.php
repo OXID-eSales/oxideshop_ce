@@ -29,6 +29,6 @@ class ThemeConfigTest extends \OxidTestCase
         $sThemeName = 'testtheme';
         $oTheme_Config = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeConfiguration::class, array('getEditObjectId'));
         $oTheme_Config->expects($this->any())->method('getEditObjectId')->will($this->returnValue($sThemeName));
-        $this->assertEquals('theme:' . $sThemeName, $oTheme_Config->_getModuleForConfigVars());
+        $this->assertEquals('theme:' . $sThemeName, $oTheme_Config->getModuleForConfigVars());
     }
 }

@@ -38,10 +38,10 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // active AJAX component
-        $sGroupTable = $this->_getViewName('oxgroups');
+        $sGroupTable = $this->getViewName('oxgroups');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -71,9 +71,9 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function removePromotionGroup()
     {
-        $aRemoveGroups = $this->_getActionIds('oxobject2action.oxid');
+        $aRemoveGroups = $this->getActionIds('oxobject2action.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2action.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
@@ -89,12 +89,12 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function addPromotionGroup()
     {
-        $aChosenGroup = $this->_getActionIds('oxgroups.oxid');
+        $aChosenGroup = $this->getActionIds('oxgroups.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sGroupTable = $this->_getViewName('oxgroups');
-            $aChosenGroup = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
+            $sGroupTable = $this->getViewName('oxgroups');
+            $aChosenGroup = $this->getAll($this->addFilter("select $sGroupTable.oxid " . $this->getQuery()));
         }
 
         $promotionAdded = false;

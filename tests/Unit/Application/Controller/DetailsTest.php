@@ -172,7 +172,7 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView->expects($this->once())->method('getLinkType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue("searchparams"));
 
-        $oDetailsView->_processProduct($oProduct);
+        $oDetailsView->processProduct($oProduct);
     }
 
     /**
@@ -224,7 +224,7 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct"));
         $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $oProduct = $oDetailsView->_getParentProduct('1126');
+        $oProduct = $oDetailsView->getParentProduct('1126');
         $this->assertTrue($oProduct instanceof article);
         $this->assertEquals('1126', $oProduct->getId());
     }
@@ -658,9 +658,9 @@ class DetailsTest extends \OxidTestCase
         $sKeywords .= ", Geschenke, Bar-Equipment";
 
         $oView = oxNew('oxUBase');
-        $sTestKeywords = $oView->_prepareMetaKeyword($sKeywords, true) . ", testvalue1, testvalue2, testvalue3";
+        $sTestKeywords = $oView->prepareMetaKeyword($sKeywords, true) . ", testvalue1, testvalue2, testvalue3";
 
-        $this->assertEquals($sTestKeywords, $oDetails->_prepareMetaKeyword(null));
+        $this->assertEquals($sTestKeywords, $oDetails->prepareMetaKeyword(null));
     }
 
     /**
@@ -678,7 +678,7 @@ class DetailsTest extends \OxidTestCase
         $sMeta = $oProduct->oxarticles__oxtitle->value . ' - ' . $oProduct->getLongDescription();
 
         $oView = oxNew('oxUBase');
-        $this->assertEquals($oView->_prepareMetaDescription($sMeta, 200, false), $oDetails->_prepareMetaDescription(null));
+        $this->assertEquals($oView->prepareMetaDescription($sMeta, 200, false), $oDetails->prepareMetaDescription(null));
     }
 
     /**
@@ -702,7 +702,7 @@ class DetailsTest extends \OxidTestCase
         $sMeta = 'Title - parsed description';
 
         $oView = oxNew('oxUBase');
-        $this->assertEquals($oView->_prepareMetaDescription($sMeta, 200, false), $oDetails->_prepareMetaDescription(null));
+        $this->assertEquals($oView->prepareMetaDescription($sMeta, 200, false), $oDetails->prepareMetaDescription(null));
     }
 
     /**

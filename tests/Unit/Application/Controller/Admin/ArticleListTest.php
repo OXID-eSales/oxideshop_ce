@@ -136,7 +136,7 @@ class ArticleListTest extends \OxidTestCase
     }
 
     /**
-     * Article_List::_buildSelectString() test case
+     * Article_List::buildSelectString() test case
      *
      * @return null
      */
@@ -152,11 +152,11 @@ class ArticleListTest extends \OxidTestCase
         $sQ = str_replace(" from $sTable where 1 ", " from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = 'testCategory' and  1  and $sTable.oxparentid = '' ", $sQ);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ, $oView->_buildSelectString($oProduct));
+        $this->assertEquals($sQ, $oView->buildSelectString($oProduct));
     }
 
     /**
-     * Article_List::_buildSelectString() test case
+     * Article_List::buildSelectString() test case
      *
      * @return null
      */
@@ -170,11 +170,11 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->_buildSelectString($oProduct));
+        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->buildSelectString($oProduct));
     }
 
     /**
-     * Article_List::_buildSelectString() test case
+     * Article_List::buildSelectString() test case
      *
      * @return null
      */
@@ -188,7 +188,7 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->_buildSelectString($oProduct));
+        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->buildSelectString($oProduct));
     }
 
     /**
@@ -207,7 +207,7 @@ class ArticleListTest extends \OxidTestCase
     }
 
     /**
-     * Article_List::_buildSelectString() test case
+     * Article_List::buildSelectString() test case
      *
      * @return null
      */
@@ -220,7 +220,7 @@ class ArticleListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $this->assertEquals(
             $sQ . " and " . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid = '' ",
-            $oView->_buildSelectString($oProduct)
+            $oView->buildSelectString($oProduct)
         );
     }
 

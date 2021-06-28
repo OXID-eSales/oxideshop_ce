@@ -57,18 +57,18 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxuser where 1 and oxuser.oxshopid = '" . $this->getShopIdTest() . "'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxuser where 1 and oxuser.oxshopid = '" . $this->getShopIdTest() . "'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -76,11 +76,11 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blMallUsers", true);
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxuser where 1", trim($oView->_getQuery()));
+        $this->assertEquals("from oxuser where 1", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -90,11 +90,11 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxuser where 1 and oxuser.oxshopid = '" . $this->getShopIdTest() . "' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxuser where 1 and oxuser.oxshopid = '" . $this->getShopIdTest() . "' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -105,11 +105,11 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxuser where 1 and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxuser where 1 and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -119,11 +119,11 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sOxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sOxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -135,11 +135,11 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '" . $sOxid . "'and oxuser.oxshopid = '" . $this->getShopIdTest() . "' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '" . $sOxid . "'and oxuser.oxshopid = '" . $this->getShopIdTest() . "' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliverysetUsersAjax::_getQuery() test case
+     * DeliverysetUsersAjax::getQuery() test case
      *
      * @return null
      */
@@ -152,7 +152,7 @@ class DeliverysetUsersAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_users_ajax');
-        $this->assertEquals("from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '" . $sOxid . "'and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '" . $sOxid . "'and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim($oView->getQuery()));
     }
 
     /**

@@ -83,7 +83,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     public function render()
     {
         parent::render();
-        $this->_aViewData['mylist'] = $this->_getLanguagesList();
+        $this->_aViewData['mylist'] = $this->getLanguagesList();
 
         return "language_list.tpl";
     }
@@ -93,7 +93,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @return array
      */
-    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
@@ -124,7 +124,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
                 }
             }
 
-            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
+            uasort($aLanguages, [$this, 'sortLanguagesCallback']);
         }
 
         return $aLanguages;
@@ -139,7 +139,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @return bool
      */
-    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortParam = $this->_sDefSortField;
         $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
@@ -158,7 +158,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @param string $iLangId language ID
      */
-    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLangId = (int) $iLangId;
 

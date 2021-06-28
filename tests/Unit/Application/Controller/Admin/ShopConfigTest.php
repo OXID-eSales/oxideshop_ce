@@ -104,7 +104,7 @@ class ShopConfigTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals("a\nb\nc", $oView->_arrayToMultiline($aInput));
+        $this->assertEquals("a\nb\nc", $oView->arrayToMultiline($aInput));
     }
 
     /**
@@ -119,7 +119,7 @@ class ShopConfigTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->_multilineToArray($sMultiline));
+        $this->assertEquals(array(0 => "a", 1 => "b", 3 => "c"), $oView->multilineToArray($sMultiline));
     }
 
     /**
@@ -134,7 +134,7 @@ class ShopConfigTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals("a => b\nc => d", $oView->_aarrayToMultiline($aInput));
+        $this->assertEquals("a => b\nc => d", $oView->aarrayToMultiline($aInput));
     }
 
     /**
@@ -149,7 +149,7 @@ class ShopConfigTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals(array("a" => "b", "c" => "d"), $oView->_multilineToAarray($sMultiline));
+        $this->assertEquals(array("a" => "b", "c" => "d"), $oView->multilineToAarray($sMultiline));
     }
 
     /**

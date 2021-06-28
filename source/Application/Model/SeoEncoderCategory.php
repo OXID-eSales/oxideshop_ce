@@ -22,7 +22,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -38,12 +38,12 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return boolean
      */
-    protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sCacheId = $this->_getCategoryCacheId($oCat, $iLang);
+        $sCacheId = $this->getCategoryCacheId($oCat, $iLang);
         if (isset($this->_aCatCache[$sCacheId])) {
             $sSeoUrl = $this->_aCatCache[$sCacheId];
-        } elseif (($sSeoUrl = $this->_loadFromDb('oxcategory', $oCat->getId(), $iLang))) {
+        } elseif (($sSeoUrl = $this->loadFromDb('oxcategory', $oCat->getId(), $iLang))) {
             // caching
             $this->_aCatCache[$sCacheId] = $sSeoUrl;
         }
@@ -61,7 +61,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $oCat->getId() . '_' . ((int) $iLang);
     }
@@ -92,7 +92,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             $aCacheMap = [];
             $aStdLinks = [];
 
-            while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
+            while ($oCat && !($sSeoUrl = $this->categoryUrlLoader($oCat, $iLang))) {
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
                     $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
@@ -100,7 +100,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
                 }
 
                 // prepare oCat title part
-                $sTitle = $this->_prepareTitle($oCat->oxcategories__oxtitle->value, false, $oCat->getLanguage());
+                $sTitle = $this->prepareTitle($oCat->oxcategories__oxtitle->value, false, $oCat->getLanguage());
 
                 foreach (array_keys($aCacheMap) as $id) {
                     $aCacheMap[$id] = $sTitle . '/' . $aCacheMap[$id];
@@ -114,8 +114,8 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             }
 
             foreach ($aCacheMap as $sId => $sUri) {
-                $this->_aCatCache[$sId . '_' . $iLang] = $this->_processSeoUrl($sSeoUrl . $sUri . '/', $sId, $iLang);
-                $this->_saveToDb('oxcategory', $sId, $aStdLinks[$sId], $this->_aCatCache[$sId . '_' . $iLang], $iLang);
+                $this->_aCatCache[$sId . '_' . $iLang] = $this->processSeoUrl($sSeoUrl . $sUri . '/', $sId, $iLang);
+                $this->saveToDb('oxcategory', $sId, $aStdLinks[$sId], $this->_aCatCache[$sId . '_' . $iLang], $iLang);
             }
 
             $sSeoUrl = $this->_aCatCache[$sCatId . '_' . $iLang];
@@ -144,11 +144,11 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $category->getBaseStdLink($languageId);
         $parameters = null;
 
-        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $stdUrl = $this->trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getCategoryUri($category, $languageId);
 
         if ($isFixed === null) {
-            $isFixed = $this->_isFixed('oxcategory', $category->getId(), $languageId);
+            $isFixed = $this->isFixed('oxcategory', $category->getId(), $languageId);
         }
 
         return $this->assembleFullPageUrl($category, 'oxcategory', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
@@ -173,7 +173,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         }
         // category may have specified url
         if (($sSeoUrl = $this->getCategoryUri($oCategory, $iLang))) {
-            $sUrl = $this->_getFullUrl($sSeoUrl, $iLang);
+            $sUrl = $this->getFullUrl($sSeoUrl, $iLang);
         }
 
         return $sUrl;
@@ -255,7 +255,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);

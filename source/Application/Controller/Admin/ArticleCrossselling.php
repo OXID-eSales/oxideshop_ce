@@ -31,10 +31,10 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
         $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         // crossselling
-        $this->_createCategoryTree("artcattree");
+        $this->createCategoryTree("artcattree");
 
         // accessoires
-        $this->_createCategoryTree("artcattree2");
+        $this->createCategoryTree("artcattree2");
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {

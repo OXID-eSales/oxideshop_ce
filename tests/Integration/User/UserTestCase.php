@@ -71,7 +71,7 @@ abstract class UserTestCase extends UnitTestCase
      *
      * @return oxUser
      */
-    protected function _createDefaultUser($sRight, $iShopId, $blMd5EncodedStyle = true)
+    protected function createDefaultUser($sRight, $iShopId, $blMd5EncodedStyle = true)
     {
         if ($blMd5EncodedStyle) {
             $sPassVal = $this->_sOldEncodedPassword;
@@ -97,7 +97,7 @@ abstract class UserTestCase extends UnitTestCase
         return $oUser;
     }
 
-    protected function _createSecondSubShop()
+    protected function createSecondSubShop()
     {
         $oShop = oxNew('oxShop');
         $oShop->save();
@@ -109,7 +109,7 @@ abstract class UserTestCase extends UnitTestCase
      *
      * @return string
      */
-    protected function _login($sUserName = null, $sUserPassword = null)
+    protected function login($sUserName = null, $sUserPassword = null)
     {
         if (is_null($sUserName)) {
             $sUserName = $this->_sDefaultUserName;
@@ -117,7 +117,7 @@ abstract class UserTestCase extends UnitTestCase
         if (is_null($sUserPassword)) {
             $sUserPassword = $this->_sDefaultUserPassword;
         }
-        $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
+        $this->setLoginParametersToRequest($sUserName, $sUserPassword);
         $oCmpUser = oxNew('oxcmp_user');
         return $oCmpUser->login();
     }
@@ -126,7 +126,7 @@ abstract class UserTestCase extends UnitTestCase
      * @param string $sUserName
      * @param string $sUserPassword
      */
-    private function _setLoginParametersToRequest($sUserName, $sUserPassword)
+    private function setLoginParametersToRequest($sUserName, $sUserPassword)
     {
         $this->setRequestParameter('lgn_usr', $sUserName);
         $this->setRequestParameter('lgn_pwd', $sUserPassword);

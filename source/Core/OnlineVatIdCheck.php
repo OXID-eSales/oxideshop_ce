@@ -69,7 +69,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
         $oCheckVat->countryCode = $oVatIn->getCountryCode();
         $oCheckVat->vatNumber = $oVatIn->getNumbers();
 
-        $blResult = $this->_checkOnline($oCheckVat);
+        $blResult = $this->checkOnline($oCheckVat);
         if (!$blResult) {
             $this->setError('ID_NOT_VALID');
         }
@@ -103,7 +103,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @return bool
      */
-    protected function _isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blServiceIsOn === null) {
             $this->_blServiceIsOn = class_exists('SoapClient') ? true : false;
@@ -140,9 +140,9 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @return bool
      */
-    protected function _checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_isServiceAvailable()) {
+        if ($this->isServiceAvailable()) {
             $iTryMoreCnt = self::BUSY_RETRY_CNT;
 
             //T2009-07-02

@@ -41,10 +41,10 @@ class PasswordSaltGenerator
      */
     public function generate()
     {
-        if ($this->_getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
+        if ($this->getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
             $sSalt = bin2hex(openssl_random_pseudo_bytes(16));
         } else {
-            $sSalt = $this->_customSaltGenerator();
+            $sSalt = $this->customSaltGenerator();
         }
 
         return $sSalt;
@@ -55,7 +55,7 @@ class PasswordSaltGenerator
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
-    protected function _getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_openSSLFunctionalityChecker;
     }
@@ -65,7 +65,7 @@ class PasswordSaltGenerator
      *
      * @return string
      */
-    protected function _customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHash = '';
         $sSalt = '';

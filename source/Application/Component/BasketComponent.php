@@ -149,13 +149,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // adding articles
-        if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
-            $this->_setLastCallFnc('tobasket');
+        if ($aProducts = $this->getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
+            $this->setLastCallFnc('tobasket');
 
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $database->startTransaction();
             try {
-                $oBasketItem = $this->_addItems($aProducts);
+                $oBasketItem = $this->addItems($aProducts);
                 //reserve active basket
                 if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                     $basket = Registry::getSession()->getBasket();
@@ -181,7 +181,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
 
             // redirect to basket
-            $redirectUrl = $this->_getRedirectUrl();
+            $redirectUrl = $this->getRedirectUrl();
             $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent($this));
 
             return $redirectUrl;
@@ -239,16 +239,16 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aPersParam = $aPersParam ? $aPersParam : Registry::getRequest()->getRequestEscapedParameter('persparam');
 
         // adding articles
-        if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
+        if ($aProducts = $this->getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
             // information that last call was changebasket
             $oBasket = $session->getBasket();
             $oBasket->onUpdate();
-            $this->_setLastCallFnc('changebasket');
+            $this->setLastCallFnc('changebasket');
 
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $database->startTransaction();
             try {
-                $oBasketItem = $this->_addItems($aProducts);
+                $oBasketItem = $this->addItems($aProducts);
                 // reserve active basket
                 if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                     Registry::getSession()->getBasketReservations()->reserveBasket($oBasket);
@@ -268,7 +268,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string   $sClass.$sPosition  redirection URL
      */
-    protected function _getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
 
         // active controller id
@@ -331,7 +331,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return mixed
      */
-    protected function _getItems( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItems( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $sProductId = null,
         $dAmount = null,
         $aSel = null,
@@ -392,7 +392,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  object  $oBasketItem    last added basket item
      */
-    protected function _addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $activeView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
@@ -441,7 +441,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // information that last call was tobasket
-        $this->_setLastCall($this->_getLastCallFnc(), $products, $basketInfo);
+        $this->setLastCall($this->getLastCallFnc(), $products, $basketInfo);
 
         return $basketItem;
     }
@@ -453,7 +453,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param array  $aProductInfo data which comes from request when you press button "to basket"
      * @param array  $aBasketInfo  array returned by \OxidEsales\Eshop\Application\Model\Basket::getBasketSummary()
      */
-    protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         Registry::getSession()->setVariable('aLastcall', [$sCallName => $aProductInfo]);
     }
@@ -463,7 +463,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sCallName name of action ('tobasket', 'changebasket')
      */
-    protected function _setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sLastCallFnc = $sCallName;
     }
@@ -473,7 +473,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function _getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_sLastCallFnc;
     }

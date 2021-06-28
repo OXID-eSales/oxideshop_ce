@@ -274,7 +274,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         foreach ($aModulesIds as $sModuleId) {
             $oModule->setModuleData(['id' => $sModuleId]);
-            $aInvalidExtensions = $this->_getInvalidExtensions($sModuleId);
+            $aInvalidExtensions = $this->getInvalidExtensions($sModuleId);
             if ($aInvalidExtensions) {
                 $aDeletedExt[$sModuleId]['extensions'] = $aInvalidExtensions;
             }
@@ -411,7 +411,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
                 continue;
             }
 
-            if ($this->_isVendorDir($sModuleDirPath)) {
+            if ($this->isVendorDir($sModuleDirPath)) {
                 // scanning modules vendor directory
                 $this->getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
             } else {
@@ -481,7 +481,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
     }
@@ -493,7 +493,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir($sModuleDir)) {
             return false;
@@ -517,7 +517,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $extendedShopClasses = $this->getModuleExtensions($moduleId);
         $invalidModuleClasses = [];

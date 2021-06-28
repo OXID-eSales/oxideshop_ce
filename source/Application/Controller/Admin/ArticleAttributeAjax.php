@@ -36,14 +36,14 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchArtId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        $sAttrViewName = $this->_getViewName('oxattribute');
-        $sO2AViewName = $this->_getViewName('oxobject2attribute');
+        $sAttrViewName = $this->getViewName('oxattribute');
+        $sO2AViewName = $this->getViewName('oxobject2attribute');
         if ($sArtId) {
             // all categories article is in
             $sQAdd = " from {$sO2AViewName} left join {$sAttrViewName} " .
@@ -64,11 +64,11 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function removeAttr()
     {
-        $aChosenArt = $this->_getActionIds('oxobject2attribute.oxid');
+        $aChosenArt = $this->getActionIds('oxobject2attribute.oxid');
         $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sO2AViewName = $this->_getViewName('oxobject2attribute');
-            $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
+            $sO2AViewName = $this->getViewName('oxobject2attribute');
+            $sQ = $this->addFilter("delete $sO2AViewName.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
@@ -84,12 +84,12 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function addAttr()
     {
-        $aAddCat = $this->_getActionIds('oxattribute.oxid');
+        $aAddCat = $this->getActionIds('oxattribute.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sAttrViewName = $this->_getViewName('oxattribute');
-            $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
+            $sAttrViewName = $this->getViewName('oxattribute');
+            $aAddCat = $this->getAll($this->addFilter("select $sAttrViewName.oxid " . $this->getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
@@ -128,7 +128,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->onAttributeValueChange($article);
 
             if (isset($attributeId) && ("" != $attributeId)) {
-                $viewName = $this->_getViewName("oxobject2attribute");
+                $viewName = $this->getViewName("oxobject2attribute");
                 $quotedArticleId = $database->quote($article->oxarticles__oxid->value);
                 $select = "select * from {$viewName} where {$viewName}.oxobjectid= {$quotedArticleId} and
                             {$viewName}.oxattrid= " . $database->quote($attributeId);

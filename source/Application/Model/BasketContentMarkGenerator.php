@@ -52,7 +52,7 @@ class BasketContentMarkGenerator
     {
         if (is_null($this->_aMarks)) {
             $sCurrentMark = self::DEFAULT_EXPLANATION_MARK;
-            $aMarks = $this->_formMarks($sCurrentMark);
+            $aMarks = $this->formMarks($sCurrentMark);
             $this->_aMarks = $aMarks;
         }
 
@@ -64,7 +64,7 @@ class BasketContentMarkGenerator
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
      */
-    private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_oBasket;
     }
@@ -76,9 +76,9 @@ class BasketContentMarkGenerator
      *
      * @return array
      */
-    private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oBasket = $this->_getBasket();
+        $oBasket = $this->getBasket();
         $aMarks = [];
         if ($oBasket->hasSkipedDiscount()) {
             $aMarks['skippedDiscount'] = $sCurrentMark;

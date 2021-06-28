@@ -674,7 +674,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $this->assertEquals("oxtesttable__oxtestfield", $oBase->_getFieldLongName('oxtestfield'));
+        $this->assertEquals("oxtesttable__oxtestfield", $oBase->getFieldLongName('oxtestfield'));
     }
 
     /**
@@ -697,7 +697,7 @@ class BaseTest extends \OxidTestCase
         $base->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
 
         $expectedOxid = "oxid = 'test1'";
-        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields());
+        $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields());
     }
 
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOff()
@@ -711,7 +711,7 @@ class BaseTest extends \OxidTestCase
         $shopId = $this->getUpdateShopId();
 
         $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1'";
-        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields(false));
+        $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields(false));
     }
 
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOn()
@@ -725,7 +725,7 @@ class BaseTest extends \OxidTestCase
 
         $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
         $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = ''";
-        $this->assertStringStartsWith($expectedOxid, $base->_getUpdateFields());
+        $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields());
     }
 
     /**
@@ -1632,9 +1632,9 @@ class BaseTest extends \OxidTestCase
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
         $myDB->Execute($sInsert);
 
-        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('_getUpdateFields'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('getUpdateFields'));
         $oBase->expects($this->any())
-            ->method('_getUpdateFields')
+            ->method('getUpdateFields')
             ->will($this->returnValue(''));
 
         $oBase->init("oxarticles");

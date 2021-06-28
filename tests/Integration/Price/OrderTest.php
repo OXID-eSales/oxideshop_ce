@@ -211,7 +211,7 @@ class OrderTest extends BaseTestCase
      *
      * @param array $configOptions
      */
-    protected function _changeConfigs($configOptions)
+    protected function changeConfigs($configOptions)
     {
         $config = oxRegistry::getConfig();
         if (!empty($configOptions)) {
@@ -227,7 +227,7 @@ class OrderTest extends BaseTestCase
      * @param array  $articlesData new articles to add
      * @param object $order
      */
-    protected function _addArticles($articlesData, $order)
+    protected function addArticles($articlesData, $order)
     {
         $basketConstruct = new BasketConstruct();
         $articles = $basketConstruct->getArticles($articlesData);
@@ -250,7 +250,7 @@ class OrderTest extends BaseTestCase
      * @param array  $articleIds article id's to remove
      * @param object $order
      */
-    protected function _removeArticles($articleIds, $order)
+    protected function removeArticles($articleIds, $order)
     {
         $articleCount = count($articleIds);
         $orderArticles = $order->getOrderArticles();
@@ -270,7 +270,7 @@ class OrderTest extends BaseTestCase
      * @param array  $articleAmounts
      * @param object $order
      */
-    protected function _changeArticles($articleAmounts, $order)
+    protected function changeArticles($articleAmounts, $order)
     {
         $articlesCount = count($articleAmounts);
         $orderArticles = $order->getOrderArticles();

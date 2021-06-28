@@ -54,7 +54,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;
@@ -132,7 +132,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getPaymentList($sShipSetId, $dPrice, $oUser = null)
     {
-        $this->selectString($this->_getFilterSelect($sShipSetId, $dPrice, $oUser));
+        $this->selectString($this->getFilterSelect($sShipSetId, $dPrice, $oUser));
 
         return $this->_aArray;
     }
@@ -172,7 +172,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
             $oSaved = clone $this->getBaseObject();
             while (!$rs->EOF) {
                 $oListObject = clone $oSaved;
-                $this->_assignElement($oListObject, $rs->fields);
+                $this->assignElement($oListObject, $rs->fields);
                 $this->_aArray[] = $oListObject;
                 $rs->fetchRow();
             }

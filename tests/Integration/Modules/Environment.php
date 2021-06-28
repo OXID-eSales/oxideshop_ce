@@ -231,7 +231,7 @@ class Environment
             'aModules', 'aModuleEvents', 'aModuleVersions', 'aDisabledModules', 'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
-            Registry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));
+            Registry::getConfig()->setConfigParam($sParameter, $this->getConfigValueFromDB($sParameter));
         }
     }
 
@@ -242,7 +242,7 @@ class Environment
      *
      * @return array
      */
-    protected function _getConfigValueFromDB($sVarName)
+    protected function getConfigValueFromDB($sVarName)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQuery = "SELECT oxvarvalue

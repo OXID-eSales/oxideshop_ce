@@ -244,7 +244,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @param int $iNumber article count in compare page
      */
-    protected function _setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_iArticlesPerPage = $iNumber;
     }
@@ -254,7 +254,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function setNoPaging()
     {
-        $this->_setArticlesPerPage(0);
+        $this->setArticlesPerPage(0);
     }
 
 
@@ -275,10 +275,10 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
                 // cut page articles
                 if ($this->_iArticlesPerPage > 0) {
                     $this->_iCntPages = ceil($oList->count() / $this->_iArticlesPerPage);
-                    $aItems = $this->_removeArticlesFromPage($aItems, $oList);
+                    $aItems = $this->removeArticlesFromPage($aItems, $oList);
                 }
 
-                $this->_oArtList = $this->_changeArtListOrder($aItems, $oList);
+                $this->_oArtList = $this->changeArtListOrder($aItems, $oList);
             }
         }
 
@@ -352,7 +352,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $aNewItems
      */
-    protected function _removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //#1106S $aItems changed to $oList.
         //2006-08-10 Alfonsas, compare arrows fixed, array position is very important here, preserve it.
@@ -380,7 +380,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $oNewList
      */
-    protected function _changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #777C changing order of list elements, according to $aItems
         $oNewList = [];

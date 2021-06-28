@@ -63,7 +63,7 @@ class OrderOverviewTest extends \OxidTestCase
         $oOrder->oxorder__oxpaymenttype = new oxField("testValue");
 
         $oView = oxNew('Order_Overview');
-        $oUserPayment = $oView->_getPaymentType($oOrder);
+        $oUserPayment = $oView->getPaymentType($oOrder);
 
         $this->assertTrue($oUserPayment instanceof userpayment);
         $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);

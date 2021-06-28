@@ -35,7 +35,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
     public function getAction()
     {
         $actionId = $this->getViewParameter('action');
-        if ($actionId && $this->_getLoadActionsParam()) {
+        if ($actionId && $this->getLoadActionsParam()) {
             $artList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $artList->loadActionArticles($actionId);
             if ($artList->count()) {
@@ -49,7 +49,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
      *
      * @return string
      */
-    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_blLoadActions = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion');
 

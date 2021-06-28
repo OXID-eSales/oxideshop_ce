@@ -32,7 +32,7 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oCat->setLanguage(Registry::getRequest()->getRequestEscapedParameter('editlanguage'));

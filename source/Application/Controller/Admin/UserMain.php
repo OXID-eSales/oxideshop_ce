@@ -86,7 +86,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $this->_aViewData["sSaveError"] = $this->_sSaveError;
         }
 
-        if (!$this->_allowAdminEdit($soxId)) {
+        if (!$this->allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
         }
         if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {
@@ -110,7 +110,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         //allow admin information edit only for MALL admins
         $soxId = $this->getEditObjectId();
-        if ($this->_allowAdminEdit($soxId)) {
+        if ($this->allowAdminEdit($soxId)) {
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
             // checkbox handling

@@ -51,7 +51,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return RssFeed
      */
-    protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_oRss) {
             $this->_oRss = oxNew(RssFeed::class);
@@ -83,7 +83,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         $sCharset = Registry::getLang()->translateString("charset");
         Registry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
         Registry::getUtils()->showMessageAndExit(
-            $this->_processOutput(
+            $this->processOutput(
                 $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData)
             )
         );
@@ -108,7 +108,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return string
      */
-    protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Str::getStr()->recodeEntities($sInput);
     }
@@ -121,7 +121,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function topshop()
     {
         if (Registry::getConfig()->getConfigParam('bl_rssTopShop')) {
-            $this->_getRssFeed()->loadTopInShop();
+            $this->getRssFeed()->loadTopInShop();
         } else {
             error_404_handler();
         }
@@ -135,7 +135,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function newarts()
     {
         if (Registry::getConfig()->getConfigParam('bl_rssNewest')) {
-            $this->_getRssFeed()->loadNewestArticles();
+            $this->getRssFeed()->loadNewestArticles();
         } else {
             error_404_handler();
         }
@@ -151,7 +151,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         if (Registry::getConfig()->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCat->load(Registry::getRequest()->getRequestEscapedParameter('cat'))) {
-                $this->_getRssFeed()->loadCategoryArticles($oCat);
+                $this->getRssFeed()->loadCategoryArticles($oCat);
             }
         } else {
             error_404_handler();
@@ -171,7 +171,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
             $sVendorId = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
             $sManufacturerId = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
 
-            $this->_getRssFeed()->loadSearchArticles($sSearchParameter, $sCatId, $sVendorId, $sManufacturerId);
+            $this->getRssFeed()->loadSearchArticles($sSearchParameter, $sCatId, $sVendorId, $sManufacturerId);
         } else {
             error_404_handler();
         }
@@ -190,7 +190,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         if ($this->getViewConfig()->getShowListmania() && Registry::getConfig()->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load(Registry::getRequest()->getRequestEscapedParameter('anid'))) {
-                $this->_getRssFeed()->loadRecommLists($oArticle);
+                $this->getRssFeed()->loadRecommLists($oArticle);
 
                 return;
             }
@@ -211,7 +211,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         if (Registry::getConfig()->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
             if ($oRecommList->load(Registry::getRequest()->getRequestEscapedParameter('recommid'))) {
-                $this->_getRssFeed()->loadRecommListArticles($oRecommList);
+                $this->getRssFeed()->loadRecommListArticles($oRecommList);
 
                 return;
             }
@@ -227,7 +227,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function bargain()
     {
         if (Registry::getConfig()->getConfigParam('bl_rssBargain')) {
-            $this->_getRssFeed()->loadBargain();
+            $this->getRssFeed()->loadBargain();
         } else {
             error_404_handler();
         }
@@ -241,7 +241,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     public function getChannel()
     {
         if ($this->_oChannel === null) {
-            $this->_oChannel = $this->_getRssFeed()->getChannel();
+            $this->_oChannel = $this->getRssFeed()->getChannel();
         }
 
         return $this->_oChannel;
@@ -254,6 +254,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function getCacheLifeTime()
     {
-        return $this->_getRssFeed()->getCacheTtl();
+        return $this->getRssFeed()->getCacheTtl();
     }
 }

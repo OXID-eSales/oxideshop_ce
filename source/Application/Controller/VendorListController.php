@@ -102,10 +102,10 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
                     $this->getArticleList();
 
                     // checking if requested page is correct
-                    $this->_checkRequestedPage();
+                    $this->checkRequestedPage();
 
                     // processing list articles
-                    $this->_processListArticles();
+                    $this->processListArticles();
                 }
             }
         }
@@ -118,7 +118,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return OXARTICLE_LINKTYPE_VENDOR;
     }
@@ -130,7 +130,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return array
      */
-    protected function _loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sVendorId = $oVendor->getId();
 
@@ -139,7 +139,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->setSqlLimit($iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles);
+        $oArtList->setSqlLimit($iNrOfCatArticles * $this->getRequestPageNr(), $iNrOfCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
         // load the articles
@@ -156,7 +156,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
@@ -173,7 +173,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
@@ -181,7 +181,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 $sUrl = $oVendor->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;
@@ -250,7 +250,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         if ($this->_aArticleList === null) {
             $this->_aArticleList = [];
             if (($oVendor = $this->getActVendor()) && ($oVendor->getId() != 'root')) {
-                list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oVendor);
+                list($aArticleList, $iAllArtCnt) = $this->loadArticles($oVendor);
                 if ($iAllArtCnt) {
                     $this->_aArticleList = $aArticleList;
                 }
@@ -349,21 +349,21 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
     /**
      * Returns current view keywords separated by comma
-     * (calls parent::_collectMetaKeyword())
+     * (calls parent::collectMetaKeyword())
      *
      * @param string $sKeywords               data to use as keywords
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return parent::_collectMetaKeyword($sKeywords);
+        return parent::collectMetaKeyword($sKeywords);
     }
 
     /**
      * Returns current view meta description data
-     * (calls parent::_collectMetaDescription())
+     * (calls parent::collectMetaDescription())
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
@@ -371,9 +371,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return parent::_collectMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::collectMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -384,7 +384,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getActVendor();
     }

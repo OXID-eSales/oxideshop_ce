@@ -113,7 +113,7 @@ class Utilities extends Core
      *
      * @return string
      */
-    protected function _extractPath($aPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function extractPath($aPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sExtPath = '';
         $blBuildPath = false;
@@ -148,7 +148,7 @@ class Utilities extends Core
             $sFilepath = $_SERVER['SCRIPT_FILENAME'];
         }
 
-        $aParams['sShopDir'] = str_replace("\\", "/", $this->_extractPath(preg_split("/\\\|\//", $sFilepath)));
+        $aParams['sShopDir'] = str_replace("\\", "/", $this->extractPath(preg_split("/\\\|\//", $sFilepath)));
         $aParams['sCompileDir'] = $aParams['sShopDir'] . "tmp/";
 
         // try referer
@@ -156,7 +156,7 @@ class Utilities extends Core
         if (!isset($sFilepath) || !$sFilepath) {
             $sFilepath = "http://" . @$_SERVER['HTTP_HOST'] . @$_SERVER['SCRIPT_NAME'];
         }
-        $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
+        $aParams['sShopURL'] = ltrim($this->extractPath(explode("/", $sFilepath)), "/");
 
         return $aParams;
     }

@@ -47,26 +47,26 @@ class ArticleBundleAjaxTest extends \OxidTestCase
     }
 
     /**
-     * ArticleBundleAjax::_getQuery() test case
+     * ArticleBundleAjax::getQuery() test case
      */
     public function testGetQuery()
     {
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleBundleAjax::_getQuery() test case
+     * ArticleBundleAjax::getQuery() test case
      */
     public function testGetQueryVariantsSelectionTrue()
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleBundleAjax::_getQuery() test case
+     * ArticleBundleAjax::getQuery() test case
      */
     public function testGetQueryOxid()
     {
@@ -74,11 +74,11 @@ class ArticleBundleAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->_getQuery()));
+        $this->assertEquals("and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != ''", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleBundleAjax::_getQuery() test case
+     * ArticleBundleAjax::getQuery() test case
      */
     public function testGetQuerySynchoxidOxid()
     {
@@ -88,11 +88,11 @@ class ArticleBundleAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleBundleAjax::_getQuery() test case
+     * ArticleBundleAjax::getQuery() test case
      */
     public function testGetQuerySynchoxidOxidVariantsSelectionTrue()
     {
@@ -103,28 +103,28 @@ class ArticleBundleAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  (" . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid or " . $this->getArticleViewTable() . ".oxparentid=oxobject2category.oxobjectid) where oxobject2category.oxcatnid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  (" . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid or " . $this->getArticleViewTable() . ".oxparentid=oxobject2category.oxobjectid) where oxobject2category.oxcatnid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleBundleAjax::_addFilter() test case
+     * ArticleBundleAjax::addFilter() test case
      */
     public function testAddFilter()
     {
         $sParam = 'parameter';
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals($sParam, trim($oView->_addFilter($sParam)));
+        $this->assertEquals($sParam, trim($oView->addFilter($sParam)));
     }
 
     /**
-     * ArticleBundleAjax::_addFilter() test case
+     * ArticleBundleAjax::addFilter() test case
      */
     public function testAddFilterVariantsSelectionTrue()
     {
         $sParam = 'parameter';
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('article_bundle_ajax');
-        $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->_addFilter($sParam)));
+        $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim($oView->addFilter($sParam)));
     }
 
     /**

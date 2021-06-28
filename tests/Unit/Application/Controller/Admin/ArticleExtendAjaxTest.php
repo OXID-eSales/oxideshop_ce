@@ -100,18 +100,18 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     }
 
     /**
-     * ArticleExtendAjax::_getQuery() test case
+     * ArticleExtendAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals("from " . $this->getCategoriesViewTable() . " where " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '' and " . $this->getCategoriesViewTable() . ".oxid is not null ) and " . $this->getCategoriesViewTable() . ".oxpriceto = '0'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getCategoriesViewTable() . " where " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '' and " . $this->getCategoriesViewTable() . ".oxid is not null ) and " . $this->getCategoriesViewTable() . ".oxpriceto = '0'", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleExtendAjax::_getQuery() test case
+     * ArticleExtendAjax::getQuery() test case
      *
      * @return null
      */
@@ -121,11 +121,11 @@ class ArticleExtendAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sOxid' and " . $this->getCategoriesViewTable() . ".oxid is not null", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sOxid' and " . $this->getCategoriesViewTable() . ".oxid is not null", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleExtendAjax::_getQuery() test case
+     * ArticleExtendAjax::getQuery() test case
      *
      * @return null
      */
@@ -135,11 +135,11 @@ class ArticleExtendAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals("from " . $this->getCategoriesViewTable() . " where " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sSynchoxid' and " . $this->getCategoriesViewTable() . ".oxid is not null ) and " . $this->getCategoriesViewTable() . ".oxpriceto = '0'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getCategoriesViewTable() . " where " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from " . $this->getObject2CategoryViewTable() . " left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxcatnid  where " . $this->getObject2CategoryViewTable() . ".oxobjectid = '$sSynchoxid' and " . $this->getCategoriesViewTable() . ".oxid is not null ) and " . $this->getCategoriesViewTable() . ".oxpriceto = '0'", trim($oView->getQuery()));
     }
 
     /**
-     * ArticleExtendAjax::_getDataFields() test case
+     * ArticleExtendAjax::getDataFields() test case
      *
      * @return null
      */
@@ -154,11 +154,11 @@ class ArticleExtendAjaxTest extends \OxidTestCase
         );
 
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals($aResult, $oView->_getDataFields("select  " . $this->getCategoriesViewTable() . ".oxtitle as _0, " . $this->getCategoriesViewTable() . ".oxdesc as _1, oxobject2category.oxid as _3, oxobject2category.oxtime as _4, " . $this->getCategoriesViewTable() . ".oxid as _5  from oxobject2category left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '_testObject' and " . $this->getCategoriesViewTable() . ".oxid is not null  order by _0 asc  limit 0, 25 "));
+        $this->assertEquals($aResult, $oView->getDataFields("select  " . $this->getCategoriesViewTable() . ".oxtitle as _0, " . $this->getCategoriesViewTable() . ".oxdesc as _1, oxobject2category.oxid as _3, oxobject2category.oxtime as _4, " . $this->getCategoriesViewTable() . ".oxid as _5  from oxobject2category left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '_testObject' and " . $this->getCategoriesViewTable() . ".oxid is not null  order by _0 asc  limit 0, 25 "));
     }
 
     /**
-     * ArticleExtendAjax::_getDataFields() test case
+     * ArticleExtendAjax::getDataFields() test case
      *
      * @return null
      */
@@ -174,22 +174,22 @@ class ArticleExtendAjaxTest extends \OxidTestCase
         );
 
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals($aResult, $oView->_getDataFields("select  " . $this->getCategoriesViewTable() . ".oxtitle as _0, " . $this->getCategoriesViewTable() . ".oxdesc as _1, oxobject2category.oxid as _3, oxobject2category.oxtime as _4, " . $this->getCategoriesViewTable() . ".oxid as _5  from oxobject2category left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '_testObject' and " . $this->getCategoriesViewTable() . ".oxid is not null  order by _0 asc  limit 0, 25 "));
+        $this->assertEquals($aResult, $oView->getDataFields("select  " . $this->getCategoriesViewTable() . ".oxtitle as _0, " . $this->getCategoriesViewTable() . ".oxdesc as _1, oxobject2category.oxid as _3, oxobject2category.oxtime as _4, " . $this->getCategoriesViewTable() . ".oxid as _5  from oxobject2category left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2category.oxcatnid  where oxobject2category.oxobjectid = '_testObject' and " . $this->getCategoriesViewTable() . ".oxid is not null  order by _0 asc  limit 0, 25 "));
     }
 
     /**
-     * ArticleExtendAjax::_getDataFields() test case
+     * ArticleExtendAjax::getDataFields() test case
      *
      * @return null
      */
     public function testGetDataFieldsFalse()
     {
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0)), $oView->_getDataFields('select FALSE'));
+        $this->assertEquals(array(array('FALSE' => 0)), $oView->getDataFields('select FALSE'));
     }
 
     /**
-     * ArticleExtendAjax::_getDataFields() test case
+     * ArticleExtendAjax::getDataFields() test case
      *
      * @return null
      */
@@ -197,7 +197,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", true);
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->_getDataFields('select FALSE'));
+        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->getDataFields('select FALSE'));
     }
 
     /**
@@ -278,7 +278,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     }
 
     /**
-     * ArticleExtendAjax::_updateOxTime() test case
+     * ArticleExtendAjax::updateOxTime() test case
      *
      * @return null
      */
@@ -289,13 +289,13 @@ class ArticleExtendAjaxTest extends \OxidTestCase
 
         $oView = oxNew('article_extend_ajax');
 
-        $sO2CView = $oView->_getViewName('oxobject2category');
+        $sO2CView = $oView->getViewName('oxobject2category');
 
         // updating oxtime values
         $sQ = "update oxobject2category set oxtime = 1 where oxobjectid = '$sOxid' ";
         $oDb->execute($sQ);
 
-        $oView->_updateOxTime($sOxid);
+        $oView->updateOxTime($sOxid);
         $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2category where oxtime=0 and oxobjectid = '$sOxid' limit 1"));
     }
 

@@ -130,12 +130,12 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         parent::render();
 
         $oContent = $this->getContent();
-        if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
+        if ($oContent && !$this->canShowContent($oContent->oxcontents__oxloadid->value)) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=account');
         }
 
         $sTpl = false;
-        if ($sTplName = $this->_getTplName()) {
+        if ($sTplName = $this->getTplName()) {
             $this->_sThisTemplate = $sTpl = $sTplName;
         } elseif ($oContent) {
             $sTpl = $oContent->getId();
@@ -164,7 +164,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return bool
      */
-    protected function _canShowContent($sContentIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canShowContent($sContentIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return !(
             $this->isEnabledPrivateSales() &&
@@ -182,13 +182,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sMeta) {
             $sMeta = $this->getContent()->oxcontents__oxtitle->value;
         }
 
-        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::prepareMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -200,13 +200,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sKeywords) {
             $sKeywords = $this->getContent()->oxcontents__oxtitle->value;
         }
 
-        return parent::_prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
+        return parent::prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
     }
 
     /**
@@ -254,7 +254,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Registry::getRequest()->getRequestEscapedParameter('oxcid');
     }
@@ -317,7 +317,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getContent();
     }
@@ -327,7 +327,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // assign template name
         $sTplName = Registry::getRequest()->getRequestEscapedParameter('tpl');

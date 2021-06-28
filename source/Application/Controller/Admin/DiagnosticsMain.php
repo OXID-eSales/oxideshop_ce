@@ -65,7 +65,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blError;
     }
@@ -75,7 +75,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_sErrorMessage;
     }
@@ -100,8 +100,8 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         parent::render();
 
-        if ($this->_hasError()) {
-            $this->_aViewData['sErrorMessage'] = $this->_getErrorMessage();
+        if ($this->hasError()) {
+            $this->_aViewData['sErrorMessage'] = $this->getErrorMessage();
         }
 
         return "diagnostics_form.tpl";
@@ -114,7 +114,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $sReport = "";
 
-        $aDiagnosticsResult = $this->_runBasicDiagnostics();
+        $aDiagnosticsResult = $this->runBasicDiagnostics();
         $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main.tpl", $aDiagnosticsResult);
 
         $this->_oOutput->storeResult($sReport);
@@ -129,7 +129,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);

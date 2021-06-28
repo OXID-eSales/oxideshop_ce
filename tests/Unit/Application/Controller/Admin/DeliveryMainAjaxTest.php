@@ -68,18 +68,18 @@ class DeliveryMainAjaxTest extends \OxidTestCase
     }
 
     /**
-     * DeliveryMainAjax::_getQuery() test case
+     * DeliveryMainAjax::getQuery() test case
      *
      * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('delivery_main_ajax');
-        $this->assertEquals("from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1'", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryMainAjax::_getQuery() test case
+     * DeliveryMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -89,11 +89,11 @@ class DeliveryMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_main_ajax');
-        $this->assertEquals("from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1'  and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcountry' )", trim($oView->_getQuery()));
+        $this->assertEquals("from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1'  and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcountry' )", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryMainAjax::_getQuery() test case
+     * DeliveryMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -103,11 +103,11 @@ class DeliveryMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('delivery_main_ajax');
-        $this->assertEquals("from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcountry'", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcountry'", trim($oView->getQuery()));
     }
 
     /**
-     * DeliveryMainAjax::_getQuery() test case
+     * DeliveryMainAjax::getQuery() test case
      *
      * @return null
      */
@@ -119,7 +119,7 @@ class DeliveryMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('delivery_main_ajax');
-        $this->assertEquals("from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcountry'  and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcountry' )", trim($oView->_getQuery()));
+        $this->assertEquals("from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sOxid . "' and oxobject2delivery.oxtype = 'oxcountry'  and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcountry' )", trim($oView->getQuery()));
     }
 
     /**

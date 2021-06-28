@@ -38,7 +38,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
     }
@@ -58,7 +58,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxmanufacturer';
     }
@@ -85,7 +85,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
     {
         $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         if ($oManufacturer->load($this->getEditObjectId())) {
-            return $this->_getEncoder()->getManufacturerUri($oManufacturer, $this->getEditLang());
+            return $this->getEncoder()->getManufacturerUri($oManufacturer, $this->getEditLang());
         }
     }
 }

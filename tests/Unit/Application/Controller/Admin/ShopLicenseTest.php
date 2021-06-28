@@ -92,7 +92,7 @@ class ShopLicenseTest extends \OxidTestCase
     }
 
     /**
-     * Testting Shop_License::_canUpdate();
+     * Testting Shop_License::canUpdate();
      */
     public function testCanUpdate()
     {
@@ -105,11 +105,11 @@ class ShopLicenseTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertTrue($oSubj->_canUpdate());
+        $this->assertTrue($oSubj->canUpdate());
     }
 
     /**
-     * Testting Shop_License::_canUpdate(); for malladmin
+     * Testting Shop_License::canUpdate(); for malladmin
      */
     public function testCanUpdateForNonMallAdmin()
     {
@@ -122,11 +122,11 @@ class ShopLicenseTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertFalse($oSubj->_canUpdate());
+        $this->assertFalse($oSubj->canUpdate());
     }
 
     /**
-     * Testting Shop_License::_canUpdate(); for demo shops (#3870)
+     * Testting Shop_License::canUpdate(); for demo shops (#3870)
      */
     public function testCanUpdateForDemoVersion()
     {
@@ -139,6 +139,6 @@ class ShopLicenseTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertFalse($oView->_canUpdate());
+        $this->assertFalse($oView->canUpdate());
     }
 }

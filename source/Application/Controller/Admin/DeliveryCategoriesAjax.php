@@ -39,10 +39,10 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
-        $sCatTable = $this->_getViewName('oxcategories');
+        $sCatTable = $this->getViewName('oxcategories');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchDelId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -79,11 +79,11 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function removeCatFromDel()
     {
-        $aChosenCat = $this->_getActionIds('oxobject2delivery.oxid');
+        $aChosenCat = $this->getActionIds('oxobject2delivery.oxid');
 
         // removing all
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2delivery.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
             $sChosenCategoriess = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
@@ -97,13 +97,13 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function addCatToDel()
     {
-        $aChosenCat = $this->_getActionIds('oxcategories.oxid');
+        $aChosenCat = $this->getActionIds('oxcategories.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sCatTable = $this->_getViewName('oxcategories');
-            $aChosenCat = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
+            $sCatTable = $this->getViewName('oxcategories');
+            $aChosenCat = $this->getAll($this->addFilter("select $sCatTable.oxid " . $this->getQuery()));
         }
 
         if (isset($soxId) && $soxId != "-1" && isset($aChosenCat) && $aChosenCat) {

@@ -65,7 +65,7 @@ class OnlineRequest
     public function __construct()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $this->clusterId = $this->_getClusterId();
+        $this->clusterId = $this->getClusterId();
         $this->edition = (new Facts())->getEdition();
         $this->version = ShopVersion::getVersion();
         $this->shopUrl = $oConfig->getShopUrl();
@@ -77,7 +77,7 @@ class OnlineRequest
      *
      * @return string
      */
-    private function _getClusterId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getClusterId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sBaseShop = $oConfig->getBaseShopId();

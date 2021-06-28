@@ -41,10 +41,10 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // active AJAX component
-        $sGroupTable = $this->_getViewName('oxgroups');
+        $sGroupTable = $this->getViewName('oxgroups');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
@@ -75,9 +75,9 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $groupIds = $this->_getActionIds('oxobject2discount.oxid');
+        $groupIds = $this->getActionIds('oxobject2discount.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
+            $query = $this->addFilter("delete oxobject2discount.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         } elseif ($groupIds && is_array($groupIds)) {
             $groupIdsQuoted = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($groupIds));
@@ -91,12 +91,12 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function addDiscGroup()
     {
-        $groupIds = $this->_getActionIds('oxgroups.oxid');
+        $groupIds = $this->getActionIds('oxgroups.oxid');
         $discountId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $groupTable = $this->_getViewName('oxgroups');
-            $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
+            $groupTable = $this->getViewName('oxgroups');
+            $groupIds = $this->getAll($this->addFilter("select $groupTable.oxid " . $this->getQuery()));
         }
         if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($groupIds)) {
             foreach ($groupIds as $groupId) {

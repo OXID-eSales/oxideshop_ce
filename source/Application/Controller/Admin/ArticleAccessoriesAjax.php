@@ -64,7 +64,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      * @return string
      * @throws DatabaseConnectionException
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         $oxidId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -72,8 +72,8 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         $db = DatabaseProvider::getDb();
         $this->containerId = Registry::getRequest()->getRequestEscapedParameter('cmpid');
 
-        $articleTable = $this->_getViewName('oxarticles');
-        $object2categoryTable = $this->_getViewName('oxobject2category');
+        $articleTable = $this->getViewName('oxarticles');
+        $object2categoryTable = $this->getViewName('oxobject2category');
 
         // category selected or not ?
         if (!$oxidId) {
@@ -118,12 +118,12 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->containerId == 'container2') {
             return ' order by _2,_0';
         } else {
-            return ' order by _' . $this->_getSortCol() . ' ' . $this->_getSortDir() . ' ';
+            return ' order by _' . $this->getSortCol() . ' ' . $this->getSortDir() . ' ';
         }
     }
 
@@ -132,10 +132,10 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function removeArticleAcc()
     {
-        $aChosenArt = $this->_getActionIds('oxaccessoire2article.oxid');
+        $aChosenArt = $this->getActionIds('oxaccessoire2article.oxid');
         // removing all
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxaccessoire2article.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxaccessoire2article.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
@@ -150,13 +150,13 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     public function addArticleAcc()
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-        $aChosenArt = $this->_getActionIds('oxarticles.oxid');
+        $aChosenArt = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sArtTable = $this->_getViewName('oxarticles');
-            $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $sArtTable = $this->getViewName('oxarticles');
+            $aChosenArt = $this->getAll(parent::addFilter("select $sArtTable.oxid " . $this->getQuery()));
         }
 
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
@@ -222,12 +222,12 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
             }
         }
 
-        $outputQuery = $this->_getQuery();
+        $outputQuery = $this->getQuery();
 
-        $normalQuery = 'select ' . $this->_getQueryCols() . $outputQuery;
+        $normalQuery = 'select ' . $this->getQueryCols() . $outputQuery;
         $countQuery = 'select count( * ) ' . $outputQuery;
 
-        $this->_outputResponse($this->_getData($countQuery, $normalQuery));
+        $this->outputResponse($this->getData($countQuery, $normalQuery));
     }
 
 

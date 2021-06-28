@@ -40,7 +40,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $this->_aViewData["aProductVats"] = $oOrder->getProductVats();
             $this->_aViewData["orderArticles"] = $oOrder->getOrderArticles();
             $this->_aViewData["giftCard"] = $oOrder->getGiftCard();
-            $this->_aViewData["paymentType"] = $this->_getPaymentType($oOrder);
+            $this->_aViewData["paymentType"] = $this->getPaymentType($oOrder);
             $this->_aViewData["deliveryType"] = $oOrder->getDelSet();
             $sTsProtectsField = 'oxorder__oxtsprotectcosts';
             if ($oOrder->$sTsProtectsField->value) {
@@ -73,7 +73,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @return \OxidEsales\Eshop\Application\Model\Payment
      */
-    protected function _getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!($oUserPayment = $oOrder->getPaymentType()) && $oOrder->oxorder__oxpaymenttype->value) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);

@@ -26,22 +26,22 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     public function getRecommUri($oRecomm, $iLang = null)
     {
-        if (!($sSeoUrl = $this->_loadFromDb('dynamic', $oRecomm->getId(), $iLang))) {
+        if (!($sSeoUrl = $this->loadFromDb('dynamic', $oRecomm->getId(), $iLang))) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // fetching part of base url
-            $sSeoUrl = $this->_getStaticUri(
+            $sSeoUrl = $this->getStaticUri(
                 $oRecomm->getBaseStdLink($iLang, false),
                 $myConfig->getShopId(),
                 $iLang
             )
-            . $this->_prepareTitle($oRecomm->oxrecommlists__oxtitle->value, false, $iLang);
+            . $this->prepareTitle($oRecomm->oxrecommlists__oxtitle->value, false, $iLang);
 
             // creating unique
-            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oRecomm->getId(), $iLang);
+            $sSeoUrl = $this->processSeoUrl($sSeoUrl, $oRecomm->getId(), $iLang);
 
             // inserting
-            $this->_saveToDb('dynamic', $oRecomm->getId(), $oRecomm->getBaseStdLink($iLang), $sSeoUrl, $iLang, $myConfig->getShopId());
+            $this->saveToDb('dynamic', $oRecomm->getId(), $oRecomm->getBaseStdLink($iLang), $sSeoUrl, $iLang, $myConfig->getShopId());
         }
 
         return $sSeoUrl;
@@ -61,7 +61,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
-        return $this->_getFullUrl($this->getRecommUri($oRecomm, $iLang), $iLang);
+        return $this->getFullUrl($this->getRecommUri($oRecomm, $iLang), $iLang);
     }
 
     /**
@@ -82,7 +82,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $recomm->getBaseStdLink($languageId);
         $parameters = null;
 
-        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $stdUrl = $this->trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getRecommUri($recomm, $languageId);
 
         return $this->assembleFullPageUrl($recomm, 'dynamic', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);

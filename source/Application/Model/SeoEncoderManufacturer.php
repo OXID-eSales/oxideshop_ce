@@ -26,7 +26,7 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -46,7 +46,7 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
             $iLang = $oManufacturer->getLanguage();
         }
         // load from db
-        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxmanufacturer', $oManufacturer->getId(), $iLang))) {
+        if ($blRegenerate || !($sSeoUrl = $this->loadFromDb('oxmanufacturer', $oManufacturer->getId(), $iLang))) {
             if ($iLang != $oManufacturer->getLanguage()) {
                 $sId = $oManufacturer->getId();
                 $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
@@ -63,11 +63,11 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sSeoUrl .= $this->_aRootManufacturerUri[$iLang];
             }
 
-            $sSeoUrl .= $this->_prepareTitle($oManufacturer->oxmanufacturers__oxtitle->value, false, $oManufacturer->getLanguage()) . '/';
-            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oManufacturer->getId(), $iLang);
+            $sSeoUrl .= $this->prepareTitle($oManufacturer->oxmanufacturers__oxtitle->value, false, $oManufacturer->getLanguage()) . '/';
+            $sSeoUrl = $this->processSeoUrl($sSeoUrl, $oManufacturer->getId(), $iLang);
 
             // save to db
-            $this->_saveToDb('oxmanufacturer', $oManufacturer->getId(), $oManufacturer->getBaseStdLink($iLang), $sSeoUrl, $iLang);
+            $this->saveToDb('oxmanufacturer', $oManufacturer->getId(), $oManufacturer->getBaseStdLink($iLang), $sSeoUrl, $iLang);
         }
 
         return $sSeoUrl;
@@ -91,11 +91,11 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $manufacturer->getBaseStdLink($languageId);
         $parameters = null;
 
-        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $stdUrl = $this->trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getManufacturerUri($manufacturer, $languageId);
 
         if ($isFixed === null) {
-            $isFixed = $this->_isFixed('oxmanufacturer', $manufacturer->getId(), $languageId);
+            $isFixed = $this->isFixed('oxmanufacturer', $manufacturer->getId(), $languageId);
         }
 
         return $this->assembleFullPageUrl($manufacturer, 'oxmanufacturer', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
@@ -115,7 +115,7 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
             $iLang = $oManufacturer->getLanguage();
         }
 
-        return $this->_getFullUrl($this->getManufacturerUri($oManufacturer, $iLang), $iLang);
+        return $this->getFullUrl($this->getManufacturerUri($oManufacturer, $iLang), $iLang);
     }
 
     /**
@@ -145,7 +145,7 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);

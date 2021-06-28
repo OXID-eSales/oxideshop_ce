@@ -52,14 +52,14 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
-        $sUserTable = $this->_getViewName('oxuser');
+        $sUserTable = $this->getViewName('oxuser');
 
         // category selected or not ?
         if (!$sId) {
@@ -95,9 +95,9 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function removeUserFromSet()
     {
-        $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
+        $aRemoveGroups = $this->getActionIds('oxobject2delivery.oxid');
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = $this->addFilter("delete oxobject2delivery.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
@@ -110,13 +110,13 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function addUserToSet()
     {
-        $aChosenUsr = $this->_getActionIds('oxuser.oxid');
+        $aChosenUsr = $this->getActionIds('oxuser.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
         // adding
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
-            $sUserTable = $this->_getViewName('oxuser');
-            $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
+            $sUserTable = $this->getViewName('oxuser');
+            $aChosenUsr = $this->getAll($this->addFilter("select $sUserTable.oxid " . $this->getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {

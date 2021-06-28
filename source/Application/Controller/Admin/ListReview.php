@@ -37,7 +37,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      */
     public function getViewListSize()
     {
-        return $this->_getUserDefListSize();
+        return $this->getUserDefListSize();
     }
 
     /**
@@ -64,7 +64,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
@@ -91,9 +91,9 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSql = parent::_prepareWhereQuery($aWhere, $sSql);
+        $sSql = parent::prepareWhereQuery($aWhere, $sSql);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);

@@ -43,7 +43,7 @@ class SimpleXml
     public function objectToXml($oInput, $sDocument)
     {
         $oXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><$sDocument/>");
-        $this->_addSimpleXmlElement($oXml, $oInput);
+        $this->addSimpleXmlElement($oXml, $oInput);
 
         return $oXml->asXml();
     }
@@ -69,12 +69,12 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aElements = is_object($oInput) ? get_object_vars($oInput) : (array) $oInput;
 
         foreach ($aElements as $sKey => $mElement) {
-            $oXml = $this->_addChildNode($oXml, $sKey, $mElement, $sPreferredKey);
+            $oXml = $this->addChildNode($oXml, $sKey, $mElement, $sPreferredKey);
         }
 
         return $oXml;
@@ -90,7 +90,7 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
@@ -100,16 +100,16 @@ class SimpleXml
 
         if (is_object($mElement) || is_array($mElement)) {
             if (is_int(key($mElement))) {
-                $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
+                $this->addSimpleXmlElement($oXml, $mElement, $sKey);
             } else {
                 $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);
-                $this->_addNodeAttributes($oChildNode, $aAttributes);
-                $this->_addSimpleXmlElement($oChildNode, $mElement);
+                $this->addNodeAttributes($oChildNode, $aAttributes);
+                $this->addSimpleXmlElement($oChildNode, $mElement);
             }
         } else {
             $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);
             $oChildNode[0] = $mElement; // $oChildNode[0] is the inner text-node
-            $this->_addNodeAttributes($oChildNode, $aAttributes);
+            $this->addNodeAttributes($oChildNode, $aAttributes);
         }
 
         return $oXml;
@@ -123,7 +123,7 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addNodeAttributes($oNode, $aAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addNodeAttributes($oNode, $aAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = (array) $aAttributes;
         foreach ($aAttributes as $sKey => $sValue) {

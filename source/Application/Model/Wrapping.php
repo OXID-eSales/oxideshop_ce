@@ -156,7 +156,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getUser();
@@ -188,7 +188,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getPrice()
     {
-        if ($this->_isPriceViewModeNetto()) {
+        if ($this->isPriceViewModeNetto()) {
             $dPrice = $this->getWrappingPrice()->getNettoPrice();
         } else {
             $dPrice = $this->getWrappingPrice()->getBruttoPrice();

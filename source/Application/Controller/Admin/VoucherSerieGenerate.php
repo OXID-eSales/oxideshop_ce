@@ -77,7 +77,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
         $iAmount = abs((int) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("voucherAmount"));
 
         // creating new vouchers
-        if ($iCnt < $iAmount && ($oVoucherSerie = $this->_getVoucherSerie())) {
+        if ($iCnt < $iAmount && ($oVoucherSerie = $this->getVoucherSerie())) {
             if (!$this->_iGenerated) {
                 $this->_iGenerated = $iCnt;
             }

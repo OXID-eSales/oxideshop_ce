@@ -22,19 +22,19 @@ class BasketAdminTest extends AdminTestCase
     public function testFrontendPersParamSaveBasket()
     {
         // Active option (Product can be customized) for product with ID 1000
-        $this->_saveArticle("1000", array("oxisconfigurable" => 1));
+        $this->saveArticle("1000", array("oxisconfigurable" => 1));
 
         // Active config option (Don't save Shopping Carts of registered Users)
-        $this->_setShopParam("blPerfNoBasketSaving", '');
+        $this->setShopParam("blPerfNoBasketSaving", '');
 
-        $aOrderParams1 = $this->_getNewTestOrderParams();
+        $aOrderParams1 = $this->getNewTestOrderParams();
 
         $sOrderId = $this->callShopSC("oxOrder", "save", null, $aOrderParams1);
 
-        $aOrderArticleParams1 = $this->_getOrderArticle1($sOrderId);
-        $aOrderArticleParams2 = $this->_getOrderArticle2($sOrderId);
-        $aOrderArticleParams3 = $this->_getOrderArticle3($sOrderId);
-        $aOrderArticleParams4 = $this->_getOrderArticle4($sOrderId);
+        $aOrderArticleParams1 = $this->getOrderArticle1($sOrderId);
+        $aOrderArticleParams2 = $this->getOrderArticle2($sOrderId);
+        $aOrderArticleParams3 = $this->getOrderArticle3($sOrderId);
+        $aOrderArticleParams4 = $this->getOrderArticle4($sOrderId);
 
         $this->callShopSC("oxOrderArticle", "save", null, $aOrderArticleParams1);
         $this->callShopSC("oxOrderArticle", "save", null, $aOrderArticleParams2);
@@ -90,7 +90,7 @@ class BasketAdminTest extends AdminTestCase
      * @param array  $aArticleParams
      * @param null   $iShopId
      */
-    protected function _saveArticle($sArticleId, $aArticleParams, $iShopId = null)
+    protected function saveArticle($sArticleId, $aArticleParams, $iShopId = null)
     {
         $this->callShopSC("oxArticle", "save", $sArticleId, $aArticleParams, null, $iShopId);
     }
@@ -100,7 +100,7 @@ class BasketAdminTest extends AdminTestCase
      * @param string $sParamValue
      * @param null $sModule  optional
      */
-    protected function _setShopParam($sParamName, $sParamValue, $sModule = null)
+    protected function setShopParam($sParamName, $sParamValue, $sModule = null)
     {
         $aParams = array("type" => "bool", "value" => $sParamValue);
 
@@ -114,7 +114,7 @@ class BasketAdminTest extends AdminTestCase
     /**
      * @return array
      */
-    protected function _getNewTestOrderParams()
+    protected function getNewTestOrderParams()
     {
         $aOrderParams1 = array(
             'OXID' => 'e2a96db880623b02ff69617de634ba5f',
@@ -163,7 +163,7 @@ class BasketAdminTest extends AdminTestCase
         return $aOrderParams1;
     }
 
-    protected function _getOrderArticle1($sOrderId)
+    protected function getOrderArticle1($sOrderId)
     {
         return array(
             'OXID' => '4caac47d5f4a819c0853dd5d3b90287e',
@@ -199,7 +199,7 @@ class BasketAdminTest extends AdminTestCase
         );
     }
 
-    protected function _getOrderArticle2($sOrderId)
+    protected function getOrderArticle2($sOrderId)
     {
         return array(
             'OXID' => '3b61dc80172cd600af584b5abb5a6d4a',
@@ -235,7 +235,7 @@ class BasketAdminTest extends AdminTestCase
         );
     }
 
-    protected function _getOrderArticle3($sOrderId)
+    protected function getOrderArticle3($sOrderId)
     {
         return array(
             'OXID' => '1e5c3234fdc11195ddaf0face31c2998',
@@ -271,7 +271,7 @@ class BasketAdminTest extends AdminTestCase
         );
     }
 
-    protected function _getOrderArticle4($sOrderId)
+    protected function getOrderArticle4($sOrderId)
     {
         return array(
             'OXID' => '13453ad523bfcd0c1783fc225c534df1',

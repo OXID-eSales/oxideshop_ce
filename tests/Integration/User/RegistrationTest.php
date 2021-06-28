@@ -23,9 +23,9 @@ class RegistrationTest extends UserTestCase
         $sUserName = $this->_sDefaultUserName;
         $sUserPassword = $this->_sDefaultUserPassword;
 
-        $oCmpUser = $this->_createCmpUserObject();
+        $oCmpUser = $this->createCmpUserObject();
 
-        $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
+        $this->setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
         $this->assertSame('register?success=1', $oCmpUser->registerUser());
 
         return $oCmpUser->getUser()->getId();
@@ -38,11 +38,11 @@ class RegistrationTest extends UserTestCase
      */
     public function testLoginWithNewUser($sUserId)
     {
-        $oCmpUser = $this->_createCmpUserObject();
+        $oCmpUser = $this->createCmpUserObject();
         $oCmpUser->logout();
         $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should not be in session after logout.');
 
-        $this->_login();
+        $this->login();
 
         $this->assertSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
     }
@@ -51,7 +51,7 @@ class RegistrationTest extends UserTestCase
      * @param string $sUserName
      * @param string $sUserPassword
      */
-    private function _setUserRegistrationParametersToRequest($sUserName, $sUserPassword)
+    private function setUserRegistrationParametersToRequest($sUserName, $sUserPassword)
     {
         $sGermanyId = 'a7c40f631fc920687.20179984';
 
@@ -81,7 +81,7 @@ class RegistrationTest extends UserTestCase
     /**
      * @return oxcmp_user
      */
-    private function _createCmpUserObject()
+    private function createCmpUserObject()
     {
         $oRegister = oxNew('Register');
         $oCmpUser = oxNew('oxcmp_user');

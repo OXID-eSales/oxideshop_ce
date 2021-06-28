@@ -41,7 +41,6 @@ class Dispatcher extends Core
      * Returns name of controller action script to perform
      *
      * @return string|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "chooseCurrentAction" in next major
      */
     protected function _chooseCurrentAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

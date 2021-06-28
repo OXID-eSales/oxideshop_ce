@@ -23,7 +23,6 @@ class CreditsController extends \OxidEsales\Eshop\Application\Controller\Content
      * Returns active content id to load its seo meta info
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

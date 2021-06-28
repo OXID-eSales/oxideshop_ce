@@ -53,7 +53,6 @@ class Str
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
      * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getStrHandler" in next major
      */
     protected function _getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -129,7 +129,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aColumns required column names (optional)
      *
      * @return string return
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSqlSelectFieldsForTree" in next major
      */
     protected function _getSqlSelectFieldsForTree($sTable, $aColumns = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -176,7 +175,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sOrder    order by string (optional)
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSelectString" in next major
      */
     protected function _getSelectString($blReverse = false, $aColumns = null, $sOrder = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -213,7 +211,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat selected category
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDepthSqlSnippet" in next major
      */
     protected function _getDepthSqlSnippet($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -250,7 +247,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array                                        $aColumns required column names (optional)
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDepthSqlUnion" in next major
      */
     protected function _getDepthSqlUnion($oCat, $aColumns = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -272,7 +268,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Get data from db
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -330,7 +325,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * set full category object in tree
      *
      * @param string $sId category id
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppLoadFullCategory" in next major
      */
     protected function _ppLoadFullCategory($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -410,7 +404,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Category list postprocessing routine, responsible for removal of inactive of forbidden categories, and subcategories.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppRemoveInactiveCategories" in next major
      */
     protected function _ppRemoveInactiveCategories() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -452,7 +445,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Category list postprocessing routine, responsible for generation of active category path
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppAddPathInfo" in next major
      */
     protected function _ppAddPathInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -475,7 +467,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Category list postprocessing routine, responsible adding of content categories
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppAddContentCategories" in next major
      */
     protected function _ppAddContentCategories() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -492,7 +483,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Category list postprocessing routine, responsible building an sorting of hierarchical category tree
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppBuildTree" in next major
      */
     protected function _ppBuildTree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -514,7 +504,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Category list postprocessing routine, responsible for making flat category tree and adding depth information.
      * Requires reversed category list!
-     * @deprecated underscore prefix violates PSR12, will be renamed to "ppAddDepthInformation" in next major
      */
     protected function _ppAddDepthInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -539,7 +528,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sDepth string to show category depth
      *
      * @return array $aTree
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addDepthInfo" in next major
      */
     protected function _addDepthInfo($aTree, $oCat, $sDepth = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -632,7 +620,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $oxRootId rootid of tree
      * @param bool   $isRoot   is the current node root?
      * @param string $thisRoot the id of the root
-     * @deprecated underscore prefix violates PSR12, will be renamed to "updateNodes" in next major
      */
     protected function _updateNodes($oxRootId, $isRoot, $thisRoot) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

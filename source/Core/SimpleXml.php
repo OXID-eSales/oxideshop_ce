@@ -68,7 +68,6 @@ class SimpleXml
      * @param string              $sPreferredKey Key to use instead of node's key.
      *
      * @return SimpleXMLElement
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addSimpleXmlElement" in next major
      */
     protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -90,7 +89,6 @@ class SimpleXml
      * @param string              $sPreferredKey
      *
      * @return SimpleXMLElement
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addChildNode" in next major
      */
     protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -124,7 +122,6 @@ class SimpleXml
      * @param array            $aAttributes
      *
      * @return SimpleXMLElement
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addNodeAttributes" in next major
      */
     protected function _addNodeAttributes($oNode, $aAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

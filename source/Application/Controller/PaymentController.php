@@ -189,7 +189,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Set default empty payment. If config param 'blOtherCountryOrder' is on,
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaultEmptyPayment" in next major
      */
     protected function _setDefaultEmptyPayment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -209,7 +208,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Unsets payment errors from session
-     * @deprecated underscore prefix violates PSR12, will be renamed to "unsetPaymentErrors" in next major
      */
     protected function _unsetPaymentErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -394,7 +392,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @param array                                      $aPaymentList payments array
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setValues" in next major
      */
     protected function _setValues(&$aPaymentList, $oBasket = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -480,7 +477,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
-     * @deprecated underscore prefix violates PSR12, will be renamed to "assignDebitNoteParams" in next major
      */
     protected function _assignDebitNoteParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -571,7 +567,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param array $aKeys array of array indexes
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkArrValuesEmpty" in next major
      */
     protected function _checkArrValuesEmpty($aData, $aKeys) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

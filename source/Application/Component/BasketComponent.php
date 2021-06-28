@@ -267,7 +267,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * storing something to basket
      *
      * @return string   $sClass.$sPosition  redirection URL
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getRedirectUrl" in next major
      */
     protected function _getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -331,7 +330,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param bool   $blOverride amount override status
      *
      * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getItems" in next major
      */
     protected function _getItems( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $sProductId = null,
@@ -393,7 +391,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param array $products products to add array
      *
      * @return  object  $oBasketItem    last added basket item
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addItems" in next major
      */
     protected function _addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -455,7 +452,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sCallName    name of action ('tobasket', 'changebasket')
      * @param array  $aProductInfo data which comes from request when you press button "to basket"
      * @param array  $aBasketInfo  array returned by \OxidEsales\Eshop\Application\Model\Basket::getBasketSummary()
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setLastCall" in next major
      */
     protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -466,7 +462,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Setting last call function name (data used by econda)
      *
      * @param string $sCallName name of action ('tobasket', 'changebasket')
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setLastCallFnc" in next major
      */
     protected function _setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -477,7 +472,6 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Getting last call function name (data used by econda)
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getLastCallFnc" in next major
      */
     protected function _getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

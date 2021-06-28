@@ -75,7 +75,6 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Get data from db
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

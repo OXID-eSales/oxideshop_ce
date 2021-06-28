@@ -292,7 +292,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sCountryId country ID
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCountryTitle" in next major
      */
     protected function _getCountryTitle($sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -312,7 +311,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $blExcludeCanceled excludes canceled items from list
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticles" in next major
      */
     protected function _getArticles($blExcludeCanceled = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -579,7 +577,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates order transaction status. Faster than saving whole object
      *
      * @param string $sStatus order transaction status
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setOrderStatus" in next major
      */
     protected function _setOrderStatus($sStatus) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -600,7 +597,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sVat vat value
      *
      * @return float
-     * @deprecated underscore prefix violates PSR12, will be renamed to "convertVat" in next major
      */
     protected function _convertVat($sVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -615,7 +611,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Reset Vat info
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resetVats" in next major
      */
     protected function _resetVats() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -632,7 +627,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * and creates oxOrderArticle objects and assigns to them basket articles.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket Shopping basket object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromBasket" in next major
      */
     protected function _loadFromBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -784,7 +778,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Assigns wrapping VAT and card price + card message info
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setWrapping" in next major
      */
     protected function _setWrapping(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -812,7 +805,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates quantity of sold articles (\OxidEsales\Eshop\Application\Model\Article::updateSoldAmount()).
      *
      * @param array $aArticleList article list
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setOrderArticles" in next major
      */
     protected function _setOrderArticles($aArticleList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -914,7 +906,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param object                                     $oUserpayment user payment object
      *
      * @return  integer 2 or an error code
-     * @deprecated underscore prefix violates PSR12, will be renamed to "executePayment" in next major
      */
     protected function _executePayment(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUserpayment) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -949,7 +940,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * and IPayment, can be extended later.
      *
      * @return object $oPayTransaction payment gateway object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getGateway" in next major
      */
     protected function _getGateway() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -962,7 +952,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sPaymentid used payment id
      *
      * @return \OxidEsales\Eshop\Application\Model\UserPayment
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setPayment" in next major
      */
     protected function _setPayment($sPaymentid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1013,7 +1002,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Assigns oxfolder as new
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setFolder" in next major
      */
     protected function _setFolder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1027,7 +1015,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array  $aArticleList basket products
      * @param object $oUser        user object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "updateWishlist" in next major
      */
     protected function _updateWishlist($aArticleList, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1066,7 +1053,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        basket user object
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "updateNoticeList" in next major
      */
     protected function _updateNoticeList($aArticleList, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1101,7 +1087,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Updates order date to current date
-     * @deprecated underscore prefix violates PSR12, will be renamed to "updateOrderDate" in next major
      */
     protected function _updateOrderDate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1121,7 +1106,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      * @param \OxidEsales\Eshop\Application\Model\User   $oUser   user object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "markVouchers" in next major
      */
     protected function _markVouchers($oBasket, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1232,7 +1216,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts order object information in DB. Returns true on success.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1268,7 +1251,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * creates counter ident
      *
      * @return String
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCounterIdent" in next major
      */
     protected function _getCounterIdent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1282,7 +1264,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Tries to fetch and set next record number in DB. Returns true on success
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setNumber" in next major
      */
     protected function _setNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1306,7 +1287,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates object parameters to DB.
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1400,7 +1380,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $blStockCheck perform stock check or not (default true)
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOrderBasket" in next major
      */
     protected function _getOrderBasket($blStockCheck = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1700,7 +1679,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sOxId order ID
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkOrderExist" in next major
      */
     protected function _checkOrderExist($sOxId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1728,7 +1706,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Application\Model\UserPayment $oPayment order payment
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "sendOrderByEmail" in next major
      */
     protected function _sendOrderByEmail($oUser = null, $oBasket = null, $oPayment = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1871,7 +1848,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket        basket object
      * @param array                                      $aOrderArticles order articles
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addOrderArticlesToBasket" in next major
      */
     protected function _addOrderArticlesToBasket($oBasket, $aOrderArticles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1889,7 +1865,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket   basket to add articles
      * @param array                                      $aArticles article array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addArticlesToBasket" in next major
      */
     protected function _addArticlesToBasket($oBasket, $aArticles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

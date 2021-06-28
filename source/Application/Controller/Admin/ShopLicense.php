@@ -66,7 +66,6 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      * Checks if the license key update is allowed.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "canUpdate" in next major
      */
     protected function _canUpdate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -87,7 +86,6 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      * Fetch current shop version information from url
      * @param string $sUrl current version info fetching url by edition
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "fetchCurVersionInfo" in next major
      */
     protected function _fetchCurVersionInfo($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

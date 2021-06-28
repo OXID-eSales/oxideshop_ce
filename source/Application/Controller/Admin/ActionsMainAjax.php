@@ -53,7 +53,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Returns SQL query for data to fetc
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -103,7 +102,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * @param string $sQ query to add filter condition
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
     protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -126,7 +124,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Returns SQL query addon for sorting
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
     protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -275,7 +272,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Getter for the rss feed handler.
      *
      * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOxRssFeed" in next major
      */
     protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

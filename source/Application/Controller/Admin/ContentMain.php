@@ -195,7 +195,6 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sIdent ident to filter
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareIdent" in next major
      */
     protected function _prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -211,7 +210,6 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOxId  Object id
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkIdent" in next major
      */
     protected function _checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -124,7 +124,6 @@ class RequiredFieldsValidator
      * Add fields to invalid fields array.
      *
      * @param array $aFields Invalid field name.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setInvalidFields" in next major
      */
     private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -179,7 +179,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Rewrites authorization method.
      *
      * @return boolean
-     * @deprecated underscore prefix violates PSR12, will be renamed to "authorize" in next major
      */
     protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -200,7 +199,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Get available admin interface languages
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAvailableLanguages" in next major
      */
     protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -219,7 +217,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Get detected user browser language abbervation
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBrowserLanguage" in next major
      */
     protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

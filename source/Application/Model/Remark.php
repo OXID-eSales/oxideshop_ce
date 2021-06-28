@@ -61,7 +61,6 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data fields in DB. Returns true on success.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -145,7 +145,6 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle       article object
      * @param int                                         $iIndex         master picture index
      * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resetMasterPicture" in next major
      */
     protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -175,7 +174,6 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Deletes main icon file
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteMainIcon" in next major
      */
     protected function _deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -194,7 +192,6 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Deletes thumbnail file
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteThumbnail" in next major
      */
     protected function _deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -214,7 +211,6 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * icon or thumb picture, leaves records untouched.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanupCustomFields" in next major
      */
     protected function _cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

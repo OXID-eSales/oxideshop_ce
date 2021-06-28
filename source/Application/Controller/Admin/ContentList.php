@@ -65,7 +65,6 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param string $sqlFull SQL query string
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
     protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

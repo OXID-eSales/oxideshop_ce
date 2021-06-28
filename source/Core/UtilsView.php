@@ -546,7 +546,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * Returns active module Ids
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveModuleInfo" in next major
      */
     protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

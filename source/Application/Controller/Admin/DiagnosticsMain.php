@@ -64,7 +64,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Error status getter
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "hasError" in next major
      */
     protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -75,7 +74,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Error status getter
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorMessage" in next major
      */
     protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -130,7 +128,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Shop and module details, database health, php parameters, server information
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "runBasicDiagnostics" in next major
      */
     protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

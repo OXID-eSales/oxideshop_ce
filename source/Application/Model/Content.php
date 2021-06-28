@@ -123,7 +123,6 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sLoadId id
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -349,7 +348,6 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int    $iDataType  field type
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -359,6 +357,18 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+    }
+
+    /**
+     * Get field data
+     *
+     * @param string $sFieldName name of the field which value to get
+     *
+     * @return mixed
+     */
+    protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->{$sFieldName}->value;
     }
 
     /**

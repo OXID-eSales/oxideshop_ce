@@ -143,7 +143,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Setter for param _iNewFilesCounter which counts how many new files added.
      *
      * @param integer $iNewFilesCounter New files count.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setNewFilesCounter" in next major
      */
     protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -265,7 +264,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareImageName" in next major
      */
     protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -304,7 +302,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sType image type
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getImagePath" in next major
      */
     protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -322,7 +319,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sImgConf config parameter name, which keeps size info
      *
      * @return array|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getImageSize" in next major
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -521,7 +517,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $suffix
      * @param bool $unique
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getUniqueFileName" in next major
      */
     protected function _getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

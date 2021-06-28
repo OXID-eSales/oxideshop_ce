@@ -420,7 +420,6 @@ class Price
 
     /**
      * Flush assigned discounts
-     * @deprecated underscore prefix violates PSR12, will be renamed to "flushDiscounts" in next major
      */
     protected function _flushDiscounts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

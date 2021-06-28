@@ -41,7 +41,6 @@ class OnlineModuleVersionNotifierCaller extends \OxidEsales\Eshop\Core\OnlineCal
      * Gets XML document name.
      *
      * @return string XML document tag name.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getXMLDocumentName" in next major
      */
     protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -52,7 +51,6 @@ class OnlineModuleVersionNotifierCaller extends \OxidEsales\Eshop\Core\OnlineCal
      * Gets service url.
      *
      * @return string Web service url.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceUrl" in next major
      */
     protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

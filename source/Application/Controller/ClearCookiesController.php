@@ -40,7 +40,6 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
 
     /**
      * Clears all cookies
-     * @deprecated underscore prefix violates PSR12, will be renamed to "removeCookies" in next major
      */
     protected function _removeCookies() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

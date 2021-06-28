@@ -132,7 +132,6 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sProductId product id
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
-     * @deprecated underscore prefix violates PSR12, will be renamed to "toList" in next major
      */
     protected function _toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

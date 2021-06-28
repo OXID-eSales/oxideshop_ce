@@ -442,7 +442,6 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param double $iAmount amount
      *
      * @return boolean
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkDeliveryAmount" in next major
      */
     protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -573,7 +572,6 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Calculate multiplier for price calculation
      *
      * @return float|int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMultiplier" in next major
      */
     protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -594,7 +592,6 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Calculate cost sum
      *
      * @return float
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCostSum" in next major
      */
     protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

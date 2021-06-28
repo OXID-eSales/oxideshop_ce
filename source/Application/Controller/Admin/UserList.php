@@ -89,7 +89,6 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      * @param string $fullQuery  SQL query string
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
     public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -59,7 +59,6 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * In widgets we do not need to parse seo and do any work related to that
      * Shop main control is responsible for that, and that has to be done once
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processRequest" in next major
      */
     protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

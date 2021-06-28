@@ -84,7 +84,6 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareForTemplate" in next major
      */
     protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -46,7 +46,6 @@ class ShopIdCalculator
      * Returns shop url to id map from config.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopUrlMap" in next major
      */
     protected function _getShopUrlMap() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

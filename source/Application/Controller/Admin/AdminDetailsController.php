@@ -69,7 +69,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string                                 $sField  name of editable field
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getEditValue" in next major
      */
     protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -94,7 +93,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string $sValue string to process
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processEditValue" in next major
      */
     protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -166,7 +164,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param int    $iTreeShopId     tree shop id
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "createCategoryTree" in next major
      */
     protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -212,7 +209,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param int    $iTreeShopId     tree shop id
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryTree" in next major
      */
     protected function _getCategoryTree( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $sTplVarName,
@@ -270,7 +266,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * Sets-up navigation parameters.
      *
      * @param string $sNode active view id
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -290,7 +285,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * Resets count of vendor/manufacturer category items.
      *
      * @param array $aIds to reset type => id
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resetCounts" in next major
      */
     protected function _resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -60,7 +60,6 @@ class OnlineModuleVersionNotifier
      * Collects only required modules information and returns as array.
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareModulesInformation" in next major
      */
     protected function _prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -94,7 +93,6 @@ class OnlineModuleVersionNotifier
      * Send request message to Online Module Version Notifier web service.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
-     * @deprecated underscore prefix violates PSR12, will be renamed to "formRequest" in next major
      */
     protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -110,7 +108,6 @@ class OnlineModuleVersionNotifier
      * Returns caller.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOnlineModuleNotifierCaller" in next major
      */
     protected function _getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

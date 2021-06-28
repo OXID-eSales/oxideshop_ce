@@ -80,7 +80,6 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      * Return export file name
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getExportFileName" in next major
      */
     protected function _getExportFileName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -98,7 +97,6 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      * Return export file path
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getExportFilePath" in next major
      */
     protected function _getExportFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -104,7 +104,6 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      * Returns true is payment active.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isActive" in next major
      */
     protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

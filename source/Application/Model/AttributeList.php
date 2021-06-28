@@ -58,7 +58,6 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sSelect SQL select
      *
      * @return array $aAttributes
-     * @deprecated underscore prefix violates PSR12, will be renamed to "createAttributeListFromSql" in next major
      */
     protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -223,7 +222,6 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array $aParentAttributes array of parent article attributes
      *
      * @return array $aAttributes
-     * @deprecated underscore prefix violates PSR12, will be renamed to "mergeAttributes" in next major
      */
     protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

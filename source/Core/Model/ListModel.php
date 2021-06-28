@@ -482,7 +482,6 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @param BaseModel $oListObject List object (the one derived from BaseModel)
      * @param array     $aDbFields   An array holding db field values (normally the result of \OxidEsales\Eshop\Core\DatabaseProvider::Execute())
-     * @deprecated underscore prefix violates PSR12, will be renamed to "assignElement" in next major
      */
     protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -495,7 +494,6 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param string $sFieldName Field name
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLongName" in next major
      */
     protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

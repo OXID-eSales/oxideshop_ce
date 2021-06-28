@@ -137,7 +137,6 @@ class ShopViewValidator
      * Returns list of all shop views
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAllViews" in next major
      */
     protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -154,7 +153,6 @@ class ShopViewValidator
      * @param string $sViewName View name
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentShopView" in next major
      */
     protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -179,7 +177,6 @@ class ShopViewValidator
      * Returns list of shop specific views currently in database
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopViews" in next major
      */
     protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -201,7 +198,6 @@ class ShopViewValidator
      * Returns list of valid shop views
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getValidShopViews" in next major
      */
     protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -251,7 +247,6 @@ class ShopViewValidator
      * @param string $sViewName View name
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isViewValid" in next major
      */
     protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

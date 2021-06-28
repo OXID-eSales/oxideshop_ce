@@ -406,7 +406,6 @@ class Email extends PHPMailer
      * @param string $url initial smtp
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpProtocol" in next major
      */
     protected function _setSmtpProtocol($url) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -465,7 +464,6 @@ class Email extends PHPMailer
      * @param string $smtpHost currently used smtp server host name
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidSmtpHost" in next major
      */
     protected function _isValidSmtpHost($smtpHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -815,7 +813,6 @@ class Email extends PHPMailer
      * @param string $confirmCode confirmation code
      *
      * @return string $url
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getNewsSubsLink" in next major
      */
     protected function _getNewsSubsLink($id, $confirmCode = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1287,7 +1284,6 @@ class Email extends PHPMailer
      * @param string $dynImageDir    Path to Dyn images
      * @param string $absImageDir    Absolute path to images
      * @param string $absDynImageDir Absolute path to Dyn images
-     * @deprecated underscore prefix violates PSR12, will be renamed to "includeImages" in next major
      */
     protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1733,7 +1729,6 @@ class Email extends PHPMailer
      * Gets use inline images.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getUseInlineImages" in next major
      */
     protected function _getUseInlineImages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1744,7 +1739,6 @@ class Email extends PHPMailer
      * Try to send error message when original mailing by smtp and via mail() fails
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "sendMailErrorMsg" in next major
      */
     protected function _sendMailErrorMsg() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1774,7 +1768,6 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\Order $order Ordering object
      *
      * @return \OxidEsales\Eshop\Application\Model\Order
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addUserInfoOrderEMail" in next major
      */
     protected function _addUserInfoOrderEMail($order) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1789,7 +1782,6 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
      * @return \OxidEsales\Eshop\Application\Model\User
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addUserRegisterEmail" in next major
      */
     protected function _addUserRegisterEmail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1804,7 +1796,6 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addForgotPwdEmail" in next major
      */
     protected function _addForgotPwdEmail($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1819,7 +1810,6 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
      * @return \OxidEsales\Eshop\Application\Model\User
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addNewsletterDbOptInMail" in next major
      */
     protected function _addNewsletterDbOptInMail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1828,7 +1818,6 @@ class Email extends PHPMailer
 
     /**
      * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
-     * @deprecated underscore prefix violates PSR12, will be renamed to "clearMailer" in next major
      */
     protected function _clearMailer() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1843,7 +1832,6 @@ class Email extends PHPMailer
      * Set mail From, FromName, SMTP values
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setMailParams" in next major
      */
     protected function _setMailParams($shop = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1895,7 +1883,6 @@ class Email extends PHPMailer
      *
      * @param string                                   $userName     smtp user
      * @param \OxidEsales\Eshop\Application\Model\Shop $userPassword smtp password
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpAuthInfo" in next major
      */
     protected function _setSmtpAuthInfo($userName = null, $userPassword = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1908,7 +1895,6 @@ class Email extends PHPMailer
      * Sets SMTP class debugging on or off
      *
      * @param bool $debug show debug info or not
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpDebug" in next major
      */
     protected function _setSmtpDebug($debug = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1918,7 +1904,6 @@ class Email extends PHPMailer
     /**
      * Process email body and alt body thought oxOutput.
      * Calls \OxidEsales\Eshop\Core\Output::processEmail() on class instance.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "makeOutputProcessing" in next major
      */
     protected function _makeOutputProcessing() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1932,7 +1917,6 @@ class Email extends PHPMailer
      * Sends email via phpmailer.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "sendMail" in next major
      */
     protected function _sendMail() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1954,7 +1938,6 @@ class Email extends PHPMailer
 
     /**
      * Process view data array through oxOutput processor
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processViewArray" in next major
      */
     protected function _processViewArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2103,7 +2086,6 @@ class Email extends PHPMailer
      * @param string $altBody Body.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "clearSidFromBody" in next major
      */
     private function _clearSidFromBody($altBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

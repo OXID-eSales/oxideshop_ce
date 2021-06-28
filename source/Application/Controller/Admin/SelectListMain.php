@@ -318,7 +318,6 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @param integer $iPos   new pos of the field
      *
      * @return bool - true if failed.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "rearrangeFields" in next major
      */
     protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

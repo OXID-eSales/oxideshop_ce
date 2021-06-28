@@ -76,7 +76,6 @@ class OnlineRequest
      * Takes cluster id from configuration if set, otherwise generates it.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getClusterId" in next major
      */
     private function _getClusterId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

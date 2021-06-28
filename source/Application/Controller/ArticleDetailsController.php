@@ -163,7 +163,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * @param string $parentId parent product id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getParentProduct" in next major
      */
     protected function _getParentProduct($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -229,7 +228,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $article Product to process
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processProduct" in next major
      */
     protected function _processProduct($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -315,7 +313,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($meta, $length = 200, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -345,7 +342,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * @param bool   $removeDuplicatedWords Remove duplicated words
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -448,7 +444,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * Returns active product id to load its seo meta info
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -499,7 +494,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
     /**
      * Runs additional checks for article.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "additionalChecksForArticle" in next major
      */
     protected function _additionalChecksForArticle() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -762,7 +756,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * @param int $languageId language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1250,7 +1243,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * Vendor bread crumb
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorBreadCrumb" in next major
      */
     protected function _getVendorBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1296,7 +1288,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * Search bread crumb
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchBreadCrumb" in next major
      */
     protected function _getSearchBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1321,7 +1312,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * Category bread crumb
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryBreadCrumb" in next major
      */
     protected function _getCategoryBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

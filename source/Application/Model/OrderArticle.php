@@ -159,7 +159,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * @param bool   $blAllowNegativeStock allow/disallow negative stock value
      *
      * @return double
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getArtStock" in next major
      */
     protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -222,7 +221,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * @param int    $iDataType  field type
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -289,7 +287,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setArticleParams" in next major
      */
     protected function _setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -348,7 +345,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * @param string $sArticleId article id (optional, is not passed oxorderarticles__oxartid will be used)
      *
      * @return \OxidEsales\Eshop\Application\Model\Article|false
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOrderArticle" in next major
      */
     protected function _getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -762,7 +758,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * parent::_insert() and returns insertion status.
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -803,7 +798,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
     /**
      * Set order files
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setOrderFiles" in next major
      */
     public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

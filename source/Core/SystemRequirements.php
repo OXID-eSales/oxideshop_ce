@@ -342,7 +342,6 @@ class SystemRequirements
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfoFromConfig" in next major
      */
     protected function _getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -372,7 +371,6 @@ class SystemRequirements
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSSLHostInfoFromConfig" in next major
      */
     protected function _getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -402,7 +400,6 @@ class SystemRequirements
      * takes this info from _SERVER variable
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfoFromServerVars" in next major
      */
     protected function _getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -427,7 +424,6 @@ class SystemRequirements
      * returns host, port, current script, ssl information as assotiative array, false on error
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfo" in next major
      */
     protected function _getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -443,7 +439,6 @@ class SystemRequirements
      * Takes ssl address from config so important only in admin.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSSLHostInfo" in next major
      */
     protected function _getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -720,7 +715,6 @@ class SystemRequirements
      * Additional sql: do not check collation for \OxidEsales\Eshop\Core\SystemRequirements::$_aException columns
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalCheck" in next major
      */
     protected function _getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -958,7 +952,6 @@ class SystemRequirements
      * @param string $bytes string form byte value (64M, 32K etc)
      *
      * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBytes" in next major
      */
     protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -993,7 +986,6 @@ class SystemRequirements
      * @see getMissingTemplateBlocks
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkTemplateBlock" in next major
      */
     protected function _checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1092,7 +1084,6 @@ class SystemRequirements
      * Return minimum memory limit by edition.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMinimumMemoryLimit" in next major
      */
     protected function _getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1103,7 +1094,6 @@ class SystemRequirements
      * Return recommend memory limit by edition.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getRecommendMemoryLimit" in next major
      */
     protected function _getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

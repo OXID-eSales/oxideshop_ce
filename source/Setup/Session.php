@@ -54,7 +54,6 @@ class Session extends Core
 
     /**
      * Start session
-     * @deprecated underscore prefix violates PSR12, will be renamed to "startSession" in next major
      */
     protected function _startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -81,7 +80,6 @@ class Session extends Core
      * Validate if session is started by setup script, if not, generate new session.
      *
      * @return string Session ID
-     * @deprecated underscore prefix violates PSR12, will be renamed to "validateSession" in next major
      */
     protected function _validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -103,7 +101,6 @@ class Session extends Core
      * Generate new unique session ID
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getNewSessionID" in next major
      */
     protected function _getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -136,7 +133,6 @@ class Session extends Core
 
     /**
      * Initializes setup session data array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "initSessionData" in next major
      */
     protected function _initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -178,7 +174,6 @@ class Session extends Core
      * Return session object reference.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionData" in next major
      */
     protected function &_getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

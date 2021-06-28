@@ -131,7 +131,6 @@ class Diagnostics
      * @param boolean $blMode mode
      *
      * @return integer
-     * @deprecated underscore prefix violates PSR12, will be renamed to "countRows" in next major
      */
     protected function _countRows($sTable, $blMode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -248,7 +247,6 @@ class Diagnostics
      * Returns Apache version
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getApacheVersion" in next major
      */
     protected function _getApacheVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -265,7 +263,6 @@ class Diagnostics
      * Tries to find out which VM is used
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVirtualizationSystem" in next major
      */
     protected function _getVirtualizationSystem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -306,7 +303,6 @@ class Diagnostics
      * @param string $sSystemType System type.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDeviceList" in next major
      */
     protected function _getDeviceList($sSystemType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -317,7 +313,6 @@ class Diagnostics
      * Returns amount of CPU units.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuAmount" in next major
      */
     protected function _getCpuAmount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -329,7 +324,6 @@ class Diagnostics
      * Returns CPU speed in Mhz
      *
      * @return float
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuMhz" in next major
      */
     protected function _getCpuMhz() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -340,7 +334,6 @@ class Diagnostics
      * Returns BogoMIPS evaluation of processor
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBogoMips" in next major
      */
     protected function _getBogoMips() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -351,7 +344,6 @@ class Diagnostics
      * Returns total amount of memory
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryTotal" in next major
      */
     protected function _getMemoryTotal() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -362,7 +354,6 @@ class Diagnostics
      * Returns amount of free memory
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryFree" in next major
      */
     protected function _getMemoryFree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -373,7 +364,6 @@ class Diagnostics
      * Returns CPU model information
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuModel" in next major
      */
     protected function _getCpuModel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -384,7 +374,6 @@ class Diagnostics
      * Returns total disk space
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskTotalSpace" in next major
      */
     protected function _getDiskTotalSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -395,7 +384,6 @@ class Diagnostics
      * Returns free disk space
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskFreeSpace" in next major
      */
     protected function _getDiskFreeSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -406,7 +394,6 @@ class Diagnostics
      * Returns PHP version
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPhpVersion" in next major
      */
     protected function _getPhpVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -417,7 +404,6 @@ class Diagnostics
      * Returns MySQL server Information
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMySqlServerInfo" in next major
      */
     protected function _getMySqlServerInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

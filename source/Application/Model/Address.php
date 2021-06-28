@@ -35,7 +35,6 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns oxState object
      *
      * @return \OxidEsales\Eshop\Application\Model\State
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -149,7 +148,6 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns merged address fields.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMergedAddressFields" in next major
      */
     protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

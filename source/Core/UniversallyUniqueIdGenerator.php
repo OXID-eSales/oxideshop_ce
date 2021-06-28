@@ -88,7 +88,6 @@ class UniversallyUniqueIdGenerator
      * gets open SSL checker.
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOpenSSLChecker" in next major
      */
     protected function _getOpenSSLChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -99,7 +98,6 @@ class UniversallyUniqueIdGenerator
      * Generates UUID based on OpenSSL's openssl_random_pseudo_bytes.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "generateBasedOnOpenSSL" in next major
      */
     protected function _generateBasedOnOpenSSL() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -114,7 +112,6 @@ class UniversallyUniqueIdGenerator
      * Generates UUID based on mt_rand.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "generateBasedOnMtRand" in next major
      */
     protected function _generateBasedOnMtRand() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

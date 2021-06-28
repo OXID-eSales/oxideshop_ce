@@ -39,7 +39,6 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param \OxidEsales\Eshop\Application\Model\SimpleVariant $oListObject Simple variant
      * @param array          $aDbFields   Array of available
-     * @deprecated underscore prefix violates PSR12, will be renamed to "assignElement" in next major
      */
     protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

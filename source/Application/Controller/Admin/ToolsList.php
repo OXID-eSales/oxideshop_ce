@@ -121,7 +121,6 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * Processes files containing SQL queries
      *
      * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processFiles" in next major
      */
     protected function _processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -166,7 +165,6 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * @param integer $iSQLlen query lenght
      *
      * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareSQL" in next major
      */
     protected function _prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

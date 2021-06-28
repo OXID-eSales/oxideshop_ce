@@ -193,7 +193,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iLang  Language id
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewSelect" in next major
      */
     protected function _getViewSelect($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -214,7 +213,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param string $sTable table name
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewSelectMultilang" in next major
      */
     protected function _getViewSelectMultilang($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -240,7 +238,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param string $sTable table name
      *
      * @return string $sSQL
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewJoinAll" in next major
      */
     protected function _getViewJoinAll($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -263,7 +260,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iLang  language id
      *
      * @return string $sSQL
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewJoinLang" in next major
      */
     protected function _getViewJoinLang($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -278,7 +274,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Gets all invalid views and drops them from database
-     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanInvalidViews" in next major
      */
     protected function _cleanInvalidViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -309,7 +304,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Creates all view queries and adds them in query array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareViewsQueries" in next major
      */
     protected function _prepareViewsQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -362,7 +356,6 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Returns false when any of the queries fail, otherwise return true
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "runQueries" in next major
      */
     protected function _runQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

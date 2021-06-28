@@ -73,7 +73,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param $filename
      * @param $masterImagePath
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "deletePicture" in next major
      */
     protected function _deletePicture($filename, $masterImagePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -103,7 +102,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $field   table field value
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isPicDeletable" in next major
      */
     protected function _isPicDeletable($filename, $tabl, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -175,7 +173,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blDisableTouch  false if "touch()" should be called
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resizeGif" in next major
      */
     protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -196,7 +193,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $iDefQuality       quality for "imagejpeg" function
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resize" in next major
      */
     protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -241,7 +237,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blDisableTouch    wether Touch() should be called or not
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "copyAlteredImage" in next major
      */
     protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

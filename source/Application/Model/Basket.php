@@ -391,7 +391,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param string $sOldKey old key
      * @param string $sNewKey new key to place in old one's place
      * @param mixed  $value   (optional)
-     * @deprecated underscore prefix violates PSR12, will be renamed to "changeBasketItemKey" in next major
      */
     protected function _changeBasketItemKey($sOldKey, $sNewKey, $value = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -618,7 +617,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Unsets bundled basket items from basket contents array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "clearBundles" in next major
      */
     protected function _clearBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -636,7 +634,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param object $oBasketItem basket item object
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleBundles" in next major
      */
     protected function _getArticleBundles($oBasketItem) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -661,7 +658,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param array  $aBundles    array of found bundles
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getItemBundles" in next major
      */
     protected function _getItemBundles($oBasketItem, $aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -699,7 +695,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param array $aBundles array of found bundles
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBasketBundles" in next major
      */
     protected function _getBasketBundles($aBundles = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -729,7 +724,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Iterates through basket contents and adds bundles to items + adds
      * global basket bundles
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addBundles" in next major
      */
     protected function _addBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -770,7 +764,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Adds bundles to basket
      *
      * @param array $aBundles added bundle articles
-     * @deprecated underscore prefix violates PSR12, will be renamed to "addBundlesToBasket" in next major
      */
     protected function _addBundlesToBasket($aBundles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -793,7 +786,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Iterates through basket items and calculates its prices and discounts
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcItemsPrice" in next major
      */
     protected function _calcItemsPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -880,7 +872,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param array $aItemDiscounts Discount array
      *
      * @return array $aDiscounts
-     * @deprecated underscore prefix violates PSR12, will be renamed to "mergeDiscounts" in next major
      */
     protected function _mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -900,7 +891,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Iterates through basket items and calculates its delivery costs
      *
      * @return \OxidEsales\Eshop\Core\Price
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcDeliveryCost" in next major
      */
     protected function _calcDeliveryCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1019,7 +1009,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     //P
     /**
      * Performs final sum calculation and rounding.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcTotalPrice" in next major
      */
     protected function _calcTotalPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1078,7 +1067,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Calculates voucher discount
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcVoucherDiscount" in next major
      */
     protected function _calcVoucherDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1144,7 +1132,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Performs netto price and VATs calculations including discounts and vouchers.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "applyDiscounts" in next major
      */
     protected function _applyDiscounts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1190,7 +1177,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Returns prepared price object depending on view mode
      *
      * @return \OxidEsales\Eshop\Core\Price
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceObject" in next major
      */
     protected function _getPriceObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1207,7 +1193,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Loads basket discounts and calculates discount values.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcBasketDiscount" in next major
      */
     protected function _calcBasketDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1271,7 +1256,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Calculates total basket discount value.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcBasketTotalDiscount" in next major
      */
     protected function _calcBasketTotalDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1299,7 +1283,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * $this->oBasket. Returns price object for wrapping.
      *
      * @return \OxidEsales\Eshop\Core\Price
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcBasketWrapping" in next major
      */
     protected function _calcBasketWrapping() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1326,7 +1309,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * $this->oBasket. Returns oxprice object for wrapping.
      *
      * @return \OxidEsales\Eshop\Core\Price
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcBasketGiftCard" in next major
      */
     protected function _calcBasketGiftCard() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1357,7 +1339,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Payment cost calculation, applying payment discount if available.
      *
      * @return \OxidEsales\Eshop\Core\Price
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcPaymentCost" in next major
      */
     protected function _calcPaymentCost() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1692,7 +1673,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Saves existing basket to database
-     * @deprecated underscore prefix violates PSR12, will be renamed to "save" in next major
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1719,7 +1699,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Cleans up saved basket data. This method usually is initiated by
      * \OxidEsales\Eshop\Application\Model\Basket::deleteBasket() method which cleans up basket data when
      * user completes order.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteSavedBasket" in next major
      */
     protected function _deleteSavedBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1738,7 +1717,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Tries to fetch user delivery country ID
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "findDelivCountry" in next major
      */
     protected function _findDelivCountry() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2704,7 +2682,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Returns ( current basket products sum - total discount - voucher discount )
      *
      * @return double
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiscountedProductsSum" in next major
      */
     public function _getDiscountedProductsSum()  // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2865,7 +2842,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @param string $sRootCatId root category id
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isProductInRootCategory" in next major
      */
     protected function _isProductInRootCategory($sProductId, $sRootCatId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

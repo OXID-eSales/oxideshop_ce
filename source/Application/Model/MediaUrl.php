@@ -116,7 +116,6 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Transforms the link to YouTube object, and returns it.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getYoutubeHtml" in next major
      */
     protected function _getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

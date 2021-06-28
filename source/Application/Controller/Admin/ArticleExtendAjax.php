@@ -40,7 +40,6 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * Returns SQL query for data to fetc
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -73,7 +72,6 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * @param string $sQ SQL query
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDataFields" in next major
      */
     protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -196,7 +194,6 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * Updates oxtime value for product
      *
      * @param string $oxId product id
-     * @deprecated underscore prefix violates PSR12, will be renamed to "updateOxTime" in next major
      */
     protected function _updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

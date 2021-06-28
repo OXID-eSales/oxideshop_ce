@@ -110,7 +110,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array $aFileInfo File info array
      *
      * @throws oxException Throws exception if file wasn't uploaded successfully.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkArticleFile" in next major
      */
     protected function _checkArticleFile($aFileInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -129,7 +128,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Return full path of root dir where download files are stored
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBaseDownloadDirPath" in next major
      */
     protected function _getBaseDownloadDirPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -191,7 +189,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns relative file path from oxConfig 'sDownloadsDir' variable.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFileLocation" in next major
      */
     protected function _getFileLocation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -222,7 +219,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sFileHash File hash value
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getHashedFileDir" in next major
      */
     protected function _getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -243,7 +239,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sFileName File name values
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFileHash" in next major
      */
     protected function _getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -258,7 +253,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sTarget Target filename
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "uploadFile" in next major
      */
     protected function _uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -314,7 +308,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * If not used, unlink the file.
      *
      * @return null|false
-     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteFile" in next major
      */
     protected function _deleteFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -339,7 +332,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * converts spec symbols to %xx combination
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilenameForUrl" in next major
      */
     protected function _getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

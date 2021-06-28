@@ -138,7 +138,6 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sDelSet    user chosen delivery set
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSelect" in next major
      */
     protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -86,7 +86,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget view object
      * @param Article            $oCurrArticle   current article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setListLocatorData" in next major
      */
     protected function _setListLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -130,7 +129,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setVendorLocatorData" in next major
      */
     protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -175,7 +173,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setManufacturerLocatorData" in next major
      */
     protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -230,7 +227,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setSearchLocatorData" in next major
      */
     protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -361,7 +357,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param string                                       $sOrderBy     order by fields
      *
      * @return object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "loadIdsInList" in next major
      */
     protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -393,7 +388,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param string $sParams parameters to add to url
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "makeLink" in next major
      */
     protected function _makeLink($sLink, $sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -413,7 +407,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param Article   $oArticle active article id (optional)
      *
      * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "findActPageNumber" in next major
      */
     protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -439,7 +432,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param int $iPageNr page number
      *
      * @return string $sPageNum
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPageNumber" in next major
      */
     protected function _getPageNumber($iPageNr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -457,7 +449,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $oLocatorTarget FrontendController object
      *
      * @return integer
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductPos" in next major
      */
     protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

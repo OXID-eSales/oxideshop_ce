@@ -180,7 +180,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Viewable list size getter (used in list_*.php views)
      *
      * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserDefListSize" in next major
      */
     protected function _getUserDefListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -242,7 +241,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Calculates list items count
      *
      * @param string $sql SQL query used co select list items
-     * @deprecated underscore prefix violates PSR12, will be renamed to "calcListItemsCount" in next major
      */
     protected function _calcListItemsCount($sql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -266,7 +264,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Set current list position
      *
      * @param string $page jump page string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setCurrentListPosition" in next major
      */
     protected function _setCurrentListPosition($page = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -291,7 +288,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $query sql string
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareOrderByQuery" in next major
      */
     protected function _prepareOrderByQuery($query = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -337,7 +333,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param object $listObject list main object
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
     protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -353,7 +348,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldValue Filters
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processFilter" in next major
      */
     protected function _processFilter($fieldValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -372,7 +366,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param bool   $isSearchValue filter value type, true means surrount search key with '%'
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "buildFilter" in next major
      */
     protected function _buildFilter($value, $isSearchValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -393,7 +386,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldValue filter value
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isSearchValue" in next major
      */
     protected function _isSearchValue($fieldValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -409,7 +401,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fullQuery  SQL query string
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
     protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -469,7 +460,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $query SQL select to change
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "changeselect" in next major
      */
     protected function _changeselect($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -525,7 +515,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldType Field type
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "convertToDBDate" in next major
      */
     protected function _convertToDBDate($value, $fieldType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -558,7 +547,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $date searched date
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "convertDate" in next major
      */
     protected function _convertDate($date) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -597,7 +585,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fullDate searched date
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "convertTime" in next major
      */
     protected function _convertTime($fullDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -636,7 +623,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
     /**
      * Set parameters needed for list navigation
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setListNavigationParams" in next major
      */
     protected function _setListNavigationParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -722,7 +708,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Sets-up navigation parameters
      *
      * @param string $node active view id
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($node) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

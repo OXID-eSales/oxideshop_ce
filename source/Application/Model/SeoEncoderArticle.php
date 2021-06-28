@@ -30,7 +30,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (.html)
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -45,7 +44,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                         $iLang    user defined language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductForLang" in next major
      */
     protected function _getProductForLang($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -129,7 +127,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns active list type
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getListType" in next major
      */
     protected function _getListType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -144,7 +141,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                          $iLang     language to generate uri for
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "createArticleCategoryUri" in next major
      */
     protected function _createArticleCategoryUri($oArticle, $oCategory, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -228,7 +224,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                         $iLang    language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Category|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategory" in next major
      */
     protected function _getCategory($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -249,7 +244,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getMainCategory" in next major
      */
     protected function _getMainCategory($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -338,7 +332,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareArticleTitle" in next major
      */
     protected function _prepareArticleTitle($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -424,7 +417,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                         $iLang    language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Vendor|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendor" in next major
      */
     protected function _getVendor($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -502,7 +494,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                         $iLang    language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturer" in next major
      */
     protected function _getManufacturer($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -612,7 +603,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $iLang     language id
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -154,7 +154,6 @@ class ActionListTest extends \OxidTestCase
 
         $sGroupSql = "EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' and oxobject2action.OXOBJECTID in (" . implode(', ', array("'id1'", "'id2'", "'id3'")) . ") )";
         $sQ .= " and (
-            select
                 if(EXISTS(select 1 from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
                     $sGroupSql,
                     1)
@@ -191,7 +190,6 @@ class ActionListTest extends \OxidTestCase
 
         $sGroupSql = '0';
         $sQ .= " and (
-            select
                 if(EXISTS(select 1 from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
                     $sGroupSql,
                     1)

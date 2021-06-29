@@ -1027,8 +1027,8 @@ class DeliveryTest extends \OxidTestCase
 
     public function testIsDeliveryRuleFitByArticle()
     {
-        $oDelivery = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, array('_checkDeliveryAmount', 'getCalculationRule'));
-        $oDelivery->expects($this->once())->method('_checkDeliveryAmount')->will($this->returnValue(true));
+        $oDelivery = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, array('checkDeliveryAmount', 'getCalculationRule'));
+        $oDelivery->expects($this->once())->method('checkDeliveryAmount')->will($this->returnValue(true));
         $calculateMoreThanOncePerCartRule = 123;
         $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));
         $oDelivery->load('_testDeliveryId');

@@ -19,8 +19,8 @@ class CmpBasketTest extends \OxidTestCase
     public function testToBasketReturnsNull()
     {
         /** @var oxcmp_basket|PHPUnit\Framework\MockObject\MockObject $o */
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems'));
-        $o->expects($this->once())->method('_getItems')->will($this->returnValue(false));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems'));
+        $o->expects($this->once())->method('getItems')->will($this->returnValue(false));
 
         oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{return true;}');
         $this->assertSame(null, $o->tobasket());
@@ -50,10 +50,10 @@ class CmpBasketTest extends \OxidTestCase
         Registry::getConfig()->setConfigParam('iNewBasketItemMessage', 2);
 
         /** @var oxcmp_basket|PHPUnit\Framework\MockObject\MockObject $o */
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems', '_setLastCallFnc', '_addItems', 'getConfig'));
-        $o->expects($this->once())->method('_getItems')->will($this->returnValue($aProducts));
-        $o->expects($this->once())->method('_setLastCallFnc')->with($this->equalTo('tobasket'))->will($this->returnValue(null));
-        $o->expects($this->once())->method('_addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems', 'setLastCallFnc', 'addItems', 'getConfig'));
+        $o->expects($this->once())->method('getItems')->will($this->returnValue($aProducts));
+        $o->expects($this->once())->method('setLastCallFnc')->with($this->equalTo('tobasket'))->will($this->returnValue(null));
+        $o->expects($this->once())->method('addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
 
         $this->assertEquals("start?", $o->tobasket());
 
@@ -65,7 +65,7 @@ class CmpBasketTest extends \OxidTestCase
         $this->assertEquals('ret:getdBundledAmount', $oNewItem->dBundledAmount);
 
         $test = new BasketComponent();
-        $test->_getItems("dsdsd");
+        $test->getItems("dsdsd");
     }
 
     public function testToBasketAddProductsNoBasketMsgAndRedirect()
@@ -90,11 +90,11 @@ class CmpBasketTest extends \OxidTestCase
         Registry::getConfig()->setConfigParam('iNewBasketItemMessage', 0);
 
         /** @var oxcmp_basket|PHPUnit\Framework\MockObject\MockObject $o */
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems', '_setLastCallFnc', '_addItems', 'getConfig', '_getRedirectUrl'));
-        $o->expects($this->once())->method('_getItems')->will($this->returnValue($aProducts));
-        $o->expects($this->once())->method('_setLastCallFnc')->with($this->equalTo('tobasket'))->will($this->returnValue(null));
-        $o->expects($this->once())->method('_addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
-        $o->expects($this->once())->method('_getRedirectUrl')->will($this->returnValue('new url'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems', 'setLastCallFnc', 'addItems', 'getConfig', 'getRedirectUrl'));
+        $o->expects($this->once())->method('getItems')->will($this->returnValue($aProducts));
+        $o->expects($this->once())->method('setLastCallFnc')->with($this->equalTo('tobasket'))->will($this->returnValue(null));
+        $o->expects($this->once())->method('addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
+        $o->expects($this->once())->method('getRedirectUrl')->will($this->returnValue('new url'));
 
         $this->assertEquals('new url', $o->tobasket());
 
@@ -106,8 +106,8 @@ class CmpBasketTest extends \OxidTestCase
     {
         oxRegistry::getUtils()->setSearchEngine(true);
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems'));
-        $o->expects($this->never())->method('_getItems');
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems'));
+        $o->expects($this->never())->method('getItems');
 
         $this->assertSame(null, $o->changebasket());
     }
@@ -116,8 +116,8 @@ class CmpBasketTest extends \OxidTestCase
     {
         $this->prepareSessionChallengeToken();
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems'));
-        $o->expects($this->once())->method('_getItems')
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems'));
+        $o->expects($this->once())->method('getItems')
             ->with(
                 $this->equalTo('abc'),
                 $this->equalTo(10),
@@ -154,8 +154,8 @@ class CmpBasketTest extends \OxidTestCase
         $oBItem->expects($this->never())->method('getAmount')->will($this->returnValue('ret:getAmount'));
         $oBItem->expects($this->never())->method('getdBundledAmount')->will($this->returnValue('ret:getdBundledAmount'));
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems', '_setLastCallFnc', '_addItems', 'getConfig', '_getRedirectUrl'));
-        $o->expects($this->once())->method('_getItems')
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems', 'setLastCallFnc', 'addItems', 'getConfig', 'getRedirectUrl'));
+        $o->expects($this->once())->method('getItems')
             ->with(
                 $this->equalTo('abc'),
                 $this->equalTo(11),
@@ -163,10 +163,10 @@ class CmpBasketTest extends \OxidTestCase
                 $this->equalTo('persparam'),
                 $this->equalTo('override')
             )->will($this->returnValue($aProducts));
-        $o->expects($this->once())->method('_setLastCallFnc')->with($this->equalTo('changebasket'))->will($this->returnValue(null));
-        $o->expects($this->once())->method('_addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
+        $o->expects($this->once())->method('setLastCallFnc')->with($this->equalTo('changebasket'))->will($this->returnValue(null));
+        $o->expects($this->once())->method('addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $o->expects($this->never())->method('_getRedirectUrl')->will($this->returnValue(null));
+        $o->expects($this->never())->method('getRedirectUrl')->will($this->returnValue(null));
 
         $this->assertSame(null, $o->changebasket('abc', 11, 'sel', 'persparam', 'override'));
     }
@@ -183,8 +183,8 @@ class CmpBasketTest extends \OxidTestCase
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems'));
-        $o->expects($this->once())->method('_getItems')
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems'));
+        $o->expects($this->once())->method('getItems')
             ->with(
                 $this->equalTo('b:artid'),
                 $this->equalTo('b:am'),
@@ -204,8 +204,8 @@ class CmpBasketTest extends \OxidTestCase
     {
         $this->prepareSessionChallengeToken();
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getItems'));
-        $o->expects($this->once())->method('_getItems')
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getItems'));
+        $o->expects($this->once())->method('getItems')
             ->with(
                 $this->equalTo('b:artid'),
                 $this->equalTo('b:am'),
@@ -256,16 +256,16 @@ class CmpBasketTest extends \OxidTestCase
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
-        $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->_getRedirectUrl());
+        $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->getRedirectUrl());
 
         $this->setRequestParameter('cl', null);
         $this->setRequestParameter('pgNr', 'a123');
-        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->_getRedirectUrl());
+        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->getRedirectUrl());
 
         $this->assertEquals(null, oxRegistry::getSession()->getVariable('_backtoshop'));
 
         $this->setRequestParameter('pgNr', '0');
-        $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->_getRedirectUrl());
+        $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->getRedirectUrl());
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxRegistry::getSession()->getVariable('_backtoshop'));
     }
 
@@ -283,14 +283,14 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->_getItems('abc', 10, 'sel', 'persparam', 'override')
+            $o->getItems('abc', 10, 'sel', 'persparam', 'override')
         );
     }
 
     public function testGetItemsFromArgsEmpty()
     {
         $o = oxNew('oxcmp_basket');
-        $this->assertEquals(false, $o->_getItems('', 10, 'sel', 'persparam', 'override'));
+        $this->assertEquals(false, $o->getItems('', 10, 'sel', 'persparam', 'override'));
     }
 
     public function testGetItemsFromArgsRm()
@@ -321,7 +321,7 @@ class CmpBasketTest extends \OxidTestCase
                      'remove'       => 1,
                  )
             ),
-            $o->_getItems('', 10, 'sel', 'persparam', 'override')
+            $o->getItems('', 10, 'sel', 'persparam', 'override')
         );
     }
 
@@ -346,7 +346,7 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->_getItems()
+            $o->getItems()
         );
 
         $this->setRequestParameter('persparam', 'b:persparam');
@@ -361,7 +361,7 @@ class CmpBasketTest extends \OxidTestCase
             )
 
             ),
-            $o->_getItems(),
+            $o->getItems(),
             '"Details" field in persparams is mandatory'
         );
     }
@@ -380,7 +380,7 @@ class CmpBasketTest extends \OxidTestCase
         $o = oxNew('oxcmp_basket');
         $this->assertEquals(
             array(),
-            $o->_getItems()
+            $o->getItems()
         );
     }
 
@@ -398,7 +398,7 @@ class CmpBasketTest extends \OxidTestCase
         $o = oxNew(\OxidEsales\Eshop\Application\Component\BasketComponent::class);
         $this->assertEquals(
             $oBasketItem,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(
                          'aid'          => 'a_aid',
@@ -460,7 +460,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(),
                 )
@@ -503,7 +503,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(),
                 )
@@ -547,7 +547,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(),
                 )
@@ -579,7 +579,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $this->assertEquals(
             null,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(),
                 )
@@ -609,12 +609,12 @@ class CmpBasketTest extends \OxidTestCase
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('_getLastCallFnc'));
-        $o->expects($this->any())->method('_getLastCallFnc')->will($this->returnValue('tobasket'));
+        $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getLastCallFnc'));
+        $o->expects($this->any())->method('getLastCallFnc')->will($this->returnValue('tobasket'));
 
         $this->assertEquals(
             $oBasketItem,
-            $o->_addItems(
+            $o->addItems(
                 array(
                      array(
                          'aid'          => 'a_aid',
@@ -686,7 +686,7 @@ class CmpBasketTest extends \OxidTestCase
             'aArticles' => array('b_aid' => 15)
         );
         $o = oxNew('oxcmp_basket');
-        $this->assertSame(null, $o->_setLastCall('sCallName', $aProductInfo, $aBasketInfo));
+        $this->assertSame(null, $o->setLastCall('sCallName', $aProductInfo, $aBasketInfo));
         $this->assertEquals(array('sCallName' => $aProductInfo), oxRegistry::getSession()->getVariable('aLastcall'));
     }
 
@@ -793,8 +793,8 @@ class CmpBasketTest extends \OxidTestCase
     public function testSetGetLastCallFnc()
     {
         $o = oxNew('oxcmp_basket');
-        $o->_setLastCallFnc('tobasket');
-        $this->assertEquals('tobasket', $o->_getLastCallFnc());
+        $o->setLastCallFnc('tobasket');
+        $this->assertEquals('tobasket', $o->getLastCallFnc());
     }
 
     public function testExecuteUserChoiceToBasket()

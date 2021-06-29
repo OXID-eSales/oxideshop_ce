@@ -266,9 +266,9 @@ final class UtilsPicTest extends \OxidTestCase
     // deeper code must not allow deletion
     public function testSafePictureDeleteMustFailDeletion()
     {
-        $oUtilsPic = $this->getMock(UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
-        $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(false));
-        $oUtilsPic->expects($this->never())->method('_deletePicture');
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('isPicDeletable', 'deletePicture'));
+        $oUtilsPic->expects($this->once())->method('isPicDeletable')->will($this->returnValue(false));
+        $oUtilsPic->expects($this->never())->method('deletePicture');
 
         $this->assertFalse($oUtilsPic->safePictureDelete('', '', '', ''));
     }
@@ -276,9 +276,9 @@ final class UtilsPicTest extends \OxidTestCase
     //
     public function testSafePictureDeleteMustSucceed()
     {
-        $oUtilsPic = $this->getMock(UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
-        $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(true));
-        $oUtilsPic->expects($this->once())->method('_deletePicture')->will($this->returnValue(true));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('isPicDeletable', 'deletePicture'));
+        $oUtilsPic->expects($this->once())->method('isPicDeletable')->will($this->returnValue(true));
+        $oUtilsPic->expects($this->once())->method('deletePicture')->will($this->returnValue(true));
 
         $this->assertTrue($oUtilsPic->safePictureDelete('', '', '', ''));
     }

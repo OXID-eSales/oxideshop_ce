@@ -223,7 +223,7 @@ $aData = array(
         'activeCurrencyRate' => 1.00,
     ),
       'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                 'blShowNetPrice' => false,
             ),
     ),

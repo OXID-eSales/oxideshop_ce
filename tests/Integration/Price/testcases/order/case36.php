@@ -167,11 +167,7 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
         'actions' => array(
-      /*  '_changeConfigs' => array (
-            'blShowNetPrice' => false,
-            'blEnterNetPrice' => true,
-        ),*/
-        '_addArticles' => array(
+        'addArticles' => array(
                 0 => array(
                         'oxid'       => '1003',
                         'oxtitle'    => '1003',

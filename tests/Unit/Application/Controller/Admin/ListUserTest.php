@@ -24,8 +24,8 @@ class ListUserTest extends \OxidTestCase
     public function testGetViewListSize()
     {
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("_getUserDefListSize"));
-        $oView->expects($this->once())->method('_getUserDefListSize')->will($this->returnValue(999));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getUserDefListSize"));
+        $oView->expects($this->once())->method('getUserDefListSize')->will($this->returnValue(999));
         $this->assertEquals(999, $oView->getViewListSize());
     }
 

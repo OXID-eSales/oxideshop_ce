@@ -35,13 +35,13 @@ class UserPaymentTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "allowAdminEdit"));
         $oView->expects($this->once())->method('getSelUserPayment')->will($this->returnValue("getSelUserPayment"));
         $oView->expects($this->once())->method('getPaymentId')->will($this->returnValue("getPaymentId"));
         $oView->expects($this->once())->method('getPaymentTypes')->will($this->returnValue("getPaymentTypes"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue("getUser"));
         $oView->expects($this->once())->method('getUserPayments')->will($this->returnValue("getUserPayments"));
-        $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
         $this->assertEquals("user_payment.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -67,8 +67,8 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("dynvalue", "testId");
 
         try {
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
-            $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("allowAdminEdit"));
+            $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in user_payment::save()");
@@ -93,8 +93,8 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("editval", array("oxuserpayments__oxid" => "testId"));
 
         try {
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
-            $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("allowAdminEdit"));
+            $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(true));
             $oView->delPayment();
         } catch (Exception $oExcp) {
             $this->assertEquals("delete", $oExcp->getMessage(), "Error in user_payment::delPayment()");

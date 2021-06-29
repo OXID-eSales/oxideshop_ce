@@ -107,9 +107,9 @@ class DiscountlistTest extends \OxidTestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getId'));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, array('selectString', '_getFilterSelect'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, array('selectString', 'getFilterSelect'));
         $oList->expects($this->once())->method('selectString');
-        $oList->expects($this->once())->method('_getFilterSelect');
+        $oList->expects($this->once())->method('getFilterSelect');
         $oList->getDiscountList($oUser);
     }
 
@@ -198,7 +198,7 @@ class DiscountlistTest extends \OxidTestCase
             )";
         $sQ .= " order by $sTable.oxsort ";
 
-        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->_getFilterSelect(null)));
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->getFilterSelect(null)));
     }
 
     // admin user
@@ -238,7 +238,7 @@ class DiscountlistTest extends \OxidTestCase
             )";
         $sQ .= " order by $sTable.oxsort ";
 
-        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->_getFilterSelect($oUser)));
+        $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->getFilterSelect($oUser)));
     }
 
     /**

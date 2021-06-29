@@ -87,8 +87,8 @@ class VatSelectorTest extends \OxidTestCase
      */
     public function testGetUserVat()
     {
-        $oVatSelector = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('_getForeignCountryUserVat'));
-        $oVatSelector->expects($this->once())->method('_getForeignCountryUserVat')->will($this->returnValue(66));
+        $oVatSelector = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('getForeignCountryUserVat'));
+        $oVatSelector->expects($this->once())->method('getForeignCountryUserVat')->will($this->returnValue(66));
 
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxcountryid = new oxField(null, oxField::T_RAW);
@@ -122,15 +122,15 @@ class VatSelectorTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oVatSelector = $this->getProxyClass("oxVatSelector");
 
-        $this->assertSame(0, $oVatSelector->_getForeignCountryUserVat($oUser, $oCountry1));
+        $this->assertSame(0, $oVatSelector->getForeignCountryUserVat($oUser, $oCountry1));
 
         $oCountry2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Country::class, array('isInEU'));
         $oCountry2->expects($this->exactly(2))->method('isInEU')->will($this->returnValue(true));
         $oUser->oxuser__oxustid = new oxField(0, oxField::T_RAW);
-        $this->assertSame(false, $oVatSelector->_getForeignCountryUserVat($oUser, $oCountry2));
+        $this->assertSame(false, $oVatSelector->getForeignCountryUserVat($oUser, $oCountry2));
         $oUser->oxuser__oxustid = new oxField("LTsff", oxField::T_RAW);
         $oCountry2->oxcountry__oxisoalpha2 = new oxField('LT', oxField::T_RAW);
-        $this->assertSame(0, $oVatSelector->_getForeignCountryUserVat($oUser, $oCountry2));
+        $this->assertSame(0, $oVatSelector->getForeignCountryUserVat($oUser, $oCountry2));
     }
 
     /**
@@ -139,8 +139,8 @@ class VatSelectorTest extends \OxidTestCase
     // article has custom VAT stored in oxarticle
     public function testFindArticleVatArticleHasCustomVat()
     {
-        $oVatSelector1 = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('_getVatForArticleCategory'));
-        $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(69));
+        $oVatSelector1 = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('getVatForArticleCategory'));
+        $oVatSelector1->expects($this->once())->method('getVatForArticleCategory')->will($this->returnValue(69));
 
         $oArticle1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getCustomVAT'));
         $oArticle1->expects($this->once())->method('getCustomVAT')->will($this->returnValue('66'));
@@ -152,8 +152,8 @@ class VatSelectorTest extends \OxidTestCase
 
         $this->assertEquals(69, $oVatSelector1->getArticleVat($oArticle2));
 
-        $oVatSelector1 = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('_getVatForArticleCategory'));
-        $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(false));
+        $oVatSelector1 = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('getVatForArticleCategory'));
+        $oVatSelector1->expects($this->once())->method('getVatForArticleCategory')->will($this->returnValue(false));
 
         $this->assertEquals(99, $oVatSelector1->getArticleVat($oArticle2));
     }
@@ -165,19 +165,19 @@ class VatSelectorTest extends \OxidTestCase
         $oArticle1->expects($this->never())->method('getCategoryIds');
 
         $oVatSelector = oxNew('oxVatSelector');
-        $this->assertFalse($oVatSelector->_getVatForArticleCategory($oArticle1));
+        $this->assertFalse($oVatSelector->getVatForArticleCategory($oArticle1));
 
         $this->oCategory->oxcategories__oxvat = new oxField(69, oxField::T_RAW);
         $this->oCategory->save();
 
         $oVatSelector = oxNew('oxVatSelector');
-        $this->assertEquals(69, $oVatSelector->_getVatForArticleCategory($this->oArticle));
+        $this->assertEquals(69, $oVatSelector->getVatForArticleCategory($this->oArticle));
 
         $this->oCategory->oxcategories__oxvat = new oxField(null, oxField::T_RAW);
         $this->oCategory->save();
 
         $oVatSelector = oxNew('oxVatSelector');
-        $this->assertFalse($oVatSelector->_getVatForArticleCategory($this->oArticle));
+        $this->assertFalse($oVatSelector->getVatForArticleCategory($this->oArticle));
     }
 
     public function testGetVatForArticleCategoryArtWithoutCat()
@@ -190,7 +190,7 @@ class VatSelectorTest extends \OxidTestCase
         $this->oCategory->oxcategories__oxvat = new oxField(69, oxField::T_RAW);
         $this->oCategory->save();
 
-        $this->assertFalse($oVatSelector->_getVatForArticleCategory($oArticle1));
+        $this->assertFalse($oVatSelector->getVatForArticleCategory($oArticle1));
     }
 
     /**
@@ -258,7 +258,7 @@ class VatSelectorTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShippingCountryVat", true);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
-        $this->assertEquals($sSwitzerlandId, $oVatSelector->_getVatCountry($oUser));
+        $this->assertEquals($sSwitzerlandId, $oVatSelector->getVatCountry($oUser));
     }
 
     /**
@@ -288,7 +288,7 @@ class VatSelectorTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShippingCountryVat", true);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
-        $this->assertEquals($sGermanyId, $oVatSelector->_getVatCountry($oUser));
+        $this->assertEquals($sGermanyId, $oVatSelector->getVatCountry($oUser));
     }
 
     /**
@@ -315,7 +315,7 @@ class VatSelectorTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShippingCountryVat", false);
 
         $oVatSelector = $this->getProxyClass("oxVatSelector");
-        $this->assertEquals($sGermanyId, $oVatSelector->_getVatCountry($oUser));
+        $this->assertEquals($sGermanyId, $oVatSelector->getVatCountry($oUser));
     }
 
     /**
@@ -327,8 +327,8 @@ class VatSelectorTest extends \OxidTestCase
         $sGermanyId = 'a7c40f631fc920687.20179984';
         $oUser = oxNew('oxUser');
 
-        $oVatSelector = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array("_getVatCountry"));
-        $oVatSelector->expects($this->once())->method("_getVatCountry")->with($oUser)->will($this->returnValue($sGermanyId));
+        $oVatSelector = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array("getVatCountry"));
+        $oVatSelector->expects($this->once())->method("getVatCountry")->with($oUser)->will($this->returnValue($sGermanyId));
         $oVatSelector->getUserVat($oUser, true);
     }
 }

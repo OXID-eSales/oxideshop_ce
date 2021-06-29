@@ -135,7 +135,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testLanguageFileEncoding($sLanguage, $sTheme, $aDetectOrder)
     {
-        $aLang = $this->getLanguage($sTheme, $sLanguage);
+        $aLang = $this->getLanguageFileContents($sTheme, $sLanguage);
 
         //oxid lang encoding should stay on utf-8 because all language files are utf-8 encoded,
         //or at least converted to utf8
@@ -205,8 +205,8 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testIdentsMatch($sTheme)
     {
-        $aLangIdentsDE = $this->getLanguage($sTheme, 'de');
-        $aLangIdentsEN = $this->getLanguage($sTheme, 'en');
+        $aLangIdentsDE = $this->getLanguageFileContents($sTheme, 'de');
+        $aLangIdentsEN = $this->getLanguageFileContents($sTheme, 'en');
 
         $this->assertEquals(array(), array_diff_key($aLangIdentsDE, $aLangIdentsEN), 'ident does not match, EN misses translations');
         $this->assertEquals(array(), array_diff_key($aLangIdentsEN, $aLangIdentsDE), 'ident does not match, DE misses translations');
@@ -220,7 +220,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testNoFrontendHtmlEntitiesAllowed($sLang, $sTheme)
     {
-        $aLangIndents = $this->getLanguage($sTheme, $sLang, '*.php');
+        $aLangIndents = $this->getLanguageFileContents($sTheme, $sLang, '*.php');
 
         $aLangIndents = str_replace('&amp;', '(amp)', $aLangIndents);
         $aIncorrectIndents = array();
@@ -292,7 +292,7 @@ class LangIntegrityTest extends \OxidTestCase
             $this->fail(' Map array is empty');
         }
 
-        $aLangIdents = $this->getLanguage('', $sLang);
+        $aLangIdents = $this->getLanguageFileContents('', $sLang);
         if (array() == $aLangIdents) {
             $this->fail('Language array is empty');
         }
@@ -314,7 +314,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testColonsAtTheEnd($sLang, $sTheme)
     {
-        $aIdents = $this->getLanguage($sTheme, $sLang);
+        $aIdents = $this->getLanguageFileContents($sTheme, $sLang);
 
         $this->assertEquals(array(), $this->getConstantsWithColons($aIdents), "$sLang has colons. Theme - $sTheme");
     }
@@ -326,8 +326,8 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testThemeTranslationsNotEqualsGenericTranslations($sLang)
     {
-        $aGenericTranslations = $this->getLanguage('', $sLang);
-        $aThemeTranslations = $this->getLanguage($this->getThemeName(), $sLang);
+        $aGenericTranslations = $this->getLanguageFileContents('', $sLang);
+        $aThemeTranslations = $this->getLanguageFileContents($this->getThemeName(), $sLang);
         $aIntersectionsDE = array_intersect_key($aThemeTranslations, $aGenericTranslations);
 
         $this->assertEquals(array('charset' => 'UTF-8'), $aIntersectionsDE, "some $sLang translations in theme overrides generic translations");
@@ -339,12 +339,12 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testDuplicates()
     {
-        $aThemeTranslationsDE = $this->getLanguage($this->getThemeName(), 'de');
-        $aRTranslationsDE = array_merge($aThemeTranslationsDE, $this->getLanguage('', 'de'));
+        $aThemeTranslationsDE = $this->getLanguageFileContents($this->getThemeName(), 'de');
+        $aRTranslationsDE = array_merge($aThemeTranslationsDE, $this->getLanguageFileContents('', 'de'));
         $aTranslationsDE = $this->stripLangParts($aRTranslationsDE);
 
-        $aThemeTranslationsEN = $this->getLanguage($this->getThemeName(), 'en');
-        $aRTranslationsEN = array_merge($aThemeTranslationsEN, $this->getLanguage('', 'en'));
+        $aThemeTranslationsEN = $this->getLanguageFileContents($this->getThemeName(), 'en');
+        $aRTranslationsEN = array_merge($aThemeTranslationsEN, $this->getLanguageFileContents('', 'en'));
         $aTranslationsEN = $this->stripLangParts($aRTranslationsEN);
 
         $aStrippedUniqueTranslationsDE = array_unique($aTranslationsDE);
@@ -423,10 +423,10 @@ class LangIntegrityTest extends \OxidTestCase
         $aTemplateLangIdents = $this->getTemplateConstants($this->getThemeName());
         $aConstants = array_merge(
             array_merge(
-                $this->getLanguage('', 'de'),
+                $this->getLanguageFileContents('', 'de'),
                 $this->getMap($this->getThemeName(), 'de')
             ),
-            $this->getLanguage($this->getThemeName(), 'de')
+            $this->getLanguageFileContents($this->getThemeName(), 'de')
         );
         $aConstantLangIdents = array_keys($aConstants);
         $this->assertEquals(
@@ -729,7 +729,7 @@ class LangIntegrityTest extends \OxidTestCase
      *
      * @return array
      */
-    private function getLanguage($sTheme, $sLang, $sFileName = "lang.php")
+    private function getLanguageFileContents($sTheme, $sLang, $sFileName = "lang.php"): array
     {
         $aAllLang = array();
         $sInputFile = $this->getLanguageFilePath($sTheme, $sLang, $sFileName);
@@ -884,7 +884,7 @@ class LangIntegrityTest extends \OxidTestCase
         $languageFiles = $this->getLangFileContents($type, $languageCode, $filePattern);
 
         foreach ($languageFiles as $filePath => $fileContent) {
-            $languageTranslation = $this->getLanguage($type, $languageCode, $filePattern);
+            $languageTranslation = $this->getLanguageFileContents($type, $languageCode, $filePattern);
 
             $declaredEncoding = $languageTranslation['charset'];
             $isDeclaredAsUTF8 = strtolower($declaredEncoding) === 'utf-8';
@@ -959,7 +959,7 @@ EOD;
         $languageFiles = $this->getLangFileContents($type, $languageCode, $filePattern);
 
         foreach ($languageFiles as $filePath => $fileContent) {
-            $languageTranslation = $this->getLanguage($type, $languageCode, $filePattern);
+            $languageTranslation = $this->getLanguageFileContents($type, $languageCode, $filePattern);
 
             $isEncodingDeclared = $languageTranslation['charset'] ? true : false;
 
@@ -997,7 +997,7 @@ EOD;
         $languageFiles = $this->getLangFileContents($type, $languageCode, $filePattern);
 
         foreach ($languageFiles as $filePath => $fileContent) {
-            $languageTranslation = $this->getLanguage($type, $languageCode, $filePattern);
+            $languageTranslation = $this->getLanguageFileContents($type, $languageCode, $filePattern);
 
             $declaredEncoding = strtolower($languageTranslation['charset']);
             $validEncodings = ['utf-8', 'iso-8859-15'];

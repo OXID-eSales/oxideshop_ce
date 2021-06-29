@@ -52,7 +52,7 @@ class AdminViewTest extends \OxidTestCase
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertEquals("https", $oAdminView->_getServiceProtocol());
+        $this->assertEquals("https", $oAdminView->getServiceProtocol());
 
         // SSL off
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isSsl"));
@@ -61,7 +61,7 @@ class AdminViewTest extends \OxidTestCase
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertEquals("http", $oAdminView->_getServiceProtocol());
+        $this->assertEquals("http", $oAdminView->getServiceProtocol());
     }
 
     /**
@@ -87,8 +87,8 @@ class AdminViewTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
-        $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array('_authorize'));
-        $oAdminView->expects($this->once())->method('_authorize')->will($this->returnValue(true));
+        $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array('authorize'));
+        $oAdminView->expects($this->once())->method('authorize')->will($this->returnValue(true));
         $oAdminView->init();
 
         $this->assertEquals(oxRegistry::getSession()->getVariable('malladmin'), $oAdminView->getViewDataElement('malladmin'));
@@ -108,7 +108,7 @@ class AdminViewTest extends \OxidTestCase
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array('getNavigation'));
         $oAdminView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $oAdminView->_setupNavigation('xxx');
+        $oAdminView->setupNavigation('xxx');
         $this->assertEquals('listurl', $oAdminView->getViewDataElement('listurl'));
         $this->assertEquals('editurl', $oAdminView->getViewDataElement('editurl'));
     }
@@ -125,7 +125,7 @@ class AdminViewTest extends \OxidTestCase
         }
 
         $oAdminView = oxNew('oxadminview');
-        $this->assertTrue($oAdminView->_allowAdminEdit('xxx'));
+        $this->assertTrue($oAdminView->allowAdminEdit('xxx'));
     }
 
     /**
@@ -325,7 +325,7 @@ class AdminViewTest extends \OxidTestCase
     {
         $oSubj = $this->getProxyClass("oxadminView");
         $sTestCode = "en";
-        $this->assertEquals("international", $oSubj->_getCountryByCode($sTestCode));
+        $this->assertEquals("international", $oSubj->getCountryByCode($sTestCode));
     }
 
     /**
@@ -342,7 +342,7 @@ class AdminViewTest extends \OxidTestCase
 
         $oSubj = oxNew('oxadminView');
         $sTestCode = "de";
-        $this->assertEquals("germany", $oSubj->_getCountryByCode($sTestCode));
+        $this->assertEquals("germany", $oSubj->getCountryByCode($sTestCode));
     }
 
     /**
@@ -363,7 +363,7 @@ class AdminViewTest extends \OxidTestCase
         $sTestCode = "de";
 
         //expecting same result due to faked language array
-        $this->assertEquals("germany", $oSubj->_getCountryByCode($sTestCode));
+        $this->assertEquals("germany", $oSubj->getCountryByCode($sTestCode));
     }
 
     /**

@@ -509,8 +509,8 @@ class OrderTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         //on order success must return next step vale
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('_getNextStep', 'getUser'));
-        $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getNextStep', 'getUser'));
+        $oOrder->expects($this->any())->method('getNextStep')->will($this->returnValue('nextStepValue'));
         $oOrder->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertEquals('nextStepValue', $oOrder->execute());
@@ -575,7 +575,7 @@ class OrderTest extends \OxidTestCase
         $session->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $order = $this->getOrderMock($session);
-        $order->expects($this->never())->method('_getNextStep');
+        $order->expects($this->never())->method('getNextStep');
 
         $this->expectException('oxOutOfStockException');
         $this->assertNull($order->execute());
@@ -609,8 +609,8 @@ class OrderTest extends \OxidTestCase
         $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('_getNextStep'));
-        $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getNextStep'));
+        $oOrder->expects($this->any())->method('getNextStep')->will($this->returnValue('nextStepValue'));
 
         $oOrder->setUser($oUser);
 
@@ -629,39 +629,39 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass('order');
 
         // set no param
-        $res = $oOrder->_getNextStep(null);
+        $res = $oOrder->getNextStep(null);
         $this->assertEquals("thankyou", $res);
 
         // email error
-        $res = $oOrder->_getNextStep(0);
+        $res = $oOrder->getNextStep(0);
         $this->assertEquals("thankyou?mailerror=1", $res);
 
         // if success
-        $res = $oOrder->_getNextStep(1);
+        $res = $oOrder->getNextStep(1);
         $this->assertEquals("thankyou", $res);
 
         // no authentication
-        $res = $oOrder->_getNextStep(2);
+        $res = $oOrder->getNextStep(2);
         $this->assertEquals("payment?payerror=2", $res);
 
         // reload blocker activ
-        $res = $oOrder->_getNextStep(3);
+        $res = $oOrder->getNextStep(3);
         $this->assertEquals("thankyou", $res);
 
         // reload blocker activ
-        $res = $oOrder->_getNextStep(8);
+        $res = $oOrder->getNextStep(8);
         $this->assertEquals("order", $res);
 
         // other payment error
-        $res = $oOrder->_getNextStep(6);
+        $res = $oOrder->getNextStep(6);
         $this->assertEquals("payment?payerror=6", $res);
 
         // address changed
-        $res = $oOrder->_getNextStep(7);
+        $res = $oOrder->getNextStep(7);
         $this->assertEquals("order?iAddressError=1", $res);
 
         // error text
-        $res = $oOrder->_getNextStep("Test Error");
+        $res = $oOrder->getNextStep("Test Error");
         $this->assertEquals("payment?payerror=-1&payerrortext=Test+Error", $res);
     }
 
@@ -971,7 +971,7 @@ class OrderTest extends \OxidTestCase
         $oCfg = $this->getMock(Config::class, array("getShowGiftWrapping"));
         $oCfg->expects($this->once())->method('getShowGiftWrapping')->will($this->returnValue(false));
 
-        oxTestModules::addFunction("oxwrapping", "__construct", '{throw new Exception("wrapping should not be constructed");}');
+        oxTestModules::addFunction("oxwrapping", "_construct", '{throw new Exception("wrapping should not be constructed");}');
 
         $oTg = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array("getViewConfig"));
         $oTg->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
@@ -1096,7 +1096,7 @@ class OrderTest extends \OxidTestCase
         $user = oxNew('oxUser');
         $user->load('_testUserId');
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, ['_getNextStep', "getUser", "getPayment"]);
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, ['getNextStep', "getUser", "getPayment"]);
         $order->expects($this->any())->method('getUser')->will($this->returnValue($user));
         $order->expects($this->any())->method('getPayment')->will($this->returnValue(true));
         return $order;

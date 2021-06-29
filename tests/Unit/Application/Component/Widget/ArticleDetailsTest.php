@@ -837,9 +837,9 @@ class ArticleDetailsTest extends \OxidTestCase
         //$oProduct->expects( $this->never() )->method( "getId" );
 
         // no parent
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array("getProduct", "getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue(false));
 
         $this->assertEquals("varselections", $oView->getVariantSelections());
 
@@ -851,9 +851,9 @@ class ArticleDetailsTest extends \OxidTestCase
         $oParent->expects($this->once())->method('getVariantSelections')->will($this->returnValue("parentselections"));
 
         // has parent
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array("getProduct", "getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue($oParent));
+        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue($oParent));
 
         $this->assertEquals("parentselections", $oView->getVariantSelections());
     }

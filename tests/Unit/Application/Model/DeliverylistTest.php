@@ -7,28 +7,27 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use oxArticleHelper;
+use oxDb;
+use oxdeliverylist;
+use oxField;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\Delivery;
-use \oxArticleHelper;
-use \oxdeliverylist;
-use \oxDb;
-use \oxField;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use \oxRegistry;
-use \oxTestModules;
-use \oxUser;
-use \PHPUnit\Framework\MockObject\MockObject as MockObject;
+use oxRegistry;
+use oxUser;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class oxDeliveryListTestClass extends oxdeliverylist
 {
-    public function getList($oUser = null, $sCountryId = null, $sDelSet = null)
+    public function getActiveDeliveryList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
         return parent::getActiveDeliveryList($oUser, $sCountryId, $sDelSet);
     }
 
-    public function _getFilterSelect($oUser, $sCountryId, $sDelSet)
+    public function getFilterSelect($oUser, $sCountryId, $sDelSet)
     {
-        return parent::_getFilterSelect($oUser, $sCountryId, $sDelSet);
+        return parent::getFilterSelect($oUser, $sCountryId, $sDelSet);
     }
 
     public function getObjectsInListName()
@@ -49,12 +48,12 @@ class oxdeliverylistTest_forGetList extends oxdeliverylist
     public $sFilterDeliverySet;
     public $sUserId;
 
-    public function getList($oUser = null, $sCountryId = null, $sDelSet = null)
+    public function getActiveDeliveryList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
         return parent::getActiveDeliveryList($oUser, $sCountryId, $sDelSet);
     }
 
-    public function _getFilterSelect($oUser, $sCountryId, $sDelSet)
+    public function getFilterSelect($oUser, $sCountryId, $sDelSet)
     {
         $this->sFilterUser = $oUser ? $oUser : null;
         $this->sFilterCountryId = $sCountryId;
@@ -66,14 +65,6 @@ class oxdeliverylistTest_forGetList extends oxdeliverylist
     public function getUserId()
     {
         return $this->_sUserId;
-    }
-}
-
-class oxDb_noActiveSnippetInDeliveryList extends oxDb
-{
-    public function getActiveSnippet($param1, $param3 = null)
-    {
-        return '1';
     }
 }
 
@@ -406,9 +397,9 @@ class DeliverylistTest extends \OxidTestCase
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
 
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', 'getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oList->expects($this->once())->method('_getFilterSelect');
+        $oList->expects($this->once())->method('getFilterSelect');
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
 
@@ -441,7 +432,7 @@ class DeliverylistTest extends \OxidTestCase
         $oUser->load('_testUserId');
 
         $oDList = new oxdeliverylistTest_forGetList();
-        $oDList->getList($this->_oUser, 'a7c40f63264309e05.58576680', '_testDeliverySetId');
+        $oDList->getActiveDeliveryList($this->_oUser, 'a7c40f63264309e05.58576680', '_testDeliverySetId');
 
         //testing if getList calls _getFilterSelect() with correct params
         $this->assertEquals('_testUserId', $oDList->sFilterUser->getId());
@@ -464,7 +455,7 @@ class DeliverylistTest extends \OxidTestCase
         $oUser->load('_testUserId');
 
         $oDList = new oxdeliverylistTest_forGetList();
-        $oDList->getList($this->_oUser, null, '_testDeliverySetId');
+        $oDList->getActiveDeliveryList($this->_oUser, null, '_testDeliverySetId');
 
         $this->assertEquals(3, $oDList->count());
         $this->assertEquals(
@@ -476,7 +467,7 @@ class DeliverylistTest extends \OxidTestCase
         $this->cleanUpTable('oxdelivery');
 
         // testing if cache works
-        $oDList->getList($this->_oUser, null, '_testDeliverySetId');
+        $oDList->getActiveDeliveryList($this->_oUser, null, '_testDeliverySetId');
         $this->assertEquals(3, $oDList->count());
         $this->assertEquals(
             array('_testDeliveryId1', '_testDeliveryId2', '_testDeliveryId3'),
@@ -510,7 +501,7 @@ class DeliverylistTest extends \OxidTestCase
                     1)
             ) order by $sTable.oxsort asc ";
 
-        $sTestSQ = $oDList->_getFilterSelect(null, null, null);
+        $sTestSQ = $oDList->getFilterSelect(null, null, null);
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -546,7 +537,7 @@ class DeliverylistTest extends \OxidTestCase
                     1)
             ) order by $sTable.oxsort asc ";
 
-        $sTestSQ = $oDList->_getFilterSelect(null, '_testCountryId', null);
+        $sTestSQ = $oDList->getFilterSelect(null, '_testCountryId', null);
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -584,7 +575,7 @@ class DeliverylistTest extends \OxidTestCase
                     1)
             ) order by $sTable.oxsort asc ";
 
-        $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
+        $sTestSQ = $oDList->getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -624,7 +615,7 @@ class DeliverylistTest extends \OxidTestCase
                     1)
             ) order by $sTable.oxsort asc ";
 
-        $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
+        $sTestSQ = $oDList->getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
         //cleaning spaces, tabs and so on...
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
@@ -1110,7 +1101,7 @@ class DeliverylistTest extends \OxidTestCase
         $oUser->load('oxdefaultadmin');
 
         $oDList = new oxDeliveryListTest_forGetList();
-        $oDList->getList($oUser, 'a7c40f631fc920687.20179984', 'b3b46b74d3894f9f5.62965460');
+        $oDList->getActiveDeliveryList($oUser, 'a7c40f631fc920687.20179984', 'b3b46b74d3894f9f5.62965460');
 
         //testing if getList calls _getFilterSelect() with correct params
         $this->assertEquals('oxdefaultadmin', $oDList->sFilterUser->getId());

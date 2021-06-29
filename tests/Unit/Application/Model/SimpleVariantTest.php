@@ -207,10 +207,10 @@ class SimpleVariantTest extends \OxidTestCase
 
     public function testGetPrice()
     {
-        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('_getGroupPrice', '_applyParentVat', '_applyCurrency'));
-        $oSubj->expects($this->once())->method('_getGroupPrice')->will($this->returnValue(1));
-        $oSubj->expects($this->once())->method('_applyParentVat')->will($this->returnValue(null));
-        $oSubj->expects($this->once())->method('_applyCurrency')->will($this->returnValue(null));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getGroupPrice', 'applyParentVat', 'applyCurrency'));
+        $oSubj->expects($this->once())->method('getGroupPrice')->will($this->returnValue(1));
+        $oSubj->expects($this->once())->method('applyParentVat')->will($this->returnValue(null));
+        $oSubj->expects($this->once())->method('applyCurrency')->will($this->returnValue(null));
         $oPrice = $oSubj->getPrice();
         $this->assertTrue($oPrice instanceof Price);
     }
@@ -221,7 +221,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue(null));
 
         $oPrice = oxNew('oxPrice');
-        $oSubj->_applyParentVat($oPrice);
+        $oSubj->applyParentVat($oPrice);
     }
 
     public function testApplyParentVat()
@@ -234,7 +234,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue($oParent));
 
-        $oSubj->_applyParentVat($oPrice);
+        $oSubj->applyParentVat($oPrice);
     }
 
     // #2231: Admin settings for "apply VAT in cart" and "net product pricing" don't work for Variants
@@ -249,7 +249,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue($oParent));
 
-        $oSubj->_applyParentVat($oPrice);
+        $oSubj->applyParentVat($oPrice);
     }
 
     public function testGetPriceExisting()
@@ -330,7 +330,7 @@ class SimpleVariantTest extends \OxidTestCase
         $this->getConfig()->setActShopCurrency(2);
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);
-        $oSubj->_applyCurrency($oPrice);
+        $oSubj->applyCurrency($oPrice);
         $this->assertEquals(143.26, $oPrice->getBruttoPrice());
         $this->getConfig()->setActShopCurrency(0);
     }
@@ -342,7 +342,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oCur->rate = 0.68;
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);
-        $oSubj->_applyCurrency($oPrice, $oCur);
+        $oSubj->applyCurrency($oPrice, $oCur);
         $this->assertEquals(68, $oPrice->getBruttoPrice());
     }
 

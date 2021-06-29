@@ -105,9 +105,9 @@ class FileTest extends \OxidTestCase
      */
     public function testGetStoreLocation()
     {
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('_getBaseDownloadDirPath', '_getFileLocation'));
-        $oFile->expects($this->once())->method('_getBaseDownloadDirPath')->will($this->returnValue('aa'));
-        $oFile->expects($this->once())->method('_getFileLocation')->will($this->returnValue('bb'));
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getBaseDownloadDirPath', 'getFileLocation'));
+        $oFile->expects($this->once())->method('getBaseDownloadDirPath')->will($this->returnValue('aa'));
+        $oFile->expects($this->once())->method('getFileLocation')->will($this->returnValue('bb'));
 
         $this->assertEquals('aa/bb', $oFile->getStoreLocation());
     }
@@ -119,8 +119,8 @@ class FileTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('sDownloadsDir', '/fullPath');
 
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('_getFileLocation'));
-        $oFile->expects($this->once())->method('_getFileLocation')->will($this->returnValue('fileName'));
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getFileLocation'));
+        $oFile->expects($this->once())->method('getFileLocation')->will($this->returnValue('fileName'));
 
         $this->assertEquals('/fullPath/fileName', $oFile->getStoreLocation());
     }
@@ -132,8 +132,8 @@ class FileTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('sDownloadsDir', 'relativePath');
 
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('_getFileLocation'));
-        $oFile->expects($this->once())->method('_getFileLocation')->will($this->returnValue('fileName'));
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getFileLocation'));
+        $oFile->expects($this->once())->method('getFileLocation')->will($this->returnValue('fileName'));
 
         $this->assertEquals(getShopBasePath() . '/relativePath/fileName', $oFile->getStoreLocation());
     }
@@ -143,8 +143,8 @@ class FileTest extends \OxidTestCase
      */
     public function testGetStoreLocationNotSet()
     {
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('_getFileLocation'));
-        $oFile->expects($this->once())->method('_getFileLocation')->will($this->returnValue('fileName'));
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getFileLocation'));
+        $oFile->expects($this->once())->method('getFileLocation')->will($this->returnValue('fileName'));
 
         $this->assertEquals(getShopBasePath() . '/out/downloads/fileName', $oFile->getStoreLocation());
     }
@@ -228,10 +228,10 @@ class FileTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getUploadedFile'));
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', 'uploadFile', 'getHashedFileDir'), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
+        $oFile->expects($this->any())->method('uploadFile')->will($this->returnValue(true));
+        $oFile->expects($this->any())->method('getHashedFileDir')->will($this->returnValue('eb'));
 
         $oFile->processFile('aa');
 
@@ -253,10 +253,10 @@ class FileTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getUploadedFile'));
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
-        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
+        $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', 'uploadFile', 'getHashedFileDir'), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(false));
-        $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
+        $oFile->expects($this->any())->method('uploadFile')->will($this->returnValue(false));
+        $oFile->expects($this->any())->method('getHashedFileDir')->will($this->returnValue('eb'));
 
         $oFile->processFile('aa');
     }

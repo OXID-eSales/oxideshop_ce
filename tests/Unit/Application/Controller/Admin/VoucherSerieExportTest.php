@@ -101,8 +101,8 @@ class VoucherSerieExportTest extends \OxidTestCase
         $oVoucher->oxvouchers__oxvouchernr = new oxField("_testvoucher");
         $oVoucher->save();
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("write", "_getVoucherSerie"));
-        $oView->expects($this->atLeastOnce())->method('_getVoucherSerie')->will($this->returnValue($oVoucherSerie));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("write", "getVoucherSerie"));
+        $oView->expects($this->atLeastOnce())->method('getVoucherSerie')->will($this->returnValue($oVoucherSerie));
         $oView
             ->method('write')
             ->withConsecutive(['Gutscheine'], ['_testvoucher']);

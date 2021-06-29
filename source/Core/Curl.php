@@ -380,7 +380,7 @@ class Curl
      */
     protected function executeCurl(): string
     {
-        return curl_exec($this->_getResource());
+        return curl_exec($this->getResource());
     }
 
     /**
@@ -430,7 +430,7 @@ class Curl
      */
     protected function prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return array_map([$this, '_htmlDecode'], array_filter($params));
+        return array_map([$this, 'htmlDecode'], array_filter($params));
     }
 
     /**

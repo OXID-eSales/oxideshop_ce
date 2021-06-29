@@ -90,9 +90,9 @@ class ArticlePicturesTest extends \OxidTestCase
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteThumbnail", "_deleteMasterPicture"));
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteThumbnail", "deleteMasterPicture"));
         $oArtPic->expects($this->never())->method('deleteThumbnail');
-        $oArtPic->expects($this->never())->method('_deleteMasterPicture');
+        $oArtPic->expects($this->never())->method('deleteMasterPicture');
 
         $this->_oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
         $this->_oArticle->save();
@@ -111,9 +111,9 @@ class ArticlePicturesTest extends \OxidTestCase
         $this->setRequestParameter("masterPicIndex", "TH");
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteMainIcon", "_deleteMasterPicture"));
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("deleteMainIcon", "deleteMasterPicture"));
         $oArtPic->expects($this->never())->method('deleteMainIcon');
-        $oArtPic->expects($this->never())->method('_deleteMasterPicture');
+        $oArtPic->expects($this->never())->method('deleteMasterPicture');
 
         $this->_oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
         $this->_oArticle->save();
@@ -152,8 +152,8 @@ class ArticlePicturesTest extends \OxidTestCase
         $this->setRequestParameter("oxid", "_testArtId");
         $this->setRequestParameter("masterPicIndex", "2");
 
-        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("_resetMasterPicture"));
-        $oArtPic->expects($this->once())->method('_resetMasterPicture');
+        $oArtPic = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticlePictures::class, array("resetMasterPicture"));
+        $oArtPic->expects($this->once())->method('resetMasterPicture');
 
         $this->_oArticle->save();
 
@@ -220,7 +220,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->_resetMasterPicture($oArticle, 2);
+        $oArtPic->resetMasterPicture($oArticle, 2);
 
         $this->assertEquals("testPic2.jpg", $oArticle->oxarticles__oxpic2->value);
     }

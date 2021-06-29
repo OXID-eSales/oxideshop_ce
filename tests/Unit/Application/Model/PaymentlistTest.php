@@ -614,7 +614,7 @@ class PaymentlistTest extends \OxidTestCase
                     if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1), 0, 1) ) ) order by $sTable.oxsort asc ";
 
         $oList = oxNew('oxPaymentList');
-        $sQ = $oList->_getFilterSelect('xxx', 666, null);
+        $sQ = $oList->getFilterSelect('xxx', 666, null);
 
         $this->assertEquals($this->cleanSQL($sTestQ), $this->cleanSQL($sQ));
     }
@@ -649,7 +649,7 @@ class PaymentlistTest extends \OxidTestCase
                     exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID=$sTable.OXID and s3.OXGROUPSID in ( $sGroupIds ) limit 1), 1) ) ) order by $sTable.oxsort asc ";
 
         $oList = oxNew('oxPaymentList');
-        $sQ = $oList->_getFilterSelect('xxx', 666, $this->oUser);
+        $sQ = $oList->getFilterSelect('xxx', 666, $this->oUser);
 
         $this->assertEquals($this->cleanSQL($sTestQ), $this->cleanSQL($sQ));
     }

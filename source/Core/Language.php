@@ -319,7 +319,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($blSort && is_array($aLangParams)) {
-            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
+            uasort($aLanguages, [$this, 'sortLanguagesCallback']);
         }
 
         return $aLanguages;

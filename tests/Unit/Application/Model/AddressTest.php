@@ -150,10 +150,10 @@ class AddressTest extends \OxidTestCase
             );
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
-        $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array('_getStateObject', 'getStateId'));
+        $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array('getStateObject', 'getStateId'));
 
         $oAddressMock->expects($this->any())
-            ->method('_getStateObject')
+            ->method('getStateObject')
             ->will($this->returnValue($oStateMock));
 
         $oAddressMock->expects($this->any())

@@ -183,11 +183,11 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,
             ),
-             '_changeArticles' => array(
+             'changeArticles' => array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 3,

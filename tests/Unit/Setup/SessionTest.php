@@ -28,7 +28,7 @@ class SessionTest extends \OxidTestCase
      */
     protected function getSessionMock($aMockFunctions = array())
     {
-        $aMockFunctions = array_merge($aMockFunctions, array('_startSession', '_initSessionData'));
+        $aMockFunctions = array_merge($aMockFunctions, array('startSession', 'initSessionData'));
         $oSession = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', $aMockFunctions);
 
         return $oSession;
@@ -39,10 +39,10 @@ class SessionTest extends \OxidTestCase
      */
     public function testValidateSession_newsession()
     {
-        $oSession = $this->getSessionMock(array('setSessionParam', '_getNewSessionID'));
+        $oSession = $this->getSessionMock(array('setSessionParam', 'getNewSessionID'));
         $oSession->setIsNewSession(true);
         $oSession->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
-        $oSession->expects($this->never())->method('_getNewSessionID');
+        $oSession->expects($this->never())->method('getNewSessionID');
         $oSession->validateSession();
     }
 
@@ -51,10 +51,10 @@ class SessionTest extends \OxidTestCase
      */
     public function testValidateSession_oldsession_invalid()
     {
-        $oSession = $this->getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
+        $oSession = $this->getSessionMock(array('setSessionParam', 'getSessionParam', 'getNewSessionID'));
         $oSession->setIsNewSession(null);
         $oSession->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(null));
-        $oSession->method('_getNewSessionID')->will($this->returnValue($this->generateUniqueSessionId()));
+        $oSession->method('getNewSessionID')->will($this->returnValue($this->generateUniqueSessionId()));
         $oSession->method('setSessionParam')->with($this->equalTo('setup_session'), $this->equalTo(true));
         $oSession->validateSession();
     }
@@ -64,10 +64,10 @@ class SessionTest extends \OxidTestCase
      */
     public function testValidateSession_oldsession_valid()
     {
-        $oSession = $this->getSessionMock(array('setSessionParam', 'getSessionParam', '_getNewSessionID'));
+        $oSession = $this->getSessionMock(array('setSessionParam', 'getSessionParam', 'getNewSessionID'));
         $oSession->setIsNewSession(null);
         $oSession->method('getSessionParam')->with($this->equalTo('setup_session'))->will($this->returnValue(true));
-        $oSession->expects($this->never())->method('_getNewSessionID');
+        $oSession->expects($this->never())->method('getNewSessionID');
         $oSession->expects($this->never())->method('setSessionParam');
         $oSession->validateSession();
     }
@@ -126,8 +126,8 @@ class SessionTest extends \OxidTestCase
     {
         $aParams = array('testKey' => 'testParam');
 
-        $oSession = $this->getSessionMock(array('_getSessionData'));
-        $oSession->method('_getSessionData')->will($this->returnValue($aParams));
+        $oSession = $this->getSessionMock(array('getSessionData'));
+        $oSession->method('getSessionData')->will($this->returnValue($aParams));
 
         $this->assertSame(null, $oSession->getSessionParam('testBadKey'), 'Incorrect not found response.');
     }
@@ -139,8 +139,8 @@ class SessionTest extends \OxidTestCase
     {
         $aParams = array('testKey' => 'testParam');
 
-        $oSession = $this->getSessionMock(array('_getSessionData'));
-        $oSession->method('_getSessionData')->will($this->returnValue($aParams));
+        $oSession = $this->getSessionMock(array('getSessionData'));
+        $oSession->method('getSessionData')->will($this->returnValue($aParams));
 
         $this->assertSame('testParam', $oSession->getSessionParam('testKey'), 'Incorrect found response.');
     }

@@ -24,7 +24,7 @@ abstract class MultilanguageTestCase extends \OxidTestCase
     {
         parent::setUp();
 
-        $this->originalLanguageArray = $this->getLanguageMain()->_getLanguages();
+        $this->originalLanguageArray = $this->getLanguageMain()->getLanguages();
         $this->originalBaseLanguageId = oxRegistry::getLang()->getBaseLanguage();
     }
 
@@ -74,8 +74,8 @@ abstract class MultilanguageTestCase extends \OxidTestCase
      */
     protected function insertLanguage($languageId)
     {
-        $languages = $this->getLanguageMain()->_getLanguages();
-        $baseId = $this->getLanguageMain()->_getAvailableLangBaseId();
+        $languages = $this->getLanguageMain()->getLanguages();
+        $baseId = $this->getLanguageMain()->getAvailableLangBaseId();
         $sort = $baseId * 100;
 
         $languages['params'][$languageId] = array('baseId' => $baseId,
@@ -89,8 +89,8 @@ abstract class MultilanguageTestCase extends \OxidTestCase
 
         $this->storeLanguageConfiguration($languages);
 
-        if (!$this->getLanguageMain()->_checkMultilangFieldsExistsInDb($languageId)) {
-            $this->getLanguageMain()->_addNewMultilangFieldsToDb();
+        if (!$this->getLanguageMain()->checkMultilangFieldsExistsInDb($languageId)) {
+            $this->getLanguageMain()->addNewMultilangFieldsToDb();
         }
 
         return $baseId;

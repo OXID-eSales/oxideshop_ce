@@ -74,8 +74,8 @@ class GetManufacturerSeoTest extends UnitTestCase
      */
     public function testGetManufacturerPageUrlSecondTimeWithoutSaving()
     {
-        $seoEncoderManufacturer = $this->getMock(SeoEncoderManufacturer::class, ['_saveToDb']);
-        $seoEncoderManufacturer->expects($this->never())->method('_saveToDb');
+        $seoEncoderManufacturer = $this->getMock(SeoEncoderManufacturer::class, ['saveToDb']);
+        $seoEncoderManufacturer->expects($this->never())->method('saveToDb');
 
         $manufacturerPageUrl = $seoEncoderManufacturer->getManufacturerPageUrl(
             $this->getManufacturer(),

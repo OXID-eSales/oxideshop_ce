@@ -52,7 +52,7 @@ class ManufacturerSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertEquals('oxmanufacturer', $oView->_getType());
+        $this->assertEquals('oxmanufacturer', $oView->getType());
     }
 
     /**
@@ -160,6 +160,6 @@ class ManufacturerSeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, array("getEditLang"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
-        $this->assertEquals($oManufacturer->getBaseStdLink(0, true, false), $oView->_getStdUrl("_test1"));
+        $this->assertEquals($oManufacturer->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }
 }

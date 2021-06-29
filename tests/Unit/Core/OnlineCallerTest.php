@@ -33,7 +33,7 @@ class OnlineCallerTest extends \OxidTestCase
             true,
             true,
             true,
-            array('_getXMLDocumentName', '_getServiceUrl')
+            array('getXMLDocumentName', 'getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->getRequest());
@@ -51,7 +51,7 @@ class OnlineCallerTest extends \OxidTestCase
             true,
             true,
             true,
-            array('_getXMLDocumentName', '_getServiceUrl')
+            array('getXMLDocumentName', 'getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
 
@@ -74,9 +74,9 @@ class OnlineCallerTest extends \OxidTestCase
             true,
             true,
             true,
-            array('_getXMLDocumentName', '_getServiceUrl')
+            array('getXMLDocumentName', 'getServiceUrl')
         );
-        $oCaller->expects($this->any())->method('_getXMLDocumentName')->will($this->returnValue('testXML'));
+        $oCaller->expects($this->any())->method('getXMLDocumentName')->will($this->returnValue('testXML'));
         /** @var oxOnlineCaller $oCaller */
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
 
@@ -93,7 +93,7 @@ class OnlineCallerTest extends \OxidTestCase
     public function testCallWhenStatusCodeIndicatesError()
     {
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue('testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
 
         /** @var oxOnlineCaller $oCaller */
@@ -104,7 +104,7 @@ class OnlineCallerTest extends \OxidTestCase
             true,
             true,
             true,
-            array('_getXMLDocumentName', '_getServiceUrl')
+            array('getXMLDocumentName', 'getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->getRequest());
@@ -150,7 +150,7 @@ class OnlineCallerTest extends \OxidTestCase
     private function getMockedCurl()
     {
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue('testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         /** @var oxCurl $oCurl */

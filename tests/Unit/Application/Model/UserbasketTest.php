@@ -291,7 +291,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->_createItem($sArtId, null);
+        $oItem = $oBasket->createItem($sArtId, null);
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -307,7 +307,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->_createItem($sArtId, array(0 => '1'));
+        $oItem = $oBasket->createItem($sArtId, array(0 => '1'));
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -321,7 +321,7 @@ class UserbasketTest extends \OxidTestCase
 
         $oBasket = oxNew('oxUserBasket');
         $oBasket->load("testUserBasket");
-        $oItem = $oBasket->_createItem($sArtId, null, array('param' => 'test'));
+        $oItem = $oBasket->createItem($sArtId, null, array('param' => 'test'));
 
         $this->assertEquals($sArtId, $oItem->oxuserbasketitems__oxartid->value);
         $this->assertEquals("testUserBasket", $oItem->oxuserbasketitems__oxbasketid->value);
@@ -352,9 +352,9 @@ class UserbasketTest extends \OxidTestCase
     {
         $oItems = array('123' => '321');
 
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, array('getItems', '_getItemKey'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, array('getItems', 'getItemKey'));
         $oBasket->expects($this->once())->method('getItems')->will($this->returnValue($oItems));
-        $oBasket->expects($this->once())->method('_getItemKey')->with($this->equalTo('123'), $this->equalTo('testsellist'), $this->equalTo('testparam'));
+        $oBasket->expects($this->once())->method('getItemKey')->with($this->equalTo('123'), $this->equalTo('testsellist'), $this->equalTo('testparam'));
 
         $oItem = $oBasket->getItem('123', 'testsellist', 'testparam');
 
@@ -368,8 +368,8 @@ class UserbasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxUserBasket');
 
-        $this->assertEquals(md5("123" . '|' . serialize(array(0 => '0')) . '|' . serialize(null)), $oBasket->_getItemKey("123"));
-        $this->assertEquals(md5("123" . '|' . serialize(array("b")) . '|' . serialize('xxx')), $oBasket->_getItemKey("123", array("b"), 'xxx'));
+        $this->assertEquals(md5("123" . '|' . serialize(array(0 => '0')) . '|' . serialize(null)), $oBasket->getItemKey("123"));
+        $this->assertEquals(md5("123" . '|' . serialize(array("b")) . '|' . serialize('xxx')), $oBasket->getItemKey("123", array("b"), 'xxx'));
     }
 
     public function testGetItemCount()

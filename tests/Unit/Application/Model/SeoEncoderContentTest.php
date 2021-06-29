@@ -53,7 +53,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array("getContentUri"));
         $oEncoder->expects($this->once())->method('getContentUri')->will($this->returnValue("contentUri"));
 
-        $this->assertEquals("contentUri", $oEncoder->_getAltUri('1126', 0));
+        $this->assertEquals("contentUri", $oEncoder->getAltUri('1126', 0));
     }
 
     /**
@@ -147,30 +147,30 @@ class SeoEncoderContentTest extends \OxidTestCase
     // code call seq. check
     public function testGetContentUriExistingSeqCheck()
     {
-        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', 'prepareTitle', 'getUniqueSeoUrl', 'saveToDb'));
         $oContent->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
         $oContent->expects($this->once())->method('getId')->will($this->returnValue('contentid'));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(1))->will($this->returnValue('seocontenturl'));
-        $oContent->expects($this->never())->method('_prepareTitle');
-        $oContent->expects($this->never())->method('_getUniqueSeoUrl');
-        $oContent->expects($this->never())->method('_saveToDb');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('loadFromDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(1))->will($this->returnValue('seocontenturl'));
+        $oContent->expects($this->never())->method('prepareTitle');
+        $oContent->expects($this->never())->method('getUniqueSeoUrl');
+        $oContent->expects($this->never())->method('saveToDb');
 
         $this->assertEquals('seocontenturl', $oEncoder->getContentUri($oContent));
     }
 
     public function testGetContentUriExistingSeqCheckWithLangParam()
     {
-        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', 'prepareTitle', 'getUniqueSeoUrl', 'saveToDb'));
         $oContent->expects($this->never())->method('getLanguage')->will($this->returnValue(1));
         $oContent->expects($this->once())->method('getId')->will($this->returnValue('contentid'));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('seocontenturl'));
-        $oContent->expects($this->never())->method('_prepareTitle');
-        $oContent->expects($this->never())->method('_getUniqueSeoUrl');
-        $oContent->expects($this->never())->method('_saveToDb');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('loadFromDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('seocontenturl'));
+        $oContent->expects($this->never())->method('prepareTitle');
+        $oContent->expects($this->never())->method('getUniqueSeoUrl');
+        $oContent->expects($this->never())->method('saveToDb');
 
         $this->assertEquals('seocontenturl', $oEncoder->getContentUri($oContent, 0));
     }
@@ -184,11 +184,11 @@ class SeoEncoderContentTest extends \OxidTestCase
         $oContent->expects($this->exactly(3))->method('getId')->will($this->returnValue('contentid'));
         $oContent->expects($this->once())->method('getBaseStdLink')->will($this->returnValue('stdlink'));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb', '_prepareTitle', '_processSeoUrl', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_prepareTitle')->with($this->equalTo('content title'))->will($this->returnValue('content-title'));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo('content-title/'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('content-title/'));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxcontent'), $this->equalTo('contentid'), $this->equalTo('stdlink'), $this->equalTo('content-title/'), $this->equalTo(0));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('loadFromDb', 'prepareTitle', 'processSeoUrl', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue(false));
+        $oEncoder->expects($this->once())->method('prepareTitle')->with($this->equalTo('content title'))->will($this->returnValue('content-title'));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo('content-title/'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('content-title/'));
+        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('oxcontent'), $this->equalTo('contentid'), $this->equalTo('stdlink'), $this->equalTo('content-title/'), $this->equalTo(0));
 
         $this->assertEquals('content-title/', $oEncoder->getContentUri($oContent, 0));
     }
@@ -206,11 +206,11 @@ class SeoEncoderContentTest extends \OxidTestCase
         oxTestModules::addFunction('oxcontent', 'loadInLang($iLanguage, $sOxid)', '{$this->oxcontents__oxtitle = new oxField("content title - new");$this->oxcontents__oxcatid = new oxField("xxx");}');
         oxTestModules::addFunction('oxcontent', 'getId', '{return "contentid";}');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb', '_prepareTitle', '_processSeoUrl', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_prepareTitle')->with($this->equalTo('content title - new'))->will($this->returnValue('content-title-new'));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo('content-title-new/'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('content-title-new/'));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('oxcontent'), $this->equalTo('contentid'), $this->equalTo('stdlink'), $this->equalTo('content-title-new/'), $this->equalTo(0));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('loadFromDb', 'prepareTitle', 'processSeoUrl', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue(false));
+        $oEncoder->expects($this->once())->method('prepareTitle')->with($this->equalTo('content title - new'))->will($this->returnValue('content-title-new'));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo('content-title-new/'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('content-title-new/'));
+        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('oxcontent'), $this->equalTo('contentid'), $this->equalTo('stdlink'), $this->equalTo('content-title-new/'), $this->equalTo(0));
 
         $this->assertEquals('content-title-new/', $oEncoder->getContentUri($oContent, 0));
     }

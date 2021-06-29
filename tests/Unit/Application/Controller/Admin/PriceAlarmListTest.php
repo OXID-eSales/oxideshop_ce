@@ -62,8 +62,8 @@ class PriceAlarmListTest extends \OxidTestCase
         $sViewName = $tableViewNameGenerator->getViewName("oxpricealarm");
         $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, array("_authorize"));
-        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, array("authorize"));
+        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
         $oView->init();
 
         $queryWhereParts = $oView->buildWhere();

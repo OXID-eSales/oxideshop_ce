@@ -57,8 +57,8 @@ class VoucherSerieGenerateTest extends \OxidTestCase
         $oSerie = $this->getMock(\OxidEsales\Eshop\Application\Model\VoucherSerie::class, array("getId"));
         $oSerie->expects($this->exactly(2))->method('getId')->will($this->returnValue("testId"));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGenerate::class, array("_getVoucherSerie"));
-        $oView->expects($this->any())->method('_getVoucherSerie')->will($this->returnValue($oSerie));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGenerate::class, array("getVoucherSerie"));
+        $oView->expects($this->any())->method('getVoucherSerie')->will($this->returnValue($oSerie));
         $this->assertEquals(1, $oView->generateVoucher(0));
         $this->assertEquals(2, $oView->generateVoucher(1));
     }

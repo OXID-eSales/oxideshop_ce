@@ -94,7 +94,7 @@ $aData = array(
             ),
     ),
     'actions' => array(
-        '_changeConfigs' => array(
+        'changeConfigs' => array(
             'blShowNetPrice' => true,
         ),
     ),

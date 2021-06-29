@@ -30,9 +30,9 @@ class UtilsServerTest extends \OxidTestCase
     public function testSetOxCookieForSaveSessionCookie()
     {
         $sValue = 'some value';
-        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_saveSessionCookie"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("saveSessionCookie"));
         // One cookie will be saved to session another will not.
-        $oUtilsServer->expects($this->once())->method('_saveSessionCookie');
+        $oUtilsServer->expects($this->once())->method('saveSessionCookie');
         $oUtilsServer->setOxCookie("testName1", $sValue);
         // Check if do not save to session when pass false(sixth param) as not to save to session.
         $oUtilsServer->setOxCookie("testName2", $sValue, 0, '/', null, false);
@@ -101,9 +101,9 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testSaveSessionCookie()
     {
-        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_mustSaveToSession", "_getSessionCookieKey"));
-        $oUtilsServer->expects($this->any())->method('_mustSaveToSession')->will($this->returnValue(true));
-        $oUtilsServer->expects($this->any())->method('_getSessionCookieKey')->will($this->returnValue("key"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("mustSaveToSession", "getSessionCookieKey"));
+        $oUtilsServer->expects($this->any())->method('mustSaveToSession')->will($this->returnValue(true));
+        $oUtilsServer->expects($this->any())->method('getSessionCookieKey')->will($this->returnValue("key"));
         $oUtilsServer->saveSessionCookie("var1", "val1", 123, "path1", "domain1");
         $oUtilsServer->saveSessionCookie("var2", "val2", 321, "path2", "domain2");
 
@@ -124,8 +124,8 @@ class UtilsServerTest extends \OxidTestCase
 
         $this->getSession()->setVariable('aSessionCookies', $aVal);
 
-        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_getSessionCookieKey", "setOxCookie"));
-        $oUtilsServer->method('_getSessionCookieKey')->will($this->returnValue("key"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getSessionCookieKey", "setOxCookie"));
+        $oUtilsServer->method('getSessionCookieKey')->will($this->returnValue("key"));
         $oUtilsServer->loadSessionCookies();
 
         $this->assertEquals(array(), oxRegistry::getSession()->getVariable('aSessionCookies'));

@@ -220,7 +220,7 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
   'actions' => array(
-       '_changeArticles' => array(
+       'changeArticles' => array(
             0 => array(
                 'oxid'       => '1002',
                 'amount'     => 2

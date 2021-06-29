@@ -176,12 +176,12 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
             ),
-             '_removeArticles' => array( '666', '777', '888' ),
-             '_changeArticles' => array(
+             'removeArticles' => array( '666', '777', '888' ),
+             'changeArticles' => array(
              0 => array(
                       'oxid'       => '444',
                       'amount'     => 4,
@@ -191,7 +191,7 @@ $aData = array(
                       'amount'     => 4,
              ),
             ),
-             '_addArticles' => array(
+             'addArticles' => array(
             0 => array(
                      'oxid'       => '111',
                      'oxtitle'    => '111',

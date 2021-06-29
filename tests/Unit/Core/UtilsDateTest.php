@@ -332,7 +332,7 @@ class UtilsDateTest extends \OxidTestCase
         $oObject->fldmax_length = 0;
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', false);
+        $oxUtilsDate->setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', false);
         $this->assertEquals('xxx', $oObject->value);
         $this->assertEquals(0, $oObject->fldmax_length);
     }
@@ -344,7 +344,7 @@ class UtilsDateTest extends \OxidTestCase
         $oObject->fldmax_length = 0;
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', true);
+        $oxUtilsDate->setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', true);
         $this->assertEquals('0000-00-00', $oObject->value);
         $this->assertEquals(strlen('0000-00-00'), $oObject->fldmax_length);
     }
@@ -356,7 +356,7 @@ class UtilsDateTest extends \OxidTestCase
         $oObject->fldmax_length = 0;
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_setDefaultFormatedValue($oObject, '0000-00-00 00:00:00', 'ISO', 'ISO', false);
+        $oxUtilsDate->setDefaultFormatedValue($oObject, '0000-00-00 00:00:00', 'ISO', 'ISO', false);
         $this->assertEquals('0000-00-00 00:00:00', $oObject->value);
         $this->assertEquals(strlen('0000-00-00 00:00:00'), $oObject->fldmax_length);
     }
@@ -393,7 +393,7 @@ class UtilsDateTest extends \OxidTestCase
         $oObject = new stdclass();
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_setDefaultDateTimeValue($oObject, "ISO", "ISO", false);
+        $oxUtilsDate->setDefaultDateTimeValue($oObject, "ISO", "ISO", false);
 
         $this->assertEquals("0000-00-00 00:00:00", $oObject->value);
         $this->assertEquals(strlen("0000-00-00 00:00:00"), $oObject->fldmax_length);
@@ -410,7 +410,7 @@ class UtilsDateTest extends \OxidTestCase
         $aDFields = array(0, 1, 2);
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_setDate($oObject, "Y-m-d", $aDFields, $aDateMatches);
+        $oxUtilsDate->setDate($oObject, "Y-m-d", $aDFields, $aDateMatches);
 
         $this->assertEquals("1981-05-14", $oObject->value);
         $this->assertEquals(strlen("1981-05-14"), $oObject->fldmax_length);
@@ -430,7 +430,7 @@ class UtilsDateTest extends \OxidTestCase
         $aTFields = array(0, 1, 2);
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
-        $oxUtilsDate->_formatCorrectTimeValue(
+        $oxUtilsDate->formatCorrectTimeValue(
             $oObject,
             "Y-m-d",
             "H:i:s",

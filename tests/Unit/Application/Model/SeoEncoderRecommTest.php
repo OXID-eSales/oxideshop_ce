@@ -51,12 +51,12 @@ class SeoEncoderRecommTest extends \OxidTestCase
         $oRecomm->expects($this->any())->method('getBaseStdLink')->will($this->returnValue("testBaseLink"));
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("_loadFromDb", "_getStaticUri", "_prepareTitle", "_processSeoUrl", "_saveToDb"));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo($oRecomm->getBaseStdLink($iLang)), $this->equalTo($this->getConfig()->getShopId()), $this->equalTo($iLang))->will($this->returnValue("testShopUrl/"));
-        $oEncoder->expects($this->once())->method('_prepareTitle')->with($this->equalTo($oRecomm->oxrecommlists__oxtitle->value))->will($this->returnValue("testTitle"));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo("testShopUrl/testTitle"), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($oRecomm->getStdLink($iLang)), $this->equalTo("testSeoUrl"), $this->equalTo($iLang), $this->equalTo($this->getConfig()->getShopId()));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("loadFromDb", "getStaticUri", "prepareTitle", "processSeoUrl", "saveToDb"));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue(false));
+        $oEncoder->expects($this->once())->method('getStaticUri')->with($this->equalTo($oRecomm->getBaseStdLink($iLang)), $this->equalTo($this->getConfig()->getShopId()), $this->equalTo($iLang))->will($this->returnValue("testShopUrl/"));
+        $oEncoder->expects($this->once())->method('prepareTitle')->with($this->equalTo($oRecomm->oxrecommlists__oxtitle->value))->will($this->returnValue("testTitle"));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo("testShopUrl/testTitle"), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
+        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($oRecomm->getStdLink($iLang)), $this->equalTo("testSeoUrl"), $this->equalTo($iLang), $this->equalTo($this->getConfig()->getShopId()));
 
         $this->assertEquals("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
     }
@@ -70,12 +70,12 @@ class SeoEncoderRecommTest extends \OxidTestCase
         $oRecomm->expects($this->never())->method('getBaseStdLink');
         $oRecomm->expects($this->never())->method('getStdLink');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("_loadFromDb", "_getStaticUri", "_prepareTitle", "_processSeoUrl", "_saveToDb"));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
-        $oEncoder->expects($this->never())->method('_getStaticUri');
-        $oEncoder->expects($this->never())->method('_prepareTitle');
-        $oEncoder->expects($this->never())->method('_processSeoUrl');
-        $oEncoder->expects($this->never())->method('_saveToDb');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("loadFromDb", "getStaticUri", "prepareTitle", "processSeoUrl", "saveToDb"));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
+        $oEncoder->expects($this->never())->method('getStaticUri');
+        $oEncoder->expects($this->never())->method('prepareTitle');
+        $oEncoder->expects($this->never())->method('processSeoUrl');
+        $oEncoder->expects($this->never())->method('saveToDb');
 
         $this->assertEquals("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
     }
@@ -91,8 +91,8 @@ class SeoEncoderRecommTest extends \OxidTestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array('_getStaticUri'));
-        $oEncoder->expects($this->once())->method('_getStaticUri')
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array('getStaticUri'));
+        $oEncoder->expects($this->once())->method('getStaticUri')
             ->with(
                 $this->equalTo('testStdLink'),
                 $sShopId,
@@ -110,9 +110,9 @@ class SeoEncoderRecommTest extends \OxidTestCase
         $oRecomm = oxNew('oxRecommList');
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("_getFullUrl", "getRecommUri"));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array("getFullUrl", "getRecommUri"));
         $oEncoder->expects($this->any())->method('getRecommUri')->with($this->equalTo($oRecomm), $this->equalTo($iLang))->will($this->returnValue("testRecommUri"));
-        $oEncoder->expects($this->any())->method('_getFullUrl')->with($this->equalTo("testRecommUri"), $this->equalTo($iLang))->will($this->returnValue("testRecommUrl"));
+        $oEncoder->expects($this->any())->method('getFullUrl')->with($this->equalTo("testRecommUri"), $this->equalTo($iLang))->will($this->returnValue("testRecommUrl"));
 
         $this->assertEquals("testRecommUrl", $oEncoder->getRecommUrl($oRecomm));
     }
@@ -128,8 +128,8 @@ class SeoEncoderRecommTest extends \OxidTestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array('_getStaticUri'));
-        $oEncoder->expects($this->once())->method('_getStaticUri')
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, array('getStaticUri'));
+        $oEncoder->expects($this->once())->method('getStaticUri')
             ->with(
                 $this->equalTo('testStdLink'),
                 $sShopId,

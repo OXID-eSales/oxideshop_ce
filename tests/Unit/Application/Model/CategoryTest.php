@@ -206,7 +206,7 @@ class CategoryTest extends \OxidTestCase
     {
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxparentid = new oxField("aaaaa", oxField::T_RAW);
-        $this->assertFalse($oCategory->_insert());
+        $this->assertFalse($oCategory->insert());
     }
 
     public function testInsert()
@@ -428,8 +428,8 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
-        $oObj->_setFieldData("oxid", "asd< as");
-        $oObj->_setFieldData("oxlongdesC", "asd< as");
+        $oObj->setFieldData("oxid", "asd< as");
+        $oObj->setFieldData("oxlongdesC", "asd< as");
         $this->assertEquals('asd&lt; as', $oObj->oxcategories__oxid->value);
         $this->assertEquals('asd< as', $oObj->oxcategories__oxlongdesc->value);
     }
@@ -438,8 +438,8 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
-        $oObj->_setFieldData("oxid", "asd< as");
-        $oObj->_setFieldData("OXLONGDESC", "asd< as");
+        $oObj->setFieldData("oxid", "asd< as");
+        $oObj->setFieldData("OXLONGDESC", "asd< as");
         $this->assertEquals('asd&lt; as', $oObj->oxcategories__oxid->value);
         $this->assertEquals('asd< as', $oObj->oxcategories__oxlongdesc->value);
     }
@@ -448,8 +448,8 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
-        $oObj->_setFieldData("oxid", "asd< as");
-        $oObj->_setFieldData("oxcategories__oxlongdesc", "asd< as");
+        $oObj->setFieldData("oxid", "asd< as");
+        $oObj->setFieldData("oxcategories__oxlongdesc", "asd< as");
         $this->assertEquals('asd&lt; as', $oObj->oxcategories__oxid->value);
         $this->assertEquals('asd< as', $oObj->oxcategories__oxlongdesc->value);
     }

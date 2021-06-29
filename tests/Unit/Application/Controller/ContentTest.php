@@ -78,15 +78,15 @@ class ContentTest extends \OxidTestCase
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->_canShowContent("oxagb"));
-        $this->assertTrue($oView->_canShowContent("oxrightofwithdrawal"));
-        $this->assertTrue($oView->_canShowContent("oximpressum"));
-        $this->assertFalse($oView->_canShowContent("testcontentident"));
+        $this->assertTrue($oView->canShowContent("oxagb"));
+        $this->assertTrue($oView->canShowContent("oxrightofwithdrawal"));
+        $this->assertTrue($oView->canShowContent("oximpressum"));
+        $this->assertFalse($oView->canShowContent("testcontentident"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getUser", "isEnabledPrivateSales"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
-        $this->assertTrue($oView->_canShowContent("testcontentident"));
+        $this->assertTrue($oView->canShowContent("testcontentident"));
     }
 
     /**
@@ -141,9 +141,9 @@ class ContentTest extends \OxidTestCase
         $oContent = oxNew('oxContent');
         $oContent->setId("testContent");
 
-        $oContentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_canShowContent', 'getContent', 'showPlainTemplate', '_getTplName'));
-        $oContentView->expects($this->atLeastOnce())->method('_getTplName')->will($this->returnValue(false));
-        $oContentView->expects($this->atLeastOnce())->method('_canShowContent')->will($this->returnValue(true));
+        $oContentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('canShowContent', 'getContent', 'showPlainTemplate', 'getTplName'));
+        $oContentView->expects($this->atLeastOnce())->method('getTplName')->will($this->returnValue(false));
+        $oContentView->expects($this->atLeastOnce())->method('canShowContent')->will($this->returnValue(true));
         $oContentView->expects($this->atLeastOnce())->method('getContent')->will($this->returnValue($oContent));
         $oContentView->expects($this->atLeastOnce())->method('showPlainTemplate')->will($this->returnValue('true'));
         $this->assertEquals('page/info/content_plain.tpl', $oContentView->render());
@@ -163,8 +163,8 @@ class ContentTest extends \OxidTestCase
 
         try {
             // testing..
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("_canShowContent"), array(), '', false);
-            $oView->expects($this->once())->method('_canShowContent')->will($this->returnValue(false));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("canShowContent"), array(), '', false);
+            $oView->expects($this->once())->method('canShowContent')->will($this->returnValue(false));
             $oView->render();
         } catch (Exception $oExcp) {
             $this->assertEquals("redirect", $oExcp->getMessage(), "Error in oxsclogincontent::getContentId()");
@@ -367,7 +367,7 @@ class ContentTest extends \OxidTestCase
     {
         $this->setRequestParameter('tpl', 'test.tpl');
         $oObj = $this->getProxyClass("content");
-        $this->assertEquals('message/test.tpl', $oObj->_getTplName());
+        $this->assertEquals('message/test.tpl', $oObj->getTplName());
     }
 
     /**
@@ -380,8 +380,8 @@ class ContentTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
         $this->getConfig()->setConfigParam("blPsLoginEnabled", false);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_getTplName'));
-        $oView->expects($this->once())->method('_getTplName')->will($this->returnValue('test.tpl'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getTplName'));
+        $oView->expects($this->once())->method('getTplName')->will($this->returnValue('test.tpl'));
 
         $this->assertEquals('test.tpl', $oView->render());
     }
@@ -396,15 +396,15 @@ class ContentTest extends \OxidTestCase
     {
         $this->setRequestParameter('tpl', '2eb46767947d21851.22681675');
         $oObj = $this->getProxyClass("content");
-        $this->assertNull($oObj->_getTplName());
+        $this->assertNull($oObj->getTplName());
     }
 
     public function testContentNotFound()
     {
         $this->setRequestParameter('oxcid', null);
         $this->setRequestParameter('oxloadid', null);
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_getTplName', 'getContentId'));
-        $oView->expects($this->once())->method('_getTplName')->will($this->returnValue(''));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getTplName', 'getContentId'));
+        $oView->expects($this->once())->method('getTplName')->will($this->returnValue(''));
         $oView->expects($this->any())->method('getContentId')->will($this->returnValue(false));
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
@@ -673,7 +673,7 @@ class ContentTest extends \OxidTestCase
 
         // Check if second CMS page will be generated with different content.
         $oSecond = oxNew('oxcontent');
-        $oSecond->setId('_test_testGetParsedContent'); // = new oxField('_test_testGetParsedContent');
+        $oSecond->setId('_test_testGetParsedContent');
         $oSecond->oxcontents__oxtitle = new oxField('test', oxField::T_RAW);
         $sShopId = $this->getConfig()->getShopId();
         $oSecond->oxcontents__oxshopid = new oxField($sShopId, oxField::T_RAW);

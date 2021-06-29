@@ -129,8 +129,8 @@ class AttributeTest extends \OxidTestCase
     public function testGetAttrId()
     {
         $oAttr = $this->getProxyClass("oxAttribute");
-        $this->assertTrue((bool) $oAttr->_getAttrId('Design'));
-        $this->assertFalse((bool) $oAttr->_getAttrId('aaaaa'));
+        $this->assertTrue((bool) $oAttr->getAttrId('Design'));
+        $this->assertFalse((bool) $oAttr->getAttrId('aaaaa'));
     }
 
     /**
@@ -143,7 +143,7 @@ class AttributeTest extends \OxidTestCase
         $oAttr = $this->getProxyClass("oxAttribute");
         $aSellTitle = array(0 => '_testAttr',
                             1 => '_testAttr_1');
-        $sId = $oAttr->_createAttribute($aSellTitle);
+        $sId = $oAttr->createAttribute($aSellTitle);
         $this->assertEquals('_testAttr', oxDb::getDB()->getOne("select oxtitle from oxattribute where oxid = '$sId'"));
         $this->assertEquals('_testAttr_1', oxDb::getDB()->getOne("select oxtitle_1 from oxattribute where oxid = '$sId'"));
     }

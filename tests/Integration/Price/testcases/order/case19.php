@@ -170,17 +170,17 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                     'blShowNetPrice' => false,
             ),
-             '_removeArticles' => array( '222', '333', '444', '555' ),
-             '_changeArticles' => array(
+             'removeArticles' => array( '222', '333', '444', '555' ),
+             'changeArticles' => array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 1,
              ),
             ),
-             '_addArticles' => array(
+             'addArticles' => array(
             0 => array(
                      'oxid'       => '666',
                      'oxtitle'    => '666',

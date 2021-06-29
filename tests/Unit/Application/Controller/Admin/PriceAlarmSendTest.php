@@ -23,8 +23,8 @@ class PriceAlarmSendTest extends \OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("_setupNavigation"));
-        $oView->expects($this->once())->method('_setupNavigation');
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("setupNavigation"));
+        $oView->expects($this->once())->method('setupNavigation');
         $this->assertEquals('pricealarm_done.tpl', $oView->render());
     }
 
@@ -47,7 +47,7 @@ class PriceAlarmSendTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("getNavigation"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $oView->_setupNavigation($sNode);
+        $oView->setupNavigation($sNode);
         $this->assertEquals("editTabs", $oView->getViewDataElement("editnavi"));
         $this->assertEquals("testEdit", $oView->getViewDataElement("actlocation"));
         $this->assertEquals("testEdit", $oView->getViewDataElement("default_edit"));

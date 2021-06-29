@@ -7,15 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use \oxField;
+use oxField;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Facts\Facts;
+use oxRegistry;
 use oxRssFeed;
-use \stdClass;
-use \oxList;
-use \oxRegistry;
-use \oxTestModules;
+use oxTestModules;
+use stdClass;
 
 class RssfeedTest extends \OxidTestCase
 {
@@ -33,7 +32,6 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
         oxTestModules::addFunction('oxlang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxlang', 'getLanguageIds', '{return array("aa", "bb");}');
-        oxTestModules::publicize('oxrssfeed', '_loadBaseChannel');
         $oRss = oxNew('oxRssFeed');
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop', 'getShopUrl', 'getImageUrl'));
@@ -46,7 +44,7 @@ class RssfeedTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getImageUrl')->will($this->returnValue("http://homeurl/lalala/"));
 
         Registry::set(Config::class, $oCfg);
-        $oRss->p_loadBaseChannel();
+        $oRss->loadBaseChannel();
         $edition = strtolower($this->getTestConfig()->getShopEdition());
         $expect = array(
             'title'       => 'name',
@@ -66,11 +64,11 @@ class RssfeedTest extends \OxidTestCase
         $this->assertEquals($expect, $oRss->getChannel());
 
         $oShop->oxshops__oxinfoemail = new oxField('bademaiail.com');
-        $oRss->p_loadBaseChannel();
+        $oRss->loadBaseChannel();
         $this->assertEquals($expect, $oRss->getChannel());
 
         $oShop->oxshops__oxinfoemail = new oxField('correct@emaiail.com');
-        $oRss->p_loadBaseChannel();
+        $oRss->loadBaseChannel();
         $expect['managingEditor'] = 'correct@emaiail.com (John Doe)';
         $this->assertEquals($expect, $oRss->getChannel());
     }
@@ -78,49 +76,46 @@ class RssfeedTest extends \OxidTestCase
     public function testGetCacheId()
     {
         oxTestModules::addFunction('oxlang', 'getBaseLanguage', '{return 4;}');
-        oxTestModules::publicize('oxrssfeed', '_getCacheId');
         $oRss = oxNew('oxRssFeed');
 
-        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_0', $oRss->p_getCacheId('asd'));
+        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_0', $oRss->getCacheId('asd'));
 
         $this->setRequestParameter('currency', 1);
-        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_1', $oRss->p_getCacheId('asd'));
+        $this->assertEquals('asd_' . $this->getConfig()->getShopId() . '_4_1', $oRss->getCacheId('asd'));
     }
 
     public function testLoadFromCache()
     {
-        oxTestModules::addFunction('oxrssfeed', '_getCacheId', '{return $aA[0]."4";}');
+        oxTestModules::addFunction('oxrssfeed', 'getCacheId', '{return $aA[0]."4";}');
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return false;}');
-        oxTestModules::publicize('oxrssfeed', '_loadFromCache');
         $oRss = oxNew('oxRssFeed');
 
-        $this->assertSame(false, $oRss->p_loadFromCache('asd'));
+        $this->assertSame(false, $oRss->loadFromCache('asd'));
 
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return array("timestamp" => 0, "content" => $aA);}');
-        $this->assertSame(false, $oRss->p_loadFromCache('asd'));
+        $this->assertSame(false, $oRss->loadFromCache('asd'));
 
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return array("timestamp" => time()+1, "content" => $aA);}');
-        $this->assertEquals(array('asd4'), $oRss->p_loadFromCache('asd'));
+        $this->assertEquals(array('asd4'), $oRss->loadFromCache('asd'));
     }
 
     public function testGetLastBuildDate()
     {
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return false;}');
-        oxTestModules::addFunction('oxrssfeed', '_getCacheId', '{return $aA[0]."id";}');
-        oxTestModules::publicize('oxrssfeed', '_getLastBuildDate');
+        oxTestModules::addFunction('oxrssfeed', 'getCacheId', '{return $aA[0]."id";}');
         $oRss = oxNew('oxRssFeed');
 
         $start = time();
-        $got = $oRss->p_getLastBuildDate('asdasd', array());
+        $got = $oRss->getLastBuildDate('asdasd', array());
         $this->assertTrue($this->checkDate('D, d M Y H:i:s O', $start, time(), $got));
 
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return array("content" => array("lastBuildDate" => $aA[0], "asd"=>"a"));}');
         $start = time();
-        $got = $oRss->p_getLastBuildDate('asd', array());
+        $got = $oRss->getLastBuildDate('asd', array());
         $this->assertTrue($this->checkDate('D, d M Y H:i:s O', $start, time(), $got));
 
 
-        $this->assertEquals('asdid', $oRss->p_getLastBuildDate('asd', array("lastBuildDate" => 'asd', 'asd' => 'a')));
+        $this->assertEquals('asdid', $oRss->getLastBuildDate('asd', array("lastBuildDate" => 'asd', 'asd' => 'a')));
     }
 
     private function checkDate($format, $timestart, $timeend, $got)
@@ -137,13 +132,12 @@ class RssfeedTest extends \OxidTestCase
     public function testSaveToCache()
     {
         oxTestModules::addFunction('oxutils', 'toFileCache', '{return $aA;}');
-        oxTestModules::addFunction('oxrssfeed', '_getCacheId', '{return $aA[0]."id";}');
-        oxTestModules::publicize('oxrssfeed', '_saveToCache');
+        oxTestModules::addFunction('oxrssfeed', 'getCacheId', '{return $aA[0]."id";}');
 
         $oRss = oxNew('oxRssFeed');
 
         $start = time();
-        $res = $oRss->p_saveToCache('asd', 'content');
+        $res = $oRss->saveToCache('asd', 'content');
         $end = time();
 
         $this->assertGreaterThanOrEqual($start, $res[1]['timestamp']);
@@ -201,7 +195,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->getArticleItems($oArr));
     }
 
     /**
@@ -241,7 +235,7 @@ class RssfeedTest extends \OxidTestCase
         $oSArt->description = "&lt;img src=&#039;" . $oParentArt->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;";
         $oSArt->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSArt), $oRss->_getArticleItems($oArr));
+        $this->assertEquals(array($oSArt), $oRss->getArticleItems($oArr));
     }
 
     public function testGetArticleItemsDescriptionParsedWithSmarty()
@@ -287,7 +281,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->getArticleItems($oArr));
     }
 
     public function testGetArticleItemsWithNoArticlePrice()
@@ -345,7 +339,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->getArticleItems($oArr));
     }
 
     public function testGetArticleItemsDiffCurrency()
@@ -403,7 +397,7 @@ class RssfeedTest extends \OxidTestCase
         $oSAr2->isGuidPermalink = true;
         $oSAr2->description = "&lt;img src=&#039;" . $oArt2->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;shortdesc";
         $oSAr2->date = "Tue, 06 Sep 2011 09:46:42 +0200";
-        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->_getArticleItems($oArr));
+        $this->assertEquals(array($oSAr1, $oSAr2), $oRss->getArticleItems($oArr));
     }
 
     public function testPrepareUrlSeoOff()
@@ -417,7 +411,7 @@ class RssfeedTest extends \OxidTestCase
 
         $oRss = oxNew('oxrssfeed');
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1extra', $oRss->_prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
+        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1extra', $oRss->prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
     }
 
     public function testPrepareUrlSeoOn()
@@ -437,7 +431,7 @@ class RssfeedTest extends \OxidTestCase
 
         Registry::set(Config::class, $oCfg);
 
-        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->_prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
+        $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->prepareUrl('cl=rss&amp;fnc=topshop', 'asd'));
     }
 
     public function testPrepareFeedName()
@@ -450,7 +444,7 @@ class RssfeedTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('Test Shop/Test', $oRss->_prepareFeedName('Test'));
+        $this->assertEquals('Test Shop/Test', $oRss->prepareFeedName('Test'));
     }
 
 
@@ -459,42 +453,40 @@ class RssfeedTest extends \OxidTestCase
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopUrl'));
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue("http://homeurl/?"));
 
-        oxTestModules::publicize('oxrssfeed', '_getShopUrl');
         $oRss = oxNew('oxRssFeed');
         Registry::set(Config::class, $oCfg);
 
-        $this->assertEquals('http://homeurl/?', $oRss->p_getShopUrl());
+        $this->assertEquals('http://homeurl/?', $oRss->getShopUrl());
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopUrl'));
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue("http://homeurl/"));
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?', $oRss->p_getShopUrl());
+        $this->assertEquals('http://homeurl/?', $oRss->getShopUrl());
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopUrl'));
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue("http://homeurl/?sdf"));
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?sdf&amp;', $oRss->p_getShopUrl());
+        $this->assertEquals('http://homeurl/?sdf&amp;', $oRss->getShopUrl());
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopUrl'));
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue("http://homeurl/?sdf&"));
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?sdf&', $oRss->p_getShopUrl());
+        $this->assertEquals('http://homeurl/?sdf&', $oRss->getShopUrl());
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopUrl'));
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue("http://homeurl/?sdf&amp;"));
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals('http://homeurl/?sdf&amp;', $oRss->p_getShopUrl());
+        $this->assertEquals('http://homeurl/?sdf&amp;', $oRss->getShopUrl());
     }
 
     public function testLoadData()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadBaseChannel', '{ $this->_aChannel = array("basic"=>true); }');
-        oxTestModules::addFunction('oxrssfeed', '_getLastBuildDate', '{ return $aA[0].$aA[1]."lastbd"; }');
-        oxTestModules::addFunction('oxrssfeed', '_saveToDb', '{ $this->_aChannel["saved"] =$aA[0]; }');
-        oxTestModules::publicize('oxrssfeed', '_loadData');
+        oxTestModules::addFunction('oxrssfeed', 'loadBaseChannel', '{ $this->_aChannel = array("basic"=>true); }');
+        oxTestModules::addFunction('oxrssfeed', 'getLastBuildDate', '{ return $aA[0].$aA[1]."lastbd"; }');
+        oxTestModules::addFunction('oxrssfeed', 'saveToDb', '{ $this->_aChannel["saved"] =$aA[0]; }');
 
         $oRss = oxNew('oxRssFeed');
-        $oRss->p_loadData('RSS_TopShop', 'topshoptitle', 'DESCRIPTION', 'loadtop5', 'topshopurl', 'targetlink');
+        $oRss->loadData('RSS_TopShop', 'topshoptitle', 'DESCRIPTION', 'loadtop5', 'topshopurl', 'targetlink');
 
         $aChannel = array(
             'basic'         => true,
@@ -516,14 +508,13 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadDataIfEmptyTag()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadBaseChannel', '{ $this->_aChannel = array("basic"=>true); }');
-        oxTestModules::addFunction('oxrssfeed', '_saveToDb', '{ $this->_aChannel["saved"] =$aA[0]; }');
-        oxTestModules::publicize('oxrssfeed', '_loadData');
+        oxTestModules::addFunction('oxrssfeed', 'loadBaseChannel', '{ $this->_aChannel = array("basic"=>true); }');
+        oxTestModules::addFunction('oxrssfeed', 'saveToDb', '{ $this->_aChannel["saved"] =$aA[0]; }');
         $iCurrTime = time();
         $this->setTime($iCurrTime);
 
         $oRss = oxNew('oxRssFeed');
-        $oRss->p_loadData(null, 'topshoptitle', 'DESCRIPTION', 'loadtop5', 'topshopurl', 'targetlink');
+        $oRss->loadData(null, 'topshoptitle', 'DESCRIPTION', 'loadtop5', 'topshopurl', 'targetlink');
         $now = date('D, d M Y H:i:s O', $iCurrTime);
 
         $aChannel = array(
@@ -563,7 +554,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testGetTopInShopUrl()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getTopInShopTitle', '{ return "topshoptitle"; }');
         $oRss = oxNew('oxRssFeed');
         $this->assertEquals(array("cl=rss&amp;fnc=topshop", "topshoptitle"), $oRss->getTopInShopUrl());
@@ -571,7 +562,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadTopInShop()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
         $oRss = oxNew('oxRssFeed');
         $oRss->loadTopInShop();
         $this->assertEquals(array('RSS_TopShop'), $oRss->getChannel());
@@ -580,13 +571,13 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getTopInShopUrl', '{ return "topshopurl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getTopInShopTitle', '{ return "topshoptitle"; }');
 
         oxTestModules::addFunction('oxarticlelist', 'loadTop5Articles', '{ $this->load5 = "loadtop5"; }');
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load5; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]->load5; }');
 
         $oRss = oxNew('oxRssFeed');
         $oRss->loadTopInShop();
@@ -619,7 +610,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testGeNewestArticlesUrl()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getNewestArticlesTitle', '{ return "title"; }');
         $oRss = oxNew('oxRssFeed');
         $this->assertEquals(array("cl=rss&amp;fnc=newarts", "title"), $oRss->getNewestArticlesUrl());
@@ -627,7 +618,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadNewestArticles()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
         $oRss = oxNew('oxRssFeed');
         $oRss->loadNewestArticles();
         $this->assertEquals(array('RSS_NewArts'), $oRss->getChannel());
@@ -635,14 +626,14 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getNewestArticlesUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getNewestArticlesTitle', '{ return "dastitle"; }');
 
         $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxarticlelist', 'loadNewestArticles', '{ $this->load = "loaded".$aA[0]; }');
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]->load; }');
 
         $oRss = oxNew('oxRssFeed');
         $oRss->loadNewestArticles();
@@ -694,7 +685,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testGetCategoryArticlesUrl()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getCategoryArticlesTitle', '{ return "title"; }');
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 4;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
@@ -707,7 +698,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadCategoryArticles()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
 
         $oCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array("getLink"));
         $oCat->expects($this->any())->method('getLink')->will($this->returnValue("klnk"));
@@ -723,11 +714,11 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getCategoryArticlesUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getCategoryArticlesTitle', '{ return "dastitle"; }');
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]->load; }');
 
         oxTestModules::addFunction('oxarticlelist', 'loadCategoryArticles', '{ $this->load = "loaded".$aA[0].$aA[2]; }');
 
@@ -754,38 +745,36 @@ class RssfeedTest extends \OxidTestCase
     public function testGetObjectField()
     {
         oxTestModules::addFunction('oxBase', 'load', '{$this->a=new oxField($aA[0]);return 1;}');
-        oxTestModules::publicize('oxrssfeed', '_getObjectField');
 
         $oRss = oxNew('oxRssFeed');
-        $this->assertEquals('dd', $oRss->p_getObjectField('dd', 'oxbase', 'a'));
+        $this->assertEquals('dd', $oRss->getObjectField('dd', 'oxbase', 'a'));
 
-        $this->assertEquals('', $oRss->p_getObjectField('', 'oxbase', 'a'));
+        $this->assertEquals('', $oRss->getObjectField('', 'oxbase', 'a'));
 
         oxTestModules::addFunction('oxBase', 'load', '{return 0;}');
-        $this->assertEquals('', $oRss->p_getObjectField('dd', 'oxbase', 'a'));
+        $this->assertEquals('', $oRss->getObjectField('dd', 'oxbase', 'a'));
     }
 
     public function testGetSearchParamsTranslation()
     {
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 5;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        oxTestModules::addFunction('oxrssfeed', '_getObjectField', '{return $aA[0].$aA[1].$aA[2];}');
-        oxTestModules::publicize('oxrssfeed', '_getSearchParamsTranslation');
+        oxTestModules::addFunction('oxrssfeed', 'getObjectField', '{return $aA[0].$aA[1].$aA[2];}');
 
         $oRss = oxNew('oxRssFeed');
 
-        $this->assertEquals('asrch"', $oRss->p_getSearchParamsTranslation('a', 'srch"', 'cat', 'vend', 'man'));
-        $this->assertEquals('CATEGORY_Scatoxcategoryoxcategories__oxtitleaVENDOR_Svendoxvendoroxvendor__oxtitlesrch', $oRss->p_getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
+        $this->assertEquals('asrch"', $oRss->getSearchParamsTranslation('a', 'srch"', 'cat', 'vend', 'man'));
+        $this->assertEquals('CATEGORY_Scatoxcategoryoxcategories__oxtitleaVENDOR_Svendoxvendoroxvendor__oxtitlesrch', $oRss->getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
 
 
-        oxTestModules::addFunction('oxrssfeed', '_getObjectField', '{return "";}');
+        oxTestModules::addFunction('oxrssfeed', 'getObjectField', '{return "";}');
         $oRss = oxNew('oxRssFeed');
-        $this->assertEquals('asrch', $oRss->p_getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
+        $this->assertEquals('asrch', $oRss->getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
     }
 
     public function testGetSearchArticlesTitle()
     {
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
+        oxTestModules::addFunction('oxrssfeed', 'getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
 
         $oRss = oxNew('oxRssFeed');
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
@@ -800,22 +789,21 @@ class RssfeedTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 5;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        oxTestModules::publicize('oxrssfeed', '_getSearchParamsUrl');
         $oRss = oxNew('oxRssFeed');
-        $this->assertEquals('searchparam=a+a', $oRss->p_getSearchParamsUrl('a a', '', '', ''));
-        $this->assertEquals('searchparam=+a&amp;searchcnid=b+', $oRss->p_getSearchParamsUrl(' a', 'b ', '', ''));
-        $this->assertEquals('searchparam=+a&amp;searchcnid=b+&amp;searchvendor=+c', $oRss->p_getSearchParamsUrl(' a', 'b ', ' c', ''));
-        $this->assertEquals('searchparam=+a&amp;searchvendor=+c', $oRss->p_getSearchParamsUrl(' a', '', ' c', ''));
-        $this->assertEquals('searchparam=+a&amp;searchmanufacturer=+d+', $oRss->p_getSearchParamsUrl(' a', '', '', ' d '));
+        $this->assertEquals('searchparam=a+a', $oRss->getSearchParamsUrl('a a', '', '', ''));
+        $this->assertEquals('searchparam=+a&amp;searchcnid=b+', $oRss->getSearchParamsUrl(' a', 'b ', '', ''));
+        $this->assertEquals('searchparam=+a&amp;searchcnid=b+&amp;searchvendor=+c', $oRss->getSearchParamsUrl(' a', 'b ', ' c', ''));
+        $this->assertEquals('searchparam=+a&amp;searchvendor=+c', $oRss->getSearchParamsUrl(' a', '', ' c', ''));
+        $this->assertEquals('searchparam=+a&amp;searchmanufacturer=+d+', $oRss->getSearchParamsUrl(' a', '', '', ' d '));
     }
 
     public function testGetSearchArticlesUrl()
     {
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 5;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return "url?".$aA[0].$aA[1]; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return "url?".$aA[0].$aA[1]; }');
         oxTestModules::addFunction('oxrssfeed', 'getSearchArticlesTitle', '{ return "title"; }');
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsUrl', '{ return "|".$aA[0].$aA[1].$aA[2].$aA[3]."|"; }');
+        oxTestModules::addFunction('oxrssfeed', 'getSearchParamsUrl', '{ return "|".$aA[0].$aA[1].$aA[2].$aA[3]."|"; }');
         $oRss = oxNew('oxRssFeed');
         $oCat = oxNew('oxcategory');
         $oCat->setId('ajai');
@@ -828,9 +816,9 @@ class RssfeedTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 5;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA[0].$aA[1]; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return $aA[0].$aA[1]; }');
         oxTestModules::addFunction('oxrssfeed', 'getSearchArticlesTitle', '{ return "title"; }');
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsUrl', '{ return "|".$aA[0].$aA[1].$aA[2].$aA[3]."|"; }');
+        oxTestModules::addFunction('oxrssfeed', 'getSearchParamsUrl', '{ return "|".$aA[0].$aA[1].$aA[2].$aA[3]."|"; }');
         $oRss = oxNew('oxRssFeed');
         $oCat = oxNew('oxcategory');
         $oCat->setId('ajai');
@@ -841,13 +829,13 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadSearchArticles()
     {
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsUrl', '{ return "klnk"; }');
+        oxTestModules::addFunction('oxrssfeed', 'getSearchParamsUrl', '{ return "klnk"; }');
 
         $this->getConfig()->setConfigParam('iRssItemsCount', 50);
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getSearchArticlesUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getSearchArticlesTitle', '{ return "dastitle"; }');
 
@@ -862,8 +850,8 @@ class RssfeedTest extends \OxidTestCase
             return $oArtList;
         }'
         );
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]; }');
-        oxTestModules::addFunction('oxrssfeed', '_getShopUrl', '{ return "shopurl?"; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]; }');
+        oxTestModules::addFunction('oxrssfeed', 'getShopUrl', '{ return "shopurl?"; }');
 
         $oRss = oxNew('oxRssFeed');
         $oRss->loadSearchArticles("AA", "BB", "CC", "DD");
@@ -988,7 +976,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadRecommLists()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
 
         $oArt = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLink'));
         $oArt->expects($this->any())->method('getLink')->will($this->returnValue("klnk"));
@@ -1003,8 +991,8 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListsUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListsTitle', '{ return "dastitle"; }');
 
@@ -1033,7 +1021,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadRecommListsIfListByIdsNotLoaded()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
 
         $oArt = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getLink"));
         $oArt->expects($this->any())->method('getLink')->will($this->returnValue("klnk"));
@@ -1049,8 +1037,8 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListsUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListsTitle', '{ return "dastitle"; }');
 
@@ -1139,7 +1127,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadRecommListArticles()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
         oxTestModules::addFunction('oxarticlelist', 'loadRecommArticles', '{ $this->load = "loadedarray()"; }');
 
         $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array('getLink'));
@@ -1155,12 +1143,12 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListArticlesUrl', '{ return "surl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getRecommListArticlesTitle', '{ return "dastitle"; }');
 
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]->load; }');
 
         $oRss = oxNew('oxRssFeed');
         $oRss->loadRecommListArticles($oRecommList);
@@ -1197,7 +1185,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testGetBargainUrl()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'prepareUrl', '{ return $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getBargainTitle', '{ return "bargaintitle"; }');
         $oRss = oxNew('oxRssFeed');
         $this->assertEquals(array("cl=rss&amp;fnc=bargain", "bargaintitle"), $oRss->getBargainUrl());
@@ -1205,7 +1193,7 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadBargainShop()
     {
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return $aA; }');
         $oRss = oxNew('oxRssFeed');
         $oRss->loadBargain();
         $this->assertEquals(array('RSS_Bargain'), $oRss->getChannel());
@@ -1213,13 +1201,13 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
         oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."tr";}');
 
-        oxTestModules::addFunction('oxrssfeed', '_loadFromCache', '{ return false; }');
-        oxTestModules::addFunction('oxrssfeed', '_loadData', '{ $this->_aChannel["data"] = $aA; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadFromCache', '{ return false; }');
+        oxTestModules::addFunction('oxrssfeed', 'loadData', '{ $this->_aChannel["data"] = $aA; }');
         oxTestModules::addFunction('oxrssfeed', 'getBargainUrl', '{ return "bargainurl"; }');
         oxTestModules::addFunction('oxrssfeed', 'getBargainTitle', '{ return "bargaintitle"; }');
 
         oxTestModules::addFunction('oxarticlelist', 'loadActionArticles', '{ $this->load5 = "loadbargainart"; }');
-        oxTestModules::addFunction('oxrssfeed', '_getArticleItems', '{ return $aA[0]->load5; }');
+        oxTestModules::addFunction('oxrssfeed', 'getArticleItems', '{ return $aA[0]->load5; }');
 
         $oRss = oxNew('oxRssFeed');
         $oRss->loadBargain();
@@ -1267,10 +1255,10 @@ class RssfeedTest extends \OxidTestCase
     public function testRemoveCacheFileDelegates()
     {
         $oRssFeed = $this->getMockBuilder('oxRssFeed')
-            ->setMethods(array('_deleteFile'))
+            ->setMethods(array('deleteFile'))
             ->getMock();
 
-        $oRssFeed->expects($this->once())->method('_deleteFile');
+        $oRssFeed->expects($this->once())->method('deleteFile');
 
         $oRssFeed->removeCacheFile('oxnewest');
     }

@@ -60,8 +60,8 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetHelpPageLinkInactiveContents()
     {
-        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('_getHelpContentIdents'));
-        $oViewConfig->expects($this->once())->method("_getHelpContentIdents")->will($this->returnValue(array("none")));
+        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getHelpContentIdents'));
+        $oViewConfig->expects($this->once())->method("getHelpContentIdents")->will($this->returnValue(array("none")));
         $this->assertEquals("", $oViewConfig->getHelpPageLink());
     }
 

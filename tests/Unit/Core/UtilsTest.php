@@ -10,38 +10,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use Exception;
 use modDB;
 use oxField;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Registry;
 use oxRegistry;
-use oxSystemComponentException;
 use oxTestModules;
 use oxUtils;
 use stdClass;
-
-class testOxUtils extends oxUtils
-{
-    public function setNonPublicVar($name, $value)
-    {
-        $this->$name = $value;
-    }
-
-    public function getNonPublicVar($name, $value)
-    {
-        $this->$name = $value;
-    }
-
-    public function __call($sMethod, $aArgs)
-    {
-        if (substr($sMethod, 0, 4) == "UNIT") {
-            $sMethod = str_replace("UNIT", "_", $sMethod);
-        }
-        if (method_exists($this, $sMethod)) {
-            return call_user_func_array(array(& $this, $sMethod), $aArgs);
-        }
-
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL);
-    }
-}
 
 class UtilsTest extends \OxidTestCase
 {
@@ -886,11 +859,11 @@ class UtilsTest extends \OxidTestCase
         $aParams = array('string' => 'someString', 'bool1' => false, 'bool2' => true, 'int' => 1234, 'float' => 123.45, 'negfloat' => -123.45);
 
         $sReturnURL = "http://www.url.com?string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals($sReturnURL, $oUtils->_addUrlParameters($sURL, $aParams));
+        $this->assertEquals($sReturnURL, $oUtils->addUrlParameters($sURL, $aParams));
 
         $sURL = 'http://www.url.com/index.php?cl=aaa';
         $sReturnURL = "http://www.url.com/index.php?cl=aaa&string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
-        $this->assertEquals($sReturnURL, $oUtils->_addUrlParameters($sURL, $aParams));
+        $this->assertEquals($sReturnURL, $oUtils->addUrlParameters($sURL, $aParams));
     }
 
     public function testOxMimeContentType()
@@ -919,8 +892,8 @@ class UtilsTest extends \OxidTestCase
         $session->expects($this->once())->method('freeze');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
-        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?redirected=1'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('simpleRedirect', 'showMessageAndExit'));
+        $oUtils->expects($this->once())->method('simpleRedirect')->with($this->equalTo('url?redirected=1'));
         $oUtils->redirect('url');
     }
 
@@ -947,8 +920,8 @@ class UtilsTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         // test also any other to redirect only temporary
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
-        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('simpleRedirect', 'showMessageAndExit'));
+        $oUtils->expects($this->once())->method('simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
         $oUtils->redirect('url', false, $iCode);
     }
 
@@ -956,16 +929,16 @@ class UtilsTest extends \OxidTestCase
     {
         $this->setRequestParameter('redirected', '1');
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', '_addUrlParameters'));
-        $oUtils->expects($this->never())->method('_simpleRedirect');
-        $oUtils->expects($this->never())->method('_addUrlParameters');
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('simpleRedirect', 'addUrlParameters'));
+        $oUtils->expects($this->never())->method('simpleRedirect');
+        $oUtils->expects($this->never())->method('addUrlParameters');
         $oUtils->redirect('url');
     }
 
     public function testRedirectWithEncodedEntities()
     {
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
-        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?param1=1&param2=2&param3=3&redirected=1'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('simpleRedirect', 'showMessageAndExit'));
+        $oUtils->expects($this->once())->method('simpleRedirect')->with($this->equalTo('url?param1=1&param2=2&param3=3&redirected=1'));
         $oUtils->redirect('url?param1=1&param2=2&amp;param3=3');
     }
 
@@ -1234,7 +1207,7 @@ class UtilsTest extends \OxidTestCase
             fclose($hFile);
 
             $oUtils = oxNew('oxUtils');
-            $this->assertEquals("test", $oUtils->_readFile($sFilePath));
+            $this->assertEquals("test", $oUtils->readFile($sFilePath));
 
             return;
         }
@@ -1255,7 +1228,7 @@ class UtilsTest extends \OxidTestCase
             fclose($hFile);
 
             $oUtils = oxNew('oxUtils');
-            $this->assertEquals("test123", $oUtils->_includeFile($sFilePath));
+            $this->assertEquals("test123", $oUtils->includeFile($sFilePath));
 
             return;
         }
@@ -1278,8 +1251,8 @@ class UtilsTest extends \OxidTestCase
                 ["serialize" => false]
             );
 
-        $this->assertEquals(serialize(123), $oUtils->_processCache(123, 123));
-        $this->assertNotEquals(serialize(123), $oUtils->_processCache(123, 123));
+        $this->assertEquals(serialize(123), $oUtils->processCache(123, 123));
+        $this->assertNotEquals(serialize(123), $oUtils->processCache(123, 123));
     }
 
     /**
@@ -1338,8 +1311,8 @@ class UtilsTest extends \OxidTestCase
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
         /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
-        $this->assertSame(10, $oUtils->_preparePrice(10, 10));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getArticleUser'));
+        $this->assertSame(10, $oUtils->preparePrice(10, 10));
     }
 
     /**
@@ -1350,8 +1323,8 @@ class UtilsTest extends \OxidTestCase
         $this->setConfigParam('blShowNetPrice', true);
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
         /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
-        $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getArticleUser'));
+        $this->assertSame(9.09, $oUtils->preparePrice(10, 10));
     }
 
     /**
@@ -1366,9 +1339,9 @@ class UtilsTest extends \OxidTestCase
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
         /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
-        $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
-        $this->assertSame(10, $oUtils->_preparePrice(10, 10));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getArticleUser'));
+        $oUtils->expects($this->atLeastOnce())->method('getArticleUser')->will($this->returnValue($oUser));
+        $this->assertSame(10, $oUtils->preparePrice(10, 10));
     }
 
     /**
@@ -1383,8 +1356,8 @@ class UtilsTest extends \OxidTestCase
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
         /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
-        $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
-        $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getArticleUser'));
+        $oUtils->expects($this->atLeastOnce())->method('getArticleUser')->will($this->returnValue($oUser));
+        $this->assertSame(9.09, $oUtils->preparePrice(10, 10));
     }
 }

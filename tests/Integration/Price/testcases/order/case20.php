@@ -164,11 +164,11 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                     'blShowNetPrice' => false,
             ),
-             '_removeArticles' => array( '111', '222', '333', '444', '555' ),
-             '_addArticles' => array(
+             'removeArticles' => array( '111', '222', '333', '444', '555' ),
+             'addArticles' => array(
             0 => array(
                      'oxid'       => '666',
                      'oxtitle'    => '666',

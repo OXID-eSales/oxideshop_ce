@@ -150,7 +150,7 @@ class ArticleFilesTest extends \OxidTestCase
      */
     public function testDeletefile()
     {
-        oxTestModules::addFunction('oxfile', '_deleteFile', '{ return true; }');
+        oxTestModules::addFunction('oxfile', 'deleteFile', '{ return true; }');
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxfiles set oxid='_testFileId', oxartid='2000'");
         $this->setRequestParameter("oxid", 2000);
@@ -167,7 +167,7 @@ class ArticleFilesTest extends \OxidTestCase
      */
     public function testDeletefileDemoShop()
     {
-        oxTestModules::addFunction('oxfile', '_deleteFile', '{ return true; }');
+        oxTestModules::addFunction('oxfile', 'deleteFile', '{ return true; }');
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxfiles set oxid='_testFileId', oxartid='2000'");
         $this->setRequestParameter("oxid", 2000);
@@ -217,7 +217,7 @@ class ArticleFilesTest extends \OxidTestCase
         $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
-        oxTestModules::addFunction('oxfile', '_deleteFile', '{ return true; }');
+        oxTestModules::addFunction('oxfile', 'deleteFile', '{ return true; }');
         $oDb = oxDb::getDb();
 
 

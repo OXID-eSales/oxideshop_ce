@@ -239,7 +239,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         //comparing in case insensitive form
         $this->assertEqualsIgnoringCase(
             $sTestSql,
-            $oDbMeta->_getCreateTableSetSql("oxcountry", 8),
+            $oDbMeta->getCreateTableSetSql("oxcountry", 8),
             ''
         );
     }

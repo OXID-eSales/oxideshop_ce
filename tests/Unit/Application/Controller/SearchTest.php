@@ -232,23 +232,23 @@ class SearchTest extends \OxidTestCase
     public function testIsSearchClass()
     {
         $this->setRequestParameter('cl', 'ysearchcnid');
-        $this->assertEquals(false, oxNew('search')->_isSearchClass());
+        $this->assertEquals(false, oxNew('search')->isSearchClass());
         $this->setRequestParameter('cl', 'search');
-        $this->assertEquals(true, oxNew('search')->_isSearchClass());
+        $this->assertEquals(true, oxNew('search')->isSearchClass());
     }
 
     public function testGetSearchManufacturer()
     {
-        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("_isSearchClass"));
-        $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(true));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("isSearchClass"));
+        $oSearch->expects($this->once())->method('isSearchClass')->will($this->returnValue(true));
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame('gsearchmanufacturer&amp;', $oSearch->getSearchManufacturer());
     }
 
     public function testGetSearchManufacturerNotInSearch()
     {
-        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("_isSearchClass"));
-        $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(false));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("isSearchClass"));
+        $oSearch->expects($this->once())->method('isSearchClass')->will($this->returnValue(false));
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame(false, $oSearch->getSearchManufacturer());
     }
@@ -280,7 +280,7 @@ class SearchTest extends \OxidTestCase
     public function testCanRedirect()
     {
         $oSearch = oxNew('search');
-        $this->assertFalse($oSearch->_canRedirect());
+        $this->assertFalse($oSearch->canRedirect());
     }
 
     public function testGetArticleCount()

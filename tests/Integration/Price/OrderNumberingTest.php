@@ -214,7 +214,7 @@ class OrderNumberingTest extends BaseTestCase
     private function getOrderMock()
     {
         $order = $this->getMock(Order::class, array(
-            '_sendOrderByEmail',
+            'sendOrderByEmail',
             'validateDeliveryAddress',
             'validateDelivery',
             'validatePayment'
@@ -222,7 +222,7 @@ class OrderNumberingTest extends BaseTestCase
 
         $order
             ->expects($this->any())
-            ->method('_sendOrderByEmail')
+            ->method('sendOrderByEmail')
             ->will($this->returnValue(0));
 
         return $order;

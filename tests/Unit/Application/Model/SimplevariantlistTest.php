@@ -32,7 +32,7 @@ class SimplevariantlistTest extends \OxidTestCase
 
         $oSubj = $this->getProxyClass("oxSimpleVariantList");
         $oSubj->setNonPublicVar("_oParent", $sParent);
-        $oSubj->_assignElement($oListObjectMock, $aDbFields);
+        $oSubj->assignElement($oListObjectMock, $aDbFields);
     }
 
     //bug #441 test case for lists

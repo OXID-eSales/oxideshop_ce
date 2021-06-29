@@ -422,8 +422,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($shopUrl . $this->seoUrl . '?pgNr=2', $result);
 
         //unpaginated seo url is now stored in database and should not be saved again.
-        $seoEncoderCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, ['_saveToDb']);
-        $seoEncoderCategory->expects($this->never())->method('_saveToDb');
+        $seoEncoderCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, ['saveToDb']);
+        $seoEncoderCategory->expects($this->never())->method('saveToDb');
 
         $seoEncoderCategory->getCategoryPageUrl($category, 0);
         $seoEncoderCategory->getCategoryPageUrl($category, 1);
@@ -453,8 +453,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($shopUrl . $seoUrl . '?pgNr=2', $result);
 
         //unpaginated seo url is now stored in database and should not be saved again.
-        $seoEncoderVendor = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, ['_saveToDb']);
-        $seoEncoderVendor->expects($this->never())->method('_saveToDb');
+        $seoEncoderVendor = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, ['saveToDb']);
+        $seoEncoderVendor->expects($this->never())->method('saveToDb');
 
         $seoEncoderVendor->getVendorPageUrl($vendor, 0);
         $seoEncoderVendor->getVendorPageUrl($vendor, 1);
@@ -504,8 +504,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($shopUrl . $seoUrl . '?pgNr=2', $result);
 
         //unpaginated seo url is now stored in database and should not be saved again.
-        $seoEncoderRecomm = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, ['_saveToDb']);
-        $seoEncoderRecomm->expects($this->never())->method('_saveToDb');
+        $seoEncoderRecomm = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, ['saveToDb']);
+        $seoEncoderRecomm->expects($this->never())->method('saveToDb');
 
         $seoEncoderRecomm->getRecommPageUrl($recomm, 0);
         $seoEncoderRecomm->getRecommPageUrl($recomm, 1);

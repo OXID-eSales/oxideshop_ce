@@ -84,13 +84,13 @@ class UserbasketitemTest extends \OxidTestCase
 
         $sValue = '<script>alert("oxid");</script>';
 
-        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxsellist', $sValue);
+        $oUserBasketItem->setFieldData('oxuserbasketitems__oxsellist', $sValue);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
-        $oUserBasketItem->_setFieldData('oxsellist', $sValue);
+        $oUserBasketItem->setFieldData('oxsellist', $sValue);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
-        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxtestfield', $sValue);
+        $oUserBasketItem->setFieldData('oxuserbasketitems__oxtestfield', $sValue);
         $this->assertEquals(htmlentities($sValue, ENT_QUOTES, 'UTF-8'), $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
-        $oUserBasketItem->_setFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
+        $oUserBasketItem->setFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
         $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
     }
 
@@ -190,10 +190,6 @@ class UserbasketitemTest extends \OxidTestCase
         $oArticle = $oBasketItem->getArticle("123");
         $this->assertTrue($oArticle instanceof article);
         $this->assertEquals($oArticle->getItemKey(), "123");
-
-        // if thi line one day will faile, probebly becaus these parameters are not public any more :)
-        // removed due to #4178
-        //$this->assertFalse( $oArticle->getClassVar('_blLoadVariants') );
     }
 
     // testing article title formatting - article has NO parent

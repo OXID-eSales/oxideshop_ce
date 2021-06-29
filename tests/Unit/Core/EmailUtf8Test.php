@@ -93,9 +93,9 @@ class EmailUtf8Test extends \OxidTestCase
         $oShop = oxNew("oxshop");
         $oShop->load($this->getConfig()->getShopId());
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "getOrderFileList"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($oShop));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendMail", "getShop", "getOrderFileList"));
+        $oEmail->expects($this->once())->method('sendMail')->will($this->returnValue(true));
+        $oEmail->expects($this->any())->method('getShop')->will($this->returnValue($oShop));
         $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));
 
         $blRet = $oEmail->sendOrderEmailToUser($oOrder);

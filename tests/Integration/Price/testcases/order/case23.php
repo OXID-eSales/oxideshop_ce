@@ -160,7 +160,7 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
             ),

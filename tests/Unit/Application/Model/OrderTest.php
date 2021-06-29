@@ -530,7 +530,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_testOrderId');
-        $oOrder->_updateNoticeList($aBasketItems, $oUser);
+        $oOrder->updateNoticeList($aBasketItems, $oUser);
 
         // testing if items were removed from db
         $this->assertFalse($oDB->getOne('select 1 from oxuserbasketitems where oxbasketid = "' . $oUserBasket->getId() . '"'));
@@ -728,8 +728,8 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxpaymenttype = new oxField('oxidcashondel', oxField::T_RAW);
         $oOrder->oxorder__oxdeltype = new oxField('1b842e73470578914.54719298', oxField::T_RAW); // 3.9
 
-        $oBasket = $oOrder->_getOrderBasket(false, false);
-        $oOrder->_addOrderArticlesToBasket($oBasket, $oOrderArticles);
+        $oBasket = $oOrder->getOrderBasket(false, false);
+        $oOrder->addOrderArticlesToBasket($oBasket, $oOrderArticles);
         $oBasket->calculateBasket(true);
 
         $this->assertEquals("_testUserId", $oBasket->getBasketUser()->getId());
@@ -772,8 +772,8 @@ class OrderTest extends \OxidTestCase
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField('_testVoucherSerieId', oxField::T_RAW);
         $oVoucher->save();
 
-        $oBasket = $oOrder->_getOrderBasket(false, false);
-        $oOrder->_addOrderArticlesToBasket($oBasket, $oOrderArticles);
+        $oBasket = $oOrder->getOrderBasket(false, false);
+        $oOrder->addOrderArticlesToBasket($oBasket, $oOrderArticles);
         $oBasket->calculateBasket(true);
 
         $this->assertEquals("595", $oBasket->getProductsPrice()->getBruttoSum());
@@ -1394,10 +1394,10 @@ class OrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getCountryTitle'));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getCountryTitle'));
 
         $oOrder->expects($this->any())
-            ->method('_getCountryTitle')
+            ->method('getCountryTitle')
             ->will($this->returnValue('testCountryTitle'));
 
         $oOrder->load("_testOrderId");
@@ -1498,7 +1498,7 @@ class OrderTest extends \OxidTestCase
     public function testGetCountryTitle()
     {
         $oOrder = $this->getProxyClass("oxOrder");
-        $sCountry = $oOrder->_getCountryTitle("a7c40f631fc920687.20179984");
+        $sCountry = $oOrder->getCountryTitle("a7c40f631fc920687.20179984");
         $this->assertEquals("Deutschland", $sCountry);
     }
 
@@ -1506,14 +1506,14 @@ class OrderTest extends \OxidTestCase
     {
         $oOrder = $this->getProxyClass("oxOrder");
         oxRegistry::getLang()->setBaseLanguage(1);
-        $sCountry = $oOrder->_getCountryTitle("a7c40f631fc920687.20179984");
+        $sCountry = $oOrder->getCountryTitle("a7c40f631fc920687.20179984");
         $this->assertEquals("Germany", $sCountry);
     }
 
     public function testGetCountryTitleWithoutId()
     {
         $oOrder = $this->getProxyClass("oxOrder");
-        $sCountry = $oOrder->_getCountryTitle(null);
+        $sCountry = $oOrder->getCountryTitle(null);
         $this->assertEquals(null, $sCountry);
     }
 
@@ -1631,9 +1631,9 @@ class OrderTest extends \OxidTestCase
 
     public function testFinalizeOrderReturnsErrorCodeWhenOrderAlreadyExist()
     {
-        $order = $this->getMock(Order::class, array('_checkOrderExist'));
+        $order = $this->getMock(Order::class, array('checkOrderExist'));
         $order->expects($this->any())
-            ->method('_checkOrderExist')
+            ->method('checkOrderExist')
             ->will($this->returnValue('EXISTINGORDERID'));
 
         $basket = oxNew(Basket::class);
@@ -1658,22 +1658,22 @@ class OrderTest extends \OxidTestCase
 
         $methods = [
             'setId',
-            '_loadFromBasket',
-            '_setPayment',
-            '_setFolder',
+            'loadFromBasket',
+            'setPayment',
+            'setFolder',
             'save',
-            '_executePayment',
-            '_updateWishlist',
-            '_updateNoticeList',
-            '_markVouchers',
-            '_sendOrderByEmail',
-            '_updateOrderDate',
+            'executePayment',
+            'updateWishlist',
+            'updateNoticeList',
+            'markVouchers',
+            'sendOrderByEmail',
+            'updateOrderDate',
         ];
 
         $testMethods = array_unique($methods);
         $testMethods[] = 'setUser';
         $testMethods[] = 'validateOrder';
-        $testMethods[] = '_setOrderStatus';
+        $testMethods[] = 'setOrderStatus';
 
         $order = $this->getMock(Order::class, $testMethods);
 
@@ -1699,15 +1699,15 @@ class OrderTest extends \OxidTestCase
 
         $methods = [
             'setUser',
-            '_loadFromBasket',
-            '_setPayment',
-            '_setOrderStatus',
+            'loadFromBasket',
+            'setPayment',
+            'setOrderStatus',
             'save',
-            '_updateWishlist',
-            '_updateNoticeList',
+            'updateWishlist',
+            'updateNoticeList',
         ];
         $testMethods = array_unique($methods);
-        $testMethods[] = '_updateOrderDate';
+        $testMethods[] = 'updateOrderDate';
         $order = $this->getMock(Order::class, $testMethods);
 
 
@@ -1717,7 +1717,7 @@ class OrderTest extends \OxidTestCase
                 ->will($this->returnValue(true));
         }
 
-        $order->expects($this->never())->method('_updateOrderDate');
+        $order->expects($this->never())->method('updateOrderDate');
 
         $order->finalizeOrder($basket, $user, true);
     }
@@ -1733,17 +1733,17 @@ class OrderTest extends \OxidTestCase
         $methods = [
             'setId',
             'setUser',
-            '_loadFromBasket',
-            '_setPayment',
-            '_setFolder',
+            'loadFromBasket',
+            'setPayment',
+            'setFolder',
             'save',
-            '_setOrderStatus',
-            '_executePayment',
-            '_setOrderStatus',
-            '_updateWishlist',
-            '_updateNoticeList',
-            '_markVouchers',
-            '_sendOrderByEmail',
+            'setOrderStatus',
+            'executePayment',
+            'setOrderStatus',
+            'updateWishlist',
+            'updateNoticeList',
+            'markVouchers',
+            'sendOrderByEmail',
             'validateOrder',
         ];
 
@@ -1752,14 +1752,14 @@ class OrderTest extends \OxidTestCase
 
         $order->expects($this->once())->method('setId')->will($this->returnValue(true));
         $order->expects($this->once())->method('setUser')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
+        $order->expects($this->once())->method('loadFromBasket')->will($this->returnValue(true));
+        $order->expects($this->once())->method('setPayment')->will($this->returnValue(true));
         $order->expects($this->once())->method('save')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_executePayment')->will($this->returnValue(true));
-        $order->expects($this->atLeastOnce())->method('_setOrderStatus')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_updateWishlist')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_markVouchers')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_sendOrderByEmail')->will($this->returnValue(1));
+        $order->expects($this->once())->method('executePayment')->will($this->returnValue(true));
+        $order->expects($this->atLeastOnce())->method('setOrderStatus')->will($this->returnValue(true));
+        $order->expects($this->once())->method('updateWishlist')->will($this->returnValue(true));
+        $order->expects($this->once())->method('markVouchers')->will($this->returnValue(true));
+        $order->expects($this->once())->method('sendOrderByEmail')->will($this->returnValue(1));
         $order->expects($this->once())->method('validateOrder');
 
         $this->assertEquals(
@@ -1779,11 +1779,11 @@ class OrderTest extends \OxidTestCase
         $methods = [
             'setId',
             'setUser',
-            '_loadFromBasket',
-            '_setPayment',
-            '_setFolder',
+            'loadFromBasket',
+            'setPayment',
+            'setFolder',
             'save',
-            '_executePayment',
+            'executePayment',
             'validateOrder',
         ];
 
@@ -1791,10 +1791,10 @@ class OrderTest extends \OxidTestCase
 
         $order->expects($this->once())->method('setId')->will($this->returnValue(true));
         $order->expects($this->once())->method('setUser')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
+        $order->expects($this->once())->method('loadFromBasket')->will($this->returnValue(true));
+        $order->expects($this->once())->method('setPayment')->will($this->returnValue(true));
         $order->expects($this->once())->method('save')->will($this->returnValue(true));
-        $order->expects($this->once())->method('_executePayment')->will($this->returnValue(2));
+        $order->expects($this->once())->method('executePayment')->will($this->returnValue(2));
         $order->expects($this->once())->method('validateOrder');
 
         $this->assertEquals(
@@ -1814,7 +1814,7 @@ class OrderTest extends \OxidTestCase
         $sSql = "select oxorderdate from oxorder where oxid='_testOrderId'";
         $sOldDate = oxDb::getDb()->getOne($sSql);
 
-        $oOrder->_setOrderStatus("OK");
+        $oOrder->setOrderStatus("OK");
 
         $sSql = "select oxtransstatus from oxorder where oxid='_testOrderId'";
         $sStatus = oxDb::getDb()->getOne($sSql);
@@ -1837,7 +1837,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load("_testOrderId");
-        $oOrder->_updateOrderDate();
+        $oOrder->updateOrderDate();
 
         $sQ = "select oxorderdate from oxorder where oxid='_testOrderId' ";
         $sDateNew = oxDb::getDb()->getOne($sQ);
@@ -1891,7 +1891,7 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getShippingId')->will($this->returnValue('_testShippingId'));
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->_loadFromBasket($oBasket);
+        $oOrder->loadFromBasket($oBasket);
 
         $this->assertEquals("95", $oOrder->oxorder__oxtotalnetsum->value);
         $this->assertEquals("119", $oOrder->oxorder__oxtotalbrutsum->value);
@@ -1955,7 +1955,7 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getContents')->will($this->returnValue($aBasketItems));
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->_loadFromBasket($oBasket);
+        $oOrder->loadFromBasket($oBasket);
 
         $this->assertEquals(2, count($oOrder->getNonPublicVar('_oArticles')));
     }
@@ -2021,7 +2021,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         Registry::set(Config::class, $myConfig);
 
-        $oOrder->_setWrapping($oBasket);
+        $oOrder->setWrapping($oBasket);
 
         $this->assertEquals(119, $oOrder->oxorder__oxwrapcost->value);
         $this->assertEquals(19, $oOrder->oxorder__oxwrapvat->value);
@@ -2047,7 +2047,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
 
-        $oOrder->_setOrderArticles($aBasketItems);
+        $oOrder->setOrderArticles($aBasketItems);
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         //$this->assertEquals( 1, count($oArticles) );
         $this->assertEquals(1, $oArticles->count());
@@ -2086,7 +2086,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
-        $oOrder->_setOrderArticles($aBasketItems);
+        $oOrder->setOrderArticles($aBasketItems);
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         $oArticles->rewind();
@@ -2120,7 +2120,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
-        $oOrder->_setOrderArticles($aBasketItems);
+        $oOrder->setOrderArticles($aBasketItems);
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         $oArticles->rewind();
@@ -2161,7 +2161,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
-        $oOrder->_setOrderArticles($aBasketItems);
+        $oOrder->setOrderArticles($aBasketItems);
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
 
@@ -2210,7 +2210,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
-        $oOrder->_setOrderArticles($aBasketItems);
+        $oOrder->setOrderArticles($aBasketItems);
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
 
@@ -2230,8 +2230,8 @@ class OrderTest extends \OxidTestCase
         $oGateway = $this->getMock(\OxidEsales\Eshop\Application\Model\PaymentGateway::class, array('executePayment'));
         $oGateway->expects($this->any())->method('executePayment')->will($this->returnValue(true));
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getGateway'));
-        $oOrder->expects($this->once())->method('_getGateway')->will($this->returnValue($oGateway));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getGateway'));
+        $oOrder->expects($this->once())->method('getGateway')->will($this->returnValue($oGateway));
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(119, 19);
@@ -2241,7 +2241,7 @@ class OrderTest extends \OxidTestCase
 
         $oPayment = oxNew('oxpayment');
 
-        $this->assertEquals(true, $oOrder->_executePayment($oBasket, $oPayment));
+        $this->assertEquals(true, $oOrder->executePayment($oBasket, $oPayment));
     }
 
     public function testExecutePaymentReturnsDefaultErrorCodeOnFailedPayment()
@@ -2250,8 +2250,8 @@ class OrderTest extends \OxidTestCase
         $oGateway->expects($this->any())->method('executePayment')->will($this->returnValue(false));
         $oGateway->expects($this->any())->method('getLastErrorNo')->will($this->returnValue(false));
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getGateway'));
-        $oOrder->expects($this->once())->method('_getGateway')->will($this->returnValue($oGateway));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getGateway'));
+        $oOrder->expects($this->once())->method('getGateway')->will($this->returnValue($oGateway));
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(119, 19);
@@ -2261,7 +2261,7 @@ class OrderTest extends \OxidTestCase
 
         $oPayment = oxNew('oxpayment');
 
-        $this->assertEquals(2, $oOrder->_executePayment($oBasket, $oPayment));
+        $this->assertEquals(2, $oOrder->executePayment($oBasket, $oPayment));
     }
 
     public function testExecutePaymentReturnsGatewayErrorNoOnFailedPayment()
@@ -2270,8 +2270,8 @@ class OrderTest extends \OxidTestCase
         $oGateway->expects($this->any())->method('executePayment')->will($this->returnValue(false));
         $oGateway->expects($this->any())->method('getLastErrorNo')->will($this->returnValue(3));
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getGateway'));
-        $oOrder->expects($this->once())->method('_getGateway')->will($this->returnValue($oGateway));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getGateway'));
+        $oOrder->expects($this->once())->method('getGateway')->will($this->returnValue($oGateway));
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(119, 19);
@@ -2281,7 +2281,7 @@ class OrderTest extends \OxidTestCase
 
         $oPayment = oxNew('oxpayment');
 
-        $this->assertEquals(3, $oOrder->_executePayment($oBasket, $oPayment));
+        $this->assertEquals(3, $oOrder->executePayment($oBasket, $oPayment));
     }
 
     public function testExecutePaymentReturnsGatewayErrorMessageOnFailedPayment()
@@ -2290,8 +2290,8 @@ class OrderTest extends \OxidTestCase
         $oGateway->expects($this->any())->method('executePayment')->will($this->returnValue(false));
         $oGateway->expects($this->any())->method('getLastError')->will($this->returnValue('testErrorMsg'));
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_getGateway'));
-        $oOrder->expects($this->once())->method('_getGateway')->will($this->returnValue($oGateway));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getGateway'));
+        $oOrder->expects($this->once())->method('getGateway')->will($this->returnValue($oGateway));
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(119, 19);
@@ -2301,7 +2301,7 @@ class OrderTest extends \OxidTestCase
 
         $oPayment = oxNew('oxpayment');
 
-        $this->assertEquals('testErrorMsg', $oOrder->_executePayment($oBasket, $oPayment));
+        $this->assertEquals('testErrorMsg', $oOrder->executePayment($oBasket, $oPayment));
     }
 
     public function testGetGatewayPayment()
@@ -2320,7 +2320,7 @@ class OrderTest extends \OxidTestCase
         $oPayment->setId('_testPaymentId');
         $oPayment->save();
 
-        $oGateway = $oOrder->_getGateway();
+        $oGateway = $oOrder->getGateway();
         $this->assertInstanceOf('OxidEsales\EshopCommunity\Application\Model\PaymentGateway', $oGateway);
     }
 
@@ -2329,7 +2329,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
 
-        $oUserpayment = $oOrder->_setPayment('oxidcashondel');
+        $oUserpayment = $oOrder->setPayment('oxidcashondel');
 
         $this->assertEquals("_testUserId", $oUserpayment->oxuserpayments__oxuserid->value);
         $this->assertEquals("oxidcashondel", $oUserpayment->oxuserpayments__oxpaymentsid->value);
@@ -2343,7 +2343,7 @@ class OrderTest extends \OxidTestCase
         $myConfig = $this->getConfig();
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $oOrder->_setFolder();
+        $oOrder->setFolder();
 
         $this->assertEquals(key($myConfig->getShopConfVar('aOrderfolder')), $oOrder->oxorder__oxfolder->value);
     }
@@ -2353,7 +2353,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
 
-        $oOrder->_setPayment('oxidcashondel');
+        $oOrder->setPayment('oxidcashondel');
 
         $myDb = oxDb::getDb();
         $sSql = "select oxuserid from oxuserpayments where oxuserid = '_testUserId' and oxpaymentsid = 'oxidcashondel' ";
@@ -2366,7 +2366,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
 
-        $this->assertNull($oOrder->_setPayment('noSuchPayment'));
+        $this->assertNull($oOrder->setPayment('noSuchPayment'));
 
         $myDb = oxDb::getDb();
         $sSql = "select oxuserid from oxuserpayments where oxuserid = '_testUserId' and oxpaymentsid = 'noSuchPayment' ";
@@ -2385,14 +2385,14 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
 
-        $oUserpayment = $oOrder->_setPayment('oxiddebitnote');
+        $oUserpayment = $oOrder->setPayment('oxiddebitnote');
 
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
         $this->assertEquals(4, count($oUserpayment->aDynValues));
 
         $this->getSession()->deleteVariable('dynvalue');
 
-        $oUserpayment = $oOrder->_setPayment('oxiddebitnote');
+        $oUserpayment = $oOrder->setPayment('oxiddebitnote');
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
         $this->assertEquals(4, count($oUserpayment->aDynValues));
     }
@@ -2418,7 +2418,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
 
-        $oOrder->_updateWishlist($aBasketItems, $oUser);
+        $oOrder->updateWishlist($aBasketItems, $oUser);
 
         $sSql = "select oxamount from oxuserbasketitems where oxartid = '2000' and oxbasketid = '_testUserBasketId'";
         $iRes = $oDB->getOne($sSql);
@@ -2445,7 +2445,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
 
-        $oOrder->_updateWishlist($aBasketItems, $oUser);
+        $oOrder->updateWishlist($aBasketItems, $oUser);
 
         $sSql = "select count(*) from oxuserbasketitems where oxartid = '2000' and oxbasketid = '_testUserBasketId'";
         $iRes = $oDB->getOne($sSql);
@@ -2473,7 +2473,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
 
-        $oOrder->_updateWishlist($aBasketItems, $oUser);
+        $oOrder->updateWishlist($aBasketItems, $oUser);
 
         $sSql = "select count(*) from oxuserbasketitems where oxartid = '2000' and oxbasketid = '_testUserBasketId'";
         $iRes = $oDB->getOne($sSql);
@@ -2504,7 +2504,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
 
-        $oOrder->_updateWishlist($aBasketItems, $oUser);
+        $oOrder->updateWishlist($aBasketItems, $oUser);
 
         $sSql = "select count(*) from oxuserbasketitems where oxartid = '$sArtId' and oxbasketid = '_testUserBasketId'";
         $iRes = $oDB->getOne($sSql);
@@ -2531,7 +2531,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
 
-        $oOrder->_updateWishlist($aBasketItems, $oUser);
+        $oOrder->updateWishlist($aBasketItems, $oUser);
 
         $sSql = "select oxamount from oxuserbasketitems where oxartid = '1126' and oxbasketid = '_testUserBasketId'";
         $iRes = $oDB->getOne($sSql);
@@ -2557,7 +2557,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId');
-        $oOrder->_markVouchers($oBasket, $oUser);
+        $oOrder->markVouchers($oBasket, $oUser);
 
         $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $sSQL = "select * from oxvouchers where oxid = '_testVoucherId'";
@@ -2759,7 +2759,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxtotalnetsum = new oxField('100', oxField::T_RAW);
 
         $sTestDate = date('Y-m-d H:i:s');
-        $this->assertTrue($oOrder->_insert());
+        $this->assertTrue($oOrder->insert());
 
         $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $sSql = "select * from oxorder where oxid = '_testOrderId2'";
@@ -2784,7 +2784,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load("_testOrderId");
         $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field("2007/07/07 00:00:00", \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oOrder->_update();
+        $oOrder->update();
 
         $sSendDate = '2007-07-07 00:00:00';
         $this->assertEquals($sSendDate, $oOrder->oxorder__oxsenddate->value);
@@ -3166,21 +3166,21 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $this->assertTrue($oOrder->_checkOrderExist('_testOrderId'));
+        $this->assertTrue($oOrder->checkOrderExist('_testOrderId'));
     }
 
     public function testCheckOrderExistWithNotExistingOrder()
     {
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $this->assertFalse($oOrder->_checkOrderExist('_noExistingOrderId'));
+        $this->assertFalse($oOrder->checkOrderExist('_noExistingOrderId'));
     }
 
     public function testCheckOrderExistWithoutParams()
     {
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $this->assertFalse($oOrder->_checkOrderExist());
+        $this->assertFalse($oOrder->checkOrderExist());
     }
 
     public function testSendOrderByEmail()
@@ -3199,7 +3199,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $iRes = $oOrder->_sendOrderByEmail($oUser, $oBasket, $oPayment);
+        $iRes = $oOrder->sendOrderByEmail($oUser, $oBasket, $oPayment);
 
         $this->assertEquals(1, $iRes);
 
@@ -3224,7 +3224,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
 
-        $iRes = $oOrder->_sendOrderByEmail(null, null, null);
+        $iRes = $oOrder->sendOrderByEmail(null, null, null);
 
         $this->assertEquals(0, $iRes);
     }
@@ -3293,7 +3293,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field();
 
-        $oOrder->_setPayment('oxiddebitnote');
+        $oOrder->setPayment('oxiddebitnote');
 
         $aDynVal = oxRegistry::getUtils()->assignValuesFromText($sDyn);
         $this->assertEquals($aDynVal, $oOrder->getPaymentType()->aDynValues);
@@ -3694,12 +3694,12 @@ class OrderTest extends \OxidTestCase
     public function testconvertVat()
     {
         $oOrder = oxNew('oxOrder');
-        $this->assertEquals(7.6, $oOrder->_convertVat("7,6"));
-        $this->assertEquals(7.6, $oOrder->_convertVat("7.6"));
-        $this->assertEquals(76.01, $oOrder->_convertVat("76,01"));
-        $this->assertEquals(76.01, $oOrder->_convertVat("7.6,01"));
-        $this->assertEquals(76.01, $oOrder->_convertVat("76.01"));
-        $this->assertEquals(76.01, $oOrder->_convertVat("7,6.01"));
+        $this->assertEquals(7.6, $oOrder->convertVat("7,6"));
+        $this->assertEquals(7.6, $oOrder->convertVat("7.6"));
+        $this->assertEquals(76.01, $oOrder->convertVat("76,01"));
+        $this->assertEquals(76.01, $oOrder->convertVat("7.6,01"));
+        $this->assertEquals(76.01, $oOrder->convertVat("76.01"));
+        $this->assertEquals(76.01, $oOrder->convertVat("7,6.01"));
     }
 
     /**
@@ -3750,10 +3750,10 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
         $order->expects($this->once())->method('setUser');
-        $order->expects($this->once())->method('_loadFromBasket');
-        $order->expects($this->once())->method('_sendOrderByEmail');
+        $order->expects($this->once())->method('loadFromBasket');
+        $order->expects($this->once())->method('sendOrderByEmail');
 
         $order->finalizeOrder($basket, $user);
 
@@ -3779,10 +3779,10 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
         $order->expects($this->once())->method('setUser');
-        $order->expects($this->once())->method('_loadFromBasket');
-        $order->expects($this->once())->method('_sendOrderByEmail');
+        $order->expects($this->once())->method('loadFromBasket');
+        $order->expects($this->once())->method('sendOrderByEmail');
 
         $order->finalizeOrder($basket, $user);
 
@@ -3812,10 +3812,10 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', '_loadFromBasket', '_sendOrderByEmail'));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
         $order->expects($this->once())->method('setUser');
-        $order->expects($this->once())->method('_loadFromBasket');
-        $order->expects($this->once())->method('_sendOrderByEmail');
+        $order->expects($this->once())->method('loadFromBasket');
+        $order->expects($this->once())->method('sendOrderByEmail');
 
         $order->finalizeOrder($basket, $user);
 

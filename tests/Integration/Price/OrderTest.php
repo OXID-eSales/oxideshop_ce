@@ -113,13 +113,13 @@ class OrderTest extends BaseTestCase
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order */
         $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array(
-            '_sendOrderByEmail',
+            'sendOrderByEmail',
             'validateDeliveryAddress',
             'validateDelivery',
             'validatePayment',
         ));
 
-        $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
+        $order->expects($this->any())->method('sendOrderByEmail')->will($this->returnValue(0));
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
         $order->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 

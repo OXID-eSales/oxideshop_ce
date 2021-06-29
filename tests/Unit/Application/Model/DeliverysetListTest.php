@@ -7,30 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use oxField;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Application\Model\DeliverySet;
-use \oxDeliverySetList;
-use \oxDb;
-use \oxPaymentList;
-use \oxField;
-use \oxRegistry;
-use \oxTestModules;
-
-class modOxDeliverySetList extends oxDeliverySetList
-{
-    public function getObjectsInListName()
-    {
-        return $this->_sObjectsInListName;
-    }
-}
-
-class oxDb_noActiveSnippetInDeliverySetList extends oxDb
-{
-    public function getActiveSnippet($param1, $param3 = null)
-    {
-        return '1';
-    }
-}
+use oxPaymentList;
+use oxRegistry;
 
 class modOxDeliverySetList_paymentList extends oxPaymentList
 {
@@ -46,12 +27,6 @@ class modOxDeliverySetList_paymentList extends oxPaymentList
 
 class DeliverysetListTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -73,11 +48,6 @@ class DeliverysetListTest extends \OxidTestCase
         $this->getSession()->setVariable('deladrid', '_testAddressId');
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
@@ -340,7 +310,7 @@ class DeliverysetListTest extends \OxidTestCase
 
         /**
          * changing amounts
-         * act. delivery set mustl be "Test deliveryset1" ('_testdeliveryset1')
+         * act. delivery set mustl be "Test deliveryset1" ('testdeliveryset1')
          */
         $oBasket->addToBasket('1126', 9);
         $oBasket->addToBasket('1127', 0, array(), null, true);
@@ -355,7 +325,7 @@ class DeliverysetListTest extends \OxidTestCase
 
         /**
          * changing amounts
-         * act. delivery set must be "Test deliveryset2" ('_testdeliveryset2')
+         * act. delivery set must be "Test deliveryset2" ('testdeliveryset2')
          */
         $oBasket->addToBasket('1127', 10);
         $oBasket->calculateBasket();
@@ -367,7 +337,7 @@ class DeliverysetListTest extends \OxidTestCase
         /**
          * changing sorting
          * changing amounts
-         * act. delivery set must be "Test deliveryset2" ('_testdeliveryset2')
+         * act. delivery set must be "Test deliveryset2" ('testdeliveryset2')
          */
         $oDel1->oxdelivery__oxsort = new oxField(1, oxField::T_RAW);
         $oDel1->save();
@@ -416,11 +386,11 @@ class DeliverysetListTest extends \OxidTestCase
      */
     public function testGetListWithoutCountryId()
     {
-        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('_getFilterSelect'));
+        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getFilterSelect'));
         $oDelSetList->setHomeCountry(array('_testHomeCountryId'));
 
         $oDelSetList->expects($this->any())
-            ->method('_getFilterSelect')
+            ->method('getFilterSelect')
             ->will($this->returnValue('SELECT 1'))
             ->with(null, '_testHomeCountryId');
 
@@ -434,11 +404,11 @@ class DeliverysetListTest extends \OxidTestCase
      */
     public function testGetListWithoutUser()
     {
-        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('_getFilterSelect'));
+        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getFilterSelect'));
         $oDelSetList->setHomeCountry(array('_testHomeCountryId'));
 
         $oDelSetList->expects($this->any())
-            ->method('_getFilterSelect')
+            ->method('getFilterSelect')
             ->will($this->returnValue('SELECT 1'))
             ->with($this->_oUser, 'a7c40f6323c4bfb36.59919433');
 
@@ -452,11 +422,11 @@ class DeliverysetListTest extends \OxidTestCase
      */
     public function testGetListWithUserAndCountryId()
     {
-        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('_getFilterSelect'));
+        $oDelSetList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getFilterSelect'));
         $oDelSetList->setHomeCountry(array('_testHomeCountryId'));
 
         $oDelSetList->expects($this->any())
-            ->method('_getFilterSelect')
+            ->method('getFilterSelect')
             ->will($this->returnValue('SELECT 1'))
             ->with($this->_oUser, '_testHomeCountryId');
 
@@ -469,10 +439,10 @@ class DeliverysetListTest extends \OxidTestCase
     // when user is not passed and does not exist in session
     public function testgetListCodeExecNoUser()
     {
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', 'getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
         $oList->expects($this->never())->method('setUser');
-        $oList->expects($this->once())->method('_getFilterSelect');
+        $oList->expects($this->once())->method('getFilterSelect');
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
 
@@ -488,10 +458,10 @@ class DeliverysetListTest extends \OxidTestCase
         ;
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
 
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', 'getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oList->expects($this->never())->method('setUser');
-        $oList->expects($this->once())->method('_getFilterSelect')->with($oUser, 'yyy');
+        $oList->expects($this->once())->method('getFilterSelect')->with($oUser, 'yyy');
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
 
@@ -502,10 +472,10 @@ class DeliverysetListTest extends \OxidTestCase
     // when user and country ar set
     public function testgetListCountryAndUserAreSet()
     {
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', 'getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->never())->method('getUser');
         $oList->expects($this->exactly(2))->method('setUser');
-        $oList->expects($this->once())->method('_getFilterSelect')->will($this->returnValue('SELECT 1'))->with($this->_oUser, '_testHomeCountryId');
+        $oList->expects($this->once())->method('getFilterSelect')->will($this->returnValue('SELECT 1'))->with($this->_oUser, '_testHomeCountryId');
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->exactly(2))->method('rewind');
 
@@ -518,10 +488,10 @@ class DeliverysetListTest extends \OxidTestCase
     // when user and country ar set
     public function testgetListCountryIsChanged()
     {
-        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', 'getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->never())->method('getUser');
         $oList->expects($this->exactly(2))->method('setUser');
-        $oList->expects($this->exactly(2))->method('_getFilterSelect')->will($this->returnValue('SELECT 1'));
+        $oList->expects($this->exactly(2))->method('getFilterSelect')->will($this->returnValue('SELECT 1'));
         $oList->expects($this->exactly(2))->method('selectString');
         $oList->expects($this->exactly(2))->method('rewind');
 
@@ -569,7 +539,7 @@ class DeliverysetListTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
-        $sQ = $oList->_getFilterSelect(null, null);
+        $sQ = $oList->getFilterSelect(null, null);
 
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
@@ -605,7 +575,7 @@ class DeliverysetListTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $oList = oxNew('oxDeliverySetList');
-        $sQ = $oList->_getFilterSelect($this->_oUser, '_testCoutntryId');
+        $sQ = $oList->getFilterSelect($this->_oUser, '_testCoutntryId');
 
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
@@ -663,7 +633,7 @@ class DeliverysetListTest extends \OxidTestCase
                 $this->returnValue('_testUserId')
             );
 
-        $sQ = oxRegistry::get("oxDeliverySetList")->_getFilterSelect($oUser, '_testCoutntryId');
+        $sQ = oxRegistry::get("oxDeliverySetList")->getFilterSelect($oUser, '_testCoutntryId');
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');

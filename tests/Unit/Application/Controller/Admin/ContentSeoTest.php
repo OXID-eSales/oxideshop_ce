@@ -38,7 +38,7 @@ class ContentSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Content_Seo');
-        $this->assertEquals('oxcontent', $oView->_getType());
+        $this->assertEquals('oxcontent', $oView->getType());
     }
 
     /**
@@ -86,7 +86,7 @@ class ContentSeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentSeo::class, array("getEditLang"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
-        $this->assertEquals($oContent->getBaseStdLink(0, true, false), $oView->_getStdUrl("_test1"));
+        $this->assertEquals($oContent->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }
 
     /**

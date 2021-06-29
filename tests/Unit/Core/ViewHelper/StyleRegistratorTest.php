@@ -35,8 +35,8 @@ class StyleRegistratorTest extends \OxidTestCase
      */
     public function testAddFile($file, $expected)
     {
-        $utils = $this->getMock('oxUtilsUrl', ['_getHosts']);
-        $utils->expects($this->any())->method('_getHosts')->will($this->returnValue([
+        $utils = $this->getMock('oxUtilsUrl', ['getHosts']);
+        $utils->expects($this->any())->method('getHosts')->will($this->returnValue([
             'shopurl.de'
         ]));
         Registry::set('oxUtilsUrl', $utils);

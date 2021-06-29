@@ -35,8 +35,8 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxid', 'oxarticles', 0, 0, 1)
         );
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->once())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->once())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals("testValue", $oComponent->getActionIds("oxarticles.oxid"));
     }
 
@@ -72,8 +72,8 @@ class AjaxListComponentTest extends \OxidTestCase
     {
         $sQ = " testQ";
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getQueryCols"));
-        $oComponent->expects($this->once())->method('_getQueryCols')->will($this->returnValue("testColumns"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getQueryCols"));
+        $oComponent->expects($this->once())->method('getQueryCols')->will($this->returnValue("testColumns"));
         $this->assertEquals("select testColumns{$sQ}", $oComponent->getDataQuery($sQ));
     }
 
@@ -97,13 +97,13 @@ class AjaxListComponentTest extends \OxidTestCase
      */
     public function testProcessRequestFunctionDefined()
     {
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("testFnc", "_getQuery", "_getDataQuery", "_getCountQuery", "_outputResponse", "_getData"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("testFnc", "getQuery", "getDataQuery", "getCountQuery", "outputResponse", "getData"));
         $oComponent->expects($this->once())->method('testFnc');
-        $oComponent->expects($this->never())->method('_getQuery');
-        $oComponent->expects($this->never())->method('_getDataQuery');
-        $oComponent->expects($this->never())->method('_getCountQuery');
-        $oComponent->expects($this->never())->method('_outputResponse');
-        $oComponent->expects($this->never())->method('_getData');
+        $oComponent->expects($this->never())->method('getQuery');
+        $oComponent->expects($this->never())->method('getDataQuery');
+        $oComponent->expects($this->never())->method('getCountQuery');
+        $oComponent->expects($this->never())->method('outputResponse');
+        $oComponent->expects($this->never())->method('getData');
         $oComponent->processRequest('testFnc');
     }
 
@@ -114,13 +114,13 @@ class AjaxListComponentTest extends \OxidTestCase
      */
     public function testProcessRequest()
     {
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("testFnc", "_getQuery", "_getDataQuery", "_getCountQuery", "_outputResponse", "_getData"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("testFnc", "getQuery", "getDataQuery", "getCountQuery", "outputResponse", "getData"));
         $oComponent->expects($this->never())->method('testFnc');
-        $oComponent->expects($this->once())->method('_getQuery');
-        $oComponent->expects($this->once())->method('_getDataQuery');
-        $oComponent->expects($this->once())->method('_getCountQuery');
-        $oComponent->expects($this->once())->method('_outputResponse');
-        $oComponent->expects($this->once())->method('_getData');
+        $oComponent->expects($this->once())->method('getQuery');
+        $oComponent->expects($this->once())->method('getDataQuery');
+        $oComponent->expects($this->once())->method('getCountQuery');
+        $oComponent->expects($this->once())->method('outputResponse');
+        $oComponent->expects($this->once())->method('getData');
         $oComponent->processRequest();
     }
 
@@ -133,8 +133,8 @@ class AjaxListComponentTest extends \OxidTestCase
     {
         $this->setRequestParameter('sort', "_1");
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getVisibleColNames"));
-        $oComponent->expects($this->once())->method('_getVisibleColNames')->will($this->returnValue(array(0, 1)));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getVisibleColNames"));
+        $oComponent->expects($this->once())->method('getVisibleColNames')->will($this->returnValue(array(0, 1)));
         $this->assertEquals("1", $oComponent->getSortCol());
     }
 
@@ -184,8 +184,8 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxid', 'oxarticles', 0, 0, 1)
         );
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->once())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->once())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals(array("6" => array('oxid', 'oxarticles', 0, 0, 1)), $oComponent->getIdentColNames());
     }
 
@@ -208,8 +208,8 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxid', 'oxarticles', 0, 0, 1)
         );
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->once())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->once())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals(array(1 => array('oxtitle', 'oxarticles', 1, 1, 0), 2 => array('oxean', 'oxarticles', 1, 0, 0)), $oComponent->getVisibleColNames());
     }
 
@@ -232,8 +232,8 @@ class AjaxListComponentTest extends \OxidTestCase
             array('oxid', 'oxarticles', 0, 0, 1)
         );
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->once())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->once())->method('getColNames')->will($this->returnValue($aColNames));
 
         unset($aColNames[6]);
         $this->assertEquals($aColNames, $oComponent->getVisibleColNames());
@@ -262,8 +262,8 @@ class AjaxListComponentTest extends \OxidTestCase
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->getQueryCols());
     }
 
@@ -274,9 +274,9 @@ class AjaxListComponentTest extends \OxidTestCase
      */
     public function testGetSorting()
     {
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getSortCol", "_getSortDir"));
-        $oComponent->expects($this->once())->method('_getSortCol')->will($this->returnValue("col"));
-        $oComponent->expects($this->once())->method('_getSortDir')->will($this->returnValue("dir"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getSortCol", "getSortDir"));
+        $oComponent->expects($this->once())->method('getSortCol')->will($this->returnValue("col"));
+        $oComponent->expects($this->once())->method('getSortDir')->will($this->returnValue("dir"));
         $this->assertEquals(' order by _col dir ', $oComponent->getSorting());
     }
 
@@ -322,8 +322,8 @@ class AjaxListComponentTest extends \OxidTestCase
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = "$sTableName.oxartnum like '%a%'  and $sTableName.oxtitle like '%b%'  and $sTableName.oxmpn like '%0%' ";
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getColNames"));
-        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getColNames"));
+        $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->getFilter());
     }
 
@@ -334,8 +334,8 @@ class AjaxListComponentTest extends \OxidTestCase
      */
     public function testAddFilter()
     {
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("_getFilter"));
-        $oComponent->expects($this->any())->method('_getFilter')->will($this->returnValue("testfilter"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getFilter"));
+        $oComponent->expects($this->any())->method('getFilter')->will($this->returnValue("testfilter"));
         $this->assertEquals("somethingwheretestfilter", $oComponent->addFilter("something"));
     }
 
@@ -421,8 +421,8 @@ class AjaxListComponentTest extends \OxidTestCase
         $aData['records'][0] = array(0 => "a", 1 => "b");
         $aData['records'][1] = array(0 => "c", 1 => "d");
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig", "_output"));
-        $oComponent->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig", "output"));
+        $oComponent->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
         $oComponent->outputResponse($aData);
     }
 
@@ -436,16 +436,16 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(1));
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig", "_addFilter", "_getStartIndex", "_getSortCol", "_getSortDir", "_getTotalCount", "_getSorting", "_getLimit", "_getDataFields"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig", "addFilter", "getStartIndex", "getSortCol", "getSortDir", "getTotalCount", "getSorting", "getLimit", "getDataFields"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oComponent->expects($this->exactly(2))->method('_addFilter')->will($this->returnValue("_addFilter"));
-        $oComponent->expects($this->once())->method('_getStartIndex')->will($this->returnValue("_getStartIndex"));
-        $oComponent->expects($this->once())->method('_getSortCol')->will($this->returnValue("_getSortCol"));
-        $oComponent->expects($this->once())->method('_getSortDir')->will($this->returnValue("_getSortDir"));
-        $oComponent->expects($this->once())->method('_getTotalCount')->will($this->returnValue("_getTotalCount"));
-        $oComponent->expects($this->once())->method('_getSorting')->will($this->returnValue("_getSorting"));
-        $oComponent->expects($this->once())->method('_getLimit')->will($this->returnValue("_getLimit"));
-        $oComponent->expects($this->once())->method('_getDataFields')->will($this->returnValue("_getDataFields"));
+        $oComponent->expects($this->exactly(2))->method('addFilter')->will($this->returnValue("_addFilter"));
+        $oComponent->expects($this->once())->method('getStartIndex')->will($this->returnValue("_getStartIndex"));
+        $oComponent->expects($this->once())->method('getSortCol')->will($this->returnValue("_getSortCol"));
+        $oComponent->expects($this->once())->method('getSortDir')->will($this->returnValue("_getSortDir"));
+        $oComponent->expects($this->once())->method('getTotalCount')->will($this->returnValue("_getTotalCount"));
+        $oComponent->expects($this->once())->method('getSorting')->will($this->returnValue("_getSorting"));
+        $oComponent->expects($this->once())->method('getLimit')->will($this->returnValue("_getLimit"));
+        $oComponent->expects($this->once())->method('getDataFields')->will($this->returnValue("_getDataFields"));
 
         $aResponse = array();
         $aResponse['startIndex'] = '_getStartIndex';

@@ -242,8 +242,8 @@ class ArticleListTest extends \OxidTestCase
         $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("_authorize"));
-        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("authorize"));
+        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
         $oView->deleteEntry();
     }
 

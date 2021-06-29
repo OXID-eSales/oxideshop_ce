@@ -586,7 +586,7 @@ class UserTest extends \OxidTestCase
         $oUser->setId($sId);
         $oUser->oxuser__oxusername = new oxField("aaa@bbb.lt", oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oUser->_insert();
+        $oUser->insert();
 
         $this->assertEquals('1000', $this->getDb()->getOne("select oxboni from oxuser where oxid = '$sId' "));
     }
@@ -1112,7 +1112,7 @@ class UserTest extends \OxidTestCase
     public function testGetUserRightsNoInitialRights()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('user', $oUser->_getUserRights());
+        $this->assertEquals('user', $oUser->getUserRights());
     }
 
     // 2. user initial rights are malladmin
@@ -1122,7 +1122,7 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals('malladmin', $oUser->_getUserRights());
+        $this->assertEquals('malladmin', $oUser->getUserRights());
     }
 
     // 3. user initial rights are "user"
@@ -1131,7 +1131,7 @@ class UserTest extends \OxidTestCase
         $this->getSession()->setVariable("usr", null);
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals('user', $oUser->_getUserRights());
+        $this->assertEquals('user', $oUser->getUserRights());
     }
 
     // 4. user initial rights are sub shop admin
@@ -1150,17 +1150,17 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField($this->getConfig()->GetShopId(), oxField::T_RAW);
-        $this->assertEquals($this->getConfig()->GetShopId(), $oUser->_getUserRights());
+        $this->assertEquals($this->getConfig()->GetShopId(), $oUser->getUserRights());
 
         // check for denial
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField(2, oxField::T_RAW);
-        $this->assertEquals("user", $oUser->_getUserRights());
+        $this->assertEquals("user", $oUser->getUserRights());
 
         // check for denial
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals("user", $oUser->_getUserRights());
+        $this->assertEquals("user", $oUser->getUserRights());
     }
 
     /**
@@ -1316,7 +1316,7 @@ class UserTest extends \OxidTestCase
         $oDb = $this->getDb();
 
         $oUser = oxNew('oxUser');
-        $oUser->_insert();
+        $oUser->insert();
 
         // checking
         $sQ = 'select count(*) from oxuser where oxid = "' . $oUser->oxuser__oxid->value . '" ';
@@ -1345,7 +1345,7 @@ class UserTest extends \OxidTestCase
         $sOxCustNr = $oUser->oxuser__oxcustnr->value;
 
         // updating
-        $oUser->_update();
+        $oUser->update();
 
         // reloading
         $oUser = oxNew('oxUser');
@@ -1926,7 +1926,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method("addToGroup");
         $oUser->expects($this->exactly(2))->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true)));
 
-        $oUser->_setAutoGroups('xxx', array());
+        $oUser->setAutoGroups('xxx', array());
     }
 
     // 2. testing if native country customer is automatically assigned/removed to/from special user groups
@@ -1938,7 +1938,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method("addToGroup");
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(true), $this->returnValue(false)));
 
-        $oUser->_setAutoGroups('xxx');
+        $oUser->setAutoGroups('xxx');
     }
 
     public function testSetAutoGroupsNativeMultiple()
@@ -1949,7 +1949,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method("addToGroup");
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(true), $this->returnValue(false)));
 
-        $oUser->_setAutoGroups('xxx');
+        $oUser->setAutoGroups('xxx');
     }
 
     /**
@@ -2372,7 +2372,7 @@ class UserTest extends \OxidTestCase
         $aDelAddress = array();
 
         $oUser = oxNew('oxUser');
-        $oUser->_assignAddress($aDelAddress);
+        $oUser->assignAddress($aDelAddress);
 
         $this->assertNull(oxRegistry::getSession()->getVariable('deladrid'));
     }
@@ -2390,7 +2390,7 @@ class UserTest extends \OxidTestCase
 
         $this->setRequestParameter('oxaddressid', 'xxx');
 
-        $oUser->_assignAddress($aDelAddress);
+        $oUser->assignAddress($aDelAddress);
         $oDb = $this->getDb();
         $sSelect = 'select oxaddress.oxcountry from oxaddress where oxaddress.oxid = "xxx" AND oxaddress.oxuserid = "' . $sUserId . '" ';
 
@@ -2413,7 +2413,7 @@ class UserTest extends \OxidTestCase
 
         $this->setRequestParameter('oxaddressid', 'xxx');
 
-        $oUser->_assignAddress($aDelAddress);
+        $oUser->assignAddress($aDelAddress);
         $oDb = $this->getDb();
         $this->assertEquals('xxx', oxRegistry::getSession()->getVariable('deladrid'));
         $sSelect = 'select oxaddress.oxcompany from oxaddress where oxaddress.oxuserid = "' . $sUserId . '" AND oxid = "xxx" ';
@@ -2450,7 +2450,7 @@ class UserTest extends \OxidTestCase
         $this->setRequestParameter('deladrid', null);
         $this->setRequestParameter('oxaddressid', 'xxx');
 
-        $oUser->_assignAddress($aDelAddress);
+        $oUser->assignAddress($aDelAddress);
 
         $this->getSession()->setVariable('oxaddressid', null);
         $oAddress = $oUser->getSelectedAddress();
@@ -2665,7 +2665,7 @@ class UserTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oUserView = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $this->assertEquals("testwishid", $oUserView->_getWishListId());
+        $this->assertEquals("testwishid", $oUserView->getWishListId());
     }
 
     /**
@@ -2794,10 +2794,10 @@ class UserTest extends \OxidTestCase
             );
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
-        $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('_getStateObject', 'getStateId'));
+        $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getStateObject', 'getStateId'));
 
         $oUserMock->expects($this->any())
-            ->method('_getStateObject')
+            ->method('getStateObject')
             ->will($this->returnValue($oStateMock));
 
         $oUserMock->expects($this->any())

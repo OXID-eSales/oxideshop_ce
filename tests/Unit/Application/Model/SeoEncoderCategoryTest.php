@@ -46,7 +46,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getCategoryUri"));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("categoryUri"));
 
-        $this->assertEquals("categoryUri", $oEncoder->_getAltUri('1126', 0));
+        $this->assertEquals("categoryUri", $oEncoder->getAltUri('1126', 0));
     }
 
     /**
@@ -144,8 +144,8 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getLanguage'));
         $oCategory->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array('_getFullUrl', 'getCategoryUri'));
-        $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue('seocaturl'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array('getFullUrl', 'getCategoryUri'));
+        $oEncoder->expects($this->once())->method('getFullUrl')->will($this->returnValue('seocaturl'));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue(true));
 
         $this->assertEquals('seocaturl', $oEncoder->getCategoryUrl($oCategory));

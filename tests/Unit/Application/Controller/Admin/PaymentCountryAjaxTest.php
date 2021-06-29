@@ -112,8 +112,8 @@ class PaymentCountryAjaxTest extends \OxidTestCase
      */
     public function testRemovePayFromCountry()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
 
         $sSql = "select count(oxid) from oxobject2payment where oxid in ('_testPayRemove1', '_testPayRemove2')";
         $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
@@ -152,8 +152,8 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayCountry();
         $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
@@ -176,8 +176,8 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayCountry();
         $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));

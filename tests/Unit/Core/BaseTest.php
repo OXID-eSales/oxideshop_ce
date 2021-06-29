@@ -84,7 +84,7 @@ class _oxBase extends oxBase
      */
     public function setFieldData($sName, $sValue, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
-        return parent::_setFieldData($sName, $sValue, $dataType);
+        return parent::setFieldData($sName, $sValue, $dataType);
     }
 
     /**
@@ -116,7 +116,7 @@ class _oxBase extends oxBase
      */
     public function update()
     {
-        return parent::_update();
+        return parent::update();
     }
 
     /**
@@ -126,7 +126,7 @@ class _oxBase extends oxBase
      */
     public function insert()
     {
-        return parent::_insert();
+        return parent::insert();
     }
 
 
@@ -139,7 +139,7 @@ class _oxBase extends oxBase
      */
     public function getObjectViewName($sTable, $shopId = null)
     {
-        return parent::_getObjectViewName($sTable, $shopId);
+        return parent::getObjectViewName($sTable, $shopId);
     }
 
     /**
@@ -151,7 +151,7 @@ class _oxBase extends oxBase
      */
     public function initDataStructure($blForceFullStructure = false)
     {
-        return parent::_initDataStructure($blForceFullStructure);
+        return parent::initDataStructure($blForceFullStructure);
     }
 
     /**
@@ -174,7 +174,7 @@ class _oxBase extends oxBase
      */
     public function getUpdateFieldValue($sFieldName, $oField)
     {
-        return parent::_getUpdateFieldValue($sFieldName, $oField);
+        return parent::getUpdateFieldValue($sFieldName, $oField);
     }
 }
 
@@ -250,8 +250,8 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsLoaded()
     {
-        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array("_addField", "buildSelectString", "assignRecord", "getViewName"));
-        $oBase->expects($this->once())->method('_addField')->with($this->equalTo('oxid'), $this->equalTo(0));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array("addField", "buildSelectString", "assignRecord", "getViewName"));
+        $oBase->expects($this->once())->method('addField')->with($this->equalTo('oxid'), $this->equalTo(0));
         $oBase->expects($this->once())->method('getViewName')->will($this->returnValue("testView"));
         $oBase->expects($this->once())->method('buildSelectString')->with($this->equalto(array("testView.oxid" => "xxx")))->will($this->returnValue("testSql"));
         $oBase->expects($this->once())->method('assignRecord')->with($this->equalTo("testSql"))->will($this->returnValue(true));
@@ -348,13 +348,13 @@ class BaseTest extends \OxidTestCase
      */
     public function testConvertingFields()
     {
-        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_initDataStructure', 'isAdmin', 'exists', 'isDerived', '_update', '_insert', 'onChange', 'getId'));
-        $oBase->expects($this->once())->method('_initDataStructure');
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('initDataStructure', 'isAdmin', 'exists', 'isDerived', 'update', 'insert', 'onChange', 'getId'));
+        $oBase->expects($this->once())->method('initDataStructure');
         $oBase->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oBase->expects($this->once())->method('exists')->will($this->returnValue(false));
         $oBase->expects($this->never())->method('isDerived');
-        $oBase->expects($this->never())->method('_update');
-        $oBase->expects($this->once())->method('_insert')->will($this->returnValue(true));
+        $oBase->expects($this->never())->method('update');
+        $oBase->expects($this->once())->method('insert')->will($this->returnValue(true));
         $oBase->expects($this->once())->method('onChange')->with($this->equalTo(ACTION_INSERT));
         $oBase->expects($this->once())->method('getId')->will($this->returnValue('ggg'));
 
@@ -362,9 +362,9 @@ class BaseTest extends \OxidTestCase
         $oBase->init('oxsomething');
 
         // adding some test fields ..
-        $oBase->_addField('oxfield1', 1, 'datetime');
-        $oBase->_addField('oxfield2', 1, 'timestamp');
-        $oBase->_addField('oxfield3', 1, 'date');
+        $oBase->addField('oxfield1', 1, 'datetime');
+        $oBase->addField('oxfield2', 1, 'timestamp');
+        $oBase->addField('oxfield3', 1, 'date');
 
         $this->assertEquals('ggg', $oBase->save());
 
@@ -1013,7 +1013,7 @@ class BaseTest extends \OxidTestCase
         $this->assertFalse(isset($aFieldNames['oxtitle']));
         $rs = array("oxid" => "oxtopstart", "oxtitle" => "Startseite unten");
         foreach ($rs as $name => $value) {
-            $oBase->_setFieldData($name, $value);
+            $oBase->setFieldData($name, $value);
         }
         //standard field
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
@@ -1463,9 +1463,9 @@ class BaseTest extends \OxidTestCase
      */
     public function testSaveIfNew()
     {
-        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('insert'));
         $oBase->expects($this->any())
-            ->method('_insert')
+            ->method('insert')
             ->will($this->returnValue(true));
         $oBase->init("oxactions");
         $oBase->setId("_test");
@@ -1480,9 +1480,9 @@ class BaseTest extends \OxidTestCase
      */
     public function testSaveIfCannotInsert()
     {
-        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('insert'));
         $oBase->expects($this->any())
-            ->method('_insert')
+            ->method('insert')
             ->will($this->returnValue(false));
         $oBase->init("oxactions");
         $oBase->setId("_test");
@@ -1666,7 +1666,7 @@ class BaseTest extends \OxidTestCase
         $base->init($table);
         $base->$field1 = new oxField($val1, oxField::T_RAW);
 
-        $return = $base->_insert();
+        $return = $base->insert();
 
         $count = (int) oxDb::getDb()->getOne(
             "select count(*) from `$table` where $col1 = '$val1'"
@@ -1722,7 +1722,7 @@ class BaseTest extends \OxidTestCase
         }
 
         $oBase = oxNew('oxBase');
-        $sResult = $oBase->_getObjectViewName("oxarticles");
+        $sResult = $oBase->getObjectViewName("oxarticles");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
@@ -1736,7 +1736,7 @@ class BaseTest extends \OxidTestCase
         }
 
         $oBase = oxNew('oxBase');
-        $sResult = $oBase->_getObjectViewName("oxarticles", "1");
+        $sResult = $oBase->getObjectViewName("oxarticles", "1");
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
@@ -1749,7 +1749,7 @@ class BaseTest extends \OxidTestCase
         $table = 'oxactions';
         $base = oxNew('oxBase');
 
-        $sResult = $base->_getObjectViewName($table, $shopId);
+        $sResult = $base->getObjectViewName($table, $shopId);
 
         $this->assertSame("oxv_$table", $sResult);
     }
@@ -1765,7 +1765,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init('oxactions');
         $aExpectedFields = array('oxid' => 0, 'oxshopid' => 0, 'oxtype' => 0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive' => 0, 'oxactivefrom' => 0, 'oxactiveto' => 0, 'oxpic' => 0, 'oxpic_1' => 0, 'oxpic_2' => 0, 'oxpic_3' => 0, 'oxlink' => 0, 'oxlink_1' => 0, 'oxlink_2' => 0, 'oxlink_3' => 0, 'oxsort' => 0, 'oxtimestamp' => 0);
 
-        $this->assertEquals($aExpectedFields, $oBase->_getAllFields(true));
+        $this->assertEquals($aExpectedFields, $oBase->getAllFields(true));
     }
 
     /**
@@ -1777,7 +1777,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         //should not throw any error
-        $oBase->_getAllFields();
+        $oBase->getAllFields();
     }
 
     /**
@@ -1789,7 +1789,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->_addField('oxtestfield', 1);
+        $oBase->addField('oxtestfield', 1);
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1806,7 +1806,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->_addField('oxtestfield', 1, null, 20);
+        $oBase->addField('oxtestfield', 1, null, 20);
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1825,7 +1825,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $oBase->_addField('oxtestfield', 1, 'datetime');
+        $oBase->addField('oxtestfield', 1, 'datetime');
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
@@ -1994,9 +1994,9 @@ class BaseTest extends \OxidTestCase
     public function testIsInList()
     {
         $oSubj = $this->getProxyClass('oxBase');
-        $this->assertFalse($oSubj->_isInList());
+        $this->assertFalse($oSubj->isInList());
         $oSubj->setNonPublicVar("_blIsInList", true);
-        $this->assertTrue($oSubj->_isInList());
+        $this->assertTrue($oSubj->isInList());
     }
 
     /**

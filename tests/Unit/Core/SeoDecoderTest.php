@@ -54,19 +54,19 @@ class SeoDecoderTest extends \OxidTestCase
         $oDecoder = oxNew('oxSeoDecoder');
 
         $_SERVER["QUERY_STRING"] = "?abc=123";
-        $this->assertEquals($sUrl . "?def=456&abc=123", $oDecoder->_addQueryString($sUrl . "?def=456"));
+        $this->assertEquals($sUrl . "?def=456&abc=123", $oDecoder->addQueryString($sUrl . "?def=456"));
 
         $_SERVER["QUERY_STRING"] = "&abc=123";
-        $this->assertEquals($sUrl . "?def=456&abc=123", $oDecoder->_addQueryString($sUrl . "?def=456&"));
+        $this->assertEquals($sUrl . "?def=456&abc=123", $oDecoder->addQueryString($sUrl . "?def=456&"));
 
         $_SERVER["QUERY_STRING"] = "abc=123";
-        $this->assertEquals($sUrl . "?abc=123", $oDecoder->_addQueryString($sUrl));
+        $this->assertEquals($sUrl . "?abc=123", $oDecoder->addQueryString($sUrl));
 
         $_SERVER["QUERY_STRING"] = "?abc=123";
-        $this->assertEquals($sUrl . "?abc=123", $oDecoder->_addQueryString($sUrl));
+        $this->assertEquals($sUrl . "?abc=123", $oDecoder->addQueryString($sUrl));
 
         $_SERVER["QUERY_STRING"] = "&abc=123";
-        $this->assertEquals($sUrl . "?abc=123", $oDecoder->_addQueryString($sUrl));
+        $this->assertEquals($sUrl . "?abc=123", $oDecoder->addQueryString($sUrl));
     }
 
     public function testGetIdent()
@@ -100,8 +100,8 @@ class SeoDecoderTest extends \OxidTestCase
         $sPath = 'domain/';
 
         try {
-            $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_decodeSimpleUrl'));
-            $oDecoder->expects($this->once())->method('_decodeSimpleUrl')->with($this->equalTo('Cocktail-Shaker-ROCKET.html'))->will($this->returnValue('true'));
+            $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('decodeSimpleUrl'));
+            $oDecoder->expects($this->once())->method('decodeSimpleUrl')->with($this->equalTo('Cocktail-Shaker-ROCKET.html'))->will($this->returnValue('true'));
             $oDecoder->processSeoCall($sRequest, $sPath);
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "testProcessSeoCallTypeIUrl"" test');
@@ -113,15 +113,15 @@ class SeoDecoderTest extends \OxidTestCase
 
     public function testDecodeSimpleUrlNoParams()
     {
-        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
-        $oDecoder->expects($this->never())->method('_getObjectUrl');
-        $oDecoder->_decodeSimpleUrl('/');
+        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getObjectUrl'));
+        $oDecoder->expects($this->never())->method('getObjectUrl');
+        $oDecoder->decodeSimpleUrl('/');
     }
 
     public function testDecodeSimpleUrlForArticle()
     {
-        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
-        $oDecoder->expects($this->once())->method('_getObjectUrl')
+        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getObjectUrl'));
+        $oDecoder->expects($this->once())->method('getObjectUrl')
             ->with(
                 $this->equalTo('article.html'),
                 $this->equalTo('oxarticles'),
@@ -129,13 +129,13 @@ class SeoDecoderTest extends \OxidTestCase
                 $this->equalTo('oxarticle')
             )
             ->will($this->returnValue('articleseourl'));
-        $this->assertEquals('articleseourl', $oDecoder->_decodeSimpleUrl('article.html'));
+        $this->assertEquals('articleseourl', $oDecoder->decodeSimpleUrl('article.html'));
     }
 
     public function testDecodeSimpleUrlForCategory()
     {
-        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
-        $oDecoder->expects($this->once())->method('_getObjectUrl')
+        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getObjectUrl'));
+        $oDecoder->expects($this->once())->method('getObjectUrl')
             ->with(
                 $this->equalTo('category'),
                 $this->equalTo('oxcategories'),
@@ -143,14 +143,14 @@ class SeoDecoderTest extends \OxidTestCase
                 $this->equalTo('oxcategory')
             )
             ->will($this->returnValue('categoryseourl'));
-        $this->assertEquals('categoryseourl', $oDecoder->_decodeSimpleUrl('category'));
+        $this->assertEquals('categoryseourl', $oDecoder->decodeSimpleUrl('category'));
     }
 
     public function testDecodeSimpleUrlForManufacturer()
     {
-        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
+        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getObjectUrl'));
         $oDecoder
-            ->method('_getObjectUrl')
+            ->method('getObjectUrl')
             ->withConsecutive(
                 ['manufacturer', 'oxcategories', 0, 'oxcategory'],
                 ['manufacturer', 'oxmanufacturers', 0, 'oxmanufacturer']
@@ -160,14 +160,14 @@ class SeoDecoderTest extends \OxidTestCase
                 'manufacturerseourl'
             );
 
-        $this->assertEquals('manufacturerseourl', $oDecoder->_decodeSimpleUrl('manufacturer'));
+        $this->assertEquals('manufacturerseourl', $oDecoder->decodeSimpleUrl('manufacturer'));
     }
 
     public function testDecodeSimpleUrlForVendor()
     {
-        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
+        $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getObjectUrl'));
         $oDecoder
-            ->method('_getObjectUrl')
+            ->method('getObjectUrl')
             ->withConsecutive(
                 ['vendor', 'oxcategories', 0, 'oxcategory'],
                 ['vendor', 'oxmanufacturers', 0, 'oxmanufacturer'],
@@ -179,13 +179,13 @@ class SeoDecoderTest extends \OxidTestCase
                 'vendorseourl'
             );
 
-        $this->assertEquals('vendorseourl', $oDecoder->_decodeSimpleUrl('vendor'));
+        $this->assertEquals('vendorseourl', $oDecoder->decodeSimpleUrl('vendor'));
     }
 
     public function testGetObjectUrlColumnInDbIsMissing()
     {
         $oDecoder = oxNew('oxseodecoder');
-        $this->assertNull($oDecoder->_getObjectUrl('someid', 'oxarticles', 0, 'oxarticle'));
+        $this->assertNull($oDecoder->getObjectUrl('someid', 'oxarticles', 0, 'oxarticle'));
     }
 
     public function testGetObjectUrl()
@@ -231,8 +231,8 @@ class SeoDecoderTest extends \OxidTestCase
         }
 
         $oDecoder = oxNew('oxseodecoder');
-        $this->assertEquals($sUrl1, $oDecoder->_getObjectUrl('someid1', 'oxarticles', 0, 'oxarticle'));
-        $this->assertEquals($sUrl2, $oDecoder->_getObjectUrl('someid2', 'oxarticles', 1, 'oxarticle'));
+        $this->assertEquals($sUrl1, $oDecoder->getObjectUrl('someid1', 'oxarticles', 0, 'oxarticle'));
+        $this->assertEquals($sUrl2, $oDecoder->getObjectUrl('someid2', 'oxarticles', 1, 'oxarticle'));
     }
 
     public function testParseStdUrl()
@@ -281,7 +281,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->Execute("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( '{$sObjectId}', '" . md5(strtolower("$sOldSeoUrl")) . "', '{$iShopId}', '0' )");
 
         $oDecoder = oxNew('oxSeoDecoder');
-        $this->assertEquals($sNewSeoUrl, $oDecoder->_decodeOldUrl($this->getConfig()->getShopURL() . "$sOldSeoUrl"));
+        $this->assertEquals($sNewSeoUrl, $oDecoder->decodeOldUrl($this->getConfig()->getShopURL() . "$sOldSeoUrl"));
 
         // checking if oxhits value was incremented
         $this->assertEquals(1, $oDb->getOne("select oxhits from oxseohistory where oxobjectid = '{$sObjectId}'"));
@@ -295,11 +295,11 @@ class SeoDecoderTest extends \OxidTestCase
 
         try {
             // this forces redirect to "/oxideshop/eshop/source/asd" + "/"
-            $this->assertEquals("asd/", $oD->_getParams("/oxideshop/eshop/source/asd", "/oxideshop/eshop/source/"));
+            $this->assertEquals("asd/", $oD->getParams("/oxideshop/eshop/source/asd", "/oxideshop/eshop/source/"));
         } catch (Exception $oE) {
             if ($oE->getCode() === 123) {
-                $this->assertEquals("Admin-oxid/", $oD->_getParams("/oxideshop/eshop/source/Admin-oxid/?pgNr=1", "/oxideshop/eshop/source/"));
-                $this->assertEquals("Admin-oxid/", $oD->_getParams("/oxideshop/eshop/source/Admin-oxid/", "/oxideshop/eshop/source/"));
+                $this->assertEquals("Admin-oxid/", $oD->getParams("/oxideshop/eshop/source/Admin-oxid/?pgNr=1", "/oxideshop/eshop/source/"));
+                $this->assertEquals("Admin-oxid/", $oD->getParams("/oxideshop/eshop/source/Admin-oxid/", "/oxideshop/eshop/source/"));
 
                 return;
             }
@@ -312,7 +312,7 @@ class SeoDecoderTest extends \OxidTestCase
         $aS = $_SERVER;
         $aG = $_GET;
         try {
-            oxTestModules::addFunction('oxSeoDecoder', '_getParams', 'function ($sR, $sP) {if ($sR != "sRe" || $sP != "sPa" ) throw new PHPUnit\Framework\AssertionFailedError("bad params"); return "sParam";}');
+            oxTestModules::addFunction('oxSeoDecoder', 'getParams', 'function ($sR, $sP) {if ($sR != "sRe" || $sP != "sPa" ) throw new PHPUnit\Framework\AssertionFailedError("bad params"); return "sParam";}');
             oxTestModules::addFunction('oxSeoDecoder', 'decodeUrl', 'function ($sU) {if ($sU != "sParam" ) throw new PHPUnit\Framework\AssertionFailedError("bad params"); return array("test"=>"test");}');
             $oD = oxNew('oxSeoDecoder');
             $_GET = array('was' => 'was');
@@ -335,10 +335,10 @@ class SeoDecoderTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "redirect", "{ throw new Exception( 'test exception' );}");
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getParams', 'decodeUrl', '_decodeOldUrl'));
-        $oEncoder->expects($this->once())->method('_getParams')->will($this->returnValue('xxx'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getParams', 'decodeUrl', 'decodeOldUrl'));
+        $oEncoder->expects($this->once())->method('getParams')->will($this->returnValue('xxx'));
         $oEncoder->expects($this->once())->method('decodeUrl')->with($this->equalTo('xxx'))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo('xxx'))->will($this->returnValue('yyy'));
+        $oEncoder->expects($this->once())->method('decodeOldUrl')->with($this->equalTo('xxx'))->will($this->returnValue('yyy'));
 
         $this->expectExceptionMessage('test exception');
         $oEncoder->processSeoCall();
@@ -352,14 +352,14 @@ class SeoDecoderTest extends \OxidTestCase
      */
     public function testProcessSeoCallUsingStatus301ForRedirectsOldUrl()
     {
-        $encoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $encoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getParams', 'decodeUrl', 'decodeOldUrl', 'decodeSimpleUrl'));
         $shopUrl = Registry::getConfig()->getShopURL();
         $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
         $decodedOldUrlPart = 'en/Something/else/entirely.html';
         $redirectOldUrl = rtrim($shopUrl, '/') . '/' . $decodedOldUrlPart;
-        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('getParams')->will($this->returnValue($parameters));
         $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
-        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedOldUrlPart));
+        $encoder->expects($this->once())->method('decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedOldUrlPart));
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectOldUrl), $this->equalTo(false), $this->equalTo(301));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
@@ -375,15 +375,15 @@ class SeoDecoderTest extends \OxidTestCase
      */
     public function testProcessSeoCallUsingStatus301ForRedirectsSimpleUrl()
     {
-        $encoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getParams', 'decodeUrl', '_decodeOldUrl', '_decodeSimpleUrl'));
+        $encoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('getParams', 'decodeUrl', 'decodeOldUrl', 'decodeSimpleUrl'));
         $shopUrl = Registry::getConfig()->getShopURL();
         $parameters = 'en/Kiteboarding/Kites/Kite-CORE-GTS.html';
         $decodedSimpleUrlPart = 'en/Something/really/simple.html';
         $redirectSimpleUrl = rtrim($shopUrl, '/') . '/' . $decodedSimpleUrlPart;
-        $encoder->expects($this->once())->method('_getParams')->will($this->returnValue($parameters));
+        $encoder->expects($this->once())->method('getParams')->will($this->returnValue($parameters));
         $encoder->expects($this->once())->method('decodeUrl')->will($this->returnValue(null));
-        $encoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue(null));
-        $encoder->expects($this->once())->method('_decodeSimpleUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedSimpleUrlPart));
+        $encoder->expects($this->once())->method('decodeOldUrl')->with($this->equalTo($parameters))->will($this->returnValue(null));
+        $encoder->expects($this->once())->method('decodeSimpleUrl')->with($this->equalTo($parameters))->will($this->returnValue($decodedSimpleUrlPart));
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')->with($this->equalTo($redirectSimpleUrl), $this->equalTo(false), $this->equalTo(301));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
@@ -399,7 +399,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'NOToxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'NOToxarticle', 'csd' )");
         $oDec = oxNew('oxSeoDecoder');
-        $this->assertEquals('seourl1', $oDec->_getSeoUrl('obid', 0, 'iShopId'));
+        $this->assertEquals('seourl1', $oDec->getSeoUrl('obid', 0, 'iShopId'));
     }
 
     public function testGetSeoUrlForArticleNotExistingCatCfg()
@@ -410,7 +410,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )");
         $oDec = oxNew('oxSeoDecoder');
-        $this->assertEquals('seourl1', $oDec->_getSeoUrl('obid', 0, 'iShopId'));
+        $this->assertEquals('seourl1', $oDec->getSeoUrl('obid', 0, 'iShopId'));
     }
 
     public function testGetSeoUrlForArticleWithExistingCatCfg()
@@ -424,6 +424,6 @@ class SeoDecoderTest extends \OxidTestCase
         $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x2', 'obid', 'bsd', 5 )", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x3', 'obid', 'cat3', 15 )", 'oxobject2category');
         $oDec = oxNew('oxSeoDecoder');
-        $this->assertEquals('seourl2', $oDec->_getSeoUrl('obid', 0, 'iShopId'));
+        $this->assertEquals('seourl2', $oDec->getSeoUrl('obid', 0, 'iShopId'));
     }
 }

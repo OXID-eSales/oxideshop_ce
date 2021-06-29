@@ -704,7 +704,7 @@ class Email extends PHPMailer
     {
         $result = false;
 
-        $shop = $this->_addForgotPwdEmail($this->getShop());
+        $shop = $this->addForgotPwdEmail($this->getShop());
 
         $oxid = $this->getUserIdByUserName($emailAddress, $shop->getId());
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -1189,7 +1189,7 @@ class Email extends PHPMailer
      */
     public function sendPriceAlarmNotification($params, $alarm, $subject = null)
     {
-        $this->_clearMailer();
+        $this->clearMailer();
         $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp)

@@ -106,7 +106,7 @@ class LocatorTest extends \OxidTestCase
         );
         $oLocator = oxNew('oxLocator');
         foreach ($aInput as $sLink => $aParams) {
-            if ($oLocator->_makeLink($sLink, $aParams[0]) != $aParams[1]) {
+            if ($oLocator->makeLink($sLink, $aParams[0]) != $aParams[1]) {
                 $this->fail('testMakeLink failed');
             }
         }
@@ -134,8 +134,8 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('setListType'));
         $oLocatorTarget->expects($this->once())->method('setListType');
 
-        $oLocator = $this->getMock(\OxidEsales\Eshop\Application\Component\Locator::class, array('_setListLocatorData'));
-        $oLocator->expects($this->once())->method('_setListLocatorData')->with($this->equalTo($oLocatorTarget), $this->equalTo($oCurrArticle));
+        $oLocator = $this->getMock(\OxidEsales\Eshop\Application\Component\Locator::class, array('setListLocatorData'));
+        $oLocator->expects($this->once())->method('setListLocatorData')->with($this->equalTo($oLocatorTarget), $this->equalTo($oCurrArticle));
         $oLocator->setLocatorData($oCurrArticle, $oLocatorTarget, 'xxx');
     }
 
@@ -176,7 +176,7 @@ class LocatorTest extends \OxidTestCase
 
         $oLocator = new testOxLocator();
 
-        $oLocator->_setListLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setListLocatorData($oLocatorTarget, $oCurrArticle);
 
         $expectedPosition = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 9;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
@@ -213,7 +213,7 @@ class LocatorTest extends \OxidTestCase
         $oLocator = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\testOxLocator::class, array('getConfig'));
 
         // testing
-        $oLocator->_setListLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setListLocatorData($oLocatorTarget, $oCurrArticle);
 
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -266,7 +266,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
-        $oLocator->_setVendorLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setVendorLocatorData($oLocatorTarget, $oCurrArticle);
 
         $expectedPosition = $this->getTestConfig()->getShopEdition() == 'EE' ? 2 : 1;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 14 : 1;
@@ -302,7 +302,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
-        $oLocator->_setVendorLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setVendorLocatorData($oLocatorTarget, $oCurrArticle);
 
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -358,7 +358,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
-        $oLocator->_setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
 
         $expectedPosition = $this->getTestConfig()->getShopEdition() == 'EE' ? 2 : 1;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 14 : 1;
@@ -395,7 +395,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
-        $oLocator->_setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
 
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -446,7 +446,7 @@ class LocatorTest extends \OxidTestCase
 
         $this->setRequestParameter("searchparam", 'Bier');
         $oLocator = new testOxLocator();
-        $oLocator->_setSearchLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setSearchLocatorData($oLocatorTarget, $oCurrArticle);
         $this->setRequestParameter("searchparam", null);
 
         $oSearch = $oLocatorTarget->getActSearch();
@@ -491,7 +491,7 @@ class LocatorTest extends \OxidTestCase
         $this->setRequestParameter("searchparam", 'a');
         $this->setRequestParameter("searchvendor", $sSearchVendor);
         $oLocator = new testOxLocator();
-        $oLocator->_setSearchLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setSearchLocatorData($oLocatorTarget, $oCurrArticle);
         $this->setRequestParameter("searchparam", null);
         $this->setRequestParameter("searchvendor", null);
 
@@ -535,7 +535,7 @@ class LocatorTest extends \OxidTestCase
         $this->setRequestParameter("searchparam", 'Bier');
         $this->setRequestParameter("searchcnid", $sSearchCat);
         $oLocator = new testOxLocator();
-        $oLocator->_setSearchLocatorData($oLocatorTarget, $oCurrArticle);
+        $oLocator->setSearchLocatorData($oLocatorTarget, $oCurrArticle);
         $this->setRequestParameter("searchparam", null);
         $this->setRequestParameter("searchcnid", null);
 
@@ -652,7 +652,7 @@ class LocatorTest extends \OxidTestCase
         $oCategory->load($sActCat);
 
         // testing
-        $oIdList = $oLocator->_loadIdsInList($oCategory, $oCurrArticle, 'oxid');
+        $oIdList = $oLocator->loadIdsInList($oCategory, $oCurrArticle, 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
@@ -672,7 +672,7 @@ class LocatorTest extends \OxidTestCase
         $oCategory->load($sActCat);
 
         // testing
-        $oIdList = $oLocator->_loadIdsInList($oCategory, $oCurrArticle, 'oxid');
+        $oIdList = $oLocator->loadIdsInList($oCategory, $oCurrArticle, 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
@@ -700,7 +700,7 @@ class LocatorTest extends \OxidTestCase
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
 
         // testing
-        $oIdList = $oLocator->_loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
+        $oIdList = $oLocator->loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
@@ -728,7 +728,7 @@ class LocatorTest extends \OxidTestCase
         $oCategory->oxcategories__oxpriceto = new oxField(50, oxField::T_RAW);
 
         // testing
-        $oIdList = $oLocator->_loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
+        $oIdList = $oLocator->loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
         $this->assertEquals('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
@@ -738,9 +738,9 @@ class LocatorTest extends \OxidTestCase
     public function testGetPageNumber()
     {
         $oLocator = oxNew('oxlocator');
-        $this->assertEquals('pgNr=5', $oLocator->_getPageNumber(5));
-        $this->assertEquals('', $oLocator->_getPageNumber(-3));
-        $this->assertEquals('', $oLocator->_getPageNumber('nonumber'));
+        $this->assertEquals('pgNr=5', $oLocator->getPageNumber(5));
+        $this->assertEquals('', $oLocator->getPageNumber(-3));
+        $this->assertEquals('', $oLocator->getPageNumber('nonumber'));
     }
 
     public function testGetProductPos()
@@ -762,7 +762,7 @@ class LocatorTest extends \OxidTestCase
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
 
         $oLocator = new testOxLocator();
-        $this->assertEquals($oLocator->_getProductPos($oArticle, $oTest, $oLocatorTarget), 2);
+        $this->assertEquals($oLocator->getProductPos($oArticle, $oTest, $oLocatorTarget), 2);
 
         $this->assertNotNull($oLocator->_oBackProduct);
         $this->assertNotNull($oLocator->_oNextProduct);
@@ -779,7 +779,7 @@ class LocatorTest extends \OxidTestCase
         $oTest->assign($aTest);
 
         $oLocator = new testOxLocator();
-        $this->assertEquals($oLocator->_getProductPos($oArticle, $oTest, $oLocatorTarget), 3);
+        $this->assertEquals($oLocator->getProductPos($oArticle, $oTest, $oLocatorTarget), 3);
 
         $this->assertNotNull($oLocator->_oBackProduct);
         $this->assertEquals($oLocator->_oBackProduct->getId(), $sBackId);
@@ -798,13 +798,13 @@ class LocatorTest extends \OxidTestCase
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
 
         $oLocator = new testOxLocator();
-        $this->assertEquals($oLocator->_getProductPos($oArticle, $oTest, $oLocatorTarget), 1);
+        $this->assertEquals($oLocator->getProductPos($oArticle, $oTest, $oLocatorTarget), 1);
         $this->assertEquals($oLocator->_oBackProduct, null);
 
         $this->assertNotNull($oLocator->_oNextProduct);
         $this->assertEquals($oLocator->_oNextProduct->getId(), $sNextId);
 
-        $this->assertEquals(0, $oLocator->_getProductPos($oArticle, new oxlist(), $oLocatorTarget));
+        $this->assertEquals(0, $oLocator->getProductPos($oArticle, new oxlist(), $oLocatorTarget));
     }
 
     /**
@@ -828,14 +828,14 @@ class LocatorTest extends \OxidTestCase
         $list->assign($array);
 
         $locator = new testOxLocator();
-        $this->assertSame(2, $locator->_getProductPos($article, $list, $locatorTarget));
+        $this->assertSame(2, $locator->getProductPos($article, $list, $locatorTarget));
         $this->assertNotNull($locator->_oBackProduct);
         $this->assertNotNull($locator->_oNextProduct);
         $this->assertSame('943ed656e21971fb2f1827facbba9bec', $locator->_oBackProduct->getId());
         $this->assertSame('1234567A', $locator->_oNextProduct->getId());
 
         $locator = new testOxLocator();
-        $this->assertSame(3, $locator->_getProductPos($otherArticle, $list, $locatorTarget));
+        $this->assertSame(3, $locator->getProductPos($otherArticle, $list, $locatorTarget));
         $this->assertNotNull($locator->_oBackProduct);
         $this->assertNotNull($locator->_oNextProduct);
         $this->assertSame('1234567', $locator->_oBackProduct->getId());

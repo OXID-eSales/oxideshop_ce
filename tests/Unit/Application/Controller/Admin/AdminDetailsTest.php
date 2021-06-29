@@ -39,7 +39,7 @@ class AdminDetailsTest extends \OxidTestCase
     public function testGetEditValueObjectNotSet()
     {
         $oAdminDetails = oxNew('oxadmindetails');
-        $this->assertEquals('', $oAdminDetails->_getEditValue(null, null));
+        $this->assertEquals('', $oAdminDetails->getEditValue(null, null));
     }
 
     /**
@@ -54,9 +54,9 @@ class AdminDetailsTest extends \OxidTestCase
         $oObject->oField2->value = 'field2value';
 
         $oAdminDetails = oxNew('oxadmindetails');
-        $this->assertEquals('', $oAdminDetails->_getEditValue($oObject, 'notExistingField'));
-        $this->assertEquals('field1value', $oAdminDetails->_getEditValue($oObject, 'oField1'));
-        $this->assertEquals('field2value', $oAdminDetails->_getEditValue($oObject, 'oField2'));
+        $this->assertEquals('', $oAdminDetails->getEditValue($oObject, 'notExistingField'));
+        $this->assertEquals('field1value', $oAdminDetails->getEditValue($oObject, 'oField1'));
+        $this->assertEquals('field2value', $oAdminDetails->getEditValue($oObject, 'oField2'));
     }
 
     /**
@@ -72,7 +72,7 @@ class AdminDetailsTest extends \OxidTestCase
         $sUrl = $this->getConfig()->getCurrentShopURL();
 
         $oAdminDetails = oxNew('oxadmindetails');
-        $this->assertEquals("test $sUrl", $oAdminDetails->_getEditValue($oObject, 'oField'));
+        $this->assertEquals("test $sUrl", $oAdminDetails->getEditValue($oObject, 'oField'));
     }
 
     /**
@@ -133,7 +133,7 @@ class AdminDetailsTest extends \OxidTestCase
         $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('getNavigation'));
         $oAdminDetails->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
-        $oAdminDetails->_setupNavigation('xxx');
+        $oAdminDetails->setupNavigation('xxx');
         $this->assertEquals('default_edit', $oAdminDetails->getViewDataElement('default_edit'));
         $this->assertEquals('bottom_buttons', $oAdminDetails->getViewDataElement('bottom_buttons'));
     }
@@ -144,7 +144,7 @@ class AdminDetailsTest extends \OxidTestCase
     public function testGetCategoryTreeTestingIfEmptyCategoryWillBeSelected()
     {
         $oAdminDetails = oxNew('oxadmindetails');
-        $sActCatId = $oAdminDetails->_getCategoryTree('xxx', null);
+        $sActCatId = $oAdminDetails->getCategoryTree('xxx', null);
         $oList = $oAdminDetails->getViewDataElement('xxx');
         $oList->rewind();
 
@@ -163,7 +163,7 @@ class AdminDetailsTest extends \OxidTestCase
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
         $oAdminDetails = oxNew('oxadmindetails');
-        $sActCatId = $oAdminDetails->_getCategoryTree('xxx', null, $sCat);
+        $sActCatId = $oAdminDetails->getCategoryTree('xxx', null, $sCat);
         $oList = $oAdminDetails->getViewDataElement('xxx');
 
         foreach ($oList as $oCat) {
@@ -183,7 +183,7 @@ class AdminDetailsTest extends \OxidTestCase
         $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
 
         $oAdminDetails = oxNew('oxadmindetails');
-        $sActCatId = $oAdminDetails->_getCategoryTree('xxx', $sCat);
+        $sActCatId = $oAdminDetails->getCategoryTree('xxx', $sCat);
         $oList = $oAdminDetails->getViewDataElement('xxx');
 
         foreach ($oList as $oCat) {
@@ -248,6 +248,6 @@ class AdminDetailsTest extends \OxidTestCase
 
         $aIds = array("vendor" => array("ID1" => "1"), "manufacturer" => array("ID2" => "2"));
 
-        $oAdminDetails->_resetCounts($aIds);
+        $oAdminDetails->resetCounts($aIds);
     }
 }

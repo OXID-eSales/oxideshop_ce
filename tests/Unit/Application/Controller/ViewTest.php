@@ -281,9 +281,9 @@ class ViewTest extends \OxidTestCase
      */
     public function testExecuteFunction()
     {
-        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx', '_executeNewAction'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx', 'executeNewAction'));
         $oView->expects($this->once())->method('xxx')->will($this->returnValue('xxx'));
-        $oView->expects($this->once())->method('_executeNewAction')->with($this->equalTo('xxx'));
+        $oView->expects($this->once())->method('executeNewAction')->with($this->equalTo('xxx'));
         $oView->executeFunction('xxx');
     }
 

@@ -167,6 +167,6 @@ class VendorSeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorSeo::class, array("getEditLang"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
-        $this->assertEquals($oVendor->getBaseStdLink(0, true, false), $oView->_getStdUrl("_test1"));
+        $this->assertEquals($oVendor->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }
 }

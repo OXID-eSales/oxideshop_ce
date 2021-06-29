@@ -21,8 +21,8 @@ class SelectListListTest extends \OxidTestCase
     public function testInit()
     {
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListList::class, array("_authorize"));
-        $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListList::class, array("authorize"));
+        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
         $oView->init();
         $oView->render();
         $this->assertEquals(array('oxselectlist' => array("oxtitle" => "asc")), $oView->getListSorting());

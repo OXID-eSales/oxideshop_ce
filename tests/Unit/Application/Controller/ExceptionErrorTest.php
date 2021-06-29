@@ -36,8 +36,8 @@ class ExceptionErrorTest extends \OxidTestCase
         $sEx = "testText";
         $aErrors = array("default" => array("aaa" => serialize($sEx)));
 
-        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors"));
-        $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue($aErrors));
+        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("getErrors"));
+        $oErr->expects($this->once())->method('getErrors')->will($this->returnValue($aErrors));
 
         $oErr->displayExceptionError();
 
@@ -57,9 +57,9 @@ class ExceptionErrorTest extends \OxidTestCase
         $this->getSession()->setVariable("Errors", "testValue");
         $this->assertEquals("testValue", $this->getSession()->getVariable("Errors"));
 
-        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors", 'getViewData'));
+        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("getErrors", 'getViewData'));
         $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
-        $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue(array()));
+        $oErr->expects($this->once())->method('getErrors')->will($this->returnValue(array()));
 
         $oErr->displayExceptionError();
 
@@ -76,6 +76,6 @@ class ExceptionErrorTest extends \OxidTestCase
         $this->getSession()->setVariable("Errors", "testValue");
 
         $oErr = $this->getProxyClass("exceptionError");
-        $this->assertEquals("testValue", $oErr->_getErrors());
+        $this->assertEquals("testValue", $oErr->getErrors());
     }
 }

@@ -608,7 +608,7 @@ class UtilsViewTest extends \OxidTestCase
         oxTestModules::addFunction('oxModulelist', 'getActiveModuleInfo', '{ return true; }');
         $oUV = $this->getProxyClass('oxUtilsView');
 
-        $this->assertTrue($oUV->_getActiveModuleInfo());
+        $this->assertTrue($oUV->getActiveModuleInfo());
     }
 
     /**

@@ -427,7 +427,7 @@ class UtfTest extends \OxidTestCase
         $oArticle->save();
 
         $oBasketItem = new oxBasketItem();
-        $oBasketItem->_setArticle('_testArticle');
+        $oBasketItem->setArticle('_testArticle');
 
         $this->assertEquals("agentūrų Литовские, für", $oBasketItem->getTitle());
         $this->assertEquals("für", $oBasketItem->getVarSelect());
@@ -904,7 +904,7 @@ class UtfTest extends \OxidTestCase
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
 
-        $oUserpayment = $oOrder->_setPayment('oxiddebitnote');
+        $oUserpayment = $oOrder->setPayment('oxiddebitnote');
 
         $sValue = "lsbankname__Bank name@@lsblz__12345678@@lsktonr__123456789@@lsktoinhaber__Hans Mustermann@@";
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
@@ -1127,7 +1127,7 @@ class UtfTest extends \OxidTestCase
         $expectedArticle->description = "&lt;img src=&#039;" . $articleMock->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;" . $shortDescription;
         $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
-        $this->assertEquals(array($expectedArticle), $rssFeed->_getArticleItems($articleList));
+        $this->assertEquals(array($expectedArticle), $rssFeed->getArticleItems($articleList));
     }
 
     public function testOxRssFeedPrepareFeedName()
@@ -1141,12 +1141,12 @@ class UtfTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         Registry::set(Config::class, $oCfg);
-        $this->assertEquals($sValue . '/Test', $oRss->_prepareFeedName('Test'));
+        $this->assertEquals($sValue . '/Test', $oRss->prepareFeedName('Test'));
     }
 
     public function testOxRssFeedLoadSearchArticles()
     {
-        oxTestModules::addFunction('oxrssfeed', '_getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
+        oxTestModules::addFunction('oxrssfeed', 'getSearchParamsTranslation', '{return $aA[0].$aA[1].$aA[2].$aA[3].$aA[4];}');
         $sValue = 'agentūЛитовfür';
         $oRss = new oxrssfeed();
         $sResult = $this->getConfig()->getShopUrl() . 'rss/Suche/?searchparam=agent%C5%AB%D0%9B%D0%B8%D1%82%D0%BE%D0%B2f%C3%BCr&amp;searchcnid=BB&amp;searchvendor=CC&amp;searchmanufacturer=DD';
@@ -1163,8 +1163,8 @@ class UtfTest extends \OxidTestCase
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $config->expects($this->any())->method('getActiveShop')->will($this->returnValue($shop));
 
-        $rssFeedMock = $this->getMock(RssFeed::class, ['_getSearchParamsTranslation']);
-        $rssFeedMock->method('_getSearchParamsTranslation')->will(
+        $rssFeedMock = $this->getMock(RssFeed::class, ['getSearchParamsTranslation']);
+        $rssFeedMock->method('getSearchParamsTranslation')->will(
             $this->returnCallback(
                 function ($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) {
                     return $sSearch . $sId . $sCatId . $sVendorId . $sManufacturerId;
@@ -1191,7 +1191,7 @@ class UtfTest extends \OxidTestCase
         // setting english language as base
         $oSearch->setLanguage(1);
 
-        $sFix = $oSearch->_getWhere($sValue);
+        $sFix = $oSearch->getWhere($sValue);
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));
@@ -1741,7 +1741,7 @@ class UtfTest extends \OxidTestCase
         $sResult = 'agentū, лито, вfü, r, test, best, nest, fest';
 
         $oView = new oxubase();
-        $this->assertEquals($sResult, $oView->_removeDuplicatedWords($sValue));
+        $this->assertEquals($sResult, $oView->removeDuplicatedWords($sValue));
     }
 
     public function testOxEmailIncludeImages(): void
@@ -1761,7 +1761,7 @@ class UtfTest extends \OxidTestCase
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
         $oEmail->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
-        $oEmail->_includeImages(__DIR__ . "/Fixtures", null, null, $this->getConfig()->getImageDir());
+        $oEmail->includeImages(__DIR__ . "/Fixtures", null, null, $this->getConfig()->getImageDir());
     }
 
     public function testOxEmailSetBody()

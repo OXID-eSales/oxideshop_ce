@@ -35,8 +35,8 @@ class ActionListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
 
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and oxactiveto>0 and oxactiveto < '$sNow'
                (user group filter)
@@ -63,8 +63,8 @@ class ActionListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
 
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and oxactiveto < '$sNow' and oxactiveto > '$sDateFrom'
                (user group filter)
@@ -88,8 +88,8 @@ class ActionListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
 
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom != 0 and oxactivefrom < '$sNow'
                (user group filter)
@@ -113,8 +113,8 @@ class ActionListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
 
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom > '$sNow'
                (user group filter)
@@ -139,8 +139,8 @@ class ActionListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
 
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom > '$sNow' and oxactivefrom < '$sFut'
                (user group filter)
@@ -183,7 +183,7 @@ class ActionListTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("getUser"));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertEquals($sQ, $oList->_getUserGroupFilter());
+        $this->assertEquals($sQ, $oList->getUserGroupFilter());
     }
 
     /**
@@ -208,7 +208,7 @@ class ActionListTest extends \OxidTestCase
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("getUser"));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
 
-        $this->assertEquals($sQ, $oList->_getUserGroupFilter());
+        $this->assertEquals($sQ, $oList->getUserGroupFilter());
     }
 
     /**
@@ -251,8 +251,8 @@ class ActionListTest extends \OxidTestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions');
-        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', '_getUserGroupFilter'));
-        $oL->expects($this->once())->method('_getUserGroupFilter')->will($this->returnValue('(user group filter)'));
+        $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array('selectString', 'getUserGroupFilter'));
+        $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')
             ->with("select * from $sView where oxtype=3 and  (   $sView.oxactive = 1  or  ( $sView.oxactivefrom < '$sNow' and $sView.oxactiveto > '$sNow' ) )  and oxshopid='$sShopId' (user group filter) order by oxsort");
 

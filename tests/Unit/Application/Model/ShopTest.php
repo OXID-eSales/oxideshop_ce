@@ -60,8 +60,8 @@ class ShopTest extends \OxidTestCase
         $sFields = 'OXID, OXTITLE';
 
         $aMockedFunctionReturns = array(
-            '_getViewSelectMultilang' => $sFieldsMultilang,
-            '_getViewSelect'          => $sFields,
+            'getViewSelectMultilang' => $sFieldsMultilang,
+            'getViewSelect'          => $sFields,
         );
 
         return array(

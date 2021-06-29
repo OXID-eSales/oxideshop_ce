@@ -134,12 +134,12 @@ $aData = array(
             ),
     ),
     'actions' => array(
-            '_changeConfigs' => array(
+            'changeConfigs' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
             ),
 
-             '_changeArticles' => array(
+             'changeArticles' => array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 1,

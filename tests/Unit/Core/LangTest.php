@@ -114,7 +114,7 @@ class LangTest extends \OxidTestCase
 
         $oLang = oxNew('oxLang');
         foreach ($aPathArray as $languageFilePath) {
-            $this->assertContains($languageFilePath, $oLang->_getLangFilesPathArray(0));
+            $this->assertContains($languageFilePath, $oLang->getLangFilesPathArray(0));
         }
     }
 
@@ -125,7 +125,7 @@ class LangTest extends \OxidTestCase
         $customLangPath = $sPath . "views/azure/de/cust_lang.php";
 
         $oLang = oxNew('oxLang');
-        $this->assertContains($customLangPath, $oLang->_getLangFilesPathArray(0));
+        $this->assertContains($customLangPath, $oLang->getLangFilesPathArray(0));
     }
 
     public function testGetLangFilesPathContainsOnlyAvailableLanguages()
@@ -134,7 +134,7 @@ class LangTest extends \OxidTestCase
         $language = oxNew(\OxidEsales\Eshop\Core\Language::class);
         $currentLanguageAbbreviation = $language->getLanguageAbbr($languageId);
 
-        $languagePaths = $language->_getLangFilesPathArray($languageId);
+        $languagePaths = $language->getLangFilesPathArray($languageId);
 
         foreach ($languagePaths as $languagePath) {
             $this->assertStringContainsString(
@@ -162,7 +162,7 @@ class LangTest extends \OxidTestCase
 
         $language = oxNew(\OxidEsales\Eshop\Core\Language::class);
 
-        $aResult = $language->_getAdminLangFilesPathArray(0);
+        $aResult = $language->getAdminLangFilesPathArray(0);
 
         foreach ($aPathArray as $sPath) {
             $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
@@ -175,10 +175,10 @@ class LangTest extends \OxidTestCase
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
         $oLang = oxNew('oxLang');
-        $this->assertEquals($sCacheName, $oLang->_getLangFileCacheName(true, 1));
+        $this->assertEquals($sCacheName, $oLang->getLangFileCacheName(true, 1));
 
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_9fe20164bd4aeab975137aae7f30a1ce';
-        $this->assertEquals($sCacheName, $oLang->_getLangFileCacheName(true, 1, array('asdasd', 'dasasd')));
+        $this->assertEquals($sCacheName, $oLang->getLangFileCacheName(true, 1, array('asdasd', 'dasasd')));
     }
 
     public function testGetLanguageFileData()
@@ -206,9 +206,9 @@ class LangTest extends \OxidTestCase
             )
         );
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLangFilesData = $oLang->_getLanguageFileData(false, 0);
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->getLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
     }
@@ -229,9 +229,9 @@ class LangTest extends \OxidTestCase
             "_aSeoReplaceChars" => [],
         );
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLangFilesData = $oLang->_getLanguageFileData(false, 0);
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->getLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
     }
@@ -260,9 +260,9 @@ class LangTest extends \OxidTestCase
             'TESTKEY' => 'testVal'
         );
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLangFilesData = $oLang->_getLanguageFileData(false, 0);
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->getLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
     }
@@ -281,11 +281,11 @@ class LangTest extends \OxidTestCase
 
         $aLangFilesPath = array($sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt");
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('_getLangFileCacheName', "_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getLangFileCacheName', "getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('getLangFileCacheName')->will($this->returnValue(false));
+        $oLang->expects($this->any())->method('getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
 
-        $oLangFilesData = $oLang->_getLanguageFileData(false, 0);
+        $oLangFilesData = $oLang->getLanguageFileData(false, 0);
 
         $aResult = array("charset" => "UTF-8", "TESTKEY" => "testVal", '_aSeoReplaceChars' => array("t1" => "overide1"));
         $this->assertEquals($aResult, $oLangFilesData);
@@ -340,10 +340,10 @@ class LangTest extends \OxidTestCase
         );
 
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('_getLangFileCacheName', "_getLangFilesPathArray"));
-        $oLang->expects($this->any())->method('_getLangFileCacheName')->will($this->returnValue(false));
-        $oLang->expects($this->any())->method('_getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
-        $oLangFilesData = $oLang->_getLanguageFileData(false, 0);
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getLangFileCacheName', "getLangFilesPathArray"));
+        $oLang->expects($this->any())->method('getLangFileCacheName')->will($this->returnValue(false));
+        $oLang->expects($this->any())->method('getLangFilesPathArray')->will($this->returnValue($aLangFilesPath));
+        $oLangFilesData = $oLang->getLanguageFileData(false, 0);
 
         $this->assertEquals($aResult, $oLangFilesData);
     }
@@ -1143,7 +1143,7 @@ class LangTest extends \OxidTestCase
     public function testGetLangTranslationArray()
     {
         $oSubj = $this->getProxyClass("oxLang");
-        $aTrArray = $oSubj->_getLangTranslationArray();
+        $aTrArray = $oSubj->getLangTranslationArray();
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Sie haben Fragen zu diesem Artikel?");
     }
@@ -1151,7 +1151,7 @@ class LangTest extends \OxidTestCase
     public function testGetLangTranslationArrayLang1()
     {
         $oSubj = $this->getProxyClass("oxLang");
-        $aTrArray = $oSubj->_getLangTranslationArray(1);
+        $aTrArray = $oSubj->getLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");
     }
@@ -1160,7 +1160,7 @@ class LangTest extends \OxidTestCase
     {
         $oSubj = $this->getProxyClass("oxLang");
         $oSubj->setNonPublicVar('_aLangCache', array('langcache_0_1_' . $this->getConfig()->getShopId() . '_basic_default' => array('1' => array("ACCOUNT_LOGIN" => "Login"))));
-        $aTrArray = $oSubj->_getLangTranslationArray(1);
+        $aTrArray = $oSubj->getLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");
     }
@@ -1169,7 +1169,7 @@ class LangTest extends \OxidTestCase
     {
         $oSubj = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getBaseLanguage'));
         $oSubj->expects($this->any())->method('getBaseLanguage')->will($this->returnValue(null));
-        $aTrArray = $oSubj->_getLangTranslationArray();
+        $aTrArray = $oSubj->getLangTranslationArray();
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Sie haben Fragen zu diesem Artikel?");
     }
@@ -1187,7 +1187,7 @@ class LangTest extends \OxidTestCase
 
         file_put_contents($sFileName, $sFileContents);
         $oSubj = $this->getProxyClass("oxLang");
-        $aTrArray = $oSubj->_getLangTranslationArray();
+        $aTrArray = $oSubj->getLangTranslationArray();
 
         $this->assertTrue(isset($aTrArray["TESTKEY"]));
 
@@ -1451,7 +1451,7 @@ class LangTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtils", "setLangCache", "{}");
 
         $oLang = oxNew('oxLang');
-        $aMapData = $oLang->_getLanguageMap(1);
+        $aMapData = $oLang->getLanguageMap(1);
 
         $this->assertTrue(count($aMapData) > 0);
     }
@@ -1505,12 +1505,12 @@ class LangTest extends \OxidTestCase
         $oLang = oxNew('oxLang');
 
         // initial check..
-        $this->assertEquals($aResData1, $oLang->_collectSimilar($aData, "A_1_"));
-        $this->assertEquals($aResData2, $oLang->_collectSimilar($aData, "B_1_"));
+        $this->assertEquals($aResData1, $oLang->collectSimilar($aData, "A_1_"));
+        $this->assertEquals($aResData2, $oLang->collectSimilar($aData, "B_1_"));
 
         // checking if appends given array
-        $aCollection = $oLang->_collectSimilar($aData, "A_1_");
-        $this->assertEquals($aResData1 + $aResData2, $oLang->_collectSimilar($aData, "B_1_", $aCollection));
+        $aCollection = $oLang->collectSimilar($aData, "A_1_");
+        $this->assertEquals($aResData1 + $aResData2, $oLang->collectSimilar($aData, "B_1_", $aCollection));
     }
 
     /**
@@ -1697,8 +1697,8 @@ class LangTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('aLanguages', $aLanguages);
         $this->getConfig()->setConfigParam('aLanguageParams', $aLanguageParams);
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('_getBrowserLanguage'));
-        $oLang->expects($this->any())->method('_getBrowserLanguage')->will(
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getBrowserLanguage'));
+        $oLang->expects($this->any())->method('getBrowserLanguage')->will(
             $this->returnValue("en")
         );
 

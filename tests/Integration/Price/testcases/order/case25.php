@@ -218,17 +218,13 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
         'actions' => array(
-            '_changeArticles' => array(
+            'changeArticles' => array(
                     0 => array(
                             'oxid'       => '1001',
                             'amount'     => 10,
                     ),
             ),
-                //  Discount should be 20 eur
-        //  '_changeDiscount' => array (
-        //        editval[oxorder__oxdiscount],
-       // ),
-            '_addArticles' => array(
+            'addArticles' => array(
                     0 => array(
                             'oxid'       => '1002',
                             'oxtitle'    => '1002',

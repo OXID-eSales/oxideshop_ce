@@ -349,7 +349,7 @@ class ListTest extends \OxidTestCase
         $oListObjectMock->expects($this->once())->method('assign')->with($aDbFields);
 
         $oSubj = $this->getProxyClass("oxList");
-        $oSubj->_assignElement($oListObjectMock, $aDbFields);
+        $oSubj->assignElement($oListObjectMock, $aDbFields);
     }
 
     /**

@@ -458,7 +458,7 @@ class SystemRequirements
     public function checkModRewrite()
     {
         $iModStat = null;
-        $aHostInfo = $this->_getShopHostInfo();
+        $aHostInfo = $this->getShopHostInfo();
         $iModStat = $this->isModeRewriteExtensionLoaded($aHostInfo);
 
         $aSSLHostInfo = $this->getShopSSLHostInfo();

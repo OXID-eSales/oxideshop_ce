@@ -239,9 +239,9 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testSetNoPaging()
     {
-        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array('_setArticlesPerPage'));
+        $oCompare = $this->getMock(\OxidEsales\Eshop\Application\Controller\CompareController::class, array('setArticlesPerPage'));
 
-        $oCompare->expects($this->once())->method('_setArticlesPerPage')->with($this->equalTo(0));
+        $oCompare->expects($this->once())->method('setArticlesPerPage')->with($this->equalTo(0));
         $oCompare->setNoPaging();
     }
 
@@ -250,15 +250,15 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testSetArticlesPerPage()
     {
-        $cl = oxTestModules::addFunction('compare', '_getArticlesPerPage', '{return $this->_iArticlesPerPage;}');
+        $cl = oxTestModules::addFunction('compare', 'getArticlesPerPage', '{return $this->_iArticlesPerPage;}');
         $oCompare = new $cl();
 
-        $oCompare->_setArticlesPerPage(5);
-        $this->assertEquals(5, $oCompare->_getArticlesPerPage());
-        $oCompare->_setArticlesPerPage(50);
-        $this->assertEquals(50, $oCompare->_getArticlesPerPage());
-        $oCompare->_setArticlesPerPage(-50);
-        $this->assertEquals(-50, $oCompare->_getArticlesPerPage());
+        $oCompare->setArticlesPerPage(5);
+        $this->assertEquals(5, $oCompare->getArticlesPerPage());
+        $oCompare->setArticlesPerPage(50);
+        $this->assertEquals(50, $oCompare->getArticlesPerPage());
+        $oCompare->setArticlesPerPage(-50);
+        $this->assertEquals(-50, $oCompare->getArticlesPerPage());
     }
 
     /**
@@ -293,7 +293,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oArtList = oxNew('oxArticleList');
         $oArtList->loadIds(array_keys($aItems));
 
-        $oResList = $oSubj->_changeArtListOrder($aItems, $oArtList);
+        $oResList = $oSubj->changeArtListOrder($aItems, $oArtList);
 
         $this->assertArrayHasKey("1126", $oResList);
         $this->assertArrayNotHasKey("nonExistingVal", $oResList);

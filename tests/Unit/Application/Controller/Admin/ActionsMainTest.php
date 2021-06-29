@@ -47,8 +47,8 @@ class ActionsMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxactions"));
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("_createCategoryTree"));
-        $oView->expects($this->any())->method('_createCategoryTree')->will($this->returnValue(false));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("createCategoryTree"));
+        $oView->expects($this->any())->method('createCategoryTree')->will($this->returnValue(false));
         $sTplName = $oView->render();
 
         // testing view data
@@ -99,9 +99,9 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "createCategoryTree"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('_createCategoryTree');
+        $oView->expects($this->once())->method('createCategoryTree');
         $sTplName = $oView->render();
 
 
@@ -129,9 +129,9 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "createCategoryTree"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
-        $oView->expects($this->never())->method('_createCategoryTree');
+        $oView->expects($this->never())->method('createCategoryTree');
         $sTplName = $oView->render();
 
 

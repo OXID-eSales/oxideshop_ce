@@ -643,7 +643,7 @@ class SearchTest extends UnitTestCase
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
         Registry::set(Config::class, $oConfig);
-        $sQ = $oSearch->_getWhere($sSearchString, $iLanguage = 0);
+        $sQ = $oSearch->getWhere($sSearchString, $iLanguage = 0);
 
         $this->assertEquals($sFix, $sQ);
     }
@@ -658,7 +658,7 @@ class SearchTest extends UnitTestCase
         /** @var Search $search */
         $search = oxNew('oxSearch');
         $search->setLanguage(1);
-        $where = $search->_getWhere('a');
+        $where = $search->getWhere('a');
 
         $this->assertEquals($expectedWhere, $where);
     }
@@ -848,7 +848,7 @@ class SearchTest extends UnitTestCase
         // setting english language as base
         $oSearch->setLanguage(1);
 
-        $sFix = $oSearch->_getWhere('xxx');
+        $sFix = $oSearch->getWhere('xxx');
 
         $aSearch = array("/\s+/", "/\t+/", "/\r+/", "/\n+/");
         $sQ = trim(strtolower(preg_replace($aSearch, " ", $sQ)));

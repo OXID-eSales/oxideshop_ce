@@ -265,8 +265,8 @@ class DetailsTest extends \OxidTestCase
         $oParentProduct->expects($this->once())->method('isVisible')->will($this->returnValue(false));
 
         try {
-            $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("_getParentProduct"));
-            $oDetailsView->expects($this->once())->method('_getParentProduct')->will($this->returnValue($oParentProduct));
+            $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getParentProduct"));
+            $oDetailsView->expects($this->once())->method('getParentProduct')->will($this->returnValue($oParentProduct));
             $oDetailsView->getProduct();
         } catch (Exception $oExcp) {
             $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
@@ -1063,9 +1063,9 @@ class DetailsTest extends \OxidTestCase
         //$oProduct->expects( $this->never() )->method( "getId" );
 
         // no parent
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue(false));
 
         $this->assertEquals("varselections", $oView->getVariantSelections());
 
@@ -1077,9 +1077,9 @@ class DetailsTest extends \OxidTestCase
         $oParent->expects($this->once())->method('getVariantSelections')->will($this->returnValue("parentselections"));
 
         // has parent
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "_getParentProduct"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getProduct", "getParentProduct"));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('_getParentProduct')->will($this->returnValue($oParent));
+        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue($oParent));
 
         $this->assertEquals("parentselections", $oView->getVariantSelections());
     }

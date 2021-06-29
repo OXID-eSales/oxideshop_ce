@@ -166,8 +166,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
     public function testRemoveDiscArt()
     {
         $this->setRequestParameter("oxid", '_testO2DRemove1');
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1', '_testObjectRemove2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testObjectRemove1', '_testObjectRemove2')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
         $oView->removeDiscArt();
@@ -183,8 +183,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testO2DRemove4';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
         $oView->addDiscArt();
@@ -214,8 +214,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
-        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("getColNames"));
+        $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->getQueryCols());
     }
 
@@ -242,8 +242,8 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0,  IF( $sTableName.oxtitle != '', $sTableName.oxtitle, CONCAT((select oxart.oxtitle from $sTableName as oxart where oxart.oxid = $sTableName.oxparentid),', ',$sTableName.oxvarselect)) as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
-        $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("getColNames"));
+        $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->getQueryCols());
     }
 }

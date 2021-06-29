@@ -122,10 +122,10 @@ $aData = array(
             ),
     ),
     'actions' => array(
-        '_changeConfigs' => array(
+        'changeConfigs' => array(
             'blShowNetPrice' => true,
         ),
-            '_addArticles' => array(
+            'addArticles' => array(
                     0 => array(
                             'oxid'       => '1111',
                             'oxtitle'    => '1111',

@@ -29,8 +29,8 @@ class modForTestGetBaseTplDirExpectsDefault extends oxConfig
             return;
         }
         $this->_blInit = true;
-        $this->_loadVarsFromFile();
-        $this->_setDefaults();
+        $this->loadVarsFromFile();
+        $this->setDefaults();
     }
 
     public function getShopId()
@@ -46,7 +46,7 @@ class modForTestInitLoadingPriority extends oxConfig
 
     protected function loadVarsFromDb($sShopID, $aOnlyVars = null, $sModule = '')
     {
-        $this->_setConfVarFromDb("iDebug", "str", 33);
+        $this->setConfVarFromDb("iDebug", "str", 33);
 
         return true;
     }
@@ -277,8 +277,8 @@ class ConfigTest extends \OxidTestCase
         $exceptionHandlerMock->expects($this->once())->method('handleDatabaseException');
 
         /** @var Config|PHPUnit\Framework\MockObject\MockObject $config */
-        $config = $this->getMock(Config::class, ['_loadVarsFromDb','getExceptionHandler']);
-        $config->expects($this->any())->method('_loadVarsFromDb')->will($this->throwException($exception));
+        $config = $this->getMock(Config::class, ['loadVarsFromDb','getExceptionHandler']);
+        $config->expects($this->any())->method('loadVarsFromDb')->will($this->throwException($exception));
         $config->expects($this->any())->method('getExceptionHandler')->will($this->returnValue($exceptionHandlerMock));
 
         $config->init();
@@ -591,11 +591,11 @@ class ConfigTest extends \OxidTestCase
                 ['test5', false],
             );
 
-        $oConfig->_setConfVarFromDb('test1', 'blabla', 't1');
-        $oConfig->_setConfVarFromDb('test2', 'arr', serialize(array('x')));
-        $oConfig->_setConfVarFromDb('test3', 'aarr', serialize(array('x' => 'y')));
-        $oConfig->_setConfVarFromDb('test4', 'bool', 'true');
-        $oConfig->_setConfVarFromDb('test5', 'bool', '0');
+        $oConfig->setConfVarFromDb('test1', 'blabla', 't1');
+        $oConfig->setConfVarFromDb('test2', 'arr', serialize(array('x')));
+        $oConfig->setConfVarFromDb('test3', 'aarr', serialize(array('x' => 'y')));
+        $oConfig->setConfVarFromDb('test4', 'bool', 'true');
+        $oConfig->setConfVarFromDb('test5', 'bool', '0');
     }
 
     /**
@@ -1669,7 +1669,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         $oConfig->init();
-        //$oConfig->setNonPublicVar( '_iLanguageId', null );
+        //$oConfig->setNonPublicVar( 'iLanguageId', null );
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
         $this->setRequestParameter( 'changelang', null );
         $this->setRequestParameter( 'lang', 1 );
@@ -2204,7 +2204,7 @@ class ConfigTest extends \OxidTestCase
 
         /** @var oxConfig $config */
         $config = $this->getMock(Config::class, array('init'));
-        $config->_loadVarsFromFile();
+        $config->loadVarsFromFile();
 
         $this->assertSame("customValue", $config->getConfigParam("customVar"));
     }
@@ -2215,9 +2215,9 @@ class ConfigTest extends \OxidTestCase
     public function testInit_noValuesFromConfig()
     {
         /** @var oxconfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
-        $oConfig = $this->getMock(Config::class, array('_loadVarsFromDb', '_handleDbConnectionException'));
-        $oConfig->expects($this->once())->method('_loadVarsFromDb')->will($this->returnValue(false));
-        $oConfig->expects($this->once())->method('_handleDbConnectionException');
+        $oConfig = $this->getMock(Config::class, array('loadVarsFromDb', 'handleDbConnectionException'));
+        $oConfig->expects($this->once())->method('loadVarsFromDb')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
         $oConfig->init();
@@ -2229,9 +2229,9 @@ class ConfigTest extends \OxidTestCase
     public function testInit_noShopId()
     {
         /** @var oxconfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
-        $oConfig = $this->getMock(Config::class, array('getShopId', '_handleDbConnectionException'));
+        $oConfig = $this->getMock(Config::class, array('getShopId', 'handleDbConnectionException'));
         $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(false));
-        $oConfig->expects($this->once())->method('_handleDbConnectionException');
+        $oConfig->expects($this->once())->method('handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
         $oConfig->init();

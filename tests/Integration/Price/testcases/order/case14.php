@@ -217,14 +217,13 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
           'actions' => array(
-             // '_removeArticles' => array ( '1001' ),
-              '_changeArticles' => array(
+              'changeArticles' => array(
                     0 => array(
                             'oxid'       => '1001',
                             'amount'     => 10
                     ),
             ),
-              '_addArticles' => array(
+              'addArticles' => array(
                     0 => array(
                             'oxid'       => '1006',
                             'oxtitle'    => '1006',

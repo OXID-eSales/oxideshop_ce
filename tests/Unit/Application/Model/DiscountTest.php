@@ -583,8 +583,8 @@ class DiscountTest extends \OxidTestCase
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
 
-        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
-        $oDiscount->expects($this->never())->method('_checkForArticleCategories');
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('checkForArticleCategories'));
+        $oDiscount->expects($this->never())->method('checkForArticleCategories');
 
         // setting up discount
         $oDiscount->oxdiscount__oxamount = new oxField(1);
@@ -604,8 +604,8 @@ class DiscountTest extends \OxidTestCase
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
 
-        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
-        $oDiscount->expects($this->never())->method('_checkForArticleCategories');
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('checkForArticleCategories'));
+        $oDiscount->expects($this->never())->method('checkForArticleCategories');
 
         // setting up discount
         $oDiscount->oxdiscount__oxamount = new oxField(1);
@@ -747,8 +747,8 @@ class DiscountTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
 
-        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
-        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('checkForArticleCategories'));
+        $oDiscount->expects($this->once())->method('checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->setId('testdid');
 
@@ -987,8 +987,8 @@ class DiscountTest extends \OxidTestCase
         $sQ2 = " and oxobjectid = 'ProductId'";
 
         $oDiscount = oxNew('oxDiscount');
-        $this->assertEquals($sQ1, $oDiscount->_getProductCheckQuery($oProduct1));
-        $this->assertEquals($sQ2, $oDiscount->_getProductCheckQuery($oProduct2));
+        $this->assertEquals($sQ1, $oDiscount->getProductCheckQuery($oProduct1));
+        $this->assertEquals($sQ2, $oDiscount->getProductCheckQuery($oProduct2));
     }
 
     /**

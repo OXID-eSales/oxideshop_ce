@@ -287,7 +287,7 @@ class ArticleSeoTest extends \OxidTestCase
     {
         $view = oxNew("Article_Seo");
 
-        $this->assertEquals('oxarticle', $view->_getSeoEntryType());
+        $this->assertEquals('oxarticle', $view->getSeoEntryType());
     }
 
     /**
@@ -397,12 +397,12 @@ class ArticleSeoTest extends \OxidTestCase
         $product = oxNew('oxArticle');
         $product->load($productId);
 
-        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "getQuery", "getVendorList", "getManufacturerList", "_getTagList"));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "getCategoryList", "getVendorList", "getManufacturerList", "getTagList"));
         $view->expects($this->any())->method("getEditObjectId")->will($this->returnValue($productId));
-        $view->expects($this->any())->method("getQuery")->will($this->returnValue("CategoryList"));
+        $view->expects($this->any())->method("getCategoryList")->will($this->returnValue("CategoryList"));
         $view->expects($this->any())->method("getVendorList")->will($this->returnValue("VendorList"));
         $view->expects($this->any())->method("getManufacturerList")->will($this->returnValue("ManufacturerList"));
-        $view->expects($this->any())->method("_getTagList")->will($this->returnValue("TagList"));
+        $view->expects($this->any())->method("getTagList")->will($this->returnValue("TagList"));
 
         $expectedList = array();
         $expectedList["oxcategory"][$editingLanguageId] = "CategoryList";
@@ -435,9 +435,9 @@ class ArticleSeoTest extends \OxidTestCase
                                  ( 'objectid', 'ident', '{$ShopId}', '{$iLang}', 'stdurl', 'seourl', 'type', 1, 'catid' )";
         oxDb::getDb()->execute($sQ);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("_getSaveObjectId", "getActCatId", "getEditLang", "processParam"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getSaveObjectId", "getActCatId", "getEditLang", "processParam"));
         $oView
-            ->method('_getSaveObjectId')
+            ->method('getSaveObjectId')
             ->willReturnOnConsecutiveCalls('objectid', 'nonexistingobjectid');
 
         $oView->method('getEditLang')->will($this->returnValue(0));

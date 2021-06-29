@@ -7,55 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\RestrictedAddress;
 
-/**
- * Class Integration_RestrictedAddress_RestrictedAddressTest
- */
 class RestrictedAddressTest extends \OxidTestCase
 {
-    /**
-     * DataProvider returns shop URL list to call.
-     *
-     * @return array
-     */
-    public function providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart()
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        return array(
-            array($shopUrl . '?fnc=getShopVersion'),
-            array($shopUrl . '?fnc=getShopEdition'),
-            array($shopUrl . '?fnc=getShopVersion&n2=v2'),
-            array($shopUrl . '?fnc=getShopEdition&n2=v2'),
-            array($shopUrl . '?name=value&fnc=getShopVersion'),
-            array($shopUrl . '?name=value&fnc=getShopEdition'),
-            array($shopUrl . '?name=value&fnc=getShopVersion&n2=v2'),
-            array($shopUrl . '?name=value&fnc=getShopEdition&n2=v2'),
-            array($shopUrl . '?fnc=%67etshopversion'),
-            array($shopUrl . '?fnc=getCharSet'),
-            array($shopUrl . '?fnc=getShopFullEdition'),
-            array($shopUrl . '?fnc=isMall'),
-            array($shopUrl . '?fnc=getCacheLifeTime'),
-            array($shopUrl . '?fnc=addGlobalParams')
-        );
-    }
-
-    /**
-     * Test case that a function's return value is no callable new action, directly redirect
-     * to startpage without trying to call a not extisting view class.
-     *
-     * @dataProvider providerRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart
-     */
-    public function _testRequestFunctionThatResultsInNoValidNewActionGetsRedirectedToStart($sForbiddenUrl)
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        $result = $this->callPage($sForbiddenUrl);
-
-        $location = "Location: " .  $shopUrl . 'index.php?force_sid=' . $this->extractSessionId($result) .
-                     "&cl=start&redirected=1\r\n";
-        $this->assertStringContainsString($location, $result, 'User should be redirected to shop front page.');
-    }
-
     /**
      * Fix for bug 0005565: Accessing config.inc.php directly results in Fatal error
      */

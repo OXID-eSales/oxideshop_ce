@@ -217,8 +217,8 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
           'actions' => array(
-              '_removeArticles' => array( '1001' ),
-              '_addArticles' => array(
+              'removeArticles' => array( '1001' ),
+              'addArticles' => array(
                     0 => array(
                             'oxid'       => '1006',
                             'oxtitle'    => '1006',

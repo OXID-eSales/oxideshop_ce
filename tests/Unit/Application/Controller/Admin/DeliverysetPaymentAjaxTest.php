@@ -129,8 +129,8 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
      */
     public function testRemovePayFromSet()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testDeliverysetPayment1', '_testDeliverysetPayment2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testDeliverysetPayment1', '_testDeliverysetPayment2')));
 
         $sSql = "select count(oxid) from oxobject2payment where oxid in ('_testDeliverysetPayment1', '_testDeliverysetPayment2')";
         $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
@@ -169,8 +169,8 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addPayToSet();
         $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
@@ -193,8 +193,8 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("_getActionIds"));
-        $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, array("getActionIds"));
+        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addPayToSet();
         $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));

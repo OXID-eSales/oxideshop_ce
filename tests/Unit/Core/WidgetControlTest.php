@@ -29,10 +29,10 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testStart()
     {
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("_runOnce", "_runLast", "_process"), array(), '', false);
-        $oControl->expects($this->once())->method('_runOnce');
-        $oControl->expects($this->once())->method('_runLast');
-        $oControl->expects($this->once())->method('_process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("runOnce", "runLast", "process"), array(), '', false);
+        $oControl->expects($this->once())->method('runOnce');
+        $oControl->expects($this->once())->method('runLast');
+        $oControl->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
         $oControl->start("start", "testFnc", "testParams", "testViewsChain");
     }
 
@@ -72,7 +72,7 @@ class WidgetControlTest extends \OxidTestCase
     public function testInitializeViewObject()
     {
         $oControl = oxNew("oxWidgetControl");
-        $oView = $oControl->_initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
+        $oView = $oControl->initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
 
         //checking widget object
         $this->assertEquals("oxwCookieNote", $oView->getClassKey());
@@ -92,7 +92,7 @@ class WidgetControlTest extends \OxidTestCase
     public function testInitializeViewObject_hasViewChain()
     {
         $oControl = oxNew("oxWidgetControl");
-        $oView = $oControl->_initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
+        $oView = $oControl->initializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
 
         //checking widget object
         $this->assertEquals("oxwCookieNote", $oView->getClassKey());

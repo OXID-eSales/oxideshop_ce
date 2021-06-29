@@ -426,7 +426,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->setConfigParam('aNrofSearchArticles', 'xxx');
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(10, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -443,7 +443,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 200);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -464,7 +464,7 @@ class UBaseTest extends \OxidTestCase
         $this->setSessionParam("_artperpage", 20);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $this->assertEquals(10, $config->getConfigParam('iNrofCatArticles'));
         $this->assertEquals(array(10), $config->getConfigParam('aNrofCatArticles'));
@@ -480,7 +480,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 30);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -500,7 +500,7 @@ class UBaseTest extends \OxidTestCase
         $this->setSessionParam("_artperpage", 26);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -521,7 +521,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->setConfigParam('aNrofCatArticles', null);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $iCnt = $this->getSessionParam("_artperpage");
 
@@ -544,7 +544,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', null);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(2, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -564,7 +564,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 2);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(2, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -584,7 +584,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('_artperpage', 2);
 
         $oView = oxNew('oxubase');
-        $oView->_setNrOfArtPerPage();
+        $oView->setNrOfArtPerPage();
 
         $oViewConf = $oView->getViewConfig();
         $this->assertEquals(10, $oViewConf->getViewConfigParam('iartPerPage'));
@@ -789,7 +789,7 @@ class UBaseTest extends \OxidTestCase
 
         $oView = oxNew('oxubase');
         foreach ($aIn as $sIn => $sOut) {
-            $this->assertEquals($sOut, $oView->_removeDuplicatedWords($sIn));
+            $this->assertEquals($sOut, $oView->removeDuplicatedWords($sIn));
         }
     }
 
@@ -801,7 +801,7 @@ class UBaseTest extends \OxidTestCase
         $sDesc = array('aaa', 'ccc', 'bbb', 'ccc', 'ddd', 'ccc');
 
         $oView = oxNew('oxubase');
-        $sResult = $oView->_removeDuplicatedWords($sDesc);
+        $sResult = $oView->removeDuplicatedWords($sDesc);
 
         $this->assertEquals("aaa, ccc, bbb, ddd", $sResult);
     }
@@ -872,8 +872,8 @@ class UBaseTest extends \OxidTestCase
      */
     public function testAddGlobalParamsCallsSetNrOfArtPerPage()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_setNrOfArtPerPage'));
-        $oView->expects($this->once())->method('_setNrOfArtPerPage');
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('setNrOfArtPerPage'));
+        $oView->expects($this->once())->method('setNrOfArtPerPage');
 
         $oView->addGlobalParams(new stdclass());
     }
@@ -1352,14 +1352,14 @@ class UBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter('fnc', 'something');
         $oUBase = oxNew('oxubase');
-        $this->assertFalse($oUBase->_canRedirect());
+        $this->assertFalse($oUBase->canRedirect());
     }
 
     public function testCanRedirectTrue()
     {
         $this->setRequestParameter('cl', 'details');
         $oUBase = oxNew('oxubase');
-        $this->assertTrue($oUBase->_canRedirect());
+        $this->assertTrue($oUBase->canRedirect());
     }
 
     public function testProcessRequestCanRedirect()
@@ -1369,12 +1369,12 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'isAdmin'));
-        $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(true));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'isAdmin'));
+        $oUBase->expects($this->any())->method('canRedirect')->will($this->returnValue(true));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         try {
-            $oUBase->_processRequest();
+            $oUBase->processRequest();
         } catch (Exception $oEx) {
             $this->assertEquals($this->getConfig()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test');
 
@@ -1387,7 +1387,7 @@ class UBaseTest extends \OxidTestCase
     public function testForceNoIndex()
     {
         $oView = oxNew('oxubase');
-        $oView->_forceNoIndex();
+        $oView->forceNoIndex();
         $this->assertEquals(2, $oView->noIndex());
     }
 
@@ -1398,15 +1398,15 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
-        $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'getLink', 'isAdmin', 'forceNoIndex'));
+        $oUBase->expects($this->any())->method('canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oUBase->expects($this->once())->method('_forceNoIndex');
+        $oUBase->expects($this->once())->method('forceNoIndex');
 
         $this->setConfigParam('blSeoLogging', 1);
 
         try {
-            $oUBase->_processRequest();
+            $oUBase->processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test');
@@ -1427,14 +1427,14 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'noIndex'));
-        $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'getLink', 'isAdmin', 'forceNoIndex', 'noIndex'));
+        $oUBase->expects($this->any())->method('canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oUBase->expects($this->never())->method('_forceNoIndex');
+        $oUBase->expects($this->never())->method('forceNoIndex');
         $oUBase->expects($this->once())->method('noIndex')->will($this->returnValue(VIEW_INDEXSTATE_NOINDEXFOLLOW));
 
         try {
-            $oUBase->_processRequest();
+            $oUBase->processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test');
@@ -1461,13 +1461,13 @@ class UBaseTest extends \OxidTestCase
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
 
-        $userBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
-        $userBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
+        $userBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'getLink', 'isAdmin', 'forceNoIndex', 'getConfig'));
+        $userBase->expects($this->any())->method('canRedirect')->will($this->returnValue(false));
         $userBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $userBase->expects($this->once())->method('_forceNoIndex');
+        $userBase->expects($this->once())->method('forceNoIndex');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $userBase->_processRequest();
+        $userBase->processRequest();
 
         $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . '1' . $sLangId);
@@ -1490,13 +1490,13 @@ class UBaseTest extends \OxidTestCase
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
         $config->setConfigParam('blSeoLogging', 1);
 
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
-        $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'getLink', 'isAdmin', 'forceNoIndex', 'getConfig'));
+        $oUBase->expects($this->any())->method('canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oUBase->expects($this->once())->method('_forceNoIndex');
+        $oUBase->expects($this->once())->method('forceNoIndex');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $oUBase->_processRequest();
+        $oUBase->processRequest();
 
         $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $shopId = $this->getShopId();
@@ -2379,13 +2379,13 @@ class UBaseTest extends \OxidTestCase
         $this->setConfigParam('blSeoLogging', $blSeoLogging);
         $this->setConfigParam('blProductive', $blProductive);
 
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
-        $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('canRedirect', 'getLink', 'isAdmin', 'forceNoIndex'));
+        $oUBase->expects($this->any())->method('canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oUBase->expects($this->once())->method('_forceNoIndex');
+        $oUBase->expects($this->once())->method('forceNoIndex');
 
         try {
-            $oUBase->_processRequest();
+            $oUBase->processRequest();
         } catch (Exception $oEx) {
             // redirect must not be executed
             $this->fail('error executing "testProcessRequestCantRedirect" test: ' . $oEx->getMessage());

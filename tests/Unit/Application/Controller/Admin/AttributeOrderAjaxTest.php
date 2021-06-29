@@ -85,8 +85,8 @@ class AttributeOrderAjaxTest extends \OxidTestCase
 
         $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("_output"));
-        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("output"));
+        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
 
@@ -106,8 +106,8 @@ class AttributeOrderAjaxTest extends \OxidTestCase
 
         $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("_output"));
-        $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("output"));
+        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
 
         $this->assertEquals(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));

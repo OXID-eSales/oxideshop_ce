@@ -448,11 +448,11 @@ class OrderRecalculationTest extends \OxidTestCase
     {
         $order = $this->getMock(Order::class, array(
             'validateDeliveryAddress',
-            '_sendOrderByEmail',
+            'sendOrderByEmail',
             'validatePayment',
         ));
         // sending order by email is always successful for tests
-        $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
+        $order->expects($this->any())->method('sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
 

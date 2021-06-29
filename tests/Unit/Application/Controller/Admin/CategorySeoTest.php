@@ -169,6 +169,6 @@ class CategorySeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, array("getEditLang"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
 
-        $this->assertEquals($oCategory->getBaseStdLink(0, true, false), $oView->_getStdUrl("_test1"));
+        $this->assertEquals($oCategory->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }
 }

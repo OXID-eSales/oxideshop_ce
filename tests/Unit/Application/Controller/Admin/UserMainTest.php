@@ -74,10 +74,10 @@ class UserMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxuser', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'getId', '{ return "testId"; }');
 
-        $aTasks = array("_allowAdminEdit", "resetContentCache");
+        $aTasks = array("allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, $aTasks);
-        $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(true));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
 
@@ -100,10 +100,10 @@ class UserMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxuser', 'assign', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'getId', '{ return "testId"; }');
 
-        $aTasks = array("_allowAdminEdit", "resetContentCache");
+        $aTasks = array("allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, $aTasks);
-        $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->will($this->returnValue(true));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
         $oView->render();
@@ -123,11 +123,11 @@ class UserMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxuser', 'setPassword', '{ return true; }');
         oxTestModules::addFunction('oxuser', 'checkIfEmailExists', '{ return true; }');
 
-        $aTasks = array("_allowAdminEdit", "resetContentCache");
+        $aTasks = array("allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, $aTasks);
 
-        $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->will($this->returnValue(true));
         $oView->expects($this->once())->method('resetContentCache');
 
         $_POST["editval"]['oxuser__oxusername'] = 'some';
@@ -155,8 +155,8 @@ class UserMainTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxuser', $oUser);
 
         /** @var User_Main|PHPUnit\Framework\MockObject\MockObject $oView */
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, array('getEditObjectId', '_allowAdminEdit'));
-        $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, array('getEditObjectId', 'allowAdminEdit'));
+        $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(true));
 
         $oView->save();
     }

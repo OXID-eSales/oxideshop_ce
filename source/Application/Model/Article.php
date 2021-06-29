@@ -523,7 +523,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function isInList()
     {
-        return $this->isInList();
+        return parent::isInList();
     }
 
     /**
@@ -997,10 +997,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($this->_blIsRangePrice === null) {
             $this->setRangePrice(false);
 
-            if ($this->_hasAnyVariant()) {
+            if ($this->hasAnyVariant()) {
                 $dPrice = $this->getRawPrice();
                 $dMinPrice = $this->getVarMinRawPrice();
-                $dMaxPrice = $this->_getVarMaxPrice();
+                $dMaxPrice = $this->getVarMaxPrice();
 
                 if ($dMinPrice != $dMaxPrice) {
                     $this->setRangePrice();
@@ -5013,7 +5013,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function getRawPrice()
     {
-        $sPriceSuffix = $this->_getUserPriceSufix();
+        $sPriceSuffix = $this->getUserPriceSufix();
         if ($sPriceSuffix === '') {
             $dPrice = $this->oxarticles__oxprice->value;
         } else {
@@ -5035,10 +5035,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function getVarMinRawPrice()
     {
         if ($this->_dVarMinPrice === null) {
-            $dPrice = $this->_getShopVarMinPrice();
+            $dPrice = $this->getShopVarMinPrice();
 
             if (is_null($dPrice)) {
-                $sPriceSuffix = $this->_getUserPriceSufix();
+                $sPriceSuffix = $this->getUserPriceSufix();
                 if ($sPriceSuffix === '') {
                     $dPrice = $this->oxarticles__oxvarminprice->value;
                 } else {

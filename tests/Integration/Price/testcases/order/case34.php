@@ -190,7 +190,7 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
         'actions' => array(
-          '_removeArticles' => array( '1002' ),
+          'removeArticles' => array( '1002' ),
 
         ),
 );

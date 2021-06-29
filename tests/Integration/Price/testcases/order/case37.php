@@ -211,6 +211,6 @@ $aData = array(
         'activeCurrencyRate' => 1,
     ),
     'actions' => array(
-            '_removeArticles' => array( '111', '1112', '1113', '1114', '1115' ),
+            'removeArticles' => array( '111', '1112', '1113', '1114', '1115' ),
     ),
 );

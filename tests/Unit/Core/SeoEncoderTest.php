@@ -27,7 +27,7 @@ class modSeoEncoder extends oxSeoEncoder
 
     public function p_prepareTitle($a, $b = false)
     {
-        return $this->_prepareTitle($a, $b);
+        return $this->prepareTitle($a, $b);
     }
 }
 
@@ -92,7 +92,7 @@ class SeoEncoderTest extends \OxidTestCase
     public function testGetAltUri()
     {
         $oEncoder = oxNew('oxSeoEncoder');
-        $this->assertNull($oEncoder->_getAltUri("", ""));
+        $this->assertNull($oEncoder->getAltUri("", ""));
     }
 
     /**
@@ -114,17 +114,17 @@ class SeoEncoderTest extends \OxidTestCase
         $blExclude = true;
         $sAltObjectId = 'testAltId';
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_processSeoUrl", "_trimUrl", "_getAltUri", "_saveToDb"));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with(
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("processSeoUrl", "trimUrl", "getAltUri", "saveToDb"));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with(
             $this->equalTo('testTrimmedUrl'),
             $this->equalTo($sObjectId),
             $this->equalTo($iLang),
             $this->equalTo($blExclude)
         )
             ->will($this->returnValue('testProcessedSeoUrl'));
-        $oEncoder->expects($this->once())->method('_trimUrl')->with($this->equalTo('testAltUri'))->will($this->returnValue('testTrimmedUrl'));
-        $oEncoder->expects($this->once())->method('_getAltUri')->with($this->equalTo($sAltObjectId))->will($this->returnValue('testAltUri'));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with(
+        $oEncoder->expects($this->once())->method('trimUrl')->with($this->equalTo('testAltUri'))->will($this->returnValue('testTrimmedUrl'));
+        $oEncoder->expects($this->once())->method('getAltUri')->with($this->equalTo($sAltObjectId))->will($this->returnValue('testAltUri'));
+        $oEncoder->expects($this->once())->method('saveToDb')->with(
             $this->equalTo($sType),
             $this->equalTo($sObjectId),
             $this->equalTo($sStdUrl),
@@ -152,7 +152,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder->setPrefix("-");
         $oEncoder->setReservedWords(explode(" ", $sChars));
 
-        $this->assertEquals("http/www+oxideshop+com/", $oEncoder->_prepareUri("http://www!oxideshop~com"));
+        $this->assertEquals("http/www+oxideshop+com/", $oEncoder->prepareUri("http://www!oxideshop~com"));
     }
 
     /**
@@ -166,7 +166,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder->setPrefix("-");
         $oEncoder->setReservedWords(array('-'));
 
-        $this->assertEquals("-+-/", $oEncoder->_prepareUri("-"));
+        $this->assertEquals("-+-/", $oEncoder->prepareUri("-"));
     }
 
     /**
@@ -330,8 +330,8 @@ class SeoEncoderTest extends \OxidTestCase
     {
         $sSeoUrl = "seourl/";
         $oEncoder = oxNew('oxSeoEncoder');
-        $this->assertEquals($sSeoUrl, $oEncoder->_processSeoUrl($sSeoUrl, null, 1, true));
-        $this->assertEquals("en/" . $sSeoUrl, $oEncoder->_processSeoUrl($sSeoUrl, null, 1, false));
+        $this->assertEquals($sSeoUrl, $oEncoder->processSeoUrl($sSeoUrl, null, 1, true));
+        $this->assertEquals("en/" . $sSeoUrl, $oEncoder->processSeoUrl($sSeoUrl, null, 1, false));
     }
 
     public function testLanguagePrefixForSeoUrlForDe()
@@ -524,16 +524,15 @@ class SeoEncoderTest extends \OxidTestCase
 
     public function testGetReservedEntryKeys()
     {
-        oxTestModules::publicize('oxSeoEncoder', '_getReservedEntryKeys');
         oxTestModules::addFunction('oxSeoEncoder', 'setREKCache', '{ oxSeoEncoder::$_aReservedEntryKeys = $aA[0]; }');
         $oE = oxNew('oxSeoEncoder');
 
         $oE->setREKCache(array('arraa'));
-        $this->assertEquals(array('arraa'), $oE->p_getReservedEntryKeys());
+        $this->assertEquals(array('arraa'), $oE->getReservedEntryKeys());
 
         $oE->setREKCache(null);
-        $this->assertTrue(is_array($oE->p_getReservedEntryKeys()));
-        $this->assertTrue(count($oE->p_getReservedEntryKeys()) > 10);
+        $this->assertTrue(is_array($oE->getReservedEntryKeys()));
+        $this->assertTrue(count($oE->getReservedEntryKeys()) > 10);
     }
 
     public function testGetFullUrl()
@@ -546,7 +545,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getConfig'), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertEquals('PROCurl/seouri/CORP', $oEncoder->_getFullUrl('seouri/', 1));
+        $this->assertEquals('PROCurl/seouri/CORP', $oEncoder->getFullUrl('seouri/', 1));
     }
 
     public function testSettingEmptyMetaDataWhileUpdatingObjectSeoInfo()
@@ -661,9 +660,9 @@ class SeoEncoderTest extends \OxidTestCase
         $sResult = "Wie-bestellen-" . str_repeat('a', 200) . '-' . str_repeat('a', 200);
 
         $oEncoder = oxNew('oxSeoEncoder');
-        $this->assertEquals($sResult, $oEncoder->_prepareTitle($sTitle));
-        $this->assertEquals($sResult, $oEncoder->_prepareTitle($sTitle, false));
-        $this->assertEquals($sResult . '-' . str_repeat('a', 200), $oEncoder->_prepareTitle($sTitle, true));
+        $this->assertEquals($sResult, $oEncoder->prepareTitle($sTitle));
+        $this->assertEquals($sResult, $oEncoder->prepareTitle($sTitle, false));
+        $this->assertEquals($sResult . '-' . str_repeat('a', 200), $oEncoder->prepareTitle($sTitle, true));
     }
 
     public function testSetIdLength()
@@ -754,16 +753,16 @@ class SeoEncoderTest extends \OxidTestCase
         $iShopId = $this->getConfig()->getBaseShopId();
         $sObjectId = md5(strtolower($iShopId . $sStdUrl));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_trimUrl', 'getDynamicObjectId', '_prepareUri', '_loadFromDb', '_copyToHistory', '_processSeoUrl', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_trimUrl')->with($this->equalTo($sStdUrl))->will($this->returnValue($sStdUrl));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('trimUrl', 'getDynamicObjectId', 'prepareUri', 'loadFromDb', 'copyToHistory', 'processSeoUrl', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('trimUrl')->with($this->equalTo($sStdUrl))->will($this->returnValue($sStdUrl));
         $oEncoder->expects($this->once())->method('getDynamicObjectId')->with($this->equalTo($iShopId), $this->equalTo($sStdUrl))->will($this->returnValue($sObjectId));
-        $oEncoder->expects($this->once())->method('_prepareUri')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue('oldseourl'));
-        $oEncoder->expects($this->once())->method('_copyToHistory')->with($this->equalTo($sObjectId), $this->equalTo($iShopId), $this->equalTo($iLang))->will($this->returnValue('dynamic'));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo($sSeoUrl), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue($sSeoUrl));
-        $oEncoder->expects($this->once())->method('_saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($sStdUrl), $this->equalTo($sSeoUrl), $this->equalTo($iLang), $this->equalTo($iShopId));
+        $oEncoder->expects($this->once())->method('prepareUri')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue('oldseourl'));
+        $oEncoder->expects($this->once())->method('copyToHistory')->with($this->equalTo($sObjectId), $this->equalTo($iShopId), $this->equalTo($iLang))->will($this->returnValue('dynamic'));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo($sSeoUrl), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue($sSeoUrl));
+        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($sStdUrl), $this->equalTo($sSeoUrl), $this->equalTo($iLang), $this->equalTo($iShopId));
 
-        $this->assertEquals($sSeoUrl, $oEncoder->_getDynamicUri($sStdUrl, $sSeoUrl, $iLang));
+        $this->assertEquals($sSeoUrl, $oEncoder->getDynamicUri($sStdUrl, $sSeoUrl, $iLang));
     }
 
     public function testGetDynamicUriExistingCallSeq()
@@ -774,15 +773,15 @@ class SeoEncoderTest extends \OxidTestCase
         $iShopId = $this->getConfig()->getBaseShopId();
         $sObjectId = md5(strtolower($iShopId . $sStdUrl));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_trimUrl', '_prepareUri', '_loadFromDb', '_copyToHistory', '_getUniqueSeoUrl', '_saveToDb', '_processSeoUrl'));
-        $oEncoder->expects($this->atLeastOnce())->method('_trimUrl')->with($this->equalTo($sStdUrl))->will($this->returnValue($sStdUrl));
-        $oEncoder->expects($this->once())->method('_prepareUri')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue($sSeoUrl));
-        $oEncoder->expects($this->never())->method('_copyToHistory');
-        $oEncoder->expects($this->never())->method('_processSeoUrl');
-        $oEncoder->expects($this->never())->method('_saveToDb');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('trimUrl', 'prepareUri', 'loadFromDb', 'copyToHistory', 'getUniqueSeoUrl', 'saveToDb', 'processSeoUrl'));
+        $oEncoder->expects($this->atLeastOnce())->method('trimUrl')->with($this->equalTo($sStdUrl))->will($this->returnValue($sStdUrl));
+        $oEncoder->expects($this->once())->method('prepareUri')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($sObjectId), $this->equalTo($iLang))->will($this->returnValue($sSeoUrl));
+        $oEncoder->expects($this->never())->method('copyToHistory');
+        $oEncoder->expects($this->never())->method('processSeoUrl');
+        $oEncoder->expects($this->never())->method('saveToDb');
 
-        $this->assertEquals($sSeoUrl, $oEncoder->_getDynamicUri($sStdUrl, $sSeoUrl, $iLang));
+        $this->assertEquals($sSeoUrl, $oEncoder->getDynamicUri($sStdUrl, $sSeoUrl, $iLang));
     }
 
     //
@@ -790,14 +789,14 @@ class SeoEncoderTest extends \OxidTestCase
     //
     public function testGetStaticUrl()
     {
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_loadFromDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('static'), $this->equalTo(md5('1xxx')), $this->equalTo(1));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('loadFromDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('static'), $this->equalTo(md5('1xxx')), $this->equalTo(1));
         $oEncoder->getStaticUrl('xxx', 1, 1);
         // default params:
         $shop = ShopIdCalculator::BASE_SHOP_ID;
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getStaticUri', '_getFullUrl'));
-        $oEncoder->expects($this->once())->method('_getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
-        $oEncoder->expects($this->once())->method('_getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getStaticUri', 'getFullUrl'));
+        $oEncoder->expects($this->once())->method('getStaticUri')->with($this->equalTo('xxx'), $this->equalTo($shop), $this->equalTo(oxRegistry::getLang()->getEditLanguage()))->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->once())->method('getFullUrl')->with($this->equalTo('seourl'))->will($this->returnValue('fullseourl'));
         $this->assertEquals('fullseourl', $oEncoder->getStaticUrl('xxx'));
     }
 
@@ -806,9 +805,9 @@ class SeoEncoderTest extends \OxidTestCase
     //
     public function testGetStaticUrlCallsGetFullUrlWithLangParam()
     {
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getStaticUri', '_getFullUrl'));
-        $oEncoder->expects($this->any())->method('_getStaticUri')->will($this->returnValue('seourl'));
-        $oEncoder->expects($this->any())->method('_getFullUrl')->with($this->equalTo('seourl'), $this->equalTo(1));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getStaticUri', 'getFullUrl'));
+        $oEncoder->expects($this->any())->method('getStaticUri')->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->any())->method('getFullUrl')->with($this->equalTo('seourl'), $this->equalTo(1));
         $oEncoder->getStaticUrl('xxx', 1);
     }
 
@@ -834,8 +833,8 @@ class SeoEncoderTest extends \OxidTestCase
                values ( '$sObjectId', '{$iShopId}', {$iLang}, '{$sKeywords}', '{$sDescription}' ) ";
         oxDb::getDb()->Execute($sQ);
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_saveToDb', '_processSeoUrl', '_trimUrl'));
-        $oEncoder->expects($this->exactly(1))->method('_saveToDb')->with(
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('saveToDb', 'processSeoUrl', 'trimUrl'));
+        $oEncoder->expects($this->exactly(1))->method('saveToDb')->with(
             $this->equalTo('ggg'),
             $this->equalTo('xxx'),
             $this->equalTo('stdurl'),
@@ -844,8 +843,8 @@ class SeoEncoderTest extends \OxidTestCase
             $this->equalTo('yyy'),
             $this->equalTo('1')
         )->will($this->returnValue(null));
-        $oEncoder->expects($this->once())->method('_processSeoUrl')->with($this->equalTo($sSeoUrl . "t"))->will($this->returnValue($sSeoUrl . "u"));
-        $oEncoder->expects($this->once())->method('_trimUrl')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl . "t"));
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo($sSeoUrl . "t"))->will($this->returnValue($sSeoUrl . "u"));
+        $oEncoder->expects($this->once())->method('trimUrl')->with($this->equalTo($sSeoUrl))->will($this->returnValue($sSeoUrl . "t"));
 
         $oEncoder->addSeoEntry($sObjectId, $iShopId, $iLang, $sStdUrl, $sSeoUrl, $sType, $blFixed, $sKeywords, $sDescription);
     }
@@ -884,9 +883,9 @@ class SeoEncoderTest extends \OxidTestCase
                             'oxseo__oxobjectid' => '-1'
         );
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_processSeoUrl', '_trimUrl'));
-        $oEncoder->expects($this->exactly(2))->method('_processSeoUrl')->will($this->returnValue(null));
-        $oEncoder->expects($this->exactly(4))->method('_trimUrl')->will($this->returnValue('notnull'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('processSeoUrl', 'trimUrl'));
+        $oEncoder->expects($this->exactly(2))->method('processSeoUrl')->will($this->returnValue(null));
+        $oEncoder->expects($this->exactly(4))->method('trimUrl')->will($this->returnValue('notnull'));
 
         $this->aSQL = array();
         $this->aRET = array();
@@ -911,9 +910,9 @@ class SeoEncoderTest extends \OxidTestCase
 
         $expectedSql = "delete from oxseo where oxobjectid in ( '$objectId', '" . md5(strtolower('1' . $standardUrl)) . "' )";
 
-        $seoEncoderMock = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getUniqueSeoUrl', '_trimUrl', 'executeDatabaseQuery'));
-        $seoEncoderMock->expects($this->any())->method('_getUniqueSeoUrl')->will($this->returnValue(0));
-        $seoEncoderMock->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue($standardUrl));
+        $seoEncoderMock = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getUniqueSeoUrl', 'trimUrl', 'executeDatabaseQuery'));
+        $seoEncoderMock->expects($this->any())->method('getUniqueSeoUrl')->will($this->returnValue(0));
+        $seoEncoderMock->expects($this->atLeastOnce())->method('trimUrl')->will($this->returnValue($standardUrl));
         $seoEncoderMock->expects($this->atLeastOnce())->method('executeDatabaseQuery')->with($this->equalTo($expectedSql));
 
         $seoEncoderMock->encodeStaticUrls($staticUrl, 1, 0);
@@ -929,9 +928,9 @@ class SeoEncoderTest extends \OxidTestCase
                        "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '0', 'yyy', 'yyy', 'static' ), " .
                        "( '" . md5('1yyy') . "', '" . md5('yyy') . "', '1', '1', 'yyy', 'yyy', 'static' ) ";
 
-        $seoEncoderMock = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getUniqueSeoUrl', '_trimUrl', 'executeDatabaseQuery'));
-        $seoEncoderMock->expects($this->exactly(2))->method('_getUniqueSeoUrl')->will($this->returnValue('yyy'));
-        $seoEncoderMock->expects($this->atLeastOnce())->method('_trimUrl')->will($this->returnValue('yyy'));
+        $seoEncoderMock = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getUniqueSeoUrl', 'trimUrl', 'executeDatabaseQuery'));
+        $seoEncoderMock->expects($this->exactly(2))->method('getUniqueSeoUrl')->will($this->returnValue('yyy'));
+        $seoEncoderMock->expects($this->atLeastOnce())->method('trimUrl')->will($this->returnValue('yyy'));
         $seoEncoderMock->expects($this->once())->method('executeDatabaseQuery')->with($this->equalTo($expectedSql));
 
         $seoEncoderMock->encodeStaticUrls($staticUrl, 1, 0);
@@ -1024,7 +1023,7 @@ class SeoEncoderTest extends \OxidTestCase
         $this->assertTrue('1' == $oDB->getOne('select oxexpired from oxseo where oxobjectid = "999"'));
 
         $oEncoder = oxNew('oxSeoEncoder');
-        $oEncoder->_saveToDb("oxarticle", '999', 'stdurt', 'seourl', '999', '999');
+        $oEncoder->saveToDb("oxarticle", '999', 'stdurt', 'seourl', '999', '999');
 
         $this->assertTrue('0' == $oDB->getOne('select oxexpired from oxseo where oxobjectid = "999"'));
     }
@@ -1076,7 +1075,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         $oEncoder = oxNew('oxSeoEncoder');
         ;
-        $oEncoder->_saveToDb('oxarticle', $sObjectId, $sStdUrl3, $sSeoUrl3, 0, $iShopId, null, $sRootId3);
+        $oEncoder->saveToDb('oxarticle', $sObjectId, $sStdUrl3, $sSeoUrl3, 0, $iShopId, null, $sRootId3);
 
         $sSql = " select oxobjectid, oxparams, oxexpired from oxseo where oxobjectid= '{$sObjectId}' and oxexpired = '0' ";
         $aRows = $oDb->getAll($sSql);
@@ -1096,7 +1095,7 @@ class SeoEncoderTest extends \OxidTestCase
         );
 
         $oEncoder = oxNew('oxSeoEncoder');
-        $oEncoder->_saveToDb("oxarticle", '999', 'newstdurt', 'seourl', '999', '999');
+        $oEncoder->saveToDb("oxarticle", '999', 'newstdurt', 'seourl', '999', '999');
 
         $this->assertTrue('newstdurt' == $oDB->getOne('select oxstdurl from oxseo where oxobjectid = "999"'));
         $this->assertTrue('1' == $oDB->getOne('select 1 from oxseohistory where oxobjectid = "999"'));
@@ -1111,7 +1110,7 @@ class SeoEncoderTest extends \OxidTestCase
         );
 
         $oEncoder = oxNew('oxSeoEncoder');
-        $oEncoder->_copyToHistory('999', '999', '999');
+        $oEncoder->copyToHistory('999', '999', '999');
 
         // testing if record is stored to db
         $this->assertTrue('1' == $oDB->getOne('select 1 from oxseohistory where oxobjectid = "999" and oxident = MD5( LOWER( "seourl" ) ) and oxshopid = "999" and oxlang = "999" '));
@@ -1160,11 +1159,11 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = new modSeoEncoder();
         $sTitleIn = '///AA keyword1 keyword2 ä  ö ü Ü Ä Ö ß' . str_repeat(' a', 300);
         $oEncoder->setSeparator();
-        $sTitleOut = $oEncoder->p_prepareTitle($sTitleIn);
+        $sTitleOut = $oEncoder->prepareTitle($sTitleIn);
 
         $this->assertEquals('AA-keyword1-keyword2-ae-oe-ue-Ue-Ae-Oe-ss' . str_repeat('-a', 107), $sTitleOut);
 
-        $sTitleOut = $oEncoder->p_prepareTitle('');
+        $sTitleOut = $oEncoder->prepareTitle('');
         $this->assertEquals('oxid', $sTitleOut);
     }
 
@@ -1188,24 +1187,24 @@ class SeoEncoderTest extends \OxidTestCase
             // starting test
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1, 0)');
             $oEncoder = oxNew('oxSeoEncoder');
-            $this->assertFalse($oEncoder->_isFixed('static', 'test', 0, 1));
+            $this->assertFalse($oEncoder->isFixed('static', 'test', 0, 1));
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1, 1)');
 
             oxSeoEncoderHelper::cleanup();
 
             $oEncoder = oxNew('oxSeoEncoder');
-            $this->assertTrue($oEncoder->_isFixed('static', 'test', 0, 1));
+            $this->assertTrue($oEncoder->isFixed('static', 'test', 0, 1));
 
             oxSeoEncoderHelper::cleanup();
 
             $oEncoder = oxNew('oxSeoEncoder');
-            $this->assertTrue($oEncoder->_isFixed('static', 'test', 0, 1, 0, 0));
+            $this->assertTrue($oEncoder->isFixed('static', 'test', 0, 1, 0, 0));
             $oDb->Execute('delete from oxseo where oxident="test"');
 
             oxSeoEncoderHelper::cleanup();
 
             $oEncoder = oxNew('oxSeoEncoder');
-            $this->assertFalse($oEncoder->_isFixed('static', 'test', 0, 1));
+            $this->assertFalse($oEncoder->isFixed('static', 'test', 0, 1));
             // test finished
         } catch (Exception $e) {
             // will be thrown again soon
@@ -1218,9 +1217,9 @@ class SeoEncoderTest extends \OxidTestCase
 
     public function testLoadFromDbStaticUrl()
     {
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", "_saveInCache"));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", "saveInCache"));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
         $oDb = oxDb::getDb();
         $e = null;
@@ -1228,7 +1227,7 @@ class SeoEncoderTest extends \OxidTestCase
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired) values ("test", "test", 1, 0, "stdurl", "seourl", "static", 1)');
             // starting test
             $this->assertEquals('1', $oDb->getOne('select oxexpired from oxseo where oxobjectid="test"'));
-            $this->assertEquals('seourl', $oEncoder->_loadFromDb('static', 'test', 0, 1));
+            $this->assertEquals('seourl', $oEncoder->loadFromDb('static', 'test', 0, 1));
             $this->assertEquals('0', $oDb->getOne('select oxexpired from oxseo where oxobjectid="test"'));
             // test finished
         } catch (Exception $e) {
@@ -1242,17 +1241,17 @@ class SeoEncoderTest extends \OxidTestCase
 
     public function testLoadFromDb111()
     {
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", '_saveInCache'));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", 'saveInCache'));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
         $oDb = oxDb::getDb();
         $e = null;
         try {
             $oDb->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype) values ("test", "test", 1, 0, "stdurl", "seourl", "oxarticle")');
             // starting test
-            $this->assertEquals('seourl', $oEncoder->_loadFromDb('oxarticle', 'test', 0, 1));
-            $this->assertSame(false, $oEncoder->_loadFromDb('oxarticle', 'test', 0, 2));
+            $this->assertEquals('seourl', $oEncoder->loadFromDb('oxarticle', 'test', 0, 1));
+            $this->assertSame(false, $oEncoder->loadFromDb('oxarticle', 'test', 0, 2));
             // test finished
         } catch (Exception $e) {
             // will be thrown again soon
@@ -1268,11 +1267,11 @@ class SeoEncoderTest extends \OxidTestCase
     {
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired ) values ("test", "test", 1, 0, "stdurl", "seourl", "oxarticle", "1" )');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", '_saveInCache'));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", 'saveInCache'));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
-        $this->assertFalse($oEncoder->_loadFromDb('oxarticle', 'test', 0, 1));
+        $this->assertFalse($oEncoder->loadFromDb('oxarticle', 'test', 0, 1));
     }
 
     // expired seo entry, but fixed and will still be used
@@ -1280,11 +1279,11 @@ class SeoEncoderTest extends \OxidTestCase
     {
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed) values ("test", "test", 1, 0, "stdurl", "seourl", "oxarticle", "1", "1")');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", '_saveInCache'));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", 'saveInCache'));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
-        $this->assertEquals('seourl', $oEncoder->_loadFromDb('oxarticle', 'test', 0, 1));
+        $this->assertEquals('seourl', $oEncoder->loadFromDb('oxarticle', 'test', 0, 1));
     }
 
     public function testloadFromDbWithStrictParamsCheck()
@@ -1292,11 +1291,11 @@ class SeoEncoderTest extends \OxidTestCase
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed, oxparams) values ("test", "test1", 1, 0, "stdurl", "seourl2", "oxarticle", "1", "1", "param1")');
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed, oxparams) values ("test", "test2", 1, 0, "stdurl", "seourl1", "oxarticle", "1", "1", "param2")');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", '_saveInCache'));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", 'saveInCache'));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
-        $this->assertEquals('seourl1', $oEncoder->_loadFromDb('oxarticle', 'test', 0, 1, 'param2'));
+        $this->assertEquals('seourl1', $oEncoder->loadFromDb('oxarticle', 'test', 0, 1, 'param2'));
     }
 
     public function testloadFromDbNoStrictParamsCheck()
@@ -1304,17 +1303,17 @@ class SeoEncoderTest extends \OxidTestCase
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed, oxparams) values ("test", "test1", 1, 0, "stdurl", "seourl", "oxarticle", "1", "1", "param2")');
         oxDb::getDb()->Execute('replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxexpired, oxfixed, oxparams) values ("test", "test2", 1, 0, "stdurl", "seourl", "oxarticle", "1", "1", "param1")');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("_loadFromCache", '_saveInCache'));
-        $oEncoder->expects($this->atLeastOnce())->method('_loadFromCache')->will($this->returnValue(false));
-        $oEncoder->expects($this->atLeastOnce())->method('_saveInCache');
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("loadFromCache", 'saveInCache'));
+        $oEncoder->expects($this->atLeastOnce())->method('loadFromCache')->will($this->returnValue(false));
+        $oEncoder->expects($this->atLeastOnce())->method('saveInCache');
 
-        $this->assertEquals('seourl', $oEncoder->_loadFromDb('oxarticle', 'test', 0, 1, 'param1', false));
+        $this->assertEquals('seourl', $oEncoder->loadFromDb('oxarticle', 'test', 0, 1, 'param1', false));
     }
 
     public function testSaveToDb()
     {
         $oEncoder = $this->getProxyClass('oxSeoEncoder');
-        $oEncoder->_saveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
+        $oEncoder->saveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
         $oDb = oxDb::getDb();
         $affectedRows = $oDb->Execute('delete from oxseo where oxobjectid="test"');
         $this->assertEquals(1, $affectedRows);
@@ -1325,9 +1324,9 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = $this->getProxyClass('oxSeoEncoder');
 
         //add entry
-        $oEncoder->_saveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
+        $oEncoder->saveToDb("static", 'test', 'http://std', 'http://seo', 0, 0);
         //override entry by using the same url
-        $oEncoder->_saveToDb("static", 'testOtherId', 'http://std', 'http://seo', 0, 0);
+        $oEncoder->saveToDb("static", 'testOtherId', 'http://std', 'http://seo', 0, 0);
 
         $oDb = oxDb::getDb();
 
@@ -1353,33 +1352,32 @@ class SeoEncoderTest extends \OxidTestCase
         $oE = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("getConfig"), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertEquals('aa?a=2', $oE->_trimUrl($sBaseUrl . 'aa?sid=as23.&a=2', 0));
-        $this->assertEquals('aa', $oE->_trimUrl($sBaseUrl . 'aa?sid=as23.', 1));
-        $this->assertEquals('aa', $oE->_trimUrl($sBaseUrl . 'aa?sid=as23.&', 1));
+        $this->assertEquals('aa?a=2', $oE->trimUrl($sBaseUrl . 'aa?sid=as23.&a=2', 0));
+        $this->assertEquals('aa', $oE->trimUrl($sBaseUrl . 'aa?sid=as23.', 1));
+        $this->assertEquals('aa', $oE->trimUrl($sBaseUrl . 'aa?sid=as23.&', 1));
 
-        $this->assertEquals('aa?a=2', $oE->_trimUrl($sBaseUrl . 'aa?force_sid=as23.&a=2', 0));
-        $this->assertEquals('aa', $oE->_trimUrl($sBaseUrl . 'aa?force_sid=as23.', 1));
-        $this->assertEquals('aa', $oE->_trimUrl($sBaseUrl . 'aa?force_sid=as23.&', 1));
-        $this->assertEquals('aa?force_something=1', $oE->_trimUrl($sBaseUrl . 'aa?force_something=1&sid=as23.&', 1));
-        $this->assertEquals('index.php?cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', $oE->_trimUrl($sBaseUrl . 'index.php?force_sid=as23&cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', 1));
+        $this->assertEquals('aa?a=2', $oE->trimUrl($sBaseUrl . 'aa?force_sid=as23.&a=2', 0));
+        $this->assertEquals('aa', $oE->trimUrl($sBaseUrl . 'aa?force_sid=as23.', 1));
+        $this->assertEquals('aa', $oE->trimUrl($sBaseUrl . 'aa?force_sid=as23.&', 1));
+        $this->assertEquals('aa?force_something=1', $oE->trimUrl($sBaseUrl . 'aa?force_something=1&sid=as23.&', 1));
+        $this->assertEquals('index.php?cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', $oE->trimUrl($sBaseUrl . 'index.php?force_sid=as23&cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', 1));
         //#M1423: Problems with article seo url, if admin is ssl
-        $this->assertEquals('index.php?cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', $oE->_trimUrl($sBaseUrl . 'index.php?force_admin_sid=as23&cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', 1));
+        $this->assertEquals('index.php?cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', $oE->trimUrl($sBaseUrl . 'index.php?force_admin_sid=as23&cl=details&amp;anid=762b1c44c95cd81dd1396b089982a568', 1));
 
-        $this->assertEquals('aa?a=2', $oE->_trimUrl($sSslUrl . 'aa?sid=as23.&a=2', 0));
-        $this->assertEquals('aa', $oE->_trimUrl($sSslUrl . 'aa?sid=as23.', 1));
-        $this->assertEquals('aa', $oE->_trimUrl($sSslUrl . 'aa?sid=as23.&', 1));
+        $this->assertEquals('aa?a=2', $oE->trimUrl($sSslUrl . 'aa?sid=as23.&a=2', 0));
+        $this->assertEquals('aa', $oE->trimUrl($sSslUrl . 'aa?sid=as23.', 1));
+        $this->assertEquals('aa', $oE->trimUrl($sSslUrl . 'aa?sid=as23.&', 1));
 
-        $this->assertEquals('aa?a=2', $oE->_trimUrl($sSslUrl . 'aa?cur=5&a=2', 0));
+        $this->assertEquals('aa?a=2', $oE->trimUrl($sSslUrl . 'aa?cur=5&a=2', 0));
 
         // checking length
         $sUrl = 'aa?a=' . str_repeat("1", 3000);
-        $this->assertEquals(substr($sUrl, 0, 2048), $oE->_trimUrl($sUrl, 0));
+        $this->assertEquals(substr($sUrl, 0, 2048), $oE->trimUrl($sUrl, 0));
     }
 
     public function testSaveToDbCreatesGoodMd5()
     {
-        oxTestModules::publicize('oxSeoEncoder', '_saveToDb');
-        oxTestModules::addFunction('oxSeoEncoder', '_trimUrl', '{return ltrim($aA[0], "u");}');
+        oxTestModules::addFunction('oxSeoEncoder', 'trimUrl', '{return ltrim($aA[0], "u");}');
         $oE = oxNew('oxSeoEncoder');
         $this->aSQL = array();
         $oDb = modDB::getInstance();
@@ -1387,7 +1385,7 @@ class SeoEncoderTest extends \OxidTestCase
 
         try {
             $goodMd5 = '241b4e9d8fe73920dcd544dbabfa0cb1';
-            $oE->p_saveToDb('test', 'test', 'stdurl', 'uWohnen/Lampen/', 0, 0);
+            $oE->saveToDb('test', 'test', 'stdurl', 'uWohnen/Lampen/', 0, 0);
 
             $sQ = "replace into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxkeywords, oxdescription, oxparams) values ( 'test', '$goodMd5', '0', 0, 'stdurl', 'Wohnen/Lampen/', 'test', '0', '0', '', '', \"\" )";
             $sQ = preg_replace('/\W/', '', $sQ);
@@ -1410,28 +1408,27 @@ class SeoEncoderTest extends \OxidTestCase
         $oDb = oxDb::getDb();
         $oEncoder = oxNew('oxseoencoder');
 
-        $this->assertEquals('uaaA/', $oEncoder->_getUniqueSeoUrl('uaaA'));
-        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->_getSeoIdent($oEncoder->_trimUrl('uaaa/')) . "', '$iShopId', 0, 'oxcategory' )");
+        $this->assertEquals('uaaA/', $oEncoder->getUniqueSeoUrl('uaaA'));
+        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->getSeoIdent($oEncoder->trimUrl('uaaa/')) . "', '$iShopId', 0, 'oxcategory' )");
 
-        $this->assertEquals('uaaa-oxid/', $oEncoder->_getUniqueSeoUrl('uaaa'));
-        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->_getSeoIdent($oEncoder->_trimUrl('uaaa-oxid/')) . "', '$iShopId', 0, 'oxcategory' )");
-        $this->assertEquals('uaaa-oxid-1/', $oEncoder->_getUniqueSeoUrl('uaaa'));
-        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->_getSeoIdent($oEncoder->_trimUrl('uaaa-oxid-1/')) . "', '$iShopId', 0, 'oxcategory' )");
-        $this->assertEquals('uaaa-oxid-2/', $oEncoder->_getUniqueSeoUrl('uaaa'));
+        $this->assertEquals('uaaa-oxid/', $oEncoder->getUniqueSeoUrl('uaaa'));
+        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->getSeoIdent($oEncoder->trimUrl('uaaa-oxid/')) . "', '$iShopId', 0, 'oxcategory' )");
+        $this->assertEquals('uaaa-oxid-1/', $oEncoder->getUniqueSeoUrl('uaaa'));
+        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->getSeoIdent($oEncoder->trimUrl('uaaa-oxid-1/')) . "', '$iShopId', 0, 'oxcategory' )");
+        $this->assertEquals('uaaa-oxid-2/', $oEncoder->getUniqueSeoUrl('uaaa'));
 
-        $this->assertEquals('uaaa.html', $oEncoder->_getUniqueSeoUrl('uaaa.html'));
-        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->_getSeoIdent($oEncoder->_trimUrl('uaaa.html')) . "', '$iShopId', 0, 'oxcategory' )");
-        $this->assertEquals('uaaa-oxid.html', $oEncoder->_getUniqueSeoUrl('uaaa.html'));
+        $this->assertEquals('uaaa.html', $oEncoder->getUniqueSeoUrl('uaaa.html'));
+        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->getSeoIdent($oEncoder->trimUrl('uaaa.html')) . "', '$iShopId', 0, 'oxcategory' )");
+        $this->assertEquals('uaaa-oxid.html', $oEncoder->getUniqueSeoUrl('uaaa.html'));
 
-        $this->assertEquals('uaaa.htm', $oEncoder->_getUniqueSeoUrl('uaaa.htm'));
-        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->_getSeoIdent($oEncoder->_trimUrl('uaaa.htm')) . "', '$iShopId', 0, 'oxcategory' )");
-        $this->assertEquals('uaaa-oxid.htm', $oEncoder->_getUniqueSeoUrl('uaaa.htm'));
+        $this->assertEquals('uaaa.htm', $oEncoder->getUniqueSeoUrl('uaaa.htm'));
+        $oDb->execute("insert into oxseo (`oxobjectid`, `oxident`, `oxshopid`, `oxlang`, `oxtype` ) values( '" . md5(uniqid(rand(), true)) . "', '" . $oEncoder->getSeoIdent($oEncoder->trimUrl('uaaa.htm')) . "', '$iShopId', 0, 'oxcategory' )");
+        $this->assertEquals('uaaa-oxid.htm', $oEncoder->getUniqueSeoUrl('uaaa.htm'));
     }
 
     public function testPrepareUriFiltersRootFilesAndReservedKeywords()
     {
-        oxTestModules::publicize('oxSeoEncoder', '_prepareUri');
-        oxTestModules::addFunction('oxSeoEncoder', '_trimUrl', '{return ltrim($aA[0], "u");}');
+        oxTestModules::addFunction('oxSeoEncoder', 'trimUrl', '{return ltrim($aA[0], "u");}');
 
         $oDb = modDB::getInstance();
         $oDb->addClassFunction('GetOne', array($this, '__SaveToDbCreatesGoodMd5Callback'));
@@ -1441,48 +1438,48 @@ class SeoEncoderTest extends \OxidTestCase
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('admin-oxid/aa.html', $oE->p_prepareUri('admin/aa.html'), '');
+        $this->assertEquals('admin-oxid/aa.html', $oE->prepareUri('admin/aa.html'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('index-php/aa/', $oE->p_prepareUri('index.php/aa'), '');
+        $this->assertEquals('index-php/aa/', $oE->prepareUri('index.php/aa'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('index-php/', $oE->p_prepareUri('index.php'), '');
+        $this->assertEquals('index-php/', $oE->prepareUri('index.php'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/index-oxid/aa.html', $oE->p_prepareUri('/index/aa.html'), '');
+        $this->assertEquals('/index-oxid/aa.html', $oE->prepareUri('/index/aa.html'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/index-php/aa.html', $oE->p_prepareUri('/index.php/aa.html'), '');
+        $this->assertEquals('/index-php/aa.html', $oE->prepareUri('/index.php/aa.html'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/index-oxid/', $oE->p_prepareUri('/index/'), '');
+        $this->assertEquals('/index-oxid/', $oE->prepareUri('/index/'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/index-oxid/', $oE->p_prepareUri('/index'), '');
+        $this->assertEquals('/index-oxid/', $oE->prepareUri('/index'), '');
 
         $oE = oxNew('oxseoencoder');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('index-oxid/', $oE->p_prepareUri('--index'), '');
+        $this->assertEquals('index-oxid/', $oE->prepareUri('--index'), '');
 
         $oE = oxNew('oxseoencoder');
         $oE->setSeparator('/');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/index_oxid/aa.html', $oE->p_prepareUri('/index/aa.html'), '');
+        $this->assertEquals('/index_oxid/aa.html', $oE->prepareUri('/index/aa.html'), '');
 
         $cl = oxTestModules::addFunction('oxSeoEncoder', 'clean_aReservedEntryKeys', '{oxSeoEncoder::$_aReservedEntryKeys = null;}');
         $oE = new $cl();
@@ -1491,8 +1488,8 @@ class SeoEncoderTest extends \OxidTestCase
         $oE->setSeparator('+');
         $this->aSQL = array();
         $this->aRET = array(false);
-        $this->assertEquals('/keyword1+oxid/keyword1+s+keyword2/aa+keyword1.html', $oE->p_prepareUri('/keyword1/keyword1-s.keyword2/aa-keyword1.html'), '');
-        $this->assertEquals('/keyword2+oxid/', $oE->p_prepareUri('/keyword2'), '');
+        $this->assertEquals('/keyword1+oxid/keyword1+s+keyword2/aa+keyword1.html', $oE->prepareUri('/keyword1/keyword1-s.keyword2/aa-keyword1.html'), '');
+        $this->assertEquals('/keyword2+oxid/', $oE->prepareUri('/keyword2'), '');
     }
 
     public function testGetMetaData()
@@ -1510,9 +1507,9 @@ class SeoEncoderTest extends \OxidTestCase
     {
         $oE = oxNew('oxSeoEncoder');
 
-        $this->assertEquals(md5('aaa'), $oE->_getSeoIdent('aAa', 0));
-        $this->assertEquals(md5('a1aa'), $oE->_getSeoIdent('a1Aa', 1));
-        $this->assertEquals(md5(''), $oE->_getSeoIdent('', 1));
+        $this->assertEquals(md5('aaa'), $oE->getSeoIdent('aAa', 0));
+        $this->assertEquals(md5('a1aa'), $oE->getSeoIdent('a1Aa', 1));
+        $this->assertEquals(md5(''), $oE->getSeoIdent('', 1));
     }
 
 
@@ -1530,8 +1527,8 @@ class SeoEncoderTest extends \OxidTestCase
         $sStdUrl = 'stdurl';
         $sType = 'xxx';
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_loadFromDb', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('loadFromDb', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')
             ->with(
                 $this->equalTo($sType),
                 $this->equalTo($oObject->getId()),
@@ -1541,9 +1538,9 @@ class SeoEncoderTest extends \OxidTestCase
             )
             ->will($this->returnValue($sSeoUrl));
 
-        $oEncoder->expects($this->never())->method('_saveToDb');
+        $oEncoder->expects($this->never())->method('saveToDb');
 
-        $this->assertEquals($sSeoUrl, $oEncoder->_getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams));
+        $this->assertEquals($sSeoUrl, $oEncoder->getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams));
     }
 
     public function testGetGetPageUriWithLangParam()
@@ -1560,8 +1557,8 @@ class SeoEncoderTest extends \OxidTestCase
         $sStdUrl = 'stdurl';
         $sType = 'xxx';
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_loadFromDb', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('loadFromDb', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')
             ->with(
                 $this->equalTo($sType),
                 $this->equalTo($oObject->getId()),
@@ -1571,9 +1568,9 @@ class SeoEncoderTest extends \OxidTestCase
             )
             ->will($this->returnValue($sSeoUrl));
 
-        $oEncoder->expects($this->never())->method('_saveToDb');
+        $oEncoder->expects($this->never())->method('saveToDb');
 
-        $this->assertEquals($sSeoUrl, $oEncoder->_getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams, $iLang));
+        $this->assertEquals($sSeoUrl, $oEncoder->getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams, $iLang));
     }
 
     public function testGetPageUriEntryDoesNotExistInDbAndWillBeCreated()
@@ -1592,8 +1589,8 @@ class SeoEncoderTest extends \OxidTestCase
 
         $oDb = oxDb::getDb();
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_loadFromDb', '_processSeoUrl', '_saveToDb'));
-        $oEncoder->expects($this->once())->method('_loadFromDb')
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('loadFromDb', 'processSeoUrl', 'saveToDb'));
+        $oEncoder->expects($this->once())->method('loadFromDb')
             ->with(
                 $this->equalTo($sType),
                 $this->equalTo($oObject->getId()),
@@ -1603,7 +1600,7 @@ class SeoEncoderTest extends \OxidTestCase
             )
             ->will($this->returnValue(false));
 
-        $oEncoder->expects($this->once())->method('_processSeoUrl')
+        $oEncoder->expects($this->once())->method('processSeoUrl')
             ->with(
                 $this->equalTo($sSeoUrl),
                 $this->equalTo($oObject->getId()),
@@ -1611,7 +1608,7 @@ class SeoEncoderTest extends \OxidTestCase
             )
             ->will($this->returnValue($sSeoUrl));
 
-        $oEncoder->expects($this->once())->method('_saveToDb')
+        $oEncoder->expects($this->once())->method('saveToDb')
             ->with(
                 $this->equalTo($sType),
                 $this->equalTo($oObject->getId()),
@@ -1623,7 +1620,7 @@ class SeoEncoderTest extends \OxidTestCase
                 $this->equalTo($sParams)
             );
 
-        $this->assertEquals($sSeoUrl, $oEncoder->_getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams));
+        $this->assertEquals($sSeoUrl, $oEncoder->getPageUri($oObject, $sType, $sStdUrl, $sSeoUrl, $sParams));
     }
 
     /**
@@ -1689,7 +1686,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('isAdmin', 'getConfig'), array(), '', false);
         $oEncoder->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oEncoder->expects($this->never())->method('getConfig');
-        $this->assertFalse($oEncoder->_getCacheKey("any"));
+        $this->assertFalse($oEncoder->getCacheKey("any"));
 
         oxSeoEncoderHelper::cleanup();
 
@@ -1704,13 +1701,13 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('isAdmin', 'getConfig'), array(), '', false);
         $oEncoder->expects($this->exactly(3))->method('isAdmin')->will($this->returnValue(false));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals(md5($sViewId) . "seo", $oEncoder->_getCacheKey("oxarticle"));
+        $this->assertEquals(md5($sViewId) . "seo", $oEncoder->getCacheKey("oxarticle"));
 
         // + cache check
-        $this->assertEquals(md5($sViewId) . "seo", $oEncoder->_getCacheKey("oxarticle"));
+        $this->assertEquals(md5($sViewId) . "seo", $oEncoder->getCacheKey("oxarticle"));
 
         // #3381
-        $this->assertEquals("any00seo", $oEncoder->_getCacheKey("any", 0, 0, ''));
+        $this->assertEquals("any00seo", $oEncoder->getCacheKey("any", 0, 0, ''));
     }
 
     /**
@@ -1725,18 +1722,18 @@ class SeoEncoderTest extends \OxidTestCase
         $sCacheIdent = "testCacheIdent";
 
         // no cache key - not saved to cache
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getCacheKey'), array(), '', false);
-        $oEncoder->expects($this->any())->method('_getCacheKey')->will($this->returnValue(false));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getCacheKey'), array(), '', false);
+        $oEncoder->expects($this->any())->method('getCacheKey')->will($this->returnValue(false));
 
-        $this->assertFalse($oEncoder->_saveInCache($sCacheIdent, $sCache, "any"));
-        $this->assertFalse($oEncoder->_loadFromCache($sCacheIdent, "any"));
+        $this->assertFalse($oEncoder->saveInCache($sCacheIdent, $sCache, "any"));
+        $this->assertFalse($oEncoder->loadFromCache($sCacheIdent, "any"));
 
         // cache key + saved to cache
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('_getCacheKey'), array(), '', false);
-        $oEncoder->expects($this->any())->method('_getCacheKey')->will($this->returnValue($sCacheKey));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getCacheKey'), array(), '', false);
+        $oEncoder->expects($this->any())->method('getCacheKey')->will($this->returnValue($sCacheKey));
 
-        $this->assertTrue($oEncoder->_saveInCache($sCacheIdent, $sCache, "any"));
-        $this->assertEquals($sCache, $oEncoder->_loadFromCache($sCacheIdent, "any"));
+        $this->assertTrue($oEncoder->saveInCache($sCacheIdent, $sCache, "any"));
+        $this->assertEquals($sCache, $oEncoder->loadFromCache($sCacheIdent, "any"));
     }
 
     /**
@@ -1752,10 +1749,10 @@ class SeoEncoderTest extends \OxidTestCase
         $oEncoder = oxNew('oxSeoEncoder');
 
         $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', true);
-        $this->assertEquals($sSeoUrlAfter, $oEncoder->_prepareUri($sSeoUrlBefore));
+        $this->assertEquals($sSeoUrlAfter, $oEncoder->prepareUri($sSeoUrlBefore));
 
         $this->getConfig()->setConfigParam('blSEOLowerCaseUrls', false);
-        $this->assertEquals($sSeoUrlBefore, $oEncoder->_prepareUri($sSeoUrlBefore));
+        $this->assertEquals($sSeoUrlBefore, $oEncoder->prepareUri($sSeoUrlBefore));
     }
 
     /**
@@ -1778,10 +1775,10 @@ class SeoEncoderTest extends \OxidTestCase
         // The addLanguageParam() method should add the language code to the uri only once irrespective of the
         // number of times the method gets called.
         // Hence calling the same method twice in the below code.
-        $sUri = $oEncoder->_prepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $sUri = $oEncoder->prepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
         $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
 
-        $sUri = $oEncoder->_prepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
+        $sUri = $oEncoder->prepareUri($oEncoder->addLanguageParam($sUrl, $baseId), $baseId);
         $this->assertEquals("en-US/Angebote/Transportcontainer-THE-BARREL.html", $sUri);
     }
 }

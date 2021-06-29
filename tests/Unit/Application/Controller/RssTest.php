@@ -28,7 +28,7 @@ class RssTest extends \OxidTestCase
     public function testProcessOutput()
     {
         $oRss = oxNew('rss');
-        $this->assertEquals("äöüÄÖÜß", $oRss->_processOutput('&auml;&ouml;&uuml;&Auml;&Ouml;&Uuml;&szlig;'));
+        $this->assertEquals("äöüÄÖÜß", $oRss->processOutput('&auml;&ouml;&uuml;&Auml;&Ouml;&Uuml;&szlig;'));
     }
 
     public function testInit()
@@ -45,7 +45,7 @@ class RssTest extends \OxidTestCase
 
     public function testGetRssFeed()
     {
-        $rssFeed = oxNew('rss')->_getRssFeed();
+        $rssFeed = oxNew('rss')->getRssFeed();
         $this->assertInstanceOf(RssFeed::class, $rssFeed);
     }
 
@@ -102,9 +102,9 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadTopInShop'));
         $oRssFeed->expects($this->once())->method('loadTopInShop');
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $oRss->topshop();
     }
@@ -137,9 +137,9 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadNewestArticles'));
         $oRssFeed->expects($this->once())->method('loadNewestArticles');
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $oRss->newarts();
     }
@@ -183,9 +183,9 @@ class RssTest extends \OxidTestCase
             $this->equalTo('x&amp;searchmanufacturer')
         );
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $oRss->searcharts();
     }
@@ -218,9 +218,9 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadBargain'));
         $oRssFeed->expects($this->once())->method('loadBargain');
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $oRss->bargain();
     }
@@ -256,9 +256,9 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadCategoryArticles'));
         $oRssFeed->expects($this->once())->method('loadCategoryArticles')->with($this->equalTo($oObj));
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $this->setRequestParameter('cat', 'x&objid');
         oxTestModules::addModuleObject('oxCategory', $oObj);
@@ -293,8 +293,8 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadRecommLists'));
         $oRssFeed->expects($this->once())->method('loadRecommLists')->with($this->equalTo($oObj));
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $this->setRequestParameter('anid', 'x&objid');
         oxTestModules::addModuleObject('oxarticle', $oObj);
@@ -330,8 +330,8 @@ class RssTest extends \OxidTestCase
         $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('loadRecommListArticles'));
         $oRssFeed->expects($this->once())->method('loadRecommListArticles')->with($this->equalTo($oObj));
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
-        $oRss->expects($this->once())->method('_getRssFeed')->will($this->returnValue($oRssFeed));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
+        $oRss->expects($this->once())->method('getRssFeed')->will($this->returnValue($oRssFeed));
 
         $this->setRequestParameter('recommid', 'x&objid');
         oxTestModules::addModuleObject('oxrecommlist', $oObj);
@@ -350,8 +350,8 @@ class RssTest extends \OxidTestCase
         $oUtils->expects($this->once())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
-        $oRss->expects($this->never())->method('_getRssFeed');
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
+        $oRss->expects($this->never())->method('getRssFeed');
 
         $this->setRequestParameter('recommid', 'x&objid');
         oxTestModules::addModuleObject('oxrecommlist', $oObj);
@@ -370,8 +370,8 @@ class RssTest extends \OxidTestCase
         $oUtils->expects($this->once())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', '_getRssFeed'));
-        $oRss->expects($this->never())->method('_getRssFeed');
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Controller\RssController::class, array('getConfig', 'getRssFeed'));
+        $oRss->expects($this->never())->method('getRssFeed');
 
         $this->setRequestParameter('anid', 'x&objid');
         oxTestModules::addModuleObject('oxarticle', $oObj);

@@ -354,6 +354,7 @@ INSERT INTO `oxcountry` (`OXID`, `OXACTIVE`, `OXTITLE`, `OXISOALPHA2`, `OXISOALP
 ('8f241f11096116744.92008092', 0, 'Nigeria', 'NG', 'NGA', '566', 'NG', 9999, 'Rest Welt', '', 'Nigeria', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f1109612dc68.63806992', 0, 'Niue', 'NU', 'NIU', '570', 'NU', 9999, 'Rest Welt', '', 'Niue', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f110961442c2.82573898', 0, 'Norfolkinsel', 'NF', 'NFK', '574', 'NF', 9999, 'Rest Welt', '', 'Norfolk Island', '', '', 'Rest World', '', '', '', '', '', 0),
+('8f241f1109533b944.50289999', 0, 'Nordirland', 'XI', 'NIR', '826', 'XI', 9999, 'EU2', '', 'Northern Ireland', '', '', 'EU2', '', '', '', '', '', 1),
 ('8f241f11096162678.71164081', 0, 'Nördliche Marianen', 'MP', 'MNP', '580', 'MP', 9999, 'Rest Welt', '', 'Northern Mariana Islands', '', '', 'Rest World', '', '', '', '', '', 0),
 ('8f241f11096176795.61257067', 0, 'Norwegen', 'NO', 'NOR', '578', 'NO', 9999, 'Rest Europa', '', 'Norway', '', '', 'Rest Europe', '', '', '', '', '', 0),
 ('8f241f1109618d825.87661926', 0, 'Oman', 'OM', 'OMN', '512', 'OM', 9999, 'Rest Welt', '', 'Oman', '', '', 'Rest World', '', '', '', '', '', 0),

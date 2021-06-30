@@ -149,12 +149,12 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("somelisttype"));
         $oDetailsView->expects($this->never())->method('getDynUrlParams');
-        $this->assertNull($oDetailsView->_getAddUrlParams());
+        $this->assertNull($oDetailsView->getAddUrlParams());
 
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('getDynUrlParams')->will($this->returnValue("searchparams"));
-        $this->assertEquals("searchparams", $oDetailsView->_getAddUrlParams());
+        $this->assertEquals("searchparams", $oDetailsView->getAddUrlParams());
     }
 
     /**
@@ -168,9 +168,9 @@ class DetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('setLinkType')->with($this->equalTo("search"));
         $oProduct->expects($this->once())->method('appendLink')->with($this->equalTo("searchparams"));
 
-        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getLinkType", "_getAddUrlParams"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getLinkType", "getAddUrlParams"));
         $oDetailsView->expects($this->once())->method('getLinkType')->will($this->returnValue("search"));
-        $oDetailsView->expects($this->once())->method('_getAddUrlParams')->will($this->returnValue("searchparams"));
+        $oDetailsView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue("searchparams"));
 
         $oDetailsView->_processProduct($oProduct);
     }

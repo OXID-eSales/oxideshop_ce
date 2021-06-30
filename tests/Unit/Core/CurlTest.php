@@ -256,13 +256,13 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_getResponseArray()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->any())->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
         $oCurl->expects($this->once())->method('getQuery');
         $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array('CURLOPT_VERBOSE' => 'rValue1')));
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
 
@@ -274,13 +274,13 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForGET()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->exactly(1))->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
         $oCurl->expects($this->never())->method('getQuery');
         $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array()));
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
         $oCurl->setMethod('GET');
@@ -293,13 +293,13 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForPOST()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->exactly(3))->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
         $oCurl->expects($this->once())->method('getQuery');
         $oCurl->expects($this->once())->method('getOptions')->will($this->returnValue(array()));
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
 
@@ -312,10 +312,10 @@ class CurlTest extends \OxidTestCase
     public function testExecute_curlError()
     {
         $this->expectException('oxException');
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOptions', '_close', '_getErrorNumber'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOptions', '_close', '_getErrorNumber'));
 
         $oCurl->expects($this->any())->method('_setOptions');
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(1));
         $oCurl->expects($this->once())->method('_close');
 
@@ -327,7 +327,7 @@ class CurlTest extends \OxidTestCase
      */
     public function testGetStatusCode()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute"));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl"));
 
         $this->assertSame(null, $oCurl->getStatusCode());
 
@@ -373,8 +373,8 @@ class CurlTest extends \OxidTestCase
 
     public function testSimplePOSTCall()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber'));
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
         $oCurl->expects($this->exactly(5))->method('_setOpt');
@@ -389,8 +389,8 @@ class CurlTest extends \OxidTestCase
 
     public function testSimpleGETCall()
     {
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber'));
-        $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("executeCurl", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl->expects($this->once())->method('executeCurl')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
         $oCurl->expects($this->exactly(5))->method('_setOpt');

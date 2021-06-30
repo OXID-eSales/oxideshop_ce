@@ -81,12 +81,12 @@ class AdminListTest extends \OxidTestCase
         // testing is config value taken
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, array('getConfig'), array(), '', false);
         \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('iAdminListSize', 0);
-        $this->assertEquals(10, $oAdminList->_getViewListSize());
+        $this->assertEquals(10, $oAdminList->getViewListSize());
 
         // testing if cookie data is used
         $this->getSession()->setVariable('profile', array(1 => 500));
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(500, $oAdminList->_getViewListSize());
+        $this->assertEquals(500, $oAdminList->getViewListSize());
     }
 
     /**

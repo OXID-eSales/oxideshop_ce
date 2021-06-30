@@ -364,7 +364,7 @@ class DeliverylistTest extends \OxidTestCase
     {
         $oList = $this->getProxyClass('oxDeliveryList');
         $oList->setHomeCountry(array('_testHomeCountryId'));
-        $oList->_getList(null, null, '_testDeliverySetId');
+        $oList->getActiveDeliveryList(null, null, '_testDeliverySetId');
 
         $this->assertEquals('_testHomeCountryId_testDeliverySetId', $oList->getNonPublicVar('_sUserId'));
         $this->assertEquals(
@@ -385,7 +385,7 @@ class DeliverylistTest extends \OxidTestCase
         $oAddress->oxaddress__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW); //germany
         $oAddress->save();
         $oList = $this->getProxyClass('oxDeliveryList');
-        $oList->_getList($this->_oUser, null, 'oxidstandard');
+        $oList->getActiveDeliveryList($this->_oUser, null, 'oxidstandard');
         // testing with demo deliveries
         $this->assertEquals($this->_oUser->getId() . 'a7c40f631fc920687.20179984oxidstandard', $oList->getNonPublicVar('_sUserId'));
         $this->assertEquals(
@@ -412,7 +412,7 @@ class DeliverylistTest extends \OxidTestCase
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
 
-        $oList->_getList(null, null, null);
+        $oList->getActiveDeliveryList(null, null, null);
     }
 
     /**
@@ -428,7 +428,7 @@ class DeliverylistTest extends \OxidTestCase
         $oList->expects($this->once())->method('rewind');
 
         // executing test
-        $oList->_getList(null, null, null);
+        $oList->getActiveDeliveryList(null, null, null);
     }
 
     /**

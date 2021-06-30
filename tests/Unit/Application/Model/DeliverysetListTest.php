@@ -411,7 +411,7 @@ class DeliverysetListTest extends \OxidTestCase
     }
 
     /**
-     * Testing _getList - test getting list when country id is not setted.
+     * Testing getActiveDeliverySetList - test getting list when country id is not setted.
      * Checking if _getFilterSelect() is called with correct params.
      */
     public function testGetListWithoutCountryId()
@@ -424,11 +424,11 @@ class DeliverysetListTest extends \OxidTestCase
             ->will($this->returnValue('SELECT 1'))
             ->with(null, '_testHomeCountryId');
 
-        $oDelSetList->_getList(null, null);
+        $oDelSetList->getActiveDeliverySetList(null, null);
     }
 
     /**
-     * Testing _getList - test getting list when user not setted.
+     * Testing getActiveDeliverySetList - test getting list when user not setted.
      * Checking if _getFilterSelect() is called with correct
      * params - with setted user and user country id
      */
@@ -443,11 +443,11 @@ class DeliverysetListTest extends \OxidTestCase
             ->with($this->_oUser, 'a7c40f6323c4bfb36.59919433');
 
         $oDelSetList->setUser($this->_oUser);
-        $oDelSetList->_getList(null, null);
+        $oDelSetList->getActiveDeliverySetList(null, null);
     }
 
     /**
-     * Testing _getList - test getting list when user and country id are setted.
+     * Testing getActiveDeliverySetList - test getting list when user and country id are setted.
      * Checking if _getFilterSelect() is called with correct params
      */
     public function testGetListWithUserAndCountryId()
@@ -460,7 +460,7 @@ class DeliverysetListTest extends \OxidTestCase
             ->will($this->returnValue('SELECT 1'))
             ->with($this->_oUser, '_testHomeCountryId');
 
-        $oDelSetList->_getList($this->_oUser, '_testHomeCountryId');
+        $oDelSetList->getActiveDeliverySetList($this->_oUser, '_testHomeCountryId');
     }
 
     /**
@@ -477,7 +477,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->once())->method('rewind');
 
         // testing
-        $oList->_getList(null, null);
+        $oList->getActiveDeliverySetList(null, null);
     }
 
     // when user is passed by param
@@ -496,7 +496,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->once())->method('rewind');
 
         // testing
-        $oList->_getList(null, null);
+        $oList->getActiveDeliverySetList(null, null);
     }
 
     // when user and country ar set
@@ -511,8 +511,8 @@ class DeliverysetListTest extends \OxidTestCase
 
         // testing
         $oList->setHomeCountry(array('_testHomeCountryId'));
-        $oList->_getList($this->_oUser, '_testHomeCountryId');
-        $oList->_getList($this->_oUser, '_testHomeCountryId');
+        $oList->getActiveDeliverySetList($this->_oUser, '_testHomeCountryId');
+        $oList->getActiveDeliverySetList($this->_oUser, '_testHomeCountryId');
     }
 
     // when user and country ar set
@@ -526,8 +526,8 @@ class DeliverysetListTest extends \OxidTestCase
         $oList->expects($this->exactly(2))->method('rewind');
 
         // testing
-        $oList->_getList($this->_oUser, '_testHomeCountryId');
-        $oList->_getList($this->_oUser, 'a7c40f6323c4bfb36.59919433');
+        $oList->getActiveDeliverySetList($this->_oUser, '_testHomeCountryId');
+        $oList->getActiveDeliverySetList($this->_oUser, 'a7c40f6323c4bfb36.59919433');
     }
 
     /**
@@ -537,7 +537,7 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetListTestingResultsNoInput()
     {
         $oList = oxNew('oxDeliverySetList');
-        $oList->_getList(null, null);
+        $oList->getActiveDeliverySetList(null, null);
 
         $this->assertEquals(3, count($oList->aList));
         $this->assertArrayHasKey('oxidstandard', $oList->aList);
@@ -549,7 +549,7 @@ class DeliverysetListTest extends \OxidTestCase
     public function testGetListTestingResultsPassingOnlyCountryId()
     {
         $oList = oxNew('oxDeliverySetList');
-        $oList->_getList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
+        $oList->getActiveDeliverySetList(null, 'a7c40f6320aeb2ec2.72885259'); // austria
 
         $this->assertEquals(3, count($oList->aList));
         $this->assertArrayHasKey('oxidstandard', $oList->aList);

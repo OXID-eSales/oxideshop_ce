@@ -50,7 +50,7 @@
         function handlePassword(position, password)
         {
             password = $(password);
-            var passwordConfirm = password.clone().attr('name', '');
+            var passwordConfirm = password.clone().prop('name', '');
 
             passwordFields.push({original: password, confirmation: passwordConfirm});
 
@@ -61,7 +61,7 @@
             }
 
             password.add(passwordConfirm).change(function () {
-                if (password.attr('value') != '' || passwordConfirm.attr('value') == '') {
+                if (password.prop('value') != '' || passwordConfirm.prop('value') == '') {
                     checkPassword(password, passwordConfirm);
                 }
             });
@@ -95,12 +95,12 @@
          */
         function hidePassword(password, passwordConfirm)
         {
-            passwordConfirm.attr('value', '*****');
-            password.hide().attr('disabled', true);
+            passwordConfirm.prop('value', '*****');
+            password.hide().prop('disabled', true);
 
             passwordConfirm.bind("change paste keyup", function () {
                 if (!password.is(":visible")) {
-                    password.show().attr('disabled', false);
+                    password.show().prop('disabled', false);
                 }
             })
         }
@@ -114,9 +114,9 @@
         function checkPassword(original, confirm)
         {
             var result = true;
-            if (original.attr('disabled') == false && original.attr('value') != confirm.attr('value')) {
+            if (original.prop('disabled') == false && original.prop('value') != confirm.prop('value')) {
                 if (original.errorBox == undefined) {
-                    original.errorBox = $('<div class="errorbox"></div>').text(original.data('errorMessage'));
+                    original.errorBox = $('<div class="errorbox"></div>').text(original.data('errormessage'));
                     original.after(original.errorBox);
                 } else {
                     original.errorBox.show();

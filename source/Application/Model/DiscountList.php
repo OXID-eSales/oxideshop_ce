@@ -54,9 +54,8 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
-    protected function _getList($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDiscountList($oUser = null)
     {
         $sUserId = $oUser ? $oUser->getId() : '';
 
@@ -174,7 +173,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getArticleDiscounts($oArticle, $oUser = null)
     {
         $aList = [];
-        $aDiscList = $this->_getList($oUser)->getArray();
+        $aDiscList = $this->getDiscountList($oUser)->getArray();
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForArticle($oArticle)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -196,7 +195,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getBasketItemDiscounts($oArticle, $oBasket, $oUser = null)
     {
         $aList = [];
-        $aDiscList = $this->_getList($oUser)->getArray();
+        $aDiscList = $this->getDiscountList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket)) {
@@ -218,7 +217,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getBasketDiscounts($oBasket, $oUser = null)
     {
         $aList = [];
-        $aDiscList = $this->_getList($oUser)->getArray();
+        $aDiscList = $this->getDiscountList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasket($oBasket)) {
@@ -241,7 +240,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getBasketItemBundleDiscounts($oArticle, $oBasket, $oUser = null)
     {
         $aList = [];
-        $aDiscList = $this->_getList($oUser)->getArray();
+        $aDiscList = $this->getDiscountList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleItem($oArticle, $oBasket) && $oDiscount->isForBasketAmount($oBasket)) {
@@ -263,7 +262,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getBasketBundleDiscounts($oBasket, $oUser = null)
     {
         $aList = [];
-        $aDiscList = $this->_getList($oUser)->getArray();
+        $aDiscList = $this->getDiscountList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleBasket($oBasket)) {

@@ -362,19 +362,6 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get field data
-     *
-     * @param string $sFieldName name of the field which value to get
-     *
-     * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldData" in next major
-     */
-    protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->{$sFieldName}->value;
-    }
-
-    /**
      * Delete this object from the database, returns true on success.
      *
      * @param string $sOXID Object ID(default null)
@@ -448,7 +435,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getType()
     {
-        return (int) $this->_getFieldData('oxcontents__oxtype');
+        return (int) $this->getFieldData('oxcontents__oxtype');
     }
 
     /**
@@ -468,6 +455,6 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getTitle()
     {
-        return (string) $this->_getFieldData('oxcontents__oxtitle');
+        return (string) $this->getFieldData('oxcontents__oxtitle');
     }
 }

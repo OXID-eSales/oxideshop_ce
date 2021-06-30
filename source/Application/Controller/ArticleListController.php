@@ -148,7 +148,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $categoryId = Registry::getRequest()->getRequestEscapedParameter('cnid');
         $activePage = $this->getActPage();
         $articlesPerPage = Registry::getSession()->getVariable('_artperpage');
-        $listDisplayType = $this->_getListDisplayType();
+        $listDisplayType = $this->getArticleListDisplayType();
         $parentViewId = parent::generateViewId();
 
         return md5(
@@ -430,9 +430,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Get list display type
      *
      * @return null|string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getListDisplayType" in next major
      */
-    protected function _getListDisplayType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleListDisplayType()
     {
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 

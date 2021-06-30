@@ -279,7 +279,7 @@ class Curl
     {
         $this->_setOptions();
 
-        $response = $this->_execute();
+        $response = $this->executeCurl();
         $this->_saveStatusCode();
 
         $curlErrorNumber = $this->_getErrorNumber();
@@ -380,9 +380,8 @@ class Curl
      * Wrapper function to be mocked for testing.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "execute" in next major
      */
-    protected function _execute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function executeCurl(): string
     {
         return curl_exec($this->_getResource());
     }

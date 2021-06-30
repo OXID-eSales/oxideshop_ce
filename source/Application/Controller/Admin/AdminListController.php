@@ -155,9 +155,8 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Viewable list size getter
      *
      * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getViewListSize()
     {
         if (!$this->_iViewListSize) {
             $config = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -175,16 +174,6 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         }
 
         return $this->_iViewListSize;
-    }
-
-    /**
-     * Returns view list size
-     *
-     * @return int
-     */
-    public function getViewListSize()
-    {
-        return $this->_getViewListSize();
     }
 
     /**
@@ -281,7 +270,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _setCurrentListPosition($page = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $adminListSize = $this->_getViewListSize();
+        $adminListSize = $this->getViewListSize();
 
         $jumpToPage = $page ? ((int)$page) : ((int)((int)Registry::getRequest()->getRequestEscapedParameter('lstrt')) / $adminListSize);
         $jumpToPage = ($page && $jumpToPage) ? ($jumpToPage - 1) : $jumpToPage;
@@ -653,7 +642,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         // list navigation
         $showNavigation = false;
-        $adminListSize = $this->_getViewListSize();
+        $adminListSize = $this->getViewListSize();
         if ($this->_iListSize > $adminListSize) {
             // yes, we need to build the navigation object
             $pageNavigation = new stdClass();
@@ -718,7 +707,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
         // determine not used space in List
         $listSizeToShow = $this->_iListSize - $this->_iCurrListPos;
-        $adminListSize = $this->_getViewListSize();
+        $adminListSize = $this->getViewListSize();
         $notUsed = $adminListSize - min($listSizeToShow, $adminListSize);
         $space = $notUsed * 15;
 
@@ -809,7 +798,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $this->_setCurrentListPosition(Registry::getRequest()->getRequestEscapedParameter('jumppage'));
 
             // setting addition params for list: current list size
-            $this->_oList->setSqlLimit($this->_iCurrListPos, $this->_getViewListSize());
+            $this->_oList->setSqlLimit($this->_iCurrListPos, $this->getViewListSize());
 
             $this->_oList->selectString($query);
         }

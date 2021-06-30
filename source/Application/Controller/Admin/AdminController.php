@@ -390,15 +390,14 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
                     $myUtilsCount->resetManufacturerArticleCount($sValue);
                     break;
             }
-            $this->_resetContentCache();
+            $this->resetContentCacheAfterResetCounter();
         }
     }
 
     /**
      * Resets cache.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resetContentCache" in next major
      */
-    protected function _resetContentCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetContentCacheAfterResetCounter() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 

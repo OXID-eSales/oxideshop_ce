@@ -95,7 +95,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         \OxidEsales\Eshop\Application\Controller\FrontendController::render();
 
         // load vendor
-        if (($this->_getVendorId() && $this->getVendorTree())) {
+        if (($this->getVendorIdFromRequest() && $this->getVendorTree())) {
             if (($oVendor = $this->getActVendor())) {
                 if ($oVendor->getId() != 'root') {
                     // load the articles
@@ -214,7 +214,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     {
         if ($this->_blVisibleSubCats === null) {
             $this->_blVisibleSubCats = false;
-            if (($this->_getVendorId() && $oVendorTree = $this->getVendorTree())) {
+            if (($this->getVendorIdFromRequest() && $oVendorTree = $this->getVendorTree())) {
                 if (($oVendor = $this->getActVendor())) {
                     if ($oVendor->getId() == 'root') {
                         $this->_blVisibleSubCats = $oVendorTree->count();
@@ -288,7 +288,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getTreePath()
     {
-        if ($this->_getVendorId() && $oVendorTree = $this->getVendorTree()) {
+        if ($this->getVendorIdFromRequest() && $oVendorTree = $this->getVendorTree()) {
             return $oVendorTree->getPath();
         }
     }
@@ -297,9 +297,8 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns request parameter of vendor id.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorId" in next major
      */
-    protected function _getVendorId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorIdFromRequest()
     {
         return Registry::getRequest()->getRequestEscapedParameter('cnid');
     }
@@ -313,7 +312,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     {
         if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            if (($this->_getVendorId() && $oVendorTree = $this->getVendorTree())) {
+            if (($this->getVendorIdFromRequest() && $oVendorTree = $this->getVendorTree())) {
                 if ($oVendor = $this->getActVendor()) {
                     $this->_oActCategory = $oVendor;
                 }
@@ -445,7 +444,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getVendorTree()
     {
-        if ($this->_getVendorId() && $this->_oVendorTree === null) {
+        if ($this->getVendorIdFromRequest() && $this->_oVendorTree === null) {
             /** @var \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree */
             $oVendorTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
             $oVendorTree->buildVendorTree(

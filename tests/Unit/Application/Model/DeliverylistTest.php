@@ -23,7 +23,7 @@ class oxDeliveryListTestClass extends oxdeliverylist
 {
     public function getList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
-        return parent::_getList($oUser, $sCountryId, $sDelSet);
+        return parent::getActiveDeliveryList($oUser, $sCountryId, $sDelSet);
     }
 
     public function _getFilterSelect($oUser, $sCountryId, $sDelSet)
@@ -51,7 +51,7 @@ class oxdeliverylistTest_forGetList extends oxdeliverylist
 
     public function getList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
-        return parent::_getList($oUser, $sCountryId, $sDelSet);
+        return parent::getActiveDeliveryList($oUser, $sCountryId, $sDelSet);
     }
 
     public function _getFilterSelect($oUser, $sCountryId, $sDelSet)

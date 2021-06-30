@@ -946,7 +946,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _calculateVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $dPrice = $this->_getVarMinPrice();
+        $dPrice = $this->getVarMinRawPrice();
 
         return $this->_preparePrice($dPrice, $this->getArticleVat());
     }
@@ -963,9 +963,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $oPrice = null;
-        $dPrice = $this->_getPrice();
-        if ($this->_getVarMinPrice() !== null && $dPrice > $this->_getVarMinPrice()) {
-            $dPrice = $this->_getVarMinPrice();
+        $dPrice = $this->getRawPrice();
+        if ($this->getVarMinRawPrice() !== null && $dPrice > $this->getVarMinRawPrice()) {
+            $dPrice = $this->getVarMinRawPrice();
         }
 
         $dPrice = $this->_prepareModifiedPrice($dPrice);
@@ -1001,8 +1001,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->setRangePrice(false);
 
             if ($this->_hasAnyVariant()) {
-                $dPrice = $this->_getPrice();
-                $dMinPrice = $this->_getVarMinPrice();
+                $dPrice = $this->getRawPrice();
+                $dMinPrice = $this->getVarMinRawPrice();
                 $dMaxPrice = $this->_getVarMaxPrice();
 
                 if ($dMinPrice != $dMaxPrice) {
@@ -5062,11 +5062,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Return prepared price
-     *
-     * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPrice" in next major
      */
-    protected function _getPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRawPrice()
     {
         $sPriceSuffix = $this->_getUserPriceSufix();
         if ($sPriceSuffix === '') {
@@ -5084,11 +5081,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Return variant min price
-     *
-     * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMinPrice" in next major
      */
-    protected function _getVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVarMinRawPrice()
     {
         if ($this->_dVarMinPrice === null) {
             $dPrice = $this->_getShopVarMinPrice();

@@ -79,9 +79,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sCountryId user country id
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
-    protected function _getList($oUser = null, $sCountryId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveDeliverySetList($oUser = null, $sCountryId = null)
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser === null) {
@@ -189,7 +188,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getDeliverySetList($oUser, $sCountryId, $sDelSet = null)
     {
-        $this->_getList($oUser, $sCountryId);
+        $this->getActiveDeliverySetList($oUser, $sCountryId);
 
         // if there is already chosen delivery set we must start checking from it
         $aList = $this->_aArray;
@@ -228,7 +227,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $this->_getList($oUser, $oUser->getActiveCountry());
+        $this->getActiveDeliverySetList($oUser, $oUser->getActiveCountry());
 
         // if there are no shipping sets we don't need to load payments
         if ($this->count()) {

@@ -98,9 +98,8 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sDelSet    user chosen delivery set
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
-    protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveDeliveryList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser === null) {
@@ -237,7 +236,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         // must choose right delivery set to use its delivery list
         foreach ($aDelSetList as $sDeliverySetId => $oDeliverySet) {
             // loading delivery list to check if some of them fits
-            $aDeliveries = $this->_getList($oUser, $sDelCountry, $sDeliverySetId);
+            $aDeliveries = $this->getActiveDeliveryList($oUser, $sDelCountry, $sDeliverySetId);
             $blDelFound = false;
 
             foreach ($aDeliveries as $sDeliveryId => $oDelivery) {
@@ -308,7 +307,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $blHas = false;
 
         // loading delivery list to check if some of them fits
-        $this->_getList($oUser, $sDelCountry, $sDeliverySetId);
+        $this->getActiveDeliveryList($oUser, $sDelCountry, $sDeliverySetId);
         foreach ($this as $oDelivery) {
             if ($oDelivery->isForBasket($oBasket)) {
                 $blHas = true;

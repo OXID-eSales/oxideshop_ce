@@ -492,7 +492,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // copies user info
-        $this->_setUser($oUser);
+        $this->setUser($oUser);
 
         // copies basket info
         $this->_loadFromBasket($oBasket);
@@ -738,9 +738,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Assigns to new oxorder object customer delivery and shipping info
      *
      * @param object $oUser user object
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setUser" in next major
      */
-    protected function _setUser($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function setUser($oUser)
     {
         $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
 

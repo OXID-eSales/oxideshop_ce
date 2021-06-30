@@ -71,7 +71,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $aSeoData['oxfixed'] = 0;
             }
 
-            $sParams = $this->_getAdditionalParams($aSeoData);
+            $sParams = $this->getAdditionalParamsFromSeoData($aSeoData);
 
             $oEncoder = $this->_getEncoder();
             // marking self and page links as expired
@@ -101,9 +101,8 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * @param array $aSeoData Seo data array
      *
      * @return null|string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalParams" in next major
      */
-    protected function _getAdditionalParams($aSeoData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdditionalParamsFromSeoData($aSeoData)
     {
         $sParams = null;
         if (isset($aSeoData['oxparams'])) {

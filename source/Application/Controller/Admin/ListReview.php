@@ -34,9 +34,8 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * Viewable list size getter
      *
      * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getViewListSize()
     {
         return $this->_getUserDefListSize();
     }

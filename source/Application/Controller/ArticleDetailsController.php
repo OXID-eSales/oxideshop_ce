@@ -183,9 +183,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * In case list type is "search" returns search parameters which will be added to product details link
      *
      * @return string|null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getAddUrlParams" in next major
      */
-    protected function _getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getAddUrlParams()
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -235,7 +234,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     protected function _processProduct($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $article->setLinkType($this->getLinkType());
-        if ($dynamicParameters = $this->_getAddUrlParams()) {
+        if ($dynamicParameters = $this->getAddUrlParams()) {
             $article->appendLink($dynamicParameters);
         }
     }

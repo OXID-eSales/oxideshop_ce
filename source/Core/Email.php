@@ -437,7 +437,7 @@ class Email extends PHPMailer
     public function setSmtp($shop = null)
     {
         $myConfig = Registry::getConfig();
-        $shop = ($shop) ? $shop : $this->_getShop();
+        $shop = ($shop) ? $shop : $this->getShop();
 
         $smtpUrl = $this->_setSmtpProtocol($shop->oxshops__oxsmtp->value);
 
@@ -502,7 +502,7 @@ class Email extends PHPMailer
         // add user defined stuff if there is any
         $order = $this->_addUserInfoOrderEMail($order);
 
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
         $this->_setMailParams($shop);
 
         $user = $order->getOrderUser();
@@ -552,7 +552,7 @@ class Email extends PHPMailer
     {
         $config = Registry::getConfig();
 
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         // cleanup
         $this->_clearMailer();
@@ -573,7 +573,7 @@ class Email extends PHPMailer
         // if running shop language is different from admin lang. set in config
         // we have to load shop in config language
         if ($shop->getLanguage() != $orderLanguage) {
-            $shop = $this->_getShop($orderLanguage);
+            $shop = $this->getShop($orderLanguage);
         }
 
         $this->setSmtp($shop);
@@ -668,7 +668,7 @@ class Email extends PHPMailer
         $user = $this->_addUserRegisterEmail($user);
 
         // shop info
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp )
         $this->_setMailParams($shop);
@@ -706,7 +706,7 @@ class Email extends PHPMailer
     {
         $result = false;
 
-        $shop = $this->_addForgotPwdEmail($this->_getShop());
+        $shop = $this->_addForgotPwdEmail($this->getShop());
 
         $oxid = $this->getUserIdByUserName($emailAddress, $shop->getId());
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -751,7 +751,7 @@ class Email extends PHPMailer
     {
 
         // shop info
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -781,7 +781,7 @@ class Email extends PHPMailer
         $user = $this->_addNewsletterDbOptInMail($user);
 
         // shop info
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -845,7 +845,7 @@ class Email extends PHPMailer
         $currLang = $myConfig->getActiveShop()->getLanguage();
 
         // shop info
-        $shop = $this->_getShop($currLang);
+        $shop = $this->getShop($currLang);
 
         // mailer stuff
         $this->setFrom($user->send_email, $user->send_name);
@@ -909,7 +909,7 @@ class Email extends PHPMailer
         $orderLang = (int) (isset($order->oxorder__oxlang->value) ? $order->oxorder__oxlang->value : 0);
 
         // shop info
-        $shop = $this->_getShop($orderLang);
+        $shop = $this->getShop($orderLang);
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -972,7 +972,7 @@ class Email extends PHPMailer
         $orderLang = (int) (isset($order->oxorder__oxlang->value) ? $order->oxorder__oxlang->value : 0);
 
         // shop info
-        $shop = $this->_getShop($orderLang);
+        $shop = $this->getShop($orderLang);
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -1031,7 +1031,7 @@ class Email extends PHPMailer
     public function sendBackupMail($attFiles, $attPath, $emailAddress, $subject, $message, &$status, &$error)
     {
         // shop info
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -1123,7 +1123,7 @@ class Email extends PHPMailer
 
         // nothing to remind?
         if ($articleList->count()) {
-            $shop = $this->_getShop();
+            $shop = $this->getShop();
 
             //set mail params (from, fromName, smtp... )
             $this->_setMailParams($shop);
@@ -1193,7 +1193,7 @@ class Email extends PHPMailer
     public function sendPriceAlarmNotification($params, $alarm, $subject = null)
     {
         $this->_clearMailer();
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         //set mail params (from, fromName, smtp)
         $this->_setMailParams($shop);
@@ -1238,7 +1238,7 @@ class Email extends PHPMailer
     {
         $this->_clearMailer();
 
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         if ($shop->getId() != $alarm->oxpricealarm__oxshopid->value) {
             $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
@@ -1483,7 +1483,7 @@ class Email extends PHPMailer
     {
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
         if (!$emailValidator->isEmailValid($email)) {
-            $email = $this->_getShop()->oxshops__oxorderemail->value;
+            $email = $this->getShop()->oxshops__oxorderemail->value;
         }
 
         $this->_aReplies[] = [$email, $name];
@@ -1761,7 +1761,7 @@ class Email extends PHPMailer
         $ownerMessage .= "\n\nError : " . $this->getErrorInfo();
 
         // shop info
-        $shop = $this->_getShop();
+        $shop = $this->getShop();
 
         return @mail($shop->oxshops__oxorderemail->value, "eMail problem in shop!", $ownerMessage);
     }
@@ -1850,7 +1850,7 @@ class Email extends PHPMailer
         $this->_clearMailer();
 
         if (!$shop) {
-            $shop = $this->_getShop();
+            $shop = $this->getShop();
         }
 
         $this->setFrom($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
@@ -1865,9 +1865,8 @@ class Email extends PHPMailer
      * @param int $shopId shop id
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShop" in next major
      */
-    protected function _getShop($langId = null, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getShop($langId = null, $shopId = null)
     {
         if ($langId === null && $shopId === null) {
             if (isset($this->_oShop)) {
@@ -1981,15 +1980,6 @@ class Email extends PHPMailer
         }
     }
 
-    /**
-     * Get shop object
-     *
-     * @return \OxidEsales\Eshop\Application\Model\Shop
-     */
-    public function getShop()
-    {
-        return $this->_getShop();
-    }
 
     /**
      * Set shop object

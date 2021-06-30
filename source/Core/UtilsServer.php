@@ -404,11 +404,11 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         }
 
         $sServerHost = $this->getServerVar('HTTP_HOST');
-        $blIsCurrentUrl = $this->_isCurrentUrl($sURL, $sServerHost);
+        $blIsCurrentUrl = $this->isUrlHostServerHost($sURL, $sServerHost);
         if (!$blIsCurrentUrl) {
             $sServerHost = $this->getServerVar('HTTP_X_FORWARDED_HOST');
             if ($sServerHost) {
-                $blIsCurrentUrl = $this->_isCurrentUrl($sURL, $sServerHost);
+                $blIsCurrentUrl = $this->isUrlHostServerHost($sURL, $sServerHost);
             }
         }
 
@@ -425,9 +425,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentUrl" in next major
      */
-    public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function isUrlHostServerHost($sURL, $sServerHost): bool
     {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);

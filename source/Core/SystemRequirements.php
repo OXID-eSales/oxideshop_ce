@@ -464,12 +464,12 @@ class SystemRequirements
     {
         $iModStat = null;
         $aHostInfo = $this->_getShopHostInfo();
-        $iModStat = $this->_checkModRewrite($aHostInfo);
+        $iModStat = $this->isModeRewriteExtensionLoaded($aHostInfo);
 
         $aSSLHostInfo = $this->_getShopSSLHostInfo();
         // Don't need to check if mod status is already failed.
         if (0 != $iModStat && $aSSLHostInfo) {
-            $iSSLModStat = $this->_checkModRewrite($aSSLHostInfo);
+            $iSSLModStat = $this->isModeRewriteExtensionLoaded($aSSLHostInfo);
 
             // Send if failed, even if couldn't check another
             if (0 == $iSSLModStat) {
@@ -491,9 +491,8 @@ class SystemRequirements
      * @param array $aHostInfo host info to open socket
      *
      * @return integer
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkModRewrite" in next major
      */
-    protected function _checkModRewrite($aHostInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isModeRewriteExtensionLoaded(array $aHostInfo): int
     {
         $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
         if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {

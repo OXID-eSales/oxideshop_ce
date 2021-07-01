@@ -156,7 +156,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return int
      */
-    protected function getViewListSize()
+    public function getViewListSize()
     {
         if (!$this->_iViewListSize) {
             $config = \OxidEsales\Eshop\Core\Registry::getConfig();

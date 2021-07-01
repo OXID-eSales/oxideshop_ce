@@ -35,7 +35,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return int
      */
-    protected function getViewListSize()
+    public function getViewListSize()
     {
         return $this->_getUserDefListSize();
     }

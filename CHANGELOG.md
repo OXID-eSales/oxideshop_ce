@@ -412,6 +412,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - SQL performance issue in oxDeliverySetList::_getFilterSelect [#0006247](https://bugs.oxid-esales.com/view.php?id=6247) [PR-865](https://github.com/OXID-eSales/oxideshop_ce/pull/865)
 - Fix css style of password type fields in admin [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-873](https://github.com/OXID-eSales/oxideshop_ce/pull/873)
 - Fix password checking script in admin module settings [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-874](https://github.com/OXID-eSales/oxideshop_ce/pull/874)
+- Fix moduleSettings existance requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
 
 ### Deprecated
 - Method

@@ -46,7 +46,8 @@ final class ModuleSettingsCest
         $I->click('save');
 
         $I->waitForText('Empty Settings Group');
-        $I->click($I->see('Empty Settings Group'));
+        $I->see('Empty Settings Group');
+        $I->click('Empty Settings Group');
         $this->checkModifiedSettingsNotEmpty($I);
     }
 
@@ -95,6 +96,7 @@ final class ModuleSettingsCest
         $I->fillField('confaarrs[testEmptyAArrConfig]', "key1 => new-option-1\nkey2 => new-option-2");
         $I->selectOption('confselects[testEmptySelectConfig]', 2);
         $I->fillField('.password_input', 'test-password');
+        $I->fillField('confpassword[testEmptyPasswordConfig]', 'test-password');
     }
 
     /** @param AcceptanceAdminTester $I */

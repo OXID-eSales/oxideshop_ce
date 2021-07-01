@@ -48,10 +48,12 @@ class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderI
                 unset($environmentData['modules'][$moduleId]);
                 continue;
             }
-            foreach (\array_keys($moduleConfiguration['moduleSettings']) as $settingId) {
-                if (!isset($shopConfiguration['modules'][$moduleId]['moduleSettings'][$settingId])) {
-                    unset($environmentData['modules'][$moduleId]['moduleSettings'][$settingId]);
-                    $this->processOrphanSetting($moduleId, $settingId);
+            if (isset($moduleConfiguration['moduleSettings'])) {
+                foreach (\array_keys($moduleConfiguration['moduleSettings']) as $settingId) {
+                    if (!isset($shopConfiguration['modules'][$moduleId]['moduleSettings'][$settingId])) {
+                        unset($environmentData['modules'][$moduleId]['moduleSettings'][$settingId]);
+                        $this->processOrphanSetting($moduleId, $settingId);
+                    }
                 }
             }
         }

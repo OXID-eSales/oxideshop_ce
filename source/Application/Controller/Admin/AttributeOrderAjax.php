@@ -31,7 +31,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sSelTable = $this->getViewName('oxattribute');
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -45,7 +45,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         return 'order by oxcategory2attribute.oxsort ';
     }

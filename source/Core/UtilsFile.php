@@ -144,7 +144,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @param integer $iNewFilesCounter New files count.
      */
-    protected function setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setNewFilesCounter($iNewFilesCounter)
     {
         $this->_iNewFilesCounter = (int) $iNewFilesCounter;
     }
@@ -265,7 +265,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true)
     {
         if ($sValue) {
             // add type to name
@@ -303,7 +303,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getImagePath($sType)
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
@@ -320,7 +320,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return array|null
      */
-    protected function getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getImageSize($sImgType, $iImgNum, $sImgConf)
     {
         $myConfig = Registry::getConfig();
 
@@ -518,7 +518,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool $unique
      * @return string
      */
-    protected function getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true)
     {
         if (!$unique) {
             return "$filename$suffix.$extension";

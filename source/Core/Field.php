@@ -143,7 +143,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      * @param mixed $value Field value
      * @param int   $type  Value type
      */
-    protected function initValue($value = null, $type = self::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initValue($value = null, $type = self::T_TEXT)
     {
         if ($type == self::T_TEXT) {
             $this->rawValue = $value;

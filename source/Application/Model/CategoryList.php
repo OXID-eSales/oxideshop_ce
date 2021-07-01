@@ -130,7 +130,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string return
      */
-    protected function getSqlSelectFieldsForTree($sTable, $aColumns = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSqlSelectFieldsForTree($sTable, $aColumns = null)
     {
         if ($aColumns && count($aColumns)) {
             foreach ($aColumns as $key => $val) {
@@ -176,7 +176,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getSelectString($blReverse = false, $aColumns = null, $sOrder = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSelectString($blReverse = false, $aColumns = null, $sOrder = null)
     {
         $sViewName = $this->getBaseObject()->getViewName();
         $sFieldList = $this->getSqlSelectFieldsForTree($sViewName, $aColumns);
@@ -212,7 +212,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getDepthSqlSnippet($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDepthSqlSnippet($oCat)
     {
         $sViewName = $this->getBaseObject()->getViewName();
         $sDepthSnippet = ' ( 0';
@@ -248,7 +248,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getDepthSqlUnion($oCat, $aColumns = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDepthSqlUnion($oCat, $aColumns = null)
     {
         if (!$oCat) {
             return '';
@@ -269,7 +269,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb()
     {
         $sSql = $this->getSelectString(false, null, 'oxparentid, oxsort, oxtitle');
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
@@ -326,7 +326,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sId category id
      */
-    protected function ppLoadFullCategory($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppLoadFullCategory($sId)
     {
         if (isset($this->_aArray[$sId])) {
             $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
@@ -405,7 +405,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Category list postprocessing routine, responsible for removal of inactive of forbidden categories, and subcategories.
      */
-    protected function ppRemoveInactiveCategories() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppRemoveInactiveCategories()
     {
         // Collect all items which must be remove
         $aRemoveList = [];
@@ -446,7 +446,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return null
      */
-    protected function ppAddPathInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppAddPathInfo()
     {
         if (is_null($this->_sActCat)) {
             return;
@@ -468,7 +468,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Category list postprocessing routine, responsible adding of content categories
      */
-    protected function ppAddContentCategories() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
         $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
@@ -484,7 +484,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Category list postprocessing routine, responsible building an sorting of hierarchical category tree
      */
-    protected function ppBuildTree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppBuildTree()
     {
         $aTree = [];
         foreach ($this->_aArray as $oCat) {
@@ -505,7 +505,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Category list postprocessing routine, responsible for making flat category tree and adding depth information.
      * Requires reversed category list!
      */
-    protected function ppAddDepthInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function ppAddDepthInformation()
     {
         $aTree = [];
         foreach ($this->_aArray as $oCat) {
@@ -529,7 +529,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aTree
      */
-    protected function addDepthInfo($aTree, $oCat, $sDepth = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addDepthInfo($aTree, $oCat, $sDepth = "")
     {
         $sDepth .= "-";
         $oCat->oxcategories__oxtitle->setValue($sDepth . ' ' . $oCat->oxcategories__oxtitle->value);
@@ -621,7 +621,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param bool   $isRoot   is the current node root?
      * @param string $thisRoot the id of the root
      */
-    protected function updateNodes($oxRootId, $isRoot, $thisRoot) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateNodes($oxRootId, $isRoot, $thisRoot)
     {
         // Called from inside a transaction so master is picked automatically (see ESDEV-3804 and ESDEV-3822).
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

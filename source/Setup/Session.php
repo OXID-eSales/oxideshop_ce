@@ -55,7 +55,7 @@ class Session extends Core
     /**
      * Start session
      */
-    protected function startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function startSession()
     {
         session_name($this->_sSessionName);
 
@@ -81,7 +81,7 @@ class Session extends Core
      *
      * @return string Session ID
      */
-    protected function validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateSession()
     {
         if ($this->getIsNewSession() === true) {
             $this->setSessionParam('setup_session', true);
@@ -102,7 +102,7 @@ class Session extends Core
      *
      * @return string
      */
-    protected function getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNewSessionID()
     {
         session_regenerate_id(false);
         $this->setIsNewSession(true);
@@ -134,7 +134,7 @@ class Session extends Core
     /**
      * Initializes setup session data array
      */
-    protected function initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initSessionData()
     {
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
@@ -175,7 +175,7 @@ class Session extends Core
      *
      * @return array
      */
-    protected function &getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function &getSessionData()
     {
         return $_SESSION;
     }

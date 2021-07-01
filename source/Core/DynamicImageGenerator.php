@@ -168,7 +168,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getShopBasePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getShopBasePath()
         {
             return Registry::getConfig()->getConfigParam("sShopDir");
         }
@@ -178,7 +178,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getImageUri() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageUri()
         {
             if ($this->_sImageUri === null) {
                 $this->_sImageUri = "";
@@ -201,7 +201,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getImageName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageName()
         {
             return basename($this->getImageUri());
         }
@@ -211,7 +211,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getImageMasterPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageMasterPath()
         {
             $uri = $this->getImageUri();
             $path = false;
@@ -228,7 +228,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return array
          */
-        protected function getImageInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageInfo()
         {
             $info = [0, 0, 0];
             if (($uri = $this->getImageUri())) {
@@ -243,7 +243,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getImageTarget() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageTarget()
         {
             return $this->getShopBasePath() . $this->getImageUri();
         }
@@ -253,7 +253,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getNopicImageTarget() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getNopicImageTarget()
         {
             $path = $this->getShopBasePath() . $this->getImageUri();
 
@@ -265,7 +265,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getImageType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getImageType()
         {
             $fileExtension = strtolower(pathinfo($this->getImageName(), PATHINFO_EXTENSION));
             if (!$this->validateImageFileExtension($fileExtension)) {
@@ -291,7 +291,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function generatePng($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function generatePng($source, $target, $width, $height)
         {
             return resizePng($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null);
         }
@@ -307,7 +307,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function generateJpg($source, $target, $width, $height, $quality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function generateJpg($source, $target, $width, $height, $quality)
         {
             return resizeJpeg($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null, $quality);
         }
@@ -322,7 +322,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function generateGif($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function generateGif($source, $target, $width, $height)
         {
             $imageInfo = @getimagesize($source);
 
@@ -337,7 +337,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return bool
          */
-        protected function isTargetPathValid($path) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function isTargetPathValid($path)
         {
             $valid = true;
             $dir = dirname(trim($path));
@@ -358,7 +358,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return bool
          */
-        protected function createFolders($dir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function createFolders($dir)
         {
             $config = Registry::getConfig();
             $picFolderPath = dirname($config->getMasterPictureDir());
@@ -387,7 +387,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return bool
          */
-        protected function isValidPath($path) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function isValidPath($path)
         {
             $valid = false;
 
@@ -463,7 +463,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return bool|string Return false on failure or file path of the generated image on success
          */
-        protected function generateImage($imageSource, $imageTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function generateImage($imageSource, $imageTarget)
         {
             $generatedImagePath = false;
             list($targetWidth, $targetHeight, $targetQuality) = $this->getImageInfo();
@@ -528,7 +528,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return string
          */
-        protected function getLockName($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getLockName($name)
         {
             return "$name.lck";
         }
@@ -540,7 +540,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return bool
          */
-        protected function lock($source) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function lock($source)
         {
             $locked = false;
             $lockName = $this->getLockName($source);
@@ -573,7 +573,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @param string $source source file which should be locked
          */
-        protected function unlock($source) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function unlock($source)
         {
             if (is_resource($this->_hLockHandle)) {
                 flock($this->_hLockHandle, LOCK_UN);
@@ -693,7 +693,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @param string $header header
          */
-        protected function setHeader($header) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function setHeader($header)
         {
             $this->_aHeaders[] = $header;
         }
@@ -703,7 +703,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @return array
          */
-        protected function getHeaders() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+        protected function getHeaders()
         {
             return $this->_aHeaders;
         }

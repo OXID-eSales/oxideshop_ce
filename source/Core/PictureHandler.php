@@ -192,7 +192,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBaseMasterImageFileName($sMasterImageFile)
     {
         return basename($sMasterImageFile);
     }
@@ -236,7 +236,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null)
     {
         // custom server as image storage?
         if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile, $blSSL)) {

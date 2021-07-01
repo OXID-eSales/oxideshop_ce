@@ -118,7 +118,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return int
      */
-    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_VENDOR;
     }
@@ -130,7 +130,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return array
      */
-    protected function loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oVendor)
     {
         $sVendorId = $oVendor->getId();
 
@@ -156,7 +156,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
@@ -173,7 +173,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
@@ -356,7 +356,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
         return parent::collectMetaKeyword($sKeywords);
     }
@@ -371,7 +371,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
         return parent::collectMetaDescription($sMeta, $iLength, $blDescTag);
     }
@@ -384,7 +384,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return object
      */
-    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getActVendor();
     }

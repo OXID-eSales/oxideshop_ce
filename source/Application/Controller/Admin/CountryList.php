@@ -75,7 +75,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string The name of the field we want to be the second order by argument.
      */
-    protected function getSecondSortFieldName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSecondSortFieldName()
     {
         return $this->sSecondDefSortField;
     }

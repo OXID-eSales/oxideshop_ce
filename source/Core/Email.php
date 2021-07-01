@@ -407,7 +407,7 @@ class Email extends PHPMailer
      *
      * @return string
      */
-    protected function setSmtpProtocol($url) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSmtpProtocol($url)
     {
         $protocol = '';
         $smtpHost = $url;
@@ -465,7 +465,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function isValidSmtpHost($smtpHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidSmtpHost($smtpHost)
     {
         $isSmtp = false;
         if ($smtpHost) {
@@ -814,7 +814,7 @@ class Email extends PHPMailer
      *
      * @return string $url
      */
-    protected function getNewsSubsLink($id, $confirmCode = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNewsSubsLink($id, $confirmCode = null)
     {
         $myConfig = Registry::getConfig();
         $actShopLang = $myConfig->getActiveShop()->getLanguage();
@@ -1285,7 +1285,7 @@ class Email extends PHPMailer
      * @param string $absImageDir    Absolute path to images
      * @param string $absDynImageDir Absolute path to Dyn images
      */
-    protected function includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null)
     {
         $body = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
@@ -1730,7 +1730,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function getUseInlineImages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUseInlineImages()
     {
         return $this->_blInlineImgEmail;
     }
@@ -1740,7 +1740,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function sendMailErrorMsg() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sendMailErrorMsg()
     {
         // build addresses
         $recipients = $this->getRecipient();
@@ -1769,7 +1769,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\Order
      */
-    protected function addUserInfoOrderEMail($order) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addUserInfoOrderEMail($order)
     {
         return $order;
     }
@@ -1783,7 +1783,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
-    protected function addUserRegisterEmail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addUserRegisterEmail($user)
     {
         return $user;
     }
@@ -1797,7 +1797,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
      */
-    protected function addForgotPwdEmail($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addForgotPwdEmail($shop)
     {
         return $shop;
     }
@@ -1811,7 +1811,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
-    protected function addNewsletterDbOptInMail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addNewsletterDbOptInMail($user)
     {
         return $user;
     }
@@ -1819,7 +1819,7 @@ class Email extends PHPMailer
     /**
      * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
      */
-    protected function clearMailer() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function clearMailer()
     {
         $this->clearAllRecipients();
         $this->clearReplyTos();
@@ -1833,7 +1833,7 @@ class Email extends PHPMailer
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      */
-    protected function setMailParams($shop = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setMailParams($shop = null)
     {
         $this->clearMailer();
 
@@ -1884,7 +1884,7 @@ class Email extends PHPMailer
      * @param string                                   $userName     smtp user
      * @param \OxidEsales\Eshop\Application\Model\Shop $userPassword smtp password
      */
-    protected function setSmtpAuthInfo($userName = null, $userPassword = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSmtpAuthInfo($userName = null, $userPassword = null)
     {
         $this->set("SMTPAuth", true);
         $this->set("Username", $userName);
@@ -1896,7 +1896,7 @@ class Email extends PHPMailer
      *
      * @param bool $debug show debug info or not
      */
-    protected function setSmtpDebug($debug = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSmtpDebug($debug = null)
     {
         $this->set("SMTPDebug", $debug);
     }
@@ -1905,7 +1905,7 @@ class Email extends PHPMailer
      * Process email body and alt body thought oxOutput.
      * Calls \OxidEsales\Eshop\Core\Output::processEmail() on class instance.
      */
-    protected function makeOutputProcessing() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function makeOutputProcessing()
     {
         $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
         $this->setBody($output->process($this->getBody(), "oxemail"));
@@ -1918,7 +1918,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function sendMail() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sendMail()
     {
         $result = false;
         try {
@@ -1939,7 +1939,7 @@ class Email extends PHPMailer
     /**
      * Process view data array through oxOutput processor
      */
-    protected function processViewArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processViewArray()
     {
         $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
 
@@ -2087,7 +2087,7 @@ class Email extends PHPMailer
      *
      * @return string
      */
-    private function clearSidFromBody($altBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function clearSidFromBody($altBody)
     {
         return Str::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . Registry::getConfig()->getShopId(), $altBody);
     }

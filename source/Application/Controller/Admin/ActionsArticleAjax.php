@@ -42,7 +42,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -84,7 +84,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sArtTable = $this->getViewName('oxarticles');
         $sQ = parent::addFilter($sQ);

@@ -103,7 +103,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @return bool
      */
-    protected function isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isServiceAvailable()
     {
         if ($this->_blServiceIsOn === null) {
             $this->_blServiceIsOn = class_exists('SoapClient') ? true : false;
@@ -140,7 +140,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @return bool
      */
-    protected function checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkOnline($oCheckVat)
     {
         if ($this->isServiceAvailable()) {
             $iTryMoreCnt = self::BUSY_RETRY_CNT;

@@ -39,7 +39,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getReservationsId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReservationsId()
     {
         $sId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('basketReservationToken');
         if (!$sId) {
@@ -58,7 +58,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Application\Model\UserBasket
      */
-    protected function loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadReservations($sBasketId)
     {
         $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
         $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
@@ -99,7 +99,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function getReservedItems() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReservedItems()
     {
         if (isset($this->_aCurrentlyReserved)) {
             return $this->_aCurrentlyReserved;
@@ -145,7 +145,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aDiff = $this->getReservedItems();
         // refreshing history
@@ -168,7 +168,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @see oxBasketReservation::_basketDifference
      */
-    protected function reserveArticles($aBasketDiff) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function reserveArticles($aBasketDiff)
     {
         $blAllowNegativeStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowNegativeStock');
 

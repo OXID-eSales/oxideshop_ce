@@ -79,7 +79,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry)
     {
         if ($oCountry->isInEU()) {
             if ($oUser->oxuser__oxustid->value) {
@@ -99,7 +99,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return float|false
      */
-    protected function getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -203,7 +203,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser)
     {
         $blUseShippingCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blShippingCountryVat");
 

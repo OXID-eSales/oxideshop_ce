@@ -97,7 +97,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      */
-    protected function loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadBaseChannel()
     {
         $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
@@ -133,7 +133,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCacheId($name)
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -148,7 +148,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromCache($name)
     {
         if ($aRes = Registry::getUtils()->fromFileCache($this->getCacheId($name))) {
             if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
@@ -170,7 +170,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLastBuildDate($name, $aData)
     {
         if ($aData2 = Registry::getUtils()->fromFileCache($this->getCacheId($name))) {
             $sLastBuildDate = $aData2['content']['lastBuildDate'];
@@ -196,7 +196,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return void
      */
-    protected function saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveToCache($name, $aContent)
     {
         $aData = ['timestamp' => time(), 'content' => $aContent];
 
@@ -212,7 +212,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -282,7 +282,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareUrl($sUri, $sTitle)
     {
         $iLang = Registry::getLang()->getBaseLanguage();
         $sUrl = $this->getShopUrl();
@@ -305,7 +305,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareFeedName($sTitle)
     {
         $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
 
@@ -318,7 +318,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopUrl()
     {
         $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
         $oStr = Str::getStr();
@@ -345,7 +345,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      */
-    protected function loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
     {
         $this->loadBaseChannel();
 
@@ -500,7 +500,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatPath($oCat)
     {
         $sCatPathString = '';
         $sSep = '';
@@ -595,7 +595,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
         $sParams = "searchparam=" . urlencode($sSearch);
         if ($sCatId) {
@@ -623,7 +623,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getObjectField($sId, $sObject, $sField)
     {
         if (!$sId) {
             return '';
@@ -649,7 +649,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId)
     {
         $oLang = Registry::getLang();
         $sCatTitle = '';
@@ -961,7 +961,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool Went everything well?
      */
-    protected function deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteFile($sFilePath)
     {
         return @unlink($sFilePath);
     }

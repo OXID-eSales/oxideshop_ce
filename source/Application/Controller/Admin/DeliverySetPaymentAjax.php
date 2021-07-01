@@ -39,7 +39,7 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = Registry::getRequest()->getRequestEscapedParameter('oxid');

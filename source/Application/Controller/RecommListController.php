@@ -147,7 +147,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return int
      */
-    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_RECOMM;
     }
@@ -480,7 +480,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList())) {
             if ($iPage) {

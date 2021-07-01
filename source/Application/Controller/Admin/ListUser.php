@@ -19,7 +19,7 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
      *
      * @return int
      */
-    public function getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getViewListSize()
     {
         return $this->getUserDefListSize();
     }

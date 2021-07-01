@@ -38,7 +38,7 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // active AJAX component
         $sGroupTable = $this->getViewName('oxgroups');

@@ -38,7 +38,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderVendor
      */
-    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
     }
@@ -71,7 +71,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return string
      */
-    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxvendor';
     }

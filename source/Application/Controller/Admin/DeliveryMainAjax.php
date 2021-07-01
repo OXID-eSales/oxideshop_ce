@@ -40,7 +40,7 @@ class DeliveryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sCountryTable = $this->getViewName('oxcountry');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

@@ -41,7 +41,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $categoriesTable = $this->getViewName('oxcategories');
         $objectToCategoryView = $this->getViewName('oxobject2category');
@@ -73,7 +73,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return array
      */
-    protected function getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDataFields($sQ)
     {
         $dataFields = parent::getDataFields($sQ);
         if (Registry::getRequest()->getRequestEscapedParameter('oxid') && is_array($dataFields) && count($dataFields)) {
@@ -195,7 +195,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @param string $oxId product id
      */
-    protected function updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateOxTime($oxId)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $objectToCategoryView = $this->getViewName('oxobject2category');

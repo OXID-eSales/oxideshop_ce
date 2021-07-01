@@ -155,7 +155,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @return bool
      */
-    protected function setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setRootObjectData()
     {
         $this->setId('root');
         $this->oxmanufacturers__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

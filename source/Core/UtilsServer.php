@@ -82,7 +82,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mustSaveToSession()
     {
         if ($this->_blSaveToSession === null) {
             $this->_blSaveToSession = false;
@@ -112,7 +112,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSessionCookieKey($blGet)
     {
         $blSsl = \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl();
         $sKey = $blSsl ? 'nossl' : 'ssl';
@@ -133,7 +133,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
      */
-    protected function saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
     {
         if ($this->mustSaveToSession()) {
             $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
@@ -176,7 +176,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookiePath($sPath)
     {
         if ($aCookiePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCookiePaths')) {
             // in case user wants to have shop specific setup
@@ -198,7 +198,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookieDomain($sDomain)
     {
         $sDomain = $sDomain ? $sDomain : "";
 

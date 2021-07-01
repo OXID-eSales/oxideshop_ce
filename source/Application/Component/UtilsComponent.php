@@ -133,7 +133,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
      */
-    protected function toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function toList($sListType, $sProductId, $dAmount, $aSel)
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {

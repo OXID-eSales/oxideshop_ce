@@ -547,7 +547,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveModuleInfo()
     {
         if ($this->_aActiveModuleInfo === null) {
             $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);

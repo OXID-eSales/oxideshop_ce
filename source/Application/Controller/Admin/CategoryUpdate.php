@@ -31,7 +31,7 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return \OxidEsales\Eshop\Application\Model\CategoryList
      */
-    protected function getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryList()
     {
         if ($this->_oCatList == null) {
             $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);

@@ -532,7 +532,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function readFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function readFile($sFilePath)
     {
         $sRes = file_get_contents($sFilePath);
 
@@ -546,7 +546,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function includeFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function includeFile($sFilePath)
     {
         $_aCacheContents = null;
         include $sFilePath;
@@ -562,7 +562,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function processCache($sKey, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processCache($sKey, $mContents)
     {
         // looking for cache meta
         $aCacheMeta = $this->getCacheMeta($sKey);
@@ -614,7 +614,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed lock file resource or false on error
      */
-    protected function lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX)
     {
         $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
         if ($rHandle === null) {
@@ -666,7 +666,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function releaseFile($sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function releaseFile($sIdent, $iLockMode = LOCK_EX)
     {
         $blSuccess = true;
         if (
@@ -957,7 +957,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
      */
-    protected function simpleRedirect($sUrl, $sHeaderCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function simpleRedirect($sUrl, $sHeaderCode)
     {
         $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
         $oHeader->setHeader($sHeaderCode);
@@ -1076,7 +1076,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function addUrlParameters($sUrl, $aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addUrlParameters($sUrl, $aParams)
     {
         $sDelimiter = ((Str::getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
         foreach ($aParams as $sName => $sVal) {
@@ -1098,7 +1098,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @todo rename function more closely to actual purpose
      * @todo finish refactoring
      */
-    protected function fillExplodeArray($aName, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function fillExplodeArray($aName, $dVat = null)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
@@ -1161,7 +1161,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return float
      */
-    protected function preparePrice($dPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function preparePrice($dPrice, $dVat)
     {
         $blCalculationModeNetto = $this->isPriceViewModeNetto();
 
@@ -1182,7 +1182,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isPriceViewModeNetto()
     {
         $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
@@ -1198,7 +1198,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
-    protected function getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleUser()
     {
         if (isset($this->_oUser) && $this->_oUser) {
             return $this->_oUser;

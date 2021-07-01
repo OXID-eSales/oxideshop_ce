@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Method `OxidEsales\EshopCommunity\Core\UtilsFile::processFiles` will try to store files externally if alternative image URL is configured
 - Updated a list of bots (aRobots array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
 - Throw exception in getLanguageAbbr method if no abbreviation is available by specific id [PR-802](https://github.com/OXID-eSales/oxideshop_ce/pull/802)
+- Rename deprecated methods prefixed with a single underscore
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

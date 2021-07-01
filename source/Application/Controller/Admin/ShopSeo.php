@@ -60,7 +60,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @param int $iShopId active shop id
      */
-    protected function loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadActiveUrl($iShopId)
     {
         $sActObject = null;
         if ($this->_sActSeoObject) {
@@ -118,7 +118,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return array
      */
-    protected function processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processUrls($aUrls)
     {
         if (isset($aUrls['oxseo__oxstdurl']) && $aUrls['oxseo__oxstdurl']) {
             $aUrls['oxseo__oxstdurl'] = $this->cleanupUrl($aUrls['oxseo__oxstdurl']);
@@ -140,7 +140,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return string
      */
-    protected function cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanupUrl($sUrl)
     {
         // replacing &amp; to & or removing double &&
         while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {

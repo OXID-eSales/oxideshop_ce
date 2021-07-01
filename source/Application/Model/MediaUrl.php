@@ -117,7 +117,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getYoutubeHtml()
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;

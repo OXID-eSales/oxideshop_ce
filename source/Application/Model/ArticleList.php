@@ -157,7 +157,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return int
      */
-    protected function sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortByOrderMapCallback($key1, $key2)
     {
         if (isset($this->_aOrderMap[$key1])) {
             if (isset($this->_aOrderMap[$key2])) {
@@ -487,7 +487,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect($sRecommId, $sArticlesFilter = null)
     {
         $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
@@ -842,7 +842,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sSql SQL select
      */
-    protected function createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createIdListFromSql($sSql)
     {
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
@@ -862,7 +862,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterIdsSql($sCatId, $aFilter)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
@@ -903,7 +903,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSql($sCatId, $aFilter)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -938,7 +938,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategorySelect($sFields, $sCatId, $aSessionFilter)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -977,7 +977,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryCountSelect($sCatId, $aSessionFilter)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -1009,7 +1009,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchString)
     {
         // check if it has string at all
         if (!$sSearchString || !str_replace(' ', '', $sSearchString)) {
@@ -1076,7 +1076,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceSelect($dPriceFrom, $dPriceTo)
     {
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
@@ -1104,7 +1104,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorSelect($sVendorId)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -1128,7 +1128,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerSelect($sManufacturerId)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
@@ -1150,7 +1150,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return bool
      */
-    protected function canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canUpdatePrices()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blCan = false;

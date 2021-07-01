@@ -94,7 +94,7 @@ final class ReviewAndRatingCest
         $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }
 
-    public function _failed(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _failed(AcceptanceTester $I)
     {
         $userData = $this->getExistingUserData();
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
@@ -102,7 +102,7 @@ final class ReviewAndRatingCest
         $I->clearShopCache();
     }
 
-    public function _after(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _after(AcceptanceTester $I)
     {
         $I->clearShopCache();
     }

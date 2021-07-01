@@ -182,7 +182,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return \OxidEsales\Eshop\Application\Model\State
      */
-    protected function getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getStateObject()
     {
         if (is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
@@ -427,7 +427,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return $sWishId
      */
-    protected function getWishListId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getWishListId()
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->_sWishId = null;
@@ -1239,7 +1239,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMergedAddressFields()
     {
         $sDelAddress = '';
         $sDelAddress .= $this->oxuser__oxcompany;
@@ -1266,7 +1266,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array $aDelAddress address data array
      */
-    protected function assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignAddress($aDelAddress)
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
             $sAddressId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
@@ -1587,7 +1587,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getCookieUserId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookieUserId()
     {
         $sUserID = null;
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -1626,7 +1626,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getUserRights() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUserRights()
     {
         // previously user had no rights defined
         if (!$this->oxuser__oxrights instanceof \OxidEsales\Eshop\Core\Field || !$this->oxuser__oxrights->value) {
@@ -1678,7 +1678,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
 
         // set oxcreate date
@@ -1696,7 +1696,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
         //V #M418: for not registered users, don't change boni during update
         if (!$this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
@@ -1845,7 +1845,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sCountryId users country id
      */
-    protected function setAutoGroups($sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setAutoGroups($sCountryId)
     {
         // assigning automatically to specific groups
         $blForeigner = true;
@@ -2340,7 +2340,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isDemoShop() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isDemoShop()
     {
         $blDemoMode = false;
 
@@ -2361,7 +2361,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getDemoShopLoginQuery($sUser, $sPassword) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDemoShopLoginQuery($sUser, $sPassword)
     {
         if ($sPassword == "admin" && $sUser == "admin") {
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";

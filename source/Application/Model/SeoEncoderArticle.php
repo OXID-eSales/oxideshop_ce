@@ -31,7 +31,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension()
     {
         return '.html';
     }
@@ -45,7 +45,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function getProductForLang($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductForLang($oArticle, $iLang)
     {
         if (isset($iLang) && $iLang != $oArticle->getLanguage()) {
             $sId = $oArticle->getId();
@@ -128,7 +128,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getListType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getListType()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
@@ -142,7 +142,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function createArticleCategoryUri($oArticle, $oCategory, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createArticleCategoryUri($oArticle, $oCategory, $iLang)
     {
         startProfile(__FUNCTION__);
         $oArticle = $this->getProductForLang($oArticle, $iLang);
@@ -225,7 +225,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
-    protected function getCategory($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategory($oArticle, $iLang)
     {
         $oCat = null;
         $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
@@ -245,7 +245,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getMainCategory($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMainCategory($oArticle)
     {
         $oMainCat = null;
 
@@ -333,7 +333,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function prepareArticleTitle($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareArticleTitle($oArticle)
     {
         // create title part for uri
         if (!($sTitle = $oArticle->oxarticles__oxtitle->value)) {
@@ -418,7 +418,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return \OxidEsales\Eshop\Application\Model\Vendor|null
      */
-    protected function getVendor($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendor($oArticle, $iLang)
     {
         $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
@@ -495,7 +495,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
      */
-    protected function getManufacturer($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturer($oArticle, $iLang)
     {
         $oManufacturer = null;
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
@@ -604,7 +604,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

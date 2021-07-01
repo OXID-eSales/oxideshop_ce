@@ -44,7 +44,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getIdent($sSeoUrl, $blIgnore = false)
     {
         return md5(strtolower($sSeoUrl));
     }
@@ -99,7 +99,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @access         public
      * @return string || false
      */
-    protected function decodeOldUrl($seoUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function decodeOldUrl($seoUrl)
     {
         $stringObject = Str::getStr();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -150,7 +150,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addQueryString($sUrl)
     {
         if (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"]) {
             $sUrl = rtrim($sUrl, "&?");
@@ -173,7 +173,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getSeoUrl($sObjectId, $iLang, $iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoUrl($sObjectId, $iLang, $iShopId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid order by oxparams limit 1", [
@@ -251,7 +251,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function decodeSimpleUrl($sParams)
     {
         $sLastParam = trim($sParams, '/');
 
@@ -289,7 +289,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getObjectUrl($sSeoId, $sTable, $iLanguage, $sType)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -320,7 +320,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return array $aParams extracted params
      */
-    protected function getParams($sRequest, $sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParams($sRequest, $sPath)
     {
         $oStr = Str::getStr();
 

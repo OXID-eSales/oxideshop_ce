@@ -54,7 +54,7 @@ class Str
      *
      * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      */
-    protected function getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getStrHandler()
     {
         if (function_exists('mb_strlen')) {
             return oxNew(\OxidEsales\Eshop\Core\StrMb::class);

@@ -70,7 +70,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEditValue($oObject, $sField)
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
@@ -94,7 +94,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processEditValue($sValue)
     {
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
@@ -165,7 +165,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
@@ -210,7 +210,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function getCategoryTree( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryTree(
         $sTplVarName,
         $sSelectedCatId,
         $sEditCatId = '',
@@ -267,7 +267,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @param string $sNode active view id
      */
-    protected function setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode)
     {
         // navigation according to class
         if ($sNode) {
@@ -286,7 +286,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @param array $aIds to reset type => id
      */
-    protected function resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetCounts($aIds)
     {
         foreach ($aIds as $sType => $aResetInfo) {
             foreach ($aResetInfo as $sResetId => $iPos) {

@@ -138,7 +138,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return mixed attribute id or false
      */
-    protected function getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAttrId($sSelTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -156,7 +156,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string attribute id
      */
-    protected function createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createAttribute($aSelTitle)
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();

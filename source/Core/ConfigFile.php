@@ -86,7 +86,7 @@ class ConfigFile
      *
      * @param string $fileName Configuration file name
      */
-    private function loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function loadVars($fileName)
     {
         include $fileName;
     }

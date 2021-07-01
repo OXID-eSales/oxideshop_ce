@@ -48,13 +48,13 @@ abstract class OnlineCaller
      *
      * @return string XML document tag name.
      */
-    abstract protected function getXMLDocumentName(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    abstract protected function getXMLDocumentName();
     /**
      * Gets service url.
      *
      * @return string Web service url.
      */
-    abstract protected function getServiceUrl(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    abstract protected function getServiceUrl();
 
     /**
      * Sets dependencies.
@@ -113,7 +113,7 @@ abstract class OnlineCaller
      *
      * @return string
      */
-    protected function formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formEmail($oRequest)
     {
         return $this->formXMLRequest($oRequest);
     }
@@ -125,7 +125,7 @@ abstract class OnlineCaller
      *
      * @return string
      */
-    protected function formXMLRequest($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formXMLRequest($oRequest)
     {
         return $this->getSimpleXml()->objectToXml($oRequest, $this->getXMLDocumentName());
     }
@@ -135,7 +135,7 @@ abstract class OnlineCaller
      *
      * @return \OxidEsales\Eshop\Core\SimpleXml
      */
-    protected function getSimpleXml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSimpleXml()
     {
         return $this->_oSimpleXml;
     }
@@ -145,7 +145,7 @@ abstract class OnlineCaller
      *
      * @return \OxidEsales\Eshop\Core\Curl
      */
-    protected function getCurl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCurl()
     {
         return $this->_oCurl;
     }
@@ -155,7 +155,7 @@ abstract class OnlineCaller
      *
      * @return \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
      */
-    protected function getEmailBuilder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEmailBuilder()
     {
         return $this->_oEmailBuilder;
     }
@@ -168,7 +168,7 @@ abstract class OnlineCaller
      *
      * @return string
      */
-    private function executeCurlCall($sUrl, $sXml) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function executeCurlCall($sUrl, $sXml)
     {
         $oCurl = $this->getCurl();
         $oCurl->setMethod('POST');
@@ -187,7 +187,7 @@ abstract class OnlineCaller
      *
      * @param string $sBody Mail content.
      */
-    private function sendEmail($sBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function sendEmail($sBody)
     {
         $oEmail = $this->getEmailBuilder()->build($sBody);
         $oEmail->send();
@@ -198,7 +198,7 @@ abstract class OnlineCaller
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
      */
-    private function resetFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function resetFailedCallsCount($iFailedOnlineCallsCount)
     {
         if ($iFailedOnlineCallsCount > 0) {
             \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
@@ -210,7 +210,7 @@ abstract class OnlineCaller
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
      */
-    private function increaseFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function increaseFailedCallsCount($iFailedOnlineCallsCount)
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }

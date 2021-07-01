@@ -36,7 +36,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');

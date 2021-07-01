@@ -164,7 +164,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     /**
      * Deletes uploaded csv file from temp directory
      */
-    protected function deleteCsvFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteCsvFile()
     {
         $sPath = $this->getUploadedCsvFilePath();
         if (is_file($sPath)) {
@@ -178,7 +178,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function getCsvFieldsNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsNames()
     {
         $blCsvContainsHeader = Registry::getRequest()->getRequestEscapedParameter('blContainsHeader');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
@@ -207,7 +207,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function getCsvFirstRow() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFirstRow()
     {
         $sPath = $this->getUploadedCsvFilePath();
         $iMaxLineLength = 8192;
@@ -224,7 +224,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     /**
      * Resets CSV parameters stored in session
      */
-    protected function resetUploadedCsvData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', null);
@@ -239,7 +239,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return int
      */
-    protected function checkErrors($iNavStep) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkErrors($iNavStep)
     {
         if ($iNavStep == 2) {
             if (!$this->getUploadedCsvFilePath()) {
@@ -279,7 +279,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function getUploadedCsvFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUploadedCsvFilePath()
     {
         //try to get uploaded csv file path
         if ($this->_sCsvFilePath !== null) {
@@ -304,7 +304,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @param object $oErpImport Import object
      */
-    protected function checkImportErrors($oErpImport) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkImportErrors($oErpImport)
     {
         foreach ($oErpImport->getStatistics() as $aValue) {
             if (!$aValue ['r']) {
@@ -320,7 +320,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function getCsvFieldsTerminator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsTerminator()
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
@@ -337,7 +337,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function getCsvFieldsEncolser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsEncolser()
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;

@@ -40,7 +40,7 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sCountryTable = $this->getViewName('oxcountry');

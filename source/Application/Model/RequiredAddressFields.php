@@ -100,7 +100,7 @@ class RequiredAddressFields
      *
      * @return mixed
      */
-    private function filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function filterFields($aFields, $sPrefix)
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {

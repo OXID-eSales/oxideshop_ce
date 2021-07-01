@@ -36,7 +36,7 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sGroupTable = $this->getViewName('oxgroups');

@@ -203,7 +203,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOptions($aParams)
     {
         if (!is_array($aParams)) {
             $aParams = [];

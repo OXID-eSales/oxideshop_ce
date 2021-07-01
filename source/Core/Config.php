@@ -356,7 +356,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Parse SEO url parameters.
      */
-    protected function processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processSeoCall()
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
@@ -468,7 +468,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads vars from default config file
      */
-    protected function loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadVarsFromFile()
     {
         //config variables from config.inc.php takes priority over the ones loaded from db
         include getShopBasePath() . '/config.inc.php';
@@ -487,7 +487,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Set important defaults.
      */
-    protected function setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaults()
     {
         $this->setConfigParam('sTheme', 'azure');
 
@@ -530,7 +530,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads vars from custom config file
      */
-    protected function loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadCustomConfig()
     {
         $custConfig = getShopBasePath() . '/cust_config.inc.php';
         if (is_readable($custConfig)) {
@@ -547,7 +547,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function loadVarsFromDb($shopId, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadVarsFromDb($shopId, $onlyVars = null, $module = '')
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -588,7 +588,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getConfigParamsSelectSnippet($vars)
     {
         $select = '';
         if (is_array($vars) && !empty($vars)) {
@@ -611,7 +611,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setConfVarFromDb($varName, $varType, $varVal)
     {
         if (
             ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
@@ -770,7 +770,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if WEB session is SSL.
      */
-    protected function checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkSsl()
     {
         $myUtilsServer = Registry::getUtilsServer();
         $serverVars = $myUtilsServer->getServerVar();
@@ -2057,7 +2057,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
      */
-    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
         $exceptionHandler = $this->getExceptionHandler();
         $exceptionHandler->handleDatabaseException($exception);
@@ -2068,7 +2068,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
      */
-    protected function handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function handleCookieException($ex)
     {
         $this->processSeoCall();
 
@@ -2112,7 +2112,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidShopId($shopId)
     {
         return !empty($shopId);
     }

@@ -111,7 +111,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws oxException Throws exception if file wasn't uploaded successfully.
      */
-    protected function checkArticleFile($aFileInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkArticleFile($aFileInfo)
     {
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -129,7 +129,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getBaseDownloadDirPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBaseDownloadDirPath()
     {
         $sConfigValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDownloadsDir');
 
@@ -190,7 +190,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getFileLocation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFileLocation()
     {
         $this->_sRelativeFilePath = '';
         $sFileHash = $this->oxfiles__oxstorehash->value;
@@ -220,7 +220,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHashedFileDir($sFileHash)
     {
         $sDir = substr($sFileHash, 0, 2);
         $sAbsDir = $this->getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
@@ -240,7 +240,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFileHash($sFileName)
     {
         return md5_file($sFileName);
     }
@@ -254,7 +254,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function uploadFile($sSource, $sTarget)
     {
         $blDone = move_uploaded_file($sSource, $sTarget);
 
@@ -309,7 +309,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null|false
      */
-    protected function deleteFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteFile()
     {
         if (!$this->isUploaded()) {
             return false;
@@ -333,7 +333,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilenameForUrl()
     {
         return rawurlencode($this->oxfiles__oxfilename->value);
     }

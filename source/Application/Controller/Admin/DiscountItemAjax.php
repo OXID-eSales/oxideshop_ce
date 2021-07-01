@@ -46,7 +46,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -137,7 +137,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQueryCols()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();

@@ -60,7 +60,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
     /**
      * Runs actions that should be performed at the controller finish.
      */
-    protected function runLast() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function runLast()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -90,7 +90,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
-    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeViewsIds = $config->getActiveViewsIds();

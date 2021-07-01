@@ -190,7 +190,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
      */
-    protected function setDefaultEmptyPayment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaultEmptyPayment()
     {
         // no shipping method there !!
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOtherCountryOrder')) {
@@ -209,7 +209,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Unsets payment errors from session
      */
-    protected function unsetPaymentErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function unsetPaymentErrors()
     {
         $iPayError = Registry::getRequest()->getRequestEscapedParameter('payerror');
         $sPayErrorText = Registry::getRequest()->getRequestEscapedParameter('payerrortext');
@@ -393,7 +393,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param array                                      $aPaymentList payments array
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
      */
-    protected function setValues(&$aPaymentList, $oBasket = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setValues(&$aPaymentList, $oBasket = null)
     {
         if (is_array($aPaymentList)) {
             foreach ($aPaymentList as $oPayment) {
@@ -478,7 +478,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
      */
-    protected function assignDebitNoteParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignDebitNoteParams()
     {
         // #701A
         $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
@@ -568,7 +568,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return bool
      */
-    protected function checkArrValuesEmpty($aData, $aKeys) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkArrValuesEmpty($aData, $aKeys)
     {
         if (!is_array($aKeys) || count($aKeys) < 1) {
             return false;

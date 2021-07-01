@@ -61,7 +61,7 @@ class OnlineModuleVersionNotifier
      *
      * @return null
      */
-    protected function prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareModulesInformation()
     {
         $preparedModules = [];
 
@@ -94,7 +94,7 @@ class OnlineModuleVersionNotifier
      *
      * @return \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
      */
-    protected function formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formRequest()
     {
         $oRequestParams = new \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest();
 
@@ -109,7 +109,7 @@ class OnlineModuleVersionNotifier
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
      */
-    protected function getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOnlineModuleNotifierCaller()
     {
         return $this->_oCaller;
     }

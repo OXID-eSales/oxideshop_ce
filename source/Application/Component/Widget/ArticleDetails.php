@@ -225,7 +225,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return Article
      */
-    protected function getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParentProduct($sParentId)
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -244,7 +244,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return string|null
      */
-    public function getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function getAddUrlParams()
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -256,7 +256,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @param object $oProduct Product to process.
      */
-    protected function processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processProduct($oProduct)
     {
         $oProduct->setLinkType($this->getLinkType());
         if ($sAddParams = $this->getAddUrlParams()) {
@@ -697,7 +697,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return object
      */
-    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getProduct();
     }
@@ -898,7 +898,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Set item sorting for widget based of retrieved parameters.
      */
-    protected function setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSortingParameters()
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
@@ -972,7 +972,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param Utils  $myUtils  General utils.
      * @param Config $myConfig Main shop configuration.
      */
-    protected function additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function additionalChecksForArticle($myUtils, $myConfig)
     {
         $blContinue = true;
         if (!$this->_oProduct->isVisible()) {

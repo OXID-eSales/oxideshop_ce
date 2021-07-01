@@ -751,7 +751,7 @@ final class ProductDetailsPageCest
             ->seeAmountPrices($amountPrices);
     }
 
-    public function _failed(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _failed(AcceptanceTester $I)
     {
         $I->cleanUp();
         $I->clearShopCache();

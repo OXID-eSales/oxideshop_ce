@@ -175,7 +175,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return string
      */
-    protected function processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processLongDesc($sValue)
     {
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
         return str_replace('&lang=', '&amp;lang=', $sValue);
@@ -231,7 +231,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function deleteCatPicture($item, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteCatPicture($item, $field)
     {
         if ($item->isDerived()) {
             return;
@@ -278,7 +278,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function parseRequestParametersForSave($aReqParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function parseRequestParametersForSave($aReqParams)
     {
         // checkbox handling
         if (!isset($aReqParams['oxcategories__oxactive'])) {

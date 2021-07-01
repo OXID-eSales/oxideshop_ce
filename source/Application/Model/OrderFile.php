@@ -130,7 +130,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFieldLongName($sFieldName)
     {
         $aFieldNames = [
             'oxorderfiles__oxarticletitle',

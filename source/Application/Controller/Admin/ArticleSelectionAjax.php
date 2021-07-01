@@ -39,7 +39,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sSLViewName = $this->getViewName('oxselectlist');
         $sArtViewName = $this->getViewName('oxarticles');

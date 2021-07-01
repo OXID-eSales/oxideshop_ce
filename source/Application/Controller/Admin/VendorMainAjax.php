@@ -51,7 +51,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sArtTable = $this->getViewName('oxarticles');
@@ -88,7 +88,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @return string
      */
-    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sArtTable = $this->getViewName('oxarticles');
         $sQ = parent::addFilter($sQ);

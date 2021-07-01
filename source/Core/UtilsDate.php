@@ -282,7 +282,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate)
     {
         $aDefTimePatterns = $this->defaultTimePattern();
         $aDFormats = $this->defineDateFormattingRules();
@@ -320,7 +320,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function defineAndCheckDefaultTimeValues($blToTimeStamp) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defineAndCheckDefaultTimeValues($blToTimeStamp)
     {
         // defining time format
         // checking for default values
@@ -339,7 +339,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function defineAndCheckDefaultDateValues($blToTimeStamp) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defineAndCheckDefaultDateValues($blToTimeStamp)
     {
         // defining time format
         // checking for default values
@@ -356,7 +356,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function defaultDatePattern() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defaultDatePattern()
     {
         return ["/^0000-00-00/"   => "ISO",
                      "/^00\.00\.0000/" => "EUR",
@@ -369,7 +369,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function defaultTimePattern() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defaultTimePattern()
     {
         return ["/00:00:00$/"    => "ISO",
                      "/00\.00\.00$/"  => "EUR",
@@ -382,7 +382,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function regexp2ValidateDateInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function regexp2ValidateDateInput()
     {
         return ["/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
                      "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
@@ -395,7 +395,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function regexp2ValidateTimeInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function regexp2ValidateTimeInput()
     {
         return ["/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
                      "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/"               => "EUR",
@@ -408,7 +408,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function defineDateFormattingRules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defineDateFormattingRules()
     {
         return ["ISO" => ["Y-m-d", [2, 3, 1], "0000-00-00"],
                      "EUR" => ["d.m.Y", [2, 1, 3], "00.00.0000"],
@@ -421,7 +421,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function defineTimeFormattingRules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function defineTimeFormattingRules()
     {
         return ["ISO" => ["H:i:s", [1, 2, 3], "00:00:00"],
                      "EUR" => ["H.i.s", [1, 2, 3], "00.00.00"],
@@ -437,7 +437,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param string $sLocalTimeFormat local format
      * @param bool   $blOnlyDate       marker to format only date field (no time)
      */
-    protected function setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate)
     {
         $aDFormats = $this->defineDateFormattingRules();
         $aTFormats = $this->defineTimeFormattingRules();
@@ -464,7 +464,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param array  $aDFields     days
      * @param array  $aDateMatches new date as array (month, year)
      */
-    protected function setDate($oObject, $sDateFormat, $aDFields, $aDateMatches) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setDate($oObject, $sDateFormat, $aDFields, $aDateMatches)
     {
         // formatting correct time value
         $iTimestamp = mktime(
@@ -496,7 +496,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param array  $aTFields     defines the time fields
      * @param array  $aDFields     defines the date fields
      */
-    protected function formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields)
     {
         // formatting correct time value
         $iTimestamp = @mktime(
@@ -695,7 +695,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      *
      * @return string formatted string
      */
-    protected function processDate($aTime, $aDate, $blGerman, $sFormat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processDate($aTime, $aDate, $blGerman, $sFormat)
     {
         if ($blGerman) {
             return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]));

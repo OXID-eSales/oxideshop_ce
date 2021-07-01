@@ -138,7 +138,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAllViews()
     {
         if (empty($this->_aAllViews)) {
             $this->_aAllViews = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
@@ -154,7 +154,7 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isCurrentShopView($sViewName)
     {
         $blResult = false;
 
@@ -178,7 +178,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopViews()
     {
         if (empty($this->_aShopViews)) {
             $this->_aShopViews = [];
@@ -199,7 +199,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getValidShopViews()
     {
         if (empty($this->_aValidShopViews)) {
             $aTables = $this->getShopTables();
@@ -248,7 +248,7 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isViewValid($sViewName)
     {
         return in_array($sViewName, $this->getValidShopViews());
     }

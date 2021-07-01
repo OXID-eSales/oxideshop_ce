@@ -304,7 +304,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * initialize new session challenge token
      */
-    protected function initNewSessionChallenge() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initNewSessionChallenge()
     {
         $this->setVariable('sess_stoken', sprintf('%X', crc32(Registry::getUtilsObject()->generateUID())));
     }
@@ -314,7 +314,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function sessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sessionStart()
     {
         if ($this->needToSetHeaders()) {
             //enforcing no caching when session is started
@@ -391,7 +391,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getNewSessionId($blUnset = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNewSessionId($blUnset = true)
     {
         session_regenerate_id(true);
 
@@ -631,7 +631,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {
@@ -807,7 +807,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function forceSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function forceSessionStart()
     {
         return (!Registry::getUtils()->isSearchEngine()) && (((bool) Registry::getConfig()->getConfigParam('blForceSessionStart')) || Registry::getRequest()->getRequestEscapedParameter("su") || $this->_blForceNewSession);
     }
@@ -817,7 +817,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function allowSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function allowSessionStart()
     {
         $blAllowSessionStart = true;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -852,7 +852,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isSwappedClient() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isSwappedClient()
     {
         $blSwapped = false;
         $myUtilsServer = Registry::getUtilsServer();
@@ -883,7 +883,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function checkUserAgent($sAgent, $sExistingAgent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkUserAgent($sAgent, $sExistingAgent)
     {
         $blCheck = false;
         // processing
@@ -910,7 +910,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function checkCookies($sCookieSid, $aSessCookieSetOnce) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkCookies($sCookieSid, $aSessCookieSetOnce)
     {
         $blSwapped = false;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -957,7 +957,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function setSessionId($sSessId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSessionId($sSessId)
     {
         //marking this session as new one, as it might be not writen to db yet
         if ($sSessId && session_id() != $sSessId) {
@@ -975,7 +975,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getBasketName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBasketName()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('blMallSharedBasket') == 0) {
@@ -990,7 +990,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getCookieSid() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCookieSid()
     {
         return Registry::getUtilsServer()->getOxCookie($this->getName());
     }
@@ -1001,7 +1001,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function getRequireSessionWithParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRequireSessionWithParams()
     {
         $aCfgArray = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
         if (is_array($aCfgArray)) {
@@ -1023,7 +1023,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isSessionRequiredAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isSessionRequiredAction()
     {
         foreach ($this->getRequireSessionWithParams() as $sParam => $aValues) {
             $sValue = Registry::getRequest()->getRequestEscapedParameter($sParam);
@@ -1046,7 +1046,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function getSessionUseCookies() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSessionUseCookies()
     {
         return $this->isAdmin() || \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSessionUseCookies');
     }
@@ -1056,7 +1056,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isValidRemoteAccessToken() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidRemoteAccessToken()
     {
         $inputToken = Registry::getRequest()->getRequestEscapedParameter('rtoken');
         $token = $this->getRemoteAccessToken(false);

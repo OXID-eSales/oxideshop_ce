@@ -132,7 +132,7 @@ class Diagnostics
      *
      * @return integer
      */
-    protected function countRows($sTable, $blMode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function countRows($sTable, $blMode)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
@@ -248,7 +248,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getApacheVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getApacheVersion()
     {
         if (function_exists('apache_get_version')) {
             $sReturn = apache_get_version();
@@ -264,7 +264,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getVirtualizationSystem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVirtualizationSystem()
     {
         $sSystemType = '';
 
@@ -304,7 +304,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getDeviceList($sSystemType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDeviceList($sSystemType)
     {
         return exec('lspci | grep -i ' . $sSystemType);
     }
@@ -314,7 +314,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getCpuAmount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCpuAmount()
     {
         // cat /proc/cpuinfo | grep "processor" | sort -u | cut -d: -f2');
         return exec('cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l');
@@ -325,7 +325,7 @@ class Diagnostics
      *
      * @return float
      */
-    protected function getCpuMhz() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCpuMhz()
     {
         return round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'), 0);
     }
@@ -335,7 +335,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getBogoMips() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBogoMips()
     {
         return exec('cat /proc/cpuinfo | grep "bogomips" | sort -u | cut -d: -f2');
     }
@@ -345,7 +345,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getMemoryTotal() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMemoryTotal()
     {
         return exec('cat /proc/meminfo | grep "MemTotal" | sort -u | cut -d: -f2');
     }
@@ -355,7 +355,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getMemoryFree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMemoryFree()
     {
         return exec('cat /proc/meminfo | grep "MemFree" | sort -u | cut -d: -f2');
     }
@@ -365,7 +365,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getCpuModel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCpuModel()
     {
         return exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
     }
@@ -375,7 +375,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getDiskTotalSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDiskTotalSpace()
     {
         return round(disk_total_space('/') / 1024 / 1024, 0) . ' GiB';
     }
@@ -385,7 +385,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getDiskFreeSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDiskFreeSpace()
     {
         return round(disk_free_space('/') / 1024 / 1024, 0) . ' GiB';
     }
@@ -395,7 +395,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getPhpVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPhpVersion()
     {
         return phpversion();
     }
@@ -405,7 +405,7 @@ class Diagnostics
      *
      * @return string
      */
-    protected function getMySqlServerInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMySqlServerInfo()
     {
         $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
 

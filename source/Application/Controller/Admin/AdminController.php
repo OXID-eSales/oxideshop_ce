@@ -112,7 +112,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
      */
-    protected function getEditShop($sShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEditShop($sShopId)
     {
         if (!$this->_oEditShop) {
             $this->_oEditShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
@@ -192,7 +192,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function getServiceProtocol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getServiceProtocol()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? 'https' : 'http';
     }
@@ -202,7 +202,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sNode active view id
      */
-    protected function setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode)
     {
         // navigation according to class
         if ($sNode) {
@@ -230,7 +230,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sNode active view id
      */
-    protected function addNavigationHistory($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addNavigationHistory($sNode)
     {
         $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
@@ -303,7 +303,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return array
      */
-    protected function getMaxUploadFileInfo( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMaxUploadFileInfo(
         $maxFileSize,
         $isFormatted = false
     ) {
@@ -392,7 +392,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Resets cache.
      */
-    protected function resetContentCacheAfterResetCounter() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetContentCacheAfterResetCounter()
     {
     }
 
@@ -404,7 +404,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return bool
      */
-    protected function allowAdminEdit($sUserId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function allowAdminEdit($sUserId)
     {
         return true;
     }
@@ -416,7 +416,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return boolean
      */
-    protected function getCountryByCode($sCountryCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCountryByCode($sCountryCode)
     {
         //default country
         $sCountry = 'international';
@@ -454,7 +454,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return boolean
      */
-    protected function authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function authorize()
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         return (bool) (

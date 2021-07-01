@@ -123,7 +123,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return int
      */
-    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_MANUFACTURER;
     }
@@ -135,7 +135,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oManufacturer)
     {
         $sManufacturerId = $oManufacturer->getId();
 
@@ -161,7 +161,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($oManufacturer = $this->getActManufacturer())) {
             return $oManufacturer->getId();
@@ -178,7 +178,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
@@ -350,7 +350,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true)
     {
         return parent::collectMetaKeyword($aCatPath);
     }
@@ -367,7 +367,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return  string  $sString    converted string
      */
-    protected function prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false)
     {
         return parent::collectMetaDescription($aCatPath, $iLength, $blDescTag);
     }
@@ -380,7 +380,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return object
      */
-    protected function getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getActManufacturer();
     }

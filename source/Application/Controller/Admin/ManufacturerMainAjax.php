@@ -53,7 +53,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -91,7 +91,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($query)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $articleViewName = $this->getViewName('oxarticles');

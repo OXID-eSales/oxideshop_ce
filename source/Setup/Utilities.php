@@ -113,7 +113,7 @@ class Utilities extends Core
      *
      * @return string
      */
-    protected function extractPath($aPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function extractPath($aPath)
     {
         $sExtPath = '';
         $blBuildPath = false;

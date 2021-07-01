@@ -196,7 +196,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareIdent($sIdent)
     {
         if ($sIdent) {
             return Str::getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
@@ -211,7 +211,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return null
      */
-    protected function checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkIdent($sIdent, $sOxId)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();

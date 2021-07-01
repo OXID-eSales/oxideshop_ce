@@ -58,7 +58,7 @@ class CompanyVatIn
      *
      * @return string
      */
-    protected function cleanUp($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanUp($sValue)
     {
         return (string) \OxidEsales\Eshop\Core\Str::getStr()->preg_replace("/\s|-/", '', $sValue);
     }

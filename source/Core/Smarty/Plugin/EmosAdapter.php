@@ -181,7 +181,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getScriptPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getScriptPath()
     {
         $sShopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopUrl();
 
@@ -193,7 +193,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem
      */
-    protected function getNewEmosItem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNewEmosItem()
     {
         return new \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem();
     }
@@ -205,7 +205,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function prepareProductTitle($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareProductTitle($oProduct)
     {
         $sTitle = $oProduct->oxarticles__oxtitle->value;
         if ($oProduct->oxarticles__oxvarselect->value) {
@@ -224,7 +224,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem
      */
-    protected function convProd2EmosItem($oProduct, $sCatPath = "NULL", $iQty = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function convProd2EmosItem($oProduct, $sCatPath = "NULL", $iQty = 1)
     {
         $oItem = $this->getNewEmosItem();
 
@@ -252,7 +252,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getEmosPageTitle($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEmosPageTitle($aParams)
     {
         return isset($aParams['title']) ? $aParams['title'] : null;
     }
@@ -262,7 +262,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getEmosCl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEmosCl()
     {
         $oActView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         // showLogin function is deprecated, but just in case if it is called
@@ -280,7 +280,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getEmosCatPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEmosCatPath()
     {
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
@@ -303,7 +303,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getBasketProductCatPath($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBasketProductCatPath($oArticle)
     {
         $sCatPath = '';
         if ($oCategory = $oArticle->getCategory()) {
@@ -341,7 +341,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getEmosPageId($sTplName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEmosPageId($sTplName)
     {
         $sPageId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() .
                    $this->getEmosCl() .
@@ -358,7 +358,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getTplName()
     {
         if (!($sCurrTpl = basename((string)Registry::getRequest()->getRequestEscapedParameter('tpl')))) {
             // in case template was not defined in request
@@ -373,7 +373,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function getPagesContent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getPagesContent()
     {
         return $this->_aPagesContent;
     }
@@ -383,7 +383,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function getOrderStepNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getOrderStepNames()
     {
         return $this->_aOrderStepNames;
     }
@@ -395,7 +395,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param array $aParams
      * @param \Smarty $oSmarty
      */
-    private function setControllerInfo($oEmos, $aParams, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setControllerInfo($oEmos, $aParams, $oSmarty)
     {
         $sControllerName = $this->getEmosCl();
         $aContent = $this->getPagesContent();
@@ -518,7 +518,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param \Smarty $oSmarty
      */
-    private function setSearchInformation($oEmos, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setSearchInformation($oEmos, $oSmarty)
     {
         $iPage = Registry::getRequest()->getRequestEscapedParameter('pgNr');
         if (!$iPage) {
@@ -540,7 +540,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Order $oOrder
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      */
-    private function setBasketInformation($oEmos, $oUser, $oOrder, $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setBasketInformation($oEmos, $oUser, $oOrder, $oBasket)
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oCur = $oConfig->getActShopCurrencyObject();
@@ -578,7 +578,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param \OxidEsales\Eshop\Application\Model\User $oUser
      */
-    private function setUserRegistration($oEmos, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setUserRegistration($oEmos, $oUser)
     {
         $iError = Registry::getRequest()->getRequestEscapedParameter('newslettererror');
         $iSuccess = Registry::getRequest()->getRequestEscapedParameter('success');
@@ -597,7 +597,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      */
-    private function setBasketActionsInfo($oEmos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setBasketActionsInfo($oEmos)
     {
         // get the last Call for special handling function "tobasket", "changebasket"
         if (($aLastCall = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aLastcall'))) {

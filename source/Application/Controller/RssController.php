@@ -51,7 +51,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return RssFeed
      */
-    protected function getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRssFeed()
     {
         if (!$this->_oRss) {
             $this->_oRss = oxNew(RssFeed::class);
@@ -108,7 +108,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return string
      */
-    protected function processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOutput($sInput)
     {
         return Str::getStr()->recodeEntities($sInput);
     }

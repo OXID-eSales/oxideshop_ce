@@ -139,7 +139,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId, $sDelSet)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 

@@ -67,7 +67,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      *
      * @return bool
      */
-    protected function canUpdate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canUpdate()
     {
         $myConfig = Registry::getConfig();
 
@@ -87,7 +87,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      * @param string $sUrl current version info fetching url by edition
      * @return string
      */
-    protected function fetchCurVersionInfo($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function fetchCurVersionInfo($sUrl)
     {
         try {
             $response = $this->requestVersionInfo($sUrl);

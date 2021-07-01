@@ -232,7 +232,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function isAvailablePrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAvailablePrice($dPrice)
     {
         $oSeries = $this->getSerie();
         $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
@@ -256,7 +256,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isAvailableWithSameSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAvailableWithSameSeries($aVouchers)
     {
         if (is_array($aVouchers)) {
             $sId = $this->getId();
@@ -291,7 +291,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isAvailableWithOtherSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAvailableWithOtherSeries($aVouchers)
     {
         if (is_array($aVouchers) && count($aVouchers)) {
             $oSeries = $this->getSerie();
@@ -332,7 +332,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isValidDate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidDate()
     {
         $oSeries = $this->getSerie();
         $iTime = time();
@@ -369,7 +369,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isNotReserved() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isNotReserved()
     {
         if ($this->oxvouchers__oxreserved->value < time() - $this->getVoucherTimeout()) {
             return true;
@@ -409,7 +409,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return boolean
      */
-    protected function isAvailableInOtherOrder($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAvailableInOtherOrder($oUser)
     {
         $oSeries = $this->getSerie();
         if (!$oSeries->oxvoucherseries__oxallowuseanother->value) {
@@ -444,7 +444,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function isValidUserGroup($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isValidUserGroup($oUser)
     {
         $oVoucherSeries = $this->getSerie();
         $oUserGroups = $oVoucherSeries->setUserGroups();
@@ -512,7 +512,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return boolean
      */
-    protected function isProductVoucher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isProductVoucher()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oSeries = $this->getSerie();
@@ -531,7 +531,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return boolean
      */
-    protected function isCategoryVoucher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isCategoryVoucher()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oSeries = $this->getSerie();
@@ -550,7 +550,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return object
      */
-    protected function getSerieDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSerieDiscount()
     {
         $oSeries = $this->getSerie();
         $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
@@ -581,7 +581,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBasketItems($oDiscount = null)
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         if ($this->oxvouchers__oxorderid->value) {
@@ -600,7 +600,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getOrderBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOrderBasketItems($oDiscount = null)
     {
         if (is_null($oDiscount)) {
             $oDiscount = $this->getSerieDiscount();
@@ -634,7 +634,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getSessionBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSessionBasketItems($oDiscount = null)
     {
         if (is_null($oDiscount)) {
             $oDiscount = $this->getSerieDiscount();
@@ -670,7 +670,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return double
      */
-    protected function getGenericDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getGenericDiscountValue($dPrice)
     {
         $oSeries = $this->getSerie();
         if ($oSeries->oxvoucherseries__oxdiscounttype->value == 'absolute') {
@@ -721,7 +721,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return double
      */
-    protected function getProductDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductDiscountValue($dPrice)
     {
         $oDiscount = $this->getSerieDiscount();
         $aBasketItems = $this->getBasketItems($oDiscount);
@@ -786,7 +786,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return double
      */
-    protected function getCategoryDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryDiscountValue($dPrice)
     {
         $oDiscount = $this->getSerieDiscount();
         $aBasketItems = $this->getBasketItems($oDiscount);
@@ -844,7 +844,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return integer Seconds a voucher can stay in status reserved
      */
-    protected function getVoucherTimeout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVoucherTimeout()
     {
         $iVoucherTimeout = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iVoucherTimeout') ?:
             3 * 3600;

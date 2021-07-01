@@ -49,7 +49,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
      *
      * @return string
      */
-    protected function getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoadActionsParam()
     {
         $this->_blLoadActions = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion');
 

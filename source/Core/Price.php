@@ -421,7 +421,7 @@ class Price
     /**
      * Flush assigned discounts
      */
-    protected function flushDiscounts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function flushDiscounts()
     {
         $this->_aDiscounts = null;
     }

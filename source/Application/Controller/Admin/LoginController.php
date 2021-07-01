@@ -180,7 +180,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return boolean
      */
-    protected function authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function authorize()
     {
         return true;
     }
@@ -200,7 +200,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAvailableLanguages()
     {
         $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->getBrowserLanguage();
@@ -218,7 +218,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBrowserLanguage()
     {
         return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }

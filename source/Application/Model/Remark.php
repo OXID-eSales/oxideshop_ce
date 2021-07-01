@@ -62,7 +62,7 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         // set oxcreate
         $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());

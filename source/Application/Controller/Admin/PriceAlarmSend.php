@@ -67,7 +67,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @param string $sId Class name
      */
-    protected function setupNavigation($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sId)
     {
         parent::setupNavigation('pricealarm_list');
     }

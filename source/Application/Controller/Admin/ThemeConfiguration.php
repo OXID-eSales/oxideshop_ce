@@ -64,7 +64,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars()
     {
         if ($this->_sTheme === null) {
             $this->_sTheme = $this->getEditObjectId();

@@ -15,7 +15,7 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 
 final class UserAccountCest
 {
-    public function _after(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _after(AcceptanceTester $I)
     {
         $this->cleanUpUserData($I);
     }

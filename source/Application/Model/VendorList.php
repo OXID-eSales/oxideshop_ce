@@ -147,7 +147,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param object $oVendor vendor object
      */
-    protected function addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addCategoryFields($oVendor)
     {
         $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
@@ -181,7 +181,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Processes vendor category URLs
      */
-    protected function seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function seoSetVendorData()
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

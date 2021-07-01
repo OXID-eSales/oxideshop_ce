@@ -164,7 +164,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function getParentProduct($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParentProduct($parentId)
     {
         if ($parentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -229,7 +229,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $article Product to process
      */
-    protected function processProduct($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processProduct($article)
     {
         $article->setLinkType($this->getLinkType());
         if ($dynamicParameters = $this->getAddUrlParams()) {
@@ -314,7 +314,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return string
      */
-    protected function prepareMetaDescription($meta, $length = 200, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($meta, $length = 200, $descriptionTag = false)
     {
         if (!$meta) {
             $article = $this->getProduct();
@@ -343,7 +343,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return string
      */
-    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
         if (!$keywords) {
             $article = $this->getProduct();
@@ -445,7 +445,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return string
      */
-    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if ($article = $this->getProduct()) {
             return $article->getId();
@@ -495,7 +495,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Runs additional checks for article.
      */
-    protected function additionalChecksForArticle() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function additionalChecksForArticle()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -757,7 +757,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($languageId)
     {
         return $this->getProduct();
     }
@@ -1244,7 +1244,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function getVendorBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorBreadCrumb()
     {
         $paths = [];
         $vendorPath = [];
@@ -1289,7 +1289,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function getSearchBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchBreadCrumb()
     {
         $paths = [];
         $searchPath = [];
@@ -1313,7 +1313,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function getCategoryBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryBreadCrumb()
     {
         $paths = [];
 

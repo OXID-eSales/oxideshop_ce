@@ -64,7 +64,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      * @return string
      * @throws DatabaseConnectionException
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = Registry::getConfig();
         $oxidId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -118,7 +118,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         if ($this->containerId == 'container2') {
             return ' order by _2,_0';

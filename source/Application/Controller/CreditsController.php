@@ -24,7 +24,7 @@ class CreditsController extends \OxidEsales\Eshop\Application\Controller\Content
      *
      * @return string
      */
-    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         return $this->getContentId();
     }

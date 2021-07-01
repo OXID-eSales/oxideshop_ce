@@ -132,7 +132,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      *
      * @return \OxidEsales\Eshop\Application\Model\VoucherSerie
      */
-    protected function getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVoucherSerie()
     {
         if ($this->_oVoucherSerie == null) {
             $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);

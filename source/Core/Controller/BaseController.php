@@ -538,7 +538,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
      */
-    protected function executeNewAction($sNewAction) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function executeNewAction($sNewAction)
     {
         if ($sNewAction) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

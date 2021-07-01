@@ -104,7 +104,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect()
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtView = $tableViewNameGenerator->getViewName('oxarticles');
@@ -301,7 +301,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
      */
-    protected function loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
@@ -389,7 +389,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchStr)
     {
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");

@@ -81,7 +81,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getExportFileName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getExportFileName()
     {
         $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
@@ -98,7 +98,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function getExportFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getExportFilePath()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/export/" . $this->getExportFileName();
     }

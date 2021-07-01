@@ -54,7 +54,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;

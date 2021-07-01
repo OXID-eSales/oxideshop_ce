@@ -36,7 +36,7 @@ class UserMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListCo
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sGroupTable = $this->getViewName('oxgroups');

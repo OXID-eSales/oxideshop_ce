@@ -107,7 +107,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string
      */
-    protected function getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActCat()
     {
         $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
 
@@ -143,7 +143,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActCat active category id
      */
-    protected function loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadCategoryTree($sActCat)
     {
         /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree */
         $oCategoryTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
@@ -164,7 +164,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActManufacturer active Manufacturer id
      */
-    protected function loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadManufacturerTree($sActManufacturer)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
@@ -219,7 +219,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string $sActCat
      */
-    protected function addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor)
     {
         $sSearchPar = Registry::getRequest()->getRequestEscapedParameter('searchparam');
         $sSearchCat = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
@@ -263,7 +263,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return array
      */
-    protected function getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDefaultParams($oProduct)
     {
         $sListType = null;
         $aArticleCats = $oProduct->getCategoryIds(true);

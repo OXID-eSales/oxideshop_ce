@@ -55,7 +55,7 @@ class PasswordSaltGenerator
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
-    protected function getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOpenSSLFunctionalityChecker()
     {
         return $this->_openSSLFunctionalityChecker;
     }
@@ -65,7 +65,7 @@ class PasswordSaltGenerator
      *
      * @return string
      */
-    protected function customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function customSaltGenerator()
     {
         $sHash = '';
         $sSalt = '';

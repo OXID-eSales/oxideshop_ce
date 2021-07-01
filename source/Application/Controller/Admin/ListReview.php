@@ -64,7 +64,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oObject = null)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArtTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
@@ -91,7 +91,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sSql)
     {
         $sSql = parent::prepareWhereQuery($aWhere, $sSql);
 

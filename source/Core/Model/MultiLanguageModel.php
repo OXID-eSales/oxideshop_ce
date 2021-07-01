@@ -243,7 +243,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return int
      */
-    protected function getFieldStatus($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFieldStatus($fieldName)
     {
         $allField = $this->getAllFields(true);
         if (isset($allField[strtolower($fieldName) . "_1"])) {
@@ -264,7 +264,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getNonCachedFieldNames($forceFullStructure = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNonCachedFieldNames($forceFullStructure = false)
     {
         //Tomas
         //TODO: this place could be optimized. please check what we can do.
@@ -302,7 +302,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function getFieldLang($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFieldLang($fieldName)
     {
         if (false === strpos($fieldName, '_')) {
             return 0;
@@ -339,7 +339,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $field Field name that will be checked
      */
-    protected function setUpdateSeoOnFieldChange($field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setUpdateSeoOnFieldChange($field)
     {
         parent::setUpdateSeoOnFieldChange($this->getUpdateSqlFieldName($field));
     }
@@ -353,7 +353,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getUpdateFieldsForTable($table, $useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUpdateFieldsForTable($table, $useSkipSaveFields = true)
     {
         $coreTable = $this->getCoreTableName();
 
@@ -420,7 +420,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getUpdateFields($useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUpdateFields($useSkipSaveFields = true)
     {
         return $this->getUpdateFieldsForTable($this->getCoreTableName(), $useSkipSaveFields);
     }
@@ -435,7 +435,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
         $ret = parent::update();
 
@@ -476,7 +476,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getLanguageSetTables($coreTableName = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLanguageSetTables($coreTableName = null)
     {
         $coreTableName = $coreTableName ? $coreTableName : $this->getCoreTableName();
 
@@ -490,7 +490,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         $result = parent::insert();
 
@@ -514,7 +514,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function getObjectViewName($table, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getObjectViewName($table, $shopId = null)
     {
         if (!$this->_blEmployMultilanguage) {
             return parent::getObjectViewName($table, $shopId);
@@ -535,7 +535,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return array
      */
-    protected function getAllFields($returnSimple = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAllFields($returnSimple = false)
     {
         if ($this->_blEmployMultilanguage) {
             return parent::getAllFields($returnSimple);
@@ -559,7 +559,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null
      */
-    protected function addField($name, $status, $type = null, $length = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addField($name, $status, $type = null, $length = null)
     {
         if ($this->_blEmployMultilanguage && $this->getFieldLang($name)) {
             return;
@@ -579,7 +579,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function canFieldBeNull($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canFieldBeNull($fieldName)
     {
         $fieldName = preg_replace('/_\d{1,2}$/', '', $fieldName);
 

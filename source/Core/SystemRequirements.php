@@ -343,7 +343,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfoFromConfig()
     {
         $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
@@ -372,7 +372,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopSSLHostInfoFromConfig()
     {
         $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
@@ -401,7 +401,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfoFromServerVars()
     {
         // got here from setup dir
         $sScript = $_SERVER['SCRIPT_NAME'];
@@ -425,7 +425,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopHostInfo()
     {
         if ($this->isAdmin()) {
             return $this->getShopHostInfoFromConfig();
@@ -440,7 +440,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopSSLHostInfo()
     {
         if ($this->isAdmin()) {
             return $this->getShopSSLHostInfoFromConfig();
@@ -716,7 +716,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdditionalCheck()
     {
         $sSelect = '';
         foreach ($this->_aException as $sTable => $sColumn) {
@@ -953,7 +953,7 @@ class SystemRequirements
      *
      * @return int
      */
-    protected function getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBytes($sBytes)
     {
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
@@ -987,7 +987,7 @@ class SystemRequirements
      *
      * @return bool
      */
-    protected function checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkTemplateBlock($sTemplate, $sBlockName)
     {
         /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
@@ -1085,7 +1085,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMinimumMemoryLimit()
     {
         return '32M';
     }
@@ -1095,7 +1095,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRecommendMemoryLimit()
     {
         return '60M';
     }

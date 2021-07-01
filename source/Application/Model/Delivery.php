@@ -443,7 +443,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return boolean
      */
-    protected function checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDeliveryAmount($iAmount)
     {
         $blResult = false;
 
@@ -573,7 +573,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float|int
      */
-    protected function getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMultiplier()
     {
         $dAmount = 0;
 
@@ -593,7 +593,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float
      */
-    protected function getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCostSum()
     {
         if ($this->getAddSumType() == 'abs') {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();

@@ -74,7 +74,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param $masterImagePath
      * @return bool
      */
-    protected function deletePicture($filename, $masterImagePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deletePicture($filename, $masterImagePath)
     {
         if ($this->isPlaceholderImage($filename) || Registry::getConfig()->isDemoShop()) {
             return false;
@@ -103,7 +103,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isPicDeletable($filename, $tabl, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isPicDeletable($filename, $tabl, $field)
     {
         if (!$filename || $this->isPlaceholderImage($filename)) {
             return false;
@@ -174,7 +174,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch)
     {
         return resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch);
     }
@@ -194,7 +194,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality)
     {
         startProfile("PICTURE_RESIZE");
 
@@ -238,7 +238,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch)
     {
         $blSuccess = copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer);
         if (!$blDisableTouch && $blSuccess) {

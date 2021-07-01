@@ -26,7 +26,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension()
     {
         return '/';
     }
@@ -146,7 +146,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($vendorId, $languageId)
     {
         $seoUrl = null;
         $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);

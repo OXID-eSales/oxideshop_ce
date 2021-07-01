@@ -244,7 +244,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @param int $iNumber article count in compare page
      */
-    protected function setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticlesPerPage($iNumber)
     {
         $this->_iArticlesPerPage = $iNumber;
     }
@@ -352,7 +352,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $aNewItems
      */
-    protected function removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function removeArticlesFromPage($aItems, $oList)
     {
         //#1106S $aItems changed to $oList.
         //2006-08-10 Alfonsas, compare arrows fixed, array position is very important here, preserve it.
@@ -380,7 +380,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $oNewList
      */
-    protected function changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function changeArtListOrder($aItems, $oList)
     {
         // #777C changing order of list elements, according to $aItems
         $oNewList = [];

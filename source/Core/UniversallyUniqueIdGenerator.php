@@ -89,7 +89,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
-    protected function getOpenSSLChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOpenSSLChecker()
     {
         return $this->_openSSLChecker;
     }
@@ -99,7 +99,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return string
      */
-    protected function generateBasedOnOpenSSL() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateBasedOnOpenSSL()
     {
         $sRandomData = openssl_random_pseudo_bytes(16);
         $sRandomData[6] = chr(ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
@@ -113,7 +113,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return string
      */
-    protected function generateBasedOnMtRand() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateBasedOnMtRand()
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',

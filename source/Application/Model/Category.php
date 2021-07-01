@@ -212,7 +212,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return array
      */
-    protected function loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($sOXID)
     {
         $sSelect = $this->buildSelectString(["`{$this->getViewName()}`.`oxid`" => $sOXID]);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
@@ -837,7 +837,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
@@ -899,7 +899,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
         $this->setUpdateSeo(true);
         $this->setUpdateSeoOnFieldChange('oxtitle');
@@ -1024,7 +1024,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return null
      */
-    protected function setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
         $fieldNameIndex2 = $fieldName[2];

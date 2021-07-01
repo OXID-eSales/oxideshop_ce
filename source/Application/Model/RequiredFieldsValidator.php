@@ -125,7 +125,7 @@ class RequiredFieldsValidator
      *
      * @param array $aFields Invalid field name.
      */
-    private function setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setInvalidFields($aFields)
     {
         $this->_aInvalidFields = $aFields;
     }

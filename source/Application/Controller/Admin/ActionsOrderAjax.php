@@ -33,7 +33,7 @@ class ActionsOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sSelTable = $this->getViewName('oxselectlist');
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
@@ -47,7 +47,7 @@ class ActionsOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         return 'order by oxobject2selectlist.oxsort ';
     }

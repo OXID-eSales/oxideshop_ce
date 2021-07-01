@@ -166,7 +166,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool
      */
-    protected function isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAnythingChanged($oProduct, $aData)
     {
         if (!is_array($aData)) {
             return true;
@@ -187,7 +187,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductParent($sParentId)
     {
         if (
             $this->_oProductParent === null ||

@@ -41,7 +41,7 @@ class Encryptor
      *
      * @return string
      */
-    protected function formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function formKey($key, $string)
     {
         $key = '_' . $key;
         $keyLength = (strlen($string) / strlen($key)) + 5;

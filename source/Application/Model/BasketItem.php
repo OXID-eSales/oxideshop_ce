@@ -719,7 +719,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @throws oxNoArticleException exception
      */
-    protected function setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticle($sProductId)
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
@@ -757,7 +757,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
      */
-    protected function setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFromOrderArticle($oOrderArticle)
     {
         // overriding whole article
         $this->_oArticle = $oOrderArticle;
@@ -778,7 +778,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aSelList item select lists
      */
-    protected function setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSelectList($aSelList)
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();

@@ -122,7 +122,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processFiles()
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
@@ -166,7 +166,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareSQL($sSQL, $iSQLlen)
     {
         $sStrStart = "";
         $blString = false;

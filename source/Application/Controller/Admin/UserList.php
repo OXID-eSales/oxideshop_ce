@@ -90,7 +90,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @return string
      */
-    public function prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function prepareWhereQuery($whereQuery, $fullQuery)
     {
         $nameWhere = null;
         if (isset($whereQuery['oxuser.oxlname']) && ($name = $whereQuery['oxuser.oxlname'])) {

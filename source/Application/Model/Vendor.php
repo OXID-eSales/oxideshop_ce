@@ -123,7 +123,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @return bool
      */
-    protected function setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setRootObjectData()
     {
         $this->setId('root');
         $this->oxvendor__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

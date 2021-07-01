@@ -104,7 +104,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @return double
      */
-    protected function getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getGroupPrice()
     {
         $dPrice = $this->oxarticles__oxprice->value;
         if ($oUser = $this->getArticleUser()) {
@@ -173,7 +173,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
      */
-    protected function applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
@@ -187,7 +187,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      */
-    protected function applyParentDiscounts($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyParentDiscounts($oPrice)
     {
         if (($oParent = $this->getParent())) {
             $oParent->applyDiscountsForVariant($oPrice);
@@ -199,7 +199,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      */
-    protected function applyParentVat($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyParentVat($oPrice)
     {
         if (($oParent = $this->getParent()) && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $oParent->applyVats($oPrice);

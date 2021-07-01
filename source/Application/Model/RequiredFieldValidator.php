@@ -40,7 +40,7 @@ class RequiredFieldValidator
      *
      * @return bool
      */
-    private function validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function validateFieldValueArray($aFieldValues)
     {
         $blValid = true;
         foreach ($aFieldValues as $sValue) {

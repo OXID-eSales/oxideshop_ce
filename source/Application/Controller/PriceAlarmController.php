@@ -134,7 +134,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      *
      * @return array
      */
-    private function getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getParams()
     {
         return Registry::getRequest()->getRequestEscapedParameter('pa');
     }

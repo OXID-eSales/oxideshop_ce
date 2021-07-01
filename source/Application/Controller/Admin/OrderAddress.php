@@ -54,7 +54,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processAddress($aData, $sTypeToProcess, $aIgnore)
     {
         // empty address fields?
         $blEmpty = true;

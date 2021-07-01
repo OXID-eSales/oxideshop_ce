@@ -52,7 +52,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -100,7 +100,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sQ = parent::addFilter($sQ);
 

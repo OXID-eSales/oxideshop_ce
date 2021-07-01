@@ -76,7 +76,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
-    protected function getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReviewList($article)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = "select oxreviews.* from oxreviews

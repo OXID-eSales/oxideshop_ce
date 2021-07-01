@@ -138,7 +138,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryList($oArticle)
     {
         $sMainCatId = false;
         if ($oMainCat = $oArticle->getCategory()) {
@@ -185,7 +185,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorList($oArticle)
     {
         if ($oArticle->oxarticles__oxvendorid->value) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -202,7 +202,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerList($oArticle)
     {
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
@@ -279,7 +279,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return null
      */
-    protected function getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltSeoEntryId()
     {
         return $this->getEditObjectId();
     }
@@ -289,7 +289,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return string
      */
-    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxarticle';
     }
@@ -311,7 +311,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderArticle
      */
-    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }

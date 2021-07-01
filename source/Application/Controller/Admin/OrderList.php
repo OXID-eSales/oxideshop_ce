@@ -107,7 +107,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return string
      */
-    protected function prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($whereQuery, $fullQuery)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = parent::prepareWhereQuery($whereQuery, $fullQuery);
@@ -132,7 +132,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return string
      */
-    protected function buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($listObject = null)
     {
         $query = parent::buildSelectString($listObject);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

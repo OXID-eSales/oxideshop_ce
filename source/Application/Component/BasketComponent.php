@@ -268,7 +268,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string   $sClass.$sPosition  redirection URL
      */
-    protected function getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRedirectUrl()
     {
 
         // active controller id
@@ -331,7 +331,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return mixed
      */
-    protected function getItems( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItems(
         $sProductId = null,
         $dAmount = null,
         $aSel = null,
@@ -392,7 +392,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  object  $oBasketItem    last added basket item
      */
-    protected function addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addItems($products)
     {
         $activeView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
@@ -453,7 +453,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param array  $aProductInfo data which comes from request when you press button "to basket"
      * @param array  $aBasketInfo  array returned by \OxidEsales\Eshop\Application\Model\Basket::getBasketSummary()
      */
-    protected function setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
         Registry::getSession()->setVariable('aLastcall', [$sCallName => $aProductInfo]);
     }
@@ -463,7 +463,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sCallName name of action ('tobasket', 'changebasket')
      */
-    protected function setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCallFnc($sCallName)
     {
         $this->_sLastCallFnc = $sCallName;
     }
@@ -473,7 +473,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLastCallFnc()
     {
         return $this->_sLastCallFnc;
     }

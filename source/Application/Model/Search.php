@@ -113,7 +113,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
     {
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
             //no search string
@@ -241,7 +241,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getWhere($sSearchString)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

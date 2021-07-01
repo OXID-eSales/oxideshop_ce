@@ -112,7 +112,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUserGroupFilter($oUser = null)
     {
         $oUser = ($oUser == null) ? $this->getUser() : $oUser;
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);

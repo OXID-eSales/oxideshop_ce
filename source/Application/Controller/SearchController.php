@@ -235,7 +235,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processListArticles()
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
@@ -286,7 +286,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return object
      */
-    protected function isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isSearchClass()
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
@@ -486,7 +486,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return bool
      */
-    protected function canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canRedirect()
     {
         return false;
     }

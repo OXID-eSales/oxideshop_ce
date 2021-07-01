@@ -40,7 +40,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderCategory
      */
-    protected function getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
@@ -60,7 +60,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return string
      */
-    protected function getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxcategory';
     }

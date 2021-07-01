@@ -105,7 +105,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isActive()
     {
         return $this->_blActive;
     }

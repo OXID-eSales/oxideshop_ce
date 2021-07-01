@@ -121,7 +121,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId)
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxdeliveryset');

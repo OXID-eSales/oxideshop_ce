@@ -40,7 +40,7 @@ class NavigationTree extends Base
      * @param string $parentXPath parent xpath
      * @param string $childXPath  child xpath from parent
      */
-    protected function cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanEmptyParents($dom, $parentXPath, $childXPath)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query($parentXPath);
@@ -59,7 +59,7 @@ class NavigationTree extends Base
      *
      * @param DomDocument $dom where to add links
      */
-    protected function addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addLinks($dom)
     {
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
         $xPath = new DomXPath($dom);
@@ -86,7 +86,7 @@ class NavigationTree extends Base
      * @param string      $menuFile which file to load
      * @param DomDocument $dom      where to load
      */
-    protected function loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromFile($menuFile, $dom)
     {
         $merge = false;
         $domFile = new DomDocument();
@@ -121,7 +121,7 @@ class NavigationTree extends Base
      *
      * @param object $dom dom element to add links
      */
-    protected function sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sessionizeLocalUrls($dom)
     {
         $url = $this->getAdminUrl();
         $xPath = new DomXPath($dom);
@@ -142,7 +142,7 @@ class NavigationTree extends Base
      *
      * @param object $dom DOMDocument
      */
-    protected function checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkRights($dom)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query('//*[@rights or @norights]');
@@ -173,7 +173,7 @@ class NavigationTree extends Base
      *
      * @param DOMDocument $dom document to check group
      */
-    protected function checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkGroups($dom)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query("//*[@nogroup or @group]");
@@ -206,7 +206,7 @@ class NavigationTree extends Base
      *
      * @return null
      */
-    protected function checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDemoShopDenials($dom)
     {
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             // nothing to check for non demo shop
@@ -244,7 +244,7 @@ class NavigationTree extends Base
      * @param object $domElemTo   DOMElement
      * @param object $domElemFrom DOMElement
      */
-    protected function copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function copyAttributes($domElemTo, $domElemFrom)
     {
         foreach ($domElemFrom->attributes as $attr) {
             $domElemTo->setAttribute($attr->nodeName, $attr->nodeValue);
@@ -260,7 +260,7 @@ class NavigationTree extends Base
      * @param object $domDocTo    node to append child
      * @param string $queryStart  node query
      */
-    protected function mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart)
     {
         foreach ($domElemFrom->childNodes as $fromNode) {
             if ($fromNode->nodeType === XML_ELEMENT_NODE) {
@@ -294,7 +294,7 @@ class NavigationTree extends Base
      * @param DomDocument $domNew what to merge
      * @param DomDocument $dom    where to merge
      */
-    protected function merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function merge($domNew, $dom)
     {
         $xPath = new DOMXPath($dom);
         $this->mergeNodes($dom->documentElement, $domNew->documentElement, $xPath, $dom, '/OX');
@@ -374,7 +374,7 @@ class NavigationTree extends Base
      *
      * @return array
      */
-    protected function getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMenuFiles()
     {
         return $this->getContainer()
             ->get('oxid_esales.templating.admin.navigation.file.locator')
@@ -388,7 +388,7 @@ class NavigationTree extends Base
      *
      * @return string
      */
-    protected function processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processCachedFile($cacheContents)
     {
         return $cacheContents;
     }
@@ -398,7 +398,7 @@ class NavigationTree extends Base
      *
      * @return DOMDocument
      */
-    protected function getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getInitialDom()
     {
         if ($this->_oInitialDom === null) {
             $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -570,7 +570,7 @@ class NavigationTree extends Base
      *
      * @return string
      */
-    protected function getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdminUrl()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -590,7 +590,7 @@ class NavigationTree extends Base
      *
      * @return bool
      */
-    protected function hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasRights($rights)
     {
         return $this->getUser()->oxuser__oxrights->value == $rights;
     }
@@ -602,7 +602,7 @@ class NavigationTree extends Base
      *
      * @return bool
      */
-    protected function hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasGroup($groupId)
     {
         return $this->getUser()->inGroup($groupId);
     }

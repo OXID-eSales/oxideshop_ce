@@ -62,7 +62,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return $sQ
      */
-    protected function prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::prepareWhereQuery($aWhere, $sqlFull);
         $sDisplayType = (int) Registry::getRequest()->getRequestEscapedParameter('displaytype');

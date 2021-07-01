@@ -236,7 +236,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * or
      * - displays 404 error if category has no products
      */
-    protected function checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkRequestedPage()
     {
         $pageCount = $this->getPageCount();
         $currentPageNumber = $this->getActPage();
@@ -255,7 +255,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processListArticles()
     {
         if ($articleList = $this->getArticleList()) {
             $linkType = $this->getProductLinkType();
@@ -312,7 +312,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return int
      */
-    protected function getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         $categoryType = OXARTICLE_LINKTYPE_CATEGORY;
         if (($category = $this->getActiveCategory()) && $category->isPriceCategory()) {
@@ -364,7 +364,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return \OxidEsales\Eshop\Application\Model\ArticleList
      */
-    protected function loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($category)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -416,7 +416,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return int
      */
-    protected function getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRequestPageNr()
     {
         return parent::getActPage();
     }
@@ -442,7 +442,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($category = $this->getActiveCategory())) {
             return $category->getId();
@@ -454,7 +454,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatPathString()
     {
         if ($this->_sCatPathString === null) {
             // marking as already set
@@ -485,7 +485,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return  string
      */
-    protected function prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
         $description = '';
         // appending parent title
@@ -545,7 +545,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return  string
      */
-    protected function collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function collectMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
         //formatting description tag
         $category = $this->getActiveCategory();
@@ -583,7 +583,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
         $keywords = '';
         if (($activeCategory = $this->getActiveCategory())) {
@@ -620,7 +620,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function collectMetaKeyword($keywords)
     {
         $maxTextLength = 60;
         $text = '';
@@ -690,7 +690,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($url, $currentPage, $languageId = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
             if ($currentPage) {
@@ -709,7 +709,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return bool
      */
-    protected function isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isActCategory()
     {
         return $this->_blIsCat;
     }
@@ -784,7 +784,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return object
      */
-    protected function getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($languageId)
     {
         return $this->getActiveCategory();
     }

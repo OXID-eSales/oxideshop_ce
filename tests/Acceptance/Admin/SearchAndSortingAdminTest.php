@@ -174,7 +174,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->clickAndWait("nav.last");
         $this->assertEquals("Page 25 / 25", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.25'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] DE test Country šÄßüл", $this->getText("//tr[@id='row.9']/td[2]"));
+        $this->assertEquals("[last] DE test Country šÄßüл", $this->getText("//tr[@id='row.10']/td[2]"));
         $this->clickAndWait("nav.prev");
         $this->assertEquals("Page 24 / 25", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.24'][@class='pagenavigation pagenavigationactive']");
@@ -199,7 +199,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("1 DE test Country šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
         $this->clickDeleteListItem(1);
         $this->clickAndWaitFrame("nav.last");
-        $this->assertEquals("[last] DE test Country šÄßüл", $this->getText("//tr[@id='row.8']/td[2]"));
+        $this->assertEquals("[last] DE test Country šÄßüл", $this->getText("//tr[@id='row.9']/td[2]"));
         $this->assertEquals("Page 25 / 25", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.25'][@class='pagenavigation pagenavigationactive']");
         $this->clickDeleteListItem(1);

@@ -244,7 +244,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return string|null
      */
-    public function getAddUrlParams()
+    protected function getAddDynUrlParams()
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -259,7 +259,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected function processProduct($oProduct)
     {
         $oProduct->setLinkType($this->getLinkType());
-        if ($sAddParams = $this->getAddUrlParams()) {
+        if ($sAddParams = $this->getAddDynUrlParams()) {
             $oProduct->appendLink($sAddParams);
         }
     }

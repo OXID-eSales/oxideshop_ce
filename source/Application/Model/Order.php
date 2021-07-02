@@ -490,7 +490,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // copies user info
-        $this->setUser($oUser);
+        $this->assignUserInformation($oUser);
 
         // copies basket info
         $this->loadFromBasket($oBasket);
@@ -733,7 +733,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param object $oUser user object
      */
-    public function setUser($oUser)
+    protected function assignUserInformation($oUser)
     {
         $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
 

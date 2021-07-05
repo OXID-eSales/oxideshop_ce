@@ -2032,7 +2032,7 @@ class Email extends PHPMailer
      * @param int $shopId shop id
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShop" in next major
+     * @deprecated underscore prefix violates PSR12, use "getShop" instead
      */
     protected function _getShop($langId = null, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

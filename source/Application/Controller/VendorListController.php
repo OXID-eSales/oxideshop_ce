@@ -299,11 +299,21 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns request parameter of vendor id.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorId" in next major
+     * @deprecated underscore prefix violates PSR12, use "getVendorIdFromRequest" instead
      */
     protected function _getVendorId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
+    }
+
+    /**
+     * Returns request parameter of vendor id.
+     *
+     * @return string
+     */
+    protected function getVendorIdFromRequest()
+    {
+        return $this->_getVendorId();
     }
 
     /**

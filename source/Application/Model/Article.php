@@ -5099,7 +5099,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Return prepared price
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPrice" in next major
+     * @deprecated underscore prefix violates PSR12, use "getRawPrice" instead
      */
     protected function _getPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -5118,10 +5118,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
+     * Return prepared price
+     */
+    protected function getRawPrice()
+    {
+        return $this->_getPrice();
+    }
+
+    /**
      * Return variant min price
      *
      * @return null
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMinPrice" in next major
+     * @deprecated underscore prefix violates PSR12, use "getVarMinRawPrice" instead
      */
     protected function _getVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -5154,6 +5162,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         return $this->_dVarMinPrice;
+    }
+
+    /**
+     * Return variant min price
+     */
+    protected function getVarMinRawPrice()
+    {
+        return $this->_getVarMinPrice();
     }
 
     /**

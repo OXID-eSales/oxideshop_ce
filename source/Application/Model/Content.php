@@ -370,7 +370,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sFieldName name of the field which value to get
      *
      * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldData" in next major
+     * @deprecated underscore prefix violates PSR12, use "getFieldData" instead
      */
     protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

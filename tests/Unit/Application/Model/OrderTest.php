@@ -1671,7 +1671,7 @@ class OrderTest extends \OxidTestCase
         ];
 
         $testMethods = array_unique($methods);
-        $testMethods[] = 'setUser';
+        $testMethods[] = 'assignUserInformation';
         $testMethods[] = 'validateOrder';
         $testMethods[] = 'setOrderStatus';
 
@@ -1698,7 +1698,7 @@ class OrderTest extends \OxidTestCase
         $user = oxNew(User::class);
 
         $methods = [
-            'setUser',
+            'assignUserInformation',
             'loadFromBasket',
             'setPayment',
             'setOrderStatus',
@@ -1732,7 +1732,7 @@ class OrderTest extends \OxidTestCase
 
         $methods = [
             'setId',
-            'setUser',
+            'assignUserInformation',
             'loadFromBasket',
             'setPayment',
             'setFolder',
@@ -1751,7 +1751,7 @@ class OrderTest extends \OxidTestCase
 
 
         $order->expects($this->once())->method('setId')->will($this->returnValue(true));
-        $order->expects($this->once())->method('setUser')->will($this->returnValue(true));
+        $order->expects($this->once())->method('assignUserInformation')->will($this->returnValue(true));
         $order->expects($this->once())->method('loadFromBasket')->will($this->returnValue(true));
         $order->expects($this->once())->method('setPayment')->will($this->returnValue(true));
         $order->expects($this->once())->method('save')->will($this->returnValue(true));
@@ -1778,7 +1778,7 @@ class OrderTest extends \OxidTestCase
 
         $methods = [
             'setId',
-            'setUser',
+            'assignUserInformation',
             'loadFromBasket',
             'setPayment',
             'setFolder',
@@ -1790,7 +1790,7 @@ class OrderTest extends \OxidTestCase
         $order = $this->getMock(Order::class, $methods);
 
         $order->expects($this->once())->method('setId')->will($this->returnValue(true));
-        $order->expects($this->once())->method('setUser')->will($this->returnValue(true));
+        $order->expects($this->once())->method('assignUserInformation')->will($this->returnValue(true));
         $order->expects($this->once())->method('loadFromBasket')->will($this->returnValue(true));
         $order->expects($this->once())->method('setPayment')->will($this->returnValue(true));
         $order->expects($this->once())->method('save')->will($this->returnValue(true));
@@ -1960,14 +1960,14 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(2, count($oOrder->getNonPublicVar('_oArticles')));
     }
 
-    public function testSetUser()
+    public function testassignUserInformation()
     {
         //load user
         $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->setUser($oUser);
+        $oOrder->assignUserInformation($oUser);
 
         $this->assertEquals('oxdefaultadmin', $oOrder->oxorder__oxuserid->value);
         $this->assertEquals('John', $oOrder->oxorder__oxbillfname->value);
@@ -1975,7 +1975,7 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(null, $oOrder->oxorder__oxdelfname->value);
     }
 
-    public function testSetUserLoadsDeliveryAddress()
+    public function testassignUserInformationLoadsDeliveryAddress()
     {
         $oUser = oxNew('oxuser');
         $oUser->load("oxdefaultadmin");
@@ -1999,7 +1999,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getDelAddressInfo'));
         $oOrder->expects($this->once())->method('getDelAddressInfo')->will($this->returnValue($oDelAddress));
-        $oOrder->setUser($oUser);
+        $oOrder->assignUserInformation($oUser);
 
         $this->assertEquals('testDelFName', $oOrder->oxorder__oxdelfname->value);
         $this->assertEquals('testDelLName', $oOrder->oxorder__oxdellname->value);
@@ -3750,8 +3750,8 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
-        $order->expects($this->once())->method('setUser');
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'assignUserInformation', 'loadFromBasket', 'sendOrderByEmail'));
+        $order->expects($this->once())->method('assignUserInformation');
         $order->expects($this->once())->method('loadFromBasket');
         $order->expects($this->once())->method('sendOrderByEmail');
 
@@ -3779,8 +3779,8 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
-        $order->expects($this->once())->method('setUser');
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'assignUserInformation', 'loadFromBasket', 'sendOrderByEmail'));
+        $order->expects($this->once())->method('assignUserInformation');
         $order->expects($this->once())->method('loadFromBasket');
         $order->expects($this->once())->method('sendOrderByEmail');
 
@@ -3812,8 +3812,8 @@ class OrderTest extends \OxidTestCase
         $basket = oxNew('oxBasket');
         $basket->addToBasket("2000", 1.0);
 
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'setUser', 'loadFromBasket', 'sendOrderByEmail'));
-        $order->expects($this->once())->method('setUser');
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateOrder', 'assignUserInformation', 'loadFromBasket', 'sendOrderByEmail'));
+        $order->expects($this->once())->method('assignUserInformation');
         $order->expects($this->once())->method('loadFromBasket');
         $order->expects($this->once())->method('sendOrderByEmail');
 

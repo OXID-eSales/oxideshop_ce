@@ -144,17 +144,17 @@ class DetailsTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetAddUrlParams()
+    public function testgetAddDynUrlParams()
     {
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("somelisttype"));
         $oDetailsView->expects($this->never())->method('getDynUrlParams');
-        $this->assertNull($oDetailsView->getAddUrlParams());
+        $this->assertNull($oDetailsView->getAddDynUrlParams());
 
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getListType", "getDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getListType')->will($this->returnValue("search"));
         $oDetailsView->expects($this->once())->method('getDynUrlParams')->will($this->returnValue("searchparams"));
-        $this->assertEquals("searchparams", $oDetailsView->getAddUrlParams());
+        $this->assertEquals("searchparams", $oDetailsView->getAddDynUrlParams());
     }
 
     /**
@@ -168,9 +168,9 @@ class DetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('setLinkType')->with($this->equalTo("search"));
         $oProduct->expects($this->once())->method('appendLink')->with($this->equalTo("searchparams"));
 
-        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getLinkType", "getAddUrlParams"));
+        $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getLinkType", "getAddDynUrlParams"));
         $oDetailsView->expects($this->once())->method('getLinkType')->will($this->returnValue("search"));
-        $oDetailsView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue("searchparams"));
+        $oDetailsView->expects($this->once())->method('getAddDynUrlParams')->will($this->returnValue("searchparams"));
 
         $oDetailsView->processProduct($oProduct);
     }

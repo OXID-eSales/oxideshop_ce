@@ -62,7 +62,6 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @access private
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCacheId" in next major
      */
     private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

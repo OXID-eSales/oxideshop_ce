@@ -555,7 +555,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $moduleId Module id
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getInvalidExtensions" in next major
      */
     private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

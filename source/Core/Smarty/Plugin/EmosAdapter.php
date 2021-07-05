@@ -399,7 +399,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Returns page content array.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getPagesContent" in next major
      */
     private function _getPagesContent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -410,7 +409,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Returns each order step name in array.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOrderStepNames" in next major
      */
     private function _getOrderStepNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -423,7 +421,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param array $aParams
      * @param Smarty $oSmarty
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setControllerInfo" in next major
      */
     private function _setControllerInfo($oEmos, $aParams, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -546,7 +543,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param Smarty $oSmarty
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setSearchInformation" in next major
      */
     private function _setSearchInformation($oEmos, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -569,7 +565,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\User $oUser
      * @param \OxidEsales\Eshop\Application\Model\Order $oOrder
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setBasketInformation" in next major
      */
     private function _setBasketInformation($oEmos, $oUser, $oOrder, $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -608,7 +603,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param \OxidEsales\Eshop\Application\Model\User $oUser
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setUserRegistration" in next major
      */
     private function _setUserRegistration($oEmos, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -628,7 +622,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Sets basket actions (update and add) information to Emos.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setBasketActionsInfo" in next major
      */
     private function _setBasketActionsInfo($oEmos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

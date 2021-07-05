@@ -292,7 +292,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array        $fields
      *
      * @return User|Address
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setFields" in next major
      */
     private function _setFields($object, $fields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

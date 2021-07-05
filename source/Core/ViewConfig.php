@@ -1402,7 +1402,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param array  $aModuleVersions Modules from oxconfig 'aModuleVersions'
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "moduleExists" in next major
      */
     private function _moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1436,7 +1435,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sVersionTo   Version to
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "isModuleVersionCorrect" in next major
      */
     private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

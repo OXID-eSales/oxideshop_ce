@@ -191,7 +191,6 @@ abstract class OnlineCaller
      * @param string $sXml Data to send. Currently OXID servers only accept XML formatted data.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "executeCurlCall" in next major
      */
     private function _executeCurlCall($sUrl, $sXml) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -211,7 +210,6 @@ abstract class OnlineCaller
      * Sends an email with server information.
      *
      * @param string $sBody Mail content.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "sendEmail" in next major
      */
     private function _sendEmail($sBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -223,7 +221,6 @@ abstract class OnlineCaller
      * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "resetFailedCallsCount" in next major
      */
     private function _resetFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -236,7 +233,6 @@ abstract class OnlineCaller
      * increases failed calls count.
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "increaseFailedCallsCount" in next major
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

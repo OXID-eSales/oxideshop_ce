@@ -63,7 +63,6 @@ class BasketContentMarkGenerator
      * Basket that is used to get article type(downloadable, intangible etc..).
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getBasket" in next major
      */
     private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -76,7 +75,6 @@ class BasketContentMarkGenerator
      * @param string $sCurrentMark Current mark.
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "formMarks" in next major
      */
     private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

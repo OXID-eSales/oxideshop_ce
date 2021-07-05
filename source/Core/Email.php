@@ -2280,7 +2280,6 @@ class Email extends PHPMailer
      * @param string $altBody Body.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "clearSidFromBody" in next major
      */
     private function _clearSidFromBody($altBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

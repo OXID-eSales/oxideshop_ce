@@ -330,7 +330,6 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $type Metadata type.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDbConfigTypeName" in next major
      */
     private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

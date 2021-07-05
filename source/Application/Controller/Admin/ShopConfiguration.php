@@ -306,7 +306,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param string $value var value
      *
      * @return mixed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "unserializeConfVar" in next major
+     * @deprecated will be renamed to "unserializeConfVar" in next major
      */
     public function _unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -357,7 +357,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param mixed  $value var value
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "serializeConfVar" in next major
+     * @deprecated will be renamed to "serializeConfVar" in next major
      */
     public function _serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

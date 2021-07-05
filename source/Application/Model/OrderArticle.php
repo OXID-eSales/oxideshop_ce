@@ -807,7 +807,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
     /**
      * Set order files
-     * @deprecated underscore prefix violates PSR12, will be renamed to "setOrderFiles" in next major
+     * @deprecated will be renamed to "setOrderFiles" in next major
      */
     public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

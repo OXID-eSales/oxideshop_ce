@@ -2723,7 +2723,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Returns ( current basket products sum - total discount - voucher discount )
      *
      * @return double
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiscountedProductsSum" in next major
+     * @deprecated will be renamed to "getDiscountedProductsSum" in next major
      */
     public function _getDiscountedProductsSum()  // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

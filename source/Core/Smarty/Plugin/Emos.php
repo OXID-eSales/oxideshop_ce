@@ -570,7 +570,7 @@ class Emos
 
     /**
      * formats up the connector script in a Econda ver 2 JS format
-     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareScript" in next major
+     * @deprecated will be renamed to "prepareScript" in next major
      */
     public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

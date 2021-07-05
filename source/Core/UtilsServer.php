@@ -424,7 +424,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
-     * @deprecated underscore prefix violates PSR12, use "isUrlHostServerHost" instead
+     * @deprecated use "isUrlHostServerHost" instead
      */
     public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -332,10 +332,10 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
-            // END deprecated
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 

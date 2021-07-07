@@ -651,8 +651,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getSize()
     {
         return $this->oxarticles__oxlength->value *
-                 $this->oxarticles__oxwidth->value *
-                 $this->oxarticles__oxheight->value;
+               $this->oxarticles__oxwidth->value *
+               $this->oxarticles__oxheight->value;
     }
 
     /**
@@ -1044,7 +1044,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             !$this->oxarticles__oxactive->value &&
             (
                 $this->oxarticles__oxactivefrom->value > $sNow ||
-             $this->oxarticles__oxactiveto->value < $sNow
+                $this->oxarticles__oxactiveto->value < $sNow
             )
         ) {
             return false;
@@ -1712,9 +1712,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->generateSearchStr($sOXID);
                 $sSelect .= ($oStr->strstr(
-                    $sSelect,
-                    'where'
-                ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
+                        $sSelect,
+                        'where'
+                    ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
 
                 // category not found ?
                 if (!$oCategory->assignRecord($sSelect)) {
@@ -2507,8 +2507,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             //stock level might differ from original value.
             if (
                 !$myConfig->getConfigParam('blPsBasketReservationEnabled')
-                 || ($myConfig->getConfigParam('blPsBasketReservationEnabled')
-                     && $myConfig->getConfigParam('blAllowNegativeStock'))
+                || ($myConfig->getConfigParam('blPsBasketReservationEnabled')
+                    && $myConfig->getConfigParam('blAllowNegativeStock'))
             ) {
                 // foreign stock is also always considered as on stock
                 if ($iStockFlag == 1 || $iStockFlag == 4) {
@@ -4330,19 +4330,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if (
             $sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos(
-                $mValue,
-                "nopic.jpg"
-            ) !== false)
+                                                                                                      $mValue,
+                                                                                                      "nopic.jpg"
+                                                                                                  ) !== false)
         ) {
             return true;
         }
 
         if (
             strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr(
-                $sFieldName,
-                0,
-                17
-            ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
+                                                                                                   $sFieldName,
+                                                                                                   0,
+                                                                                                   17
+                                                                                               ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
         ) {
             return true;
         }
@@ -4399,9 +4399,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function isImageField($sFieldName)
     {
         return (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
-            $sFieldName,
-            '_oxzoom'
-        ) || stristr($sFieldName, '_oxpic'));
+                $sFieldName,
+                '_oxzoom'
+            ) || stristr($sFieldName, '_oxpic'));
     }
 
     /**
@@ -5221,9 +5221,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function getLoadVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage, $baseObject, $sArticleTable)
     {
         return "select " . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
-                 $this->getActiveCheckQuery($forceCoreTableUsage) .
-                 $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
-                 " order by $sArticleTable.oxsort";
+               $this->getActiveCheckQuery($forceCoreTableUsage) .
+               $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
+               " order by $sArticleTable.oxsort";
     }
 
     /**

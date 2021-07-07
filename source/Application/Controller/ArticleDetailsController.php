@@ -1301,7 +1301,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;" .
-            "searchparam=" . $this->getSearchParamForHtml();
+                              "searchparam=" . $this->getSearchParamForHtml();
 
         $paths[] = $searchPath;
 

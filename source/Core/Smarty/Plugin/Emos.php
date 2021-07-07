@@ -392,8 +392,8 @@ class Emos
         foreach ($aBasket as $oItem) {
             $oItem = $this->emos_ItemFormat($oItem);
             $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
-                $oItem->price, $oItem->productGroup, $oItem->quantity,
-                $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
+                               $oItem->price, $oItem->productGroup, $oItem->quantity,
+                               $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
         }
 
         $this->_ecEvent = $aBasketItems;
@@ -496,9 +496,9 @@ class Emos
         $oItem = $this->emos_ItemFormat($oItem);
 
         $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
-            $oItem->price, $oItem->productGroup,
-            $oItem->quantity, $oItem->variant1,
-            $oItem->variant2, $oItem->variant3]];
+                            $oItem->price, $oItem->productGroup,
+                            $oItem->quantity, $oItem->variant1,
+                            $oItem->variant2, $oItem->variant3]];
     }
 
     /**
@@ -574,8 +574,8 @@ class Emos
         $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
         $this->_sIncScript .= "<script type=\"text/javascript\" " .
-            "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
-            "</script>" . $this->_br;
+                              "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
+                              "</script>" . $this->_br;
 
         $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;

@@ -105,8 +105,8 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     private function getSelectedModuleId(): string
     {
         $moduleId = $this->_sEditObjectId
-            ?? Registry::getRequest()->getRequestEscapedParameter('oxid')
-            ?? Registry::getSession()->getVariable('saved_oxid');
+                    ?? Registry::getRequest()->getRequestEscapedParameter('oxid')
+                       ?? Registry::getSession()->getVariable('saved_oxid');
 
         if ($moduleId === null) {
             throw new \InvalidArgumentException('Module id not found.');

@@ -217,7 +217,7 @@ class SystemRequirements
             $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
                                        array_fill_keys($aRequiredPHPConfigs, 'php_config') +
                                        array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
-                                       ;
+            ;
         }
 
         return $this->_aRequiredModules;

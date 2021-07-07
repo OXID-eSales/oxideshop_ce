@@ -345,10 +345,10 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         $sPageId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() .
                    $this->getEmosCl() .
-            $sTplName .
-            Registry::getRequest()->getRequestEscapedParameter('cnid') .
-            Registry::getRequest()->getRequestEscapedParameter('anid') .
-            Registry::getRequest()->getRequestEscapedParameter('option');
+                   $sTplName .
+                   Registry::getRequest()->getRequestEscapedParameter('cnid') .
+                   Registry::getRequest()->getRequestEscapedParameter('anid') .
+                   Registry::getRequest()->getRequestEscapedParameter('option');
 
         return md5($sPageId);
     }
@@ -616,7 +616,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                         if ($aItemData['oldam'] > $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             $sPath = $this->getBasketProductCatPath($oProduct);
                             $oEmos->removeFromBasket($this->convProd2EmosItem($oProduct, $sPath, ($aItemData['oldam'] - $aItemData['am'])));
-                        //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
+                            //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
                         } elseif ($aItemData['oldam'] < $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             $sPath = $this->getBasketProductCatPath($oProduct);
                             $oEmos->addToBasket($this->convProd2EmosItem($oProduct, $sPath, $aItemData['am'] - $aItemData['oldam']));

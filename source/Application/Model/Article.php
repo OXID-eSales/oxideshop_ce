@@ -1712,9 +1712,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->generateSearchStr($sOXID);
                 $sSelect .= ($oStr->strstr(
-                        $sSelect,
-                        'where'
-                    ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
+                    $sSelect,
+                    'where'
+                ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
 
                 // category not found ?
                 if (!$oCategory->assignRecord($sSelect)) {
@@ -4330,19 +4330,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if (
             $sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos(
-                                                                                                      $mValue,
-                                                                                                      "nopic.jpg"
-                                                                                                  ) !== false)
+                $mValue,
+                "nopic.jpg"
+            ) !== false)
         ) {
             return true;
         }
 
         if (
             strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr(
-                                                                                                   $sFieldName,
-                                                                                                   0,
-                                                                                                   17
-                                                                                               ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
+                $sFieldName,
+                0,
+                17
+            ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
         ) {
             return true;
         }
@@ -4399,9 +4399,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function isImageField($sFieldName)
     {
         return (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
-                $sFieldName,
-                '_oxzoom'
-            ) || stristr($sFieldName, '_oxpic'));
+            $sFieldName,
+            '_oxzoom'
+        ) || stristr($sFieldName, '_oxpic'));
     }
 
     /**

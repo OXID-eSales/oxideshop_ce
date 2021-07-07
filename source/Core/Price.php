@@ -41,7 +41,14 @@ class Price
      */
     protected $_aDiscounts = null;
 
-
+    
+    /**
+     * The price without discounts
+     * @var \oxPrice
+     */
+    protected $priceWithoutDiscounts = null;
+    
+    
     /**
      * Price entering mode
      * Reference to myConfig->blEnterNetPrice
@@ -426,6 +433,7 @@ class Price
         $this->_aDiscounts = null;
     }
 
+    
     /**
      * Calculates price: affects discounts
      */
@@ -435,6 +443,7 @@ class Price
         $aDiscounts = $this->getDiscounts();
 
         if ($aDiscounts) {
+            $this->priceWithoutDiscounts = clone $this;
             foreach ($aDiscounts as $aDiscount) {
                 if ($aDiscount['type'] == 'abs') {
                     $dPrice = $dPrice - $aDiscount['value'];
@@ -450,5 +459,11 @@ class Price
 
             $this->flushDiscounts();
         }
+    }
+    
+    public function getPriceWithoutDiscounts()
+    {
+        return isset($this->priceWithoutDiscounts) ?
+            $this->priceWithoutDiscounts : $this;
     }
 }

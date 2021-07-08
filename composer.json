@@ -46,7 +46,7 @@
         "oxid-esales/azure-theme": "^v2.0.0",
         "oxid-esales/testing-library": "^v9.0.0",
         "squizlabs/php_codesniffer": "^3.5.4",
-        "composer/composer": "^1",
+        "composer/composer": "^1.0 || ^2.0",
         "vimeo/psalm": "^4.4.1"
     },
     "autoload": {

@@ -1373,7 +1373,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (is_array($aLangParams)) {
             $aIds = $this->_getLanguageIdsFromLanguageParamsArray($aLangParams);
         } else {
-            $aIds = $this->_getLanguageIdsFromLanguagesArray($oConfig->getConfigParam('aLanguages'));
+            $languages = $oConfig->getConfigParam('aLanguages');
+            $aIds = $this->_getLanguageIdsFromLanguagesArray(
+                is_array($languages) ? $languages : []
+            );
         }
 
         return $aIds;

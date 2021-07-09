@@ -498,89 +498,6 @@ class NavigationFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Search in frontend
-     *
-     * @group frontend
-     */
-    public function testFrontendSearchNavigation()
-    {
-        $this->openShop();
-        //searching for 1 product (using product search field value)
-        $this->searchFor("šÄßüл1000");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertElementPresent("rssSearchProducts");
-        $this->assertEquals("1 %HITS_FOR% \"šÄßüл1000\"", $this->getHeadingText("//h1"));
-        $this->selectDropDown("viewOptions", "%line%");
-        $this->assertEquals("Test product 0 short desc [EN] šÄßüл", $this->clearString($this->getText("//ul[@id='searchList']/li[1]//div[2]/div[2]")));
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("productPrice_searchList_1")));
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
-        $this->assertEquals("2 kg | 25,00 €/kg", $this->getText("productPricePerUnit_searchList_1"));
-
-        $this->type("amountToBasket_searchList_1", "3");
-        $this->clickAndWait("toBasket_searchList_1");
-        $this->waitForElementText("3", "//div[@id='miniBasket']/span");
-
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a"); //link on img
-        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"šÄßüл1000\"", $this->getText("breadCrumb"));
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
-
-        $this->clickAndWait("//div[@id='overviewLink']/a");
-        $this->assertEquals("šÄßüл1000", $this->getValue("searchParam"));
-
-        //navigation between search results
-        $this->searchFor("100");
-        $this->assertTextPresent("4 %HITS_FOR% \"100\"");
-        $this->clickAndWait("searchList_1");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
-
-        $this->assertEquals("%DELIVERYTIME_DELIVERYTIME%: 1 day", $this->getText("productDeliveryTime"));
-        $this->clickAndWait("linkNextArticle");
-        $this->assertEquals("%DELIVERYTIME_DELIVERYTIME%: 1 week", $this->getText("productDeliveryTime"));
-        $this->clickAndWait("linkNextArticle");
-        //if product is not buyable, no delivery time should be shown
-        $this->assertTextNotPresent("%DELIVERYTIME_DELIVERYTIME%: 1 month", "This is parent product. It is not buyable, so no delivery time should be shown. works ok in basic templates");
-        $this->clickAndWait("linkNextArticle");
-        $this->assertEquals("%DELIVERYTIME_DELIVERYTIME%: 4 - 9 days", $this->getText("productDeliveryTime"));
-    }
-
-    /**
-     * Search in frontend
-     *
-     * @group frontend
-     */
-    public function testFrontendSearchSpecialCases()
-    {
-        $this->openShop();
-        //not existing search
-        $this->searchFor("notExisting");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("%NO_ITEMS_FOUND%");
-        $this->assertEquals("0 %HITS_FOR% \"notExisting\"", $this->getHeadingText("//h1"));
-        //special chars search
-        $this->searchFor("[EN] šÄßüл");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertEquals("4 %HITS_FOR% \"[EN] šÄßüл\"", $this->getHeadingText("//h1"));
-        $this->selectDropDown("viewOptions", "%line%");
-        $this->assertElementPresent("searchList_1");
-        $this->assertElementPresent("searchList_2");
-        $this->assertElementPresent("searchList_3");
-        $this->assertElementPresent("searchList_4");
-        $this->assertElementNotPresent("//ul[@id='searchList']/li[5]");
-
-        //testing #1582
-        $aCategoryParams = array("oxactive" => 0, "oxactive_1" => 0);
-        $this->callShopSC("oxCategory", "save", "testcategory0", $aCategoryParams, array(), 1);
-
-        //category is inactive
-        $this->clickAndWait("link=%HOME%");
-        $this->assertElementNotPresent("link=Test category 0 [EN] šÄßüл");
-        $this->searchFor("1002");
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
-        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"1002\"", $this->getText("breadCrumb"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
-    }
-
-    /**
      * Manufacturer navigation and all elements checking
      *
      * @group frontend
@@ -716,90 +633,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clickAndWait("//div[@id='itemsPagerbottom']//a[text()='%PREVIOUS%']");
 
         $this->assertElementPresent("productList_1");
-    }
-
-    /**
-     * sorting, paging and navigation in search
-     *
-     * @group frontend
-     */
-    public function testFrontendSortingSearch()
-    {
-        $this->openShop();
-        //testing navigation in search
-        $this->searchFor("100");
-        $this->assertElementNotPresent("itemsPager");
-
-        //top navigation testing
-        $this->selectDropDown("sortItems", "", "li[4]");
-        $this->checkSortedListEn();
-        $this->assertElementNotPresent("//ul[@id='searchList']/li[5]");
-
-        $this->selectDropDown("sortItems", "", "li[2]"); //title desc
-        $this->checkSortedListEn('titleDesc');
-
-        //adding additional column for sorting
-        $this->callShopSC("oxConfig", null, null, array("aSortCols" => array("type" => "arr", "value" => serialize(array("oxtitle", "oxvarminprice", "oxartnum")))));
-
-        //DE lang
-        $this->switchLanguage("Deutsch");
-
-        $this->selectDropDown("sortItems", "", "li[3]"); //title asc
-        $this->checkSortedListDe('titleAsc');
-
-        $this->selectDropDown("sortItems", "", "li[5]"); //artnum asc
-        $this->checkSortedListDe();
-    }
-
-    /**
-     * sorting, paging and navigation in search
-     *
-     * @group frontend
-     */
-    public function testFrontendPagingAndNavigationSearch()
-    {
-        $this->openShop();
-        //testing navigation in search
-        $this->searchFor("100");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertElementNotPresent("itemsPager");
-
-        $this->selectDropDown("itemsPerPage", "2");
-        $this->checkFilter();
-        $this->assertElementPresent("itemsPager");
-        $this->assertElementPresent("//ul[@id='searchList']/li[1]");
-        $this->assertElementPresent("//ul[@id='searchList']/li[2]");
-        $this->assertElementNotPresent("//ul[@id='searchList']/li[3]");
-        $this->clickAndWait("//div[@id='itemsPager']//a[text()='%NEXT%']");
-        $this->assertElementPresent("//div[@id='itemsPager']//a[text()='1']");
-        $this->assertElementPresent("//div[@id='itemsPager']//a[text()='2' and @class='page active']");
-        $this->assertElementNotPresent("//div[@id='itemsPager']//a[text()='%NEXT%']");
-        $this->assertElementPresent("//div[@id='itemsPager']//a[text()='%PREVIOUS%']");
-        $this->assertElementPresent("//ul[@id='searchList']/li[1]");
-        $this->assertElementPresent("//ul[@id='searchList']/li[2]");
-        $this->assertElementNotPresent("//ul[@id='searchList']/li[3]");
-        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("searchList_2"));
-        $this->clickAndWait("//div[@id='itemsPager']//a[text()='%PREVIOUS%']");
-        $this->assertElementPresent("//ul[@id='searchList']//input[@name='aid' and @value='1000']");
-        $this->clickAndWait("//div[@id='itemsPager']//a[text()='2']");
-        $this->assertElementPresent("//ul[@id='searchList']//input[@name='aid' and @value='1003']");
-        $this->clickAndWait("//div[@id='itemsPager']//a[text()='1']");
-
-        //bottom navigation
-        $this->clickAndWait("//div[@id='itemsPagerbottom']//a[text()='%NEXT%']");
-        $this->assertElementPresent("//div[@id='itemsPagerbottom']//a[text()='1']");
-        $this->assertElementPresent("//div[@id='itemsPagerbottom']//a[text()='2' and @class='page active']");
-        $this->assertElementNotPresent("//div[@id='itemsPagerbottom']//a[text()='%NEXT%']");
-        $this->assertElementPresent("//div[@id='itemsPagerbottom']//a[text()='%PREVIOUS%']");
-        $this->assertElementPresent("//ul[@id='searchList']/li[1]");
-        $this->assertElementPresent("//ul[@id='searchList']/li[2]");
-        $this->assertElementNotPresent("//ul[@id='searchList']/li[3]");
-        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("searchList_2"));
-
-        $this->clickAndWait("//div[@id='itemsPagerbottom']//a[text()='%PREVIOUS%']");
-        $this->assertElementPresent("//ul[@id='searchList']//input[@name='aid' and @value='1000']");
-        $this->clickAndWait("//div[@id='itemsPagerbottom']//a[text()='2']");
-        $this->assertElementPresent("//ul[@id='searchList']//input[@name='aid' and @value='1003']");
     }
 
     /**
@@ -1290,9 +1123,9 @@ class NavigationFrontendTest extends FrontendTestCase
      */
     private function checkFilter()
     {
-        $this->assertElementPresent("viewOptions");
         $this->assertElementPresent("itemsPerPage");
         $this->assertElementPresent("sortItems");
+        $this->assertElementPresent("viewOptions");
     }
 
     /**
@@ -1342,93 +1175,5 @@ class NavigationFrontendTest extends FrontendTestCase
         } else {
             $this->assertElementNotPresent("//form[@name='tobasket.productList_1']//button[text()='$sButtonText']");
         }
-    }
-
-    /**
-     * Unsubscribes given email.
-     *
-     * @param $sEmail
-     */
-    private function unsubscribeByEmail($sEmail)
-    {
-        $this->clickAndWait("//div[@id='panel']/div[1]//button[text()='Subscribe']");
-        $this->assertEquals("%YOU_ARE_HERE%: / %STAY_INFORMED%", $this->getText("breadCrumb"));
-        $this->assertEquals("%STAY_INFORMED%", $this->getText("//h1"));
-        $this->assertEquals("", $this->getValue("newsletterFname"));
-        $this->assertEquals("", $this->getValue("newsletterLname"));
-        $this->assertEquals("", $this->getValue("newsletterUserName"));
-        $this->type("newsletterUserName", $sEmail);
-        $this->check("newsletterSubscribeOff");
-        $this->assertEquals("0", $this->getValue("subscribeStatus"));
-        $this->clickAndWait("newsLetterSubmit");
-        $this->assertEquals("%YOU_ARE_HERE%: / %STAY_INFORMED%", $this->getText("breadCrumb"));
-    }
-
-    /**
-     * Adds subscription info to fields and asserts.
-     */
-    private function typeInfoForSubscription()
-    {
-        $this->type("//div[@id='panel']//input[@name='editval[oxuser__oxusername]']", "example01@oxid-esales.dev");
-        $this->clickAndWait("//div[@id='panel']/div[1]//button[text()='%SUBSCRIBE%']");
-        $this->assertEquals("%YOU_ARE_HERE%: / %STAY_INFORMED%", $this->getText("breadCrumb"));
-        $this->assertEquals("%STAY_INFORMED%", $this->getText("//h1"));
-        $this->select("editval[oxuser__oxsal]", "label=%MRS%");
-        $this->type("editval[oxuser__oxfname]", "name_šÄßüл");
-        $this->type("editval[oxuser__oxlname]", "surname_šÄßüл");
-        $this->assertEquals("example01@oxid-esales.dev", $this->getValue("editval[oxuser__oxusername]"));
-    }
-
-    /**
-     * Checks if was sorted correctly in EN language.
-     *
-     * @param null $sSortType
-     */
-    private function checkSortedListEn($sSortType = null)
-    {
-        $aArticlesTitles = array(
-            "Test product 1 [EN] šÄßüл",
-            "Test product 3 [EN] šÄßüл",
-            "Test product 2 [EN] šÄßüл",
-            "Test product 0 [EN] šÄßüл"
-        );
-        if ($sSortType == 'titleDesc') {
-            rsort($aArticlesTitles);
-        }
-
-        $this->runSortAsserts($aArticlesTitles);
-    }
-
-    /**
-     * Checks if was sorted correctly in DE language.
-     *
-     * @param null $sSortType
-     */
-    private function checkSortedListDe($sSortType = null)
-    {
-        $aArticlesTitles = array(
-            "[DE 4] Test product 0 šÄßüл",
-            "[DE 2] Test product 2 šÄßüл",
-            "[DE 3] Test product 3 šÄßüл",
-            "[DE 1] Test product 1 šÄßüл"
-        );
-        if ($sSortType == 'titleAsc') {
-            sort($aArticlesTitles);
-        }
-
-        $this->runSortAsserts($aArticlesTitles);
-    }
-
-    /**
-     * Run asserts for given array of articles.
-     *
-     * @param $aArticlesTitles
-     */
-    private function runSortAsserts($aArticlesTitles)
-    {
-        $this->assertEquals($aArticlesTitles[0], $this->getText("searchList_1"));
-        $this->assertEquals($aArticlesTitles[1], $this->getText("searchList_2"));
-        $this->assertEquals($aArticlesTitles[2], $this->getText("searchList_3"));
-        $this->assertEquals($aArticlesTitles[3], $this->getText("searchList_4"));
     }
 }

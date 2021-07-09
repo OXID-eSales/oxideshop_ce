@@ -9,35 +9,47 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Utility;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class ContextTest extends TestCase
+final class ContextTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testGetLogLevel()
+    public function testGetLogLevelWithConfigSetWillReturnValue(): void
     {
-        Registry::getConfig()->setConfigParam('sLogLevel', LogLevel::ALERT);
-        $context = $this->get(ContextInterface::class);
+        $configValue = (new ConfigFile())->getVar('sLogLevel');
+        if ($configValue === null) {
+            $this->markTestSkipped('Skipping because "sLogLevel" is not set in config.inc.php.');
+        }
 
-        $this->assertSame(
-            LogLevel::ALERT,
-            $context->getLogLevel()
-        );
+        $logLevel = $this->get(ContextInterface::class)->getLogLevel();
+
+        $this->assertSame($configValue, $logLevel);
     }
 
-    public function testGetLogLevelReturnsDefaultLogLevel()
+    public function testGetLogLevelWithConfigNotSetWillReturnDefaultValue(): void
     {
-        Registry::getConfig()->setConfigParam('sLogLevel', null);
-        $context = $this->get(ContextInterface::class);
+        $defaultLogLevel = LogLevel::ERROR;
+        $configValue = (new ConfigFile())->getVar('sLogLevel');
+        if ($configValue !== null) {
+            $this->markTestSkipped('Skipping because "sLogLevel" is set in config.inc.php.');
+        }
 
-        $this->assertSame(
-            LogLevel::ERROR,
-            $context->getLogLevel()
-        );
+        $logLevel = $this->get(ContextInterface::class)->getLogLevel();
+
+        $this->assertSame($defaultLogLevel, $logLevel);
+    }
+
+    public function testGetLogFilePathWithConfigSetWillReturnStringStartingWithValue(): void
+    {
+        $configValue = (new ConfigFile())->getVar('sShopDir');
+
+        $logFilePath = $this->get(ContextInterface::class)->getLogFilePath();
+
+        $this->assertStringStartsWith($configValue, $logFilePath);
     }
 }

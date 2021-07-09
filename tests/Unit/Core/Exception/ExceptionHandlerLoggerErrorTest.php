@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\Facts\Config\ConfigFile;
+use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Webmozart\PathUtil\Path;
 
@@ -28,9 +30,8 @@ use Webmozart\PathUtil\Path;
  * allows to check that the exception handler logs an exception
  * even if the DI container can't be used to fetch the logger.
  *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Exception
  */
-class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTestCase
+final class ExceptionHandlerLoggerErrorTest extends UnitTestCase
 {
     /** @var string */
     private $logFileName;
@@ -48,7 +49,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
     {
         parent::setUp();
 
-        $this->logFileName = Path::join(__DIR__, 'oxideshop.log');
+        $this->logFileName = Path::join((new ConfigFile())->getVar('sShopDir'), 'log', 'oxideshop.log');
 
         // Tamper the container factory so that it throws an exception
         // when somebody wants to use it
@@ -76,9 +77,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
         Registry::set(Config::class, $this->configInstance);
 
         // Clean up the log file if written
-        if (file_exists($this->logFileName)) {
-            unlink($this->logFileName);
-        }
+        fclose(fopen($this->logFileName, 'wb'));
 
         // Restore the container factory instance
         $this->instanceProperty->setValue($this->containerFactoryInstance);
@@ -86,7 +85,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
         parent::tearDown();
     }
 
-    public function testDIContainerFailure()
+    public function testDIContainerFailure(): void
     {
         // This is a test for the test setup :-)
 
@@ -97,7 +96,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
         $containerFactory->getContainer();
     }
 
-    public function testErrorLoggingOnFailingDIContainer()
+    public function testErrorLoggingOnFailingDIContainer(): void
     {
 
         $exceptionHandler = new ExceptionHandler();

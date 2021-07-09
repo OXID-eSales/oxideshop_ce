@@ -9,16 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
-use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
+use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
 use Psr\Log\LogLevel;
 use Webmozart\PathUtil\Path;
-use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Config;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 
 class Context extends BasicContext implements ContextInterface
 {
@@ -32,13 +30,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogLevel(): string
     {
-        try {
-            $logLevel = $this->getConfigParameter('sLogLevel');
-        } catch (DatabaseConnectionException | DatabaseNotConfiguredException $e) {
-            $logLevel = $this->getFactsConfigFile()->getVar('sLogLevel');
-        }
-
-        return $logLevel ?? LogLevel::ERROR;
+        return $this->getFactsConfigFile()->getVar('sLogLevel') ?? LogLevel::ERROR;
     }
 
     /**
@@ -46,13 +38,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogFilePath(): string
     {
-        try {
-            $logFilePath = Registry::getConfig()->getLogsDir();
-        } catch (DatabaseConnectionException | DatabaseNotConfiguredException $e) {
-            $logFilePath = Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log');
-        }
-
-        return Path::join($logFilePath, 'oxideshop.log');
+        return Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log', 'oxideshop.log');
     }
 
     /**

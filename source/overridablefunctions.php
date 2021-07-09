@@ -5,8 +5,11 @@
  * See LICENSE file for license details.
  */
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -204,8 +207,22 @@ if (!function_exists('getLogger')) {
      */
     function getLogger()
     {
-        $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+        $loggerServiceName = \Psr\Log\LoggerInterface::class;
+        try {
+            $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
 
-        return $container->get(\Psr\Log\LoggerInterface::class);
+            return $container->get($loggerServiceName);
+        } catch (ServiceCircularReferenceException $exception) {
+            if (strpos($exception->getMessage(), $loggerServiceName) !== false) {
+                $logger = new Logger('OXID Logger');
+                $logger->pushHandler(new StreamHandler(OX_LOG_FILE, Logger::ERROR));
+
+                $logger->critical('Not able to load logger from container');
+
+                return $logger;
+            }
+
+            throw $exception;
+        }
     }
 }

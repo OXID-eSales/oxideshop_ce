@@ -20,9 +20,12 @@ use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 class ShopSetupCommand extends Command
 {
@@ -123,6 +126,7 @@ class ShopSetupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->askForParameters($input, $output);
         $this->checkRequiredCommandOptions($this->getDefinition()->getOptions(), $input);
 
         $output->writeln('<info>Running pre-setup checks...</info>');
@@ -143,6 +147,50 @@ class ShopSetupCommand extends Command
         $output->writeln('<info>Setup has been finished.</info>');
 
         return 0;
+    }
+
+    private function askForParameters(InputInterface $input, OutputInterface $output): void
+    {
+        /** @var QuestionHelper $helper */
+        $helper = $this->getHelper('question');
+
+        foreach ($this->getDefinition()->getOptions() as $inputOption) {
+            if (!$inputOption->isValueRequired()) {
+                continue;
+            }
+
+            $inputOptionName = $inputOption->getName();
+            $option = $input->getOption($inputOptionName);
+            if (!$this->optionEmpty($option)) {
+                continue;
+            }
+
+            $answer = $helper->ask($input, $output, $this->getQuestion($inputOptionName));
+            $input->setOption($inputOptionName, $answer);
+        }
+    }
+
+    private function optionEmpty($option): bool
+    {
+        return empty($option) || $option === null;
+    }
+
+    private function getQuestion(string $inputOptionName): Question
+    {
+        return (new Question(
+            "<question>{$inputOptionName}:</question> ",
+            null
+        ))->setValidator(
+            function ($answer) use ($inputOptionName) {
+                if ($this->optionEmpty($answer)) {
+                    throw new RuntimeException(
+                        "The parameter {$inputOptionName} is required."
+                    );
+                }
+
+                return $answer;
+            }
+        )->setMaxAttempts(3);
     }
 
     /**

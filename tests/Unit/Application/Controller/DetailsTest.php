@@ -236,14 +236,15 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetProductNotExistingProduct()
     {
+        $_SERVER['REQUEST_URI'] = "index.php?cl=details&amp;anid=notexistingproductid";
         $this->setRequestParameter('anid', 'notexistingproductid');
-        oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception( \$aA[0] ); }");
+        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception( \$aA[0] ); }");
 
         try {
             $oDetailsView = oxNew('Details');
             $oDetailsView->getProduct();
         } catch (Exception $oExcp) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
+            $this->assertEquals($_SERVER['REQUEST_URI'], $oExcp->getMessage(), 'result does not match');
 
             return;
         }

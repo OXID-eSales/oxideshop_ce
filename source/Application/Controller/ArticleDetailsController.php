@@ -460,7 +460,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getProduct()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         if ($this->_oProduct === null) {
             //this option is only for lists and we must reset value
@@ -473,8 +472,9 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             if (!$this->_oProduct->load($articleId)) {
-                $utils->redirect($config->getShopHomeUrl());
-                $utils->showMessageAndExit('');
+                unset($_GET, $_POST);
+                $config->dropLastActiveView();
+                error_404_handler($_SERVER['REQUEST_URI']);
             }
 
             $variantSelectionId = Registry::getRequest()->getRequestEscapedParameter("varselid");

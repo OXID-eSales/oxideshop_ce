@@ -41,6 +41,8 @@ final class AdminRemoveUserOrderCest
         $orders = $orders->find($orders->orderNumberInput, "2");
         $orders->deleteOrder();
 
+        $I->waitForPageLoad();
+
         $I->seeInDatabase(
             'oxarticles',
             [
@@ -67,6 +69,8 @@ final class AdminRemoveUserOrderCest
         $orders = $adminPanel->openOrders();
         $orders = $orders->find($orders->orderNumberInput, "2");
         $orders->cancelOrder();
+
+        $I->waitForPageLoad();
 
         $I->seeInDatabase(
             'oxarticles',

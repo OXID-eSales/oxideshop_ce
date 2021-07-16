@@ -100,7 +100,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * @param array $aSeoData Seo data array
      *
      * @return null|string
-     * @deprecated underscore prefix violates PSR12, use "getAdditionalParamsFromSeoData" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalParamsFromSeoData" in next major
      */
     protected function _getAdditionalParams($aSeoData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -112,18 +112,6 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             }
         }
         return $sParams;
-    }
-
-    /**
-     * Gets additional params from aSeoData['oxparams'] if it is set.
-     *
-     * @param array $aSeoData Seo data array
-     *
-     * @return null|string
-     */
-    protected function getAdditionalParamsFromSeoData($aSeoData)
-    {
-        return $this->_getAdditionalParams($aSeoData);
     }
 
     /**

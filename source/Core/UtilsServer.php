@@ -424,7 +424,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
-     * @deprecated use "isUrlHostServerHost" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isUrlHostServerHost" in next major
      */
     public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -452,22 +452,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         }
 
         return false;
-    }
-
-    /**
-     * Check if the given URL is same as used for request.
-     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
-     * the protocol is optional (www.domain.com/shop/)
-     * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
-     *
-     * @param string $sURL        URL to check if is same as request.
-     * @param string $sServerHost request host.
-     *
-     * @return bool true if $sURL is equal to current page URL
-     */
-    public function isUrlHostServerHost($sURL, $sServerHost): bool
-    {
-        return $this->_isCurrentUrl($sURL, $sServerHost);
     }
 
     /**

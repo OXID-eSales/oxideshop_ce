@@ -465,15 +465,10 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Resets cache.
-     * @deprecated underscore prefix violates PSR12, use "resetContentCacheAfterResetCounter" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetContentCacheAfterResetCounter" in next major
      */
     protected function _resetContentCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-    }
-
-    protected function resetContentCacheAfterResetCounter()
-    {
-        $this->_resetContentCache();
     }
 
     /**

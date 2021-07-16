@@ -54,7 +54,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, use "getDiscountList" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiscountList" in next major
      */
     protected function _getList($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -73,20 +73,6 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
         $this->rewind();
 
         return $this;
-    }
-
-    /**
-     * Initializes current state discount list
-     * For iterating through the list, use getArray() on the list,
-     * as iterating on object itself can cause concurrency problems.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
-     *
-     * @return array
-     */
-    protected function getDiscountList($oUser = null)
-    {
-        return $this->_getList($oUser);
     }
 
     /**

@@ -388,21 +388,11 @@ class Curl
      * Wrapper function to be mocked for testing.
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, use "executeCurl" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "executeCurl" in next major
      */
     protected function _execute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return curl_exec($this->_getResource());
-    }
-
-    /**
-     * Wrapper function to be mocked for testing.
-     *
-     * @return string
-     */
-    protected function executeCurl(): string
-    {
-        return $this->_execute();
     }
 
     /**

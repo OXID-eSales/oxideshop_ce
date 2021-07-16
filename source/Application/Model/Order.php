@@ -752,7 +752,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Assigns to new oxorder object customer delivery and shipping info
      *
      * @param object $oUser user object
-     * @deprecated underscore prefix violates PSR12, use "assignUserInformation" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignUserInformation" in next major
      */
     protected function _setUser($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -793,16 +793,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxorder__oxdelfax = clone $oDelAdress->oxaddress__oxfax;
             $this->oxorder__oxdelsal = clone $oDelAdress->oxaddress__oxsal;
         }
-    }
-
-    /**
-     * Assigns to new oxorder object customer delivery and shipping info
-     *
-     * @param object $oUser user object
-     */
-    protected function assignUserInformation($oUser)
-    {
-        $this->_setUser($oUser);
     }
 
     /**

@@ -432,7 +432,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Get list display type
      *
      * @return null|string
-     * @deprecated underscore prefix violates PSR12, use "getArticleListDisplayType" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleListDisplayType" in next major
      */
     protected function _getListDisplayType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -443,16 +443,6 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         }
 
         return $listDisplayType;
-    }
-
-    /**
-     * Get list display type
-     *
-     * @return null|string
-     */
-    protected function getArticleListDisplayType()
-    {
-        return $this->_getListDisplayType();
     }
 
     /**

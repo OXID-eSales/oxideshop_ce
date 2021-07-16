@@ -79,7 +79,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sCountryId user country id
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, use "getActiveDeliverySetList" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveDeliverySetList" in next major
      */
     protected function _getList($oUser = null, $sCountryId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -111,24 +111,6 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
         $this->rewind();
 
         return $this;
-    }
-
-    /**
-     * Returns active delivery set list
-     *
-     * Loads all active delivery sets in list. Additionally
-     * checks if set has user customized parameters like
-     * assigned users, countries or user groups. Performs
-     * additional filtering according to these parameters
-     *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
-     * @param string                                   $sCountryId user country id
-     *
-     * @return array
-     */
-    protected function getActiveDeliverySetList($oUser = null, $sCountryId = null)
-    {
-        return $this->_getList($oUser, $sCountryId);
     }
 
 

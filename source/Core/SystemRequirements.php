@@ -491,7 +491,7 @@ class SystemRequirements
      * @param array $aHostInfo host info to open socket
      *
      * @return integer
-     * @deprecated underscore prefix violates PSR12, use "isModeRewriteExtensionLoaded" instead
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isModeRewriteExtensionLoaded" in next major
      */
     protected function _checkModRewrite($aHostInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -522,19 +522,6 @@ class SystemRequirements
         }
 
         return $iModStat;
-    }
-
-    /**
-     * Checks if mod_rewrite extension is loaded.
-     * Checks for one address.
-     *
-     * @param array $aHostInfo host info to open socket
-     *
-     * @return integer
-     */
-    protected function isModeRewriteExtensionLoaded(array $aHostInfo): int
-    {
-        return $this->_checkModRewrite($aHostInfo);
     }
 
     /**

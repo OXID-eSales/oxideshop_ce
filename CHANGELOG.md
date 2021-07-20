@@ -7,399 +7,340 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added
+
 - Support for MySQL v8.0
-- More information about problems is shown after permission check in Setup [PR-764](https://github.com/OXID-eSales/oxideshop_ce/pull/764)
-- Logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
-- Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
-- Performance improvement of Field class [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
-- Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
-- New module configuration option `moduleSource`
-- Console Shop installer
+- Console Shop installer commands:
+  - `oe:setup:shop`
+  - `oe:setup:demodata`
+  - `oe:admin:create-user`
+  - `oe:license:add`
+  - `oe:license:clear`
 - Console module installer commands:
-    - `oe:module:install`
-    - `oe:module:uninstall`
-- Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
-- Support for single language map file in translations directory [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449).
-- Setting tracking URL per Shipping Method
-- Possibility to switch file storage for uploaded files by implementing `OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface`
-- Add functionality to export newsletter recipients in Admin area
+  - `oe:module:install`
+  - `oe:module:uninstall`
+- Export for newsletter recipients list
+- Saving tracking URL per Shipping Method
+- Interface for file upload management `Internal\Framework\FileSystem\ImageHandlerInterface`
+- Psalm integration [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
+- Support for single language map file [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449)
+- Performance improvement in `Core\Field` [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
+- Logging for:
+  - Permission check in Setup [PR-764](https://github.com/OXID-eSales/oxideshop_ce/pull/764)
+  - Shop validation [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 
 ### Changed
-- Source/Application/views/admin/tpl/shop_license.tpl
-- Block names in source/Application/views/admin/tpl/shop_main.tpl were switched [PR-730](https://github.com/OXID-eSales/oxideshop_ce/pull/730):
-    - ``admin_shop_main_leftform``
-    - ``admin_shop_main_rightform``
-- Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
-- Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
-- Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
-- Update symfony components to version 5
-- Change translations loading source for themes to be same as for core and modules
-- Turn off `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
-- Load only necessary config options [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
-- Move hash service from `\OxidEsales\EshopCommunity\Internal\Authentication\` to `\OxidEsales\EshopCommunity\Internal\Utility\Hash`
-- Email validation service moved to Utility `OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidationService`
-- Shop-setup command does not add admin user
-- Module template file path should be registered in metadata.php as a relative path to the module root directory 
-- Change default value for `oxpublic` field in `oxuserbaskets` table from `1` to `0`
-- Don't copy module files to the `source/modules` directory
-- Copy module assets to the shop out directory
-- Method `OxidEsales\EshopCommunity\Core\UtilsFile::processFiles` will try to store files externally if alternative image URL is configured
-- Updated a list of bots (aRobots array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
-- Throw exception in getLanguageAbbr method if no abbreviation is available by specific id [PR-802](https://github.com/OXID-eSales/oxideshop_ce/pull/802)
-- Rename deprecated methods prefixed with a single underscore
 
-### Deprecated
-- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
-- `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
+- Update symfony components to version 5
+- Storage of module source files:
+  - don't copy files to the `source/modules` directory
+  - copy assets to the shop `out` directory
+  - change translations loading source for themes
+  - use relative path for module template file path in `metadata.php`
+  - use new module configuration parameter `moduleSource`
+- Rename deprecated methods prefixed with a single underscore
+- Extend `oxNew` signature for static analysis [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
+- Change default value for `oxpublic` field in `oxuserbaskets`
+- Optimize configuration loading [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
+- Update a list of bots (`aRobots` array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
+- Generation of currency URL [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
+- `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
+- Move functionality to `Utility` classes:
+  - hash service to `Internal\Utility\Hash`
+  - email validation service to `Internal\Utility\Email\EmailValidatorServiceInterface`
+- Behaviour of `Core\UtilsFile::processFiles()` with enabled configuration for alternative image URL
+- Database fields:
+  - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
+  - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
+- Templates and blocks:
+  - `source/Application/views/admin/tpl/shop_license.tpl`
+  - `source/Application/views/admin/tpl/shop_main.tpl` [PR-730](https://github.com/OXID-eSales/oxideshop_ce/pull/730):
+    - `admin_shop_main_leftform`
+    - `admin_shop_main_rightform`
 
 ### Removed
-- Support for MySQL v5.5, v5.6
-- Resetting the PHP error reporting level in the ShopControl class [PR-728](https://github.com/OXID-eSales/oxideshop_ce/pull/728)
-- Database encoding:
-    - Changed database fields:
-        - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
-        - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
-    - Removed methods and properties:
-        - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
-        - `OxidEsales\Eshop\Core\Config::$sConfigKey`
-        - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
-    - Removed classes:
-        - `Conf`
-    - Removed settings:
-        - `sConfigKey` from `config.inc.php`
-- Functionality for MySQL version check in Setup
-- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
-- \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()
-- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
-- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
-- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
-- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
-- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
-- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_addDynLinks()
-- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_checkDynFile()
-- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuLang()
-- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuUrl()
-- \OxidEsales\EshopCommunity\Application\Component\Widget::getCompareItemsCnt()
-- \OxidEsales\EshopCommunity\Core\Config::getRevision()
-- \OxidEsales\EshopCommunity\Core\Controller\BaseController::getRevision()
-- Template source/Application/views/admin/tpl/dyn_econda.tpl
-- Template source/Application/views/admin/tpl/dynscreen.tpl
-- Template source/Application/views/admin/tpl/dynscreen_list.tpl
-- Template source/Application/views/admin/tpl/dynscreen_local.tpl
-- Template source/Application/views/admin/tpl/version_checker_result.tpl
-- `sOXIDPHP` parameter in `config.inc.php`
-- `blDoNotDisableModuleOnError` parameter in `config.inc.php`
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setLogFileName
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getLogFileName
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug
-- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_sFileName
-- \OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut
-- \OxidEsales\EshopCommunity\Core\Exception\StandardException::setLogFileName
-- \OxidEsales\EshopCommunity\Core\Exception\StandardException::getLogFileName
-- \OxidEsales\EshopCommunity\Core\Exception\StandardException::$_sFileName
-- \OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog
-- \OxidEsales\EshopCommunity\Core\Utils::writeToLog
-- `writeToLog` in `bootstrap.php`
-- \OxidEsales\EshopCommunity\Core\Base::$_oConfig
-- \OxidEsales\EshopCommunity\Core\Base::$_oSession
-- \OxidEsales\EshopCommunity\Core\Base::$_oRights
-- Class `\OxidEsales\Eshop\Application\Model\FileChecker`
-- Class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
-- Class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
-- Class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles`
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport`
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerExtensionList`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerPathList`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerExtensionList`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerPathList`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerExtensionList`
-- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerPathList`
-- `\OxidEsales\EshopCommunity\Core\Base::setConfig`
-- `\OxidEsales\EshopCommunity\Core\Base::getConfig`
-- `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
-- `\OxidEsales\EshopCommunity\Core\Email::setConfig`
-- `\OxidEsales\EshopCommunity\Core\Email::getConfig`
-- `\OxidEsales\EshopCommunity\Core\SystemRequirements::getConfig`
-- `\OxidEsales\EshopCommunity\Core\Module::getConfigBlDoNotDisableModuleOnError`
-- `\OxidEsales\EshopCommunity\Application\Model\OrderArticle::$_aOrderCache`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator`
-- `\OxidEsales\EshopCommunity\Core\Config::getModuleTemplatePathCalculator()`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleList::getModuleTemplates()`
-- `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\TemplatesModuleSettingHandler`
-- `\OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_TEMPLATES`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter`
-- `\OxidEsales\EshopCommunity\Core\UtilsView::_getTemplateBlock()`
-- `\OxidEsales\Eshop\Core\Contract\IModuleValidator`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory`
-- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator`
-- `\OxidEsales\EshopCommunity\Core\Module\Module::getMetaDataVersion()`
-- `\OxidEsales\EshopCommunity\Core\Module\Module::getMetadataPath()`
-- `\OxidEsales\EshopCommunity\Core\Module\Module::getModulePath()`
-- `\OxidEsales\EshopCommunity\Core\Module\Module::getModuleFullPath()`
-- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::add()`
-- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::remove()`
-- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath()`
-- `\OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
-- `\OxidEsales\EshopCommunity\Application\Model\Article::getPersParams()`
-- `\OxidEsales\EshopCommunity\Application\Model\Article::_assignPersistentParam()`
-- `\OxidEsales\EshopCommunity\Application\Model\Article::$_aPersistParam`
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\OrderList::storno()`
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\ShopController::SHOP_ID`
-- Removed deprecated getSession and setSession usages around the code
-- Removed deprecated global function getRequestUrl()
-- Removed deprecated global function cmpart()
-- Removed deprecated global function getDb()
-- Removed deprecated global function getStr()
-- `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
-- `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
-- `OxidEsales\Eshop\Application\Model\Basket::_canSaveBasket()`, use isSaveToDataBaseEnabled().
-- `OxidEsales\Eshop\Application\Model\Basket::_addedNewItem()`, use addedNewItem().
-- `OxidEsales\Eshop\Core\Utils::redirectOffline()`, use showOfflinePage().
-- `OxidEsales\Eshop\Core\Utils::logger()`
-- `OxidEsales\Eshop\Core\SystemEventHandler::getConfig()`, use `\OxidEsales\Eshop\Core\Registry::getConfig()`.
-- `OxidEsales\Eshop\Core\ViewConfig::getSessionId()`, use `\OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget()`.
-- `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars`, use ModuleConfigurationDaoBridgeInterface.
-- `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_loadMetadataConfVars`, use ModuleConfigurationDaoBridgeInterface.
-- `OxidEsales\Eshop\Core\Config::getRequestParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()`.
-- `OxidEsales\Eshop\Core\Config::getRequestEscapedParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()`.
-- `OxidEsales\Eshop\Core\Config::getRequestRawParameter()`, use `\OxidEsales\Eshop\Core\Request::getRequestParameter()`.
-- LDAP functionality:
-    - Function:
-        - `OxidEsales\Eshop\Application\Model\User::_getShopSelect()`
-        - `OxidEsales\Eshop\Application\Model\User::_ldapLogin()`
-    - Language Constants:
-        - `ERROR_MESSAGE_CONNECTION_NOLDAP`
-        - `ERROR_MESSAGE_CONNECTION_NOLDAPBIND`
-        - `SHOP_SYSTEM_LDAP`
-        - `USER_MAIN_LDAP`
-- PHP version checker
-    - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
-    - Language Constants:
-        - `SYSREQ_PHP_VERSION`
-        - `MOD_PHP_VERSION`
-- Credit Card:
-    - Class:
-        - `OxidEsales\Eshop\Core\CreditCardValidator`
-    - Function: 
-        - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
-        - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
-        - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
-        - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
-        - `OxidEsales\Eshop\Application\Controller\PaymentController::getDynDataFiltered()`
-    - Property:     
-        - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
-        - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
-        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
-        - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
-        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
-    - Language Constants:
-        - `CREDITCARD`
-        - `PAYMENT_CREDITCARD`
-        - `SHOP_CONFIG_STORECREDITCARDINFO`
-        - `PAYMENT_RDFA_CREDITCARD`
-        - `PAYMENT_RDFA_MASTERCARD`
-        - `PAYMENT_RDFA_VISA`
-        - `PAYMENT_RDFA_AMERICANEXPRESS`
-        - `PAYMENT_RDFA_DINERSCLUB`
-        - `PAYMENT_RDFA_DISCOVER`
-        - `PAYMENT_RDFA_JCB`
-        - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
-        - `CARD_SECURITY_CODE_DESCRIPTION`
-        - `HELP_SHOP_CONFIG_ATTENTION`
-        - `CARD_MASTERCARD`
-        - `CARD_SECURITY_CODE`
-        - `CARD_VISA`
-- Language Constants:
-    - `SYSREQ_MYSQL_VERSION`
-    - `NAVIGATION_NEWVERSIONAVAILABLE`
-- Betanote:
-    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
-    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
-- Suggest (Recommend Product) feature [see](#654---2020-04-21)
-- News feature [see](#656---unreleased)
-- 'theme:flow' defaults within 'initial_data.sql'
-- Supporting two stars (**) in modules composer blacklist-filter, in order to use standard Symfony/finder functionality
-- Version information is not shown anymore in html copyright string [PR-813](https://github.com/OXID-eSales/oxideshop_ce/pull/813)
-- Old update procedure related updateApp directory check and mentions [PR-829](https://github.com/OXID-eSales/oxideshop_ce/pull/829)
-- Remove admin-user entry from intial_data.sql
-- Remove support of metadata version 1, 1.1 and 1.2
-  - Class: 
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationClassesWithoutNamespaceHandler`
-    - `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
-  - Method: 
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::addClassWithoutNamespace`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getClassesWithoutNamespace`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::hasClassWithoutNamespaces`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer::lowerCaseFileClassesNames` 
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsValidator::isNamespacedClass`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber::invalidateModuleCache`
-  - Constant:
-    -  `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES`
-- `OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder`
-- `OxidEsales\EshopCommunity\Core\Language`:
-    - Property: 
-        - `$_aActiveModuleInfo`
-        - `$_aDisabledModuleInfo`
-        - `$moduleTranslationPathFinder`
-    - Method:
-        - `_appendModuleLangFiles()`
-        - `_getActiveModuleInfo()`
-        - `_getDisabledModuleInfo()`
-        - `getModuleTranslationPathFinder()`
-- `OxidEsales\EshopCommunity\Core\Utils::getRemoteCachePath()`
-- `OxidEsales\EshopCommunity\Core\ViewConfig::getServiceUrl()`
-- `OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::$_sDynIncludeUrl`
-- Language constants
-    - `DYN_ECONDA_ACTIVE`
-    - `DYN_ECONDA_ATTENTION`
-    - `DYN_ECONDA_COPY_FILE`
-    - `DYNSCREEN_TITLE`
-    - `DYNSCREEN_LIST_SERVICE`
-    - `LOAD_DYN_CONTENT_NOTICE`
-    - `DYNSCREEN_LOCAL_TITLE`
-    - `DYNSCREEN_LOCAL_TEXT`
-    - `mxdynscreenlocal`
-- Module blacklist-filter functionality
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getBlackListFilters()`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setBlackListFilters()`
-- Support for Module source-directory and target-directory in composer.json
-    - Method:
-        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::filterInactiveExtensions()`
-        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getDisabledModuleIds()`
-        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getModuleDirectoryByModuleId()`
-        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::disableModule()`
-        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getPackageSourcePath()`
-        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getTargetDirectory()`
-        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setTargetDirectory()`
-        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
-    - Class:
-        - `OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner`
-- `Path` parameter from moduleConfiguration:
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
-- Console commands for module configuration management: 
+
+- Support:
+  - MySQL v5.5, v5.6
+  - Database encoding
+  - Metadata versions 1, 1.1, 1.2 [see list](#660---2020-11-10)
+  - Module `source-directory` and `target-directory` in `composer.json` [see list](#670---2021-03-25)
+  - `blacklist-filter` for composer type `oxideshop-module` [see list](#660---2020-11-10)
+  - Two stars `**` in composer `blacklist-filter`
+  - `Path` parameter in `moduleConfiguration` [see list](#670---2021-03-25)
+  - `UNIT...` prefixes in tested method calls
+
+- Feature:
+  - Credit card [see list](#651---2020-02-25)
+  - Suggest (Recommend Product) [see list](#654---2020-04-21)
+  - News [see list](#656---2020-07-16)
+  - LDAP login
+
+- Functionality:
+  - Newsletter email management [see list](#671---2021-04-13)
+  - Betanote [see list](#654---2020-04-21)
+  - Console commands for module configuration management:
     - `oe:module:install-configuration`
     - `oe:module:uninstall-configuration`
-- Management of Newsletter emails:
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterList`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::save()`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPlain`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPreview`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelection`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelectionAjax`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSend`
-    - `OxidEsales\EshopCommunity\Application\Controller\AccountNewsletterController::_blNewsletter`
-    - `OxidEsales\EshopCommunity\Application\Model\Newsletter`
-    - `OxidEsales\EshopCommunity\Core\Email::sendNewsletterMail()`
-    - Language constants
-        - `NEWSLETTER_DONE_NEWSSEND`
-        - `NEWSLETTER_DONE_GOTONEWSLETTE`
-        - `NEWSLETTER_DONE_TITLE`
-        - `NEWSLETTER_SUBJECT`
-        - `NEWSLETTER_MAIN_MODEL`
-        - `NEWSLETTER_PLAIN_TEXT`
-        - `NEWSLETTER_PREVIEW_PLAINTEXT`
-        - `NEWSLETTER_PREVIEW_HTML`
-        - `NEWSLETTER_SELECTION_SELMAILRESAVER`
-        - `NEWSLETTER_SELECTION_SENDNEWS`
-        - `NEWSLETTER_SELECTION_USEDGROUP`
-        - `NEWSLETTER_SEND_TITLE`
-        - `NEWSLETTER_SEND_SEND1`
-        - `NEWSLETTER_SEND_SEND2`
-        - `TOOLTIPS_NEWNEWSLETTER`
-        - `tbclnewsletter_plain`
-        - `tbclnewsletter_preview`
-        - `tbclnewsletter_selection`
-- GetShopVersion method and attribute from AdminController
-- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::_getShopVersionNr()`
-- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
-- iUtfMode in config.inc.php and config, as the shop will always use UTF-8.
-- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`, because GR-Notify page feature was removed.
-- `\OxidEsales\EshopCommunity\Application\Model::_getAmountPriceList()`, use buildAmountPriceList().
-- `\OxidEsales\EshopCommunity\Application\Component\UserComponent::_changeUser_noRedirect()`, use changeUserWithoutRedirect()
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_getPlainEditor()`, use TextEditorHandler::renderPlainTextEditor()
-- `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_generateTextEditor()`, use generateTextEditor()
-- `\OxidEsales\EshopCommunity\Application\Model\Order::getFormattedeliveryCost()`, use getFormattedDeliveryCost()
-- `\OxidEsales\EshopCommunity\Application\Model\Delivery::_isForArticle`, use isDeliveryRuleFitByArticle()
-- `\OxidEsales\EshopCommunity\Application\Model\Voucher::_getGenericDiscoutValue()`, use getGenericDiscountValue()
-- `\OxidEsales\EshopCommunity\Application\Model\Voucher::_getProductDiscoutValue()`, use getProductDiscountValue()
-- `\OxidEsales\EshopCommunity\Application\Model\Voucher::_getCategoryDiscoutValue()`, use getCategoryDiscountValue()
-- `\OxidEsales\EshopCommunity\Core\Config::getEdition()`, use \OxidEsales\Facts\Facts::getEdition()
-- `\OxidEsales\EshopCommunity\Core\Config::getVersion()`, use OxidEsales\Eshop\Core\ShopVersion::getVersion()
-- `\OxidEsales\EshopCommunity\Core\Config::getActiveViewsNames()`, use Config::getActiveViewsIds()
-- `\OxidEsales\EshopCommunity\Core\Config::parseModuleChains()`, use OxidEsales\Eshop\Core\ModuleList::parseModuleChains()
-- `\OxidEsales\EshopCommunity\Core\Email::$Version`, use \PHPMailer\PHPMailer\PHPMailer::VERSION
-- `\OxidEsales\EshopCommunity\Core\Email::$SMTP_PORT`, use $smtpPort
-- `\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifier::_getModules()`, use ShopConfigurationDaoBridgeInterface
-- `\OxidEsales\EshopCommunity\Core\ShopControl::$_blHandlerSet`
-- `\OxidEsales\EshopCommunity\Core\ShopControl::_getStartController()`, Use getStartControllerKey()
-- `\OxidEsales\EshopCommunity\Core\ShopControl::_getFrontendStartController()`, Use getFrontendStartControllerKey()
-- `\OxidEsales\EshopCommunity\Core\WidgetControl::$_blHandlerSet`
-- `\OxidEsales\EshopCommunity\Core\ViewConfig::getSession()`
-- `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage`
-- `\OxidEsales\EshopCommunity\Core\Exception\LanguageException`
-- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::setClassName()`, use setClassKey()
-- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getClassName()`, use getClassKey()
-- `\OxidEsales\EshopCommunity\Core\ShopControl::_stopMonitor()`, use stopMonitoring()
-- `\OxidEsales\EshopCommunity\Core\Session::$_blStarted`, use isSessionStarted()
-- `OxidEsales\EshopCommunity\Core\UtilsObject`:
-    - Methods:
-        - `getModuleVar`
-        - `setModuleVar`
-        - `resetModuleVars`
-        - `getShopId`
-- `OxidEsales\EshopCommunity\Core\ViewConfig::getConfig()`
-- Edition Classes:
-    - `OxidEsales\Eshop\Core\Edition\EditionPathProvider`
-    - `OxidEsales\Eshop\Core\Edition\EditionRootPathProvider`
-    - `OxidEsales\Eshop\Core\Edition\EditionSelector`
-- Remove global method getViewName from `overridablefunctions.php`, use `OxidEsales\Eshop\Core\TableViewNameGenerator` instead
-- Support for `UNIT...` prefixes in tested method calls
-- Smarty plugin `assign_adv` with corresponding `TemplateLogic` service:
-  `OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\AssignAdvancedLogic`
+  - PHP version checker
+  - MySQL version check in Setup
+  - Resetting the PHP `error_reporting()` level in
+    the `ShopControl` [PR-728](https://github.com/OXID-eSales/oxideshop_ce/pull/728)
+  - Smarty plugin `assign_adv` with corresponding `TemplateLogic` service
+  - Usage of concatenation in translation files [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
+  - Version information in copyright string [PR-813](https://github.com/OXID-eSales/oxideshop_ce/pull/813)
+  - Old update procedure related check [PR-829](https://github.com/OXID-eSales/oxideshop_ce/pull/829)
+    
+- Class:
+  - `Application\Controller\Admin\DynEconda`
+  - `Application\Controller\Admin\DynamicInterface`
+  - `Application\Controller\Admin\DynamicScreenController`
+  - `Application\Controller\Admin\DynamicScreenList`
+  - `Application\Controller\Admin\DynamicScreenLocal`
+  - `Application\Model\FileCheckerResult`
+  - `Application\Model\FileCheckerResult`
+  - `Application\Model\FileChecker`
+  - `Application\Model\FileChecker`
+  - `Conf`
+  - `Core\Contract\IModuleValidator`
+  - `Core\Edition\EditionPathProvider`
+  - `Core\Edition\EditionRootPathProvider`
+  - `Core\Edition\EditionSelector`
+  - `Core\Exception\LanguageException`
+  - `Core\Module\ModuleExtensionsCleaner`
+  - `Core\Module\ModuleMetadataValidator`
+  - `Core\Module\ModuleSmartyPluginDirectoryValidator`
+  - `Core\Module\ModuleTemplateBlockContentReader`
+  - `Core\Module\ModuleTemplateBlockPathFormatter`
+  - `Core\Module\ModuleTemplatePathCalculator`
+  - `Core\Module\ModuleTranslationPathFinder`
+  - `Core\Module\ModuleValidatorFactory`
+  - `Core\Routing\Module\ClassProviderStorage`
+  - `Internal\Framework\Module\Setup\Handler\TemplatesModuleSettingHandler`
+  - `Internal\Transition\Adapter\TemplateLogic\AssignAdvancedLogic`
+
+- Method:
+  - `Application\Component\UserComponent::_changeUser_noRedirect()`
+  - `Application\Component\Widget::getCompareItemsCnt()`
+  - `Application\Controller\Admin\AdminController::_getShopVersionNr()`
+  - `Application\Controller\Admin\AdminController::getServiceUrl()`
+  - `Application\Controller\Admin\AdminDetailsController::_generateTextEditor()`
+  - `Application\Controller\Admin\AdminDetailsController::_getPlainEditor()`
+  - `Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles()`
+  - `Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport()`
+  - `Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck()`
+  - `Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars()`
+  - `Application\Controller\Admin\ModuleConfiguration::_loadMetadataConfVars()`
+  - `Application\Controller\Admin\NavigationTree::_addDynLinks()`
+  - `Application\Controller\Admin\NavigationTree::_checkDynFile()`
+  - `Application\Controller\Admin\NavigationTree::_getDynMenuLang()`
+  - `Application\Controller\Admin\NavigationTree::_getDynMenuUrl()`
+  - `Application\Controller\Admin\OrderList::storno()`
+  - `Application\Controller\Admin\ShopRdfa::submitUrl()`
+  - `Application\Model::_getAmountPriceList()`
+  - `Application\Model\Article::_assignPersistentParam()`
+  - `Application\Model\Article::getPersParams()`
+  - `Application\Model\Basket::_addedNewItem()`
+  - `Application\Model\Basket::_canSaveBasket()`
+  - `Application\Model\Diagnostics::getFileCheckerExtensionList()`
+  - `Application\Model\Diagnostics::getFileCheckerPathList()`
+  - `Application\Model\Diagnostics::setFileCheckerExtensionList()`
+  - `Application\Model\Diagnostics::setFileCheckerPathList()`
+  - `Application\Model\Order::getFormattedeliveryCost()`
+  - `Application\Model\User::_getShopSelect()`
+  - `Application\Model\User::_ldapLogin()`
+  - `Application\Model\UserPayment::getPaymentKey()`
+  - `Application\Model\Voucher::_getCategoryDiscoutValue()`
+  - `Application\Model\Voucher::_getGenericDiscoutValue()`
+  - `Application\Model\Voucher::_getProductDiscoutValue()`
+  - `Core\Base::getConfig()`
+  - `Core\Base::setConfig()`
+  - `Core\Config::getActiveViewsNames()`
+  - `Core\Config::getDecodeValueQuery()`
+  - `Core\Config::getEdition()`
+  - `Core\Config::getModuleTemplatePathCalculator()`
+  - `Core\Config::getModulesDir()`
+  - `Core\Config::getRequestEscapedParameter()`
+  - `Core\Config::getRequestParameter()`
+  - `Core\Config::getRequestRawParameter()`
+  - `Core\Config::getRevision()`
+  - `Core\Config::getVersion()`
+  - `Core\Config::parseModuleChains()`
+  - `Core\Controller\BaseController::getClassName()`
+  - `Core\Controller\BaseController::getRevision()`
+  - `Core\Controller\BaseController::setClassName()`
+  - `Core\Email::getConfig()`
+  - `Core\Email::setConfig()`
+  - `Core\Exception\ExceptionHandler::displayOfflinePage()`
+  - `Core\Exception\ExceptionHandler::getLogFileName()`
+  - `Core\Exception\ExceptionHandler::setIDebug()`
+  - `Core\Exception\ExceptionHandler::setLogFileName()`
+  - `Core\Exception\ExceptionHandler::writeExceptionToLog()`
+  - `Core\Exception\StandardException::debugOut()`
+  - `Core\Exception\StandardException::getLogFileName()`
+  - `Core\Exception\StandardException::setLogFileName()`
+  - `Core\Language::_appendModuleLangFiles()`
+  - `Core\Language::_getActiveModuleInfo()`
+  - `Core\Language::_getDisabledModuleInfo()`
+  - `Core\Language::getModuleTranslationPathFinder()`
+  - `Core\Module::getConfigBlDoNotDisableModuleOnError()`
+  - `Core\Module\Module::getMetaDataVersion()`
+  - `Core\Module\Module::getMetadataPath()`
+  - `Core\Module\Module::getModuleFullPath()`
+  - `Core\Module\Module::getModulePath()`
+  - `Core\Module\ModuleChainsGenerator::disableModule()`
+  - `Core\Module\ModuleChainsGenerator::filterInactiveExtensions()`
+  - `Core\Module\ModuleChainsGenerator::getDisabledModuleIds()`
+  - `Core\Module\ModuleChainsGenerator::getModuleDirectoryByModuleId()`
+  - `Core\Module\ModuleList::getModuleTemplates()`
+  - `Core\Module\ModuleSmartyPluginDirectories::add()`
+  - `Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath()`
+  - `Core\Module\ModuleSmartyPluginDirectories::remove()`
+  - `Core\OnlineCaller::_castExceptionAndWriteToLog()`
+  - `Core\OnlineModuleVersionNotifier::_getModules()`
+  - `Core\ShopControl::_getFrontendStartController()`
+  - `Core\ShopControl::_getStartController()`
+  - `Core\ShopControl::_stopMonitor()`
+  - `Core\SystemEventHandler::getConfig()`
+  - `Core\SystemRequirements::checkMysqlVersion()`
+  - `Core\SystemRequirements::checkPhpVersion()`
+  - `Core\SystemRequirements::getConfig()`
+  - `Core\Utils::getRemoteCachePath()`
+  - `Core\Utils::logger()`
+  - `Core\Utils::redirectOffline()`
+  - `Core\Utils::writeToLog()`
+  - `Core\UtilsObject::getModuleVar()`
+  - `Core\UtilsObject::getShopId()`
+  - `Core\UtilsObject::resetModuleVars()`
+  - `Core\UtilsObject::setModuleVar()`
+  - `Core\UtilsView::_getTemplateBlock()`
+  - `Core\ViewConfig::getConfig()`
+  - `Core\ViewConfig::getServiceUrl()`
+  - `Core\ViewConfig::getSession()`
+  - `Core\ViewConfig::getSessionId()`
+  - `bootstrap.php::writeToLog()`
+  - `cmpart()`
+  - `getDb()`
+  - `getRequestUrl()`
+  - `getSession()`
+  - `getStr()`
+  - `overridablefunctions.php::getViewName()`
+  - `setSession()`
+
+- Property:
+  - `Application\Controller\Admin\AdminController::$_sShopVersion`
+  - `Application\Controller\Admin\NavigationTree::$_sDynIncludeUrl`
+  - `Application\Model\Article::$_aPersistParam`
+  - `Application\Model\Delivery::_isForArticle`
+  - `Application\Model\Diagnostics::$_aFileCheckerExtensionList`
+  - `Application\Model\Diagnostics::$_aFileCheckerPathList`
+  - `Application\Model\OrderArticle::$_aOrderCache`
+  - `Application\Model\UserPayment::$_sPaymentKey`
+  - `Core\Base::$_oConfig`
+  - `Core\Base::$_oRights`
+  - `Core\Base::$_oSession`
+  - `Core\Config::$sConfigKey`
+  - `Core\Email::$SMTP_PORT`
+  - `Core\Email::$Version`
+  - `Core\Email::$_oConfig`
+  - `Core\Exception\ExceptionHandler::$_sFileName`
+  - `Core\Exception\StandardException::$_sFileName`
+  - `Core\Language::$_aActiveModuleInfo`
+  - `Core\Language::$_aDisabledModuleInfo`
+  - `Core\Language::$moduleTranslationPathFinder`
+  - `Core\Session::$_blStarted`
+  - `Core\ShopControl::$_blHandlerSet`
+  - `Core\WidgetControl::$_blHandlerSet`
+
+- Constant:
+  - `Application\Controller\Admin\ShopController::SHOP_ID`
+  - `Core\Config::DEFAULT_CONFIG_KEY`
+  - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_TEMPLATES`
+
+- Configuration parameter:
+  - `blDoNotDisableModuleOnError`
+  - `iUtfMode`
+  - `sConfigKey`
+  - `sOXIDPHP`
+
+- Template:
+  - `source/Application/views/admin/tpl/dyn_econda.tpl`
+  - `source/Application/views/admin/tpl/dynscreen.tpl`
+  - `source/Application/views/admin/tpl/dynscreen_list.tpl`
+  - `source/Application/views/admin/tpl/dynscreen_local.tpl`
+  - `source/Application/views/admin/tpl/version_checker_result.tpl`
+
+- Language constant:
+  - `DYNSCREEN_LIST_SERVICE`
+  - `DYNSCREEN_LOCAL_TEXT`
+  - `DYNSCREEN_LOCAL_TITLE`
+  - `DYNSCREEN_TITLE`
+  - `DYN_ECONDA_ACTIVE`
+  - `DYN_ECONDA_ATTENTION`
+  - `DYN_ECONDA_COPY_FILE`
+  - `ERROR_MESSAGE_CONNECTION_NOLDAPBIND`
+  - `ERROR_MESSAGE_CONNECTION_NOLDAP`
+  - `LOAD_DYN_CONTENT_NOTICE`
+  - `MOD_PHP_VERSION`
+  - `NAVIGATION_NEWVERSIONAVAILABLE`
+  - `NEWSLETTER_SELECTION_SENDNEWS`
+  - `NEWSLETTER_SELECTION_USEDGROUP`
+  - `NEWSLETTER_SEND_SEND1`
+  - `NEWSLETTER_SEND_SEND2`
+  - `NEWSLETTER_SEND_TITLE`
+  - `SHOP_SYSTEM_LDAP`
+  - `SYSREQ_MYSQL_VERSION`
+  - `SYSREQ_PHP_VERSION`
+  - `TOOLTIPS_NEWNEWSLETTER`
+  - `USER_MAIN_LDAP`
+  - `mxdynscreenlocal`
+
+- Data in `initial_data.sql`:
+  - `admin-user` entry
+  - `theme:flow` default values
 
 ### Fixed
+
+- Throw exception in `getLanguageAbbr` method if no abbreviation is available by specific
+  id [PR-802](https://github.com/OXID-eSales/oxideshop_ce/pull/802)
+- Checking if multilanguage base table from configuration exists, before trying to generate its
+  views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
-- Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
-- Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
-- Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
-- Ensure out/pictures/generated directory existance [PR-789](https://github.com/OXID-eSales/oxideshop_ce/pull/789)
+- Fixe usages of deprecated methods `getConfig`
+  and `getSession` [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
+- Improve `oxseo::OXOBJECTID` index to fit current
+  queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
+- Replace BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
+- Ensure `out/pictures/generated` directory exists [PR-789](https://github.com/OXID-eSales/oxideshop_ce/pull/789)
 - Improve gitignore
-    - [PR-808](https://github.com/OXID-eSales/oxideshop_ce/pull/808)
-    - [PR-827](https://github.com/OXID-eSales/oxideshop_ce/pull/827)
-- Fix special chars escape problem in simplexml::addChild [PR-793](https://github.com/OXID-eSales/oxideshop_ce/pull/793)
+  - [PR-808](https://github.com/OXID-eSales/oxideshop_ce/pull/808)
+  - [PR-827](https://github.com/OXID-eSales/oxideshop_ce/pull/827)
+- Fix special chars escape problem
+  in `simplexml::addChild` [PR-793](https://github.com/OXID-eSales/oxideshop_ce/pull/793)
 - Fix new version check url protocol [PR-852](https://github.com/OXID-eSales/oxideshop_ce/pull/852)
-- Timestamp is now added for css and js files included from module [#0005746](https://bugs.oxid-esales.com/view.php?id=5746) [PR-493](https://github.com/OXID-eSales/oxideshop_ce/pull/493)
-- Improved various docs, variable and other coding style problems:
-    - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
-    - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
-    - [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
-    - [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
-    - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
-    - [PR-780](https://github.com/OXID-eSales/oxideshop_ce/pull/780)
-    - [PR-778](https://github.com/OXID-eSales/oxideshop_ce/pull/778)
-    - [PR-779](https://github.com/OXID-eSales/oxideshop_ce/pull/779)
-    - [PR-777](https://github.com/OXID-eSales/oxideshop_ce/pull/777)
-    - [PR-774](https://github.com/OXID-eSales/oxideshop_ce/pull/774)
-    - [PR-773](https://github.com/OXID-eSales/oxideshop_ce/pull/773)
-    - [PR-775](https://github.com/OXID-eSales/oxideshop_ce/pull/775)
-    - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
-    - [PR-790](https://github.com/OXID-eSales/oxideshop_ce/pull/790)
-    - [PR-809](https://github.com/OXID-eSales/oxideshop_ce/pull/809)
-    - [PR-823](https://github.com/OXID-eSales/oxideshop_ce/pull/823)
-    - [PR-824](https://github.com/OXID-eSales/oxideshop_ce/pull/824)
-    - [PR-825](https://github.com/OXID-eSales/oxideshop_ce/pull/825)
-    - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
-    - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
+- Add timestamp for CSS and JS files included from
+  module [#0005746](https://bugs.oxid-esales.com/view.php?id=5746) [PR-493](https://github.com/OXID-eSales/oxideshop_ce/pull/493)
+- Improve various docs, variable and other coding style problems:
+  - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
+  - [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748)
+  - [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
+  - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
+  - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
+  - [PR-773](https://github.com/OXID-eSales/oxideshop_ce/pull/773)
+  - [PR-774](https://github.com/OXID-eSales/oxideshop_ce/pull/774)
+  - [PR-775](https://github.com/OXID-eSales/oxideshop_ce/pull/775)
+  - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
+  - [PR-777](https://github.com/OXID-eSales/oxideshop_ce/pull/777)
+  - [PR-778](https://github.com/OXID-eSales/oxideshop_ce/pull/778)
+  - [PR-779](https://github.com/OXID-eSales/oxideshop_ce/pull/779)
+  - [PR-780](https://github.com/OXID-eSales/oxideshop_ce/pull/780)
+  - [PR-790](https://github.com/OXID-eSales/oxideshop_ce/pull/790)
+  - [PR-809](https://github.com/OXID-eSales/oxideshop_ce/pull/809)
+  - [PR-823](https://github.com/OXID-eSales/oxideshop_ce/pull/823)
+  - [PR-824](https://github.com/OXID-eSales/oxideshop_ce/pull/824)
+  - [PR-825](https://github.com/OXID-eSales/oxideshop_ce/pull/825)
+  - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
+  - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
 ## [6.9.0] - Unreleased
 
@@ -431,7 +372,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support PHP 7.1 and 7.2
 
-## [6.7.2] - Unreleased
+## [6.7.2] - 2021-07-21
 
 ### Changed
 - Update PHPMailer to v6.5.0

@@ -7,7 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxTestModules;
+use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
+use OxidEsales\Eshop\Core\Config;
 
 /**
  * Tests for Shop_Config class
@@ -33,12 +34,7 @@ class ShopConfigTest extends \OxidTestCase
         $this->assertEquals('shop_config.tpl', $oView->render());
     }
 
-    /**
-     * Shop_Config::SaveConfVars() test case
-     *
-     * @return null
-     */
-    public function testSaveConfVars()
+    public function testSaveConfVars(): void
     {
         $this->setAdminMode(true);
         $this->setRequestParameter("oxid", "testId");
@@ -52,7 +48,7 @@ class ShopConfigTest extends \OxidTestCase
         $aTasks[] = "resetContentCache";
         $aTasks[] = "getModuleForConfigVars";
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
+        $oConfig = $this->getMock(Config::class, array("saveShopConfVar"));
         $oConfig
             ->method('saveShopConfVar')
             ->withConsecutive(
@@ -63,12 +59,10 @@ class ShopConfigTest extends \OxidTestCase
                 ['select', 'varnamesel', "a", 'testId', 'theme:mytheme'],
             );
 
-        // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration::class, $aTasks, array(), '', false);
-        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+        $oView = $this->getMock(ShopConfiguration::class, $aTasks, array(), '', false);
         $oView->expects($this->once())->method('resetContentCache');
         $oView->expects($this->atLeastOnce())->method('getModuleForConfigVars')
-            ->will($this->returnValue('theme:mytheme'));
+            ->willReturn('theme:mytheme');
 
         $oView->saveConfVars();
     }
@@ -86,7 +80,7 @@ class ShopConfigTest extends \OxidTestCase
      */
     public function testSave()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration::class, array("saveConfVars"));
+        $oView = $this->getMock(ShopConfiguration::class, array("saveConfVars"));
         $oView->expects($this->once())->method('saveConfVars');
         $oView->save();
     }

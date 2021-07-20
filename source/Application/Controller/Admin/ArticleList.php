@@ -83,7 +83,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
 
         $sDateTime = $this->getServerDateTime();
-        $blUseTimeCheck = $this->getConfig()->getConfigParam('blUseTimeCheck');
+        $blUseTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
         $oArticle = null;
         $oList = $this->getItemList();
         if ($oList) {

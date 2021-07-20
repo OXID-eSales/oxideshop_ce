@@ -875,17 +875,4 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     {
         return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
-
-    /**
-     * Config instance getter
-     *
-     * @deprecated since b-dev (2018-11-14); This method will be removed completely. Extend your views accordingly and use
-     *             $this->setViewData('someVar', 'some Value') to provide the data to your templates
-     *
-     * @return \OxidEsales\Eshop\Core\Config
-     */
-    public function getConfig()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig();
-    }
 }

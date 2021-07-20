@@ -490,7 +490,6 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         $shopId = $this->getEditObjectId();
         $module = $this->getModuleForConfigVars();
-        $config = $this->getConfig();
         $preparedConfigValue = $this->serializeConfVar($existingConfigType, $configName, $configValue);
         if (strpos($module, 'module:') !== false) {
             $moduleId = explode(':', $module)[1];
@@ -504,10 +503,10 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                     "Module \"$moduleId\" setting \"$configName\" is missing in metadata.php or configuration file.",
                     [$exception]
                 );
-                $config->saveShopConfVar($existingConfigType, $configName, $preparedConfigValue, $shopId, $module);
+                Registry::getConfig()->saveShopConfVar($existingConfigType, $configName, $preparedConfigValue, $shopId, $module);
             }
         } else {
-            $config->saveShopConfVar($existingConfigType, $configName, $preparedConfigValue, $shopId, $module);
+            Registry::getConfig()->saveShopConfVar($existingConfigType, $configName, $preparedConfigValue, $shopId, $module);
         }
     }
 }

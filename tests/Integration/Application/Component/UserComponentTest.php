@@ -1672,32 +1672,14 @@ class UserComponentTest extends \OxidTestCase
         $this->assertSame($isPossibleToLoadAddressAfterDeletion, oxNew(Address::class)->load($addressId));
     }
 
-    public function testGetLogoutLinkWithUnsecureLocationInRequestWillReturnLocalTemplateName(): void
+    public function testGetLogoutLinkWithUnsecureLocationInRequestWillReturnBaseTemplateName(): void
     {
         $unsecureLocation = '/some/unsecure/location';
         $templateName = 'start.tpl';
         $remoteUrl = "$unsecureLocation/$templateName";
-        $userComponent = $this->createPartialMock(modcmp_user::class, [
-            'getConfig',
-        ]);
-       /* $requestMock = $this->createMock(Request::class);
-        $requestMock->method('getRequestEscapedParameter')
-            ->withConsecutive(
-                ['anid'],
-                ['cnid'],
-                ['mnid'],
-                ['tpl']
-            )
-            ->willReturnOnConsecutiveCalls(
-                null,
-                null,
-                null,
-                $remoteUrl
-            );
-        Registry::set(Request::class, $requestMock);*/
         $this->setRequestParameter('tpl', $remoteUrl);
 
-        $logoutLink = $userComponent->getLogoutLink();
+        $logoutLink = (new modcmp_user())->getLogoutLink();
 
         $this->assertStringContainsString($templateName, $logoutLink);
         $this->assertStringNotContainsString($unsecureLocation, $logoutLink);

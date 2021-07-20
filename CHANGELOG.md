@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.7.2] - Unreleased
 
+### Changed
+- Update PHPMailer to v6.5.0
+
 ### Fixed
 - Usage of `tpl` request parameter in `Application\Component\UserComponent`
 

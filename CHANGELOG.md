@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Usage of `tpl` request parameter in `Application\Component\UserComponent`
+- Input parsing in `assign_adv` Smarty plugin
 
 ## [6.7.1] - 2021-04-13
 

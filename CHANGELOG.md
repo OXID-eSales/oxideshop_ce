@@ -76,7 +76,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - LDAP login
 
 - Functionality:
-  - Newsletter email management [see list](#671---2021-04-13)
+  - Newsletter email management [see list](#690---unreleased)
   - Betanote [see list](#654---2020-04-21)
   - Console commands for module configuration management:
     - `oe:module:install-configuration`

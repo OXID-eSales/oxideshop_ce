@@ -360,18 +360,6 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get field data
-     *
-     * @param string $sFieldName name of the field which value to get
-     *
-     * @return mixed
-     */
-    public function getFieldData($sFieldName)
-    {
-        return $this->{$sFieldName}->value;
-    }
-
-    /**
      * Delete this object from the database, returns true on success.
      *
      * @param string $sOXID Object ID(default null)

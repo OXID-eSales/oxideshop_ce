@@ -92,8 +92,7 @@ class AlistTest extends \OxidTestCase
         $sCatId = "6b6b64bdcf7c25e92191b1120974af4e";
 
         // Demo data is different in EE and CE
-        $shopVersion = 6;
-        $sPrefix = "Woman - Jackets. OXID eShop $shopVersion";
+        $sPrefix = "Woman - Jackets. OXID eShop";
 
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCatId);

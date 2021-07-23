@@ -828,8 +828,7 @@ class AlistTest extends \OxidTestCase
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
 
-        $shopVersion = 6;
-        $sExpect = "parent category - category. OXID eShop $shopVersion";
+        $sExpect = "parent category - category. OXID eShop";
         //expected string changed due to #2776
         $this->assertEquals(
             $sExpect,

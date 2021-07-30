@@ -73,11 +73,11 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select([
-                'ANY_VALUE(n.oxsal) AS Salutation',
-                'ANY_VALUE(n.oxfname) AS Firstname',
-                'ANY_VALUE(n.oxlname) AS Lastname',
+                'n.oxsal AS Salutation',
+                'n.oxfname AS Firstname',
+                'n.oxlname AS Lastname',
                 'u.oxusername AS Email',
-                'ANY_VALUE(n.oxdboptin) AS OptInState',
+                'n.oxdboptin AS OptInState',
                 'c.oxtitle AS Country',
                 'GROUP_CONCAT(g.oxtitle ORDER BY g.oxtitle ASC) AS UserGroups'
             ])
@@ -88,7 +88,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             ->leftJoin('o2g', 'oxgroups', 'g', 'o2g.oxgroupsid=g.oxid')
             ->where('n.oxshopid = :shopId')
             ->setParameters(["shopId" => $shopId])
-            ->groupBy('u.oxid')
+            ->groupBy('n.oxsal, n.oxfname, n.oxlname, u.oxusername, n.oxdboptin, c.oxtitle, u.oxcreate')
             ->addOrderBy('u.oxcreate', 'ASC');
 
         return $queryBuilder->execute()->fetchAllAssociative();

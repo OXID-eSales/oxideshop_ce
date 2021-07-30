@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
+use function json_decode;
+use function json_encode;
+
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {
     /** @var ShopAdapterInterface */
@@ -26,9 +29,7 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
     /** @var BasicContextInterface */
     private $basicContext;
 
-    /**
-     * @var TemplateCacheServiceInterface
-     */
+    /** @var TemplateCacheServiceInterface */
     private $templateCacheService;
 
     public function __construct(
@@ -61,7 +62,10 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
      */
     public function put(string $key, int $shopId, array $data): void
     {
-        $this->fileSystem->dumpFile($this->getModulePathCacheFilePath($key, $shopId), serialize($data));
+        $this->fileSystem->dumpFile(
+            $this->getModulePathCacheFilePath($key, $shopId),
+            $this->encode($data)
+        );
     }
 
     /**
@@ -92,7 +96,9 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     private function getCacheFileContent(string $modulePathCacheFilePath): array
     {
-        return unserialize(file_get_contents($modulePathCacheFilePath), ['allowed_classes' => true]);
+        return $this->decode(
+            file_get_contents($modulePathCacheFilePath)
+        );
     }
 
     private function getModulePathCacheFilePath(string $key, int $shopId): string
@@ -109,6 +115,31 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
             $this->basicContext->getCacheDirectory(),
             'modules',
             (string) $shopId
+        );
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     * @throws \JsonException
+     */
+    private function encode(array $data): string
+    {
+        return json_encode($data, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * @param string $data
+     * @return mixed
+     * @throws \JsonException
+     */
+    private function decode(string $data)
+    {
+        return json_decode(
+            $data,
+            true,
+            512,
+            JSON_THROW_ON_ERROR
         );
     }
 }

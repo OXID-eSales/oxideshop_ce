@@ -696,8 +696,6 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testEditShopName()
     {
-        $shopVersionNumber = $this->getShopVersionNumber();
-
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
             $this->markTestSkipped('Skip CE/PE related tests for EE edition');
         }

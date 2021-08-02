@@ -1430,7 +1430,6 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxCategoriesAssignProductsWithVariants()
     {
-        $sShopNr = $this->getShopVersionNumber();
         //variants will be shown in ajax lists
         $this->loginAdmin("Master Settings", "Core Settings");
         $this->openTab("System");

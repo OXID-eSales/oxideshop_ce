@@ -696,8 +696,6 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testEditShopName()
     {
-        $shopVersionNumber = $this->getShopVersionNumber();
-
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
             $this->markTestSkipped('Skip CE/PE related tests for EE edition');
         }
@@ -706,7 +704,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("edit");
 
         //asserting default shop values in EN lang
-        $this->assertEquals("OXID eShop $shopVersionNumber", $this->getValue("editval[oxshops__oxname]"));
+        $this->assertEquals("OXID eShop", $this->getValue("editval[oxshops__oxname]"));
     }
 
     /**

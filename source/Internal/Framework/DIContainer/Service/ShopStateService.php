@@ -92,9 +92,14 @@ class ShopStateService implements ShopStateServiceInterface
     {
         include $this->basicContext->getConfigFilePath();
 
-        $dsn = sprintf('mysql:host=%s;port=%s', $this->dbHost, $this->dbPort);
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;dbname=%s',
+            $this->dbHost,
+            $this->dbPort,
+            $this->dbName
+        );
 
-        $connection = new \PDO(
+        return new \PDO(
             $dsn,
             $this->dbUser,
             $this->dbPwd,
@@ -102,9 +107,5 @@ class ShopStateService implements ShopStateServiceInterface
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             ]
         );
-
-        $connection->exec("USE `{$this->dbName}`");
-
-        return $connection;
     }
 }

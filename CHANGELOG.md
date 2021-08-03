@@ -342,7 +342,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
-## [6.9.0] - Unreleased
+## [6.9.0] - 2021-07-27
 
 ### Added
 - Added Northern Ireland due to Brexit regulations [PR-872](https://github.com/OXID-eSales/oxideshop_ce/pull/872)
@@ -1423,8 +1423,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Overview of Changes](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-overview-of-changes.html)
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
-[7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v7.0.0-rc.1 
-[6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...b-6.3.x
+[7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v7.0.0-rc.1 
+[6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
 [6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2
 [6.7.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.7.1

@@ -43,11 +43,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     private $filePath;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var MetaDataNormalizerInterface
      */
     private $metaDataNormalizer;

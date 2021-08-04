@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Registry;
+
 class SeoUrlLogic
 {
     /**
@@ -40,14 +42,14 @@ class SeoUrlLogic
                     $sUrl = $oObject->getLink();
                 }
             }
-        } elseif ($sUrl && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+        } elseif ($sUrl && Registry::getUtils()->seoIsActive()) {
             // if SEO is on ..
-            $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
-            if (($sStaticUrl = $oEncoder->getStaticUrl($sUrl))) {
+            $sStaticUrl = Registry::getSeoEncoder()->getStaticUrl($sUrl);
+            if ($sStaticUrl) {
                 $sUrl = $sStaticUrl;
             } else {
                 // in case language parameter is not added to url
-                $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl);
+                $sUrl = Registry::getUtilsUrl()->processUrl($sUrl);
             }
         }
 

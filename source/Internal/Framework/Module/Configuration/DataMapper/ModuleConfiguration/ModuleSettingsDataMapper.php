@@ -45,7 +45,7 @@ class ModuleSettingsDataMapper implements ModuleConfigurationDataMapperInterface
     {
         $data = [];
 
-        foreach ($configuration->getModuleSettings() as $index => $setting) {
+        foreach ($configuration->getModuleSettings() as $setting) {
             if ($setting->getGroupName()) {
                 $data[$setting->getName()]['group'] = $setting->getGroupName();
             }

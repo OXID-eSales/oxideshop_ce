@@ -85,7 +85,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
             return;
-        };
+        }
 
         $projectConfig = $this->dao->loadProjectConfigFile();
         $projectConfig->addImport($this->getRelativeModuleConfigFilePath($moduleConfigFile));

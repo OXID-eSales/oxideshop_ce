@@ -1889,7 +1889,6 @@ $aLang = [
     'PAYMENT_RDFA_CHECKINADVANCE'          => 'Barscheck',
     'PAYMENT_RDFA_BYBANKTRANSFERINADVANCE' => 'Vorauskasse',
 
-    // @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
     'PAYMENT_RDFA_CREDITCARD'              => 'Kreditkartenzahlung',
     'PAYMENT_RDFA_AMERICANEXPRESS'         => 'American Express',
     'PAYMENT_RDFA_DINERSCLUB'              => 'Diners Club',
@@ -1897,7 +1896,6 @@ $aLang = [
     'PAYMENT_RDFA_JCB'                     => 'JCB',
     'PAYMENT_RDFA_MASTERCARD'              => 'MasterCard',
     'PAYMENT_RDFA_VISA'                    => 'VISA',
-    // END deprecated
 
     'DELIVERY_RDFA_ASIGN_DELIVERY'             => 'Versandarten zuordnen',
     'DELIVERY_RDFA_ADVICE'                     => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Versandarten aus, die Ihrer Versandart %s entsprechen',

@@ -16,7 +16,7 @@ use oxField;
 
 /**
  * Admin article RDFa payment manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> RDFa.
  */
 class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
@@ -30,7 +30,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
     /**
      * Predefined RDFa payment methods
-     * 0 value have general payments, 1 have creditcar payments
+     * 0 value have general payments, 1 have credit card payments
      *
      * @var array
      */
@@ -44,14 +44,12 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         "GoogleCheckout"          => 0,
         "PayPal"                  => 0,
         "PaySwarm"                => 0,
-      //  @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
         "AmericanExpress"         => 1,
         "DinersClub"              => 1,
         "Discover"                => 1,
         "JCB"                     => 1,
         "MasterCard"              => 1,
         "VISA"                    => 1
-      // END deprecated
     ];
 
     public function render()

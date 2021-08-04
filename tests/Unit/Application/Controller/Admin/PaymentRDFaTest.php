@@ -1,26 +1,20 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \stdClass;
+use oxDb;
+use oxField;
+use OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa;
+use OxidEsales\Eshop\Application\Model\Payment;
+use stdClass;
 
-use \oxField;
-use \oxDb;
-
-/**
- * Tests for Shop_Main class
- */
-class PaymentRDFaTest extends \OxidTestCase
+final class PaymentRDFaTest extends \OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxobject2payment');
@@ -159,5 +153,16 @@ class PaymentRDFaTest extends \OxidTestCase
         sort($aObjIDs);
         sort($aResp);
         $this->assertSame($aObjIDs, $aResp);
+    }
+
+    public function testRenderWillLoadPayment(): void
+    {
+        $this->setRequestParameter('oxid', 123);
+        /** @var PaymentRdfa $paymentRdfa */
+        $paymentRdfa = oxNew(PaymentRdfa::class);
+
+        $paymentRdfa->render();
+
+        $this->assertInstanceOf(Payment::class, $paymentRdfa->getViewData()['edit']);
     }
 }

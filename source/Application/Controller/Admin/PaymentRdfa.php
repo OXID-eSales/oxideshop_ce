@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use oxDb;
@@ -53,6 +54,14 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
       // END deprecated
     ];
 
+    public function render()
+    {
+        $paymentId = $this->getEditObjectId();
+        if (isset($paymentId) && $paymentId !== '-1') {
+            $this->_aViewData['edit'] = $this->getPayment($paymentId);
+        }
+        return parent::render();
+    }
     /**
      * Saves changed mapping configurations
      */
@@ -118,5 +127,20 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
 
         return $aRDFaPayments;
+    }
+
+    /**
+     * @param string $paymentId
+     * @return Payment
+     */
+    private function getPayment(string $paymentId): Payment
+    {
+        $payment = oxNew(Payment::class);
+        $payment->loadInLang($this->_iEditLang, $paymentId);
+        $availableLanguages = $payment->getAvailableInLangs();
+        if (!isset($availableLanguages[$this->_iEditLang])) {
+            $payment->loadInLang(key($availableLanguages), $paymentId);
+        }
+        return $payment;
     }
 }

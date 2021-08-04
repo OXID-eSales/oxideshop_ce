@@ -1875,7 +1875,7 @@ $aLang = [
     'SHOP_RDFA_SHOW_PRODUCTSTOCK'     => 'Show real available product stock',
 
     'PAYMENT_RDFA_ASIGN_PAYMENT'           => 'Assign payment',
-    'PAYMENT_RDFA_ADVICE'                  => '<b>Hint:</b> Please choose only those payment methods, pre-defined in GoodRelations, that comply with your payment method <b>%s</b>.',
+    'PAYMENT_RDFA_ADVICE'                  => '<b>Hint:</b> Please choose only those payment methods, pre-defined in GoodRelations, that comply with your payment method <b>%s</b>',
     'PAYMENT_RDFA_GENERAL'                 => 'General payment methods',
     'PAYMENT_RDFA_CASH'                    => 'Cash',
     'PAYMENT_RDFA_GOOGLECHECKOUT'          => 'Google Checkout',

@@ -187,7 +187,6 @@
                 <div>
                     <p>[{oxmultilang ident="PAYMENT_MAIN_LONGDESC"}]</p>
                     [{$editor}]
-                    <div class="messagebox">[{oxmultilang ident="EDITOR_PLAINTEXT_HINT"}]</div>
                 </div>
             [{/oxhasrights}]
         [{/block}]

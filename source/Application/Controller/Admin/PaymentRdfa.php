@@ -60,6 +60,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
         return parent::render();
     }
+
     /**
      * Saves changed mapping configurations
      */
@@ -135,10 +136,6 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         $payment = oxNew(Payment::class);
         $payment->loadInLang($this->_iEditLang, $paymentId);
-        $availableLanguages = $payment->getAvailableInLangs();
-        if (!isset($availableLanguages[$this->_iEditLang])) {
-            $payment->loadInLang(key($availableLanguages), $paymentId);
-        }
         return $payment;
     }
 }

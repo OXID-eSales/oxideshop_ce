@@ -155,7 +155,37 @@ final class PaymentRDFaTest extends \OxidTestCase
         $this->assertSame($aObjIDs, $aResp);
     }
 
-    public function testRenderWillLoadPayment(): void
+    public function testRenderWillReturnNonEmptyString(): void
+    {
+        $result = oxNew(PaymentRdfa::class)->render();
+
+        $this->assertIsString($result);
+        $this->assertNotEmpty($result);
+    }
+
+    public function testRenderWithEmptyObjectIdWillNotLoadPayment(): void
+    {
+        $this->setRequestParameter('oxid', null);
+        /** @var PaymentRdfa $paymentRdfa */
+        $paymentRdfa = oxNew(PaymentRdfa::class);
+
+        $paymentRdfa->render();
+
+        $this->assertEmpty($paymentRdfa->getViewData()['edit']);
+    }
+
+    public function testRenderWithMinusOneObjectIdWillNotLoadPayment(): void
+    {
+        $this->setRequestParameter('oxid', -1);
+        /** @var PaymentRdfa $paymentRdfa */
+        $paymentRdfa = oxNew(PaymentRdfa::class);
+
+        $paymentRdfa->render();
+
+        $this->assertEmpty($paymentRdfa->getViewData()['edit']);
+    }
+
+    public function testRenderWithValidIdWillLoadPayment(): void
     {
         $this->setRequestParameter('oxid', 123);
         /** @var PaymentRdfa $paymentRdfa */

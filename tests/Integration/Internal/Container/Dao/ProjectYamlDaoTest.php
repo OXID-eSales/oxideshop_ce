@@ -128,7 +128,7 @@ EOT;
         $dao = $container->get(ProjectYamlDaoInterface::class);
         $context = $container->get(BasicContextInterface::class);
 
-        $projectYaml = new DIConfigWrapper([]);
+        $projectYaml = $dao->loadProjectConfigFile();
 
         // Make sure that the cache file exists
         ContainerFactory::resetContainer();

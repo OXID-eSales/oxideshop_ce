@@ -174,17 +174,6 @@ final class PaymentRDFaTest extends \OxidTestCase
         $this->assertEmpty($paymentRdfa->getViewData()['edit']);
     }
 
-    public function testRenderWithMinusOneObjectIdWillNotLoadPayment(): void
-    {
-        $this->setRequestParameter('oxid', -1);
-        /** @var PaymentRdfa $paymentRdfa */
-        $paymentRdfa = oxNew(PaymentRdfa::class);
-
-        $paymentRdfa->render();
-
-        $this->assertEmpty($paymentRdfa->getViewData()['edit']);
-    }
-
     public function testRenderWithValidIdWillLoadPayment(): void
     {
         $this->setRequestParameter('oxid', 123);

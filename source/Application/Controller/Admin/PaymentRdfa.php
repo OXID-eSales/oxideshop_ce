@@ -55,7 +55,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function render()
     {
         $paymentId = $this->getEditObjectId();
-        if (isset($paymentId) && $paymentId !== '-1') {
+        if (isset($paymentId)) {
             $this->_aViewData['edit'] = $this->getPayment($paymentId);
         }
         return parent::render();

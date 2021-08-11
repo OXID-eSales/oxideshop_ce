@@ -7,13 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use stdClass;
 use OxidEsales\Eshop\Core\Registry;
+use stdClass;
 
 /**
  * Admin article RDFa payment manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> RDFa.
  */
 class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
@@ -27,19 +28,36 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
     /**
      * Predefined RDFa payment methods
-     * 0 value have general payments
+     * 0 value have general payments, 1 have credit card payments
      *
      * @var array
      */
-    protected $_aRDFaPayments = ["ByBankTransferInAdvance" => 0,
-                                      "ByInvoice"               => 0,
-                                      "Cash"                    => 0,
-                                      "CheckInAdvance"          => 0,
-                                      "COD"                     => 0,
-                                      "DirectDebit"             => 0,
-                                      "GoogleCheckout"          => 0,
-                                      "PayPal"                  => 0,
-                                      "PaySwarm"                => 0];
+    protected $_aRDFaPayments = [
+        "ByBankTransferInAdvance" => 0,
+        "ByInvoice" => 0,
+        "Cash" => 0,
+        "CheckInAdvance" => 0,
+        "COD" => 0,
+        "DirectDebit" => 0,
+        "GoogleCheckout" => 0,
+        "PayPal" => 0,
+        "PaySwarm" => 0,
+        "AmericanExpress" => 1,
+        "DinersClub" => 1,
+        "Discover" => 1,
+        "JCB" => 1,
+        "MasterCard" => 1,
+        "VISA" => 1,
+    ];
+
+    public function render()
+    {
+        $paymentId = $this->getEditObjectId();
+        if (isset($paymentId)) {
+            $this->_aViewData['edit'] = $this->getPayment($paymentId);
+        }
+        return parent::render();
+    }
 
     /**
      * Saves changed mapping configurations
@@ -106,5 +124,16 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
 
         return $aRDFaPayments;
+    }
+
+    /**
+     * @param string $paymentId
+     * @return Payment
+     */
+    private function getPayment(string $paymentId): Payment
+    {
+        $payment = oxNew(Payment::class);
+        $payment->loadInLang($this->_iEditLang, $paymentId);
+        return $payment;
     }
 }

@@ -7,21 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \stdClass;
-use \oxField;
-use \oxDb;
+use oxDb;
+use oxField;
+use OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa;
+use OxidEsales\Eshop\Application\Model\Payment;
+use stdClass;
 
-/**
- * Tests for Shop_Main class
- */
-class PaymentRDFaTest extends \OxidTestCase
+final class PaymentRDFaTest extends \OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxobject2payment');
@@ -160,5 +153,35 @@ class PaymentRDFaTest extends \OxidTestCase
         sort($aObjIDs);
         sort($aResp);
         $this->assertSame($aObjIDs, $aResp);
+    }
+
+    public function testRenderWillReturnNonEmptyString(): void
+    {
+        $result = oxNew(PaymentRdfa::class)->render();
+
+        $this->assertIsString($result);
+        $this->assertNotEmpty($result);
+    }
+
+    public function testRenderWithEmptyObjectIdWillNotLoadPayment(): void
+    {
+        $this->setRequestParameter('oxid', null);
+        /** @var PaymentRdfa $paymentRdfa */
+        $paymentRdfa = oxNew(PaymentRdfa::class);
+
+        $paymentRdfa->render();
+
+        $this->assertEmpty($paymentRdfa->getViewData()['edit']);
+    }
+
+    public function testRenderWithValidIdWillLoadPayment(): void
+    {
+        $this->setRequestParameter('oxid', 123);
+        /** @var PaymentRdfa $paymentRdfa */
+        $paymentRdfa = oxNew(PaymentRdfa::class);
+
+        $paymentRdfa->render();
+
+        $this->assertInstanceOf(Payment::class, $paymentRdfa->getViewData()['edit']);
     }
 }

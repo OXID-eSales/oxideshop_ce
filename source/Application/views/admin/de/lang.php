@@ -1770,7 +1770,7 @@ $aLang = [
     'SHOP_RDFA_SHOW_PRODUCTSTOCK'     => 'Den tatsächlichen Lagerbestand der Artikel anzeigen',
 
     'PAYMENT_RDFA_ASIGN_PAYMENT'           => 'Zahlungsart zuordnen',
-    'PAYMENT_RDFA_ADVICE'                  => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Zahlungsarten aus, die Ihrer Zahlungsart <b>%s</b> entsprechen.',
+    'PAYMENT_RDFA_ADVICE'                  => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Zahlungsarten aus, die Ihrer Zahlungsart <b>%s</b> entsprechen',
     'PAYMENT_RDFA_GENERAL'                 => 'Allgemeine Zahlungsarten',
     'PAYMENT_RDFA_CASH'                    => 'Barzahlung',
     'PAYMENT_RDFA_GOOGLECHECKOUT'          => 'Google Checkout',
@@ -1781,6 +1781,14 @@ $aLang = [
     'PAYMENT_RDFA_BYINVOICE'               => 'Rechnung',
     'PAYMENT_RDFA_CHECKINADVANCE'          => 'Barscheck',
     'PAYMENT_RDFA_BYBANKTRANSFERINADVANCE' => 'Vorauskasse',
+
+    'PAYMENT_RDFA_CREDITCARD'              => 'Kreditkartenzahlung',
+    'PAYMENT_RDFA_AMERICANEXPRESS'         => 'American Express',
+    'PAYMENT_RDFA_DINERSCLUB'              => 'Diners Club',
+    'PAYMENT_RDFA_DISCOVER'                => 'Discover',
+    'PAYMENT_RDFA_JCB'                     => 'JCB',
+    'PAYMENT_RDFA_MASTERCARD'              => 'MasterCard',
+    'PAYMENT_RDFA_VISA'                    => 'VISA',
 
     'DELIVERY_RDFA_ASIGN_DELIVERY'             => 'Versandarten zuordnen',
     'DELIVERY_RDFA_ADVICE'                     => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Versandarten aus, die Ihrer Versandart %s entsprechen',

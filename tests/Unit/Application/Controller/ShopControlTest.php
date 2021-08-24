@@ -559,18 +559,28 @@ class ShopControlTest extends \OxidTestCase
     public function testCannotAccessProtectedMethod()
     {
         $sCL = \OxidEsales\Eshop\Application\Controller\AccountController::class;
+        $sWebCL = 'account';
         $sFNC = 'getLoginTemplate';
-        $oProtectedMethodException = new oxSystemComponentException('Non public method cannot be accessed');
 
-        $oView = $this->getMock($sCL, array('executeFunction', 'getFncName'));
+        $oView = $this->getMock($sCL, array('executeFunction', 'getFncName', 'getClassKey'));
         $oView->expects($this->never())->method('executeFunction');
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue($sFNC));
+        $oView->expects($this->once())->method('getClassKey')->will($this->returnValue($sCL));
 
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('initializeViewObject', 'handleSystemException'));
+        Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
+        Registry::getLogger()->expects($this->once())->method('warning')->with("Non public method cannot be accessed. {$sCL}::{$sFNC}()");
+
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());
+        Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->will($this->returnCallback(function () {
+            throw new \Exception('404 Page will show');
+        }));
+
+        $this->expectErrorMessage('404 Page will show');
+
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('initializeViewObject'));
         $oControl->expects($this->once())->method('initializeViewObject')->with($sCL, $sFNC, null, null)->will($this->returnValue($oView));
-        $oControl->expects($this->once())->method('handleSystemException')->with($oProtectedMethodException)->will($this->returnValue(true));
 
-        $oControl->start($sCL, $sFNC);
+        $oControl->start($sWebCL, $sFNC);
     }
 
     /**

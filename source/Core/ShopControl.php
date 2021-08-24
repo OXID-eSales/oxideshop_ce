@@ -290,17 +290,22 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Executes provided function on view object.
-     * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
+     * If this function can not be executed (is protected or so), a 404 Page will be show.
      *
      * @param FrontendController $view
      * @param string             $functionName
-     *
-     * @throws \oxSystemComponentException
      */
     protected function executeAction($view, $functionName)
     {
         if (!$this->canExecuteFunction($view, $functionName)) {
-            throw oxNew(\oxSystemComponentException::class, 'Non public method cannot be accessed');
+            unset($_GET['fnc'], $_POST['fnc']);
+            $this->handleRoutingException(
+                new StandardException(sprintf(
+                    'Non public method cannot be accessed. %s::%s()',
+                    $view->getClassKey(),
+                    $functionName
+                ))
+            );
         }
 
         $view->executeFunction($functionName);
@@ -673,7 +678,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Handle routing exception, which is thrown, if the class name for the requested controller id could not be resolved.
      *
-     * @param RoutingException $exception
+     * @param RoutingException|StandardException $exception
      */
     protected function handleRoutingException($exception)
     {

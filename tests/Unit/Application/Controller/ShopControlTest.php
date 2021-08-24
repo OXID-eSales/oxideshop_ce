@@ -592,28 +592,7 @@ class ShopControlTest extends \OxidTestCase
 
         $control->start();
     }
-
-    /**
-     * Test case that requested controller id does not match any known class.
-     *
-     * @return null
-     */
-    public function testStartWithUnmatchedRequestControllerIdDebugModeOn()
-    {
-        $controllerId = 'unmatchedControllerId';
-        $routingException = new \OxidEsales\Eshop\Core\Exception\RoutingException($controllerId);
-
-        $this->setRequestParameter('cl', $controllerId);
-        $this->setRequestParameter('fnc', 'testFnc');
-
-        $control = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('process', 'handleRoutingException', 'isDebugMode'), array(), '', false, false, true);
-        $control->expects($this->once())->method('process')->with($this->equalTo($controllerId));
-        $control->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
-        $control->expects($this->once())->method('handleRoutingException')->with($this->equalTo($routingException));
-
-        $control->start();
-    }
-
+    
     protected function tearDown(): void
     {
         parent::tearDown();

@@ -18,6 +18,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\Facts\Config\ConfigFile;
 use oxObjectException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
@@ -25,6 +26,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEv
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent;
+use Webmozart\PathUtil\Path;
 
 /**
  * Class BaseModel
@@ -723,6 +725,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function assignRecord($select)
     {
+        if ($this->isCalledFromSmartyTemplate()) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->alert(
+                new \OxidEsales\Eshop\Core\Exception\SystemComponentException('Calling assignRecord() from Smarty template has been disallowed.')
+            );
+            return false;
+        }
+
         $record = $this->getRecordByQuery($select);
 
         if ($record != false && $record->count() > 0) {
@@ -1658,5 +1667,20 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     private function isPropertyField($name)
     {
         return $this->$name instanceof Field;
+    }
+
+    private function isCalledFromSmartyTemplate(): bool
+    {
+        $smartyCacheDirectory = Path::join((new ConfigFile())->getVar('sCompileDir'), 'smarty');
+        foreach ((new \Exception())->getTrace() as $call) {
+            if (
+                ($call['function'] === 'assignRecord' || $call['function'] === 'smarty_function_oxeval') &&
+                array_key_exists('file', $call) &&
+                str_contains($call['file'], $smartyCacheDirectory)
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 }

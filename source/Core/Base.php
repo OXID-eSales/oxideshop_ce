@@ -8,9 +8,11 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\Facts\Config\ConfigFile;
 use oxSystemComponentException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -130,6 +132,9 @@ class Base
      */
     public function getSession()
     {
+        if ($this->isCalledFromSmartyTemplate()) {
+            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException('Calling getSession() from Smarty template has been disallowed.');
+        }
         if (self::$_oSession == null) {
             self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
         }
@@ -223,5 +228,20 @@ class Base
     protected function getContainer()
     {
         return ContainerFactory::getInstance()->getContainer();
+    }
+
+    private function isCalledFromSmartyTemplate(): bool
+    {
+        $smartyCacheDirectory = Path::join((new ConfigFile())->getVar('sCompileDir'), 'smarty');
+        foreach ((new \Exception())->getTrace() as $call) {
+            if (
+                ($call['function'] === 'getSession' || $call['function'] === 'smarty_function_oxeval') &&
+                array_key_exists('file', $call) &&
+                str_contains($call['file'], $smartyCacheDirectory)
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 }

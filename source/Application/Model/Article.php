@@ -11,6 +11,7 @@ use Exception;
 use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterProductSaveEvent;
 use oxList;
 
 // defining supported link types
@@ -2320,6 +2321,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // saving long description
         $this->_saveArtLongDesc();
 
+        $this->dispatchEvent(new AfterProductSaveEvent($this));
         return $blRet;
     }
 

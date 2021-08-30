@@ -7,10 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
-
 /**
  * Virtual basket manager class. Virtual baskets are user article lists which are stored in database (noticelists, wishlists).
  * The name of the class is left like this because of historic reasons.
@@ -327,9 +323,10 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (!$sOXID) {
             $sOXID = $this->getId();
         }
-
-        $blDelete = false;
-        if ($sOXID && ($blDelete = parent::delete($sOXID))) {
+        if (!$sOXID) {
+            return false;
+        }
+        if ($blDelete = parent::delete($sOXID)) {
             // cleaning up related data
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "delete from oxuserbasketitems where oxbasketid = :oxbasketid";

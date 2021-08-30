@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use oxArticle;
 use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeBasketControllerRenderEvent;
 use oxRegistry;
 use oxList;
 use oxBasketContentMarkGenerator;
@@ -108,6 +109,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function render()
     {
+        $this->dispatchEvent(new BeforeBasketControllerRenderEvent($this, Registry::getSession()->getBasket()));
+
         if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
         }

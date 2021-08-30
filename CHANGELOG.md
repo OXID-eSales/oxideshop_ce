@@ -11,6 +11,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Docblock and other coding style fixes:
     - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
 
+### Added
+- Events in `Internal\Transition\ShopEvents\`:
+    - `AfterAdminControllerOrderOverviewRenderEvent`
+    - `AfterAdminControllerOrderProductRenderEvent`,
+    - `AfterAdminControllerProductMainRenderEvent`
+    - `AfterBasketSaveToUserBasketEvent`
+    - `AfterOrderFinalizeEvent`
+    - `AfterOrderValidatedEvent`
+    - `AfterProductSaveEvent`
+    - `AfterUserBasketLoadToBasketEvent`
+    - `BeforeBasketControllerRenderEvent`
+    - `BeforeBasketSaveToUserBasketEvent`
+    - `BeforeOrderControllerRenderEvent`
+    - `BeforeOrderDeleteEvent`
+    - `BeforeOrderProductDeleteEvent`
+    - `BeforeUserBasketDeleteEvent`
+    - `BeforeUserBasketItemDeleteEvent`,
+
 ## [6.9.0] - 2021-07-27
 
 ### Added

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeOrderProductDeleteEvent;
 
 /**
  * Order article manager.
@@ -622,6 +623,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function delete($sOXID = null)
     {
+        $this->dispatchEvent(new BeforeOrderProductDeleteEvent($this));
         if ($blDelete = parent::delete($sOXID)) {
             $myConfig = $this->getConfig();
             if ($this->oxorderarticles__oxstorno->value != 1) {

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminControllerProductMainRenderEvent;
 use oxRegistry;
 use oxDb;
 use oxField;
@@ -100,6 +101,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             "details.tpl.css"
         );
         $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam('blUseTimeCheck');
+
+        $this->dispatchEvent(new AfterAdminControllerProductMainRenderEvent($this, $oArticle));
 
         return "article_main.tpl";
     }

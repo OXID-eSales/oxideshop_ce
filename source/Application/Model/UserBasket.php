@@ -358,4 +358,21 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $blIsVisible;
     }
+
+    /**
+     * @param string $userId
+     * @param string $basketName
+     * @return bool
+     */
+    public function loadByUserId(string $userId, string $basketName): bool
+    {
+        return $this->assignRecord(
+            $this->buildSelectString(
+                [
+                    'oxuserbaskets.oxuserid' => $userId,
+                    'oxuserbaskets.oxtitle' => $basketName,
+                ]
+            )
+        );
+    }
 }

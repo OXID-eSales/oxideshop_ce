@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Application\Model\UserBasket;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
@@ -541,5 +542,18 @@ class UserbasketTest extends \OxidTestCase
 
         $this->assertTrue($oBasket->isNewBasket());
         $this->assertEquals(3333, $oBasket->oxuserbaskets__oxupdate->value);
+    }
+
+    public function testLoadByUserId(): void
+    {
+        $basket = oxNew(UserBasket::class);
+        $basket->setId('testBasket');
+        $basket->oxuserbaskets__oxtitle = new Field('test', Field::T_RAW);
+        $basket->oxuserbaskets__oxuserid = new Field('someUser', Field::T_RAW);
+        $basket->save();
+
+        $basketToLoad = oxNew(UserBasket::class);
+
+        $this->assertTrue($basketToLoad->loadByUserId('someUser', 'test'));
     }
 }

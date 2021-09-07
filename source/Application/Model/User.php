@@ -1818,7 +1818,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sEmail user email/login
      *
-     * @return null
+     * @return bool
      */
     public function checkIfEmailExists($sEmail)
     {

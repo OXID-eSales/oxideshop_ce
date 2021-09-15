@@ -102,40 +102,56 @@ class SystemRequirements
     ];
 
     /**
-     * Installation info url
+     * Installation requirements info url
      *
      * @var string
      */
-    protected $_sReqInfoUrl = "https://oxidforge.org/en/system-requirements";
+    protected $_sReqInfoUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
 
     /**
-     * Module or system configuration mapping with installation info url anchor
+     * Installation preparation info url
+     *
+     * @var string
+     */
+    protected $_sPreparationInfoUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/preparing-for-installation.html";
+
+    /**
+     * Module or system configuration mapping with installation requirements info url anchor
      *
      * @var array
      */
     protected $_aInfoMap = [
-        "php_version"        => "PHP_version_at_least_7.0",
-        "php_xml"            => "DOM",
-        "open_ssl"           => "OpenSSL",
-        "soap"               => "SOAP",
-        "j_son"              => "JSON",
-        "i_conv"             => "ICONV",
-        "tokenizer"          => "Tokenizer",
-        "mysql_connect"      => "MySQL_client_connector_for_MySQL_5",
-        "gd_info"            => "GDlib_v2_.5Bv1.5D_incl._JPEG_support",
-        "mb_string"          => "mbstring",
-        "bc_math"            => "BCMath",
-        "allow_url_fopen"    => "allow_url_fopen_or_fsockopen_to_port_80",
-        "request_uri"        => "REQUEST_URI_set",
-        "ini_set"            => "ini_set_allowed",
-        "memory_limit"       => "PHP_Memory_limit_.28min._32MB.2C_60MB_recommended.29",
-        "unicode_support"    => "UTF-8_support",
-        "file_uploads"       => "file_uploads_on",
-        "mod_rewrite"        => "apache_mod_rewrite_module",
-        "server_permissions" => "Files_.26_Folder_Permission_Setup",
-        "zend_optimizer"     => "Zend_Optimizer",
-        "session_autostart"  => "session.auto_start_must_be_off",
-        "mysql_version"      => "Not_recommended_MySQL_versions",
+        "php_version"        => "php",
+        "mod_rewrite"        => "web-server",
+        "mysql_version"      => "database",
+
+        "allow_url_fopen"    => "php",
+        "request_uri"        => "php",
+        "ini_set"            => "php",
+        "memory_limit"       => "php",
+        "file_uploads"       => "php",
+        "session_autostart"  => "php",
+
+        "php_xml"            => "php",
+        "j_son"              => "php",
+        "i_conv"             => "php",
+        "tokenizer"          => "php",
+        "mysql_connect"      => "php",
+        "gd_info"            => "php",
+        "mb_string"          => "php",
+        "curl"               => "php",
+        "bc_math"            => "php",
+        "open_ssl"           => "openssl",
+        "soap"               => "php",
+    ];
+
+    /**
+     * Module or system configuration mapping with installation preparations info url anchor
+     *
+     * @var array
+     */
+    protected $_aPreparationInfoMap = [
+        "server_permissions" => "schritt-customising-file-and-directory-permissions",
     ];
 
     /**
@@ -1026,10 +1042,13 @@ class SystemRequirements
     {
         $sUrl = $this->_sReqInfoUrl;
         $aInfoMap = $this->_aInfoMap;
+        $aPreparationInfoMap = $this->_aPreparationInfoMap;
 
         // only known will be anchored
         if (isset($aInfoMap[$sIdent])) {
             $sUrl .= "#" . $aInfoMap[$sIdent];
+        } elseif (isset($aPreparationInfoMap[$sIdent])) {
+            $sUrl = $this->_sPreparationInfoUrl . "#" . $aPreparationInfoMap[$sIdent];
         }
 
         return $sUrl;

@@ -95,7 +95,7 @@ $aLang = [
 'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 32MB, 60MB empfohlen)',
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
-'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ce.html',
+'STEP_0_ERROR_URL'                              => 'https://docs.oxid-esales.com/eshop/de/latest/installation/neu-installation/server-und-systemvoraussetzungen.html',
 'STEP_0_TEXT'                                   => '<ul class="req">' .
                                                    '<li class="pass"> - Die Voraussetzung ist erfüllt.</li>' .
                                                    '<li class="pmin"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>' .

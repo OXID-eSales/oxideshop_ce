@@ -691,7 +691,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $params = [];
 
         $sShopSelect = '';
-        if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
+        if (!$this->_blMallUsers && $this->getFieldData('oxrights') != 'malladmin') {
             $sShopSelect = ' AND oxshopid = :oxshopid ';
             $params[':oxshopid'] = Registry::getConfig()->getShopId();
         }

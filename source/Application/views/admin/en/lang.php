@@ -1199,6 +1199,7 @@ $aLang = [
     'SHOP_SYSTEM_SMARTYPHPHANDLING_PASSTHRU'             => 'Display code with PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_QUOTE'                => 'Display code without PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_ALLOW'                => 'Execute the PHP code',
+    'SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT'          => 'Deactivate Smarty for CMS content',
     'SHOP_SYSTEM_LDAP'                                   => 'Activate LDAP authentification',
     'SHOP_SYSTEM_PLEASE_CHOOSE'                          => 'Please choose',
 

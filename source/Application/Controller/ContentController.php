@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * CMS - loads pages and displays it

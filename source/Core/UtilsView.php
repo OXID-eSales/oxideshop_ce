@@ -16,6 +16,7 @@ use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
@@ -221,24 +222,21 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * Runs long description through template engine.
      *
      * @param string $description Description
-     * @param array  $context     View data to use its view data (optional)
-     * @param string $oxid        Current object id
-     *
+     * @param array $context View data to use its view data (optional)
+     * @param ?string $oxid Current object id
      * @return string
      */
     public function getRenderedContent(string $description, array $context, string $oxid = null): string
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
+        if ($this->skipSmartyRender()) {
             return $description;
         }
-
-        $activeLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
-
+        $activeLanguageId = Registry::getLang()->getTplLanguage();
         $renderer = clone $this->getRenderer();
 
         return $renderer->renderFragment(
             $description,
-            "ox:" . $oxid . $activeLanguageId,
+            "ox:{$oxid}{$activeLanguageId}",
             $context
         );
     }
@@ -908,5 +906,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             );
         }
         return $this->shopIdCalculator;
+    }
+
+    private function skipSmartyRender(): bool
+    {
+        return Registry::getConfig()->isDemoShop()
+            || Registry::getConfig()->getConfigParam('deactivateSmartyForCmsContent');
     }
 }

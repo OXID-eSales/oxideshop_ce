@@ -16,8 +16,8 @@ use Webmozart\PathUtil\Path;
 
 final class StringInputParserTest extends TestCase
 {
-    private $logFile;
-    private $testFile;
+    private string $logFile;
+    private string $testFile;
 
     protected function setUp(): void
     {

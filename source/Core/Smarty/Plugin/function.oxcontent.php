@@ -40,18 +40,22 @@ function smarty_function_oxcontent($params, &$smarty)
         if ($contentFound && $content->isActive()) {
             $field = $params['field'] ?? 'oxcontent';
             $property = "oxcontents__{$field}";
-            $smarty->oxidcache = clone $content->$property;
-            $smarty->compile_check = true;
-            $resourceName = sprintf(
-                'ox:%s%s%s%s%s',
-                (string)$loadId,
-                (string)$id,
-                $field,
-                Registry::getLang()->getBaseLanguage(),
-                Registry::getConfig()->getShopId()
-            );
-            $text = $smarty->fetch($resourceName);
-            $smarty->compile_check = Registry::getConfig()->getConfigParam('blCheckTemplates');
+            if (Registry::getConfig()->getConfigParam('deactivateSmartyForCmsContent')) {
+                $text = $content->$property->value;
+            } else {
+                $smarty->oxidcache = clone $content->$property;
+                $smarty->compile_check = true;
+                $resourceName = sprintf(
+                    'ox:%s%s%s%s%s',
+                    (string)$loadId,
+                    (string)$id,
+                    $field,
+                    Registry::getLang()->getBaseLanguage(),
+                    Registry::getConfig()->getShopId()
+                );
+                $text = $smarty->fetch($resourceName);
+                $smarty->compile_check = Registry::getConfig()->getConfigParam('blCheckTemplates');
+            }
         }
     }
     // if we write '[{oxcontent ident="oxemailfooterplain" assign="fs_text"}]' the content wont be outputted.

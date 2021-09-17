@@ -18,7 +18,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
-final class FunctionOxContentTest extends UnitTestCase
+final class BlockOxIfContentTest extends UnitTestCase
 {
     private string $cmsContentId = 'test-smarty-content';
     private string $unparsedCmsContent = '[{1|cat:2|cat:3}]';
@@ -79,7 +79,7 @@ final class FunctionOxContentTest extends UnitTestCase
     private function addTemplateFile(): void
     {
         $templateContents =
-            '[{oxcontent ident="test-smarty-content"}]';
+            '[{oxifcontent ident="test-smarty-content" object="content"}][{$content->oxcontents__oxcontent->value}][{/oxifcontent}]';
         $this->templatePath = Path::join(
             $this->getTemplateDir(),
             uniqid('test-tpl-', true)

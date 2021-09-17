@@ -33,6 +33,8 @@ $aLang =  [
 'HELP_SHOP_SYSTEM_ISERVERTIMESHIFT'           => 'The server the eShop is running on can be in a different time zone. With this setting the time shift can be adjusted: Enter the amount of hours that are to be added/subtracted from the server time, e. g. <kdb>+2</kdb> or <kdb>-2</kdb>',
 'HELP_SHOP_SYSTEM_INLINEIMGEMAIL'             => 'If the setting is checked, the pictures in e-mails are sent together with the e-mail. If the setting is unchecked, the pictures are downloaded by the e-mail program when the e-mail is opened.',
 'HELP_SHOP_SYSTEM_UTILMODULE'                 => 'Please enter your custom PHP file here, which will overwrite eShop functions at shop start.',
+'HELP_SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT' => 'If active, CMS content (e.g. descriptions of products and categories, CMS pages, etc.) will not be processed by Smarty.',
+
 'HELP_SHOP_CACHE_ENABLED'                     => 'If Dynamic content caching is active, additional contents are cached for increasing performance. Deactivate this setting as long as you adapt the Shop (writing modules, adapting templates and so on).',
 'HELP_SHOP_CACHE_LIFETIME'                    => 'Here you set how many seconds cached contents are saved at most before they are recreated. The default setting is 36000 seconds.',
 'HELP_SHOP_CACHE_CLASSES'                     => 'Here you set which view classes are cached.<br> Only change this setting if you are familiar with the caching mechanisms!',

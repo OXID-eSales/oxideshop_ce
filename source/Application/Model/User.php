@@ -270,13 +270,16 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // if subscription object is not set yet - we should create one
         if (!$this->_oNewsSubscription->loadFromUserId($this->getId())) {
-            if (!$this->_oNewsSubscription->loadFromEmail($this->oxuser__oxusername->value)) {
+            if (!$this->_oNewsSubscription->loadFromEmail($this->getFieldData('oxusername'))) {
                 // no subscription defined yet - creating one
-                $this->_oNewsSubscription->oxnewssubscribed__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxemail = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxusername->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxsal = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxsal->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxfname = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxfname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $this->_oNewsSubscription->oxnewssubscribed__oxlname = new \OxidEsales\Eshop\Core\Field($this->oxuser__oxlname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+
+                $this->_oNewsSubscription->assign([
+                    'oxuserid' => $this->getId(),
+                    'oxemail' => $this->getFieldData('oxusername'),
+                    'oxsal' => $this->getFieldData('oxsal'),
+                    'oxfname' => $this->getFieldData('oxfname'),
+                    'oxlname' => $this->getFieldData('oxlname')
+                ]);
             }
         }
 

@@ -349,6 +349,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [6.10.0] - Unreleased
+
+### Changed
+- Update `symfony/expression-language` component
+
 ## [6.9.1] - Unreleased
 
 ### Fixed

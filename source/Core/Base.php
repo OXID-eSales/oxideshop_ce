@@ -115,6 +115,8 @@ class Base
     /**
      * Dispatch given event.
      *
+     * @TODO: remove psalm-suppression when new Event contract will be ready and used
+     *
      * @param \Symfony\Contracts\EventDispatcher\Event $event Event to dispatch
      *
      * @return \Symfony\Contracts\EventDispatcher\Event
@@ -123,7 +125,7 @@ class Base
     {
         $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get(EventDispatcherInterface::class);
-        return $dispatcher->dispatch($event, $event::NAME);
+        return $dispatcher->dispatch($event, $event::NAME); // @psalm-suppress UndefinedConstant
     }
 
     /**

@@ -180,8 +180,8 @@ class NewssubscribedTest extends \OxidTestCase
      */
     public function testGetOptInStatus()
     {
-        $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField('xxx', oxField::T_RAW);
-        $this->assertEquals('xxx', $this->_oNewsSub->getOptInStatus());
+        $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField(3, oxField::T_RAW);
+        $this->assertEquals(3, $this->_oNewsSub->getOptInStatus());
     }
 
     /**

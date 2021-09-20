@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 
+### Fixed
+
+- Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
+
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added

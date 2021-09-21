@@ -171,12 +171,13 @@ class ViewTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "https://oxidforge.org/en/system-requirements";
+        $sUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
 
         $oSetupView = new View();
-        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $oSetupView->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#php", $oSetupView->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#web-server", $oSetupView->getReqInfoUrl("mod_rewrite", false));
+        $this->assertEquals($sUrl . "#database", $oSetupView->getReqInfoUrl("mysql_version", false));
         $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
-        $this->assertEquals($sUrl . "#Zend_Optimizer", $oSetupView->getReqInfoUrl("zend_optimizer", false));
     }
 
     /**

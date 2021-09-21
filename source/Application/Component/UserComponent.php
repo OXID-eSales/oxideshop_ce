@@ -696,7 +696,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
             // check if email address changed, if so, force check newsletter subscription settings.
-            $sBillingUsername = $aInvAdress['oxuser__oxusername'];
+            $sBillingUsername = $aInvAdress['oxuser__oxusername'] ?? null;
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
             $blEmailParam = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);

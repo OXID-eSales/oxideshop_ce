@@ -1457,7 +1457,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oLists->selectString($sQ, [':oxobjectid' => $this->getId()]);
 
             //#1104S if this is variant ant it has no selectlists, trying with parent
-            if ($oLists->count() == 0 && $this->oxarticles__oxparentid->value) {
+            if ($oLists->count() == 0 && $this->getFieldData('oxparentid')) {
                 $oLists->selectString($sQ, [':oxobjectid' => $this->oxarticles__oxparentid->value]);
             }
 

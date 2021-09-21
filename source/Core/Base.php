@@ -115,6 +115,10 @@ class Base
     /**
      * Dispatch given event.
      *
+     * @TODO: remove psalm-suppression when new Event contract will be ready and used
+     *
+     * @psalm-suppress UndefinedConstant
+     *
      * @param \Symfony\Contracts\EventDispatcher\Event $event Event to dispatch
      *
      * @return \Symfony\Contracts\EventDispatcher\Event

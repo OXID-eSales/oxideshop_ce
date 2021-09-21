@@ -96,12 +96,13 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "https://oxidforge.org/en/system-requirements";
+        $sUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
         $systemRequirements = new SystemRequirements();
 
-        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#php", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#web-server", $systemRequirements->getReqInfoUrl("mod_rewrite"));
+        $this->assertEquals($sUrl . "#database", $systemRequirements->getReqInfoUrl("mysql_version"));
         $this->assertEquals($sUrl, $systemRequirements->getReqInfoUrl("none"));
-        $this->assertEquals($sUrl . "#Zend_Optimizer", $systemRequirements->getReqInfoUrl("zend_optimizer"));
     }
 
     /**

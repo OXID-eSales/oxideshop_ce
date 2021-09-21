@@ -557,7 +557,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $return['amount'] = isset($productInfo['am']) ? $productInfo['am'] : 0;
         $return['selectList'] = isset($productInfo['sel']) ? $productInfo['sel'] : null;
 
-        $return['persistentParameters'] = $this->getPersistedParameters($productInfo['persparam']);
+        $return['persistentParameters'] = $this->getPersistedParameters($productInfo['persparam'] ?? null);
         $return['override'] = isset($productInfo['override']) ? $productInfo['override'] : null;
         $return['bundle'] = isset($productInfo['bundle']) ? true : false;
         $return['oldBasketItemId'] = isset($productInfo['basketitemid']) ? $productInfo['basketitemid'] : null;

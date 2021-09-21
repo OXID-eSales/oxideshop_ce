@@ -46,7 +46,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
                 $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
                 $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
                 foreach ($this->_aConfParams as $sType => $sParam) {
-                    $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
+                    $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType] ?? null;
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 Registry::getUtilsView()->addErrorToDisplay($exception);

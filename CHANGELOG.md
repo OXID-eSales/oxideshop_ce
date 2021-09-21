@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 
+### Fixed
+
+- Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
+- Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
+
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added
@@ -348,6 +353,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-825](https://github.com/OXID-eSales/oxideshop_ce/pull/825)
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
+
+## [6.10.0] - Unreleased
+
+### Changed
+- Update `symfony/expression-language` component
 
 ## [6.9.1] - Unreleased
 

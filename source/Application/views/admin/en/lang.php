@@ -1914,7 +1914,6 @@ $aLang = [
 
     'SHOP_PERF_SEO_CACHE'                        => 'Enable SEO cache',
     'SHOP_PERF_SYSREQ_CHECK'                     => 'Enable system health messages at the start page',
-    'INFO_MODULES_MOVED_TO_EXTENSIONS'           => 'Themes and modules handling moved to new menu "Extensions"',
     'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE' => 'Theme should not be defined in config.inc.php',
     'EMAIL_PRICEALARM_CUSTOMER_PRICEALARMIN'     => 'Wished Price in ',
     'EMAIL_PRICEALARM_CUSTOMER_HY'               => 'Hallo,',

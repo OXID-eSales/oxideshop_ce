@@ -33,10 +33,6 @@ function editThis( sID )
 
 [{cycle assign="_clear_" values=",2"}]
 
-<div class="info">
-    <div class="infoNotice"> [{oxmultilang ident="INFO_MODULES_MOVED_TO_EXTENSIONS"}]</div>
-</div>
-
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -290,7 +286,6 @@ function editThis( sID )
                         <option value="[{$smarty.const.SMARTY_PHP_REMOVE}]"  [{if $confstrs.iSmartyPhpHandling==$smarty.const.SMARTY_PHP_REMOVE}]selected[{/if}]>[{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING_QUOTE"}]</option>
                         <option value="[{$smarty.const.SMARTY_PHP_ALLOW}]"  [{if $confstrs.iSmartyPhpHandling==$smarty.const.SMARTY_PHP_ALLOW}]selected[{/if}]>[{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING_ALLOW"}]</option>
                     </select>
-                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_SMARTYPHPHANDLING"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING"}]

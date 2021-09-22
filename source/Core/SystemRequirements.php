@@ -568,7 +568,7 @@ class SystemRequirements
     {
         $requirementFits = null;
 
-        $minimalRequiredVersion = '7.3.0';
+        $minimalRequiredVersion = '7.4.0';
         $minimalRecommendedVersion = $minimalRequiredVersion;
         $maximalRecommendedVersion = '8.0.9999';
 

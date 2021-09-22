@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update `symfony/expression-language` component
 
+### Removed
+- Support for PHP 7.3
+
 ## [6.9.1] - Unreleased
 
 ### Fixed

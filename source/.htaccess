@@ -21,11 +21,6 @@
     RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule !(\.html|\/|\.jpe?g|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [NC,R=301,L]
-
-    RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule (\.html|\/)$ oxseo.php
 
 

@@ -13,12 +13,16 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 /** Search and sorting in admin. */
 class SearchAndSortingAdminTest extends AdminTestCase
 {
-    /**
-     * Sets default language to English.
-     */
     protected function setUp(): void
     {
         parent::setUp();
+
+        /**
+         * This test uses hardcoded indexes and can't manage DB row inserts to certain tables.
+         * Use the original data it was written for.
+         */
+        $this->loadTestFixtures();
+
         $this->getTranslator()->setLanguage(1);
     }
 
@@ -3296,5 +3300,15 @@ class SearchAndSortingAdminTest extends AdminTestCase
         foreach ($queries as $query) {
             $this->executeSql($query);
         }
+    }
+
+    private function loadTestFixtures(): void
+    {
+        $this->executeSql('TRUNCATE TABLE `oxcontents`;');
+        $this->executeSql(
+            file_get_contents(
+                __DIR__ . '/testSql/fixtures/search_and_sorting_admin_test.sql'
+            )
+        );
     }
 }

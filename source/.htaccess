@@ -21,7 +21,7 @@
     RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule (\.html|\/)$ oxseo.php
+    RewriteRule ^ oxseo.php
 
 
     RewriteCond %{REQUEST_URI} (\/out\/pictures\/generated\/)

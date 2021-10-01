@@ -509,7 +509,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         }
 
         $iLang = (int) $iLang;
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         $params = [
             ':oxtype' => $sType,
@@ -545,6 +544,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         // looking in cache
         if (($sSeoUrl = $this->_loadFromCache($sIdent, $sType, $iLang, $iShopId, $sParams)) === false) {
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $oRs = $oDb->select($sQ, $params);
 
             if ($oRs && $oRs->count() > 0 && !$oRs->EOF) {

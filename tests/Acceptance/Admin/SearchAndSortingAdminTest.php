@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use oxDb;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Search and sorting in admin. */
@@ -15,6 +14,9 @@ class SearchAndSortingAdminTest extends AdminTestCase
 {
     protected function setUp(): void
     {
+        if ($this->getTestConfig()->isSubShop()) {
+            $this->markTestSkipped('This test is not for Subshop');
+        }
         parent::setUp();
 
         /**
@@ -555,18 +557,15 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
 
-        $testConfig = $this->getTestConfig();
-        if (!$testConfig->isSubShop()) {
-            //deleting to check navigation
-            $this->clickAndWait("nav.last");
-            $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
-            $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-            $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
-            $this->clickDeleteListItem(1);
-            $this->assertElementNotPresent("nav.page.1");
-            $this->assertElementPresent("//tr[@id='row.1']/td[1]");
-            $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
-        }
+        //deleting to check navigation
+        $this->clickAndWait("nav.last");
+        $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
+        $this->clickDeleteListItem(1);
+        $this->assertElementNotPresent("nav.page.1");
+        $this->assertElementPresent("//tr[@id='row.1']/td[1]");
+        $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
     }
 
     /**
@@ -2077,8 +2076,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSearchUsers()
     {
-        $this->updateUsersForSubshop();
-
         $iNameCol = 2;
         $iMailCol = 3;
         $iStreetCol = 4;
@@ -2221,7 +2218,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
     public function testSortUsers()
     {
         $this->loginAdmin("Administer Users", "Users");
-        $this->updateUsersForSubshop();
 
         $iNameCol = 2;
         $iMailCol = 3;
@@ -2380,7 +2376,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
      *
      * @group search_sort
      */
-    public function testSearchList()
+    public function testSearchUserList()
     {
         $this->loginAdmin("Administer Users", "List All Users");
         //search
@@ -2455,7 +2451,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
      *
      * @group search_sort
      */
-    public function testSortList()
+    public function testSortUserList()
     {
         $this->loginAdmin("Administer Users", "List All Users");
         $this->type("where[oxuser][oxfname]", "user");
@@ -2496,8 +2492,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSearchOrders()
     {
-        $this->updateOrdersForSubshop();
-
         $this->loginAdmin("Administer Orders", "Orders");
         //search
         $this->assertElementPresent("link=1");
@@ -2571,8 +2565,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSortOrders()
     {
-        $this->updateOrdersForSubshop();
-
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=all");
         //sorting
@@ -2985,17 +2977,10 @@ class SearchAndSortingAdminTest extends AdminTestCase
     {
         $iLastPage = 6;
         $iPagesCount = 3;
-
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $iLastPage = 5;
-            $iPagesCount = 2;
-        }
-
-        $this->loginAdmin("Customer Info", "CMS Pages");
-
         $iTitleCol = 2;
         $iIdentCol = 3;
+
+        $this->loginAdmin("Customer Info", "CMS Pages");
 
         //search
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
@@ -3085,11 +3070,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSortCmsPages()
     {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $this->markTestSkipped('This test is not for Subshop');
-        }
-
         $iLastPage = 6;
         $iPreviousPageBeforeLastPage = $iLastPage - 1;
         $iLastPageLastElementId = 3;
@@ -3163,97 +3143,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
         $this->assertElementPresent("//tr[@id='row.1']/td[".$iIdentCol."]");
         $this->assertElementNotPresent("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]");
-    }
-
-    /**
-     * sorting CMS Pages for subshop
-     *
-     * @group search_sort
-     */
-    public function testSortCmsPagesForSubShop()
-    {
-        $testConfig = $this->getTestConfig();
-        if (!$testConfig->isSubShop()) {
-            $this->markTestSkipped('This test is for Subshops only');
-        }
-
-        $iLastPage = 5;
-        $iPreviousPageBeforeLastPage = $iLastPage - 1;
-        $iLastPageLastElementId = 9;
-        $sLastPageLastElementId = "[last]testcontent";
-        $sPreviuosPageBeforeLastPageText = "oxstdfooter";
-
-        $this->loginAdmin("Customer Info", "CMS Pages");
-
-        $iTitleCol = 2;
-        $iIdentCol = 3;
-
-        //sorting
-        $this->clickAndWait("link=Title");
-        $this->assertEquals("3 [EN] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
-        $this->assertEquals("About Us", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
-        $this->assertEquals("Credits", $this->getText("//tr[@id='row.5']/td[".$iTitleCol."]"));
-        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        $this->assertEquals("oximpressum", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
-        $this->assertEquals("oxcredits", $this->getText("//tr[@id='row.5']/td[".$iIdentCol."]"));
-        $this->clickAndWait("link=Ident");
-        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
-        $this->assertElementNotPresent("link=oximpressum");
-        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.next");
-        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertElementPresent("link=oximpressum");
-        $this->clickAndWait("nav.last");
-        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
-
-        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
-        $this->clickAndWait("nav.prev");
-        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
-        $this->assertElementPresent("link=$sPreviuosPageBeforeLastPageText");
-        $this->clickAndWait("nav.first");
-        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
-        $this->clickAndWait("link=Title");
-        $this->assertEquals("1 [DE] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
-        $this->assertEquals("AGB", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
-        $this->assertEquals("Benutzer geblockt", $this->getText("//tr[@id='row.8']/td[".$iTitleCol."]"));
-        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        $this->assertEquals("oxagb", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
-        $this->assertEquals("oxblocked", $this->getText("//tr[@id='row.8']/td[".$iIdentCol."]"));
-        $this->clickAndWait("link=Ident");
-        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
-        $this->assertElementNotPresent("link=oximpressum");
-        $this->assertElementNotPresent("link=oxnewstlerinfo");
-        $this->clickAndWait("nav.next");
-        $this->assertElementPresent("link=oximpressum");
-        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.last");
-        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
-        $this->clickAndWait("nav.prev");
-        $this->assertElementPresent("link=$sPreviuosPageBeforeLastPageText");
-        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.first");
-        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
-        //deleting last element to check if navigation is correct
-        $this->clickAndWait("nav.last");
-        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
-        $this->clickAndConfirm("del.1");
-        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
-        $this->assertElementPresent("//tr[@id='row.1']/td[".$iIdentCol."]");
-        $this->assertElementNotPresent("//tr[@id='row.$sLastPageLastElementId']/td[".$iIdentCol."]");
     }
 
     /**
@@ -3424,43 +3313,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->clickDeleteListItem(1);
         $this->assertElementNotPresent("nav.page.1");
         $this->assertEquals("1 EN product šÄßüл", $this->getText("//tr[@id='row.1']/td[5]"));
-    }
-
-    /**
-     * Update users shop id for subshop testing
-     */
-    protected function updateUsersForSubshop()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->getShopEdition() === 'EE' && $testConfig->isSubShop()) {
-            #User demodata for subshop
-            $aUserParams = array("oxshopid" => $testConfig->getShopId());
-
-            // First need to update USER dependency to newsletter.
-            // It is impossible to change User Shop ID without changing Shop ID for newsletter subscription.
-            oxDb::getDb(oxDb::FETCH_MODE_NUM)->execute("UPDATE oxnewssubscribed SET oxshopid = '{$testConfig->getShopId()}'");
-
-            $aUsers = oxDb::getDb(oxDb::FETCH_MODE_NUM)->getAll('SELECT OXID FROM oxuser');
-            foreach ($aUsers as $aUser) {
-                $this->callShopSC("oxUser", "save", $aUser[0], $aUserParams);
-            }
-        }
-    }
-
-    /**
-     * Update orders shop id for subshop testing
-     */
-    protected function updateOrdersForSubshop()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->getShopEdition() === 'EE' && $testConfig->isSubShop()) {
-            # order demodata for subshop
-            $aOrderParams = array("oxshopid" => $testConfig->getShopId());
-            $aOrders = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll('SELECT OXID FROM oxorder');
-            foreach ($aOrders as $aOrder) {
-                $this->callShopSC("oxOrder", "save", $aOrder['OXID'], $aOrderParams, null, 1);
-            }
-        }
     }
 
     /**

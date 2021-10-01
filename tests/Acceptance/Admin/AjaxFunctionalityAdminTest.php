@@ -100,36 +100,36 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxPaymentMethodsAssignGroups()
     {
-        $testConfig = $this->getTestConfig();
-        if (!$testConfig->isSubShop()) {
-            $this->loginAdmin("Shop Settings", "Payment Methods");
-            $this->assertEquals("English", $this->getSelectedLabel("changelang"));
-            $this->changeAdminListLanguage('Deutsch');
-            $this->clickAndWait("link=Name");
-            $this->openListItem("link=1 DE test payment šÄßüл");
-            $this->click("//input[@value='Assign User Groups']");
-            $this->usePopUp();
-            $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
-            //assignAll btn
-            $this->click("container1_btn");
-            $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
-            //drag and drop 1 itm from one list to another
-            $this->dragAndDrop("//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]", "container1");
-            $this->assertElementText("3 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[20]/td[1]");
-            $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
-            $this->assertElementText("3 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
-            $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
-            //unassignAll btn
-            $this->click("container2_btn");
-            $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
-            $this->close();
+        if ($this->getTestConfig()->isSubShop()) {
+            $this->markTestSkipped('This test is not for Subshop');
         }
+        $this->loginAdmin("Shop Settings", "Payment Methods");
+        $this->assertEquals("English", $this->getSelectedLabel("changelang"));
+        $this->changeAdminListLanguage('Deutsch');
+        $this->clickAndWait("link=Name");
+        $this->openListItem("link=1 DE test payment šÄßüл");
+        $this->click("//input[@value='Assign User Groups']");
+        $this->usePopUp();
+        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
+        //assignAll btn
+        $this->click("container1_btn");
+        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
+        //drag and drop 1 itm from one list to another
+        $this->dragAndDrop("//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]", "container1");
+        $this->assertElementText("3 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[20]/td[1]");
+        $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
+        $this->assertElementText("3 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
+        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
+        //unassignAll btn
+        $this->click("container2_btn");
+        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
+        $this->close();
     }
 
     /**
@@ -139,38 +139,38 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxPaymentMethodsAssignCountries()
     {
-        $testConfig = $this->getTestConfig();
-        if (!$testConfig->isSubShop()) {
-            $this->loginAdmin("Shop Settings", "Payment Methods");
-            $this->changeAdminListLanguage('Deutsch');
-            $this->changeListSorting("link=Name");
-            $this->openListItem("link=1 DE test payment šÄßüл", "edit");
-            $this->openTab("Country");
-            $this->click("//input[@value='Assign Countries']");
-            $this->usePopUp();
-            $this->assertElementText("Belgien", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Spanien", "//div[@id='container1_c']/table/tbody[2]/tr[15]/td[1]");
-            $this->assertTextPresent("Österreich");
-            $this->assertElementText("Österreich", "//div[@id='container1_c']/table/tbody[2]/tr[11]/td[1]");
-            //assignAll btn
-            $this->click("container1_btn");
-            $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[15]/td[1]");
-            //drag and drop 1 itm from one list to another
-            $this->dragAndDrop("//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]", "container1");
-            $this->assertElementText("Finnland", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[14]/td[1]");
-            $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
-            $this->assertElementText("Finnland", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
-            $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[15]/td[1]");
-            //unassignAll btn
-            $this->click("container2_btn");
-            $this->assertElementText("Belgien", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-            $this->assertElementText("Spanien", "//div[@id='container1_c']/table/tbody[2]/tr[15]/td[1]");
-            $this->close();
+        if ($this->getTestConfig()->isSubShop()) {
+            $this->markTestSkipped('This test is not for Subshop');
         }
+        $this->loginAdmin("Shop Settings", "Payment Methods");
+        $this->changeAdminListLanguage('Deutsch');
+        $this->changeListSorting("link=Name");
+        $this->openListItem("link=1 DE test payment šÄßüл", "edit");
+        $this->openTab("Country");
+        $this->click("//input[@value='Assign Countries']");
+        $this->usePopUp();
+        $this->assertElementText("Belgien", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Spanien", "//div[@id='container1_c']/table/tbody[2]/tr[15]/td[1]");
+        $this->assertTextPresent("Österreich");
+        $this->assertElementText("Österreich", "//div[@id='container1_c']/table/tbody[2]/tr[11]/td[1]");
+        //assignAll btn
+        $this->click("container1_btn");
+        $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[15]/td[1]");
+        //drag and drop 1 itm from one list to another
+        $this->dragAndDrop("//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]", "container1");
+        $this->assertElementText("Finnland", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[14]/td[1]");
+        $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
+        $this->assertElementText("Finnland", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
+        $this->assertElementText("Belgien", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Spanien", "//div[@id='container2_c']/table/tbody[2]/tr[15]/td[1]");
+        //unassignAll btn
+        $this->click("container2_btn");
+        $this->assertElementText("Belgien", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText("Spanien", "//div[@id='container1_c']/table/tbody[2]/tr[15]/td[1]");
+        $this->close();
     }
 
     /**

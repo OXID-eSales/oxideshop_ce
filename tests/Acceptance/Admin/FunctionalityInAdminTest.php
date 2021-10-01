@@ -483,8 +483,7 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testProductExport()
     {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
+        if ($this->getTestConfig()->isSubShop()) {
             $this->markTestSkipped('Test is not for subshops');
         }
 

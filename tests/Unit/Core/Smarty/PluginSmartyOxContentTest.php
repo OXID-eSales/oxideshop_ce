@@ -1,29 +1,37 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
-use \oxField;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use \Smarty;
-use \stdClass;
-use \oxRegistry;
-use \oxTestModules;
+use OxidTestCase;
+use oxTestModules;
+use PHPUnit\Framework\MockObject\MockObject;
+use Smarty;
 
-$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxcontent.php';
+$filePath = Registry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxcontent.php';
 if (file_exists($filePath)) {
     require_once $filePath;
 } else {
-    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/function.oxcontent.php';
+    require_once __DIR__ . '/../../../../source/Core/Smarty/Plugin/function.oxcontent.php';
 }
 
-class PluginSmartyOxContentTest extends \OxidTestCase
+final class PluginSmartyOxContentTest extends OxidTestCase
 {
-    public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist()
+    public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist(): void
     {
-        oxTestModules::addFunction("oxconfig", "getActiveShop", "{ \$oShop = oxNew('oxShop');; \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}");
+        oxTestModules::addFunction(
+            "oxconfig",
+            "getActiveShop",
+            "{ \$oShop = oxNew('oxShop');; \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}"
+        );
 
         $aParams['ident'] = 'testident';
         $oSmarty = new Smarty();
@@ -31,15 +39,18 @@ class PluginSmartyOxContentTest extends \OxidTestCase
         $sText = "<b>content not found ! check ident(" . $aParams['ident'] . ") !</b>";
 
         $this->assertEquals($sText, smarty_function_oxcontent($aParams, $oSmarty));
-        //$this->assertEquals( $sText, $oSmarty->oxidcache );
     }
 
-    public function testGetContentNoParamsPassedShopIsProductive()
+    public function testGetContentNoParamsPassedShopIsProductive(): void
     {
-        $this->assertEquals("<b>content not found ! check ident(undefined) !</b>", smarty_function_oxcontent(array(), new stdClass()));
+        $smarty = $this->createMock(Smarty::class);
+        $this->assertEquals(
+            "<b>content not found ! check ident(undefined) !</b>",
+            smarty_function_oxcontent(array(), $smarty)
+        );
     }
 
-    public function testGetContentLoadByIdent()
+    public function testGetContentLoadByIdent(): void
     {
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
@@ -47,14 +58,14 @@ class PluginSmartyOxContentTest extends \OxidTestCase
         $oSmarty = $this->getMock("Smarty", array("fetch"));
         $oSmarty->expects($this->once())->method('fetch')
             ->with($this->equalTo('ox:oxsecurityinfooxcontent0' . $sShopId))
-            ->will($this->returnValue('testvalue'));
+            ->willReturn('testvalue');
 
         $message = "Content not found! check ident(" . $aParams['ident'] . ") !";
 
         $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty), $message);
     }
 
-    public function testGetContentLoadByIdentLangChange()
+    public function testGetContentLoadByIdentLangChange(): void
     {
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
@@ -62,7 +73,7 @@ class PluginSmartyOxContentTest extends \OxidTestCase
         $oSmarty = $this->getMock("smarty", array("fetch"));
         $oSmarty->expects($this->once())->method('fetch')
             ->with($this->equalTo('ox:oxsecurityinfooxcontent1' . $sShopId))
-            ->will($this->returnValue('testvalue'));
+            ->willReturn('testvalue');
 
         $message = "Content not found! check ident(" . $aParams['ident'] . ") !";
 
@@ -71,14 +82,18 @@ class PluginSmartyOxContentTest extends \OxidTestCase
         $this->assertEquals('testvalue', smarty_function_oxcontent($aParams, $oSmarty), $message);
     }
 
-    public function testGetContentLoadByOxId()
+    public function testGetContentLoadByOxId(): void
     {
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
         $aParams['oxid'] = 'f41427a099a603773.44301043';
         $aParams['assign'] = true;
 
-        $oSmarty = $this->getMock("smarty", array("fetch", "assign"));
-        $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo('ox:f41427a099a603773.44301043oxcontent0' . $sShopId))->will($this->returnValue('testvalue'));
+        /** @var MockObject|Smarty $oSmarty */
+        $oSmarty = $this->createPartialMock("smarty", ['fetch', 'assign']);
+        $oSmarty->expects($this->once())
+            ->method('fetch')
+            ->with($this->equalTo('ox:f41427a099a603773.44301043oxcontent0' . $sShopId))
+            ->willReturn('testvalue');
         $oSmarty->expects($this->once())->method('assign')->with($this->equalTo(true));
 
         smarty_function_oxcontent($aParams, $oSmarty);

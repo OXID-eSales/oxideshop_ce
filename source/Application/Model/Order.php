@@ -1783,10 +1783,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getPaymentType()
     {
-        if ($this->oxorder__oxpaymentid->value && $this->_oPaymentType === null) {
+        if ($this->getFieldData('oxpaymentid') && $this->_oPaymentType === null) {
             $this->_oPaymentType = false;
             $oPaymentType = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
-            if ($oPaymentType->load($this->oxorder__oxpaymentid->value)) {
+            if ($oPaymentType->load($this->getFieldData('oxpaymentid'))) {
                 $this->_oPaymentType = $oPaymentType;
             }
         }

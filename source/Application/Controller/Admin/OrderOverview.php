@@ -42,9 +42,8 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $this->_aViewData["giftCard"] = $oOrder->getGiftCard();
             $this->_aViewData["paymentType"] = $this->getPaymentType($oOrder);
             $this->_aViewData["deliveryType"] = $oOrder->getDelSet();
-            $sTsProtectsField = 'oxorder__oxtsprotectcosts';
-            if ($oOrder->$sTsProtectsField->value) {
-                $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->$sTsProtectsField->value, $oCur);
+            if ($oOrder->getFieldData('oxtsprotectcosts')) {
+                $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->getFieldData('oxtsprotectcosts'), $oCur);
             }
         }
 

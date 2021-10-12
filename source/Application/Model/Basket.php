@@ -513,10 +513,12 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         // returning basket item object
-        if ($this->_aBasketContents[$sItemId] instanceof \OxidEsales\Eshop\Application\Model\BasketItem) {
+        if (isset($this->_aBasketContents[$sItemId])
+            && $this->_aBasketContents[$sItemId] instanceof \OxidEsales\Eshop\Application\Model\BasketItem) {
             $this->_aBasketContents[$sItemId]->setBasketItemKey($sItemId);
         }
-        return $this->_aBasketContents[$sItemId];
+
+        return $this->_aBasketContents[$sItemId] ?? null;
     }
 
     /**
@@ -644,8 +646,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         $oArticle = $oBasketItem->getArticle(true);
-        if ($oArticle && $oArticle->oxarticles__oxbundleid->value) {
-            $aBundles[$oArticle->oxarticles__oxbundleid->value] = 1;
+        if ($oArticle && $oArticle->getFieldData('oxbundleid')) {
+            $aBundles[$oArticle->getFieldData('oxbundleid')] = 1;
         }
 
         return $aBundles;

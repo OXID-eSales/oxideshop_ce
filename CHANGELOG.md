@@ -366,6 +366,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support for PHP 7.3
 
+### Deprecated
+- `Core\Model\BaseModel` methods:
+  - `assignRecord()`
+  - `getRecordByQuery()`
+
 ## [6.9.1] - Unreleased
 
 ### Fixed

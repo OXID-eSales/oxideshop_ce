@@ -724,6 +724,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $select SQL statement
      *
      * @return bool
+     * @deprecated method will be removed from the public API in v7.0 use QueryBuilderFactoryInterface and assign()
+     * @see BaseModel::assign()
+     * @see \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
      */
     public function assignRecord($select)
     {
@@ -743,6 +746,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $query
      *
      * @return mixed
+     * @deprecated method will be removed from the public API in v7.0 use QueryBuilderFactoryInterface
+     * @see \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
      */
     protected function getRecordByQuery($query)
     {

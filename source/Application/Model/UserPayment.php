@@ -79,34 +79,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Loads user payment object
-     *
-     * @param string $sOxId oxuserpayment id
-     *
-     * @return mixed
-     */
-    public function load($sOxId)
-    {
-        $sSelect = 'select oxid, oxuserid, oxpaymentsid, oxvalue
-                    from oxuserpayments where oxid = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
-
-        return $this->assignRecord($sSelect);
-    }
-
-
-    /**
-     * Inserts payment information to DB. Returns insert status.
-     *
-     * @return bool
-     */
-    protected function insert()
-    {
-        $blRet = parent::insert();
-
-        return $blRet;
-    }
-
-    /**
      * Get user payment by payment id
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        user object

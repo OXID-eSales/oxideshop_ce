@@ -1141,6 +1141,7 @@ $aLang = [
     'SHOP_SYSTEM_SMARTYPHPHANDLING_PASSTHRU'             => 'Display code with PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_QUOTE'                => 'Display code without PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_ALLOW'                => 'Execute the PHP code',
+    'SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT'          => 'Deactivate Smarty for CMS content',
     'SHOP_SYSTEM_PLEASE_CHOOSE'                          => 'Please choose',
 
     'SHOP_SEO_SEOMODE'                        => 'Active',
@@ -1803,7 +1804,6 @@ $aLang = [
 
     'SHOP_PERF_SEO_CACHE'                        => 'Enable SEO cache',
     'SHOP_PERF_SYSREQ_CHECK'                     => 'Enable system health messages at the start page',
-    'INFO_MODULES_MOVED_TO_EXTENSIONS'           => 'Themes and modules handling moved to new menu "Extensions"',
     'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE' => 'Theme should not be defined in config.inc.php',
     'EMAIL_PRICEALARM_CUSTOMER_PRICEALARMIN'     => 'Wished Price in ',
     'EMAIL_PRICEALARM_CUSTOMER_HY'               => 'Hallo,',

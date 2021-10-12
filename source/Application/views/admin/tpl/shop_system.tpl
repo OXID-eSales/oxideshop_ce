@@ -33,10 +33,6 @@ function editThis( sID )
 
 [{cycle assign="_clear_" values=",2"}]
 
-<div class="info">
-    <div class="infoNotice"> [{oxmultilang ident="INFO_MODULES_MOVED_TO_EXTENSIONS"}]</div>
-</div>
-
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -288,7 +284,6 @@ function editThis( sID )
                         <option value="[{$smarty.const.SMARTY_PHP_REMOVE}]"  [{if $confstrs.iSmartyPhpHandling==$smarty.const.SMARTY_PHP_REMOVE}]selected[{/if}]>[{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING_QUOTE"}]</option>
                         <option value="[{$smarty.const.SMARTY_PHP_ALLOW}]"  [{if $confstrs.iSmartyPhpHandling==$smarty.const.SMARTY_PHP_ALLOW}]selected[{/if}]>[{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING_ALLOW"}]</option>
                     </select>
-                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_SMARTYPHPHANDLING"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_SYSTEM_SMARTYPHPHANDLING"}]
@@ -296,6 +291,22 @@ function editThis( sID )
                 <div class="spacer"></div>
             </dl>
             [{/if}]
+
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[deactivateSmartyForCmsContent]
+                           value=false>
+                    <input type=checkbox name=confbools[deactivateSmartyForCmsContent]
+                           value=true
+                           [{if ($confbools.deactivateSmartyForCmsContent)}]checked[{/if}]
+                           [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
 
             <dl>
                 <dt>

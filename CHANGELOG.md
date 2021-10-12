@@ -356,8 +356,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.10.0] - Unreleased
 
+### Added
+- Configuration option `deactivateSmartyForCmsContent` to prevent Smarty from processing content added via CMS
+
 ### Changed
 - Update `symfony/expression-language` component
+- Execution of `smarty_function_oxeval` will be prevented with `deactivateSmartyForCmsContent` switched on
 
 ### Removed
 - Support for PHP 7.3
@@ -383,7 +387,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - SQL performance issue in oxDeliverySetList::_getFilterSelect [#0006247](https://bugs.oxid-esales.com/view.php?id=6247) [PR-865](https://github.com/OXID-eSales/oxideshop_ce/pull/865)
 - Fix css style of password type fields in admin [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-873](https://github.com/OXID-eSales/oxideshop_ce/pull/873)
 - Fix password checking script in admin module settings [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-874](https://github.com/OXID-eSales/oxideshop_ce/pull/874)
-- Fix moduleSettings existance requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
+- Fix moduleSettings existence requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
 - Fix cached delivery rules reuse [PR-869](https://github.com/OXID-eSales/oxideshop_ce/pull/869)
 
 ### Deprecated

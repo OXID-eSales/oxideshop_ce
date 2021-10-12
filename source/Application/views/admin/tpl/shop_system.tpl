@@ -296,22 +296,6 @@ function editThis( sID )
 
             <dl>
                 <dt>
-                    <input type=hidden name=confbools[deactivateSmartyForCmsContent]
-                           value=false>
-                    <input type=checkbox name=confbools[deactivateSmartyForCmsContent]
-                           value=true
-                           [{if ($confbools.deactivateSmartyForCmsContent)}]checked[{/if}]
-                           [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_SYSTEM_DEACTIVATESMARTYFORCMSCONTENT"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=text class="txt" style="width: 430px;" name=confstrs[sUtilModule] value="[{$confstrs.sUtilModule}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_SYSTEM_UTILMODULE"}]
                 </dt>

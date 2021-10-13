@@ -54,7 +54,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 $this->_aViewData["var_grouping"] = $formatModuleSettings['grouping'];
 
                 foreach ($this->_aConfParams as $sType => $sParam) {
-                    $this->_aViewData[$sParam] = $formatModuleSettings['vars'][$sType];
+                    $this->_aViewData[$sParam] = $formatModuleSettings['vars'][$sType] ?? null;
                 }
             }
         } catch (\Throwable $throwable) {

@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
 
+### Removed
+
+- `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
+
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added

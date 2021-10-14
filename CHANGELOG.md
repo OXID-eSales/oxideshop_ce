@@ -367,6 +367,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Update `symfony/expression-language` component
 - Execution of `smarty_function_oxeval` will be prevented with `deactivateSmartyForCmsContent` switched on
 
+### Fixed
+- Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
+
 ### Removed
 - Support for PHP 7.3
 

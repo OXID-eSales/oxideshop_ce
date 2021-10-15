@@ -795,7 +795,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getAdminLangFilesPathArray($activeLanguage) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
-        $langFiles = [];
+        $langFiles = $this->_getLangFilesPathArray($activeLanguage);;
 
         $appDirectory = $config->getAppDir();
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
@@ -810,7 +810,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
             'views' . DIRECTORY_SEPARATOR .
             $adminThemeName . DIRECTORY_SEPARATOR .
             $language;
-        $langFiles[] = $this->_getLangFilesPathArray($activeLanguage);
         $langFiles[] = $adminPath . DIRECTORY_SEPARATOR . 'lang.php';
         $langFiles[] = $appDirectory .
             'translations' . DIRECTORY_SEPARATOR .

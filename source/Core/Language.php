@@ -725,7 +725,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLangFilesPathArray" in next major
      */
-    protected function _getLangFilesPathArray($iLang)// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getLangFilesPathArray($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
         $aLangFiles = [];

@@ -1711,7 +1711,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $str = Str::getStr();
         $where = $category->getSqlActiveSnippet();
-        $select = $this->_generateSearchStr($id);
+        $select = $this->generateSearchStr($id);
         $select .= (
             $str->strstr(
                 $select,
@@ -1722,7 +1722,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // category not found ?
         if (!$category->assignRecord($select)) {
-            $select = $this->_generateSearchStr($id, true);
+            $select = $this->generateSearchStr($id, true);
             $select .= ($str->strstr($select, 'where') ? ' and ' : ' where ') . $where . " limit 1";
 
             // looking for price category

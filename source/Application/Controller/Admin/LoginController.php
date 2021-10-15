@@ -120,7 +120,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
                 \OxidEsales\Eshop\Core\Registry::getConfig()->setShopId($iSubshop);
             }
         } catch (UserException $oEx) {
-            $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
+            $myUtilsView->addErrorToDisplay($oEx);
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
@@ -128,7 +128,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
-            $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
+            $myUtilsView->addErrorToDisplay($oEx);
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));

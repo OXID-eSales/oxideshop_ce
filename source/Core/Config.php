@@ -1401,9 +1401,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getMasterPicturePath($file, $admin = false)
+    public function getMasterPicturePath($file, $admin = false, $isZoom = false)
     {
-        return $this->getDir($file, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin);
+        $fix = $this->getDir($file, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin, null, null, null, null, null, $isZoom);
+        $fix = $this->getShopUrl()."".$fix;
+        return $fix;
     }
 
     /**

@@ -1,21 +1,25 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group module
  * @package Unit\Core\Module
  */
-class ModuleTemplatePathFormatterTest extends UnitTestCase
+class ModuleTemplatePathCalculatorTest extends UnitTestCase
 {
     /**
      * Full path to modules directory. Any path like string for testing purposes.
@@ -131,21 +135,14 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $calculator->calculateModuleTemplatePath($templateName);
     }
 
-    /**
-     * Test if exception of not found template will be thrown if modules to search templates in are not active
-     */
-    public function testCalculateModuleTemplatePathWithNoActiveModules()
+    public function testCalculateModuleTemplatePathWithTemplateForInactiveModule(): void
     {
-        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
+        $templatePathCalculator = $this->getModuleTemplatePathCalculator($this->pathToModules, null, null);
         $this->setConfigParam('aModulePaths', []);
-
-        $templatePathCalculator = new ModuleTemplatePathCalculator(oxNew(ModuleList::class));
-        $templatePathCalculator->setModulesPath($this->pathToModules);
-
         try {
-            $templatePathCalculator->calculateModuleTemplatePath('someTemplateName.tpl');
+            $templatePathCalculator->calculateModuleTemplatePath('first.tpl');
             $this->fail('An exception should have been thrown');
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+        } catch (StandardException $exception) {
             $this->assertRegExp("@^Cannot find template@i", $exception->getMessage());
         }
     }
@@ -158,7 +155,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $this->expectException('oxException');
         $this->expectExceptionMessage('Cannot find template file "/test_path/first_default.tpl"');
 
-        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
+        /** @var oxModuleList|MockObject $moduleListMock */
         $this->setConfigParam('aModulePaths', [$this->exampleModuleId => true]);
         $this->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
 
@@ -182,11 +179,11 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $this->setConfigParam('sCustomTheme', $configCustomTheme);
         $this->setConfigParam('aModulePaths', [$this->exampleModuleId => true]);
 
-        /** @var FileSystem|PHPUnit\Framework\MockObject\MockObject $fileSystemMock */
+        /** @var FileSystem|MockObject $fileSystemMock */
         $fileSystemMock = $this->getMock(FileSystem::class, ['isReadable']);
         $fileSystemMock->method('isReadable')->willReturn($this->returnValue(true));
 
-        $templatePathCalculator = new ModuleTemplatePathCalculator(oxNew(ModuleList::class), oxNew('oxTheme'), $fileSystemMock);
+        $templatePathCalculator = new ModuleTemplatePathCalculator(null, oxNew('oxTheme'), $fileSystemMock);
         $templatePathCalculator->setModulesPath($modulesPath);
 
         return $templatePathCalculator;

@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
@@ -25,51 +24,26 @@ class ModuleTemplatePathCalculator
 {
     /** @var string Path to modules directory inside the shop. */
     private $modulesPath = '';
-
     /** @var Theme */
     private $theme;
-
-    /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
-    private $moduleList;
-
     /** @var FileSystem */
     private $fileSystem;
+    /** @var array */
+    private array $activeThemes;
 
-    /**
-     * Sets required dependencies
-     *
-     * @param \OxidEsales\Eshop\Core\Module\ModuleList $moduleList
-     * @param Theme                                    $theme
-     * @param FileSystem                               $fileSystem
-     */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
     {
-        if (is_null($moduleList)) {
-            $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        }
-        if (is_null($theme)) {
-            $theme = oxNew(Theme::class);
-        }
-        if (is_null($fileSystem)) {
-            $fileSystem = oxNew(FileSystem::class);
-        }
-
-        $this->theme = $theme;
-        $this->moduleList = $moduleList;
-        $this->fileSystem = $fileSystem;
+        $this->theme = $theme ?? oxNew(Theme::class);
+        $this->fileSystem = $fileSystem ?? oxNew(FileSystem::class);
     }
 
-    /**
-     * @param string $modulesPath
-     */
+    /** @param string $modulesPath */
     public function setModulesPath($modulesPath)
     {
         $this->modulesPath = $modulesPath;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getModulesPath()
     {
         return $this->modulesPath;
@@ -77,57 +51,57 @@ class ModuleTemplatePathCalculator
 
     /**
      * Finds the template by name in modules
-     *
      * @param string $templateName
-     *
      * @return string
-     *
      */
     public function calculateModuleTemplatePath($templateName)
     {
-        $theme = $this->theme;
-
         $moduleTemplates = Registry::getConfig()->getConfigParam('aModuleTemplates');
-
-        $activeModules = (array) Registry::getConfig()->getConfigParam('aModulePaths');
-
-        $finalTemplatePath = '';
-
-        if (is_array($moduleTemplates) && is_array($activeModules)) {
-            foreach ($moduleTemplates as $sModuleId => $aTemplates) {
-                // check if module is active
-                if (isset($activeModules[$sModuleId])) {
-                    $foundTemplate = null;
-                    $fileSystem = $this->fileSystem;
-
-                    // check if template for our active themes exists
-                    foreach ((array) $theme->getActiveThemesList() as $oneActiveThemeId) {
-                        if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
-                            $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
-                        }
-                    }
-
-                    // if not found in theme specific configurations
-                    if (!$foundTemplate && isset($aTemplates[$templateName])) {
-                        $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$templateName]);
-                    }
-
-                    if ($foundTemplate) {
-                        if ($fileSystem->isReadable($foundTemplate)) {
-                            $finalTemplatePath = $foundTemplate;
-                            break;
-                        } else {
-                            throw oxNew('oxException', sprintf('Cannot find template file "%s".', $foundTemplate));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!$finalTemplatePath) {
+        if (!is_array($moduleTemplates)) {
             throw oxNew('oxException', sprintf('Cannot find template "%s" in modules configuration.', $templateName));
         }
+        $this->activeThemes = array_reverse(
+            (array)$this->theme->getActiveThemesList()
+        );
+        foreach ($moduleTemplates as $moduleId => $templatesConfiguration) {
+            if (!$this->moduleIsActive($moduleId) || !$this->moduleExtendsTemplate($templatesConfiguration, $templateName)) {
+                continue;
+            }
+            $moduleTemplatePath = $this->fileSystem->combinePaths(
+                $this->getModulesPath(),
+                $this->geModuleTemplateExtension($templatesConfiguration, $templateName)
+            );
+            if (!$this->fileSystem->isReadable($moduleTemplatePath)) {
+                throw oxNew('oxException', sprintf('Cannot find template file "%s".', $moduleTemplatePath));
+            }
+            return $moduleTemplatePath;
+        }
+        throw oxNew('oxException', sprintf('Cannot find template "%s" in modules configuration.', $templateName));
+    }
 
-        return $finalTemplatePath;
+    private function moduleIsActive(string $moduleId): bool
+    {
+        $activeModules = (array)Registry::getConfig()->getConfigParam('aModulePaths');
+        return isset($activeModules[$moduleId]);
+    }
+
+    private function moduleExtendsTemplate(array $templatesConfiguration, string $templateName): bool
+    {
+        foreach ($this->activeThemes as $themeId) {
+            if (isset($templatesConfiguration[$themeId][$templateName])) {
+                return true;
+            }
+        }
+        return isset($templatesConfiguration[$templateName]);
+    }
+
+    private function geModuleTemplateExtension(array $templatesConfiguration, string $templateName): string
+    {
+        foreach ($this->activeThemes as $themeId) {
+            if (isset($templatesConfiguration[$themeId][$templateName])) {
+                return $templatesConfiguration[$themeId][$templateName];
+            }
+        }
+        return $templatesConfiguration[$templateName];
     }
 }

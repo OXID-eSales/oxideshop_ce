@@ -10,11 +10,9 @@ div.admin-login-box {
     background: #fff;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     width: 340px;
-    height: 400px;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     margin: auto;
 }
 

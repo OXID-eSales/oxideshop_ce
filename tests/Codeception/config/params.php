@@ -36,6 +36,7 @@ return [
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
     'SELENIUM_SERVER_HOST' => $selenium_server_host,
+    'BROWSER_NAME' => getenv('BROWSER_NAME') ?: 'firefox',
     'PHP_BIN' => $php,
     'SCREEN_SHOT_URL' => $cc_screen_shot_url,
     'BROWSER' => $selenium_browser

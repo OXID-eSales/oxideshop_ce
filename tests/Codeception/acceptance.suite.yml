@@ -12,7 +12,7 @@ modules:
         - \OxidEsales\EshopCommunity\Tests\Codeception\Helper\Acceptance
         - WebDriver:
             url: '%SHOP_URL%'
-            browser: '%BROWSER%'
+            browser: '%BROWSER_NAME%'
             port: '%SELENIUM_SERVER_PORT%'
             host: '%SELENIUM_SERVER_HOST%'
             window_size: 1600x1000

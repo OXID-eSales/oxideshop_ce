@@ -1822,7 +1822,7 @@ class UtfTest extends \OxidTestCase
         $mail->setRecipient('müller@testuser.com', 'test user');
 
         $recipient = $mail->getRecipient();
-        $this->assertEquals('müller@testuser.com',$recipient);
+        $this->assertEquals(['müller@testuser.com', 'test user'], $recipient[0]);
     }
 
     public function testUserIDNMailaddress()
@@ -1835,6 +1835,6 @@ class UtfTest extends \OxidTestCase
         $mail->setRecipient('müller@testüser.com', 'test user');
 
         $recipient = $mail->getRecipient();
-        $this->assertEquals('müller@xn--testser-q2a.com', $recipient);
+        $this->assertEquals(['müller@xn--testser-q2a.com', 'test user'], $recipient[0]);
     }
 }

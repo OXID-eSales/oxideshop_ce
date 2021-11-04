@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Text message on `Payment Methods > RDFa` tab
 - Docblock and other coding style fixes:
     - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
+- Method `OxidEsales\EshopCommunity\Core\Model \BaseModel::getRawFieldData()` 
 
 ## [6.9.0] - 2021-07-27
 

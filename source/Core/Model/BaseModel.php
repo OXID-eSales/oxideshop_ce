@@ -754,14 +754,29 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Gets field data
      *
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
+     * @param bool   $raw       get unencoded value
      *
      * @return mixed value of a data field
      */
-    public function getFieldData($fieldName)
+    public function getFieldData($fieldName, $raw = false)
     {
         $longFieldName = $this->_getFieldLongName($fieldName);
+        $method = $raw ? 'rawValue' : 'value';
 
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
+        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->$method : null;
+    }
+
+    /**
+     * Gets field data
+     *
+     * @param string $fieldName name (eg. 'oxtitle') of a data field to get
+     *
+     * @return mixed value of a data field
+     *
+     */
+    public function getRawFieldData($fieldName)
+    {
+        return $this->getFieldData($fieldName,true);
     }
 
     /**

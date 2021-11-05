@@ -356,12 +356,12 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//ul[@id='alsoBoughtThankyou']/li[1]");
         //fix it in future: mouseOver effect is not working after latest jQuery update. use mouse over when working solution will be find
         //$this->mouseOverAndClick("//ul[@id='alsoBoughtThankyou']/li[1]", "//ul[@id='alsoBoughtThankyou']/li[1]//a");
+        sleep(1);
+        $this->_getScreenShot();
+        $this->clickAndWait("//ul[@id='alsoBoughtThankyou']/li[1]//a", 60);
         $this->_getScreenShot();
         sleep(1);
-        $this->clickAndWait("//ul[@id='alsoBoughtThankyou']/li[1]//a");
-        $this->_getScreenShot();
-        sleep(1);
-        $this->waitForElementText("Test product 1 [EN] šÄßüл", "//h1", 1000);
+        $this->waitForElementText("Test product 1 [EN] šÄßüл", "//h1", 60);
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
 
         //turning Load "Customers who bought this product also purchased..." OFF

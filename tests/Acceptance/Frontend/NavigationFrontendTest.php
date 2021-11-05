@@ -10,7 +10,10 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 use oxDb;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
-/** Selenium tests for new layout. */
+/** Selenium tests for new layout.
+* @group amanova4
+* @group amanova2
+*/
 class NavigationFrontendTest extends FrontendTestCase
 {
     /**
@@ -934,6 +937,8 @@ class NavigationFrontendTest extends FrontendTestCase
      * Checking Performance options
      *
      * @group frontend
+     * @group amanova3
+     * @group amanova
      */
     public function testFrontendPerfOptions1()
     {

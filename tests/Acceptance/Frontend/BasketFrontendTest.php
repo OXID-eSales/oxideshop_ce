@@ -8,7 +8,10 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
-/** Tests related creating of orders in frontend. */
+/** Tests related creating of orders in frontend.
+ * @group amanova1
+ * @group amanova2
+ */
 class BasketFrontendTest extends FrontendTestCase
 {
     /**
@@ -314,6 +317,8 @@ class BasketFrontendTest extends FrontendTestCase
      * option: Load "Customers who bought this product also purchased..."
      *
      * @group basketfrontend
+     * @group amanova0
+     * @group amanova
      */
     public function testFrontendPerfOptionsAlsoBought()
     {

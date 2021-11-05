@@ -754,20 +754,16 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Gets field data
      *
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
-     * @param bool   $raw       get unencoded value
      *
      * @return mixed value of a data field
      */
-    public function getFieldData($fieldName, $raw = false)
+    public function getFieldData($fieldName)
     {
-        $longFieldName = $this->_getFieldLongName($fieldName);
-        $method = $raw ? 'rawValue' : 'value';
-
-        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->$method : null;
+        return ($field = $this->getFieldIfAvailable($fieldName)) ? $field->value : null;
     }
 
     /**
-     * Gets field data
+     * Gets raw field data
      *
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
      *
@@ -776,7 +772,14 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function getRawFieldData($fieldName)
     {
-        return $this->getFieldData($fieldName,true);
+        return ($field = $this->getFieldIfAvailable($fieldName)) ? $field->rawValue : null;
+    }
+
+    private function getFieldIfAvailable($fieldName): ?Field
+    {
+        $longFieldName = $this->_getFieldLongName($fieldName);
+
+        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName : null;
     }
 
     /**

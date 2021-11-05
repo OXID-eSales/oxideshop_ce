@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Field;
 use \oxObjectException;
 
 use Exception;
@@ -95,7 +96,7 @@ class _oxBase extends oxBase
      *
      * @return mixed
      */
-    public function setFieldData($sName, $sValue, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    public function setFieldData($sName, $sValue, $dataType = Field::T_TEXT)
     {
         return parent::_setFieldData($sName, $sValue, $dataType);
     }
@@ -1060,14 +1061,24 @@ class BaseTest extends \OxidTestCase
     /**
      * Test get field data.
      *
-     * @return null
+     * @dataProvider getFieldDataDataProvider
      */
-    public function testGetFieldData()
+    public function testGetFieldData($value, $type, $expected)
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
-        $oBase->oxactions__oxid = new oxField("oxstart", oxField::T_RAW);
-        $this->assertEquals("oxstart", $oBase->getFieldData("oxid"));
+        $oBase->oxactions__oxid = new Field($value, $type);
+        $this->assertEquals($expected, $oBase->getFieldData("oxid"));
+    }
+
+    public function getFieldDataDataProvider(): array
+    {
+        return [
+            ['oxstart', null, "oxstart"],
+            ['oxstart', Field::T_RAW, "oxstart"],
+            ['special<>chars', null, "special&lt;&gt;chars"],
+            ['special<>chars', Field::T_RAW, "special<>chars"],
+        ];
     }
 
     /**
@@ -1080,6 +1091,41 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $this->assertNull($oBase->getFieldData("oxid"));
+    }
+
+    /**
+     * Test get raw field data.
+     *
+     * @dataProvider getRawFieldDataDataProvider
+     */
+    public function testGetRawFieldData($value, $type, $expected)
+    {
+        $oBase = new _oxBase();
+        $oBase->init("oxactions");
+        $oBase->oxactions__oxid = new Field($value, $type);
+        $this->assertEquals($expected, $oBase->getRawFieldData("oxid"));
+    }
+
+    public function getRawFieldDataDataProvider(): array
+    {
+        return [
+            ['oxstart', null, "oxstart"],
+            ['oxstart', Field::T_RAW, "oxstart"],
+            ['special<>chars', null, "special<>chars"],
+            ['special<>chars', Field::T_RAW, "special<>chars"],
+        ];
+    }
+
+    /**
+     * Test get empty field data.
+     *
+     * @return null
+     */
+    public function testGetRawFieldDataEmpty()
+    {
+        $oBase = new _oxBase();
+        $oBase->init("oxactions");
+        $this->assertNull($oBase->getRawFieldData("oxid"));
     }
 
     /**

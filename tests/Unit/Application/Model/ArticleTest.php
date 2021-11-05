@@ -2805,13 +2805,16 @@ class ArticleTest extends \OxidTestCase
         // test variables
         $sCacheIndex = "test";
         $sCacheResult = "already cached";
+        $shopId = $this->getShopId();
 
         // setting the "cached" variables
         $reflectedArticles = new \ReflectionClass(\OxidEsales\EshopCommunity\Application\Model\Article::class);
         $property = $reflectedArticles->getProperty('_aCategoryCache');
         $property->setAccessible(true);
         $property->setValue('_aCategoryCache', [
-            $sCacheIndex => $sCacheResult
+            $shopId => [
+                $sCacheIndex => $sCacheResult
+            ]
         ]);
 
         // setting the used article ID

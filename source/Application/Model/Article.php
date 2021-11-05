@@ -1696,12 +1696,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getCategory()
     {
         $id = $this->getParentId();
-        if (!$id || $id === '') {
+        $shopId = $this->getShopId();
+        if (!$id) {
             $id = $this->getId();
         }
 
-        if (\array_key_exists($id, self::$_aCategoryCache)) {
-            return self::$_aCategoryCache[$id];
+        $this->initializeShopArticleCategoryCache($shopId);
+        if (\array_key_exists($id, self::$_aCategoryCache[$shopId])) {
+            return self::$_aCategoryCache[$shopId][$id];
         }
 
         startProfile('getCategory');
@@ -1732,16 +1734,23 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // add the category instance to cache
-        self::$_aCategoryCache[$id] = $category;
+        self::$_aCategoryCache[$shopId][$id] = $category;
         stopProfile('getCategory');
 
         return $category;
     }
 
+    private function initializeShopArticleCategoryCache($shopId): void
+    {
+        if (!\array_key_exists($shopId, self::$_aCategoryCache)) {
+            self::$_aCategoryCache[$shopId] = [];
+        }
+    }
+
     /**
      * Returns ID's of categories where this article is assigned
      *
-     * @param bool $blActCats   select categories if all parents are active
+     * @param bool $blActCats select categories if all parents are active
      * @param bool $blSkipCache Whether to skip cache
      *
      * @return array

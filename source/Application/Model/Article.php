@@ -1695,8 +1695,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getCategory()
     {
+        $shopId = Registry::getConfig()->getShopId();
         $id = $this->getParentId();
-        $shopId = $this->getShopId();
         if (!$id) {
             $id = $this->getId();
         }

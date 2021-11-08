@@ -442,6 +442,7 @@ class FunctionalityInAdminTest extends AdminTestCase
      * Service -> System Requirements
      *
      * @group adminFunctionality
+     * @group sieg
      */
     public function testSystemRequirements()
     {

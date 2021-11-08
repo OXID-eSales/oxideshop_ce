@@ -961,7 +961,8 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getAttribute("//a[@id='moreSubCat_1']@title"));
         $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"), -3));
 
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
+        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
+        $this->_getScreenShot();
 
         $this->addToBasket('1001', 1, 'user');
 

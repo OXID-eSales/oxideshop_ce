@@ -314,6 +314,7 @@ class BasketFrontendTest extends FrontendTestCase
      * option: Load "Customers who bought this product also purchased..."
      *
      * @group basketfrontend
+     * @group investigate_varnish
      */
     public function testFrontendPerfOptionsAlsoBought()
     {

@@ -934,6 +934,7 @@ class NavigationFrontendTest extends FrontendTestCase
      * Checking Performance options
      *
      * @group frontend
+     * @group investigate_varnish
      */
     public function testFrontendPerfOptions1()
     {

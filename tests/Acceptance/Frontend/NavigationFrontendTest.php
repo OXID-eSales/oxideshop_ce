@@ -966,19 +966,21 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->click("//ul[@id='topMenu']/li[1]/a");
         $this->waitForItemAppear("loginBox", 2, true);
         $this->_getScreenShot();
-        $html = $this->getHtmlSource();
-        Registry::getLogger()->error($html);
-
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
+        $this->type("//div[@id='loginBox']//input[@name='lgn_usr']", "example_test@oxid-esales.dev");
+        $this->type("//div[@id='loginBox']//input[@name='lgn_pwd']", "example_test@oxid-esales.dev");
+        $this->clickAndWait("//div[@id='loginBox']//button[@type='submit']");
         $this->_getScreenShot();
-        $html = $this->getHtmlSource();
-        Registry::getLogger()->error($html);
 
-        # if (!$this->isElementPresent("//a[@id='logoutLink']")) {
-        #     $this->type("loginUser", "example_test@oxid-esales.dev");
-        #     $this->type("loginPwd", "useruser");
-        #     $this->clickAndWait("loginButton");
-        # }
+      #  $this->loginInFrontend("example_test@oxid-esales.dev", "example_test@oxid-esales.dev", false);
+      #  $this->_getScreenShot();
+      #  $html = $this->getHtmlSource();
+      #  Registry::getLogger()->error($html);
+
+         if (!$this->isElementPresent("//a[@id='logoutLink']")) {
+             $this->type("loginEmail", "example_test@oxid-esales.dev");
+             $this->type("loginPassword", "useruser");
+             $this->clickAndWait("loginButton");
+         }
 
         $this->addToBasket('1001', 1, 'user');
 

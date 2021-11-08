@@ -1784,6 +1784,15 @@ class UtfTest extends \OxidTestCase
         $this->assertEquals($sBodyWillGet, $oEmail->getAltBody());
     }
 
+    public function testUserIDNMailaddressWithUnicodeLocalPArt()
+    {
+        $mail = oxNew('oxEmail');
+        $mail->setRecipient('müller@testuser.com', 'test user');
+
+        $recipient = $mail->getRecipient();
+        $this->assertEquals(['müller@testuser.com', 'test user'], $recipient[0]);
+    }
+
     public function testUserIDNMailaddress()
     {
         if (!function_exists('idn_to_ascii')) {
@@ -1791,9 +1800,9 @@ class UtfTest extends \OxidTestCase
         }
 
         $mail = oxNew('oxEmail');
-        $mail->setRecipient('müller@testuser.com', 'test user');
+        $mail->setRecipient('müller@testüser.com', 'test user');
 
         $recipient = $mail->getRecipient();
-        $this->assertNotEmpty($recipient);
+        $this->assertEquals(['müller@xn--testser-q2a.com', 'test user'], $recipient[0]);
     }
 }

@@ -362,6 +362,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Configuration option `deactivateSmartyForCmsContent` to prevent Smarty from processing content added via CMS
+- Method `OxidEsales\EshopCommunity\Core\Model\BaseModel::getRawFieldData()`
 
 ### Changed
 - Update `symfony/expression-language` component
@@ -370,6 +371,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
 - Fix admin login box position and sizing [PR-880](https://github.com/OXID-eSales/oxideshop_ce/pull/880)
+- Improve utf8 email handling [#0007275](https://bugs.oxid-esales.com/view.php?id=7275)
 
 ### Removed
 - Support for PHP 7.3

@@ -962,18 +962,23 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getAttribute("//a[@id='moreSubCat_1']@title"));
         $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"), -3));
 
+        $this->selectWindow(null);
+        $this->click("//ul[@id='topMenu']/li[1]/a");
+        $this->waitForItemAppear("loginBox", 2, true);
         $this->_getScreenShot();
+        $html = $this->getHtmlSource();
+        Registry::getLogger()->error($html);
+
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
         $this->_getScreenShot();
         $html = $this->getHtmlSource();
         Registry::getLogger()->error($html);
 
-        if (!$this->isElementPresent("//a[@id='logoutLink']")) {
-            $this->type("loginUser", "example_test@oxid-esales.dev");
-            $this->type("loginPwd", "useruser");
-            $this->clickAndWait("loginButton");
-        }
-        $this->_getScreenShot();
+        # if (!$this->isElementPresent("//a[@id='logoutLink']")) {
+        #     $this->type("loginUser", "example_test@oxid-esales.dev");
+        #     $this->type("loginPwd", "useruser");
+        #     $this->clickAndWait("loginButton");
+        # }
 
         $this->addToBasket('1001', 1, 'user');
 

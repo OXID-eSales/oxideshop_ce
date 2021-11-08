@@ -88,7 +88,7 @@ class LoginTest extends \OxidTestCase
     public function testLoginNotAdmin()
     {
         $this->expectException('oxException');
-        $this->expectExceptionMessage('LOGIN_ERROR');
+        $this->expectExceptionMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");

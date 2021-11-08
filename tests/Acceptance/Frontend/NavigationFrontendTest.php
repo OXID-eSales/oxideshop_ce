@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
 use oxDb;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Selenium tests for new layout. */
@@ -18,7 +19,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group main
      */
-    public function testFrontendCurrencies()
+    public function _testFrontendCurrencies()
     {
         $this->openShop();
 
@@ -72,7 +73,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendFooter()
+    public function _testFrontendFooter()
     {
         $this->openShop();
         $this->assertElementPresent("panel");
@@ -200,7 +201,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendNewsBox()
+    public function _testFrontendNewsBox()
     {
         $this->callShopSC(
             'oxConfig',
@@ -267,7 +268,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPromotionsNewestProducts()
+    public function _testFrontendPromotionsNewestProducts()
     {
         $this->openShop();
         //Just arrived!
@@ -308,7 +309,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPromotionsTopOfTheShop()
+    public function _testFrontendPromotionsTopOfTheShop()
     {
         $this->openShop();
         $this->assertElementPresent("topBox");
@@ -329,7 +330,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendTopMenu()
+    public function _testFrontendTopMenu()
     {
         $this->openShop(false, true);
         $this->assertTrue($this->isVisible("navigation"));
@@ -382,7 +383,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendCategoryFilters()
+    public function _testFrontendCategoryFilters()
     {
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл »");
@@ -431,7 +432,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendCategoryNavigation()
+    public function _testFrontendCategoryNavigation()
     {
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
@@ -497,7 +498,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendCategorySorting()
+    public function _testFrontendCategorySorting()
     {
         //sorting is enabled
         $this->clearCache();
@@ -531,7 +532,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPriceCategory()
+    public function _testFrontendPriceCategory()
     {
         $this->openShop();
         $this->clickAndWait("link=price [EN] šÄßüл");
@@ -569,7 +570,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendManufacturer()
+    public function _testFrontendManufacturer()
     {
         $this->openShop();
         $this->clickAndWait("//dl[@id='footerManufacturers']//a[text()='Manufacturer [EN] šÄßüл']");
@@ -603,7 +604,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendDistributors()
+    public function _testFrontendDistributors()
     {
         $this->openShop();
         $sShopId = oxSHOPID;
@@ -639,7 +640,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPagingAndNavigationManufacturers()
+    public function _testFrontendPagingAndNavigationManufacturers()
     {
         // Articles with ID's 1001 and 1002 have MultiDimensional variants so they shouldn't have the input[@name='aid']
         $this->clearCache();
@@ -710,7 +711,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPerfOptionsSelectionLists()
+    public function _testFrontendPerfOptionsSelectionLists()
     {
         $this->openShop();
         $this->searchFor("1001");
@@ -760,7 +761,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendContact()
+    public function _testFrontendContact()
     {
         //In admin Set option (Installed GDLib Version) if "value" => ""
         $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 2)));
@@ -808,7 +809,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendMessageWhenProductIsAddedToCart()
+    public function _testFrontendMessageWhenProductIsAddedToCart()
     {
         $this->openShop();
         $this->assertElementNotPresent("newItemMsg");
@@ -877,7 +878,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendCmsAsCategories()
+    public function _testFrontendCmsAsCategories()
     {
         //activating CMS pages as categories
         //TODO: Selenium refactor to remove SQL's executions
@@ -913,7 +914,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPromotionsCategories()
+    public function _testFrontendPromotionsCategories()
     {
         if (isSUBSHOP) {
             $this->markTestSkipped('This test case is only actual when SubShops are available.');
@@ -961,8 +962,11 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getAttribute("//a[@id='moreSubCat_1']@title"));
         $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"), -3));
 
+        $this->_getScreenShot();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
         $this->_getScreenShot();
+        $html = $this->getHtmlSource();
+        Registry::getLogger()->error($html);
 
         if (!$this->isElementPresent("//a[@id='logoutLink']")) {
             $this->type("loginUser", "example_test@oxid-esales.dev");
@@ -1026,7 +1030,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testFrontendPromotionsWeekSpecial()
+    public function _testFrontendPromotionsWeekSpecial()
     {
         if (isSUBSHOP) {
             $this->callShopSC("oxActions", "save", 'oxbargain', array('oxshopid' => oxSHOPID), null, 1);
@@ -1074,7 +1078,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testVariantsInLists()
+    public function _testVariantsInLists()
     {
         $this->openShop();
         $this->searchFor("3570 1002");
@@ -1137,7 +1141,7 @@ class NavigationFrontendTest extends FrontendTestCase
      *
      * @group frontend
      */
-    public function testCookieSettingsInFrontend()
+    public function _testCookieSettingsInFrontend()
     {
         // Check if cookie option is off
         $this->clearCache();

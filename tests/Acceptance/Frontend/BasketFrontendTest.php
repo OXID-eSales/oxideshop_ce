@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Tests related creating of orders in frontend. */
@@ -355,6 +356,11 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_getScreenShot();
         $this->clickAndWait("//ul[@id='alsoBoughtThankyou']/li[1]//a");
         $this->_getScreenShot();
+        $html = $this->getHtmlSource();
+        Registry::getLogger()->error($html);
+
+        $this->assertElementPresent("//h1[text()='%CUSTOMERS_ALSO_BOUGHT%:']");
+        $this->assertTextPresent("Test product 1 [EN] šÄßüл");
 
         //$this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
 

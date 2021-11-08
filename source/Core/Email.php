@@ -268,6 +268,9 @@ class Email extends PHPMailer
         $myConfig = Registry::getConfig();
 
         $this->setSmtp();
+        $this::$validator = function($email) {
+            return filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_FLAG_EMAIL_UNICODE) !== false;
+        };
 
         $this->setUseInlineImages($myConfig->getConfigParam('blInlineImgEmail'));
         $this->setMailWordWrap(100);
@@ -2160,7 +2163,8 @@ class Email extends PHPMailer
     private function idnToAscii($idn)
     {
         if (function_exists('idn_to_ascii')) {
-            return idn_to_ascii($idn);
+            $parts = explode('@', $idn);
+            return $parts[0] . '@' . idn_to_ascii($parts[1]);
         }
 
         return $idn;

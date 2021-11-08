@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
+- Fix static cache variable usage in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
+- Fix not initialized category case possible in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
 
 ### Removed
 
@@ -362,6 +364,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Configuration option `deactivateSmartyForCmsContent` to prevent Smarty from processing content added via CMS
+- Method `OxidEsales\EshopCommunity\Core\Model\BaseModel::getRawFieldData()`
 
 ### Changed
 - Update `symfony/expression-language` component
@@ -370,6 +373,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
 - Fix admin login box position and sizing [PR-880](https://github.com/OXID-eSales/oxideshop_ce/pull/880)
+- Improve utf8 email handling [#0007275](https://bugs.oxid-esales.com/view.php?id=7275)
 
 ### Removed
 - Support for PHP 7.3

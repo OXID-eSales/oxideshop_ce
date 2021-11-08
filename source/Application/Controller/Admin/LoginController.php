@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\ShopVersion;
 
@@ -119,15 +120,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
                 \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $iSubshop);
                 \OxidEsales\Eshop\Core\Registry::getConfig()->setShopId($iSubshop);
             }
-        } catch (UserException $oEx) {
-            $myUtilsView->addErrorToDisplay($oEx);
-            $oStr = getStr();
-            $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
-            $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
-            $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
-
-            return;
-        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
+        } catch (UserException|CookieException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));

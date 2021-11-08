@@ -964,6 +964,13 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
         $this->_getScreenShot();
 
+        if (!$this->isElementPresent("//a[@id='logoutLink']")) {
+            $this->type("loginUser", "example_test@oxid-esales.dev");
+            $this->type("loginPwd", "useruser");
+            $this->clickAndWait("loginButton");
+        }
+        $this->_getScreenShot();
+
         $this->addToBasket('1001', 1, 'user');
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");

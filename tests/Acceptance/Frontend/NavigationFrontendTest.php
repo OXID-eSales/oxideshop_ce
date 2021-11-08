@@ -14,6 +14,17 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 /** Selenium tests for new layout. */
 class NavigationFrontendTest extends FrontendTestCase
 {
+    protected $errorsInPage = array(
+        "Fatal error: " => "PHP Fatal error is in the page",
+        "Catchable fatal error: " => " Catchable fatal error is in the page",
+        "exception '" => "Uncaught exception is in the page",
+        "does not exist or is not accessible!" => "Warning about not existing function is in the page ",
+        "ERROR: Tran" => "Missing translation for constant (ERROR: Translation for...)",
+        "EXCEPTION_" => "Exception - component not found (EXCEPTION_)",
+        "oxException" => "Exception is in page",
+        "Smarty error:" => "Smarty error is in page"
+    );
+
     /**
      * switching currencies in frontend
      *

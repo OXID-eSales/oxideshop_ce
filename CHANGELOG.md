@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Core\Model\BaseModel` methods:
   - `assignRecord()`
   - `getRecordByQuery()`
-
+  
 ## [6.9.0] - 2021-07-27
 
 ### Added

@@ -755,8 +755,12 @@ $aLang = [
     // END deprecated
     'SETUP_CONFIGPERMISSIONS_WARNING'                => 'WICHTIG: Aus Sicherheitsgründen setzen Sie Ihre config.inc.php Datei auf read-only-Modus!',
     'LOGIN_TITLE'                                    => 'OXID eShop Login',
+    // @deprecated 6.10.0
     'LOGIN_ERROR'                                    => 'Fehler! Falscher Benutzername und/oder Passwort.',
     'LOGIN_NO_COOKIE_SUPPORT'                        => 'Fehler! Ihr Browser unterstützt keine Cookies.',
+    // END deprecated
+    'ERROR_MESSAGE_USER_NOVALIDLOGIN'                => 'Fehler! Falscher Benutzername und/oder Passwort.',
+    'ERROR_MESSAGE_COOKIE_NOCOOKIE'                  => 'Fehler! Ihr Browser unterstützt keine Cookies.',
     'LOGIN_LANGUAGE'                                 => 'Sprache',
     'LOGIN_PROFILE'                                  => 'Profil',
     'LOGIN_START'                                    => 'OXID eShop Admin starten',

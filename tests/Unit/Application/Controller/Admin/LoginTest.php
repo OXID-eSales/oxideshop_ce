@@ -286,13 +286,19 @@ class LoginTest extends \OxidTestCase
     }
 
     /**
-     * Testing login::checklogin()
+     * Testing login::checklogin() exception cases
      *
-     * @return null
+     * @dataProvider checkLoginExceptionDataProvider
      */
-    public function testCheckloginUserException()
+    public function testCheckloginException($exception)
     {
-        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxUserException(); }');
+        $userMock = $this->createPartialMock(User::class, ['login']);
+        $userMock->expects($this->once())->method('login')->willThrowException($exception);
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()::setClassInstance(User::class, $userMock);
+
+        $utilsViewMock = $this->createPartialMock(\OxidEsales\Eshop\Core\UtilsView::class, ['addErrorToDisplay']);
+        $utilsViewMock->expects($this->atLeastOnce())->method('addErrorToDisplay')->with($exception);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsView::class, $utilsViewMock);
 
         $this->setRequestParameter('user', '\'"<^%&*aaa>');
         $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
@@ -306,25 +312,12 @@ class LoginTest extends \OxidTestCase
         $this->assertNull($oView->checklogin());
     }
 
-    /**
-     * Testing login::checklogin()
-     *
-     * @return null
-     */
-    public function testCheckloginCookieException()
+    public function checkLoginExceptionDataProvider()
     {
-        oxTestModules::addFunction('oxuser', 'login', '{ throw new oxCookieException(); }');
-
-        $this->setRequestParameter('user', '\'"<^%&*aaa>');
-        $this->setRequestParameter('pwd', '<^%&*aaa>\'"');
-        $this->setRequestParameter('profile', '<^%&*aaa>\'"');
-        $this->setAdminMode(true);
-        $this->getSession()->setVariable("blIsAdmin", true);
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class, array("addTplParam"));
-        $oView->expects($this->at(0))->method('addTplParam')->with($this->equalTo("user"), $this->equalTo('&#039;&quot;&lt;^%&amp;*aaa&gt;'));
-        $oView->expects($this->at(1))->method('addTplParam')->with($this->equalTo("pwd"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
-        $oView->expects($this->at(2))->method('addTplParam')->with($this->equalTo("profile"), $this->equalTo('&lt;^%&amp;*aaa&gt;&#039;&quot;'));
-        $this->assertNull($oView->checklogin());
+        return [
+            [new \OxidEsales\Eshop\Core\Exception\UserException('Message1')],
+            [new \OxidEsales\Eshop\Core\Exception\CookieException('Message2')]
+        ];
     }
 
     /**

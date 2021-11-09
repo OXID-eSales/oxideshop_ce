@@ -14,16 +14,7 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 /** Selenium tests for new layout. */
 class NavigationFrontendTest extends FrontendTestCase
 {
-    protected $errorsInPage = array(
-        "Fatal error: " => "PHP Fatal error is in the page",
-        "Catchable fatal error: " => " Catchable fatal error is in the page",
-        "exception '" => "Uncaught exception is in the page",
-        "does not exist or is not accessible!" => "Warning about not existing function is in the page ",
-        "ERROR: Tran" => "Missing translation for constant (ERROR: Translation for...)",
-        "EXCEPTION_" => "Exception - component not found (EXCEPTION_)",
-        "oxException" => "Exception is in page",
-        "Smarty error:" => "Smarty error is in page"
-    );
+    protected $retryTimes = 0;
 
     /**
      * switching currencies in frontend
@@ -973,6 +964,12 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getAttribute("//a[@id='moreSubCat_1']@title"));
         $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"), -3));
 
+        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser", false);
+        $this->_getScreenShot();
+        sleep(3);
+        $this->_getScreenShot();
+
+        /*
         $this->selectWindow(null);
         $this->click("//ul[@id='topMenu']/li[1]/a");
         $this->waitForItemAppear("loginBox", 2, true);
@@ -981,18 +978,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->type("//div[@id='loginBox']//input[@name='lgn_pwd']", "useruser");
         $this->clickAndWait("//div[@id='loginBox']//button[@type='submit']");
         $this->_getScreenShot();
-
-      # $this->loginInFrontend("example_test@oxid-esales.dev", "example_test@oxid-esales.dev", false);
-      #  $this->_getScreenShot();
-      #  $html = $this->getHtmlSource();
-      #  Registry::getLogger()->error($html);
-
-         if (!$this->isElementPresent("//a[@id='logoutLink']")) {
-             $this->type("loginEmail", "example_test@oxid-esales.dev");
-             $this->type("loginPassword", "useruser");
-             $this->clickAndWait("loginButton");
-         }
-
+*/
         $this->addToBasket('1001', 1, 'user');
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");

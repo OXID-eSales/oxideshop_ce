@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Execution of `smarty_function_oxeval` will be prevented with `deactivateSmartyForCmsContent` switched on
 
 ### Fixed
+- Text message on `Payment Methods > RDFa` tab
+- Docblock and other coding style fixes:
+    - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
 - Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
 - Fix admin login box position and sizing [PR-880](https://github.com/OXID-eSales/oxideshop_ce/pull/880)
 - Improve utf8 email handling [#0007275](https://bugs.oxid-esales.com/view.php?id=7275)
@@ -27,13 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Core\Model\BaseModel` methods:
   - `assignRecord()`
   - `getRecordByQuery()`
-
-## [6.9.1] - Unreleased
-
-### Fixed
-- Text message on `Payment Methods > RDFa` tab
-- Docblock and other coding style fixes:
-    - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
 
 ## [6.9.0] - 2021-07-27
 
@@ -1117,7 +1113,6 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...b-6.4.x
-[6.9.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...b-6.3.x
 [6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
 [6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2

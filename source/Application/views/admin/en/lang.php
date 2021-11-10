@@ -755,8 +755,12 @@ $aLang = [
     // END deprecated
     'SETUP_CONFIGPERMISSIONS_WARNING'                => 'Due to security reasons put your config.inc.php file to read-only mode!',
     'LOGIN_TITLE'                                    => 'OXID eShop Login',
+    // @deprecated 6.10.0
     'LOGIN_ERROR'                                    => 'Error! Incorrect username and/or password!',
     'LOGIN_NO_COOKIE_SUPPORT'                        => 'Error! Your browser does not support cookies!',
+    // END deprecated
+    'ERROR_MESSAGE_USER_NOVALIDLOGIN'                => 'Error! Incorrect username and/or password!',
+    'ERROR_MESSAGE_COOKIE_NOCOOKIE'                  => 'Error! Your browser does not support cookies!',
     'LOGIN_LANGUAGE'                                 => 'Language',
     'LOGIN_PROFILE'                                  => 'Profile',
     'LOGIN_START'                                    => 'Start OXID eShop Admin',

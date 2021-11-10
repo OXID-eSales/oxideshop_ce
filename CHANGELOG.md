@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Configuration option `deactivateSmartyForCmsContent` to prevent Smarty from processing content added via CMS
 - Method `OxidEsales\EshopCommunity\Core\Model\BaseModel::getRawFieldData()`
+- Allows to throw own exception messages in admin login [PR-882](https://github.com/OXID-eSales/oxideshop_ce/pull/882)
 
 ### Changed
 - Update `symfony/expression-language` component

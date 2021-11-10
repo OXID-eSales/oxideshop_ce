@@ -13,6 +13,7 @@ class ProductListFrontendTest extends FlowThemeTestCase
 {
     /**
      * Product list. check category filter reset button functionality
+     * @group product_list
      */
     public function testCategoryFilterReset()
     {

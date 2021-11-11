@@ -19,7 +19,7 @@
         "symfony/dependency-injection": "^3.4.26",
         "symfony/config": "~3.3 || ~4.0",
         "symfony/yaml": "~3.4 || ~4.0",
-        "symfony/expression-language": "^4.4",
+        "symfony/expression-language": "^4.4.30",
         "symfony/lock": "^3.4",
         "symfony/console": "^v3.4.15",
         "webmozart/path-util": "^2.3",

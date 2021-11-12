@@ -2021,6 +2021,8 @@ class UBaseTest extends \OxidTestCase
         $oRes = new stdClass();
         $oRes->NrOfPages = null;
         $oRes->actPage = 1;
+        $oRes->previousPage = null;
+        $oRes->nextPage = null;
         $this->assertEquals($oRes, $oUBase->getPageNavigationLimitedBottom());
     }
 
@@ -2035,6 +2037,8 @@ class UBaseTest extends \OxidTestCase
         $oRes = new stdClass();
         $oRes->NrOfPages = null;
         $oRes->actPage = 1;
+        $oRes->previousPage = null;
+        $oRes->nextPage = null;
         $this->assertEquals($oRes, $oUBase->getPageNavigationLimitedTop());
     }
 

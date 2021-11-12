@@ -16,6 +16,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
      * TODO: bug in flow theme: #6979
      *
      * @group product
+     * @group product_list
      */
     public function testCompareInFrontend()
     {

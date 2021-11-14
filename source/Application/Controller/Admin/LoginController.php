@@ -124,7 +124,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         } catch (UserException|CookieException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));

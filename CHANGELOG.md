@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Text message on `Payment Methods > RDFa` tab
 - Docblock and other coding style fixes:
     - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
+    - [PR-885](https://github.com/OXID-eSales/oxideshop_ce/pull/885)
 - Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
 - Fix admin login box position and sizing [PR-880](https://github.com/OXID-eSales/oxideshop_ce/pull/880)
 - Improve utf8 email handling [#0007275](https://bugs.oxid-esales.com/view.php?id=7275)

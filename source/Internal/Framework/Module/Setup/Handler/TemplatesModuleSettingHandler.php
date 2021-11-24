@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ThemedTemplate;
 
 /**
  * @deprecated 6.6.0
@@ -40,7 +41,11 @@ class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterfa
             $templates = [];
 
             foreach ($configuration->getTemplates() as $template) {
-                $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+                if ($template instanceof ThemedTemplate) {
+                    $templates[$template->getTemplateTheme()][$template->getTemplateKey()] = $template->getTemplatePath();
+                } else {
+                    $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+                }
             }
 
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);

@@ -99,10 +99,19 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
-            foreach ($moduleData[MetaDataProvider::METADATA_TEMPLATES] as $templateKey => $templatePath) {
-                $moduleConfiguration->addTemplate(
-                    new Template($templateKey, $templatePath)
-                );
+            foreach ($moduleData[MetaDataProvider::METADATA_TEMPLATES] as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $themedTemplateKey => $themedTemplatePath) {
+                        $moduleConfiguration->addTemplate(
+                            new ModuleConfiguration\ThemedTemplate($themedTemplateKey, $themedTemplatePath, $key)
+                        );
+                    }
+                } else {
+                    $moduleConfiguration->addTemplate(
+                        new Template($key, $value)
+                    );
+                }
+
             }
         }
 

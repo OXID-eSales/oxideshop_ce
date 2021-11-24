@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
@@ -142,6 +145,32 @@ class ModuleTest extends TestCase
         $this->assertEquals(0, count(array_diff($expected, $actual)) + count(array_diff($actual, $expected)));
     }
 
+    public function testGetModuleDataWillReturnMetadataArray(): void
+    {
+        $moduleId = "with_everything";
+
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $moduleData = $module->getModuleData();
+
+        $metadata = $this->loadMetadataPhp($moduleId);
+        $this->assertEquals($metadata['id'], $moduleData['id']);
+        $this->assertEquals($metadata['title'], $moduleData['title']['en']);
+        $this->assertEquals($metadata['description'], $moduleData['description']['en']);
+        $this->assertEquals($metadata['thumbnail'], $moduleData['thumbnail']);
+        $this->assertEquals($metadata['version'], $moduleData['version']);
+        $this->assertEquals($metadata['author'], $moduleData['author']);
+
+        $this->assertEquals(array_values($metadata['extend']), array_values($moduleData['extend']));
+        $this->assertEquals($metadata['blocks'], $moduleData['blocks']);
+        $this->assertEquals($metadata['templates'], $moduleData['templates']);
+        $this->assertEquals($metadata['files'], $moduleData['files']);
+        $this->assertEquals($metadata['settings'], $moduleData['settings']);
+    }
+
     public function testGetPathsReturnsInstalledModulePaths()
     {
         $this->installModule('with_class_extensions');
@@ -156,6 +185,30 @@ class ModuleTest extends TestCase
                 'with_metadata_v21'     => $this->getModuleConfiguration('with_metadata_v21')->getPath(),
             ],
             $module->getModulePaths()
+        );
+    }
+
+    public function testHasMetadataReturnsTrue()
+    {
+        $moduleId = 'with_metadata_v21';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $this->assertTrue($module->hasMetadata());
+    }
+
+    public function testGetModuleIdByClassName()
+    {
+        $moduleId = 'with_class_extensions';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $this->assertEquals(
+            'with_class_extensions',
+            oxNew(Module::class)->getModuleIdByClassName("with_class_extensions/ModuleArticle")
         );
     }
 
@@ -186,27 +239,9 @@ class ModuleTest extends TestCase
         $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 
-    public function testHasMetadataReturnsTrue()
+    private function loadMetadataPhp(string $moduleId): array
     {
-        $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
-        $this->activateModule($moduleId);
-
-        $module = oxNew(Module::class);
-        $module->load($moduleId);
-
-        $this->assertTrue($module->hasMetadata());
-    }
-
-    public function testGetModuleIdByClassName()
-    {
-        $moduleId = 'with_class_extensions';
-        $this->installModule($moduleId);
-        $this->activateModule($moduleId);
-
-        $this->assertEquals(
-            'with_class_extensions',
-            oxNew(Module::class)->getModuleIdByClassName("with_class_extensions/ModuleArticle")
-        );
+        require __DIR__ . "/Fixtures/$moduleId/metadata.php";
+        return $aModule;
     }
 }

@@ -69,7 +69,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                 ->normalizeKeys(false)->scalarPrototype()->end()
                             ->end()
                             ->arrayNode(TemplatesDataMapper::MAPPING_KEY)
-                                ->normalizeKeys(false)->scalarPrototype()->end()
+                                ->normalizeKeys(false)->variablePrototype()->end()
                             ->end()
                             ->arrayNode(ControllersDataMapper::MAPPING_KEY)
                                 ->normalizeKeys(false)->scalarPrototype()->end()

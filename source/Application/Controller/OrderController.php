@@ -189,7 +189,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * user to special user group ( \OxidEsales\Eshop\Application\Model\User::onOrderExecute(); if this option is not
      * disabled in admin). Finally you will be redirected to next page (order::_getNextStep()).
      *
-     * @return string
+     * @return string|null
      */
     public function execute()
     {

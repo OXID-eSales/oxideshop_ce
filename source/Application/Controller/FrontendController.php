@@ -1359,9 +1359,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $params['recommid'] = Registry::getRequest()->getRequestEscapedParameter('recommid');
 
-        $params['searchrecomm'] = Registry::getRequest()->getRequestEscapedParameter('searchrecomm', true);
+        $params['searchrecomm'] = Registry::getRequest()->getRequestEscapedParameter('searchrecomm');
         // END deprecated
-        $params['searchparam'] = Registry::getRequest()->getRequestEscapedParameter('searchparam', true);
+        $params['searchparam'] = Registry::getRequest()->getRequestEscapedParameter('searchparam');
 
         $params['searchvendor'] = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
         $params['searchcnid'] = Registry::getRequest()->getRequestEscapedParameter('searchcnid');

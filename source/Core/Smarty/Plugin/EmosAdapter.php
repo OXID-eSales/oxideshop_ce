@@ -522,7 +522,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         $iPage = Registry::getRequest()->getRequestEscapedParameter('pgNr');
         if (!$iPage) {
-            $sSearchParamForLink = Registry::getRequest()->getRequestEscapedParameter('searchparam', true);
+            $sSearchParamForLink = Registry::getRequest()->getRequestEscapedParameter('searchparam');
             $iSearchCount = 0;
             if (($oSmarty->_tpl_vars['oView']) && $oSmarty->_tpl_vars['oView']->getArticleCount()) {
                 $iSearchCount = $oSmarty->_tpl_vars['oView']->getArticleCount();

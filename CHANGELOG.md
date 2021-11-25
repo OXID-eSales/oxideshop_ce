@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update `symfony/expression-language` component
 - Execution of `smarty_function_oxeval` will be prevented with `deactivateSmartyForCmsContent` switched on
+- Visibility of `OxidEsales\EshopCommunity\Core\Email::getRenderer` changed from private to protected [PR-846](https://github.com/OXID-eSales/oxideshop_ce/pull/846)
 
 ### Fixed
 - Text message on `Payment Methods > RDFa` tab

@@ -370,6 +370,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update `symfony/expression-language` component
 - Execution of `smarty_function_oxeval` will be prevented with `deactivateSmartyForCmsContent` switched on
+- Visibility of `OxidEsales\EshopCommunity\Core\Email::getRenderer` changed from private to protected [PR-846](https://github.com/OXID-eSales/oxideshop_ce/pull/846)
 
 ### Fixed
 - Text message on `Payment Methods > RDFa` tab
@@ -378,6 +379,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix db fetchmode in SeoEncoder::loadFromDb [PR-879](https://github.com/OXID-eSales/oxideshop_ce/pull/879)
 - Fix admin login box position and sizing [PR-880](https://github.com/OXID-eSales/oxideshop_ce/pull/880)
 - Improve utf8 email handling [#0007275](https://bugs.oxid-esales.com/view.php?id=7275)
+- Module configuration can't process theme-specific template extensions
 
 ### Removed
 - Support for PHP 7.3

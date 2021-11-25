@@ -142,6 +142,32 @@ class ModuleTest extends UnitTestCase
         $this->assertEquals(0, count(array_diff($expected, $actual)) + count(array_diff($actual, $expected)));
     }
 
+    public function testGetModuleDataWillReturnMetadataArray(): void
+    {
+        $moduleId = "with_everything";
+
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $moduleData = $module->getModuleData();
+
+        $metadata = $this->loadMetadataPhp($moduleId);
+        $this->assertEquals($metadata['id'], $moduleData['id']);
+        $this->assertEquals($metadata['title'], $moduleData['title']['en']);
+        $this->assertEquals($metadata['description'], $moduleData['description']['en']);
+        $this->assertEquals($metadata['thumbnail'], $moduleData['thumbnail']);
+        $this->assertEquals($metadata['version'], $moduleData['version']);
+        $this->assertEquals($metadata['author'], $moduleData['author']);
+
+        $this->assertEquals(array_values($metadata['extend']), array_values($moduleData['extend']));
+        $this->assertEquals($metadata['blocks'], $moduleData['blocks']);
+        $this->assertEquals($metadata['templates'], $moduleData['templates']);
+        $this->assertEquals($metadata['files'], $moduleData['files']);
+        $this->assertEquals($metadata['settings'], $moduleData['settings']);
+    }
+
     public function testGetPathsReturnsInstalledModulePaths()
     {
         $this->installModule('with_class_extensions');
@@ -157,26 +183,6 @@ class ModuleTest extends UnitTestCase
             ],
             $module->getModulePaths()
         );
-    }
-
-    private function installModule(string $id)
-    {
-        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
-
-        $this->container->get(ModuleInstallerInterface::class)
-            ->install($package);
-    }
-
-    private function activateModule(string $id)
-    {
-        $this->container->get(ModuleActivationBridgeInterface::class)
-            ->activate($id, 1);
-    }
-
-    private function getModuleConfiguration(string $moduleId)
-    {
-        return $this->container->get(ModuleConfigurationDaoBridgeInterface::class)
-            ->get($moduleId);
     }
 
     public function testHasMetadataReturnsTrue()
@@ -201,5 +207,31 @@ class ModuleTest extends UnitTestCase
             'with_class_extensions',
             oxNew(Module::class)->getModuleIdByClassName("with_class_extensions/ModuleArticle")
         );
+    }
+
+    private function installModule(string $id)
+    {
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
+
+        $this->container->get(ModuleInstallerInterface::class)
+            ->install($package);
+    }
+
+    private function activateModule(string $id)
+    {
+        $this->container->get(ModuleActivationBridgeInterface::class)
+            ->activate($id, 1);
+    }
+
+    private function getModuleConfiguration(string $moduleId)
+    {
+        return $this->container->get(ModuleConfigurationDaoBridgeInterface::class)
+            ->get($moduleId);
+    }
+
+    private function loadMetadataPhp(string $moduleId): array
+    {
+        require __DIR__ . "/Fixtures/$moduleId/metadata.php";
+        return $aModule;
     }
 }

@@ -750,7 +750,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // if user company name, user name and additional info has special chars
         $blShowShipAddressParameter = Registry::getRequest()->getRequestEscapedParameter('blshowshipaddress');
         $blShowShipAddressVariable = Registry::getSession()->getVariable('blshowshipaddress');
-        $sDeliveryAddressParameter = Registry::getRequest()->getRequestParameter('deladr', true);
+        $sDeliveryAddressParameter = Registry::getRequest()->getRequestParameter('deladr');
         $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : [];
         $aDelAdress = $aDeladr;
 

@@ -2057,10 +2057,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             }
         }
 
+        $pageNavigation->previousPage = null;
         if ($activePage > 0) {
             $pageNavigation->previousPage = $this->addPageNrParam($url, $activePage - 1);
         }
 
+        $pageNavigation->nextPage = null;
         if ($activePage < $pageNavigation->NrOfPages - 1) {
             $pageNavigation->nextPage = $this->addPageNrParam($url, $activePage + 1);
         }

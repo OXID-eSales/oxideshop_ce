@@ -1,16 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -42,6 +43,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ModuleActivationServiceTest extends TestCase
 {
+    use ContainerTrait;
+
     /**
      * @var ContainerInterface
      */
@@ -50,8 +53,6 @@ class ModuleActivationServiceTest extends TestCase
     private $testModuleId = 'testModuleId';
     private $databaseRestorer;
     private $testContainerFactory = null;
-
-    use ContainerTrait;
 
     public function setup(): void
     {
@@ -136,6 +137,23 @@ class ModuleActivationServiceTest extends TestCase
         $this->assertSame(
             [],
             $moduleClassExtensionChain->getValue()
+        );
+    }
+
+    public function testModuleWithThemedBlocksActivation(): void
+    {
+        $expected = 'flow_theme';
+        $moduleConfiguration = $this->getTestModuleConfiguration();
+        $this->persistModuleConfiguration($moduleConfiguration);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+
+        $blockExtension = $this->container->get(TemplateBlockExtensionDaoInterface::class)
+            ->getExtensions('testBlock', $this->shopId);
+        $this->assertSame(
+            $expected,
+            $blockExtension[0]->getThemeId()
         );
     }
 

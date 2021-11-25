@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ThemedTemplate;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
@@ -526,7 +527,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data = [];
 
         foreach ($moduleConfiguration->getTemplates() as $template) {
-            $data[$template->getTemplateKey()] = $template->getTemplatePath();
+            if ($template instanceof ThemedTemplate) {
+                $data[$template->getTemplateTheme()][$template->getTemplateKey()] = $template->getTemplatePath();
+            } else {
+                $data[$template->getTemplateKey()] = $template->getTemplatePath();
+            }
         }
 
         return $data;

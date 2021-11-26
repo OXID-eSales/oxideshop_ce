@@ -116,6 +116,12 @@ var oxid = {
             var oNavigation = top.document.getElementById("navigation");
             oNavigation.src = oNavigation.src + "&shp=" + sID;
         },
+        reloadHeader: function (shopId) {
+            var framesShopId = top.header.document.getElementById('shopfrontlink').dataset.shopId;
+            if (framesShopId !== shopId) {
+                top.document.getElementById("header").src += "&shp=" + shopId;
+            }
+        },
 
         changeLstrt : function () {
             var oSearch = top.basefrm.list.document.getElementById("search");

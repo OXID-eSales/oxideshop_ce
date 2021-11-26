@@ -5,14 +5,11 @@
     <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]nav.css">
     <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
-    <script language="javascript">
-
+    <script type="text/javascript">
         [{if $loadbasefrm}]
         //reloading main frame
         window.onload = function ()
         {
-            //
-            top.header.document.getElementById( "homelink" ).href = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=navigation&item=home.tpl";
             if ( '[{$listview}]' != '' ) {
                 top.basefrm.list.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$listview}]&oxid=[{$oViewConf->getActiveShopId()}]&actedit=[{$actedit}]";
                 top.basefrm.edit.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$editview}]&oxid=[{$oViewConf->getActiveShopId()}]";
@@ -21,33 +18,13 @@
             }
         }
         [{/if}]
-
-        [{if $oView->isMall()}]
-        // changes active shop
-        function selectShop( iShopId )
-        {
-            var oForm = document.getElementById( "search" );
-
-            if ( oForm.shp === undefined ) {
-                // inserting new form element
-                var oInputElement = document.createElement( 'input' );
-                oInputElement.setAttribute( 'name', 'shp' );
-                oInputElement.setAttribute( 'type', 'hidden' );
-                oInputElement.setAttribute( 'value', iShopId );
-                oForm.appendChild( oInputElement );
-            } else {
-                oForm.shp.value = iShopId;
-            }
-            oForm.submit();
-        }
-        [{/if}]
     </script>
 </head>
 <body>
     <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo.svg')}]" /></div>
     <table>
     <tr><td class="main">
-    [{include file="navigation_shopselect.tpl"}]
+    [{include file="include/navigation_shopselect.tpl"}]
     [{block name="admin_navigation_menustructure"}]
         [{assign var='mh' value=0}]
         [{foreach from=$menustructure item=menuholder}]

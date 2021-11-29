@@ -16,11 +16,9 @@ final class NavigationCest
     public function shopsStartPageButton(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('"Shop\'s start page" button');
-        $shopName = 'OXID eShop 6';
         $adminPanel = $I->loginAdmin();
-        $coreSettings = $adminPanel->openCoreSettings();
-        $coreSettings->selectShopInList($shopName);
+        $I->seeInCurrentUrl('admin');
         $adminPanel->openShopsStartPage();
-        $I->seeInCurrentUrl('startseite');
+        $I->dontSeeInCurrentUrl('admin');
     }
 }

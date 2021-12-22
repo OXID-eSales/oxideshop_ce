@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
+- Increase the size of OXCONTENT fields in oxcontents table [#0006831](https://bugs.oxid-esales.com/view.php?id=6831)
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
 - Fix static cache variable usage in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
 - Fix not initialized category case possible in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)

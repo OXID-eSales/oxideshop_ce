@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax;
+use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
@@ -160,9 +161,48 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $this->assertEquals(" $expected ", $query);
     }
 
+    public function testGetQueryColsWithDbViewsWillContainJustColumnName(): void
+    {
+        Registry::getConfig()->setConfigParam('blVariantsSelection', true);
+        Registry::getConfig()->setConfigParam('blSkipViewUsage', false);
+        $_POST['cmpid'] = $this->getContainerIdForUnassignedItemsList();
+        $this->switchToALanguageWithNonZeroTag();
+        $languageTag = Registry::getLang()->getLanguageTag();
+        $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
+        $columnName = "$view.oxvarselect";
+
+        $query = oxNew(DiscountItemAjax::class)->_getQueryCols();
+
+        $this->assertStringContainsString($columnName, $query);
+        $this->assertStringNotContainsString("$columnName$languageTag", $query);
+    }
+
+    public function testGetQueryColsWithNoDbViewsWillContainColumnNameAndLanguageTag(): void
+    {
+        Registry::getConfig()->setConfigParam('blVariantsSelection', true);
+        Registry::getConfig()->setConfigParam('blSkipViewUsage', true);
+        $_POST['cmpid'] = $this->getContainerIdForUnassignedItemsList();
+        $this->switchToALanguageWithNonZeroTag();
+        $languageTag = Registry::getLang()->getLanguageTag();
+        $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
+        $columnName = "$view.oxvarselect";
+
+        $query = oxNew(DiscountItemAjax::class)->_getQueryCols();
+
+        $this->assertStringContainsString("$columnName$languageTag", $query);
+    }
+
     private function getContainerIdForUnassignedItemsList(): string
     {
         /** @see DiscountItemAjax::$_aColumns */
         return 'container1';
+    }
+
+    private function switchToALanguageWithNonZeroTag(): void
+    {
+        $nonDefaultLanguageId = 1;
+        $language = oxNew(Language::class);
+        $language->setBaseLanguage($nonDefaultLanguageId);
+        Registry::set(Language::class, $language);
     }
 }

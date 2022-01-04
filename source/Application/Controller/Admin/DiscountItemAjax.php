@@ -155,7 +155,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     private function getQueryForVisibleColumns(): string
     {
         $query = '';
-        $languageSuffix = Registry::getLang()->getLanguageTag();
+        $languageSuffix = $this->getLanguageSuffix();
         $selectVariantsEnabled = Registry::getConfig()->getConfigParam('blVariantsSelection');
         foreach ($this->_getVisibleColNames() as $key => [$columnName, $tableName]) {
             $view = $this->_getViewName($tableName);
@@ -184,5 +184,12 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             $query .= ', ';
         }
         return $query ? rtrim($query, ', ') : $query;
+    }
+
+    private function getLanguageSuffix(): string
+    {
+        return Registry::getConfig()->getConfigParam('blSkipViewUsage')
+            ? Registry::getLang()->getLanguageTag()
+            : '';
     }
 }

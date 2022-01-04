@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages discount articles
@@ -142,42 +141,48 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oConfig = $this->getConfig();
-        $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();
+        $queryForIdColumns = $this->getQueryForIdentifierColumns();
 
-        $sQ = '';
-        $blSep = false;
-        $aVisiblecols = $this->_getVisibleColNames();
-        foreach ($aVisiblecols as $iCnt => $aCol) {
-            if ($blSep) {
-                $sQ .= ', ';
-            }
-            $sViewTable = $this->_getViewName($aCol[1]);
-            // multilanguage
+        return sprintf(
+            " %s%s%s ",
+            $this->getQueryForVisibleColumns(),
+            $queryForIdColumns ? ', ' : '',
+            $queryForIdColumns
+        );
+    }
 
-            $sCol = $aCol[0];
 
-            if ($oConfig->getConfigParam('blVariantsSelection') && $aCol[0] == 'oxtitle') {
-                $sVarSelect = "$sViewTable.oxvarselect" . $sLangTag;
-                $sQ .= " IF( $sViewTable.$sCol != '', $sViewTable.$sCol, CONCAT((select oxart.$sCol from $sViewTable as oxart where oxart.oxid = $sViewTable.oxparentid),', ',$sVarSelect)) as _" . $iCnt;
+    private function getQueryForVisibleColumns(): string
+    {
+        $query = '';
+        $languageSuffix = Registry::getLang()->getLanguageTag();
+        $selectVariantsEnabled = Registry::getConfig()->getConfigParam('blVariantsSelection');
+        foreach ($this->_getVisibleColNames() as $key => [$columnName, $tableName]) {
+            $view = $this->_getViewName($tableName);
+            if ($selectVariantsEnabled && $columnName === 'oxtitle') {
+                $query .= sprintf(
+                    ' IF( %s.%s != \'\', %1$s.%2$s, CONCAT((select oxart.%2$s from %1$s as oxart where oxart.oxid = %1$s.oxparentid),\', \',%1$s.oxvarselect%s)) as _%s',
+                    $view,
+                    $columnName,
+                    $languageSuffix,
+                    $key
+                );
             } else {
-                $sQ .= $sViewTable . '.' . $sCol . ' as _' . $iCnt;
+                $query .= "{$view}.{$columnName} as _{$key}";
             }
-
-            $blSep = true;
+            $query .= ', ';
         }
+        return $query ? rtrim($query, ', ') : $query;
+    }
 
-        $aIdentCols = $this->_getIdentColNames();
-        foreach ($aIdentCols as $iCnt => $aCol) {
-            if ($blSep) {
-                $sQ .= ', ';
-            }
-
-            // multilanguage
-            $sCol = $aCol[0];
-            $sQ .= $this->_getViewName($aCol[1]) . '.' . $sCol . ' as _' . $iCnt;
+    private function getQueryForIdentifierColumns(): string
+    {
+        $query = '';
+        foreach ($this->_getIdentColNames() as $key => [$columnName, $tableName]) {
+            $view = $this->_getViewName($tableName);
+            $query .= "{$view}.{$columnName} as _{$key}";
+            $query .= ', ';
         }
-
-        return " $sQ ";
+        return $query ? rtrim($query, ', ') : $query;
     }
 }

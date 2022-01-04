@@ -117,6 +117,33 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $this->assertEquals(" $expected ", $query);
     }
 
+    public function testGetQueryColsWithMultipleIdentifiers(): void
+    {
+        $columns = [
+            ['oxartnum', 'oxarticles', 0, 0, 1],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ];
+        $component = oxNew(DiscountItemAjax::class);
+        $component->setColumns($columns);
+        $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
+        $expected = sprintf(
+            '%1$s.oxtitle as _1, %1$s.oxean as _2, %1$s.oxmpn as _3, %1$s.oxprice as _4, %1$s.oxstock as _5, %1$s.oxartnum as _0, %1$s.oxid as _6',
+            $view,
+        );
+
+        $_POST['cmpid'] = $this->getContainerIdForUnassignedItemsList();
+        Registry::getConfig()->setConfigParam('blVariantsSelection', false);
+
+        $query = $component->_getQueryCols();
+
+        $this->assertEquals(" $expected ", $query);
+    }
+
     public function testGetQueryColsWithVariants(): void
     {
         $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');

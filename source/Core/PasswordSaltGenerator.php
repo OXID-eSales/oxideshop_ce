@@ -38,6 +38,8 @@ class PasswordSaltGenerator
      * than fallback to custom salt generator.
      *
      * @return string
+     * @deprecated use \OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface::getHexToken()
+     * to generate cryptographically-secure random hex strings
      */
     public function generate()
     {

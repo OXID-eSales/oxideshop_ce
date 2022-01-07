@@ -2840,22 +2840,7 @@ class UserTest extends \OxidTestCase
 
         $user->setUpdateKey();
 
-        $this->assertTrue(ctype_alnum($user->getFieldData('oxuser__oxupdatekey')));
-    }
-
-    public function testSetUpdateKeyWillSetUniqueValues(): void
-    {
-        $tokens = [];
-        $iterations = 3;
-        $user = oxNew(User::class);
-
-        for ($i = 0; $i < $iterations; $i++) {
-            $user->setUpdateKey();
-            $tokens[] = $user->getFieldData('oxuser__oxupdatekey');
-        }
-
-        $uniqueTokens = array_unique($tokens);
-        $this->assertCount(count($tokens), $uniqueTokens);
+        $this->assertTrue(ctype_xdigit($user->getFieldData('oxuser__oxupdatekey')));
     }
 
     /**

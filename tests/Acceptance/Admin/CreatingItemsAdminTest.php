@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -792,9 +793,9 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("create_delete coupon description_šÄßüл", $this->getValue("editval[oxvoucherseries__oxseriedescription]"));
         $this->assertEquals("2008-01-01 00:00:00", $this->getValue("editval[oxvoucherseries__oxbegindate]"));
         $this->assertEquals("2009-02-02 00:00:00", $this->getValue("editval[oxvoucherseries__oxenddate]"));
-        $this->assertEquals("10.00", $this->getValue("editval[oxvoucherseries__oxdiscount]"));
+        $this->assertEquivalent(10, $this->getValue("editval[oxvoucherseries__oxdiscount]"));
         $this->assertEquals("%", $this->getSelectedLabel("editval[oxvoucherseries__oxdiscounttype]"));
-        $this->assertEquals("100.00", $this->getValue("editval[oxvoucherseries__oxminimumvalue]"));
+        $this->assertEquivalent(100, $this->getValue("editval[oxvoucherseries__oxminimumvalue]"));
         $this->assertEquals("1", $this->getValue("editval[oxvoucherseries__oxallowsameseries]"));
         $this->assertEquals("1", $this->getValue("editval[oxvoucherseries__oxallowotherseries]"));
         $this->assertEquals("1", $this->getValue("editval[oxvoucherseries__oxallowuseanother]"));
@@ -813,9 +814,9 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("create_delete coupon description1", $this->getValue("editval[oxvoucherseries__oxseriedescription]"));
         $this->assertEquals("2008-01-01 22:22:22", $this->getValue("editval[oxvoucherseries__oxbegindate]"));
         $this->assertEquals("2008-09-09 03:03:03", $this->getValue("editval[oxvoucherseries__oxenddate]"));
-        $this->assertEquals("15.00", $this->getValue("editval[oxvoucherseries__oxdiscount]"));
+        $this->assertEquivalent(15, $this->getValue("editval[oxvoucherseries__oxdiscount]"));
         $this->assertEquals("0", $this->getSelectedIndex("editval[oxvoucherseries__oxdiscounttype]"));
-        $this->assertEquals("110.00", $this->getValue("editval[oxvoucherseries__oxminimumvalue]"));
+        $this->assertEquivalent(110, $this->getValue("editval[oxvoucherseries__oxminimumvalue]"));
         $this->assertEquals("1", $this->getValue("//input[@name='editval[oxvoucherseries__oxallowsameseries]']"));
         $this->assertEquals("1", $this->getValue("//input[@name='editval[oxvoucherseries__oxallowotherseries]']"));
         $this->assertEquals("1", $this->getValue("//input[@name='editval[oxvoucherseries__oxallowuseanother]']"));

@@ -211,6 +211,7 @@ class Database implements DatabaseInterface
     {
         $default = array(
             PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
+            PDO::ATTR_STRINGIFY_FETCHES => true,
         );
 
         // options defined in config override the default

@@ -28,4 +28,18 @@ abstract class AdminTestCase extends AcceptanceTestCase
     {
         $this->assertEquals($expectedText, $this->getText("//tr[@id='row.${row}']/td[${column}]"));
     }
+
+    /**
+     * Assert values are equal as strings with integers, ignore redundant (zero) decimal places.
+     * @param $check
+     * @param $value
+     * @return void
+     */
+    protected function assertEquivalent($check, $value): void
+    {
+        $this->assertEquals(
+            (string) $check,
+            str_replace('.00', '', (string) $value)
+        );
+    }
 }

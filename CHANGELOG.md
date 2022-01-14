@@ -4,10 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.11.0] - Unreleased
+
+### Added
+- PHP 8.1 support
+
 ## [6.10.2] - Unreleased
 
 ### Fixed
-- Error in coupon series during missconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
+- Error in coupon series during misconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
 - Error in multishop case, triggering return of wrong values from cookies [#0007306](https://bugs.oxid-esales.com/view.php?id=7306) [PR-888](https://github.com/OXID-eSales/oxideshop_ce/pull/888)
 - Extend default VAT check service response errors list [PR-889](https://github.com/OXID-eSales/oxideshop_ce/pull/889)
 

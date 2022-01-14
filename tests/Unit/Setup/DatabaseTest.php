@@ -1,8 +1,12 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use Exception;
@@ -14,11 +18,6 @@ use StdClass;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
-/**
- * Class TestSetupDatabase
- *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Setup
- */
 class TestSetupDatabase extends \OxidEsales\EshopCommunity\Setup\Database
 {
     protected $sessionMock = null;
@@ -89,7 +88,7 @@ class DatabaseTest extends \OxidTestCase
     {
         /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
-        $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->expects($this->once())->method("getConnection")->willReturn($this->createConnection());
 
         $result = $database->execSql("select 1 + 1")->fetch();
         $this->assertSame('2', $result[0]);
@@ -382,21 +381,25 @@ class DatabaseTest extends \OxidTestCase
         $database->writeAdminLoginData($loginName, $password);
     }
 
-    /**
-     * @return PDO
-     */
-    protected function createConnection()
+    protected function createConnection(): PDO
     {
         $config = $this->getConfig();
-        $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));
-        $pdo = new PDO(
+        $dsn = sprintf(
+            'mysql:dbname=%s;host=%s;port=%s',
+            $config->getConfigParam('dbName'),
+            $config->getConfigParam('dbHost'),
+            $config->getConfigParam('dbPort')
+        );
+
+        return new PDO(
             $dsn,
             $config->getConfigParam('dbUser'),
             $config->getConfigParam('dbPwd'),
-            array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                PDO::ATTR_STRINGIFY_FETCHES => true,
+            ]
         );
-
-        return $pdo;
     }
 
     /**

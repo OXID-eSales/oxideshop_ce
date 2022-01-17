@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - PHP 8.1 support
+- 
+- ### Changed
+- Updated Symfony components
 
 ## [6.10.2] - Unreleased
 

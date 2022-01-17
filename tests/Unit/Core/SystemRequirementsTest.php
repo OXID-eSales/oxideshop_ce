@@ -1,18 +1,21 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\SystemRequirements;
 use Psr\Container\ContainerInterface;
+use PHPUnit\Framework\MockObject\MockObject as Mock;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
     public function testGetBytes()
     {
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
 
         $this->assertEquals(33554432, $systemRequirements->UNITgetBytes('32M'));
         $this->assertEquals(32768, $systemRequirements->UNITgetBytes('32K'));
@@ -21,7 +24,7 @@ class SystemRequirementsTest extends \OxidTestCase
 
     public function testGetRequiredModules()
     {
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
 
         $requiredModules = $systemRequirements->getRequiredModules();
         $this->assertTrue(is_array($requiredModules));
@@ -32,8 +35,8 @@ class SystemRequirementsTest extends \OxidTestCase
 
     public function testGetModuleInfo()
     {
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('checkMbString', 'checkModRewrite'));
+        /** @var SystemRequirements|Mock $systemRequirementsMock */
+        $systemRequirementsMock = $this->getMock(SystemRequirements::class, array('checkMbString', 'checkModRewrite'));
 
         $systemRequirementsMock->expects($this->once())->method('checkMbString');
         $systemRequirementsMock->expects($this->never())->method('checkModRewrite');
@@ -68,65 +71,9 @@ class SystemRequirementsTest extends \OxidTestCase
         $this->assertEquals(0, $systemRequirementsMock->checkServerPermissions('nonExistentSourcePath'));
     }
 
-
-    /**
-     * Testing SystemRequirements::checkMysqlVersion()
-     *
-     * @dataProvider dataProviderTestCheckMysqlVersion
-     *
-     * @param string $version        MySQL version string
-     * @param int    $expectedResult The expected result. 0 means failed (red), 2 means passed (green)
-     *
-     * @return null
-     */
-    public function testCheckMysqlVersion($version, $expectedResult)
-    {
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
-
-        $this->assertEquals($expectedResult, $systemRequirements->checkMysqlVersion($version));
-    }
-
-    /**
-     * Data provider for testCheckMysqlVersion
-     *
-     * @return array
-     */
-    public function dataProviderTestCheckMysqlVersion()
-    {
-        return [
-            // version 5.5.* is allowed
-            [
-                'version'        => '5.5.0',
-                'expectedResult' => 2
-            ],
-            [
-                'version'        => '5.5.52-0ubuntu0.14.04.1',
-                'expectedResult' => 2
-            ],
-            // version 5.6.* is not allowed
-            [
-                'version'        => '5.6.0',
-                'expectedResult' => 1
-            ],
-            [
-                'version'        => '5.6.30-0ubuntu0.14.04.1',
-                'expectedResult' => 1
-            ],
-            // version 5.7.* is allowed
-            [
-                'version'        => '5.7.0',
-                'expectedResult' => 2
-            ],
-            [
-                'version'        => '5.7.12-1~exp1+deb.sury.org~trusty+1',
-                'expectedResult' => 2
-            ],
-        ];
-    }
-
     public function testCheckCollation()
     {
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
 
         $collations = $systemRequirements->checkCollation();
 
@@ -135,8 +82,8 @@ class SystemRequirementsTest extends \OxidTestCase
 
     public function testGetSysReqStatus()
     {
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('getSystemInfo'));
+        /** @var SystemRequirements|Mock $systemRequirementsMock */
+        $systemRequirementsMock = $this->getMock(SystemRequirements::class, array('getSystemInfo'));
         $systemRequirementsMock->expects($this->once())->method('getSystemInfo');
 
         $this->assertTrue($systemRequirementsMock->getSysReqStatus());
@@ -149,12 +96,13 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "https://oxidforge.org/en/system-requirements";
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $sUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
+        $systemRequirements = new SystemRequirements();
 
-        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#php", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#web-server", $systemRequirements->getReqInfoUrl("mod_rewrite"));
+        $this->assertEquals($sUrl . "#database", $systemRequirements->getReqInfoUrl("mysql_version"));
         $this->assertEquals($sUrl, $systemRequirements->getReqInfoUrl("none"));
-        $this->assertEquals($sUrl . "#Zend_Optimizer", $systemRequirements->getReqInfoUrl("zend_optimizer"));
     }
 
     /**
@@ -165,7 +113,7 @@ class SystemRequirementsTest extends \OxidTestCase
     public function testGetShopHostInfoFromConfig()
     {
         $this->getConfig()->setConfigParam('sShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
         $this->assertEquals(
             array(
                 'host' => 'www.testshopurl.lt',
@@ -215,7 +163,7 @@ class SystemRequirementsTest extends \OxidTestCase
     public function testGetShopSSLHostInfoFromConfig()
     {
         $this->getConfig()->setConfigParam('sSSLShopURL', 'http://www.testshopurl.lt/testsubdir1/insideit2/');
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
         $this->assertEquals(
             array(
                 'host' => 'www.testshopurl.lt',
@@ -269,7 +217,7 @@ class SystemRequirementsTest extends \OxidTestCase
         $_SERVER['SERVER_PORT'] = null;
         $_SERVER['HTTP_HOST'] = 'www.testshopurl.lt';
 
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
         $this->assertEquals(
             array(
                 'host' => 'www.testshopurl.lt',
@@ -395,7 +343,7 @@ class SystemRequirementsTest extends \OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|Mock $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_checkTemplateBlock', 'fetchBlockRecords'));
         $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
@@ -431,7 +379,7 @@ class SystemRequirementsTest extends \OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|Mock $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_checkTemplateBlock', 'fetchBlockRecords'));
         $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
@@ -443,32 +391,6 @@ class SystemRequirementsTest extends \OxidTestCase
             array(),
             $systemRequirementsMock->getMissingTemplateBlocks()
         );
-    }
-
-    public function providerCheckPhpVersion()
-    {
-        return array(
-            array('7.2.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('7.4.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.9.0', SystemRequirements::MODULE_STATUS_OK),
-            array('8.0.1', SystemRequirements::MODULE_STATUS_OK),
-            array('8.9.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
-        );
-    }
-
-    /**
-     * @param $sVersion
-     * @param $iResult
-     *
-     * @dataProvider providerCheckPhpVersion
-     */
-    public function testCheckPhpVersion($sVersion, $iResult)
-    {
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('getPhpVersion'));
-        $systemRequirementsMock->expects($this->once())->method('getPhpVersion')->will($this->returnValue($sVersion));
-
-        $this->assertSame($iResult, $systemRequirementsMock->checkPhpVersion());
     }
 
     /**
@@ -508,7 +430,7 @@ class SystemRequirementsTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
-        $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $systemRequirements = new SystemRequirements();
 
         $this->assertEquals($expectedResult, $systemRequirements->checkMemoryLimit($memoryLimit));
     }

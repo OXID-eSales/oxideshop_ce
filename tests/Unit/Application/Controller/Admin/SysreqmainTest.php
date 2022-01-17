@@ -40,23 +40,6 @@ class SysreqmainTest extends \OxidTestCase
         $this->assertEquals('fail', $oView->getModuleClass(0));
     }
 
-
-    /**
-     * sysreq_main::getReqInfoUrl test. #1744 case.
-     *
-     * @return null
-     */
-    public function testGetReqInfoUrl()
-    {
-        $sUrl = "https://oxidforge.org/en/system-requirements";
-
-        $oSubj = oxNew('sysreq_main');
-        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $oSubj->getReqInfoUrl("php_version", false));
-        $this->assertEquals($sUrl, $oSubj->getReqInfoUrl("none", false));
-        $this->assertEquals($sUrl . "#Zend_Optimizer", $oSubj->getReqInfoUrl("zend_optimizer", false));
-    }
-
-
     /**
      * base test
      *

@@ -361,6 +361,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [6.10.1] - Unreleased
+
+### Fixed
+- Updated doc links to latest release [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
+
 ## [6.10.0] - 2021-12-02
 
 ### Added
@@ -405,7 +410,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - SQL performance issue in oxDeliverySetList::_getFilterSelect [#0006247](https://bugs.oxid-esales.com/view.php?id=6247) [PR-865](https://github.com/OXID-eSales/oxideshop_ce/pull/865)
 - Fix css style of password type fields in admin [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-873](https://github.com/OXID-eSales/oxideshop_ce/pull/873)
 - Fix password checking script in admin module settings [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-874](https://github.com/OXID-eSales/oxideshop_ce/pull/874)
-- Fix moduleSettings existence requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
+- Fix moduleSettings existance requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
 - Fix cached delivery rules reuse [PR-869](https://github.com/OXID-eSales/oxideshop_ce/pull/869)
 
 ### Deprecated
@@ -1473,6 +1478,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v7.0.0-rc.1
+[6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...b-6.4.x
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.10.0
 [6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0

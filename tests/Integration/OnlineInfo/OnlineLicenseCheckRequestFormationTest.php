@@ -46,9 +46,7 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
     private string $licenseKeyExisting;
     private string $licenseKeyNew;
     private string $pVersion = '1.1';
-    private string $packageRevisionFile;
     private string $productId = 'eShop';
-    private string $revision = 'somerevisionstring';
     private string $serverId = 'server_id1';
     private string $serverIp = '127.0.0.1';
     private string $shopUrl;
@@ -85,7 +83,7 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $licenseCheck->validateShopSerials();
 
         $xml = $this->loadRequestLogXml();
-        $this->assertEquals(9, $xml->count());
+        $this->assertEquals(8, $xml->count());
         $this->assertEquals($this->documentName, $xml->getName());
         $this->assertEquals($this->pVersion, $xml->pVersion);
         $this->assertEquals($this->clusterId, $xml->clusterId);
@@ -93,7 +91,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $this->assertEquals($this->shopVersion, $xml->version);
         $this->assertEquals($this->shopUrl, $xml->shopUrl);
         $this->assertEquals($this->productId, $xml->productId);
-        $this->assertEquals($this->revision, $xml->revision);
         /** keys */
         $this->assertEquals(1, $xml->keys->children()->count());
         $this->assertEquals($this->licenseKeyExisting, $xml->keys->key);
@@ -135,7 +132,7 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $licenseCheck->validateNewSerial($this->licenseKeyNew);
 
         $xml = $this->loadRequestLogXml();
-        $this->assertEquals(9, $xml->count());
+        $this->assertEquals(8, $xml->count());
         $this->assertEquals($this->documentName, $xml->getName());
         $this->assertEquals($this->pVersion, $xml->pVersion);
         $this->assertEquals($this->clusterId, $xml->clusterId);
@@ -143,8 +140,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $this->assertEquals($this->shopVersion, $xml->version);
         $this->assertEquals($this->shopUrl, $xml->shopUrl);
         $this->assertEquals($this->productId, $xml->productId);
-        $this->assertEquals($this->revision, (string) $xml->revision);
-        $this->assertEquals($this->revision, $xml->revision);
         /** keys */
         $this->assertEquals(2, $xml->keys->children()->count());
         $this->assertEquals($this->licenseKeyExisting, $xml->keys->key[0]);
@@ -179,7 +174,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $shopPath = __DIR__ . DIRECTORY_SEPARATOR;
 
         $this->xmlLog = sprintf("%s/%s.xml", __DIR__, uniqid('request_log_', true));
-        $this->packageRevisionFile = "{$shopPath}pkg.rev";
         $this->licenseKeyExisting = uniqid('license-', true);
         $this->licenseKeyNew = uniqid('license-', true);
         $this->clusterId = uniqid('cluster-', true);
@@ -187,7 +181,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $this->shopVersion = ShopVersion::getVersion();
         $this->shopUrl = Registry::getConfig()->getShopUrl();
         $this->timestamp = Registry::getUtilsDate()->getTime();
-        $this->revision = Registry::getConfig()->getRevision() ?: '';
         $this->adminUserCount = $this->getTestConfig()->getShopEdition() === 'EE' ? 6 : 1;
 
         Registry::getConfig()->setConfigParam('aSerials', [$this->licenseKeyExisting]);
@@ -195,7 +188,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         Registry::getConfig()->setConfigParam('sShopDir', $shopPath);
 
         $this->setSeversDataConfiguration();
-        $this->addPackageRevisionFile();
     }
 
     private function setSeversDataConfiguration(): void
@@ -212,12 +204,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
                     'lastAdminUsage' => $this->timestamp,
                 ]
             );
-    }
-
-    private function addPackageRevisionFile(): void
-    {
-        $this->revision = uniqid('revision-', true);
-        file_put_contents($this->packageRevisionFile, $this->revision);
     }
 
     private function loadRequestLogXml(): \SimpleXMLElement
@@ -252,7 +238,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
-            $fileSystem->remove($this->packageRevisionFile);
         }
     }
 }

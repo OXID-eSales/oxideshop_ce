@@ -111,8 +111,7 @@ final class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 
     private function installModule(string $moduleId): void
     {
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/../Modules/TestData/modules/' . $moduleId);
-        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/../Modules/TestData/modules/' . $moduleId);
         $this->container->get(ModuleInstallerInterface::class)->install($package);
     }
 
@@ -131,7 +130,6 @@ final class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
     private function cleanUpTestData(): void
     {
         $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
         }

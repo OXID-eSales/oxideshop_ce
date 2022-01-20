@@ -1006,6 +1006,24 @@ YAHOO.oxid.aoc = function ( elContainer , aColumnDefs , sDataSource , oConfigs )
     };
 
     /**
+     * Cast numeric values to strings
+     * @param response
+     */
+    this.stringifyNumericResults = function (response) {
+        if (typeof response.results !== 'undefined' && Array.isArray(response.results)) {
+            response.results.forEach(function (row, index) {
+                if (typeof response.results[index] === "object") {
+                    Object.keys(response.results[index]).forEach(function (value) {
+                        if (typeof response.results[index][value] === 'number') {
+                            response.results[index][value] += '';
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    /**
      * All data columns which somes from server serialized in JSON style
      *
      * @return array
@@ -1121,6 +1139,7 @@ YAHOO.lang.extend(YAHOO.oxid.aoc, YAHOO.widget.DataTable);
  * @return null
  */
 YAHOO.oxid.aoc.prototype.onDataReturnSetRows = function ( sRequest, oResponse, oPayload ) {
+    this.stringifyNumericResults(oResponse);
      YAHOO.oxid.aoc.superclass.onDataReturnSetRows.call(this, sRequest, oResponse, oPayload);
     if ( this.blInitScrollBar == null ) {
         this.renderScrollBar();

@@ -72,9 +72,9 @@ class ModuleTemplateBlockRepositoryTest extends UnitTestCase
     public function providerBlocksCount()
     {
         return [
-            [$this->activeModuleId, $this->activeShopId, '5'],
-            ['no_existing_module', $this->activeShopId, '0'],
-            [$this->activeModuleId, 'not_active_shop_id', '0'],
+            [$this->activeModuleId, $this->activeShopId, 5],
+            ['no_existing_module', $this->activeShopId, 0],
+            [$this->activeModuleId, 'not_active_shop_id', 0],
         ];
     }
 
@@ -90,7 +90,7 @@ class ModuleTemplateBlockRepositoryTest extends UnitTestCase
         $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
         $actualBlocksCount = $templateBlockRepository->getBlocksCount([$moduleId], $shopId);
 
-        $this->assertSame($expectedBlocksCount, $actualBlocksCount);
+        $this->assertEquals($expectedBlocksCount, $actualBlocksCount);
     }
 
     public function providerGetModuleInformationForDefaultTheme()

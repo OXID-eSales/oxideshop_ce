@@ -522,7 +522,6 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
             'driverOptions' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''",
                 'testkey'                    => 'testvalue',
-                PDO::ATTR_STRINGIFY_FETCHES => true,
             ],
         );
         $this->assertEquals(

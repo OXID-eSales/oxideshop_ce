@@ -43,7 +43,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             $recipient->setFistName($this->decodeHtmlEntities($row['Firstname']));
             $recipient->setLastName($this->decodeHtmlEntities($row['Lastname']));
             $recipient->setEmail($row['Email']);
-            $recipient->setOtpInState($row['OptInState']);
+            $recipient->setOtpInState((string) $row['OptInState']);
             $recipient->setCountry($row['Country']);
             $recipient->setUserGroups($this->decodeHtmlEntities((string)$row['UserGroups']));
             $recipientList[] = $recipient;

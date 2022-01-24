@@ -8,8 +8,10 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\Article;
-use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -35,42 +37,6 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     protected $_sListType = 'oxarticlelist';
 
     /**
-     * @return bool|string
-     */
-    private function getServerDateTime()
-    {
-        $sDateTimeAsTimestamp = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-        $sDateTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBTimestamp($sDateTimeAsTimestamp);
-
-        return $sDateTime;
-    }
-
-    /**
-     * @param bool|string $sDateTime
-     * @param bool        $blUseTimeCheck
-     * @param Article     $oArticle
-     *
-     * @return bool
-     */
-    private function isArticleActive($sDateTime, $blUseTimeCheck, $oArticle)
-    {
-        if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
-            return true;
-        } else {
-            if (
-                !is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
-                isset($oArticle->oxarticles__oxactiveto) && $blUseTimeCheck &&
-                $oArticle->oxarticles__oxactivefrom->value <= $sDateTime &&
-                $oArticle->oxarticles__oxactiveto->value >= $sDateTime
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Collects articles base data and passes them according to filtering rules,
      * returns name of template file "article_list.tpl".
      *
@@ -78,70 +44,47 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     public function render()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sPwrSearchFld = Registry::getRequest()->getRequestEscapedParameter("pwrsearchfld");
-        $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
+        $listType = '';
+        $activeItemId = '';
+        $requestedCategory = Registry::getRequest()->getRequestEscapedParameter('art_category');
+        $requestedSearchField = Registry::getRequest()->getRequestEscapedParameter('pwrsearchfld');
+        $searchField = $requestedSearchField ? strtolower($requestedSearchField) : 'oxtitle';
 
-        $sDateTime = $this->getServerDateTime();
-        $blUseTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
-        $oArticle = null;
-        $oList = $this->getItemList();
-        if ($oList) {
-            foreach ($oList as $key => $oArticle) {
-                $sFieldName = "oxarticles__{$sPwrSearchFld}";
-
-                // formatting view
-                if (!$myConfig->getConfigParam('blSkipFormatConversion')) {
-                    if ($oArticle->$sFieldName->fldtype == "datetime") {
-                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oArticle->$sFieldName);
-                    } elseif ($oArticle->$sFieldName->fldtype == "timestamp") {
-                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($oArticle->$sFieldName);
-                    } elseif ($oArticle->$sFieldName->fldtype == "date") {
-                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oArticle->$sFieldName);
-                    }
-                }
-
-                $oArticle->showActiveCheckInAdminPanel = $this->isArticleActive($sDateTime, $blUseTimeCheck, $oArticle);
-                $oArticle->pwrsearchval = $oArticle->$sFieldName->value;
-                $oList[$key] = $oArticle;
-            }
+        $productList = $this->getItemList();
+        if ($productList && $productList->count()) {
+            $this->convertSearchFieldValueForProductsInList($productList, $searchField);
+            $this->setAdditionalSearchFieldForProductsInList($productList, $searchField);
+            $this->setIsActiveFieldForProductsInList($productList);
         }
 
         parent::render();
 
-        // load fields
-        if (!$oArticle && $oList) {
-            $oArticle = $oList->getBaseObject();
-        }
-        $this->_aViewData["pwrsearchfields"] = $oArticle ? $this->getSearchFields() : null;
-        $this->_aViewData["pwrsearchfld"] = strtoupper($sPwrSearchFld);
+        $this->_aViewData['pwrsearchfields'] = $productList->count() || $productList->getBaseObject()
+            ? $this->getSearchFields()
+            : null;
+        $this->_aViewData['pwrsearchfld'] = strtoupper($searchField);
 
-        $aFilter = $this->getListFilter();
-        if (isset($aFilter["oxarticles"][$sPwrSearchFld])) {
-            $this->_aViewData["pwrsearchinput"] = $aFilter["oxarticles"][$sPwrSearchFld];
+        $listFilter = $this->getListFilter();
+        if (isset($listFilter['oxarticles'][$searchField])) {
+            $this->_aViewData['pwrsearchinput'] = $listFilter['oxarticles'][$searchField];
         }
 
-        $sType = '';
-        $sValue = '';
-
-        $sArtCat = Registry::getRequest()->getRequestEscapedParameter("art_category");
-        if ($sArtCat && strstr($sArtCat, "@@") !== false) {
-            list($sType, $sValue) = explode("@@", $sArtCat);
+        if ($requestedCategory && strpos($requestedCategory, '@@') !== false) {
+            [$listType, $activeItemId] = explode('@@', $requestedCategory);
         }
-        $this->_aViewData["art_category"] = $sArtCat;
+        $this->_aViewData['art_category'] = $requestedCategory;
 
         // parent categorie tree
-        $this->_aViewData["cattree"] = $this->getCategoryList($sType, $sValue);
+        $this->_aViewData['cattree'] = $this->getCategoryList($listType, $activeItemId);
 
         // manufacturer list
-        $this->_aViewData["mnftree"] = $this->getManufacturerlist($sType, $sValue);
+        $this->_aViewData['mnftree'] = $this->getManufacturerlist($listType, $activeItemId);
 
         // vendor list
-        $this->_aViewData["vndtree"] = $this->getVendorList($sType, $sValue);
+        $this->_aViewData['vndtree'] = $this->getVendorList($listType, $activeItemId);
 
-        return "article_list.tpl";
+        return 'article_list.tpl';
     }
-
     /**
      * Returns array of fields which may be used for product data search
      *
@@ -309,5 +252,90 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         if ($sOxId && $oArticle->load($sOxId)) {
             parent::deleteEntry();
         }
+    }
+
+    private function convertSearchFieldValueForProductsInList(ListModel $productList, string $searchField): void
+    {
+        $fieldName = "oxarticles__{$searchField}";
+        if (
+            Registry::getConfig()->getConfigParam('blSkipFormatConversion')
+            || !$this->isDateField($this->getFieldTypeForCurrentProduct($productList, $fieldName))
+        ) {
+            return;
+        }
+        foreach ($productList as $key => $product) {
+            $this->convertValueToDatabaseTimestamp($product->$fieldName);
+            $productList[$key] = $product;
+        }
+    }
+
+    private function getFieldTypeForCurrentProduct(ListModel $productList, string $fieldName): string
+    {
+        $currentProduct = $productList->offsetGet($productList->key());
+        return $currentProduct->$fieldName->fldtype;
+    }
+
+    private function isDateField(string $fieldType): bool
+    {
+        return in_array(
+            $fieldType,
+            [
+                'date',
+                'datetime',
+                'timestamp',
+            ]
+        );
+    }
+
+    private function setAdditionalSearchFieldForProductsInList(ListModel $productList, string $searchField): void
+    {
+        $fieldName = "oxarticles__{$searchField}";
+        foreach ($productList as $key => $product) {
+            $product->pwrsearchval = $product->$fieldName->value;
+            $productList[$key] = $product;
+        }
+    }
+
+    private function setIsActiveFieldForProductsInList(ListModel $productList): void
+    {
+        $useTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
+        $now = $this->getCurrentTimeAsDatabaseTimestamp();
+        foreach ($productList as $key => $product) {
+            $isActiveProduct = $this->isProductAlwaysActive($product)
+                || ($useTimeCheck && $this->isProductActiveNow($product, $now));
+            $product->showActiveCheckInAdminPanel = $isActiveProduct;
+            $productList[$key] = $product;
+        }
+    }
+
+    private function getCurrentTimeAsDatabaseTimestamp(): string
+    {
+        return Registry::getUtilsDate()->formatDBTimestamp(
+            Registry::getUtilsDate()->getTime()
+        );
+    }
+
+    private function convertValueToDatabaseTimestamp(Field $field): void
+    {
+        if ($field->fldtype === 'datetime') {
+            Registry::getUtilsDate()->convertDBDateTime($field);
+        } elseif ($field->fldtype === 'timestamp') {
+            Registry::getUtilsDate()->convertDBTimestamp($field);
+        } elseif ($field->fldtype === 'date') {
+            Registry::getUtilsDate()->convertDBDate($field);
+        }
+    }
+
+    private function isProductAlwaysActive(Article $product): bool
+    {
+        return !empty($product->oxarticles__oxactive->value);
+    }
+
+    private function isProductActiveNow(Article $product, string $now): bool
+    {
+        return !empty($product->oxarticles__oxactivefrom->value)
+            && !empty($product->oxarticles__oxactiveto->value)
+            && $product->oxarticles__oxactivefrom->value <= $now
+            && $product->oxarticles__oxactiveto->value >= $now;
     }
 }

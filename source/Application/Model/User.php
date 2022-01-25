@@ -2002,21 +2002,15 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Generates or resets and saves users update key
      *
-     * @param bool $blReset marker to reset update info
+     * @param bool $reset marker to reset update info
      */
-    public function setUpdateKey($blReset = false)
+    public function setUpdateKey($reset = false)
     {
-        $utilsObject = $this->getUtilsObjectInstance();
-        $sUpKey = $blReset ? '' : $utilsObject->generateUId();
-        $iUpTime = $blReset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
+        $token = $reset ? '' : $this->getRandomToken();
+        $tokenExpirationTime = $reset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
 
-        // generating key
-        $this->oxuser__oxupdatekey = new \OxidEsales\Eshop\Core\Field($sUpKey, Field::T_RAW);
-
-        // setting expiration time for 6 hours
-        $this->oxuser__oxupdateexp = new \OxidEsales\Eshop\Core\Field($iUpTime, Field::T_RAW);
-
-        // saving
+        $this->oxuser__oxupdatekey = new Field($token, Field::T_RAW);
+        $this->oxuser__oxupdateexp = new Field($tokenExpirationTime, Field::T_RAW);
         $this->save();
     }
 
@@ -2812,4 +2806,27 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $query;
     }
+
+    private function getRandomToken(): string
+    {
+        /** Token generation logic will move to a service in the next minor release */
+        $tokenLength = 32;
+        $token = '';
+        while (\strlen($token) < $tokenLength) {
+            $token .= $this->getRandomAlphanumericString($tokenLength);
+        }
+
+        return \substr($token, 0, $tokenLength);
+    }
+
+    private function getRandomAlphanumericString(int $length): string
+    {
+        $nonAlphaNumericCharactersInBase64 = ['+', '/', '='];
+        $base64String = \base64_encode(
+            \random_bytes($length)
+        );
+
+        return \str_replace($nonAlphaNumericCharactersInBase64, '', $base64String);
+    }
+
 }

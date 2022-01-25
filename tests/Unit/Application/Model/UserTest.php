@@ -1,11 +1,16 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use Exception;
+use oxDb;
 use oxEmailHelper;
+use oxField;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Rating;
@@ -18,18 +23,14 @@ use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
-use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use \oxnewssubscribed;
+use oxInputException;
+use oxnewssubscribed;
+use oxRegistry;
+use oxTestModules;
 use oxUser;
-use \oxUtilsServer;
-use \oxField;
-use \oxInputException;
-use \Exception;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxUtilsServer;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -128,11 +129,6 @@ class UserTest extends \OxidTestCase
                                           'kkname'   => 'Test Name',
                                           'kkpruef'  => '123456');
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $oUser = oxNew('oxUser');
@@ -537,23 +533,6 @@ class UserTest extends \OxidTestCase
         $oUser->oxuser__oxupdatekey = new oxfield('zzz');
 
         $this->assertEquals(md5('xxx' . 'yyy' . 'zzz'), $oUser->getUpdateId());
-    }
-
-    public function testSetUpdateKey()
-    {
-        $iCurrTime = time();
-
-        $utilsObjectInstanceMock = $this->getMock(UtilsObject::class, array('generateUID'));
-        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
-        $this->setTime($iCurrTime);
-
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('save', 'getUtilsObjectInstance'));
-        $oUser->expects($this->once())->method('save');
-        $oUser->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
-        $oUser->setUpdateKey();
-
-        $this->assertEquals('xxx', $oUser->oxuser__oxupdatekey->value);
-        $this->assertEquals(($iCurrTime + 3600 * 6), $oUser->oxuser__oxupdateexp->value);
     }
 
     public function testReSetUpdateKey()
@@ -2853,6 +2832,32 @@ class UserTest extends \OxidTestCase
         $user = $this->createUser();
 
         $this->assertFalse($user->isMallAdmin());
+    }
+
+    /** Token generation logic will move to a service in the next minor release */
+    public function testSetUpdateKeyWillContainOnlyExpectedCharacters(): void
+    {
+        $user = oxNew(User::class);
+
+        $user->setUpdateKey();
+
+        $this->assertTrue(ctype_alnum($user->oxuser__oxupdatekey->value));
+    }
+
+    /** Token generation logic will move to a service in the next minor release */
+    public function testGenerateAlphanumericTokenReturnsUniqueValues(): void
+    {
+        $tokens = [];
+        $iterations = 3;
+        $user = oxNew(User::class);
+
+        for ($i = 0; $i < $iterations; $i++) {
+            $user->setUpdateKey();
+            $tokens[] = $user->oxuser__oxupdatekey->value;
+        }
+
+        $uniqueTokens = array_unique($tokens);
+        $this->assertCount(count($tokens), $uniqueTokens);
     }
 
     /**

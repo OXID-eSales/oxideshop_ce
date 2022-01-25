@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Updated doc links to the latest release [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
 - Selection window to add an item to a discount is empty [#0007204](https://bugs.oxid-esales.com/view.php?id=7204)
+- Improved reset password token generation algorithm [#0006394](https://bugs.oxid-esales.com/view.php?id=6394)
 
 ## [6.10.0] - 2021-12-02
 

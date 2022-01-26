@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.10.1] - Unreleased
 
 ### Fixed
-- Updated doc links to latest release [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
+- Updated doc links to the latest release [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
+- Selection window to add an item to a discount is empty [#0007204](https://bugs.oxid-esales.com/view.php?id=7204)
 
 ## [6.10.0] - 2021-12-02
 
@@ -53,7 +54,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - SQL performance issue in oxDeliverySetList::_getFilterSelect [#0006247](https://bugs.oxid-esales.com/view.php?id=6247) [PR-865](https://github.com/OXID-eSales/oxideshop_ce/pull/865)
 - Fix css style of password type fields in admin [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-873](https://github.com/OXID-eSales/oxideshop_ce/pull/873)
 - Fix password checking script in admin module settings [#0007249](https://bugs.oxid-esales.com/view.php?id=7249) [PR-874](https://github.com/OXID-eSales/oxideshop_ce/pull/874)
-- Fix moduleSettings existance requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
+- Fix moduleSettings existence requirement in environment file [#0007241](https://bugs.oxid-esales.com/view.php?id=7241) [PR-868](https://github.com/OXID-eSales/oxideshop_ce/pull/868)
 - Fix cached delivery rules reuse [PR-869](https://github.com/OXID-eSales/oxideshop_ce/pull/869)
 
 ### Deprecated

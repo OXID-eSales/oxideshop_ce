@@ -12,10 +12,13 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker;
+use OxidEsales\Eshop\Core\PasswordSaltGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use oxpasswordhasher;
 use oxsha512hasher;
+use Psr\Log\LoggerInterface;
 
 /**
  * User manager.
@@ -2812,21 +2815,42 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** Token generation logic will move to a service in the next minor release */
         $tokenLength = 32;
         $token = '';
+        $useFallback = $this->useFallbackSourceOfRandomness($tokenLength);
         while (\strlen($token) < $tokenLength) {
-            $token .= $this->getRandomAlphanumericString($tokenLength);
+            $randomValue = $useFallback
+                ? $this->useRandomBytesFallbacks()
+                : $this->useRandomBytes($tokenLength);
+            $token .= $randomValue;
         }
 
         return \substr($token, 0, $tokenLength);
     }
 
-    private function getRandomAlphanumericString(int $length): string
+    private function useFallbackSourceOfRandomness(int $length): bool
     {
-        $nonAlphaNumericCharactersInBase64 = ['+', '/', '='];
-        $base64String = \base64_encode(
-            \random_bytes($length)
-        );
-
-        return \str_replace($nonAlphaNumericCharactersInBase64, '', $base64String);
+        try {
+            return !\random_bytes($length);
+        } catch (\Exception $exception) {
+            $this->getContainer()->get(LoggerInterface::class)->warning(
+                "No appropriate source of randomness was found! Please re-configure your system to enable generation of cryptographically secure values.\n{$exception}"
+            );
+            return true;
+        }
     }
 
+    private function useRandomBytes(int $tokenLength): string
+    {
+        return \bin2hex(
+            \random_bytes($tokenLength)
+        );
+    }
+
+    private function useRandomBytesFallbacks(): string
+    {
+        return oxNew(
+            PasswordSaltGenerator::class,
+            oxNew(OpenSSLFunctionalityChecker::class)
+        )
+            ->generate();
+    }
 }

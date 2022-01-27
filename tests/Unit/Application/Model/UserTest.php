@@ -2834,18 +2834,16 @@ class UserTest extends \OxidTestCase
         $this->assertFalse($user->isMallAdmin());
     }
 
-    /** Token generation logic will move to a service in the next minor release */
-    public function testSetUpdateKeyWillContainOnlyExpectedCharacters(): void
+    public function testSetUpdateKeyWillSetOnlyExpectedCharacters(): void
     {
         $user = oxNew(User::class);
 
         $user->setUpdateKey();
 
-        $this->assertTrue(ctype_alnum($user->oxuser__oxupdatekey->value));
+        $this->assertTrue(ctype_alnum($user->getFieldData('oxuser__oxupdatekey')));
     }
 
-    /** Token generation logic will move to a service in the next minor release */
-    public function testGenerateAlphanumericTokenReturnsUniqueValues(): void
+    public function testSetUpdateKeyWillSetUniqueValues(): void
     {
         $tokens = [];
         $iterations = 3;
@@ -2853,7 +2851,7 @@ class UserTest extends \OxidTestCase
 
         for ($i = 0; $i < $iterations; $i++) {
             $user->setUpdateKey();
-            $tokens[] = $user->oxuser__oxupdatekey->value;
+            $tokens[] = $user->getFieldData('oxuser__oxupdatekey');
         }
 
         $uniqueTokens = array_unique($tokens);

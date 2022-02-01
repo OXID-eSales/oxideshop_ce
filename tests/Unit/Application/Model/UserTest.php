@@ -7,7 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use Exception;
+use oxDb;
 use oxEmailHelper;
+use oxField;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Rating;
@@ -22,19 +25,15 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
-use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
-use \oxnewssubscribed;
+use oxInputException;
+use oxnewssubscribed;
+use oxRegistry;
+use oxTestModules;
 use oxUser;
-use \oxUtilsServer;
-use \oxField;
-use \oxInputException;
-use \Exception;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxUtilsServer;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -526,26 +525,6 @@ class UserTest extends \OxidTestCase
         $oUser->oxuser__oxupdatekey = new oxfield('zzz');
 
         $this->assertEquals(md5('xxx' . 'yyy' . 'zzz'), $oUser->getUpdateId());
-    }
-
-    public function testSetUpdateKey()
-    {
-        $iCurrTime = time();
-
-        $utilsObjectInstanceMock = $this->getMockBuilder(UtilsObject::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['generateUID'])
-            ->getMock();
-        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
-        $this->setTime($iCurrTime);
-
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('save', 'getUtilsObjectInstance'));
-        $oUser->expects($this->once())->method('save');
-        $oUser->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
-        $oUser->setUpdateKey();
-
-        $this->assertEquals('xxx', $oUser->oxuser__oxupdatekey->value);
-        $this->assertEquals(($iCurrTime + 3600 * 6), $oUser->oxuser__oxupdateexp->value);
     }
 
     public function testReSetUpdateKey()
@@ -2834,6 +2813,30 @@ class UserTest extends \OxidTestCase
         $user = $this->createUser();
 
         $this->assertFalse($user->isMallAdmin());
+    }
+
+    public function testSetUpdateKeyWillSetOnlyExpectedCharacters(): void
+    {
+        $user = oxNew(User::class);
+
+        $user->setUpdateKey();
+
+        $this->assertTrue(ctype_alnum($user->getFieldData('oxuser__oxupdatekey')));
+    }
+
+    public function testSetUpdateKeyWillSetUniqueValues(): void
+    {
+        $tokens = [];
+        $iterations = 3;
+        $user = oxNew(User::class);
+
+        for ($i = 0; $i < $iterations; $i++) {
+            $user->setUpdateKey();
+            $tokens[] = $user->getFieldData('oxuser__oxupdatekey');
+        }
+
+        $uniqueTokens = array_unique($tokens);
+        $this->assertCount(count($tokens), $uniqueTokens);
     }
 
     /**

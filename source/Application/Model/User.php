@@ -14,9 +14,12 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
+use OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker;
+use OxidEsales\Eshop\Core\PasswordSaltGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * User manager.
@@ -1909,21 +1912,15 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Generates or resets and saves users update key
      *
-     * @param bool $blReset marker to reset update info
+     * @param bool $reset marker to reset update info
      */
-    public function setUpdateKey($blReset = false)
+    public function setUpdateKey($reset = false)
     {
-        $utilsObject = $this->getUtilsObjectInstance();
-        $sUpKey = $blReset ? '' : $utilsObject->generateUId();
-        $iUpTime = $blReset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
+        $token = $reset ? '' : $this->getRandomToken();
+        $tokenExpirationTime = $reset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
 
-        // generating key
-        $this->oxuser__oxupdatekey = new \OxidEsales\Eshop\Core\Field($sUpKey, Field::T_RAW);
-
-        // setting expiration time for 6 hours
-        $this->oxuser__oxupdateexp = new \OxidEsales\Eshop\Core\Field($iUpTime, Field::T_RAW);
-
-        // saving
+        $this->oxuser__oxupdatekey = new Field($token, Field::T_RAW);
+        $this->oxuser__oxupdateexp = new Field($tokenExpirationTime, Field::T_RAW);
         $this->save();
     }
 
@@ -2712,5 +2709,49 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                  . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($user);
 
         return $query;
+    }
+
+    private function getRandomToken(): string
+    {
+        /** Token generation logic will move to a service in the next minor release */
+        $tokenLength = 32;
+        $token = '';
+        $useFallback = $this->useFallbackSourceOfRandomness($tokenLength);
+        while (\strlen($token) < $tokenLength) {
+            $randomValue = $useFallback
+                ? $this->useRandomBytesFallbacks()
+                : $this->useRandomBytes($tokenLength);
+            $token .= $randomValue;
+        }
+
+        return \substr($token, 0, $tokenLength);
+    }
+
+    private function useFallbackSourceOfRandomness(int $length): bool
+    {
+        try {
+            return !\random_bytes($length);
+        } catch (\Exception $exception) {
+            $this->getContainer()->get(LoggerInterface::class)->warning(
+                "No appropriate source of randomness was found! Please re-configure your system to enable generation of cryptographically secure values.\n{$exception}"
+            );
+            return true;
+        }
+    }
+
+    private function useRandomBytes(int $tokenLength): string
+    {
+        return \bin2hex(
+            \random_bytes($tokenLength)
+        );
+    }
+
+    private function useRandomBytesFallbacks(): string
+    {
+        return oxNew(
+            PasswordSaltGenerator::class,
+            oxNew(OpenSSLFunctionalityChecker::class)
+        )
+            ->generate();
     }
 }

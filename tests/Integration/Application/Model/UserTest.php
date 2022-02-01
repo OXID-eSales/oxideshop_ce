@@ -5,19 +5,21 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
-use OxidEsales\Eshop\Core\Exception\UserException;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-/**
- * Class UserTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Application\Model
- *
- * @covers  \OxidEsales\EshopCommunity\Application\Model\User
- */
-class UserTest extends \OxidEsales\TestingLibrary\UnitTestCase
+final class UserTest extends UnitTestCase
 {
+    protected function tearDown(): void
+    {
+        $this->_getDbRestore()->restoreTable('oxuser');
+
+        parent::tearDown();
+    }
 
     /**
      * Test, that during the deletion of a user all user data is deleted due to transaction commit.
@@ -71,6 +73,37 @@ class UserTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $userId,
             $addressId
         );
+    }
+
+    public function testSetUpdateKeyWillPersistResetPasswordToken(): void
+    {
+        $userId = uniqid('user', true);
+        $user = oxNew(User::class);
+        $user->setId($userId);
+        $this->assertEmpty($user->getFieldData('oxuser__oxupdatekey'));
+
+        $user->setUpdateKey();
+
+        $user = oxNew(User::class);
+        $user->load($userId);
+        $token = $user->getFieldData('oxuser__oxupdatekey');
+        $this->assertEquals(32, strlen($token));
+    }
+
+    public function testSetUpdateKeyWillPersistExpectedPasswordTokenExpirationTime(): void
+    {
+        $userId = uniqid('user', true);
+        $user = oxNew(User::class);
+        $user->setId($userId);
+        $this->assertEmpty($user->getFieldData('oxuser__oxupdateexp'));
+
+        $user->setUpdateKey();
+
+        $user = oxNew(User::class);
+        $user->load($userId);
+        $tokenExpirationTime = $user->getFieldData('oxuser__oxupdateexp');
+        $nowPlusExpiration = time() + $user->getUpdateLinkTerm();
+        $this->assertLessThanOrEqual(1, $nowPlusExpiration - $tokenExpirationTime);
     }
 
     /**

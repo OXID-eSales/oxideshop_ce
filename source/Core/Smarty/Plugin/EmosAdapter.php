@@ -584,11 +584,11 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $iSuccess = Registry::getRequest()->getRequestEscapedParameter('success');
 
         if ($iError && $iError < 0) {
-            $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', abs($iError));
+            $oEmos->addRegister($oUser ? $oUser->oxuser__oxusername->value : 'NULL', abs($iError));
         }
 
         if ($iSuccess && $iSuccess > 0 && $oUser) {
-            $oEmos->addRegister($oUser->getId(), 0);
+            $oEmos->addRegister($oUser->oxuser__oxusername->value, 0);
         }
     }
 

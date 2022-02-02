@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 - Switched to default PDO result set types when using PHP8.1
+- System requirements:
+  - PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php). 
 
 ### Fixed
 
@@ -23,6 +25,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 - `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
+- Class:
+  - `Core\PasswordSaltGenerator`
+- Method:
+  - `Application\Model\User::getUtilsObjectInstance()`
 
 ## [7.0.0-rc.1] - 2021-07-07
 

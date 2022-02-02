@@ -2817,7 +2817,8 @@ final class UserTest extends \OxidTestCase
 
         $user->setUpdateKey();
 
-        $this->assertTrue(ctype_xdigit($user->getFieldData('oxuser__oxupdatekey')));
+        $this->assertTrue(ctype_alnum($user->getFieldData('oxuser__oxupdatekey')));
+        $this->assertFalse(ctype_xdigit($user->getFieldData('oxuser__oxupdatekey')));
     }
 
     /**

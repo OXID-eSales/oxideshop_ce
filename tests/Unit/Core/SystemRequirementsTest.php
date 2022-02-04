@@ -5,13 +5,20 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\SystemRequirements;
-use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridge;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
+use Psr\Container\ContainerInterface;
 
-class SystemRequirementsTest extends \OxidTestCase
+final class SystemRequirementsTest extends UnitTestCase
 {
     public function testGetBytes()
     {
@@ -572,10 +579,29 @@ class SystemRequirementsTest extends \OxidTestCase
 
         $actualOutput = [];
         $iteration = SystemRequirements::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
-        foreach ($iteration as list($groupId, $moduleId, $moduleState)) {
+        foreach ($iteration as [$groupId, $moduleId, $moduleState]) {
             $actualOutput[] = [$groupId, $moduleId, $moduleState];
         }
 
         $this->assertSame($expectedOutput, $actualOutput);
+    }
+
+    public function testCheckCryptographicallySufficientConfigurationWithUnsecureConfig(): void
+    {
+        $systemSecurityCheckerBridge = $this->createMock(SystemSecurityCheckerBridge::class);
+        $systemSecurityCheckerBridge->method('isCryptographicallySecure')->willReturn(false);
+
+        $container = (new ContainerBuilder(new BasicContextStub()))->getContainer();
+        $container->set(SystemSecurityCheckerBridgeInterface::class, $systemSecurityCheckerBridge);
+        $container->compile();
+
+        $systemRequirements = $this->createPartialMock(SystemRequirements::class, ['getContainer']);
+        $systemRequirements
+            ->method('getContainer')
+            ->willReturn($container);
+
+        $result = $systemRequirements->checkCryptographicallySufficientConfiguration();
+
+        $this->assertEquals(SystemRequirements::MODULE_STATUS_BLOCKS_SETUP, $result);
     }
 }

@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
 /**
@@ -227,7 +228,8 @@ class SystemRequirements
 
             $aRequiredServerConfigs = [
                 'mod_rewrite',
-                'server_permissions'
+                'server_permissions',
+                'cryptographically_sufficient_configuration',
             ];
 
             $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
@@ -288,6 +290,20 @@ class SystemRequirements
         }
 
         return $modStat;
+    }
+
+    /**
+     * @see cryptographically_sufficient_configuration
+     * @return int
+     */
+    public function checkCryptographicallySufficientConfiguration(): int
+    {
+        return $this
+            ->getContainer()
+            ->get(SystemSecurityCheckerBridgeInterface::class)
+            ->isCryptographicallySecure()
+            ? self::MODULE_STATUS_OK
+            : self::MODULE_STATUS_BLOCKS_SETUP;
     }
 
     /**
@@ -879,7 +895,7 @@ class SystemRequirements
     {
         $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
 
-        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+        foreach ($iterator as [$groupId, $moduleId, $moduleState]) {
             $systemRequirementsInfo[$groupId][$moduleId] = $filterFunction($groupId, $moduleId, $moduleState);
         }
 
@@ -914,7 +930,7 @@ class SystemRequirements
     {
         $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
 
-        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+        foreach ($iterator as [$groupId, $moduleId, $moduleState]) {
             if ($moduleState === static::MODULE_STATUS_BLOCKS_SETUP) {
                 return false;
             }

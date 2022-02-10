@@ -18,8 +18,6 @@ final class ProductVariantWithSelectionsCest
     {
         $I->wantToTest('product variant inherits selections from its parent');
 
-        $I->retry(3, 2000);
-
         $admin = $I->loginAdmin();
         $products = $admin->openProducts();
         $productsMainPage = $products->switchLanguage('Deutsch');

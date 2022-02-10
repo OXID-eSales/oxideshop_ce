@@ -427,43 +427,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * Service -> System info
-     *
-     * @group adminFunctionality
-     */
-    public function testSystemInfo()
-    {
-        $this->loginAdmin("Service", "System Info");
-        $this->assertTextPresent("Configuration", "System information is not loaded: Service -> System Info");
-        $this->assertTextPresent("PHP Version", "System information is not loaded: Service -> System Info");
-    }
-
-    /**
-     * Service -> System Requirements
-     *
-     * @group adminFunctionality
-     */
-    public function testSystemRequirements()
-    {
-        $this->loginAdmin("Service", "System health");
-        $this->frame("edit");
-        $this->waitForText("State of system health");
-    }
-
-    /**
-     * Service -> Tools
-     *
-     * @group adminFunctionality
-     */
-    public function testTools()
-    {
-        $this->loginAdmin("Service", "Tools", "btn.help");
-        $this->frame("edit");
-        $this->assertTextPresent("Update SQL ", "Tools page is not loaded: Service -> Tools");
-        $this->assertElementPresent("updatesql");
-    }
-
-    /**
      * Service -> Generic Import
      *
      * @group adminFunctionality

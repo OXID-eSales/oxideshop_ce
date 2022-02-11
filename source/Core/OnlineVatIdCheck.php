@@ -152,6 +152,33 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      */
     protected function _checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
+        
+        //D3 Source: https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl     
+        $aRetryErrors = [
+            'SERVER_BUSY',
+            'GLOBAL_MAX_CONCURRENT_REQ',
+                //'Your Request for VAT validation has not been processed; 
+                //the maximum number of concurrent requests has been reached. 
+                //Please re-submit your request later or contact                       
+                //TAXUD-VIESWEB@ec.europa.eu for further information": 
+                //Your request cannot be processed due to high traffic on the web application. Please try again later;'
+                                        
+            'MS_MAX_CONCURRENT_REQ',    
+                //'Your Request for VAT validation has not been processed; 
+                //the maximum number of concurrent requests for this Member State has been reached. 
+                //Please re-submit your request later or contact TAXUD-VIESWEB@ec.europa.eu for further information": 
+                //Your request cannot be processed due to high traffic towards the Member State you are trying to reach. 
+                //Please try again later.',
+                                        
+            'SERVICE_UNAVAILABLE',      
+                //'an error was encountered either at the network level or the Web application level, try again later; ',
+            'MS_UNAVAILABLE',           
+                //'The application at the Member State is not replying or not available. 
+                //Please refer to the Technical Information page to check the status of the requested Member State, try again later;',
+            'TIMEOUT',                  
+                //'The application did not receive a reply within the allocated time period, try again later. ',
+        ];
+        
         if ($this->_isServiceAvailable()) {
             $iTryMoreCnt = self::BUSY_RETRY_CNT;
 
@@ -171,7 +198,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
                     $iTryMoreCnt = 0;
                 } catch (SoapFault $e) {
                     $this->setError($e->faultstring);
-                    if ($this->getError() == "SERVER_BUSY") {
+                    if (in_array($this->getError(), $aRetryErrors)) {
                         usleep(self::BUSY_RETRY_WAITUSEC);
                     } else {
                         $iTryMoreCnt = 0;

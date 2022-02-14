@@ -60,9 +60,9 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             // do NOT set cookies in php unit or in cli because it would issue warnings
             return;
         }
-        $config = $this->getConfig();
+
         //if shop runs in https only mode we can set secure flag to all cookies
-        $blSecure = $blSecure || ($config->isSsl() && $config->getSslShopUrl() == $config->getShopUrl());
+        $blSecure = $blSecure || Registry::getConfig()->isSsl();
         return setcookie(
             $sName,
             $sValue,

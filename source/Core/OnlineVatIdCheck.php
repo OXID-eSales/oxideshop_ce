@@ -152,6 +152,16 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      */
     protected function _checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
+        //Default D3 Source: https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl
+        $aRetryErrors = [
+            'SERVER_BUSY',
+            'GLOBAL_MAX_CONCURRENT_REQ',
+            'MS_MAX_CONCURRENT_REQ',
+            'SERVICE_UNAVAILABLE',
+            'MS_UNAVAILABLE',
+            'TIMEOUT',
+        ];
+        
         if ($this->_isServiceAvailable()) {
             $iTryMoreCnt = self::BUSY_RETRY_CNT;
 
@@ -171,7 +181,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
                     $iTryMoreCnt = 0;
                 } catch (SoapFault $e) {
                     $this->setError($e->faultstring);
-                    if ($this->getError() == "SERVER_BUSY") {
+                    if (in_array($this->getError(), $aRetryErrors)) {
                         usleep(self::BUSY_RETRY_WAITUSEC);
                     } else {
                         $iTryMoreCnt = 0;

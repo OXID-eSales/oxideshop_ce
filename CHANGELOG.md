@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Error in coupon series during missconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
+- Extend default VAT check service response errors list [PR-889](https://github.com/OXID-eSales/oxideshop_ce/pull/889)
 
 ## [6.10.1] - 2022-02-02
 

@@ -99,7 +99,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
             return;
         }
 
-        $aSerieParams["oxvoucherseries__oxdiscount"] = abs($aSerieParams["oxvoucherseries__oxdiscount"]);
+        $aSerieParams["oxvoucherseries__oxdiscount"] = abs((float) $aSerieParams["oxvoucherseries__oxdiscount"]);
 
         $oVoucherSerie->assign($aSerieParams);
         $oVoucherSerie->save();

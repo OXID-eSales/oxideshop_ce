@@ -361,6 +361,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [6.10.2] - Unreleased
+
+### Fixed
+- Error in coupon series during missconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
+- Error in multishop case, triggering return of wrong values from cookies [#0007306](https://bugs.oxid-esales.com/view.php?id=7306) [PR-888](https://github.com/OXID-eSales/oxideshop_ce/pull/888)
+- Extend default VAT check service response errors list [PR-889](https://github.com/OXID-eSales/oxideshop_ce/pull/889)
+
 ## [6.10.1] - 2022-02-02
 
 ### Fixed
@@ -1480,6 +1487,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v7.0.0-rc.1
+[6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.10.0
 [6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0

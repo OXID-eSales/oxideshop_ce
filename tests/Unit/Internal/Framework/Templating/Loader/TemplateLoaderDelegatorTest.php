@@ -13,9 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoade
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 final class TemplateLoaderDelegatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testIfFrontend(): void
     {
         $context = $this->prophesize(ContextInterface::class);

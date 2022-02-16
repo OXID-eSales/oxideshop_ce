@@ -19,13 +19,21 @@ final class TemplateFileResolverTest extends TestCase
     {
         $this->expectException(InvalidTemplateNameException::class);
 
+<<<<<<< HEAD
         (new TemplateFileResolver('tpl'))->getFilename('');
+=======
+        (new TemplateFileResolver(['tpl'], 'tpl'))->getFilename('');
+>>>>>>> OXDEV-4092 Refactor TemplateNameResolver
     }
 
     /** @dataProvider smartyTemplateNameFileDataProvider */
     public function testGetFilenameSmartyTemplate($templateName, $expectedFilename): void
     {
+<<<<<<< HEAD
         $filename = (new TemplateFileResolver('tpl'))->getFilename($templateName);
+=======
+        $filename = (new TemplateFileResolver(['tpl'], 'tpl'))->getFilename($templateName);
+>>>>>>> OXDEV-4092 Refactor TemplateNameResolver
 
         $this->assertEquals($expectedFilename, $filename);
     }
@@ -33,7 +41,11 @@ final class TemplateFileResolverTest extends TestCase
     /** @dataProvider twigTemplateNameFileDataProvider */
     public function testGetFilenameTwigTemplate($templateName, $expectedFilename): void
     {
+<<<<<<< HEAD
         $filename = (new TemplateFileResolver('html.twig'))->getFilename($templateName);
+=======
+        $filename = (new TemplateFileResolver(['tpl', 'html.twig'], 'html.twig'))->getFilename($templateName);
+>>>>>>> OXDEV-4092 Refactor TemplateNameResolver
 
         $this->assertEquals($expectedFilename, $filename);
     }
@@ -72,6 +84,7 @@ final class TemplateFileResolverTest extends TestCase
                 'template.html.twig',
             ],
             [
+<<<<<<< HEAD
                 'template.html.twig',
                 'template.html.twig'
             ],
@@ -81,6 +94,17 @@ final class TemplateFileResolverTest extends TestCase
             ],
             [
                 'some/path/template.name.html.twig',
+=======
+                'template.tpl',
+                'template.html.twig'
+            ],
+            [
+                'some/path/template_name.tpl',
+                'some/path/template_name.html.twig'
+            ],
+            [
+                'some/path/template.name.tpl',
+>>>>>>> OXDEV-4092 Refactor TemplateNameResolver
                 'some/path/template.name.html.twig'
             ],
             [

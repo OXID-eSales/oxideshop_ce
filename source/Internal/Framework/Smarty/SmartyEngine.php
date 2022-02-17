@@ -111,17 +111,6 @@ class SmartyEngine implements TemplateEngineInterface
     }
 
     /**
-     * @deprecated Use oxid_esales.templating.engine_template_extension parameter from DI container.
-     * Returns the template file extension.
-     *
-     * @return string
-     */
-    public function getDefaultFileExtension(): string
-    {
-        return 'tpl';
-    }
-
-    /**
      * Pass parameters to the Smarty instance.
      *
      * @param string $name  The name of the parameter.

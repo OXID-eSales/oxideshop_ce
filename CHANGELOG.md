@@ -25,7 +25,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-- `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
+- Methods:
+  - `Application\Model\UserPayment`
+    - `load`
+    - `insert`
+  - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
 
 ## [7.0.0-rc.1] - 2021-07-07
 

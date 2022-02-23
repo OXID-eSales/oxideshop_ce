@@ -351,7 +351,10 @@ class ModuleChainsGenerator
              * Create parent alias before trying to load the module class as the class extends this alias
              */
             if (!class_exists($moduleClassParentAlias, false)) {
-                class_alias($parentClass, $moduleClassParentAlias);
+                $aliasCreated = class_alias($parentClass, $moduleClassParentAlias);
+                if (!$aliasCreated) {
+                    return false;
+                }
             }
             include_once $moduleClassFile;
 

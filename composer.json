@@ -36,13 +36,13 @@
         "oxid-esales/oxideshop-demodata-installer": "^v2.0.0",
         "oxid-esales/oxideshop-composer-plugin": "^v6.0.0",
         "oxid-esales/oxideshop-unified-namespace-generator": "^v3.0.0",
-        "oxid-esales/oxideshop-facts": "^v3.0.0"
+        "oxid-esales/oxideshop-facts": "dev-master"
     },
     "require-dev": {
         "incenteev/composer-parameter-handler": "^v2.1.4",
         "oxid-esales/oxideshop-ide-helper": "^v5.0.0",
         "oxid-esales/azure-theme": "^v2.0.0",
-        "oxid-esales/testing-library": "^v9.0.0",
+        "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",
         "composer/composer": "^1.0 || ^2.0",
         "vimeo/psalm": "^4.4.1"
@@ -92,6 +92,12 @@
                 "shop_tests_path": "SHOP_TESTS_PATH",
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "oxid-esales/oxideshop-composer-plugin": true,
+            "oxid-esales/oxideshop-unified-namespace-generator": true
         }
     }
 }

@@ -5,100 +5,135 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use OxidEsales\Eshop\Core\Module\ModuleList;
+use OxidEsales\Eshop\Core\OnlineModuleVersionNotifier;
+use OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller;
 use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Eshop\Core\SimpleXml;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\Facts\Facts;
-use \oxOnlineModuleVersionNotifier;
-use \oxOnlineModuleVersionNotifierCaller;
-use \oxRegistry;
-use \oxSimpleXml;
+use Psr\Container\ContainerInterface;
 
-/**
- * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
- *
- * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
- */
-class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
+final class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
-    public function setup(): void
+    private ContainerInterface $container;
+    private string $clusterId;
+    private string $documentName = 'omvnRequest';
+    private string $edition;
+    private string $moduleId1 = 'extending_1_class';
+    private string $moduleId2 = 'extending_1_class_3_extensions';
+    private string $moduleVersion = '1.0';
+    private string $pVersion = '1.1';
+    private string $productId = 'eShop';
+    private string $shopUrl;
+    private string $shopVersion;
+    private string $xmlLog;
+
+    public function setUp(): void
     {
         parent::setUp();
-        $container = ContainerFactory::getInstance()->getContainer();
 
-        $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+        $this->container = ContainerFactory::getInstance()->getContainer();
+        $this->prepareTestData();
+    }
+
+    public function tearDown(): void
+    {
+        $this->cleanUpTestData();
+
+        parent::tearDown();
+    }
+
+    public function testRequestFormation(): void
+    {
+        $licenseCaller = new OnlineModuleVersionNotifierCaller(
+            oxNew(CurlSpy::class, $this->xmlLog),
+            oxNew(OnlineServerEmailBuilder::class),
+            oxNew(SimpleXml::class)
+        );
+        (new OnlineModuleVersionNotifier($licenseCaller))->versionNotify();
+
+        $xml = $this->loadRequestLogXml();
+        $this->assertEquals(7, $xml->count());
+        $this->assertEquals($this->documentName, $xml->getName());
+        $this->assertEquals($this->pVersion, $xml->pVersion);
+        $this->assertEquals($this->clusterId, $xml->clusterId);
+        $this->assertEquals($this->edition, $xml->edition);
+        $this->assertEquals($this->shopVersion, $xml->version);
+        $this->assertEquals($this->shopUrl, $xml->shopUrl);
+        $this->assertEquals($this->productId, $xml->productId);
+        $this->assertEquals(2, $xml->modules->children()->count());
+        /** module 1 */
+        $this->assertEquals(3, $xml->modules->module[0]->children()->count());
+        $this->assertEquals($this->moduleId1, $xml->modules->module[0]->id);
+        $this->assertEquals($this->moduleVersion, $xml->modules->module[0]->version);
+        /** active in shops */
+        $this->assertEquals(1, $xml->modules->module[0]->activeInShops->children()->count());
+        $this->assertEquals($this->shopUrl, $xml->modules->module[0]->activeInShops->activeInShop);
+        /** module 2 */
+        $this->assertEquals(3, $xml->modules->module[1]->children()->count());
+        $this->assertEquals($this->moduleId2, $xml->modules->module[1]->id);
+        $this->assertEquals($this->moduleVersion, $xml->modules->module[1]->version);
+        /** active in shops */
+        $this->assertEquals(1, $xml->modules->module[1]->activeInShops->children()->count());
+        $this->assertEquals($this->shopUrl, $xml->modules->module[1]->activeInShops->activeInShop);
+    }
+
+    private function prepareTestData(): void
+    {
+        $this->xmlLog = sprintf("%s/%s.xml", __DIR__, uniqid('request_log_', true));
+        $this->edition = (new Facts())->getEdition();
+        $this->shopVersion = ShopVersion::getVersion();
+        $this->shopUrl = Registry::getConfig()->getShopUrl();
+        $this->clusterId = uniqid('cluster-', true);
+
+        Registry::getConfig()->setConfigParam('sClusterId', [$this->clusterId]);
+
+        $this->container
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
+
+        $this->installModule($this->moduleId1);
+        $this->activateModule($this->moduleId1);
+
+        $this->installModule($this->moduleId2);
+        $this->activateModule($this->moduleId2);
     }
 
-    public function testRequestFormation()
+    private function installModule(string $moduleId): void
     {
-        $this->installModule('extending_1_class');
-        $this->activateModule('extending_1_class');
-
-        $this->installModule('extending_1_class_3_extensions');
-        $this->activateModule('extending_1_class_3_extensions');
-
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $sEdition = (new Facts())->getEdition();
-        $sVersion = ShopVersion::getVersion();
-        $sShopUrl = $oConfig->getShopUrl();
-
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-        $sXml .= '<omvnRequest>';
-        $sXml .=   '<pVersion>1.1</pVersion>';
-        $sXml .=   '<modules>';
-        $sXml .=     '<module>';
-        $sXml .=       '<id>extending_1_class</id>';
-        $sXml .=       '<version>1.0</version>';
-        $sXml .=       "<activeInShops><activeInShop>$sShopUrl</activeInShop></activeInShops>";
-        $sXml .=     '</module>';
-        $sXml .=     '<module>';
-        $sXml .=       '<id>extending_1_class_3_extensions</id>';
-        $sXml .=       '<version>1.0</version>';
-        $sXml .=       "<activeInShops><activeInShop>$sShopUrl</activeInShop></activeInShops>";
-        $sXml .=     '</module>';
-        $sXml .=   '</modules>';
-        $sXml .=   '<clusterId>generated_unique_cluster_id</clusterId>';
-        $sXml .=   "<edition>$sEdition</edition>";
-        $sXml .=   "<version>$sVersion</version>";
-        $sXml .=   "<shopUrl>$sShopUrl</shopUrl>";
-        $sXml .=   '<productId>eShop</productId>';
-        $sXml .= '</omvnRequest>' . "\n";
-
-        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['execute','getStatusCode','setParameters'])
-            ->getMock();
-        $curlMock->expects($this->any())->method('execute')->will($this->returnValue(true));
-        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
-        $curlMock->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
-
-        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
-        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($curlMock, $oEmailBuilder, new oxSimpleXml());
-
-        $oOnlineModuleVersionNotifier = new oxOnlineModuleVersionNotifier($oOnlineModuleVersionNotifierCaller, oxNew(ModuleList::class));
-
-        $oOnlineModuleVersionNotifier->versionNotify();
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/../Modules/TestData/modules/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $this->container->get(ModuleInstallerInterface::class)->install($package);
     }
 
-    private function installModule(string $moduleId)
+    private function activateModule(string $moduleId): void
     {
-        $installService = ContainerFactory::getInstance()->getContainer()->get(ModuleInstallerInterface::class);
-
-        $package = new OxidEshopPackage(__DIR__ . '/../Modules/TestData/modules/' . $moduleId);
-        $installService->install($package);
+        $this->container->get(ModuleActivationBridgeInterface::class)->activate($moduleId, 1);
     }
 
-    private function activateModule(string $moduleId)
+    private function loadRequestLogXml(): \SimpleXMLElement
     {
-        $activationService = ContainerFactory::getInstance()->getContainer()->get(ModuleActivationBridgeInterface::class);
+        return simplexml_load_string(
+            file_get_contents($this->xmlLog)
+        );
+    }
 
-        $activationService->activate($moduleId, 1);
+    private function cleanUpTestData(): void
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
+        if ($fileSystem->exists($this->xmlLog)) {
+            $fileSystem->remove($this->xmlLog);
+        }
     }
 }

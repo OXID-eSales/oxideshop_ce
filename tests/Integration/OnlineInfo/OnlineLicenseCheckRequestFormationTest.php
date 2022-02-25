@@ -5,206 +5,254 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
+use OxidEsales\Eshop\Core\Dao\ApplicationServerDao;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\OnlineLicenseCheck;
+use OxidEsales\Eshop\Core\OnlineLicenseCheckCaller;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Service\ApplicationServerExporter;
+use OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface;
+use OxidEsales\Eshop\Core\Service\ApplicationServerService;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Eshop\Core\SimpleXml;
+use OxidEsales\Eshop\Core\UserCounter;
+use OxidEsales\Eshop\Core\UtilsDate;
+use OxidEsales\Eshop\Core\UtilsServer;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\Facts\Facts;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use Psr\Container\ContainerInterface;
 
 /**
- * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
- *
  * @covers \OxidEsales\EshopCommunity\Core\OnlineServerEmailBuilder
  * @covers \OxidEsales\EshopCommunity\Core\SimpleXml
  * @covers \OxidEsales\EshopCommunity\Core\OnlineLicenseCheckCaller
  * @covers \OxidEsales\EshopCommunity\Core\UserCounter
  * @covers \OxidEsales\EshopCommunity\Core\OnlineLicenseCheck
  */
-class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\UnitTestCase
+final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
 {
-    /**
-     *
-     */
-    public function testRequestFormationWithExistingSerials()
+    private ContainerInterface $container;
+    private int $adminUserCount;
+    private int $timestamp;
+    private string $clusterId;
+    private string $documentName = 'olcRequest';
+    private string $edition;
+    private string $licenseKeyExisting;
+    private string $licenseKeyNew;
+    private string $pVersion = '1.1';
+    private string $packageRevisionFile;
+    private string $productId = 'eShop';
+    private string $revision = 'somerevisionstring';
+    private string $serverId = 'server_id1';
+    private string $serverIp = '127.0.0.1';
+    private string $shopUrl;
+    private string $shopVersion;
+    private string $xmlLog;
+
+
+    protected function setUp(): void
     {
-        $config = $this->getConfig();
+        parent::setUp();
 
-        $config->saveShopConfVar('arr', 'aSerials', array('license_key'));
-        $config->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
-        $validNodeTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+        $this->container = ContainerFactory::getInstance()->getContainer();
+        $this->prepareTestData();
+    }
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()
-            ->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
-        $config->saveSystemConfigParameter('arr', 'aServersData_server_id1', array(
-            'id' => 'server_id1',
-            'timestamp' => $validNodeTime,
-            'ip' => '127.0.0.1',
-            'lastFrontendUsage' => $validNodeTime,
-            'lastAdminUsage' => $validNodeTime
-        ));
+    protected function tearDown(): void
+    {
+        $this->cleanUpTestData();
 
-        $edition = (new Facts())->getEdition();
-        $version = ShopVersion::getVersion();
-        $shopUrl = $config->getShopUrl();
-        $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
+        parent::tearDown();
+    }
 
-        $xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-        $xml .= '<olcRequest>';
-        $xml .=   '<pVersion>1.1</pVersion>';
-        $xml .=   '<keys><key>license_key</key></keys>';
-        $xml .=   '<productSpecificInformation>';
-        $xml .=     '<servers>';
-        $xml .=       '<server>';
-        $xml .=         '<id>server_id1</id>';
-        $xml .=         '<ip>127.0.0.1</ip>';
-        $xml .=         "<lastFrontendUsage>$validNodeTime</lastFrontendUsage>";
-        $xml .=         "<lastAdminUsage>$validNodeTime</lastAdminUsage>";
-        $xml .=       '</server>';
-        $xml .=     '</servers>';
-        $xml .=     '<counters>';
-        $xml .=       '<counter>';
-        $xml .=         '<name>admin users</name>';
-        $xml .=         "<value>$iAdminUsers</value>";
-        $xml .=       '</counter>';
-        $xml .=       '<counter>';
-        $xml .=         '<name>active admin users</name>';
-        $xml .=         "<value>$iAdminUsers</value>";
-        $xml .=       '</counter>';
-        $xml .=       '<counter>';
-        $xml .=         '<name>subShops</name>';
-        $xml .=         '<value>1</value>';
-        $xml .=       '</counter>';
-        $xml .=     '</counters>';
-        $xml .=   '</productSpecificInformation>';
-        $xml .=   '<clusterId>generated_unique_cluster_id</clusterId>';
-        $xml .=   "<edition>$edition</edition>";
-        $xml .=   "<version>$version</version>";
-        $xml .=   "<shopUrl>$shopUrl</shopUrl>";
-        $xml .=   '<productId>eShop</productId>';
-        $xml .= '</olcRequest>' . "\n";
-
-        $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['setParameters', 'execute','getStatusCode'])
-            ->getMock();
-        $curl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $xml)));
-        $curl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        $curl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
-        /** @var \OxidEsales\Eshop\Core\Curl $curl */
-
-        $emailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
-        $simpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
-        $licenseCaller = new \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller($curl, $emailBuilder, $simpleXml);
-
-        $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
-        $appServerExporter = $this->getApplicationServerExporter();
-        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($licenseCaller);
-        $licenseCheck->setUserCounter($userCounter);
-        $licenseCheck->setAppServerExporter($appServerExporter);
+    public function testRequestFormationWithExistingSerials(): void
+    {
+        $licenseCaller = new OnlineLicenseCheckCaller(
+            oxNew(CurlSpy::class, $this->xmlLog),
+            oxNew(OnlineServerEmailBuilder::class),
+            oxNew(SimpleXml::class)
+        );
+        $licenseCheck = new OnlineLicenseCheck($licenseCaller);
+        $licenseCheck->setUserCounter(oxNew(UserCounter::class));
+        $licenseCheck->setAppServerExporter($this->getApplicationServerExporter());
 
         $licenseCheck->validateShopSerials();
+
+        $xml = $this->loadRequestLogXml();
+        $this->assertEquals(9, $xml->count());
+        $this->assertEquals($this->documentName, $xml->getName());
+        $this->assertEquals($this->pVersion, $xml->pVersion);
+        $this->assertEquals($this->clusterId, $xml->clusterId);
+        $this->assertEquals($this->edition, $xml->edition);
+        $this->assertEquals($this->shopVersion, $xml->version);
+        $this->assertEquals($this->shopUrl, $xml->shopUrl);
+        $this->assertEquals($this->productId, $xml->productId);
+        $this->assertEquals($this->revision, $xml->revision);
+        /** keys */
+        $this->assertEquals(1, $xml->keys->children()->count());
+        $this->assertEquals($this->licenseKeyExisting, $xml->keys->key);
+        /** productSpecificInformation */
+        $this->assertEquals(2, $xml->productSpecificInformation->children()->count());
+        /** servers */
+        $this->assertEquals(1, $xml->productSpecificInformation->servers->children()->count());
+        $this->assertEquals($this->serverId, $xml->productSpecificInformation->servers->server->id);
+        $this->assertEquals($this->serverIp, $xml->productSpecificInformation->servers->server->ip);
+        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastFrontendUsage);
+        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastAdminUsage);
+        /** counters */
+        $this->assertEquals(3, $xml->productSpecificInformation->counters->children()->count());
+        /** admin users */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[0]->children()->count());
+        $this->assertEquals('admin users', (string) $xml->productSpecificInformation->counters->counter[0]->name);
+        $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[0]->value);
+        /** active admin users */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[1]->children()->count());
+        $this->assertEquals('active admin users', (string) $xml->productSpecificInformation->counters->counter[1]->name);
+        $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[1]->value);
+        /** subShops */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[2]->children()->count());
+        $this->assertEquals('subShops', (string) $xml->productSpecificInformation->counters->counter[2]->name);
+        $this->assertEquals(1, (int) $xml->productSpecificInformation->counters->counter[2]->value);
     }
 
-    public function testRequestFormationWithNewSerial()
+    public function testRequestFormationWithNewSerial(): void
     {
-        $config = $this->getConfig();
+        $licenseCaller = new OnlineLicenseCheckCaller(
+            oxNew(CurlSpy::class, $this->xmlLog),
+            oxNew(OnlineServerEmailBuilder::class),
+            oxNew(SimpleXml::class)
+        );
+        $licenseCheck = new OnlineLicenseCheck($licenseCaller);
+        $licenseCheck->setUserCounter(oxNew(UserCounter::class));
+        $licenseCheck->setAppServerExporter($this->getApplicationServerExporter());
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()
-            ->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
-        $config->setConfigParam('aSerials', array('license_key'));
-        $config->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $validNodeTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-        $config->saveSystemConfigParameter('arr', 'aServersData_server_id1', array(
-            'id' => 'server_id1',
-            'timestamp' => $validNodeTime,
-            'ip' => '127.0.0.1',
-            'lastFrontendUsage' => $validNodeTime,
-            'lastAdminUsage' => $validNodeTime,
-            'isValid' => true,
-        ));
+        $licenseCheck->validateNewSerial($this->licenseKeyNew);
 
-        $edition = (new Facts())->getEdition();
-        $version = ShopVersion::getVersion();
-        $shopUrl = $config->getShopUrl();
-        $adminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
-
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-        $sXml .= '<olcRequest>';
-        $sXml .=   '<pVersion>1.1</pVersion>';
-        $sXml .=   '<keys>';
-        $sXml .=   '<key>license_key</key>';
-        $sXml .=   '<key state="new">new_serial</key>';
-        $sXml .=   '</keys>';
-        $sXml .=   '<productSpecificInformation>';
-        $sXml .=     '<servers>';
-        $sXml .=       '<server>';
-        $sXml .=         '<id>server_id1</id>';
-        $sXml .=         '<ip>127.0.0.1</ip>';
-        $sXml .=         "<lastFrontendUsage>$validNodeTime</lastFrontendUsage>";
-        $sXml .=         "<lastAdminUsage>$validNodeTime</lastAdminUsage>";
-        $sXml .=       '</server>';
-        $sXml .=     '</servers>';
-        $sXml .=     '<counters>';
-        $sXml .=       '<counter>';
-        $sXml .=         '<name>admin users</name>';
-        $sXml .=         "<value>$adminUsers</value>";
-        $sXml .=       '</counter>';
-        $sXml .=       '<counter>';
-        $sXml .=         '<name>active admin users</name>';
-        $sXml .=         "<value>$adminUsers</value>";
-        $sXml .=       '</counter>';
-        $sXml .=       '<counter>';
-        $sXml .=         '<name>subShops</name>';
-        $sXml .=         '<value>1</value>';
-        $sXml .=       '</counter>';
-        $sXml .=     '</counters>';
-        $sXml .=   '</productSpecificInformation>';
-        $sXml .=   '<clusterId>generated_unique_cluster_id</clusterId>';
-        $sXml .=   "<edition>$edition</edition>";
-        $sXml .=   "<version>$version</version>";
-        $sXml .=   "<shopUrl>$shopUrl</shopUrl>";
-        $sXml .=   '<productId>eShop</productId>';
-        $sXml .= '</olcRequest>' . "\n";
-
-        $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['setParameters', 'execute','getStatusCode'])
-            ->getMock();
-        $curl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        $curl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
-        $curl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
-        /** @var \OxidEsales\Eshop\Core\Curl $curl */
-
-        $emailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
-
-        $simpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
-        $licenseCheckCaller = new \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller($curl, $emailBuilder, $simpleXml);
-
-        $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
-        $appServerExporter = $this->getApplicationServerExporter();
-
-        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($licenseCheckCaller);
-        $licenseCheck->setUserCounter($userCounter);
-        $licenseCheck->setAppServerExporter($appServerExporter);
-
-        $licenseCheck->validateNewSerial('new_serial');
+        $xml = $this->loadRequestLogXml();
+        $this->assertEquals(9, $xml->count());
+        $this->assertEquals($this->documentName, $xml->getName());
+        $this->assertEquals($this->pVersion, $xml->pVersion);
+        $this->assertEquals($this->clusterId, $xml->clusterId);
+        $this->assertEquals($this->edition, $xml->edition);
+        $this->assertEquals($this->shopVersion, $xml->version);
+        $this->assertEquals($this->shopUrl, $xml->shopUrl);
+        $this->assertEquals($this->productId, $xml->productId);
+        $this->assertEquals($this->revision, (string) $xml->revision);
+        $this->assertEquals($this->revision, $xml->revision);
+        /** keys */
+        $this->assertEquals(2, $xml->keys->children()->count());
+        $this->assertEquals($this->licenseKeyExisting, $xml->keys->key[0]);
+        $this->assertEquals($this->licenseKeyNew, $xml->keys->key[1]);
+        $this->assertEquals('new', $xml->keys->key[1]->attributes()->state);
+        /** productSpecificInformation */
+        $this->assertEquals(2, $xml->productSpecificInformation->children()->count());
+        /** servers */
+        $this->assertEquals(1, $xml->productSpecificInformation->servers->children()->count());
+        $this->assertEquals($this->serverId, $xml->productSpecificInformation->servers->server->id);
+        $this->assertEquals($this->serverIp, $xml->productSpecificInformation->servers->server->ip);
+        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastFrontendUsage);
+        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastAdminUsage);
+        /** counters */
+        $this->assertEquals(3, $xml->productSpecificInformation->counters->children()->count());
+        /** admin users */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[0]->children()->count());
+        $this->assertEquals('admin users', (string) $xml->productSpecificInformation->counters->counter[0]->name);
+        $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[0]->value);
+        /** active admin users */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[1]->children()->count());
+        $this->assertEquals('active admin users', (string) $xml->productSpecificInformation->counters->counter[1]->name);
+        $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[1]->value);
+        /** subShops */
+        $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[2]->children()->count());
+        $this->assertEquals('subShops', (string) $xml->productSpecificInformation->counters->counter[2]->name);
+        $this->assertEquals(1, (int) $xml->productSpecificInformation->counters->counter[2]->value);
     }
 
-    /**
-     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
-     */
-    private function getApplicationServerExporter()
+    private function prepareTestData(): void
     {
-        $config = $this->getConfig();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
+        $shopPath = __DIR__ . DIRECTORY_SEPARATOR;
+
+        $this->xmlLog = sprintf("%s/%s.xml", __DIR__, uniqid('request_log_', true));
+        $this->packageRevisionFile = "{$shopPath}pkg.rev";
+        $this->licenseKeyExisting = uniqid('license-', true);
+        $this->licenseKeyNew = uniqid('license-', true);
+        $this->clusterId = uniqid('cluster-', true);
+        $this->edition = (new Facts())->getEdition();
+        $this->shopVersion = ShopVersion::getVersion();
+        $this->shopUrl = Registry::getConfig()->getShopUrl();
+        $this->timestamp = Registry::getUtilsDate()->getTime();
+        $this->revision = Registry::getConfig()->getRevision() ?: '';
+        $this->adminUserCount = $this->getTestConfig()->getShopEdition() === 'EE' ? 6 : 1;
+
+        Registry::getConfig()->setConfigParam('aSerials', [$this->licenseKeyExisting]);
+        Registry::getConfig()->setConfigParam('sClusterId', [$this->clusterId]);
+        Registry::getConfig()->setConfigParam('sShopDir', $shopPath);
+
+        $this->setSeversDataConfiguration();
+        $this->addPackageRevisionFile();
+    }
+
+    private function setSeversDataConfiguration(): void
+    {
+        Registry::getConfig()
+            ->saveSystemConfigParameter(
+                'arr',
+                "aServersData_{$this->serverId}",
+                [
+                    'id' => $this->serverId,
+                    'timestamp' => $this->timestamp,
+                    'ip' => $this->serverIp,
+                    'lastFrontendUsage' => $this->timestamp,
+                    'lastAdminUsage' => $this->timestamp,
+                ]
+            );
+    }
+
+    private function addPackageRevisionFile(): void
+    {
+        $this->revision = uniqid('revision-', true);
+        file_put_contents($this->packageRevisionFile, $this->revision);
+    }
+
+    private function loadRequestLogXml(): \SimpleXMLElement
+    {
+        return simplexml_load_string(
+            file_get_contents($this->xmlLog)
+        );
+    }
+
+    private function getApplicationServerExporter(): ApplicationServerExporterInterface
+    {
+        $appServerDao = oxNew(
+            ApplicationServerDao::class,
+            DatabaseProvider::getDb(),
+            Registry::getConfig()
+        );
         $service = oxNew(
-            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            ApplicationServerService::class,
             $appServerDao,
-            $utilsServer,
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
+            oxNew(UtilsServer::class),
+            Registry::get(UtilsDate::class)->getTime()
         );
 
-        $exporter = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
+        return oxNew(ApplicationServerExporter::class, $service);
+    }
 
-        return $exporter;
+    private function cleanUpTestData(): void
+    {
+        DatabaseProvider::getDb()->execute(
+            "DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'"
+        );
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        if ($fileSystem->exists($this->xmlLog)) {
+            $fileSystem->remove($this->xmlLog);
+            $fileSystem->remove($this->packageRevisionFile);
+        }
     }
 }

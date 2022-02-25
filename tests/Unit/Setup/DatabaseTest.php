@@ -23,6 +23,12 @@ final class DatabaseTest extends \OxidTestCase
     /** @var array Queries will be logged here. */
     private $loggedQueries;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->loggedQueries = new StdClass();
+    }
+
     protected function tearDown(): void
     {
         // restore database
@@ -320,28 +326,21 @@ final class DatabaseTest extends \OxidTestCase
         $database->writeAdminLoginData($loginName, $password);
     }
 
-
-    /**
-     * Resets logged queries.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->loggedQueries = new StdClass();
-    }
-
-    /**
-     * @return PDO
-     */
     protected function createConnection(): PDO
     {
         $config = $this->getConfig();
-        $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));
-        return new PDO(
+        $dsn = sprintf(
+            'mysql:dbname=%s;host=%s;port=%s',
+            $config->getConfigParam('dbName'),
+            $config->getConfigParam('dbHost'),
+            $config->getConfigParam('dbPort')
+        );        return new PDO(
             $dsn,
             $config->getConfigParam('dbUser'),
             $config->getConfigParam('dbPwd'),
-            array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+            ]
         );
     }
 

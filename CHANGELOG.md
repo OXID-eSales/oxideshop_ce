@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
+- Switched to default PDO result set types when using PHP8.1
 
 ### Fixed
 
@@ -361,10 +362,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [6.11.0] - Unreleased
+
+### Added
+- PHP 8.1 support
+
+- ### Changed
+- Updated Symfony components
+
 ## [6.10.2] - Unreleased
 
 ### Fixed
-- Error in coupon series during missconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
+- Error in coupon series during misconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
 - Error in multishop case, triggering return of wrong values from cookies [#0007306](https://bugs.oxid-esales.com/view.php?id=7306) [PR-888](https://github.com/OXID-eSales/oxideshop_ce/pull/888)
 - Extend default VAT check service response errors list [PR-889](https://github.com/OXID-eSales/oxideshop_ce/pull/889)
 

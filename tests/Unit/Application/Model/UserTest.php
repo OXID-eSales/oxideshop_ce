@@ -115,7 +115,7 @@ class UserTest_oxUtilsServerHelper2 extends oxUtilsServer
     }
 }
 
-class UserTest extends \OxidTestCase
+final class UserTest extends \OxidTestCase
 {
     use ContainerTrait;
 
@@ -1176,7 +1176,7 @@ class UserTest extends \OxidTestCase
         $this->assertTrue($this->executeAccountDeletion($userId));
     }
 
-    public function testIfRelatedDataHaveBeenCleanedDuringUserDeletion()
+    public function testIfRelatedDataHaveBeenCleanedDuringUserDeletion(): void
     {
         $userId = $this->prepareUserDataForDeletion();
         $this->executeAccountDeletion($userId);
@@ -1207,11 +1207,7 @@ class UserTest extends \OxidTestCase
 
             $count = $this->getDb()->getOne($query);
 
-            $this->assertSame(
-                '0',
-                $count,
-                $count . ' records were not deleted from "' . $table . '" table'
-            );
+            $this->assertEquals(0, $count);
         }
     }
 

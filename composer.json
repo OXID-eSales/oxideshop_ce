@@ -32,7 +32,7 @@
         "oxid-esales/oxideshop-demodata-installer": "^v1.3.0",
         "oxid-esales/oxideshop-composer-plugin": "^v5.2.0",
         "oxid-esales/oxideshop-unified-namespace-generator": "^v2.2.0",
-        "oxid-esales/oxideshop-facts": "^v2.4.0"
+        "oxid-esales/oxideshop-facts": "dev-b-6.5.x"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-b-6.5.x",

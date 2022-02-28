@@ -288,41 +288,23 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Rounds the value to currency cents. This method does NOT format the number.
      *
-     * @param string $sVal the value that should be rounded
-     * @param object $oCur Currency Object
+     * @param string $value the value that should be rounded
+     * @param object $currency
      *
      * @return float
      */
-    public function fRound($sVal, $oCur = null)
+    public function fRound($value, $currency = null)
     {
         startProfile('fround');
-
         //cached currency precision, this saves about 1% of execution time
-        $iCurPrecision = $this->_iCurPrecision;
-
-        if (is_null($iCurPrecision)) {
-            if (!$oCur) {
-                $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
-            }
-
-            $iCurPrecision = $oCur->decimal;
-            $this->_iCurPrecision = $iCurPrecision;
+        if (is_null($this->_iCurPrecision)) {
+            $currency = $currency ?: Registry::getConfig()->getActShopCurrencyObject();
+            $this->_iCurPrecision = $currency->decimal;
         }
-
-        // if < 5.3.x this is a workaround for #36008 bug in php - incorrect round() & number_format() result (R)
-        static $dprez = null;
-        if (!$dprez) {
-            $prez = @ini_get("precision");
-            if (!$prez || $prez > 12) {
-                $prez = 12;
-            }
-            $dprez = pow(10, -$prez);
-        }
+        $roundedValue = round((float)$value, $this->_iCurPrecision);
         stopProfile('fround');
 
-        $sVal = (float) $sVal;
-
-        return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
+        return $roundedValue;
     }
 
     /**

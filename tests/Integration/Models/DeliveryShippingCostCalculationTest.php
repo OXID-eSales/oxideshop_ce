@@ -563,7 +563,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
-        $this->assertSame($data['expected_costs'], $deliveryCost);
+        $this->assertEquals($data['expected_costs'], $deliveryCost);
     }
 
     /**

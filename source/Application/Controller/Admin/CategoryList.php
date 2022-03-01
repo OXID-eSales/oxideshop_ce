@@ -54,7 +54,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
     /**
      * Loads category tree, passes data to Smarty and returns name of
-     * template file "category_list.tpl".
+     * template file "category_list".
      *
      * @return string
      */
@@ -99,6 +99,6 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         $this->_aViewData["cattree"] = $oCatTree;
 
-        return "category_list.tpl";
+        return "category_list";
     }
 }

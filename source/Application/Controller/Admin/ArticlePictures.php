@@ -19,7 +19,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 {
     /**
      * Loads article information - pictures, passes data to Smarty
-     * engine, returns name of template file "article_pictures.tpl".
+     * engine, returns name of template file "article_pictures".
      *
      * @return string
      */
@@ -56,7 +56,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         }
 
-        return "article_pictures.tpl";
+        return "article_pictures";
     }
 
     /**

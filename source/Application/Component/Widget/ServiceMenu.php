@@ -27,7 +27,7 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/header/servicemenu.tpl';
+    protected $_sThisTemplate = 'widget/header/servicemenu';
 
     /**
      * Template variable getter. Returns comparison article list.

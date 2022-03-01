@@ -19,7 +19,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Executes parent method parent::render(), creates oxCategoryList object,
      * passes it's data to Smarty engine and returns name of template file
-     * "selectlist_main.tpl".
+     * "selectlist_main".
      *
      * @return string
      */
@@ -62,7 +62,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["blForeignCountry"] = true;
         }
 
-        return "country_main.tpl";
+        return "country_main";
     }
 
     /**

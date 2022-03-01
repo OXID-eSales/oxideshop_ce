@@ -433,7 +433,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
             $ex->setComponent($templateName);
 
-            $templateName = "message/exception.tpl";
+            $templateName = "message/exception";
 
             if ($this->isDebugMode()) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
@@ -541,7 +541,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
-                $tpl = 'message/err_setup.tpl';
+                $tpl = 'message/err_setup';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $context = [
                     "oViewConf" => $activeView->getViewConfig(),

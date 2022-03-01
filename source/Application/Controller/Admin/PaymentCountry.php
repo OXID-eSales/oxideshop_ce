@@ -20,7 +20,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Executes parent method parent::render(), creates oxlist object,
      * passes it's data to Smarty engine and retutns name of template
-     * file "payment_main.tpl".
+     * file "payment_main".
      *
      * @return string
      */
@@ -62,10 +62,10 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oPaymentCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentCountryAjax->getColumns();
 
-            return "popups/payment_country.tpl";
+            return "popups/payment_country";
         }
 
-        return "payment_country.tpl";
+        return "payment_country";
     }
 
     /**

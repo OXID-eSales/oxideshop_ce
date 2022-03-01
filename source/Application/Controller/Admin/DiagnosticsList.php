@@ -18,5 +18,5 @@ class DiagnosticsList extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @var string
      */
-    protected $_sThisTemplate = 'diagnostics_list.tpl';
+    protected $_sThisTemplate = 'diagnostics_list';
 }

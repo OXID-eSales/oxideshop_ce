@@ -22,14 +22,14 @@ use OxidEsales\Eshop\Core\ShopVersion;
 class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Current class template */
-    protected $_sThisTemplate = "shop_license.tpl";
+    protected $_sThisTemplate = "shop_license";
 
     /** @var string Current shop version links for edition. */
     private $versionCheckLink = 'http://admin.oxid-esales.com/CE/onlinecheck.php';
 
     /**
      * Executes parent method parent::render(), creates oxshop object, passes it's
-     * data to Smarty engine and returns name of template file "shop_license.tpl".
+     * data to Smarty engine and returns name of template file "shop_license".
      * @return string
      * @throws SystemComponentException
      */

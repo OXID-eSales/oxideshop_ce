@@ -18,7 +18,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
 {
     /**
      * Executes parent method parent::render(), creates oxuser object and
-     * returns name of template file "user_extend.tpl".
+     * returns name of template file "user_extend".
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $this->_aViewData['readonly'] = true;
         }
 
-        return "user_extend.tpl";
+        return "user_extend";
     }
 
     /**

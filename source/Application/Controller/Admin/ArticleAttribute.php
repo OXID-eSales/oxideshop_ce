@@ -19,7 +19,7 @@ class ArticleAttribute extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
 {
     /**
      * Collects article attributes and selection lists, passes them to Smarty engine,
-     * returns name of template file "article_attribute.tpl".
+     * returns name of template file "article_attribute".
      *
      * @return string
      */
@@ -44,14 +44,14 @@ class ArticleAttribute extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $oArticleAttributeAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAttributeAjax::class);
             $this->_aViewData['oxajax'] = $oArticleAttributeAjax->getColumns();
 
-            return "popups/article_attribute.tpl";
+            return "popups/article_attribute";
         } elseif ($iAoc == 2) {
             $oArticleSelectionAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class);
             $this->_aViewData['oxajax'] = $oArticleSelectionAjax->getColumns();
 
-            return "popups/article_selection.tpl";
+            return "popups/article_selection";
         }
 
-        return "article_attribute.tpl";
+        return "article_attribute";
     }
 }

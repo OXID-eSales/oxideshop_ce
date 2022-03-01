@@ -31,7 +31,7 @@ class GenericExportMain extends \OxidEsales\Eshop\Application\Controller\Admin\D
      *
      * @var string
      */
-    protected $_sThisTemplate = "dyn_exportdefault.tpl";
+    protected $_sThisTemplate = "dyn_exportdefault";
 
     /**
      * Creates shop object, passes shop data to Smarty engine and returns name of

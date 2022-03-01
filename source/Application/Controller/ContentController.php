@@ -34,14 +34,14 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/content.tpl';
+    protected $_sThisTemplate = 'page/info/content';
 
     /**
      * Current view plain template
      *
      * @var string
      */
-    protected $_sThisPlainTemplate = 'page/info/content_plain.tpl';
+    protected $_sThisPlainTemplate = 'page/info/content_plain';
 
     /**
      * Current view content category (if available)
@@ -74,21 +74,21 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity.tpl';
+    protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity';
 
     /**
      * Delivery charge data template
      *
      * @var string
      */
-    protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge.tpl';
+    protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge';
 
     /**
      * Payment charge data template
      *
      * @var string
      */
-    protected $_sPaymentTemplate = 'rdfa/content/inc/payment_charge.tpl';
+    protected $_sPaymentTemplate = 'rdfa/content/inc/payment_charge';
 
     /**
      * An array including all ShopConfVars which are used to extend business

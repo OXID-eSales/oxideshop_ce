@@ -13,8 +13,8 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * Admin systeminfo manager.
- * Returns template, that arranges two other templates ("tools_list.tpl"
- * and "tools_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("tools_list"
+ * and "tools_main") to frame.
  */
 class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
@@ -23,7 +23,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @var string
      */
-    protected $_sThisTemplate = 'tools_list.tpl';
+    protected $_sThisTemplate = 'tools_list';
 
     /**
      * Performs full view update

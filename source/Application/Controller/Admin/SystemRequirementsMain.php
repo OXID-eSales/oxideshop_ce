@@ -17,7 +17,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
 {
     /**
      * Loads article Mercators info, passes it to Smarty engine and
-     * returns name of template file "Mercator_main.tpl".
+     * returns name of template file "Mercator_main".
      *
      * @return string
      */
@@ -30,7 +30,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
         $this->_aViewData['aInfo'] = $oSysReq->getSystemInfo();
         $this->_aViewData['aCollations'] = $oSysReq->checkCollation();
 
-        return "sysreq_main.tpl";
+        return "sysreq_main";
     }
 
     /**

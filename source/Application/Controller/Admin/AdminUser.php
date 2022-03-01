@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin user manager.
- * Returns template, that arranges two other templates ("user_list.tpl"
- * and "user_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("user_list"
+ * and "user_main") to frame.
  * Admin Menu: User Administration -> Users.
  */
 class AdminUser extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class AdminUser extends \OxidEsales\Eshop\Application\Controller\Admin\AdminCont
      *
      * @var string
      */
-    protected $_sThisTemplate = 'user.tpl';
+    protected $_sThisTemplate = 'user';
 }

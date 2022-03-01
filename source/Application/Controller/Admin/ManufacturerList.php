@@ -17,7 +17,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'manufacturer_list.tpl';
+    protected $_sThisTemplate = 'manufacturer_list';
 
     /**
      * Name of chosen object class (default null).

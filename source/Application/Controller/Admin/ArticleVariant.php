@@ -27,7 +27,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
     /**
      * Loads article variants data, passes it to Smarty engine and returns name of
-     * template file "article_variant.tpl".
+     * template file "article_variant".
      *
      * @return string
      */
@@ -98,7 +98,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        return "article_variant.tpl";
+        return "article_variant";
     }
 
     /**

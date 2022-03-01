@@ -22,7 +22,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 {
     /**
      * Loads article actionss info, passes it to Smarty engine and
-     * returns name of template file "actions_main.tpl".
+     * returns name of template file "actions_main".
      *
      * @return string
      */
@@ -75,7 +75,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oActionsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class);
             $this->_aViewData['oxajax'] = $oActionsMainAjax->getColumns();
 
-            return "popups/actions_main.tpl";
+            return "popups/actions_main";
         }
 
 
@@ -104,7 +104,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                         $oActionsArticleAjax = oxNew($sPopup . '_ajax');
                         $this->_aViewData['oxajax'] = $oActionsArticleAjax->getColumns();
 
-                        return "popups/{$sPopup}.tpl";
+                        return "popups/{$sPopup}";
                     }
                 } else {
                     if ($oPromotion->oxactions__oxtype->value == 2) {
@@ -113,14 +113,14 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                             300,
                             $oPromotion,
                             "oxactions__oxlongdesc",
-                            "details.tpl.css"
+                            "details.css"
                         );
                     }
                 }
             }
         }
 
-        return "actions_main.tpl";
+        return "actions_main";
     }
 
     /**

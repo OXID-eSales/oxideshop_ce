@@ -19,7 +19,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     /**
      * Executes parent method parent::render(), creates oxOrder, passes
      * it's data to Smarty engine and returns name of template file
-     * "order_overview.tpl".
+     * "order_overview".
      *
      * @return string
      */
@@ -61,7 +61,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $this->_aViewData["currency"] = $oCur;
 
-        return "order_overview.tpl";
+        return "order_overview";
     }
 
     /**

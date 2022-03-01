@@ -27,5 +27,5 @@ class ManufacturerList extends \OxidEsales\Eshop\Application\Component\Widget\Wi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/footer/manufacturerlist.tpl';
+    protected $_sThisTemplate = 'widget/footer/manufacturerlist';
 }

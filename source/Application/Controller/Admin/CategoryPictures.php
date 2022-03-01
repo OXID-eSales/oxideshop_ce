@@ -16,7 +16,7 @@ class CategoryPictures extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
 {
     /**
      * Loads category object, passes it to Smarty engine and returns name
-     * of template file "category_pictures.tpl".
+     * of template file "category_pictures".
      *
      * @return string
      */
@@ -32,6 +32,6 @@ class CategoryPictures extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $oCategory->load($soxId);
         }
 
-        return "category_pictures.tpl";
+        return "category_pictures";
     }
 }

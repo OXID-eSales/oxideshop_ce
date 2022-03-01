@@ -22,7 +22,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 {
     /**
      * Loads article parameters and passes them to Smarty engine, returns
-     * name of template file "article_main.tpl".
+     * name of template file "article_main".
      *
      * @return string
      */
@@ -95,11 +95,11 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             300,
             $oArticle,
             "oxarticles__oxlongdesc",
-            "details.tpl.css"
+            "details.css"
         );
         $this->_aViewData["blUseTimeCheck"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseTimeCheck');
 
-        return "article_main.tpl";
+        return "article_main";
     }
 
     /**
@@ -175,8 +175,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         ) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sSelect = "select oxid from " . $tableViewNameGenerator->getViewName('oxarticles');
-            $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']) . "";
-            $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']) . "";
+            $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']);
+            $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']);
             if ($oArticle->assignRecord($sSelect)) {
                 $this->_aViewData["errorsavingatricle"] = 1;
             }

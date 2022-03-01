@@ -92,7 +92,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/compare/compare.tpl';
+    protected $_sThisTemplate = 'page/compare/compare';
 
     /**
      * Array of id to form recommendation list.
@@ -180,7 +180,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function inPopup() // #777C
     {
-        $this->_sThisTemplate = 'compare_popup.tpl';
+        $this->_sThisTemplate = 'compare_popup';
         $this->_iArticlesPerPage = -1;
     }
 

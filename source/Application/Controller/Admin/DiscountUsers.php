@@ -21,7 +21,7 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 {
     /**
      * Executes parent method parent::render(), creates discount category tree,
-     * passes data to Smarty engine and returns name of template file "discount_main.tpl".
+     * passes data to Smarty engine and returns name of template file "discount_main".
      *
      * @return string
      */
@@ -66,14 +66,14 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oDiscountGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountGroupsAjax->getColumns();
 
-            return "popups/discount_groups.tpl";
+            return "popups/discount_groups";
         } elseif ($iAoc == 2) {
             $oDiscountUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountUsersAjax->getColumns();
 
-            return "popups/discount_users.tpl";
+            return "popups/discount_users";
         }
 
-        return "discount_users.tpl";
+        return "discount_users";
     }
 }

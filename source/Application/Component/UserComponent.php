@@ -163,7 +163,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
             Registry::getUtils()->redirect($sUrl, true, 302);
         }
 
@@ -222,7 +222,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Special functionality which is performed after user logs in (or user is created without pass).
      * Performes additional checking if user is not BLOCKED
      * (\OxidEsales\Eshop\Application\Model\User::InGroup("oxidblocked")) - if yes - redirects to blocked user
-     * page ("cl=content&tpl=user_blocked.tpl").
+     * page ("cl=content&tpl=user_blocked").
      * Stores cookie info if user confirmed in login screen.
      * Then loads delivery info and forces basket to recalculate
      * (\OxidEsales\Eshop\Core\Session::getBasket() + oBasket::blCalcNeeded = true). Returns
@@ -243,7 +243,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
             Registry::getUtils()->redirect($sUrl, true, 302);
         }
 

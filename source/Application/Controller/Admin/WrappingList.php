@@ -30,7 +30,7 @@ class WrappingList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "user_list.tpl".
+     * file "user_list".
      *
      * @return string
      */
@@ -38,6 +38,6 @@ class WrappingList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     {
         parent::render();
 
-        return "wrapping_list.tpl";
+        return "wrapping_list";
     }
 }

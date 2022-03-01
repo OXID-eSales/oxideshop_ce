@@ -17,7 +17,7 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = "category_update.tpl";
+    protected $_sThisTemplate = "category_update";
 
     /**
      * Category list object

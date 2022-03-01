@@ -20,7 +20,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 {
     /**
      * Loads contents info, passes it to Smarty engine and
-     * returns name of template file "content_main.tpl".
+     * returns name of template file "content_main".
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $this->_aViewData["cattree"] = $oCatTree;
 
         // generate editor
-        $sCSS = "content.tpl.css";
+        $sCSS = "content.css";
         if ($oContent->oxcontents__oxsnippet->value == '1') {
             $sCSS = null;
         }
@@ -81,7 +81,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oContent, "oxcontents__oxcontent", $sCSS);
         $this->_aViewData["afolder"] = $myConfig->getConfigParam('aCMSfolder');
 
-        return "content_main.tpl";
+        return "content_main";
     }
 
     /**

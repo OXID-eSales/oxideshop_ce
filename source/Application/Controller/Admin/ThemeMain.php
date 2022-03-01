@@ -22,7 +22,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 {
     /**
      * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
+     * passes data to Smarty engine and returns name of template file "deliveryset_main".
      *
      * @return string
      */
@@ -48,7 +48,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
-        return 'theme_main.tpl';
+        return 'theme_main';
     }
 
     /**

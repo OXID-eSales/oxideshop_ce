@@ -34,133 +34,133 @@ class Email extends PHPMailer
      *
      * @var string
      */
-    protected $_sForgotPwdTemplate = "email/html/forgotpwd.tpl";
+    protected $_sForgotPwdTemplate = "email/html/forgotpwd";
 
     /**
      * Password reminder plain mail template
      *
      * @var string
      */
-    protected $_sForgotPwdTemplatePlain = "email/plain/forgotpwd.tpl";
+    protected $_sForgotPwdTemplatePlain = "email/plain/forgotpwd";
 
     /**
      * Newsletter registration mail template
      *
      * @var string
      */
-    protected $_sNewsletterOptInTemplate = "email/html/newsletteroptin.tpl";
+    protected $_sNewsletterOptInTemplate = "email/html/newsletteroptin";
 
     /**
      * Newsletter registration plain mail template
      *
      * @var string
      */
-    protected $_sNewsletterOptInTemplatePlain = "email/plain/newsletteroptin.tpl";
+    protected $_sNewsletterOptInTemplatePlain = "email/plain/newsletteroptin";
 
     /**
      * Product suggest mail template
      *
      * @var string
      */
-    protected $_sInviteTemplate = "email/html/invite.tpl";
+    protected $_sInviteTemplate = "email/html/invite";
 
     /**
      * Product suggest plain mail template
      *
      * @var string
      */
-    protected $_sInviteTemplatePlain = "email/plain/invite.tpl";
+    protected $_sInviteTemplatePlain = "email/plain/invite";
 
     /**
      * Send order notification mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplate = "email/html/ordershipped.tpl";
+    protected $_sSenedNowTemplate = "email/html/ordershipped";
 
     /**
      * Send order notification plain mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplatePlain = "email/plain/ordershipped.tpl";
+    protected $_sSenedNowTemplatePlain = "email/plain/ordershipped";
 
     /**
      * Send ordered download links mail template
      *
      * @var string
      */
-    protected $_sSendDownloadsTemplate = "email/html/senddownloadlinks.tpl";
+    protected $_sSendDownloadsTemplate = "email/html/senddownloadlinks";
 
     /**
      * Send ordered download links plain mail template
      *
      * @var string
      */
-    protected $_sSendDownloadsTemplatePlain = "email/plain/senddownloadlinks.tpl";
+    protected $_sSendDownloadsTemplatePlain = "email/plain/senddownloadlinks";
 
     /**
      * Wishlist mail template
      *
      * @var string
      */
-    protected $_sWishListTemplate = "email/html/wishlist.tpl";
+    protected $_sWishListTemplate = "email/html/wishlist";
 
     /**
      * Wishlist plain mail template
      *
      * @var string
      */
-    protected $_sWishListTemplatePlain = "email/plain/wishlist.tpl";
+    protected $_sWishListTemplatePlain = "email/plain/wishlist";
 
     /**
      * Name of template used during registration
      *
      * @var string
      */
-    protected $_sRegisterTemplate = "email/html/register.tpl";
+    protected $_sRegisterTemplate = "email/html/register";
 
     /**
      * Name of plain template used during registration
      *
      * @var string
      */
-    protected $_sRegisterTemplatePlain = "email/plain/register.tpl";
+    protected $_sRegisterTemplatePlain = "email/plain/register";
 
     /**
      * Name of template used by reminder function (article).
      *
      * @var string
      */
-    protected $_sReminderMailTemplate = "email/html/owner_reminder.tpl";
+    protected $_sReminderMailTemplate = "email/html/owner_reminder";
 
     /**
      * Order e-mail for customer HTML template
      *
      * @var string
      */
-    protected $_sOrderUserTemplate = "email/html/order_cust.tpl";
+    protected $_sOrderUserTemplate = "email/html/order_cust";
 
     /**
      * Order e-mail for customer plain text template
      *
      * @var string
      */
-    protected $_sOrderUserPlainTemplate = "email/plain/order_cust.tpl";
+    protected $_sOrderUserPlainTemplate = "email/plain/order_cust";
 
     /**
      * Order e-mail for shop owner HTML template
      *
      * @var string
      */
-    protected $_sOrderOwnerTemplate = "email/html/order_owner.tpl";
+    protected $_sOrderOwnerTemplate = "email/html/order_owner";
 
     /**
      * Order e-mail for shop owner plain text template
      *
      * @var string
      */
-    protected $_sOrderOwnerPlainTemplate = "email/plain/order_owner.tpl";
+    protected $_sOrderOwnerPlainTemplate = "email/plain/order_owner";
 
     // #586A - additional templates for more customizable subjects
 
@@ -169,28 +169,28 @@ class Email extends PHPMailer
      *
      * @var string
      */
-    protected $_sOrderUserSubjectTemplate = "email/html/order_cust_subj.tpl";
+    protected $_sOrderUserSubjectTemplate = "email/html/order_cust_subj";
 
     /**
      * Order e-mail subject for shop owner template
      *
      * @var string
      */
-    protected $_sOrderOwnerSubjectTemplate = "email/html/order_owner_subj.tpl";
+    protected $_sOrderOwnerSubjectTemplate = "email/html/order_owner_subj";
 
     /**
      * Price alarm e-mail for shop owner template
      *
      * @var string
      */
-    protected $_sOwnerPricealarmTemplate = "email/html/pricealarm_owner.tpl";
+    protected $_sOwnerPricealarmTemplate = "email/html/pricealarm_owner";
 
     /**
      * Price alarm e-mail for shop owner template
      *
      * @var string
      */
-    protected $_sPricealamrCustomerTemplate = "email_pricealarm_customer.tpl";
+    protected $_sPricealamrCustomerTemplate = "email_pricealarm_customer";
 
     /**
      * Language specific viewconfig object array containing view data, view config and shop object

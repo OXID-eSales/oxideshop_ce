@@ -20,7 +20,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 {
     /**
      * Executes parent method parent::render(), creates delivery category tree,
-     * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
+     * passes data to Smarty engine and returns name of template file "delivery_main".
      *
      * @return string
      */
@@ -81,10 +81,10 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oDeliveryMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryMainAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
-            return "popups/delivery_main.tpl";
+            return "popups/delivery_main";
         }
 
-        return "delivery_main.tpl";
+        return "delivery_main";
     }
 
     /**

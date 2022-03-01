@@ -20,7 +20,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Executes parent method parent::render(), creates oxpricealarm object
      * and passes it's data to Smarty engine. Returns name of template file
-     * "pricealarm_main.tpl".
+     * "pricealarm_main".
      *
      * @return string
      */
@@ -71,14 +71,14 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                 $oLang->setTplLanguage($iOldLang);
             }
 
-            $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oLetter, "oxpricealarm__oxlongdesc", "details.tpl.css");
+            $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oLetter, "oxpricealarm__oxlongdesc", "details.css");
             $this->_aViewData["edit"] = $oPricealarm;
             $this->_aViewData["actshop"] = $config->getShopId();
         }
 
         parent::render();
 
-        return "pricealarm_main.tpl";
+        return "pricealarm_main";
     }
 
     /**

@@ -18,7 +18,7 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 {
     /**
      * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "imex_export.tpl".
+     * and returns name of template file "imex_export".
      *
      * @return string
      */
@@ -37,6 +37,6 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $blShowUpdateViews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowUpdateViews');
         $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 
-        return "tools_main.tpl";
+        return "tools_main";
     }
 }

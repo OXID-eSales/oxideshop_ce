@@ -20,7 +20,7 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 {
     /**
      * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
+     * passes data to Smarty engine and returns name of template file "deliveryset_main".
      *
      * @return string
      */
@@ -64,10 +64,10 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $oDeliverysetMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetMainAjax->getColumns();
 
-            return "popups/deliveryset_main.tpl";
+            return "popups/deliveryset_main";
         }
 
-        return "deliveryset_main.tpl";
+        return "deliveryset_main";
     }
 
     /**

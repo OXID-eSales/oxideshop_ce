@@ -35,7 +35,7 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
 
     /**
      * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "list_review.tpl".
+     * and returns name of template file "list_review".
      *
      * @return string
      */
@@ -44,6 +44,6 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
         parent::render();
         $this->_aViewData["menustructure"] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
 
-        return "list_user.tpl";
+        return "list_user";
     }
 }

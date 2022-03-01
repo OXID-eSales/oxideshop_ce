@@ -22,7 +22,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @var string
      */
-    protected $_sThisTemplate = 'article_files.tpl';
+    protected $_sThisTemplate = 'article_files';
 
     /**
      * Stores editing article
@@ -33,7 +33,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
     /**
      * Collects available article axtended parameters, passes them to
-     * Smarty engine and returns tamplate file name "article_extend.tpl".
+     * Smarty engine and returns tamplate file name "article_extend".
      *
      * @return string
      */

@@ -27,7 +27,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/shop/start.tpl';
+    protected $_sThisTemplate = 'page/shop/start';
 
     /**
      * Start page meta description CMS ident
@@ -109,7 +109,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     public function render()
     {
         if (Registry::getRequest()->getRequestEscapedParameter('showexceptionpage') == '1') {
-            return 'message/exception.tpl';
+            return 'message/exception';
         }
 
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

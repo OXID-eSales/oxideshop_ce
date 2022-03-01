@@ -14,7 +14,7 @@ class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 {
     /**
      * Loads article data from DB, passes it to Smarty engine, returns name
-     * of template file "article_userdef.tpl".
+     * of template file "article_userdef".
      *
      * @return string
      */
@@ -35,6 +35,6 @@ class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oArticle->load($soxId);
         }
 
-        return "article_userdef.tpl";
+        return "article_userdef";
     }
 }

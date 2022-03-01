@@ -20,7 +20,7 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     /**
      * Executes parent method parent::render(), creates oxgroups object,
      * passes data to Smarty engine and returns name of template file
-     * "usergroup_main.tpl".
+     * "usergroup_main".
      *
      * @return string
      */
@@ -60,10 +60,10 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oUsergroupMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserGroupMainAjax::class);
             $this->_aViewData['oxajax'] = $oUsergroupMainAjax->getColumns();
 
-            return "popups/usergroup_main.tpl";
+            return "popups/usergroup_main";
         }
 
-        return "usergroup_main.tpl";
+        return "usergroup_main";
     }
 
     /**

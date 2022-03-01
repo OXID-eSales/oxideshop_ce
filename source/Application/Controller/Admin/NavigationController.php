@@ -25,7 +25,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
     /**
      * Executes parent method parent::render(), generates menu HTML code,
-     * passes data to Smarty engine, returns name of template file "nav_frame.tpl".
+     * passes data to Smarty engine, returns name of template file "nav_frame".
      *
      * @return string
      */
@@ -37,7 +37,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         $sItem = Registry::getRequest()->getRequestEscapedParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
-            $sItem = "nav_frame.tpl";
+            $sItem = "nav_frame";
             $aFavorites = Registry::getRequest()->getRequestEscapedParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
@@ -54,7 +54,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             //checking requirements if this is not nav frame reload
             if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
-                if ('home.tpl' == $sItem) {
+                if ('home' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->doStartUpChecks();
                 }
             } else {

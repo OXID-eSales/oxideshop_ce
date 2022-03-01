@@ -19,7 +19,7 @@ class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     /**
      * Executes parent method parent::render(), creates oxuser, oxlist and
      * oxRemark objects, passes data to Smarty engine and returns name of
-     * template file "user_remark.tpl".
+     * template file "user_remark".
      *
      * @return string
      */
@@ -60,7 +60,7 @@ class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             }
         }
 
-        return "user_remark.tpl";
+        return "user_remark";
     }
 
     /**

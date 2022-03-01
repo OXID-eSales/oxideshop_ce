@@ -42,7 +42,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
 
     /**
      * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "list_review.tpl".
+     * and returns name of template file "list_review".
      *
      * @return string
      */
@@ -54,7 +54,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $this->_aViewData["articleListTable"] = $tableViewNameGenerator->getViewName('oxarticles');
 
-        return "list_review.tpl";
+        return "list_review";
     }
 
     /**

@@ -20,7 +20,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 {
     /**
      * Loads article Attributes info, passes it to Smarty engine and
-     * returns name of template file "attribute_main.tpl".
+     * returns name of template file "attribute_main".
      *
      * @return string
      */
@@ -71,10 +71,10 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oAttributeMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 
-            return "popups/attribute_main.tpl";
+            return "popups/attribute_main";
         }
 
-        return "attribute_main.tpl";
+        return "attribute_main";
     }
 
     /**

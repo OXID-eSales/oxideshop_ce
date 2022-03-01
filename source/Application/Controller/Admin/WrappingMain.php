@@ -20,7 +20,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Executes parent method parent::render(), creates oxwrapping, oxshops and oxlist
      * objects, passes data to Smarty engine and returns name of template
-     * file "wrapping_main.tpl".
+     * file "wrapping_main".
      *
      * @return string
      */
@@ -70,7 +70,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
         }
 
-        return "wrapping_main.tpl";
+        return "wrapping_main";
     }
 
     /**

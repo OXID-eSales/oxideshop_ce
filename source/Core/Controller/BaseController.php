@@ -722,7 +722,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Template variable getter. Returns if newsletter can be displayed (for _right.tpl)
+     * Template variable getter. Returns if newsletter can be displayed (for _right)
      *
      * @return integer
      */

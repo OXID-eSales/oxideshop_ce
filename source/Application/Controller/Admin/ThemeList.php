@@ -29,6 +29,6 @@ class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         // assign our list
         $this->_aViewData['mylist'] = $oTheme->getList();
 
-        return 'theme_list.tpl';
+        return 'theme_list';
     }
 }

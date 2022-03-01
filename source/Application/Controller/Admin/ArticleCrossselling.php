@@ -20,7 +20,7 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * Collects article crosselling and attributes information, passes
      * them to Smarty engine and returns name or template file
-     * "article_crossselling.tpl".
+     * "article_crossselling".
      *
      * @return string
      */
@@ -51,14 +51,14 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
             $oArticleCrossellingAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class);
             $this->_aViewData['oxajax'] = $oArticleCrossellingAjax->getColumns();
 
-            return "popups/article_crossselling.tpl";
+            return "popups/article_crossselling";
         } elseif ($iAoc == 2) {
             $oArticleAccessoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class);
             $this->_aViewData['oxajax'] = $oArticleAccessoriesAjax->getColumns();
 
-            return "popups/article_accessories.tpl";
+            return "popups/article_accessories";
         }
 
-        return "article_crossselling.tpl";
+        return "article_crossselling";
     }
 }

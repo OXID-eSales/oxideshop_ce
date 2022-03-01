@@ -19,7 +19,7 @@ class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\A
 {
     /**
      * Loads Attribute categories info, passes it to Smarty engine and
-     * returns name of template file "attribute_main.tpl".
+     * returns name of template file "attribute_main".
      *
      * @return string
      */
@@ -40,9 +40,9 @@ class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\A
             $oAttributeCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeCategoryAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 
-            return "popups/attribute_category.tpl";
+            return "popups/attribute_category";
         }
 
-        return "attribute_category.tpl";
+        return "attribute_category";
     }
 }

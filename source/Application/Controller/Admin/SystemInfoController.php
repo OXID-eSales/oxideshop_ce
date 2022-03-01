@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 
 /**
  * Admin systeminfo manager.
- * Returns template "systeminfo.tpl" and phphinfo() result to frame.
+ * Returns template "systeminfo" and phphinfo() result to frame.
  */
 class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
@@ -59,7 +59,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             ];
 
             ob_start();
-            echo $this->getRenderer()->renderTemplate("systeminfo.tpl", $context);
+            echo $this->getRenderer()->renderTemplate("systeminfo", $context);
             echo("<br><br>");
 
             phpinfo();

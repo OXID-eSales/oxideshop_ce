@@ -22,7 +22,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
     /**
      * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
+     * passes data to Smarty engine and returns name of template file "deliveryset_main".
      *
      * @return string
      */
@@ -56,7 +56,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
-        return 'theme_config.tpl';
+        return 'theme_config';
     }
 
     /**

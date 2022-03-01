@@ -19,7 +19,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 {
     /**
      * Loads article overview data, passes to Smarty engine and returns name
-     * of template file "article_overview.tpl".
+     * of template file "article_overview".
      *
      * @return string
      */
@@ -78,7 +78,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $this->_aViewData["afolder"] = $myConfig->getConfigParam('aProductfolder');
         $this->_aViewData["aSubclass"] = $myConfig->getConfigParam('aArticleClasses');
 
-        return "article_overview.tpl";
+        return "article_overview";
     }
 
     /**

@@ -7,20 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxSysRequirements;
-
 /**
  * Collects System information.
  * Admin Menu: Service -> System Requirements -> Main.
  */
 class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads article Mercators info, passes it to Smarty engine and
-     * returns name of template file "Mercator_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

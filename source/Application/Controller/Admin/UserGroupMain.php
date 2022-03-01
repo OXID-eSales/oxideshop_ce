@@ -17,13 +17,7 @@ use stdClass;
  */
 class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxgroups object,
-     * passes data to Smarty engine and returns name of template file
-     * "usergroup_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

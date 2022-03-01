@@ -23,12 +23,7 @@ class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected $_oEditObject = null;
 
-    /**
-     * Executes parent method parent::render(), passes data
-     * to Smarty engine, returns name of template file "order_downloads".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

@@ -18,12 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
  */
 class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         if (Registry::getRequest()->getRequestEscapedParameter("moduleId")) {

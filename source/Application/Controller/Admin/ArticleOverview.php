@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads article overview data, passes to Smarty engine and returns name
-     * of template file "article_overview".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

@@ -28,13 +28,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         'oxorder__oxpaid'
     ];
 
-    /**
-     * Executes parent method parent::render(), creates oxorder and
-     * oxuserpayment objects, passes data to Smarty engine and returns
-     * name of template file "order_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

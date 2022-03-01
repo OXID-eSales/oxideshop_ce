@@ -17,13 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Collects article crosselling and attributes information, passes
-     * them to Smarty engine and returns name or template file
-     * "article_crossselling".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

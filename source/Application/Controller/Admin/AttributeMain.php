@@ -18,12 +18,7 @@ use stdClass;
  */
 class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads article Attributes info, passes it to Smarty engine and
-     * returns name of template file "attribute_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

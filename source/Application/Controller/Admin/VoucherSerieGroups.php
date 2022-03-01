@@ -17,13 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxlist and oxvoucherserie
-     * objects, passes it's data to Smarty engine and returns name of template
-     * file "voucherserie_groups".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

@@ -16,13 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxorder object
-     * and passes it's data to Smarty engine. Returns name of template
-     * file "order_address".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

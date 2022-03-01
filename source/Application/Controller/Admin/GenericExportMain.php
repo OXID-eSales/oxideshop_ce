@@ -33,12 +33,7 @@ class GenericExportMain extends \OxidEsales\Eshop\Application\Controller\Admin\D
      */
     protected $_sThisTemplate = "dyn_exportdefault";
 
-    /**
-     * Creates shop object, passes shop data to Smarty engine and returns name of
-     * template file
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $this->createMainExportView();

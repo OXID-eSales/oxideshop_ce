@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ArticleAttribute extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Collects article attributes and selection lists, passes them to Smarty engine,
-     * returns name of template file "article_attribute".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

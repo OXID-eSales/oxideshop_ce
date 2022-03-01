@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render()
-     * passes data to Smarty engine and returns name of template file "deliveryset_payment".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

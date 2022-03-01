@@ -23,12 +23,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected $_sAllowedHost = "http://admin.oxid-esales.com";
 
-    /**
-     * Executes parent method parent::render(), generates menu HTML code,
-     * passes data to Smarty engine, returns name of template file "nav_frame".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

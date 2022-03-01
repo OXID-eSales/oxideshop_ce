@@ -20,13 +20,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 {
     private $_sSaveError = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxuser, oxshops and oxlist
-     * objects, passes data to Smarty engine and returns name of template
-     * file "user_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

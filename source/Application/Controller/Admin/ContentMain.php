@@ -18,12 +18,7 @@ use OxidEsales\Eshop\Core\Str;
  */
 class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads contents info, passes it to Smarty engine and
-     * returns name of template file "content_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

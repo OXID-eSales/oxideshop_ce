@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates delivery category tree,
-     * passes data to Smarty engine and returns name of template file "delivery_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

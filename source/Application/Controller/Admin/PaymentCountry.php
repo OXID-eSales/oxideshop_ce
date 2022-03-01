@@ -17,13 +17,7 @@ use stdClass;
  */
 class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxlist object,
-     * passes it's data to Smarty engine and retutns name of template
-     * file "payment_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

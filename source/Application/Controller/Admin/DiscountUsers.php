@@ -19,12 +19,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates discount category tree,
-     * passes data to Smarty engine and returns name of template file "discount_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

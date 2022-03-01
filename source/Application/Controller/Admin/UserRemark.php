@@ -16,13 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxuser, oxlist and
-     * oxRemark objects, passes data to Smarty engine and returns name of
-     * template file "user_remark".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

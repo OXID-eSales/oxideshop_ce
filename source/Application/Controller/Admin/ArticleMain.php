@@ -20,12 +20,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads article parameters and passes them to Smarty engine, returns
-     * name of template file "article_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

@@ -33,12 +33,7 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
         oxAdminList::init();
     }
 
-    /**
-     * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "list_review".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

@@ -28,12 +28,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     protected $_aUnitsArray = null;
 
-    /**
-     * Collects available article extended parameters, passes them to
-     * Smarty engine and returns template file name "article_extend".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

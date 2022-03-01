@@ -40,12 +40,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         return $this->getUserDefListSize();
     }
 
-    /**
-     * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "list_review".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         oxAdminList::render();

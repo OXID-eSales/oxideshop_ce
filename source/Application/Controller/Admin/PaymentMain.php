@@ -22,13 +22,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected $_aFieldArray = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxlist object,
-     * passes it's data to Smarty engine and retutns name of template
-     * file "payment_main".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

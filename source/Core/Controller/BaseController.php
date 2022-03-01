@@ -237,8 +237,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns name of template to render
-     *
+     * Entry point to pass controller-specific data to the view.
      * @return string current view template file name
      */
     public function render()

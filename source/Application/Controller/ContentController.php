@@ -118,13 +118,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         return $this->_sViewId;
     }
 
-    /**
-     * Executes parent::render(), passes template variables to
-     * template engine and generates content. Returns the name
-     * of template to render content::_sThisTemplate
-     *
-     * @return  string  $this->_sThisTemplate   current template file name
-     */
+    /** @inheritdoc  */
     public function render()
     {
         parent::render();

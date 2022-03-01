@@ -152,8 +152,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * Sets some global parameters to Smarty engine (such as self link, etc.), returns
-     * modified shop object.
+     * Sets global parameters (such as self link, etc.) and returns modified shop object.
      *
      * @param object $oShop Object to modify some parameters
      *
@@ -247,12 +246,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $myUtilsServer->setOxCookie('oxidadminhistory', implode('|', $aHistory));
     }
 
-    /**
-     * Executes parent method parent::render(), passes configuration data to
-     * Smarty engine.
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $sReturn = parent::render();

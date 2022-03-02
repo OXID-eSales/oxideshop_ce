@@ -6,6 +6,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxcmp_user;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Session;
+use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Application\Component\UserComponent;
 use oxRegistry;
 
 require_once 'UserTestCase.php';
@@ -43,6 +47,21 @@ class RegistrationTest extends UserTestCase
         $this->_login();
 
         $this->assertSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
+    }
+
+    public function testRegisterWithoutCsrf()
+    {
+        $session = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
+        $session->method('checkSessionChallenge')->willReturn(False);
+
+        $utilsView = $this->createPartialMock(UtilsView::class, ['addErrorToDisplay']);
+        $utilsView->expects($this->once())->method('addErrorToDisplay')->with('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
+        Registry::set(UtilsView::class, $utilsView);
+        Registry::set(Session::class, $session);
+
+        $userView = oxNew(UserComponent::class);
+        $userView->createUser();
     }
 
     /**

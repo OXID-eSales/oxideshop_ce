@@ -21,7 +21,7 @@ class CookieNoteTest extends \OxidTestCase
     public function testRender()
     {
         $oCookieNote = oxNew('oxwCookieNote');
-        $this->assertEquals('widget/header/cookienote.tpl', $oCookieNote->render());
+        $this->assertEquals('widget/header/cookienote', $oCookieNote->render());
     }
 
     /**

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
+
 use function str_ends_with;
 
 final class TemplateFileResolver implements TemplateFileResolverInterface
@@ -26,7 +27,7 @@ final class TemplateFileResolver implements TemplateFileResolverInterface
     public function getFilename(string $templateName): string
     {
         $this->validateTemplateName($templateName);
-        return $this->convertToFilename($templateName);
+        return $this->addExtension($templateName);
     }
 
     private function validateTemplateName(string $templateName): void
@@ -36,7 +37,7 @@ final class TemplateFileResolver implements TemplateFileResolverInterface
         }
     }
 
-    private function convertToFilename(string $templateName): string
+    private function addExtension(string $templateName): string
     {
         return str_ends_with($templateName, $this->filenameExtension)
             ? $templateName

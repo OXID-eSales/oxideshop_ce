@@ -63,7 +63,7 @@ class LanguageListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Language_List');
-        $this->assertEquals('language_list.tpl', $oView->render());
+        $this->assertEquals('language_list', $oView->render());
     }
 
     /**

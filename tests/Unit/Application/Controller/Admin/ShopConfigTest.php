@@ -31,7 +31,7 @@ class ShopConfigTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals('shop_config.tpl', $oView->render());
+        $this->assertEquals('shop_config', $oView->render());
     }
 
     public function testSaveConfVars(): void

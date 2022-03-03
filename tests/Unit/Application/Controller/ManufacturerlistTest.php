@@ -53,7 +53,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oView->expects($this->once())->method('processListArticles');
         $oView->expects($this->once())->method('checkRequestedPage');
 
-        $this->assertEquals("page/list/list.tpl", $oView->render());
+        $this->assertEquals("page/list/list", $oView->render());
     }
 
     /**
@@ -74,7 +74,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
         $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
 
-        $this->assertEquals("page/list/list.tpl", $oView->render());
+        $this->assertEquals("page/list/list", $oView->render());
     }
 
     /**

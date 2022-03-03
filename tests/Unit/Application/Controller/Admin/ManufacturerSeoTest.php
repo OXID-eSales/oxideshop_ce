@@ -40,7 +40,7 @@ class ManufacturerSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertEquals('object_seo.tpl', $oView->render());
+        $this->assertEquals('object_seo', $oView->render());
     }
 
     /**

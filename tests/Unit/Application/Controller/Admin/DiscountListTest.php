@@ -35,6 +35,6 @@ class DiscountListTest extends \OxidTestCase
         $this->assertEquals("oxdiscount", $oView->getNonPublicVar("_sListClass"));
         $this->assertEquals("oxdiscountlist", $oView->getNonPublicVar("_sListType"));
         $this->assertEquals(array('oxdiscount' => array("oxsort" => "asc")), $oView->getListSorting());
-        $this->assertEquals('discount_list.tpl', $oView->render());
+        $this->assertEquals('discount_list', $oView->render());
     }
 }

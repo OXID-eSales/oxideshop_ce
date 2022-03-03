@@ -41,7 +41,7 @@ class VendorSeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Vendor_Seo');
-        $this->assertEquals('object_seo.tpl', $oView->render());
+        $this->assertEquals('object_seo', $oView->render());
     }
 
     /**

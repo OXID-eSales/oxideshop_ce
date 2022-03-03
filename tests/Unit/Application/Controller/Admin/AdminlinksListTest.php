@@ -35,6 +35,6 @@ class AdminlinksListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Adminlinks_List');
-        $this->assertEquals('adminlinks_list.tpl', $oView->render());
+        $this->assertEquals('adminlinks_list', $oView->render());
     }
 }

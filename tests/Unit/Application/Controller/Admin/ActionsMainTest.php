@@ -34,7 +34,7 @@ class ActionsMainTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals("actions_main.tpl", $sTplName);
+        $this->assertEquals("actions_main", $sTplName);
     }
 
     /**
@@ -54,7 +54,7 @@ class ActionsMainTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
-        $this->assertEquals("actions_main.tpl", $sTplName);
+        $this->assertEquals("actions_main", $sTplName);
     }
 
     /**
@@ -71,7 +71,7 @@ class ActionsMainTest extends \OxidTestCase
         $oView = oxNew('Actions_Main');
         $sTplName = $oView->render();
 
-        $this->assertEquals("popups/actions_main.tpl", $sTplName);
+        $this->assertEquals("popups/actions_main", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -105,7 +105,7 @@ class ActionsMainTest extends \OxidTestCase
         $sTplName = $oView->render();
 
 
-        $this->assertEquals("popups/actions_article.tpl", $sTplName);
+        $this->assertEquals("popups/actions_article", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -135,7 +135,7 @@ class ActionsMainTest extends \OxidTestCase
         $sTplName = $oView->render();
 
 
-        $this->assertEquals("popups/actions_groups.tpl", $sTplName);
+        $this->assertEquals("popups/actions_groups", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -164,7 +164,7 @@ class ActionsMainTest extends \OxidTestCase
         $oView->expects($this->once())->method('generateTextEditor')->will($this->returnValue("sHtmlEditor"));
         $sTplName = $oView->render();
 
-        $this->assertEquals("actions_main.tpl", $sTplName);
+        $this->assertEquals("actions_main", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -222,14 +222,14 @@ class ActionsMainTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "generateTextEditor"));
         $oView->expects($this->once())->method('getViewDataElement')->with($this->equalTo("edit"))->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.tpl.css"));
+        $oView->expects($this->once())->method('generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.css"));
 
         $sTplName = $oView->render();
 
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals("actions_main.tpl", $sTplName);
+        $this->assertEquals("actions_main", $sTplName);
     }
 
     /**

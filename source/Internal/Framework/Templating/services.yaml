@@ -70,3 +70,7 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
       - '@oxid_esales.symfony.file_system'
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
+    public: true

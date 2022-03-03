@@ -175,7 +175,7 @@ class UserTest extends \OxidTestCase
     public function testRender()
     {
         $oUserView = oxNew('User');
-        $this->assertEquals('page/checkout/user.tpl', $oUserView->render());
+        $this->assertEquals('page/checkout/user', $oUserView->render());
     }
 
 

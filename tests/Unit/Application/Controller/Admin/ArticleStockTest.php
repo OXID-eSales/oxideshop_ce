@@ -47,7 +47,7 @@ class ArticleStockTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertEquals('article_stock.tpl', $sTplName);
+        $this->assertEquals('article_stock', $sTplName);
     }
 
     /**

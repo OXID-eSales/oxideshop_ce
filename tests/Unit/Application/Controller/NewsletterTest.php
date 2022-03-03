@@ -344,7 +344,7 @@ class NewsletterTest extends \OxidTestCase
         $oTestNews->expects($this->once())->method('getNewsletterStatus')->will($this->returnValue(4));
         $oTestNews->expects($this->once())->method('getRegParams')->will($this->returnValue(5));
 
-        $this->assertEquals('page/info/newsletter.tpl', $oTestNews->render());
+        $this->assertEquals('page/info/newsletter', $oTestNews->render());
 
         $this->assertEquals('1', $oTestNews->getTopStartArticle());
         $this->assertEquals('2', $oTestNews->getTopStartActionArticles());

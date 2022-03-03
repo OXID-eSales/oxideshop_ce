@@ -22,7 +22,7 @@ class ThemeListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Theme_List');
-        $this->assertEquals('theme_list.tpl', $oView->render());
+        $this->assertEquals('theme_list', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['mylist']));

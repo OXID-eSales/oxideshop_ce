@@ -30,7 +30,7 @@ class ArticleVariantTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Article_Variant');
-        $this->assertEquals('article_variant.tpl', $oView->render());
+        $this->assertEquals('article_variant', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Article);
@@ -49,7 +49,7 @@ class ArticleVariantTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Article_Variant');
-        $this->assertEquals('article_variant.tpl', $oView->render());
+        $this->assertEquals('article_variant', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Article);

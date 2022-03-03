@@ -26,7 +26,7 @@ class UserArticleTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('User_Article');
-        $this->assertEquals('user_article.tpl', $oView->render());
+        $this->assertEquals('user_article', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oArticlelist']));
         $this->assertTrue($aViewData['oArticlelist'] instanceof orderarticlelist);

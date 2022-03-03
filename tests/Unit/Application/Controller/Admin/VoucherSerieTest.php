@@ -22,6 +22,6 @@ class VoucherSerieTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('VoucherSerie');
-        $this->assertEquals('voucherserie.tpl', $oView->render());
+        $this->assertEquals('voucherserie', $oView->render());
     }
 }

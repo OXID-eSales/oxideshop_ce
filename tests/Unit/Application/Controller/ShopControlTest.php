@@ -387,7 +387,7 @@ class ShopControlTest extends \OxidTestCase
         $this->setRequestParameter('renderPartial', 'asd');
 
         $sTplPath = $this->getConfig()->getConfigParam('sShopDir') . "/Application/views/";
-        $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket.tpl";
+        $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket";
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTemplatePath", "pageClose"));
         $oConfig->expects($this->any())->method('getTemplatePath')->will($this->returnValue($sTplPath));
@@ -413,7 +413,7 @@ class ShopControlTest extends \OxidTestCase
         $oOut->method('sendHeaders')->will($this->returnValue(null));
         $oOut->method('flushOutput')->will($this->returnValue(null));
 
-        $oSmarty = $this->getSmartyMock('page/info/content.tpl');
+        $oSmarty = $this->getSmartyMock('page/info/content');
 
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSmarty'));
         $oUtilsView->expects($this->any())->method('getSmarty')->will($this->returnValue($oSmarty));
@@ -630,7 +630,7 @@ class ShopControlTest extends \OxidTestCase
     {
         $oSmarty = $this->getMock("Smarty", array('fetch'));
         $oSmarty->expects($this->once())->method('fetch')
-            ->with($this->equalTo($expectedTemplate))
+            ->with($this->equalTo($expectedTemplate . '.tpl'))
             ->will($this->returnValue('string'));
 
         return $oSmarty;

@@ -31,7 +31,7 @@ class UserRemarkTest extends \OxidTestCase
         $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = oxNew('user_remark');
-        $this->assertEquals("user_remark.tpl", $oView->render());
+        $this->assertEquals("user_remark", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof user);

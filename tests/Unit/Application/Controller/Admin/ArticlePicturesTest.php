@@ -77,7 +77,7 @@ class ArticlePicturesTest extends \OxidTestCase
         $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertTrue($aViewData["parentarticle"] instanceof Article);
 
-        $this->assertEquals('article_pictures.tpl', $sTplName);
+        $this->assertEquals('article_pictures', $sTplName);
     }
 
     /**

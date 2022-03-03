@@ -29,7 +29,7 @@ class VendorMainTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMain::class, array("createCategoryTree"));
         $oView->expects($this->once())->method('createCategoryTree');
-        $this->assertEquals('vendor_main.tpl', $oView->render());
+        $this->assertEquals('vendor_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof vendor);
@@ -46,7 +46,7 @@ class VendorMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Vendor_Main');
-        $this->assertEquals('vendor_main.tpl', $oView->render());
+        $this->assertEquals('vendor_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertFalse(isset($aViewData['edit']));

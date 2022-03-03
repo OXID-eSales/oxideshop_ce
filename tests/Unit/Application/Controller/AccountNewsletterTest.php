@@ -143,7 +143,7 @@ class AccountNewsletterTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountNewsletterController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -158,7 +158,7 @@ class AccountNewsletterTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountNewsletterController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/newsletter.tpl', $oView->render());
+        $this->assertEquals('page/account/newsletter', $oView->render());
     }
 
     /**

@@ -925,11 +925,11 @@ class UBaseTest extends \OxidTestCase
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue('testfnc'));
 
         $this->setRequestParameter('page', 'testpage');
-        $this->setRequestParameter('tpl', 'somedir/testtpl.tpl');
+        $this->setRequestParameter('tpl', 'somedir/testtpl');
         $this->setRequestParameter('oxloadid', 'testcontent');
         $this->setRequestParameter('pgNr', 100);
 
-        $this->assertEquals('cl=testclass&amp;fnc=testfnc&amp;page=testpage&amp;tpl=testtpl.tpl&amp;oxloadid=testcontent&amp;pgNr=100', $oView->getSeoRequestParams());
+        $this->assertEquals('cl=testclass&amp;fnc=testfnc&amp;page=testpage&amp;tpl=testtpl&amp;oxloadid=testcontent&amp;pgNr=100', $oView->getSeoRequestParams());
     }
 
     public function testGetSimilarRecommListIds()

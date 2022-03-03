@@ -21,6 +21,6 @@ class ServiceListTest extends \OxidTestCase
     public function testRender()
     {
         $oServiceList = oxNew('oxwServiceList');
-        $this->assertEquals('widget/footer/services.tpl', $oServiceList->render());
+        $this->assertEquals('widget/footer/services', $oServiceList->render());
     }
 }

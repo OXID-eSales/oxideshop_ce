@@ -92,7 +92,7 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         // testing..
         $oView = oxNew('Tools_List');
-        $this->assertEquals('tools_list.tpl', $oView->render());
+        $this->assertEquals('tools_list', $oView->render());
     }
 
     /**

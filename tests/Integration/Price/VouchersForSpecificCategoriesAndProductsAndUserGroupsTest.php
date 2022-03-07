@@ -99,19 +99,19 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $session->setBasket($basket);
 
         $basket->calculateBasket(true);
-        $this->assertSame(16.81, $basket->getNettoSum());
+        $this->assertEquals(16.81, $basket->getNettoSum());
 
         $basket->addVoucher(self::SECOND_VOUCHER_NUMBER);
 
         $basket->calculateBasket(true);
-        $this->assertSame(16.81, $basket->getNettoSum());
+        $this->assertEquals(16.81, $basket->getNettoSum());
 
         // Apply a voucher that in same category
 
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
 
         $basket->calculateBasket(true);
-        $this->assertSame(12.61, $basket->getNettoSum());
+        $this->assertEquals(12.61, $basket->getNettoSum());
     }
     public function testVoucherForSpecificProduct(): void
     {
@@ -128,18 +128,18 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $session->setBasket($basket);
 
         $basket->calculateBasket(true);
-        $this->assertSame(16.81, $basket->getNettoSum());
+        $this->assertEquals(16.81, $basket->getNettoSum());
 
         $basket->addVoucher(self::SECOND_VOUCHER_NUMBER);
 
         $basket->calculateBasket(true);
-        $this->assertSame(16.81, $basket->getNettoSum());
+        $this->assertEquals(16.81, $basket->getNettoSum());
 
         // Apply a voucher that in same category as products
 
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(12.61, $basket->getNettoSum());
+        $this->assertEquals(12.61, $basket->getNettoSum());
     }
 
     public function testVoucherForSpecificUserGroup(): void
@@ -152,11 +152,11 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket = oxNew(Basket::class);
         $basket->addToBasket(self::FIRST_ARTICLE_ID, 1);
         $basket->calculateBasket(true);
-        $this->assertSame(11.76, $basket->getNettoSum());
+        $this->assertEquals(11.76, $basket->getNettoSum());
 
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(11.76, $basket->getNettoSum());
+        $this->assertEquals(11.76, $basket->getNettoSum());
 
 
         $this->loginUser();
@@ -165,24 +165,24 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket->removeVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(7.56, $basket->getNettoSum());
-        $this->assertSame(5.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEquals(5.0, $basket->getVoucherDiscount()->getPrice());
 
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 1);
         $basket->calculateBasket(true);
-        $this->assertSame(15.97, $basket->getNettoSum());
+        $this->assertEquals(15.97, $basket->getNettoSum());
 
         // Test with another voucher in same userGroup
         $basket->addVoucher(self::SECOND_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(7.56, $basket->getNettoSum());
-        $this->assertSame(15.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEquals(15.0, $basket->getVoucherDiscount()->getPrice());
 
         // Test with increasing quantity of one of the products
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 2);
         $basket->calculateBasket(true);
-        $this->assertSame(24.37, $basket->getNettoSum());
-        $this->assertSame(15.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(24.37, $basket->getNettoSum());
+        $this->assertEquals(15.0, $basket->getVoucherDiscount()->getPrice());
     }
 
     public function testVoucherCanBeApplyOnlyOnce(): void
@@ -191,12 +191,12 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket->addToBasket(self::FIRST_ARTICLE_ID, 1);
         $basket->addToBasket(self::SECOND_ARTICLE_ID, 1);
         $basket->calculateBasket(true);
-        $this->assertSame(16.81, $basket->getNettoSum());
+        $this->assertEquals(16.81, $basket->getNettoSum());
 
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(12.61, $basket->getNettoSum());
-        $this->assertSame(5.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(12.61, $basket->getNettoSum());
+        $this->assertEquals(5.0, $basket->getVoucherDiscount()->getPrice());
     }
 
     private function createVoucherSeries(string $seriesId, int $discount, bool $calculateOnce): void
@@ -239,7 +239,6 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $user = oxNew(User::class);
         $user->setId($sTestUserId);
 
-        $user->oxuser__oxactive = new Field('1');
         $user->oxuser__oxrights = new Field('user');
         $user->oxuser__oxshopid = new Field(ShopIdCalculator::BASE_SHOP_ID);
         $user->oxuser__oxusername = new Field('testuser@oxideshop.dev');
@@ -258,7 +257,6 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $user->oxuser__oxzip = new Field('4625');
         $user->oxuser__oxsal = new Field('MRS');
         $user->oxuser__oxactive = new Field('1');
-        $user->oxuser__oxboni = new Field('1000');
         $user->oxuser__oxcreate = new Field('2015-05-20 22:10:51');
         $user->oxuser__oxregister = new Field('2015-05-20 22:10:51');
         $user->oxuser__oxboni = new Field('1000');
@@ -277,7 +275,7 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
     {
         $group = oxNew(Object2Group::class);
         $group->setId(substr_replace(Registry::getUtilsObject()->generateUId(), '_', 0, 1));
-        $group->oxobject2group__oxshopid = 1;
+        $group->oxobject2group__oxshopid = new Field('1');
         $group->oxobject2group__oxobjectid = new Field($seriesId);
         $group->oxobject2group__oxgroupsid = new Field(self::GROUP_ID);
         $group->save();

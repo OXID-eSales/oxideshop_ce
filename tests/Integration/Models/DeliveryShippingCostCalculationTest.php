@@ -199,7 +199,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $basket->calculateBasket();
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
-        $this->assertSame($data['expected_deliverycost'], $deliveryCost);
+        $this->assertEquals($data['expected_deliverycost'], $deliveryCost);
     }
 
     /**
@@ -342,7 +342,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
-        $this->assertSame($data['expected_delivery_costs'], $deliveryCost);
+        $this->assertEquals($data['expected_delivery_costs'], $deliveryCost);
     }
 
     /**
@@ -706,7 +706,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
-        $this->assertSame($data['expected_delivery_costs'], $deliveryCost);
+        $this->assertEquals($data['expected_delivery_costs'], $deliveryCost);
     }
 
 

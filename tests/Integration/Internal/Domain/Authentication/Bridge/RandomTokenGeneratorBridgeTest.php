@@ -49,6 +49,19 @@ final class RandomTokenGeneratorBridgeTest extends TestCase
         $this->cleanupTestData();
     }
 
+    public function testGetHexTokenWithFallbackWithSourceOfRandomnessWillNotWriteToLog(): void
+    {
+        $logSizeBefore = \filesize($this->logFile);
+        $this->systemSecurityChecker
+            ->method('isCryptographicallySecure')
+            ->willReturn(true);
+
+        $this->bridge->getHexTokenWithFallback(32);
+
+        $logSizeAfter = \filesize($this->logFile);
+        $this->assertEquals($logSizeBefore, $logSizeAfter);
+    }
+
     public function testGetHexTokenWithFallbackWithNoSourceOfRandomnessWillWriteToLog(): void
     {
         $logSizeBefore = \filesize($this->logFile);
@@ -71,30 +84,6 @@ final class RandomTokenGeneratorBridgeTest extends TestCase
         $token = $this->bridge->getHexTokenWithFallback(32);
 
         $this->assertTrue(ctype_xdigit($token));
-    }
-
-    public function testGetHexTokenWithFallbackAndShortToken(): void
-    {
-        $tokenLength = 1;
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(false);
-
-        $token = $this->bridge->getHexTokenWithFallback($tokenLength);
-
-        $this->assertEquals($tokenLength, strlen($token));
-    }
-
-    public function testGetHexTokenWithFallbackAndLongToken(): void
-    {
-        $tokenLength = 1024;
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(false);
-
-        $token = $this->bridge->getHexTokenWithFallback($tokenLength);
-
-        $this->assertEquals($tokenLength, strlen($token));
     }
 
     protected function mockDependencies(): void

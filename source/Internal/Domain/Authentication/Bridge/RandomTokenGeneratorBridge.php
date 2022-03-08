@@ -9,25 +9,27 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge;
 
-use OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker;
-use OxidEsales\Eshop\Core\PasswordSaltGenerator;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\FallbackTokenGenerator;
 use Psr\Log\LoggerInterface;
 
 final class RandomTokenGeneratorBridge implements RandomTokenGeneratorBridgeInterface
 {
     private RandomTokenGeneratorInterface $randomTokenGenerator;
     private SystemSecurityCheckerInterface $systemSecurityChecker;
+    private FallbackTokenGenerator $fallbackTokenGenerator;
     private LoggerInterface $logger;
 
     public function __construct(
         RandomTokenGeneratorInterface $randomTokenGenerator,
         SystemSecurityCheckerInterface $systemSecurityChecker,
+        FallbackTokenGenerator $fallbackTokenGenerator,
         LoggerInterface $logger
     ) {
         $this->randomTokenGenerator = $randomTokenGenerator;
         $this->systemSecurityChecker = $systemSecurityChecker;
+        $this->fallbackTokenGenerator = $fallbackTokenGenerator;
         $this->logger = $logger;
     }
 
@@ -49,21 +51,8 @@ final class RandomTokenGeneratorBridge implements RandomTokenGeneratorBridgeInte
             $this->logger->warning(
                 'No appropriate source of randomness was found! Please re-configure your system to enable generation of cryptographically secure values.'
             );
-            return $this->getFallbackHexToken($length);
+            return $this->fallbackTokenGenerator->getHexToken($length);
         }
         return $this->randomTokenGenerator->getHexToken($length);
-    }
-
-    private function getFallbackHexToken(int $length)
-    {
-        $generator = oxNew(
-            PasswordSaltGenerator::class,
-            oxNew(OpenSSLFunctionalityChecker::class)
-        );
-        $token = '';
-        while (strlen($token) < $length) {
-            $token .= $generator->generate();
-        }
-        return substr($token, 0, $length);
     }
 }

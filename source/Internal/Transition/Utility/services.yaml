@@ -4,3 +4,5 @@ services:
     autowire: true
   OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\Context
+
+  OxidEsales\EshopCommunity\Internal\Transition\Utility\FallbackTokenGenerator:

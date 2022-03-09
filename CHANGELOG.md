@@ -8,16 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Twig templates multi inheritance for modules
+- `Internal\Framework\Templating\Resolver\TemplateFileResolverInterface`
 
 ### Changed
-
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 - Switched to default PDO result set types when using PHP8.1
 - Switched to templating-engine agnostic names in Controller templates (e.g. `Controller::$_sThisTemplate = 'page/content'` instead of `'page/content.tpl'`)
 
 ### Fixed
-
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
 - Increase the size of OXCONTENT fields in oxcontents table [#0006831](https://bugs.oxid-esales.com/view.php?id=6831)
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
@@ -25,11 +24,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix not initialized category case possible in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
 
 ### Removed
-
+- `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
+- `Internal\Framework\Templating\Resolver\TemplateNameResolverInterface`
 - Methods:
   - `Application\Model\UserPayment`
-    - `load`
-    - `insert`
+    - `load()`
+    - `insert()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInteface::getPath()`
   - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
 
 ## [7.0.0-rc.1] - 2021-07-07

@@ -26,7 +26,7 @@ interface TemplateEngineInterface
 
     /**
      * Returns the template file extension.
-     *
+     * @deprecated method will be removed in v7.0
      * @return string
      */
     public function getDefaultFileExtension(): string;

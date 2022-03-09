@@ -114,11 +114,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
         return $this->globals;
     }
 
-    /**
-     * Returns the template file extension.
-     *
-     * @return string
-     */
+    /** @inheritDoc */
     public function getDefaultFileExtension(): string
     {
         return 'tpl';

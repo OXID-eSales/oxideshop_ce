@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
+/** @deprecated class will be changed to TemplateFileResolver in v7.0 */
 class TemplateNameResolver implements TemplateNameResolverInterface
 {
     /**

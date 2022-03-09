@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 /**
- * Class LegacyTemplateNameResolver
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver
+ * @deprecated class will be removed in v7.0
  */
 class LegacyTemplateNameResolver implements TemplateNameResolverInterface
 {

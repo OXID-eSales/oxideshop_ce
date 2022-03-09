@@ -35,7 +35,7 @@ interface TemplateLoaderInterface
 
     /**
      * Returns the path to the template.
-     *
+     * @deprecated method will be removed in v7.0
      * @param string $name A template name
      *
      * @return string

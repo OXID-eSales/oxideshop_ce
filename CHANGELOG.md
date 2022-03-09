@@ -22,13 +22,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Support for NAME constants in Event classes (`*Event::NAME`)
 - Validation for `metaDataFilePath` in metadata
-- Method:
+- Methods:
     - `Application\Model\User::getUtilsObjectInstance()`
     - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
     - `OxidEsales\EshopCommunity\Core\Email::addAttachment()`
     - `OxidEsales\EshopCommunity\Core\Email::addEmbeddedImage()`
     - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
-    - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`    
+    - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`
+    - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::getPath()`
+    - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
+- Classes:
+    - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
+    - `Internal\Framework\Templating\Resolver\TemplateNameResolver`
 - Services:
   - `utility.context.admin_log_file_path`
   - `utility.context.log_file_path`
@@ -38,6 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface`
   - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
   - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
+  - `Internal\Framework\Templating\Resolver\TemplateNameResolverInterface`
 - Properties:
   - `OxidEsales\EshopCommunity\Core\Email::$_aAttachments`
 

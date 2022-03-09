@@ -59,29 +59,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private $shopIdCalculator;
 
     /**
-     * returns existing or creates smarty object
-     * Returns smarty object. If object not yet initiated - creates it. Sets such
-     * default parameters, like cache lifetime, cache/templates directory, etc.
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @param bool $blReload set true to force smarty reload
-     *
-     * @return Smarty
-     */
-    public function getSmarty($blReload = false)
-    {
-        if (!self::$_oSmarty || $blReload) {
-            $this->_aTemplateDir = [];
-            self::$_oSmarty = new Smarty();
-            $this->_fillCommonSmartyProperties(self::$_oSmarty);
-            $this->_smartyCompileCheck(self::$_oSmarty);
-        }
-
-        return self::$_oSmarty;
-    }
-
-    /**
      * Templating instance getter
      *
      * @return TemplateRendererInterface
@@ -89,7 +66,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function getRenderer()
     {
         $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
-        $bridge->setEngine($this->getSmarty());
 
         return $bridge->getTemplateRenderer();
     }

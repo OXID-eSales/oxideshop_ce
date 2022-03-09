@@ -278,8 +278,6 @@ class Email extends PHPMailer
         $this->isHTML(true);
         $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
 
-        $this->_getSmarty();
-
         //setting default view
         $this->setViewData('oEmailView', $this);
         $this->setViewData('shopUrl', $myConfig->getShopUrl());
@@ -308,22 +306,6 @@ class Email extends PHPMailer
     }
 
     /**
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * Smarty instance getter, assigns this oxEmail instance to "oEmailView" variable
-     *
-     * @return \Smarty
-     */
-    protected function _getSmarty() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        if ($this->_oSmarty === null) {
-            $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-        }
-
-        return $this->_oSmarty;
-    }
-
-    /**
      * Templating instance getter
      *
      * @return TemplateRendererInterface
@@ -331,7 +313,6 @@ class Email extends PHPMailer
     protected function getRenderer()
     {
         $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
-        $bridge->setEngine($this->_getSmarty());
 
         return $bridge->getTemplateRenderer();
     }

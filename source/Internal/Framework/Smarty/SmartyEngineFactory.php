@@ -26,14 +26,10 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
      */
     private $smartyConfiguration;
 
-    /**
-     * SmartyEngineFactory constructor.
-     *
-     * @param SmartyBuilder                $smartyBuilder
-     * @param SmartyConfigurationInterface $smartyConfiguration
-     */
-    public function __construct(SmartyBuilder $smartyBuilder, SmartyConfigurationInterface $smartyConfiguration)
-    {
+    public function __construct(
+        SmartyBuilderInterface $smartyBuilder,
+        SmartyConfigurationInterface $smartyConfiguration
+    ) {
         $this->smartyBuilder = $smartyBuilder;
         $this->smartyConfiguration = $smartyConfiguration;
     }

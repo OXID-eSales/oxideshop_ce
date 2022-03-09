@@ -42,7 +42,7 @@ class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
      */
     public function setEngine($engine)
     {
-        $this->renderer->getTemplateEngine()->setSmarty($engine);
+        //$this->renderer->getTemplateEngine()->setSmarty($engine);
     }
 
     /**
@@ -50,6 +50,6 @@ class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
      */
     public function getEngine()
     {
-        return $this->renderer->getTemplateEngine()->getSmarty();
+        return $this->renderer->getTemplateEngine();
     }
 }

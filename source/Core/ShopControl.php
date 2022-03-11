@@ -133,6 +133,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->handleCookieException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
             $this->handleDatabaseException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
+            $this->handleRoutingException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $this->handleBaseException($exception);
         }
@@ -191,7 +193,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         // If unmatched controller id is requested throw exception
         if (!$resolvedClass) {
-            throw new \OxidEsales\Eshop\Core\Exception\RoutingException($controllerKey);
+            throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
+                sprintf('Controller "%s" cannot be resolved', $controllerKey)
+            );
         }
 
         return $resolvedClass;
@@ -290,7 +294,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Executes provided function on view object.
-     * If this function can not be executed (is protected or so), a 404 Page will be show.
+     * If this function can not be executed (is protected or so), a RoutingException is thrown
      *
      * @param FrontendController $view
      * @param string             $functionName
@@ -298,13 +302,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function executeAction($view, $functionName)
     {
         if (!$this->canExecuteFunction($view, $functionName)) {
-            unset($_GET['fnc'], $_POST['fnc']);
-            $this->handleRoutingException(
-                new StandardException(sprintf(
-                    'Non public method cannot be accessed. %s::%s()',
-                    $view->getClassKey(),
-                    $functionName
-                ))
+            throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
+                sprintf("Non public method cannot be accessed: %s::%s", get_class($view), $functionName)
             );
         }
 
@@ -676,14 +675,19 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Handle routing exception, which is thrown, if the class name for the requested controller id could not be resolved.
-     *
-     * @param RoutingException|StandardException $exception
+     * Handle routing exception
      */
-    protected function handleRoutingException($exception)
+    protected function handleRoutingException(RoutingException $exception)
     {
-        \OxidEsales\Eshop\Core\Registry::getLogger()->warning($exception->getMessage());
-        error_404_handler();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage());
+
+        if ($this->isDebugMode()) {
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
+            $this->process('exceptionError', 'displayExceptionError');
+        } else {
+            unset($_GET['fnc'], $_POST['fnc']);
+            error_404_handler($_SERVER['REQUEST_URI']);
+        }
     }
 
     /**
@@ -884,13 +888,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function getControllerClass($controllerKey)
     {
-        /** Remove try catch block after routing BC is removed */
-        try {
-            $controllerClass = $this->resolveControllerClass($controllerKey);
-        } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
-            $this->handleRoutingException($exception);
-        }
-
-        return $controllerClass;
+        return $this->resolveControllerClass($controllerKey);
     }
 }

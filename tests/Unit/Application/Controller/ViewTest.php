@@ -305,24 +305,15 @@ class ViewTest extends \OxidTestCase
 
         //Mock Asserts
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logger->expects($this->once())
-               ->method('warning');
+        $logger->expects($this->never())->method('error');
 
         Registry::set('logger', $logger);
 
-        $utils = $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock();
-        $utils
-            ->expects($this->once())
-            ->method('handlePageNotFoundError');
-
-        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
-
         //Act
-        $oView->executeFunction('unkownFunction');
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\RoutingException::class);
+        $this->expectExceptionMessage('Controller method is not accessible: OxidEsales\EshopCommunity\Core\Controller\BaseController::unkownFunction');
 
-        //Assert
-        $this->assertArrayNotHasKey('fnc', $_POST);
-        $this->assertArrayNotHasKey('fnc', $_GET);
+        $oView->executeFunction('unkownFunction');
     }
 
     public function testExecuteFunctionExecutesOnlyOnce()

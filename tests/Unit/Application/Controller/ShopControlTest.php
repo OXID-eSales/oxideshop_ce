@@ -108,7 +108,7 @@ class ShopControlTest extends \OxidTestCase
 
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $logger->expects($this->once())
-               ->method('warning');
+               ->method('error');
 
         Registry::set('logger', $logger);
 
@@ -565,10 +565,11 @@ class ShopControlTest extends \OxidTestCase
         $oView = $this->getMock($sCL, array('executeFunction', 'getFncName', 'getClassKey'));
         $oView->expects($this->never())->method('executeFunction');
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue($sFNC));
-        $oView->expects($this->once())->method('getClassKey')->will($this->returnValue($sCL));
 
         Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
-        Registry::getLogger()->expects($this->once())->method('warning')->with("Non public method cannot be accessed. {$sCL}::{$sFNC}()");
+        $className = get_class($oView);
+        Registry::getLogger()->expects($this->once())->method('error')
+            ->with("Non public method cannot be accessed: {$className}::{$sFNC}");
 
         Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());
         Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->will($this->returnCallback(function () {

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Twig templates multi inheritance for modules
 - `Internal\Framework\Templating\Resolver\TemplateFileResolverInterface`
+- Configuration file to define loading order for module configurations (`SHOP_ID.module_load_sequence.yaml`)
 
 ### Changed
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`

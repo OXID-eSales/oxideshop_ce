@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationPreprocessorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,6 +27,8 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      * @var ShopConfigurationDataMapperInterface
      */
     private $shopConfigurationMapper;
+
+    private ShopConfigurationPreprocessorInterface $shopConfigurationPreprocessor;
 
     /**
      * @var FileStorageFactoryInterface
@@ -52,27 +55,22 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private $node;
 
-    /**
-     * @var ShopConfigurationExtenderInterface
-     */
-    private $shopConfigurationExtender;
-
     public function __construct(
         ShopConfigurationDataMapperInterface $shopConfigurationMapper,
+        ShopConfigurationPreprocessorInterface $shopConfigurationPreprocessor,
         FileStorageFactoryInterface $fileStorageFactory,
         BasicContextInterface $context,
         ShopConfigurationCacheInterface $cache,
         Filesystem $fileSystem,
-        NodeInterface $node,
-        ShopConfigurationExtenderInterface $shopConfigurationExtender
+        NodeInterface $node
     ) {
         $this->shopConfigurationMapper = $shopConfigurationMapper;
+        $this->shopConfigurationPreprocessor = $shopConfigurationPreprocessor;
         $this->fileStorageFactory = $fileStorageFactory;
         $this->context = $context;
         $this->cache = $cache;
         $this->fileSystem = $fileSystem;
         $this->node = $node;
-        $this->shopConfigurationExtender = $shopConfigurationExtender;
     }
 
     /**
@@ -198,11 +196,10 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function getConfigurationFromStorage(int $shopId): ShopConfiguration
     {
-        $extendedShopConfiguration = $this->shopConfigurationExtender->getExtendedConfiguration(
-            $shopId,
-            $this->getShopConfigurationData($shopId)
+        $shopConfigurationData = $this->getShopConfigurationData($shopId);
+        return $this->shopConfigurationMapper->fromData(
+            $this->shopConfigurationPreprocessor->process($shopId, $shopConfigurationData)
         );
-        return $this->shopConfigurationMapper->fromData($extendedShopConfiguration);
     }
 
     /**

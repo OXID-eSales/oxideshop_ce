@@ -7,18 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentWithOrphanSettingEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderInterface
+final class ShopConfigurationExtender implements ShopConfigurationPreprocessorInterface
 {
-    /** @var ShopEnvironmentConfigurationDaoInterface */
-    private $shopEnvironmentConfigurationDao;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-    /** @var int */
-    private $shopId;
+    private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao;
+    private EventDispatcherInterface $eventDispatcher;
+    private int $shopId;
 
     public function __construct(
         ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao,
@@ -29,7 +28,7 @@ class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderI
     }
 
     /** @inheritDoc */
-    public function getExtendedConfiguration(int $shopId, array $shopConfiguration): array
+    public function process(int $shopId, array $shopConfiguration): array
     {
         $this->shopId = $shopId;
         $environmentData = $this->shopEnvironmentConfigurationDao->get($this->shopId);

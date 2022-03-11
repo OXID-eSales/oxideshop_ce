@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationExtender;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentWithOrphanSettingEvent;
 use PHPUnit\Framework\TestCase;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,7 +23,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
 
     /** @var ShopEnvironmentConfigurationDaoInterface|ObjectProphecy */
     private $environmentDao;
-    /** @var ShopEnvironmentConfigurationExtender */
+    /** @var ShopConfigurationExtender */
     private $environmentExtension;
     /** @var ObjectProphecy|EventDispatcherInterface */
     private $eventDispatcher;
@@ -35,7 +35,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         parent::setUp();
         $this->environmentDao = $this->prophesize(ShopEnvironmentConfigurationDaoInterface::class);
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $this->environmentExtension = new ShopEnvironmentConfigurationExtender(
+        $this->environmentExtension = new ShopConfigurationExtender(
             $this->environmentDao->reveal(),
             $this->eventDispatcher->reveal()
         );
@@ -51,7 +51,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         $environmentConfiguration = [];
         $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
 
-        $result = $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
+        $result = $this->environmentExtension->process($this->shopId, $shopConfiguration);
 
         $this->assertSame($shopConfiguration, $result);
     }
@@ -68,7 +68,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         ];
         $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
 
-        $result = $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
+        $result = $this->environmentExtension->process($this->shopId, $shopConfiguration);
 
         $this->assertSame($shopConfiguration, $result);
     }
@@ -114,7 +114,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         ];
         $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
 
-        $result = $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
+        $result = $this->environmentExtension->process($this->shopId, $shopConfiguration);
 
         $this->assertSame($expectedConfiguration, $result);
     }
@@ -156,7 +156,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
             ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
             ->willReturnArgument();
 
-        $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
+        $this->environmentExtension->process($this->shopId, $shopConfiguration);
 
         $this->eventDispatcher
             ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
@@ -245,7 +245,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
             ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
             ->willReturnArgument();
 
-        $result = $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
+        $result = $this->environmentExtension->process($this->shopId, $shopConfiguration);
 
         $this->assertSame($expectedConfiguration, $result);
     }

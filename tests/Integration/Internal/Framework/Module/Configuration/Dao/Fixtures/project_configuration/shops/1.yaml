@@ -1,0 +1,36 @@
+modules:
+  moduleId1:
+    id: moduleId1
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId1
+  moduleId2:
+    id: moduleId2
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId2
+  moduleId3:
+    id: moduleId3
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId3
+  moduleId4:
+    id: moduleId4
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId4
+  moduleId5:
+    id: moduleId5
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId5

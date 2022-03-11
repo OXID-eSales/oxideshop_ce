@@ -1,7 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDao
@@ -22,7 +21,6 @@ services:
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
-      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao
@@ -31,8 +29,16 @@ services:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationExtender:
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ModuleConfigurationsSorter:
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationPreprocessorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationPreprocessorsAggregate
+    arguments:
+      -
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ShopConfigurationExtender'
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationPreprocessor\ModuleConfigurationsSorter'
 
   oxid_esales.module.configuration.node:
     class: Symfony\Component\Config\Definition\NodeInterface
@@ -91,3 +97,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleClassExtensionsMergingService
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleLoadSequenceDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleLoadSequenceDao
+    arguments:
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'

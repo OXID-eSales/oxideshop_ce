@@ -7,12 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-interface ShopConfigurationExtenderInterface
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleLoadSequence;
+
+interface ModuleLoadSequenceDaoInterface
 {
     /**
      * @param int $shopId
-     * @param array $shopConfiguration
-     * @return array
+     * @return ModuleLoadSequence
      */
-    public function getExtendedConfiguration(int $shopId, array $shopConfiguration): array;
+    public function get(int $shopId): ModuleLoadSequence;
 }

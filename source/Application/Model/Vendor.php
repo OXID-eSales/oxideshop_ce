@@ -295,6 +295,14 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      */
     public function delete($sOXID = null)
     {
+        if (!$sOXID) {
+            $sOXID = $this->getId();
+        }
+        if (!$sOXID) {
+            return false;
+        }
+        $this->load($sOXID);
+
         if (parent::delete($sOXID)) {
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class)->onDeleteVendor($this);
 

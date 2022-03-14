@@ -321,21 +321,19 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     /**
      * Delete this object from the database, returns true on success.
      *
-     * @param string $sOXID Object ID(default null)
+     * @param string $oxid Object ID(default null)
      *
      * @return bool
      */
-    public function delete($sOXID = null)
+    public function delete($oxid = null)
     {
-        if (!$sOXID) {
-            $sOXID = $this->getId();
+        if ($oxid) {
+            $this->load($oxid);
+        } else {
+            $oxid = $this->getId();
         }
-        if (!$sOXID) {
-            return false;
-        }
-        $this->load($sOXID);
 
-        if (parent::delete($sOXID)) {
+        if (parent::delete($oxid)) {
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class)->onDeleteManufacturer($this);
 
             return true;

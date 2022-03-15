@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 
 use \oxField;
@@ -346,19 +348,19 @@ class ManufacturerTest extends \OxidTestCase
 
     public function testDelete()
     {
-        oxTestModules::addFunction('oxSeoEncoderManufacturer', 'onDeleteManufacturer', '{$this->onDelete[] = $aA[0];}');
-        oxRegistry::get("oxSeoEncoderManufacturer")->onDelete = array();
+        $seoEncoderManufacturerMock = $this->createPartialMock(SeoEncoderManufacturer::class, ['onDeleteManufacturer']);
+        Registry::set(SeoEncoderManufacturer::class, $seoEncoderManufacturerMock);
 
         $obj = oxNew('oxManufacturer');
         $this->assertEquals(false, $obj->delete());
-        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderManufacturer")->onDelete));
         $this->assertEquals(false, $obj->exists());
 
-        $obj->save();
-        $this->assertEquals(true, $obj->delete());
-        $this->assertEquals(false, $obj->exists());
-        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderManufacturer")->onDelete));
-        $this->assertSame($obj, oxRegistry::get("oxSeoEncoderManufacturer")->onDelete[0]);
+        $obj1 = oxNew('oxManufacturer');
+        $seoEncoderManufacturerMock->expects($this->once())->method('onDeleteManufacturer')->with($obj1);
+        $obj1->save();
+
+        $this->assertEquals(true, $obj1->delete());
+        $this->assertEquals(false, $obj1->exists());
     }
 
     public function testGetStdLinkWithParams()

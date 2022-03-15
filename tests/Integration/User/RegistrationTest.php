@@ -22,15 +22,19 @@ class RegistrationTest extends UserTestCase
 
     public function testRegisterNewUser()
     {
-        $sUserName = $this->_sDefaultUserName;
-        $sUserPassword = $this->_sDefaultUserPassword;
+        $userName = $this->_sDefaultUserName;
+        $userPassword = $this->_sDefaultUserPassword;
 
-        $oCmpUser = $this->_createCmpUserObject();
+        $cmpUser = $this->_createCmpUserObject();
 
-        $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
-        $this->assertSame('register?success=1', $oCmpUser->registerUser());
+        $session = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
+        Registry::set(Session::class, $session);
+        $session->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
 
-        return $oCmpUser->getUser()->getId();
+        $this->_setUserRegistrationParametersToRequest($userName, $userPassword);
+        $this->assertSame('register?success=1', $cmpUser->registerUser());
+
+        return $cmpUser->getUser()->getId();
     }
 
     /**

@@ -165,24 +165,24 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket->removeVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(7.56, $basket->getNettoSum());
-        $this->assertSame(5.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEquals(5.0, $basket->getVoucherDiscount()->getPrice());
 
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 1);
         $basket->calculateBasket(true);
-        $this->assertSame(15.97, $basket->getNettoSum());
+        $this->assertEquals(15.97, $basket->getNettoSum());
 
         // Test with another voucher in same userGroup
         $basket->addVoucher(self::SECOND_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertSame(7.56, $basket->getNettoSum());
-        $this->assertSame(15.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEquals(15.0, $basket->getVoucherDiscount()->getPrice());
 
         // Test with increasing quantity of one of the products
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 2);
         $basket->calculateBasket(true);
-        $this->assertSame(24.37, $basket->getNettoSum());
-        $this->assertSame(15.0, $basket->getVoucherDiscount()->getPrice());
+        $this->assertEquals(24.37, $basket->getNettoSum());
+        $this->assertEquals(15.0, $basket->getVoucherDiscount()->getPrice());
     }
 
     public function testVoucherCanBeApplyOnlyOnce(): void

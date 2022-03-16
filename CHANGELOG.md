@@ -366,9 +366,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - PHP 8.1 support
+- Interfaces:
+    - `Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface`
+    - `Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface`
+    - `Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface`
 
 - ### Changed
 - Updated Symfony components
+
+### Deprecated
+- Method:
+    - `Application\Model\User::getUtilsObjectInstance()`
 
 ## [6.10.2] - Unreleased
 
@@ -1497,6 +1505,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v7.0.0-rc.1
+[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...b-6.5.x
 [6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.10.0

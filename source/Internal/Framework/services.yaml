@@ -11,3 +11,4 @@ imports:
   - { resource: Smarty/services.yaml }
   - { resource: Migration/services.yaml }
   - { resource: FileSystem/services.yaml }
+  - { resource: SystemRequirements/services.yaml }

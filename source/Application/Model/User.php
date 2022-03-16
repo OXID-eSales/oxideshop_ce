@@ -14,12 +14,10 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
-use OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker;
-use OxidEsales\Eshop\Core\PasswordSaltGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use Psr\Log\LoggerInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
 
 /**
  * User manager.
@@ -2425,6 +2423,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * @return \OxidEsales\Eshop\Core\UtilsObject
+     * @deprecated method will be removed in v7.0, use Registry::getUtilsObject() directly.
      */
     protected function getUtilsObjectInstance()
     {
@@ -2713,45 +2712,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     private function getRandomToken(): string
     {
-        /** Token generation logic will move to a service in the next minor release */
-        $tokenLength = 32;
-        $token = '';
-        $useFallback = $this->useFallbackSourceOfRandomness($tokenLength);
-        while (\strlen($token) < $tokenLength) {
-            $randomValue = $useFallback
-                ? $this->useRandomBytesFallbacks()
-                : $this->useRandomBytes($tokenLength);
-            $token .= $randomValue;
-        }
-
-        return \substr($token, 0, $tokenLength);
-    }
-
-    private function useFallbackSourceOfRandomness(int $length): bool
-    {
-        try {
-            return !\random_bytes($length);
-        } catch (\Exception $exception) {
-            $this->getContainer()->get(LoggerInterface::class)->warning(
-                "No appropriate source of randomness was found! Please re-configure your system to enable generation of cryptographically secure values.\n{$exception}"
-            );
-            return true;
-        }
-    }
-
-    private function useRandomBytes(int $tokenLength): string
-    {
-        return \bin2hex(
-            \random_bytes($tokenLength)
-        );
-    }
-
-    private function useRandomBytesFallbacks(): string
-    {
-        return oxNew(
-            PasswordSaltGenerator::class,
-            oxNew(OpenSSLFunctionalityChecker::class)
-        )
-            ->generate();
+        return $this
+            ->getContainer()
+            ->get(RandomTokenGeneratorBridgeInterface::class)
+            ->getHexTokenWithFallback(32);
     }
 }

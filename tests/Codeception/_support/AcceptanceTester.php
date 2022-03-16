@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
-use Codeception\Actor;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Page\Home;
 
@@ -28,10 +27,9 @@ use OxidEsales\Codeception\Page\Home;
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends Actor
+class AcceptanceTester extends AcceptanceActor
 {
     use _generated\AcceptanceTesterActions;
-    use \Codeception\Lib\Actor\Shared\Retry;
 
     /**
      * Open shop first page.

@@ -9,9 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
-use Codeception\Actor;
-use OxidEsales\Codeception\Admin\AdminLoginPage;
 use Codeception\Util\Fixtures;
+use OxidEsales\Codeception\Admin\AdminLoginPage;
 use OxidEsales\Codeception\Admin\AdminPanel;
 
 /**
@@ -29,10 +28,9 @@ use OxidEsales\Codeception\Admin\AdminPanel;
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceAdminTester extends Actor
+class AcceptanceAdminTester extends AcceptanceActor
 {
     use _generated\AcceptanceAdminTesterActions;
-    use \Codeception\Lib\Actor\Shared\Retry;
 
     public function openAdmin(): AdminLoginPage
     {

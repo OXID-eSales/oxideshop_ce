@@ -213,7 +213,6 @@ final class UserAccountCest
     {
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
-        $I->retry(3, 2000);
 
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         $I->updateConfigInDatabase('blVatIdCheckDisabled', true, 'bool');
@@ -262,8 +261,6 @@ final class UserAccountCest
         $start = new Start($I);
         $I->wantToTest('modify user shipping address in my account');
 
-        $I->retry(2, 3000);
-        
         $userData = $this->getExistingUserData();
 
         $userAddressPage = $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword'])
@@ -300,8 +297,6 @@ final class UserAccountCest
         $start = new Start($I);
         $I->wantToTest('user shipping address create and delete');
 
-        $I->retry(3, 2000);
-        
         $userData = $this->getExistingUserData();
 
         $userAddressPage = $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword'])

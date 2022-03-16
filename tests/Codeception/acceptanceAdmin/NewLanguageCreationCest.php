@@ -25,8 +25,6 @@ final class NewLanguageCreationCest
         $tools = $adminPanel->openTools();
         $tools->updateDbViews();
 
-        $I->wait(3);
-
-        $b = $I->grabFromDatabase('oxv_oxarticles_lt', 'oxid', ['oxartnum' => "3503"]);
+        $I->retryGrabFromDatabase('oxv_oxarticles_lt', 'oxid', ['oxartnum' => "3503"]);
     }
 }

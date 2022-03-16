@@ -344,7 +344,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
     }
 
     /**
-     * Data provider for testQuantityCostRulesWithCategoryAssigned.
+     * Data provider for testQuantityDeliveryCostRulesWithCategoryAssigned.
      */
     public function providerQuantityCostRulesWithCategoryAssigned()
     {

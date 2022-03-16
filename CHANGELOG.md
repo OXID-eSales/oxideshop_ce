@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Error in multishop case, triggering return of wrong values from cookies [#0007306](https://bugs.oxid-esales.com/view.php?id=7306) [PR-888](https://github.com/OXID-eSales/oxideshop_ce/pull/888)
 - Extend default VAT check service response errors list [#0007308](https://bugs.oxid-esales.com/view.php?id=7308) [PR-889](https://github.com/OXID-eSales/oxideshop_ce/pull/889)
 - Fix cascading for deletion in Manufacturer- and Vendor-Model [#0006880](https://bugs.oxid-esales.com/view.php?id=6880)
+- Add CSRF check to user creation [#0007059](https://bugs.oxid-esales.com/view.php?id=7059)
 
 ## [6.10.1] - 2022-02-02
 

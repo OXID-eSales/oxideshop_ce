@@ -407,6 +407,12 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function createUser()
     {
+        if (!Registry::getSession()->checkSessionChallenge()) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
+            return false;
+        }
+
         $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
 
         $oConfig = $this->getConfig();

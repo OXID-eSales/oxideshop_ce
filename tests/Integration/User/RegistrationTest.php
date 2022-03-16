@@ -6,6 +6,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxcmp_user;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Session;
+use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Application\Component\UserComponent;
 use oxRegistry;
 
 require_once 'UserTestCase.php';
@@ -18,15 +22,19 @@ class RegistrationTest extends UserTestCase
 
     public function testRegisterNewUser()
     {
-        $sUserName = $this->_sDefaultUserName;
-        $sUserPassword = $this->_sDefaultUserPassword;
+        $userName = $this->_sDefaultUserName;
+        $userPassword = $this->_sDefaultUserPassword;
 
-        $oCmpUser = $this->_createCmpUserObject();
+        $cmpUser = $this->_createCmpUserObject();
 
-        $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
-        $this->assertSame('register?success=1', $oCmpUser->registerUser());
+        $session = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
+        Registry::set(Session::class, $session);
+        $session->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
 
-        return $oCmpUser->getUser()->getId();
+        $this->_setUserRegistrationParametersToRequest($userName, $userPassword);
+        $this->assertSame('register?success=1', $cmpUser->registerUser());
+
+        return $cmpUser->getUser()->getId();
     }
 
     /**
@@ -43,6 +51,21 @@ class RegistrationTest extends UserTestCase
         $this->_login();
 
         $this->assertSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
+    }
+
+    public function testRegisterWithoutCsrf()
+    {
+        $session = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
+        $session->method('checkSessionChallenge')->willReturn(False);
+
+        $utilsView = $this->createPartialMock(UtilsView::class, ['addErrorToDisplay']);
+        $utilsView->expects($this->once())->method('addErrorToDisplay')->with('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
+        Registry::set(UtilsView::class, $utilsView);
+        Registry::set(Session::class, $session);
+
+        $userView = oxNew(UserComponent::class);
+        $userView->createUser();
     }
 
     /**

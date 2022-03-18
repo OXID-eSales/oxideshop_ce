@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
 - Class:
   - `Core\PasswordSaltGenerator`
+  - `Internal\Transition\Utility\FallbackTokenGenerator`
 - Method:
   - `Application\Model\User::getUtilsObjectInstance()`
 

@@ -9,94 +9,39 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Authentication\Bridge;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder as Container;
 
 final class RandomTokenGeneratorBridgeTest extends TestCase
 {
-    private const FIXTURE_PATH_SHOP = '/Fixtures/shop/';
-
     private RandomTokenGeneratorBridgeInterface $bridge;
-    private Container $container;
-    private SystemSecurityCheckerInterface $systemSecurityChecker;
-    private string $logFile = __DIR__ . self::FIXTURE_PATH_SHOP . 'log/oxideshop.log';
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        Registry::getConfig()->setConfigParam('sShopDir', __DIR__ . self::FIXTURE_PATH_SHOP);
-        Registry::getConfig()->setConfigParam('sLogLevel', 'warning');
-
-        ContainerFactory::getInstance()->resetContainer();
-        $this->container = (new ContainerBuilder(new BasicContextStub()))->getContainer();
-        $this->mockDependencies();
-        $this->container->compile();
-
-        $this->bridge = $this->container->get(RandomTokenGeneratorBridgeInterface::class);
+        $this->bridge = ContainerFactory::getInstance()->getContainer()->get(RandomTokenGeneratorBridgeInterface::class);
     }
 
-    protected function tearDown(): void
+    public function testGetAlphanumericToken(): void
     {
-        parent::tearDown();
+        $length = 32;
 
-        $this->cleanupTestData();
+        $token = $this->bridge->getAlphanumericToken($length);
+
+        $this->assertEquals($length, strlen($token));
+        $this->assertTrue(ctype_alnum($token));
+        $this->assertFalse(ctype_xdigit($token));
     }
 
-    public function testGetHexTokenWithFallbackWithSourceOfRandomnessWillNotWriteToLog(): void
+    public function testGetHexToken(): void
     {
-        $logSizeBefore = \filesize($this->logFile);
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(true);
+        $length = 32;
 
-        $this->bridge->getHexTokenWithFallback(32);
+        $token = $this->bridge->getHexToken($length);
 
-        $logSizeAfter = \filesize($this->logFile);
-        $this->assertEquals($logSizeBefore, $logSizeAfter);
-    }
-
-    public function testGetHexTokenWithFallbackWithNoSourceOfRandomnessWillWriteToLog(): void
-    {
-        $logSizeBefore = \filesize($this->logFile);
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(false);
-
-        $this->bridge->getHexTokenWithFallback(32);
-
-        $logSizeAfter = \filesize($this->logFile);
-        $this->assertGreaterThan($logSizeBefore, $logSizeAfter);
-    }
-
-    public function testGetHexTokenWithFallbackWillReturnHexValue(): void
-    {
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(false);
-
-        $token = $this->bridge->getHexTokenWithFallback(32);
-
+        $this->assertEquals($length, strlen($token));
+        $this->assertTrue(ctype_alnum($token));
         $this->assertTrue(ctype_xdigit($token));
-    }
-
-    protected function mockDependencies(): void
-    {
-        $this->systemSecurityChecker = $this->createMock(SystemSecurityCheckerInterface::class);
-        $this->container->set(SystemSecurityCheckerInterface::class, $this->systemSecurityChecker);
-        $this->container->autowire(SystemSecurityCheckerInterface::class);
-    }
-
-    private function cleanupTestData(): void
-    {
-        if (\is_file($this->logFile)) {
-            \unlink($this->logFile);
-        }
     }
 }

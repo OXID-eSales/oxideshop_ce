@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Application\Controller\ContentController;
+use OxidEsales\Eshop\Application\Model\Content;
 use OxidEsales\EshopCommunity\Application\Model\PaymentList;
 use OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
 use OxidEsales\EshopCommunity\Application\Model\Delivery;
@@ -133,19 +134,20 @@ class ContentTest extends \OxidTestCase
 
     public function testRender(): void
     {
-        $oContent = oxNew('oxContent');
-        $oContent->setId('testContent');
-        $oContent->oxcontents__oxloadid->value = 'testContent';
+        $content = oxNew(Content::class);
+        $content->setId('testContent');
+        $content->setFieldData('oxloadid', 'testContent');
 
-        $oContentView = $this->getMock(
+        $contentController = $this->getMock(
             ContentController::class,
             ['canShowContent', 'getContent', 'showPlainTemplate', 'getTplName']
         );
-        $oContentView->expects($this->atLeastOnce())->method('getTplName')->willReturn(false);
-        $oContentView->expects($this->atLeastOnce())->method('canShowContent')->willReturn(true);
-        $oContentView->expects($this->atLeastOnce())->method('getContent')->willReturn($oContent);
-        $oContentView->expects($this->atLeastOnce())->method('showPlainTemplate')->willReturn('true');
-        $this->assertEquals('page/info/content_plain', $oContentView->render());
+        $contentController->expects($this->atLeastOnce())->method('getTplName')->willReturn(false);
+        $contentController->expects($this->atLeastOnce())->method('canShowContent')->willReturn(true);
+        $contentController->expects($this->atLeastOnce())->method('getContent')->willReturn($content);
+        $contentController->expects($this->atLeastOnce())->method('showPlainTemplate')->willReturn('true');
+
+        $this->assertEquals('page/info/content_plain', $contentController->render());
     }
 
     /**

@@ -10,19 +10,19 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Loader;
 
 use org\bovigo\vfs\vfsStream;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFileNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
+use PHPUnit\Framework\TestCase;
 
-class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
+class TemplateLoaderTest extends TestCase
 {
     public function testExists(): void
     {
         $name = 'test_template.tpl';
         $locator = $this->getFileLocatorMock($name);
-        $nameResolver = $this->getTemplateNameResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
+        $templateFileResolverMock = $this->getTemplateFileResolverMock($name);
+        $loader = new TemplateLoader($locator, $templateFileResolverMock);
 
         $this->assertTrue($loader->exists($name));
     }
@@ -32,7 +32,7 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
         $name = 'not_existing_template.tpl';
         $locator = $this->getFileLocatorMock('');
 
-        $nameResolver = $this->getTemplateNameResolverMock($name);
+        $nameResolver = $this->getTemplateFileResolverMock($name);
         $loader = new TemplateLoader($locator, $nameResolver);
 
         $this->assertFalse($loader->exists('not_existing_template.tpl'));
@@ -49,37 +49,10 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
             ->url();
 
         $locator = $this->getFileLocatorMock($template);
-        $nameResolver = $this->getTemplateNameResolverMock($name);
+        $nameResolver = $this->getTemplateFileResolverMock($name);
         $loader = new TemplateLoader($locator, $nameResolver);
 
         $this->assertSame($context, $loader->getContext($template));
-    }
-
-    public function testGetPath(): void
-    {
-        $name = 'testSmartyTemplate.tpl';
-        $context = "The new contents of the file";
-        $templateDir = vfsStream::setup('testTemplateDir');
-        $template = vfsStream::newFile($name)
-            ->at($templateDir)
-            ->setContent($context)
-            ->url();
-
-        $locator = $this->getFileLocatorMock($template);
-        $nameResolver = $this->getTemplateNameResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
-
-        $this->assertSame($template, $loader->getPath($template));
-    }
-
-    public function testGetPathIfTemplateDoNotExits(): void
-    {
-        $this->expectException(TemplateFileNotFoundException::class);
-        $name = 'not_existing_template.tpl';
-        $locator = $this->getFileLocatorMock('');
-        $nameResolver = $this->getTemplateNameResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
-        $loader->getPath($name);
     }
 
     /**
@@ -94,9 +67,8 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $locator->expects($this->any())
-            ->method('locate')
-            ->will($this->returnValue($path));
+        $locator->method('locate')
+            ->willReturn($path);
 
         return $locator;
     }
@@ -104,18 +76,17 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
     /**
      * @param $path
      *
-     * @return TemplateNameResolverInterface
+     * @return TemplateFileResolverInterface
      */
-    private function getTemplateNameResolverMock($name): TemplateNameResolverInterface
+    private function getTemplateFileResolverMock($name): TemplateFileResolverInterface
     {
         $locator = $this
-            ->getMockBuilder('OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface')
+            ->getMockBuilder(TemplateFileResolverInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $locator->expects($this->any())
-            ->method('resolve')
-            ->will($this->returnValue($name));
+        $locator->method('getFilename')
+            ->willReturn($name);
 
         return $locator;
     }

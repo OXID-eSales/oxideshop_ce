@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.2] - Unreleased
 
+### Added
+- Twig templates multi inheritance for modules
+
 ### Changed
 
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
@@ -22,7 +25,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-- `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
+- Methods:
+  - `Application\Model\UserPayment`
+    - `load`
+    - `insert`
+  - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
 
 ## [7.0.0-rc.1] - 2021-07-07
 
@@ -533,6 +540,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.
+- `OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
 - Econda smarty plugin:
     - Classes:
         - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`

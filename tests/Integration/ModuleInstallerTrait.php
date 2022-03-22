@@ -14,31 +14,37 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Psr\Container\ContainerInterface;
 
 trait ModuleInstallerTrait
 {
-    public function addModules(array $moduleIds, string $modulesSource): void
+    /**
+     * @param array<string, string> $modulesConfiguration
+     * @return void
+     */
+    public function addModules(array $modulesConfiguration): void
     {
-        foreach ($moduleIds as $moduleId) {
-            $this->installModule($moduleId, "{$modulesSource}/{$moduleId}");
+        foreach ($modulesConfiguration as $moduleId => $packagePath) {
+            $this->installModule($packagePath);
             $this->activateModule($moduleId);
         }
     }
 
-    public function removeModules(array $moduleIds): void
+    /**
+     * @param array<string, string> $modulesConfiguration
+     * @return void
+     */
+    public function removeModules(array $modulesConfiguration): void
     {
-        foreach ($moduleIds as $moduleId) {
+        foreach ($modulesConfiguration as $moduleId => $packagePath) {
             $this->deactivateModule($moduleId);
-            $this->removeModule($moduleId);
+            $this->removeModule($packagePath);
         }
     }
 
-    public function installModule(string $moduleId, string $moduleSource): void
+    public function installModule(string $packagePath): void
     {
-        $package = new OxidEshopPackage($moduleId, $moduleSource);
-        $package->setTargetDirectory($moduleId);
+        $package = new OxidEshopPackage($packagePath);
         $this->getContainer()->get(ModuleInstallerInterface::class)->install($package);
     }
 
@@ -55,11 +61,11 @@ trait ModuleInstallerTrait
             ->deactivate($moduleId, Registry::getConfig()->getShopId());
     }
 
-    public function removeModule(string $moduleId): void
+    public function removeModule(string $packagePath): void
     {
         $this->getContainer()->get('oxid_esales.symfony.file_system')
             ->remove(
-                $this->getContainer()->get(ContextInterface::class)->getModulesPath() . $moduleId
+                $packagePath
             );
     }
 

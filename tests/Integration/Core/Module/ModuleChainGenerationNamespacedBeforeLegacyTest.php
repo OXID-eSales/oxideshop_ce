@@ -47,10 +47,8 @@ final class ModuleChainGenerationNamespacedBeforeLegacyTest extends UnitTestCase
         $product = oxNew(ProductUnifiedNamespace::class);
 
         $parent = get_parent_class($product);
-        $grandParent = get_parent_class($parent);
         $this->assertInstanceOf(ProductLegacyModule::class, $product);
         $this->assertEquals(ProductModule::class, $parent);
-        $this->assertEquals(ProductUnifiedNamespace::class, $grandParent);
     }
 
     private function mockModuleAutoload(): void

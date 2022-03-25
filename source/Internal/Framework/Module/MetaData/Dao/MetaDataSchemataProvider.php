@@ -14,18 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
 {
     /**
-     * @var array
-     */
-    private $metaDataSchemata;
-
-    /**
      * MetaDataDefinition constructor.
-     *
-     * @param array $metaDataSchemata
      */
-    public function __construct(array $metaDataSchemata)
+    public function __construct(private array $metaDataSchemata)
     {
-        $this->metaDataSchemata = $metaDataSchemata;
     }
 
     /**

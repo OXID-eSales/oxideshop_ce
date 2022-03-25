@@ -21,11 +21,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class EditionMenuFileLocator implements NavigationFileLocatorInterface
 {
     /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
      * @var string
      */
     private $themeName;
@@ -36,25 +31,14 @@ class EditionMenuFileLocator implements NavigationFileLocatorInterface
     private $fileName = 'menu.xml';
 
     /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
      * EditionMenuFileLocator constructor.
-     *
-     * @param AdminThemeBridgeInterface $adminThemeBridge
-     * @param BasicContextInterface     $context
-     * @param Filesystem                $fileSystem
      */
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
-        BasicContextInterface $context,
-        Filesystem $fileSystem
+        private BasicContextInterface $context,
+        private Filesystem $fileSystem
     ) {
         $this->themeName = $adminThemeBridge->getActiveTheme();
-        $this->context = $context;
-        $this->fileSystem = $fileSystem;
     }
 
     /**

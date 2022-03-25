@@ -18,8 +18,6 @@ class DICallWrapper
 
     /**
      * DICallWrapper constructor.
-     *
-     * @param array $callArray
      */
     public function __construct(array $callArray = [])
     {

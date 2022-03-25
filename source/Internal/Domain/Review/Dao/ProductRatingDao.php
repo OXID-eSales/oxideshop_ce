@@ -17,26 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 class ProductRatingDao implements ProductRatingDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @var ProductRatingDataMapperInterface
-     */
-    private $productRatingMapper;
-
-    /**
-     * @param QueryBuilderFactoryInterface     $queryBuilderFactory
-     * @param ProductRatingDataMapperInterface $productRatingMapper
-     */
-    public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        ProductRatingDataMapperInterface $productRatingMapper
-    ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->productRatingMapper = $productRatingMapper;
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ProductRatingDataMapperInterface $productRatingMapper)
+    {
     }
 
     /**

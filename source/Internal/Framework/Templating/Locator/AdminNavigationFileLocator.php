@@ -16,18 +16,12 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 class AdminNavigationFileLocator implements NavigationFileLocatorInterface
 {
     /**
-     * @var NavigationFileLocatorInterface[]
-     */
-    private $menuFileLocators;
-
-    /**
      * AdminNavigationFileLocator constructor.
      *
-     * @param iterable $menuFileLocators
+     * @param \OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\NavigationFileLocatorInterface[] $menuFileLocators
      */
-    public function __construct(iterable $menuFileLocators = [])
+    public function __construct(private iterable $menuFileLocators = [])
     {
-        $this->menuFileLocators = $menuFileLocators;
     }
 
     /**

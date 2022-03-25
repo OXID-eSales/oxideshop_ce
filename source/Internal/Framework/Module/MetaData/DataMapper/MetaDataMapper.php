@@ -26,18 +26,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 {
     /**
-     * @var MetaDataSchemaValidator
-     */
-    private $validator;
-
-    /**
      * MetaDataMapper constructor.
-     *
-     * @param MetaDataSchemaValidatorInterface $validator
      */
-    public function __construct(MetaDataSchemaValidatorInterface $validator)
+    public function __construct(private MetaDataSchemaValidatorInterface $validator)
     {
-        $this->validator = $validator;
     }
 
     /**

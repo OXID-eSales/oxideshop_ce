@@ -11,24 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class Template
 {
-    /**
-     * @var string
-     */
-    private $templateKey;
-
-    /**
-     * @var string
-     */
-    private $templatePath;
-
-    /**
-     * @param string $templateKey
-     * @param string $templatePath
-     */
-    public function __construct(string $templateKey, string $templatePath)
+    public function __construct(private string $templateKey, private string $templatePath)
     {
-        $this->templateKey = $templateKey;
-        $this->templatePath = $templatePath;
     }
 
     /**

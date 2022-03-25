@@ -36,7 +36,7 @@ class TranslateFilterLogic
         try {
             $sTranslation = $oLang->translateString($sIdent, $iLang, $oLang->isAdmin());
             $blTranslationNotFound = !$oLang->isTranslated();
-        } catch (StandardException $oEx) {
+        } catch (StandardException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 

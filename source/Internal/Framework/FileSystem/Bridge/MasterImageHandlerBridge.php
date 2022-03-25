@@ -13,13 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterfac
 
 class MasterImageHandlerBridge implements MasterImageHandlerBridgeInterface
 {
-    /** @var ImageHandlerInterface */
-    private $masterImageHandler;
-
-    public function __construct(
-        ImageHandlerInterface $masterImageHandler
-    ) {
-        $this->masterImageHandler = $masterImageHandler;
+    public function __construct(private ImageHandlerInterface $masterImageHandler)
+    {
     }
 
     /** @inheritdoc */

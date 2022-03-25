@@ -11,19 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject
 
 class OxidEshopPackage
 {
-    /**
-     * Package path is the absolute path to the root directory, e.g. /var/www/oxideshop/vendor/oxid-esales/paypal-module
-     *
-     * @var string
-     */
-    private $packagePath;
-
-    /**
-     * @param string $packagePath
-     */
-    public function __construct(string $packagePath)
+    public function __construct(private string $packagePath)
     {
-        $this->packagePath = $packagePath;
     }
 
     /**

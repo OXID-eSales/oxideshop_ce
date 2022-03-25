@@ -13,14 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\FileGe
 
 class CsvFileGeneratorBridge implements FileGeneratorBridgeInterface
 {
-    /**
-     * @var FileGeneratorInterface
-     */
-    private $fileGenerator;
-
-    public function __construct(FileGeneratorInterface $fileGenerator)
+    public function __construct(private FileGeneratorInterface $fileGenerator)
     {
-        $this->fileGenerator = $fileGenerator;
     }
 
     /**

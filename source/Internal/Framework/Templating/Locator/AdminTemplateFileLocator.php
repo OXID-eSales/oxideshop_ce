@@ -18,18 +18,10 @@ use OxidEsales\Eshop\Core\Config;
 class AdminTemplateFileLocator implements FileLocatorInterface
 {
     /**
-     * @var Config
-     */
-    private $context;
-
-    /**
      * FileLocator constructor.
-     *
-     * @param Config $context
      */
-    public function __construct(Config $context)
+    public function __construct(private Config $context)
     {
-        $this->context = $context;
     }
 
     /**

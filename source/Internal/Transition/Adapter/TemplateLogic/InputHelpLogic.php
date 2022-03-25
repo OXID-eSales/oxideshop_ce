@@ -31,7 +31,7 @@ class InputHelpLogic
         $isAdmin = $config->isAdmin();
         try {
             $translation = $lang->translateString($ident, $tplLanguage, $isAdmin);
-        } catch (StandardException $ex) {
+        } catch (StandardException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 

@@ -16,21 +16,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ServicesCommandsProvider implements CommandsProviderInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var array
      */
     private $commands = [];
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(private ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**

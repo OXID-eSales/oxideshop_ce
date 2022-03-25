@@ -16,17 +16,8 @@ use PDO;
 class DatabaseChecker implements DatabaseCheckerInterface
 {
 
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
-    /**
-     * @param BasicContextInterface $basicContext
-     */
-    public function __construct(BasicContextInterface $basicContext)
+    public function __construct(private BasicContextInterface $basicContext)
     {
-        $this->basicContext = $basicContext;
     }
 
     /** @inheritDoc */
@@ -41,7 +32,7 @@ class DatabaseChecker implements DatabaseCheckerInterface
             $connection = $this->getDatabaseConnection($host, $port, $user, $password);
             $connection->exec("USE `{$name}`");
             $connection->exec('SELECT 1 FROM ' . $this->basicContext->getConfigTableName() . ' LIMIT 1');
-        } catch (\PDOException $exception) {
+        } catch (\PDOException) {
             return;
         }
         throw new DatabaseExistsAndNotEmptyException("Database `$name` already exists and is not empty");

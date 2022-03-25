@@ -16,19 +16,11 @@ use Webmozart\PathUtil\Path;
 
 class ModulesMenuFileLocator implements NavigationFileLocatorInterface
 {
-    /** @var ActiveModulesDataProviderInterface */
-    private $activeModulesDataProvider;
-    /** @var Filesystem */
-    private $filesystem;
     /** @var string */
     private $fileName = 'menu.xml';
 
-    public function __construct(
-        ActiveModulesDataProviderInterface $activeModulesDataProvider,
-        Filesystem $filesystem
-    ) {
-        $this->activeModulesDataProvider = $activeModulesDataProvider;
-        $this->filesystem = $filesystem;
+    public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider, private Filesystem $filesystem)
+    {
     }
 
     /** @inheritDoc */

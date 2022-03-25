@@ -15,11 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 class BcryptPasswordHashService implements PasswordHashServiceInterface
 {
     /**
-     * @var PasswordPolicyInterface
-     */
-    private $passwordPolicy;
-
-    /**
      * @var int $cost
      *
      * The value of the option cost has to be between 4 and 31.
@@ -27,17 +22,13 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
     private $cost;
 
     /**
-     * @param PasswordPolicyInterface $passwordPolicy
-     * @param int                     $cost
      *
      * @throws PasswordHashException
      */
     public function __construct(
-        PasswordPolicyInterface $passwordPolicy,
+        private PasswordPolicyInterface $passwordPolicy,
         int $cost
     ) {
-        $this->passwordPolicy = $passwordPolicy;
-
         $this->validateCostOption($cost);
         $this->cost = $cost;
     }

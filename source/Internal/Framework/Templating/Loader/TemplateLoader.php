@@ -13,35 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFi
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface;
 
-/**
- * Class TemplateLoader
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
- */
 class TemplateLoader implements TemplateLoaderInterface
 {
-    /**
-     * @var TemplateNameResolverInterface
-     */
-    private $templateNameResolver;
-
-    /**
-     * @var FileLocatorInterface
-     */
-    private $fileLocator;
-
-    /**
-     * TemplateLoader constructor.
-     *
-     * @param FileLocatorInterface  $fileLocator
-     * @param TemplateNameResolverInterface $templateNameResolver
-     */
     public function __construct(
-        FileLocatorInterface $fileLocator,
-        TemplateNameResolverInterface $templateNameResolver
+        private FileLocatorInterface $fileLocator,
+        private TemplateNameResolverInterface $templateNameResolver
     ) {
-        $this->fileLocator = $fileLocator;
-        $this->templateNameResolver = $templateNameResolver;
     }
 
     /**
@@ -55,7 +32,7 @@ class TemplateLoader implements TemplateLoaderInterface
     {
         try {
             $this->findTemplate($name);
-        } catch (TemplateFileNotFoundException $e) {
+        } catch (TemplateFileNotFoundException) {
             return false;
         }
         return true;

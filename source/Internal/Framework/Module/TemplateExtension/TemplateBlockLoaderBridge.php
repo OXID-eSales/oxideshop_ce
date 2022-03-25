@@ -11,14 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
 class TemplateBlockLoaderBridge implements TemplateBlockLoaderBridgeInterface
 {
-    /**
-     * @var TemplateBlockLoaderInterface
-     */
-    private $templateBlockLoader;
-
-    public function __construct(TemplateBlockLoaderInterface $templateBlockLoader)
+    public function __construct(private TemplateBlockLoaderInterface $templateBlockLoader)
     {
-        $this->templateBlockLoader = $templateBlockLoader;
     }
 
     /**

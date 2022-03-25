@@ -16,17 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterface
 {
     /**
-     * @var ModuleConfigurationDataMapperInterface
-     */
-    private $moduleConfigurationDataMapper;
-
-    /**
      * ProjectConfigurationDataMapper constructor.
-     * @param ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper
      */
-    public function __construct(ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper)
+    public function __construct(private ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper)
     {
-        $this->moduleConfigurationDataMapper = $moduleConfigurationDataMapper;
     }
 
     /**

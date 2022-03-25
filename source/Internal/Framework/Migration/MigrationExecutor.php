@@ -21,15 +21,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class MigrationExecutor implements MigrationExecutorInterface
 {
 
-    /** @var ContextInterface */
-    protected $context;
-
-    /**
-     * @param ContextInterface $context
-     */
-    public function __construct(ContextInterface $context)
+    public function __construct(protected ContextInterface $context)
     {
-        $this->context = $context;
     }
 
     public function execute(): void

@@ -15,19 +15,15 @@ class ShopEnvironmentWithOrphanSettingEvent extends Event
 {
     public const NAME = self::class;
 
-    /** @var int */
-    private $shopId;
-    /** @var  string */
-    private $moduleId;
-    /** @var string */
-    private $settingId;
-
-    public function __construct($shopId, $moduleId, $settingId)
+    public function __construct(
+        /** @var int */
+        private $shopId,
+        /** @var  string */
+        private $moduleId,
+        /** @var string */
+        private $settingId
+    )
     {
-
-        $this->shopId = $shopId;
-        $this->moduleId = $moduleId;
-        $this->settingId = $settingId;
     }
 
     /** @return int */

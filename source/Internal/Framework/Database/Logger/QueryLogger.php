@@ -18,35 +18,10 @@ use OxidEsales\Eshop\Core\Registry;
 class QueryLogger implements SQLLogger
 {
     /**
-     * @var LoggerInterface
-     */
-    private $psrLogger;
-
-    /**
-     * @var QueryFilter
-     */
-    private $queryFilter;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
      * QueryLogger constructor.
-     *
-     * @param QueryFilterInterface      $queryFilter
-     * @param ContextInterface $context
-     * @param LoggerInterface  $psrLogger
      */
-    public function __construct(
-        QueryFilterInterface $queryFilter,
-        ContextInterface $context,
-        LoggerInterface $psrLogger
-    ) {
-        $this->queryFilter = $queryFilter;
-        $this->psrLogger = $psrLogger;
-        $this->context = $context;
+    public function __construct(private QueryFilterInterface $queryFilter, private ContextInterface $context, private LoggerInterface $psrLogger)
+    {
     }
 
     /**
@@ -87,7 +62,7 @@ class QueryLogger implements SQLLogger
 
         foreach ((new \Exception())->getTrace() as $item) {
             if (
-                (false === stripos($item['class'], get_class($this))) &&
+                (false === stripos($item['class'], $this::class)) &&
                 (false === stripos($item['class'], 'Doctrine'))
             ) {
                 $queryTraceItem = $item;
@@ -156,7 +131,7 @@ class QueryLogger implements SQLLogger
     {
         try {
             $adminId = $this->context->getAdminUserId();
-        } catch (AdminUserNotFoundException $exception) {
+        } catch (AdminUserNotFoundException) {
             $adminId = '';
         }
 

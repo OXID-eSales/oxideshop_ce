@@ -16,9 +16,6 @@ class MetaDataValidatorAggregate implements MetaDataValidatorInterface
      */
     private $metaDataValidators;
 
-    /**
-     * @param MetaDataValidatorInterface ...$metaDataValidators
-     */
     public function __construct(MetaDataValidatorInterface ...$metaDataValidators)
     {
         $this->metaDataValidators = $metaDataValidators;

@@ -13,14 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Utility\Header\HeaderGeneratorInterface;
 
 class CsvHeaderGeneratorBridge implements HeaderGeneratorBridgeInterface
 {
-    /**
-     * @var HeaderGeneratorInterface
-     */
-    private $headerGenerator;
-
-    public function __construct(HeaderGeneratorInterface $headerGenerator)
+    public function __construct(private HeaderGeneratorInterface $headerGenerator)
     {
-        $this->headerGenerator = $headerGenerator;
     }
 
     /**

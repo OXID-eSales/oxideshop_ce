@@ -29,36 +29,12 @@ class ModuleDeactivateCommand extends Command
     public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
     private const ARGUMENT_MODULE_ID = 'module-id';
 
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ModuleActivationServiceInterface
-     */
-    private $moduleActivationService;
-
-    /**
-     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
-     * @param ContextInterface                 $context
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     */
     public function __construct(
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ContextInterface $context,
-        ModuleActivationServiceInterface $moduleActivationService
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ContextInterface $context,
+        private ModuleActivationServiceInterface $moduleActivationService
     ) {
         parent::__construct(null);
-
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->context = $context;
-        $this->moduleActivationService = $moduleActivationService;
     }
 
     /**
@@ -99,7 +75,7 @@ class ModuleDeactivateCommand extends Command
             $output->writeLn(
                 '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
             );
-        } catch (ModuleSetupException $exception) {
+        } catch (ModuleSetupException) {
             $output->writeLn(
                 '<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
             );

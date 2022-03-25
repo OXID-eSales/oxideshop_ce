@@ -22,58 +22,8 @@ use function is_string;
 
 class SettingDao implements SettingDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ShopSettingEncoderInterface
-     */
-    private $shopSettingEncoder;
-
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * @var TransactionServiceInterface
-     */
-    private $transactionService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ContextInterface             $context
-     * @param ShopSettingEncoderInterface  $shopSettingEncoder
-     * @param ShopAdapterInterface         $shopAdapter
-     * @param TransactionServiceInterface  $transactionService
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
-    public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        ContextInterface $context,
-        ShopSettingEncoderInterface $shopSettingEncoder,
-        ShopAdapterInterface $shopAdapter,
-        TransactionServiceInterface $transactionService,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->context = $context;
-        $this->shopSettingEncoder = $shopSettingEncoder;
-        $this->shopAdapter = $shopAdapter;
-        $this->transactionService = $transactionService;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ContextInterface $context, private ShopSettingEncoderInterface $shopSettingEncoder, private ShopAdapterInterface $shopAdapter, private TransactionServiceInterface $transactionService, private EventDispatcherInterface $eventDispatcher)
+    {
     }
 
     /**

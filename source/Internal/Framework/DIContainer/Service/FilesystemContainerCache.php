@@ -16,14 +16,8 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 class FilesystemContainerCache implements ContainerCacheInterface
 {
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    public function __construct(BasicContextInterface $context)
+    public function __construct(private BasicContextInterface $context)
     {
-        $this->context = $context;
     }
 
     public function put(ContainerBuilder $container): void

@@ -17,38 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
  */
 class Argon2IPasswordHashService implements PasswordHashServiceInterface
 {
-    /**
-     * @var PasswordPolicyInterface
-     */
-    private $passwordPolicy;
-
-    /** @var int $memoryCost */
-    private $memoryCost;
-
-    /** @var int $timeCost */
-    private $timeCost;
-
-    /** @var int $threads */
-    private $threads;
-
-
-    /**
-     * @param PasswordPolicyInterface $passwordPolicy
-     * @param int                     $memoryCost
-     * @param int                     $timeCost
-     * @param int                     $threads
-     */
-    public function __construct(
-        PasswordPolicyInterface $passwordPolicy,
-        int $memoryCost,
-        int $timeCost,
-        int $threads
-    ) {
-        $this->passwordPolicy = $passwordPolicy;
-
-        $this->memoryCost = $memoryCost;
-        $this->timeCost = $timeCost;
-        $this->threads = $threads;
+    public function __construct(private PasswordPolicyInterface $passwordPolicy, private int $memoryCost, private int $timeCost, private int $threads)
+    {
     }
 
     /**

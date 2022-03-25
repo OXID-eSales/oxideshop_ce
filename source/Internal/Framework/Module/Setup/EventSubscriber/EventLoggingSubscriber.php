@@ -18,18 +18,10 @@ class EventLoggingSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * EventLoggingSubscriber constructor.
-     *
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function logConfigurationError(ServicesYamlConfigurationErrorEvent $event): void

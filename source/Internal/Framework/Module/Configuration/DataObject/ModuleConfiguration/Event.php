@@ -11,24 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class Event
 {
-    /**
-     * @var string
-     */
-    private $action;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @param string $action
-     * @param string $method
-     */
-    public function __construct(string $action, string $method)
+    public function __construct(private string $action, private string $method)
     {
-        $this->action = $action;
-        $this->method = $method;
     }
 
     /**

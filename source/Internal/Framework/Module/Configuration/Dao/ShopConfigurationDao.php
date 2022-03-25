@@ -22,57 +22,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ShopConfigurationDao implements ShopConfigurationDaoInterface
 {
-    /**
-     * @var ShopConfigurationDataMapperInterface
-     */
-    private $shopConfigurationMapper;
-
-    /**
-     * @var FileStorageFactoryInterface
-     */
-    private $fileStorageFactory;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ShopConfigurationCacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var NodeInterface
-     */
-    private $node;
-
-    /**
-     * @var ShopConfigurationExtenderInterface
-     */
-    private $shopConfigurationExtender;
-
-    public function __construct(
-        ShopConfigurationDataMapperInterface $shopConfigurationMapper,
-        FileStorageFactoryInterface $fileStorageFactory,
-        BasicContextInterface $context,
-        ShopConfigurationCacheInterface $cache,
-        Filesystem $fileSystem,
-        NodeInterface $node,
-        ShopConfigurationExtenderInterface $shopConfigurationExtender
-    ) {
-        $this->shopConfigurationMapper = $shopConfigurationMapper;
-        $this->fileStorageFactory = $fileStorageFactory;
-        $this->context = $context;
-        $this->cache = $cache;
-        $this->fileSystem = $fileSystem;
-        $this->node = $node;
-        $this->shopConfigurationExtender = $shopConfigurationExtender;
+    public function __construct(private ShopConfigurationDataMapperInterface $shopConfigurationMapper, private FileStorageFactoryInterface $fileStorageFactory, private BasicContextInterface $context, private ShopConfigurationCacheInterface $cache, private Filesystem $fileSystem, private NodeInterface $node, private ShopConfigurationExtenderInterface $shopConfigurationExtender)
+    {
     }
 
     /**

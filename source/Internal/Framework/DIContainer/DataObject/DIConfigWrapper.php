@@ -24,18 +24,10 @@ class DIConfigWrapper
     private $sectionDefaults = [self::SERVICE_SECTION => ['_defaults' => ['public' => false, 'autowire' => true]]];
 
     /**
-     * @var array
-     */
-    private $configArray;
-
-    /**
      * DIConfigWrapper constructor.
-     *
-     * @param array $configArray
      */
-    public function __construct(array $configArray)
+    public function __construct(private array $configArray)
     {
-        $this->configArray = $configArray;
     }
 
     /**
@@ -88,7 +80,7 @@ class DIConfigWrapper
     {
         try {
             $this->getService($serviceKey);
-        } catch (MissingServiceException $e) {
+        } catch (MissingServiceException) {
             return false;
         }
         return true;

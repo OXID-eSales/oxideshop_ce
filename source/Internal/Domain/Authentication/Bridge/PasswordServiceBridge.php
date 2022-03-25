@@ -14,25 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVer
 
 class PasswordServiceBridge implements PasswordServiceBridgeInterface
 {
-    /**
-     * @var PasswordHashServiceInterface
-     */
-    private $passwordHashService;
-    /**
-     * @var PasswordVerificationServiceInterface
-     */
-    private $passwordVerificationService;
-
-    /**
-     * @param PasswordHashServiceInterface         $passwordHashService
-     * @param PasswordVerificationServiceInterface $passwordVerificationService
-     */
-    public function __construct(
-        PasswordHashServiceInterface $passwordHashService,
-        PasswordVerificationServiceInterface $passwordVerificationService
-    ) {
-        $this->passwordHashService = $passwordHashService;
-        $this->passwordVerificationService = $passwordVerificationService;
+    public function __construct(private PasswordHashServiceInterface $passwordHashService, private PasswordVerificationServiceInterface $passwordVerificationService)
+    {
     }
 
     /**

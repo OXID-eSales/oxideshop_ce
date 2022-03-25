@@ -17,14 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
-    private $shopConfigurationSettingDao;
-
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
-    public function __construct(
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-    ) {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
+    {
     }
 
     /**
@@ -93,7 +87,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
                 ShopConfigurationSetting::MODULE_CONTROLLERS,
                 $shopId
             );
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)

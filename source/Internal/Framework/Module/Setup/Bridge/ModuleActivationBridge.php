@@ -17,26 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 class ModuleActivationBridge implements ModuleActivationBridgeInterface
 {
     /**
-     * @var ModuleActivationServiceInterface
-     */
-    private $moduleActivationService;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $moduleStateService;
-
-    /**
      * ModuleActivationBridge constructor.
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleStateServiceInterface      $moduleStateService
      */
-    public function __construct(
-        ModuleActivationServiceInterface $moduleActivationService,
-        ModuleStateServiceInterface $moduleStateService
-    ) {
-        $this->moduleActivationService = $moduleActivationService;
-        $this->moduleStateService = $moduleStateService;
+    public function __construct(private ModuleActivationServiceInterface $moduleActivationService, private ModuleStateServiceInterface $moduleStateService)
+    {
     }
 
     /**

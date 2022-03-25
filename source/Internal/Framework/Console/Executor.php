@@ -22,26 +22,8 @@ class Executor implements ExecutorInterface
 {
     public const SHOP_ID_PARAMETER_OPTION_NAME = 'shop-id';
 
-    /**
-     * @var Application
-     */
-    private $application;
-
-    /**
-     * @var ServicesCommandsProvider
-     */
-    private $servicesCommandsProvider;
-
-    /**
-     * @param Application               $application
-     * @param CommandsProviderInterface $commandsProvider
-     */
-    public function __construct(
-        Application $application,
-        CommandsProviderInterface $commandsProvider
-    ) {
-        $this->application = $application;
-        $this->servicesCommandsProvider = $commandsProvider;
+    public function __construct(private Application $application, private CommandsProviderInterface $servicesCommandsProvider)
+    {
     }
 
     /**

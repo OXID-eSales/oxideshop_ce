@@ -24,12 +24,8 @@ class ConfigFileDao implements ConfigFileDaoInterface
         'sCompileDir',
     ];
 
-    /** @var BasicContextInterface */
-    private $context;
-
-    public function __construct(BasicContextInterface $context)
+    public function __construct(private BasicContextInterface $context)
     {
-        $this->context = $context;
     }
 
     /** @inheritDoc */
@@ -81,7 +77,7 @@ class ConfigFileDao implements ConfigFileDaoInterface
      */
     private function checkPlaceholderPresent(string $placeholder, string $fileContents): void
     {
-        if (strpos($fileContents, $placeholder) === false) {
+        if (!str_contains($fileContents, $placeholder)) {
             throw new FileNotEditableException("Value for $placeholder can not be set as the placeholder was not found in the configuration file (" . $this->context->getConfigFilePath() . ")");
         }
     }

@@ -11,14 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 class ActiveModulesDataProviderBridge implements ActiveModulesDataProviderBridgeInterface
 {
-    /**
-     * @var ActiveModulesDataProviderInterface
-     */
-    private $activeModulesDataProvider;
-
-    public function __construct(ActiveModulesDataProviderInterface $activeModulesDataProvider)
+    public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider)
     {
-        $this->activeModulesDataProvider = $activeModulesDataProvider;
     }
 
     /**

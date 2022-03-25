@@ -23,14 +23,10 @@ class ModuleInstallCommand extends Command
     private const SUCCESS_MESSAGE = 'Module installed successfully';
     private const ERROR_MESSAGE = 'Error installing module: ';
 
-    /** @var ModuleInstallerInterface */
-    private $moduleInstaller;
-
     public function __construct(
-        ModuleInstallerInterface $moduleInstaller
+        private ModuleInstallerInterface $moduleInstaller
     ) {
         parent::__construct();
-        $this->moduleInstaller = $moduleInstaller;
     }
 
     /** @inheritdoc */

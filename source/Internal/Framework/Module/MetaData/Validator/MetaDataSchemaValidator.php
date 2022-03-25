@@ -17,11 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSch
 class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 {
     /**
-     * @var MetaDataSchemataProviderInterface
-     */
-    private $metaDataSchemataProvider;
-
-    /**
      * @var array
      */
     private static $sectionsExcludedFromItemValidation = [
@@ -44,12 +39,9 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 
     /**
      * MetaDataValidator constructor.
-     *
-     * @param MetaDataSchemataProviderInterface $metaDataSchemataProvider
      */
-    public function __construct(MetaDataSchemataProviderInterface $metaDataSchemataProvider)
+    public function __construct(private MetaDataSchemataProviderInterface $metaDataSchemataProvider)
     {
-        $this->metaDataSchemataProvider = $metaDataSchemataProvider;
     }
 
     /**

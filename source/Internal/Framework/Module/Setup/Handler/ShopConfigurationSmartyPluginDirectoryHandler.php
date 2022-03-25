@@ -17,14 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
-    private $shopConfigurationSettingDao;
-
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
-    public function __construct(
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-    ) {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
+    {
     }
 
     /**
@@ -92,7 +86,7 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
                 ShopConfigurationSetting::MODULE_SMARTY_PLUGIN_DIRECTORIES,
                 $shopId
             );
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)

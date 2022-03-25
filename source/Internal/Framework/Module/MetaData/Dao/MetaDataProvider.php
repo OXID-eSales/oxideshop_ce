@@ -42,41 +42,8 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private $filePath;
 
-    /**
-     * @var MetaDataNormalizerInterface
-     */
-    private $metaDataNormalizer;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-    /**
-     * @var MetaDataValidatorInterface
-     */
-    private $metaDataValidatorService;
-
-    /**
-     * @var MetaDataConverterInterface
-     */
-    private $metaDataConverter;
-
-    /**
-     * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param BasicContextInterface       $context
-     * @param MetaDataValidatorInterface  $metaDataValidator
-     * @param MetaDataConverterInterface  $metaDataConverter
-     */
-    public function __construct(
-        MetaDataNormalizerInterface $metaDataNormalizer,
-        BasicContextInterface $context,
-        MetaDataValidatorInterface $metaDataValidator,
-        MetaDataConverterInterface $metaDataConverter
-    ) {
-        $this->metaDataNormalizer = $metaDataNormalizer;
-        $this->context = $context;
-        $this->metaDataValidatorService = $metaDataValidator;
-        $this->metaDataConverter = $metaDataConverter;
+    public function __construct(private MetaDataNormalizerInterface $metaDataNormalizer, private BasicContextInterface $context, private MetaDataValidatorInterface $metaDataValidatorService, private MetaDataConverterInterface $metaDataConverter)
+    {
     }
 
     /**

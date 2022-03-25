@@ -20,23 +20,8 @@ use Webmozart\PathUtil\Path;
 
 class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 {
-    /** @var BasicContextInterface  */
-    private $basicContext;
-
-    /** @var ProjectYamlDaoInterface  */
-    private $projectYamlDao;
-
-    /** @var ModulePathResolverInterface */
-    private $modulePathResolver;
-
-    public function __construct(
-        BasicContextInterface $basicContext,
-        ProjectYamlDaoInterface $projectYamlDao,
-        ModulePathResolverInterface $modulePathResolver
-    ) {
-        $this->basicContext = $basicContext;
-        $this->projectYamlDao = $projectYamlDao;
-        $this->modulePathResolver = $modulePathResolver;
+    public function __construct(private BasicContextInterface $basicContext, private ProjectYamlDaoInterface $projectYamlDao, private ModulePathResolverInterface $modulePathResolver)
+    {
     }
 
     /**

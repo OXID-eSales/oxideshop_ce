@@ -19,42 +19,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 class DatabaseInstaller implements DatabaseInstallerInterface
 {
     /**
-     * @var DatabaseCreatorInterface
-     */
-    private $creator;
-
-    /**
-     * @var DatabaseInitiatorInterface
-     */
-    private $initiator;
-
-    /**
-     * @var ConfigFileDaoInterface
-     */
-    private $configFileDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
-    /**
      * DatabaseInstaller constructor.
-     * @param DatabaseCreatorInterface $creator
-     * @param DatabaseInitiatorInterface $initiator
-     * @param ConfigFileDaoInterface $configFileDao
-     * @param BasicContextInterface $basicContext
      */
-    public function __construct(
-        DatabaseCreatorInterface $creator,
-        DatabaseInitiatorInterface $initiator,
-        ConfigFileDaoInterface $configFileDao,
-        BasicContextInterface $basicContext
-    ) {
-        $this->creator = $creator;
-        $this->initiator = $initiator;
-        $this->configFileDao = $configFileDao;
-        $this->basicContext = $basicContext;
+    public function __construct(private DatabaseCreatorInterface $creator, private DatabaseInitiatorInterface $initiator, private ConfigFileDaoInterface $configFileDao, private BasicContextInterface $basicContext)
+    {
     }
 
     /**
@@ -68,7 +36,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
     {
         try {
             $this->creator->createDatabase($host, $port, $username, $password, $name);
-        } catch (DatabaseExistsException $exception) {
+        } catch (DatabaseExistsException) {
         }
 
         $this->addCredentialsToConfigFile($host, (string) $port, $username, $password, $name);

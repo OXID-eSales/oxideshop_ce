@@ -21,9 +21,6 @@ class CacheResourcePlugin
      */
     private static $context;
 
-    /**
-     * @param SmartyContextInterface $context
-     */
     public function __construct(SmartyContextInterface $context)
     {
         self::$context = $context;

@@ -23,41 +23,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
     /**
-     * @var ProjectConfigurationDaoInterface
-     */
-    private $projectConfigurationDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ModuleConfigurationMergingServiceInterface
-     */
-    private $moduleConfigurationMergingService;
-
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $metadataModuleConfigurationDao;
-
-    /**
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface $context
      * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
-     * @param ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
      */
-    public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
-        BasicContextInterface $context,
-        ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
-        ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
-    ) {
-        $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->context = $context;
-        $this->moduleConfigurationMergingService = $moduleConfigurationMergingService;
-        $this->metadataModuleConfigurationDao = $metadataModuleConfigurationDao;
+    public function __construct(private ProjectConfigurationDaoInterface $projectConfigurationDao, private BasicContextInterface $context, private ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService, private ModuleConfigurationDaoInterface $metadataModuleConfigurationDao)
+    {
     }
 
     /**

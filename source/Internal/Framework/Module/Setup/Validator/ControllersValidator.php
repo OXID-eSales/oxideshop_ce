@@ -24,34 +24,8 @@ use function array_key_exists;
 
 class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
-    private $shopConfigurationSettingDao;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @param ShopAdapterInterface $shopAdapter
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     * @param LoggerInterface $logger
-     */
-    public function __construct(
-        ShopAdapterInterface $shopAdapter,
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        LoggerInterface $logger
-    ) {
-        $this->shopAdapter = $shopAdapter;
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
-        $this->logger = $logger;
+    public function __construct(private ShopAdapterInterface $shopAdapter, private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao, private LoggerInterface $logger)
+    {
     }
 
     /**
@@ -110,7 +84,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
                     $moduleControllersClassMap = array_merge($moduleControllersClassMap, $moduleControllers);
                 }
             }
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
         }
 
         return $moduleControllersClassMap;

@@ -18,23 +18,8 @@ use Webmozart\PathUtil\Path;
 
 class AdminAreaModuleTranslationFileLocator extends LocatorAbstract implements LocatorInterface
 {
-    /** @var ModulesDataProviderInterface */
-    private $modulesDataProvider;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $adminThemeName;
-
-    public function __construct(
-        ModulesDataProviderInterface $modulesDataProvider,
-        Filesystem $filesystem,
-        string $adminThemeName
-    ) {
-        $this->modulesDataProvider = $modulesDataProvider;
-        $this->filesystem = $filesystem;
-        $this->adminThemeName = $adminThemeName;
+    public function __construct(private ModulesDataProviderInterface $modulesDataProvider, private Filesystem $filesystem, private string $adminThemeName)
+    {
     }
 
     /**

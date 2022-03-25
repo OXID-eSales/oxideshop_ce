@@ -61,9 +61,6 @@ class Form implements FormInterface
         }
     }
 
-    /**
-     * @param FormValidatorInterface $validator
-     */
     public function addValidator(FormValidatorInterface $validator)
     {
         $this->validators[] = $validator;

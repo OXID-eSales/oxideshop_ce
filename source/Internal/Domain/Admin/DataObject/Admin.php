@@ -13,43 +13,29 @@ class Admin
 {
     public const MALL_ADMIN = 'malladmin';
 
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $passwordHash;
-
-    /**
-     * @var string
-     */
-    private $rights;
-
-    /**
-     * @var int
-     */
-    private $shopId;
-
     public function __construct(
-        $id,
-        $email,
-        $passwordHash,
-        $rights,
-        $shopId
-    ) {
-        $this->id = $id;
-        $this->email = $email;
-        $this->passwordHash = $passwordHash;
-        $this->rights   = $rights;
-        $this->shopId   = $shopId;
+        /**
+         * @var string
+         */
+        private $id,
+        /**
+         * @var string
+         */
+        private $email,
+        /**
+         * @var string
+         */
+        private $passwordHash,
+        /**
+         * @var string
+         */
+        private $rights,
+        /**
+         * @var int
+         */
+        private $shopId
+    )
+    {
     }
 
     public function getId(): string

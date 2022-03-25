@@ -14,14 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 class HtaccessDaoFactory implements HtaccessDaoFactoryInterface
 {
     private const FILENAME = '.htaccess';
-    /** @var BasicContextInterface */
-    private $basicContext;
 
-    /** @param BasicContextInterface $basicContext */
-    public function __construct(
-        BasicContextInterface $basicContext
-    ) {
-        $this->basicContext = $basicContext;
+    public function __construct(private BasicContextInterface $basicContext)
+    {
     }
 
     /**

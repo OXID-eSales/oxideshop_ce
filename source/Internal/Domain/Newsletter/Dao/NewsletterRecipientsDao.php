@@ -15,14 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 
 class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory)
     {
-        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     /**

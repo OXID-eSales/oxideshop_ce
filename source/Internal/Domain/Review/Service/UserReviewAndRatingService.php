@@ -15,35 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRat
 class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
 {
     /**
-     * @var UserReviewServiceInterface
-     */
-    private $userReviewService;
-
-    /**
-     * @var UserRatingServiceInterface
-     */
-    private $userRatingService;
-
-    /**
-     * @var ReviewAndRatingMergingServiceInterface
-     */
-    private $reviewAndRatingMergingService;
-
-    /**
      * UserReviewAndRatingBridge constructor.
-     *
-     * @param UserReviewServiceInterface             $userReviewService
-     * @param UserRatingServiceInterface             $userRatingService
-     * @param ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
      */
-    public function __construct(
-        UserReviewServiceInterface $userReviewService,
-        UserRatingServiceInterface $userRatingService,
-        ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
-    ) {
-        $this->userReviewService = $userReviewService;
-        $this->userRatingService = $userRatingService;
-        $this->reviewAndRatingMergingService = $reviewAndRatingMergingService;
+    public function __construct(private UserReviewServiceInterface $userReviewService, private UserRatingServiceInterface $userRatingService, private ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService)
+    {
     }
 
     /**

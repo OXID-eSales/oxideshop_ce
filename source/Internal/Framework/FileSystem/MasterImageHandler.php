@@ -16,17 +16,8 @@ use Webmozart\PathUtil\Path;
 
 class MasterImageHandler implements ImageHandlerInterface
 {
-    /** @var Filesystem */
-    private $filesystem;
-    /** @var ContextInterface */
-    private $context;
-
-    public function __construct(
-        Filesystem $filesystem,
-        ContextInterface $context
-    ) {
-        $this->filesystem = $filesystem;
-        $this->context = $context;
+    public function __construct(private Filesystem $filesystem, private ContextInterface $context)
+    {
     }
 
     /** @inheritDoc */

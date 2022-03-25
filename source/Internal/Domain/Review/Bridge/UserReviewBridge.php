@@ -17,19 +17,10 @@ use OxidEsales\Eshop\Application\Model\Review;
 class UserReviewBridge implements UserReviewBridgeInterface
 {
     /**
-     * @var UserReviewServiceInterface
-     */
-    private $userReviewService;
-
-    /**
      * UserReviewBridge constructor.
-     *
-     * @param UserReviewServiceInterface $userReviewService
      */
-    public function __construct(
-        UserReviewServiceInterface $userReviewService
-    ) {
-        $this->userReviewService = $userReviewService;
+    public function __construct(private UserReviewServiceInterface $userReviewService)
+    {
     }
 
     /**

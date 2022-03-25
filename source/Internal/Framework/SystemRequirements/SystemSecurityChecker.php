@@ -21,7 +21,7 @@ class SystemSecurityChecker implements SystemSecurityCheckerInterface
         try {
             random_bytes(1);
             return true;
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return false;
         }
     }

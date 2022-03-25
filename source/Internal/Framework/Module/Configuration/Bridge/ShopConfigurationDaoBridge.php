@@ -17,35 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
 {
     /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var ShopEnvironmentConfigurationDaoInterface
-     */
-    private $shopEnvironmentConfigurationDao;
-
-    /**
      * ShopConfigurationDaoBridge constructor.
-     *
-     * @param ContextInterface                         $context
-     * @param ShopConfigurationDaoInterface            $shopConfigurationDao
-     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
      */
-    public function __construct(
-        ContextInterface $context,
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
-    ) {
-        $this->context = $context;
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
+    public function __construct(private ContextInterface $context, private ShopConfigurationDaoInterface $shopConfigurationDao, private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao)
+    {
     }
 
     /**

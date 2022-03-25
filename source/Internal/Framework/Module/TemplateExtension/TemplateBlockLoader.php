@@ -16,29 +16,8 @@ use Webmozart\PathUtil\Path;
 
 class TemplateBlockLoader implements TemplateBlockLoaderInterface
 {
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ModulePathResolverInterface
-     */
-    private $modulePathResolver;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    public function __construct(
-        ContextInterface $context,
-        ModulePathResolverInterface $modulePathResolver,
-        Filesystem $filesystem
-    ) {
-        $this->context = $context;
-        $this->modulePathResolver = $modulePathResolver;
-        $this->filesystem = $filesystem;
+    public function __construct(private ContextInterface $context, private ModulePathResolverInterface $modulePathResolver, private Filesystem $filesystem)
+    {
     }
 
     /**

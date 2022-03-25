@@ -17,22 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class LanguageInstaller implements LanguageInstallerInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
-    private $shopConfigurationSettingDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    public function __construct(
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        BasicContextInterface $context
-    ) {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
-        $this->context = $context;
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao, private BasicContextInterface $context)
+    {
     }
 
     public function install(DefaultLanguage $language): void
@@ -72,7 +58,7 @@ class LanguageInstaller implements LanguageInstallerInterface
 
             $languagesSetting->setValue($settingValue);
             $this->shopConfigurationSettingDao->save($languagesSetting);
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             //no setting, nothing to update
         }
     }

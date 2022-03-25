@@ -28,17 +28,8 @@ use Symfony\Component\Filesystem\Filesystem;
 class ContainerBuilder
 {
 
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * @param BasicContextInterface $context
-     */
-    public function __construct(BasicContextInterface $context)
+    public function __construct(private BasicContextInterface $context)
     {
-        $this->context = $context;
     }
 
     /**
@@ -68,12 +59,12 @@ class ContainerBuilder
         try {
             $this->cleanupProjectYaml();
             $loader->load($this->context->getGeneratedServicesFilePath());
-        } catch (FileLocatorFileNotFoundException $exception) {
+        } catch (FileLocatorFileNotFoundException) {
             // In case generated services file not found, do nothing.
         }
         try {
             $loader->load($this->context->getConfigurableServicesFilePath());
-        } catch (FileLocatorFileNotFoundException $exception) {
+        } catch (FileLocatorFileNotFoundException) {
             // In case manually created services file not found, do nothing.
         }
     }

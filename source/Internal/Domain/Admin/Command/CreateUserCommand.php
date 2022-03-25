@@ -28,36 +28,14 @@ class CreateUserCommand extends Command
     private const ADMIN_PASSWORD = 'admin-password';
 
     /**
-     * @var EmailValidatorServiceInterface
-     */
-    private $emailValidatorService;
-
-    /**
-     * @var AdminUserServiceInterface
-     */
-    private $adminService;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
-    /**
      * AdminUserSetupCommand constructor.
-     * @param EmailValidatorServiceInterface $emailValidatorService
-     * @param AdminUserServiceInterface      $adminService
-     * @param BasicContextInterface          $basicContext
      */
     public function __construct(
-        EmailValidatorServiceInterface $emailValidatorService,
-        AdminUserServiceInterface $adminService,
-        BasicContextInterface $basicContext
+        private EmailValidatorServiceInterface $emailValidatorService,
+        private AdminUserServiceInterface $adminService,
+        private BasicContextInterface $basicContext
     ) {
         parent::__construct();
-
-        $this->emailValidatorService = $emailValidatorService;
-        $this->adminService = $adminService;
-        $this->basicContext = $basicContext;
     }
 
     /**

@@ -19,18 +19,10 @@ use function in_array;
 class ModuleStateService implements ModuleStateServiceInterface
 {
     /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
-    private $shopConfigurationSettingDao;
-
-    /**
      * ModuleStateService constructor.
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
-    public function __construct(
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-    ) {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
+    {
     }
 
     /**
@@ -103,7 +95,7 @@ class ModuleStateService implements ModuleStateServiceInterface
                 ShopConfigurationSetting::ACTIVE_MODULES,
                 $shopId
             );
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             $activeModuleIdsSetting = new ShopConfigurationSetting();
             $activeModuleIdsSetting
                 ->setShopId($shopId)

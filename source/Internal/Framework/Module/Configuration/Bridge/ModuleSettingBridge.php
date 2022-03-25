@@ -17,29 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleSettingBridge implements ModuleSettingBridgeInterface
 {
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var SettingDaoInterface
-     */
-    private $settingDao;
-
-    public function __construct(
-        ContextInterface $context,
-        ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        SettingDaoInterface $settingDao
-    ) {
-        $this->context = $context;
-        $this->moduleConfigurationDao = $moduleConfigurationDao;
-        $this->settingDao = $settingDao;
+    public function __construct(private ContextInterface $context, private ModuleConfigurationDaoInterface $moduleConfigurationDao, private SettingDaoInterface $settingDao)
+    {
     }
 
     /**

@@ -20,11 +20,11 @@ class DateFormatHelper
     {
         $winFormatSearch = ['%D', '%h', '%n', '%r', '%R', '%t', '%T'];
         $winFormatReplace = ['%m/%d/%y', '%b', "\n", '%I:%M:%S %p', '%H:%M', "\t", '%H:%M:%S'];
-        if (strpos($format, '%e') !== false) {
+        if (str_contains($format, '%e')) {
             $winFormatSearch[] = '%e';
             $winFormatReplace[] = sprintf('%\' 2d', date('j', $timestamp));
         }
-        if (strpos($format, '%l') !== false) {
+        if (str_contains($format, '%l')) {
             $winFormatSearch[] = '%l';
             $winFormatReplace[] = sprintf('%\' 2d', date('h', $timestamp));
         }

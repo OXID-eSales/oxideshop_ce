@@ -17,26 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ClassExtensionChainService implements ExtensionChainServiceInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
-    private $shopConfigurationSettingDao;
-
-    /**
-     * @var ActiveClassExtensionChainResolverInterface
-     */
-    private $activeClassExtensionChainResolver;
-
-    /**
-     * @param ShopConfigurationSettingDaoInterface       $shopConfigurationSettingDao
-     * @param ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
-     */
-    public function __construct(
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
-    ) {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
-        $this->activeClassExtensionChainResolver = $activeClassExtensionChainResolver;
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao, private ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver)
+    {
     }
 
     /**
@@ -79,7 +61,7 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
                 ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN,
                 $shopId
             );
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)

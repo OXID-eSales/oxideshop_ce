@@ -19,24 +19,8 @@ class ServicesYamlConfigurationErrorEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * @var string $errorMessage
-     */
-    private $errorMessage;
-
-    /**
-     * @var string $configurationFilePath
-     */
-    private $configurationFilePath;
-
-    /**
-     * @param string $errorMessage
-     * @param string $configurationFilePath
-     */
-    public function __construct(string $errorMessage, string $configurationFilePath)
+    public function __construct(private string $errorMessage, private string $configurationFilePath)
     {
-        $this->errorMessage = $errorMessage;
-        $this->configurationFilePath = $configurationFilePath;
     }
 
     /**

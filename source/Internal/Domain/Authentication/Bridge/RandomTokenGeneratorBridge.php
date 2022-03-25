@@ -13,12 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTok
 
 class RandomTokenGeneratorBridge implements RandomTokenGeneratorBridgeInterface
 {
-    private RandomTokenGeneratorInterface $randomTokenGenerator;
-
     public function __construct(
-        RandomTokenGeneratorInterface $randomTokenGenerator
+        private RandomTokenGeneratorInterface $randomTokenGenerator
     ) {
-        $this->randomTokenGenerator = $randomTokenGenerator;
     }
 
     /** @inheritdoc */

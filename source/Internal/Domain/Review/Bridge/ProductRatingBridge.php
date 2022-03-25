@@ -14,17 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingServic
 class ProductRatingBridge implements ProductRatingBridgeInterface
 {
     /**
-     * @var ProductRatingServiceInterface
-     */
-    private $productRatingService;
-
-    /**
      * ProductRatingBridge constructor.
-     * @param ProductRatingServiceInterface $productRatingService
      */
-    public function __construct(ProductRatingServiceInterface $productRatingService)
+    public function __construct(private ProductRatingServiceInterface $productRatingService)
     {
-        $this->productRatingService = $productRatingService;
     }
 
     /**

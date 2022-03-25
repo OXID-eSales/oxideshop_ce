@@ -14,14 +14,8 @@ use Webmozart\PathUtil\Path;
 
 class ModuleAssetsPathResolver implements ModuleAssetsPathResolverInterface
 {
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    public function __construct(BasicContextInterface $context)
+    public function __construct(private BasicContextInterface $context)
     {
-        $this->context = $context;
     }
 
     public function getAssetsPath(string $moduleId): string

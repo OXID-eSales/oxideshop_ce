@@ -16,26 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
 class RatingDao implements RatingDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @var RatingDataMapperInterface
-     */
-    private $ratingDataMapper;
-
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param RatingDataMapperInterface    $ratingDataMapper
-     */
-    public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        RatingDataMapperInterface $ratingDataMapper
-    ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->ratingDataMapper = $ratingDataMapper;
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private RatingDataMapperInterface $ratingDataMapper)
+    {
     }
 
     /**

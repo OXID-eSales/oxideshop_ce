@@ -15,23 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ModulesDataProvider implements ModulesDataProviderInterface
 {
-    /** @var ShopConfigurationDaoInterface */
-    private $shopConfigurationDao;
-
-    /** @var ContextInterface */
-    private $context;
-
-    /** @var ModulePathResolverInterface */
-    private $modulePathResolver;
-
-    public function __construct(
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ModulePathResolverInterface $modulePathResolver,
-        ContextInterface $context
-    ) {
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->modulePathResolver = $modulePathResolver;
-        $this->context = $context;
+    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private ModulePathResolverInterface $modulePathResolver, private ContextInterface $context)
+    {
     }
 
     /** @inheritDoc */

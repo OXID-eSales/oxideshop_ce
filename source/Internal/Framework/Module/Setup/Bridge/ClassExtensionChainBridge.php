@@ -15,17 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ExtensionC
 class ClassExtensionChainBridge implements ClassExtensionChainBridgeInterface
 {
     /**
-     * @var ExtensionChainServiceInterface
-     */
-    private $classExtensionChainService;
-
-    /**
      * ClassExtensionChainBridge constructor.
-     * @param ExtensionChainServiceInterface $classExtensionChainService
      */
-    public function __construct(ExtensionChainServiceInterface $classExtensionChainService)
+    public function __construct(private ExtensionChainServiceInterface $classExtensionChainService)
     {
-        $this->classExtensionChainService = $classExtensionChainService;
     }
 
     /**

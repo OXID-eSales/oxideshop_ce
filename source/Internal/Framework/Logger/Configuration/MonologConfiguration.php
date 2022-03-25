@@ -14,32 +14,14 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 class MonologConfiguration implements MonologConfigurationInterface
 {
     /**
-     * @var string
-     */
-    private $loggerName;
-
-    /**
-     * @var string
-     */
-    private $logFilePath;
-
-    /**
-     * @var string
-     */
-    private $logLevel;
-
-    /**
      * MonologConfiguration constructor.
      *
      * @param string $loggerName
      * @param string $logFilePath
      * @param string $logLevel
      */
-    public function __construct($loggerName, $logFilePath, $logLevel)
+    public function __construct(private $loggerName, private $logFilePath, private $logLevel)
     {
-        $this->loggerName = $loggerName;
-        $this->logFilePath = $logFilePath;
-        $this->logLevel = $logLevel;
     }
 
 

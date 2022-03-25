@@ -15,19 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 
 class AdminDao implements AdminDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     */
-    public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory
-    ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory)
+    {
     }
+
     /**
      * @param Admin $admin
      */

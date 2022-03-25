@@ -19,33 +19,10 @@ class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
 {
 
     /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var QueryLogger
-     */
-    private $queryLogger;
-
-    /**
-     * @var NullLogger
-     */
-    private $nullLogger;
-
-    /**
      * DatabaseLoggerFactory constructor.
-     *
-     * @param ContextInterface $context
      */
-    public function __construct(
-        ContextInterface $context,
-        QueryLogger $queryLogger,
-        NullLogger $nullLogger
-    ) {
-        $this->context = $context;
-        $this->queryLogger = $queryLogger;
-        $this->nullLogger = $nullLogger;
+    public function __construct(private ContextInterface $context, private QueryLogger $queryLogger, private NullLogger $nullLogger)
+    {
     }
 
     /**

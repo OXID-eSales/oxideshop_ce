@@ -17,19 +17,10 @@ use OxidEsales\Eshop\Application\Model\Rating;
 class UserRatingBridge implements UserRatingBridgeInterface
 {
     /**
-     * @var UserRatingServiceInterface
-     */
-    private $userRatingService;
-
-    /**
      * UserRatingBridge constructor.
-     *
-     * @param UserRatingServiceInterface $userRatingService
      */
-    public function __construct(
-        UserRatingServiceInterface $userRatingService
-    ) {
-        $this->userRatingService = $userRatingService;
+    public function __construct(private UserRatingServiceInterface $userRatingService)
+    {
     }
 
     /**

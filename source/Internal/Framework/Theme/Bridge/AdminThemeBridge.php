@@ -12,18 +12,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge;
 class AdminThemeBridge implements AdminThemeBridgeInterface
 {
     /**
-     * @var string
-     */
-    private $activeThemeName;
-
-    /**
      * AdminThemeBridge constructor.
-     *
-     * @param string $activeThemeName
      */
-    public function __construct(string $activeThemeName)
+    public function __construct(private string $activeThemeName)
     {
-        $this->activeThemeName = $activeThemeName;
     }
 
     /**

@@ -14,21 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface;
 class HtaccessUpdater implements HtaccessUpdaterInterface
 {
     private const REWRITE_BASE_FOR_EMPTY_PATH = '/';
-    /** @var HtaccessDaoFactoryInterface */
-    private $htaccessDaoFactory;
-    /** @var UrlParserInterface */
-    private $urlParser;
 
-    /**
-     * @param HtaccessDaoFactoryInterface $htaccessDaoFactory
-     * @param UrlParserInterface $urlParser
-     */
-    public function __construct(
-        HtaccessDaoFactoryInterface $htaccessDaoFactory,
-        UrlParserInterface $urlParser
-    ) {
-        $this->htaccessDaoFactory = $htaccessDaoFactory;
-        $this->urlParser = $urlParser;
+    public function __construct(private HtaccessDaoFactoryInterface $htaccessDaoFactory, private UrlParserInterface $urlParser)
+    {
     }
 
     /** @inheritDoc */

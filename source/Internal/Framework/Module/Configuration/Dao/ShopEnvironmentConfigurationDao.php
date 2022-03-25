@@ -18,44 +18,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDaoInterface
 {
     /**
-     * @var FileStorageFactoryInterface
-     */
-    private $fileStorageFactory;
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var NodeInterface
-     */
-    private $node;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-
-    /**
      * ShopConfigurationDao constructor.
-     *
-     * @param FileStorageFactoryInterface $fileStorageFactory
-     * @param Filesystem                  $fileSystem
-     * @param NodeInterface               $node
-     * @param BasicContextInterface       $context
      */
-    public function __construct(
-        FileStorageFactoryInterface $fileStorageFactory,
-        Filesystem $fileSystem,
-        NodeInterface $node,
-        BasicContextInterface $context
-    ) {
-        $this->fileStorageFactory = $fileStorageFactory;
-        $this->fileSystem = $fileSystem;
-        $this->node = $node;
-        $this->context = $context;
+    public function __construct(private FileStorageFactoryInterface $fileStorageFactory, private Filesystem $fileSystem, private NodeInterface $node, private BasicContextInterface $context)
+    {
     }
 
     /**

@@ -16,32 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 class SmartyContext implements SmartyContextInterface
 {
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var UtilsView
-     */
-    private $utilsView;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
-    /**
      * Context constructor.
-     *
-     * @param BasicContextInterface $basicContext
-     * @param Config                $config
-     * @param UtilsView             $utilsView
      */
-    public function __construct(BasicContextInterface $basicContext, Config $config, UtilsView $utilsView)
+    public function __construct(private BasicContextInterface $basicContext, private Config $config, private UtilsView $utilsView)
     {
-        $this->config = $config;
-        $this->utilsView = $utilsView;
-        $this->basicContext = $basicContext;
     }
 
     /**

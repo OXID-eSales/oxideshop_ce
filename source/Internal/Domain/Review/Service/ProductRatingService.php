@@ -15,35 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterfa
 class ProductRatingService implements ProductRatingServiceInterface
 {
     /**
-     * @var RatingDaoInterface
-     */
-    private $ratingDao;
-
-    /**
-     * @var ProductRatingDaoInterface
-     */
-    private $productRatingDao;
-
-    /**
-     * @var RatingCalculatorServiceInterface
-     */
-    private $ratingCalculator;
-
-    /**
      * ProductRatingService constructor.
-     *
-     * @param RatingDaoInterface               $ratingDao
-     * @param ProductRatingDaoInterface        $productRatingDao
-     * @param RatingCalculatorServiceInterface $ratingCalculator
      */
-    public function __construct(
-        RatingDaoInterface $ratingDao,
-        ProductRatingDaoInterface $productRatingDao,
-        RatingCalculatorServiceInterface $ratingCalculator
-    ) {
-        $this->ratingDao = $ratingDao;
-        $this->productRatingDao = $productRatingDao;
-        $this->ratingCalculator = $ratingCalculator;
+    public function __construct(private RatingDaoInterface $ratingDao, private ProductRatingDaoInterface $productRatingDao, private RatingCalculatorServiceInterface $ratingCalculator)
+    {
     }
 
     /**

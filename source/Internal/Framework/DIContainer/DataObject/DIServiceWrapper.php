@@ -20,12 +20,6 @@ class DIServiceWrapper
     private const SET_CONTEXT_METHOD = 'setContext';
     public const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
 
-    /** @var  string $id */
-    private $id;
-
-    /** @var  array $serviceArguments */
-    private $serviceArguments;
-
     /** @var  string $class */
     private $class;
 
@@ -34,15 +28,9 @@ class DIServiceWrapper
 
     /**
      * DIServiceWrapper constructor.
-     *
-     * @param string $id
-     * @param array  $serviceArguments
      */
-    public function __construct(string $id, array $serviceArguments)
+    public function __construct(private string $id, private array $serviceArguments)
     {
-        $this->id = $id;
-        $this->serviceArguments = $serviceArguments;
-
         $this->setClass();
         $this->setCalls();
     }

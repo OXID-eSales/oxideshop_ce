@@ -18,34 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainResolverInterface
 {
     /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $moduleStateService;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
      * ActiveClassExtensionChainResolver constructor.
-     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
-     * @param ModuleStateServiceInterface      $moduleStateService
-     * @param ContextInterface                 $context
      */
-    public function __construct(
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ModuleStateServiceInterface $moduleStateService,
-        ContextInterface $context
-    ) {
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->moduleStateService = $moduleStateService;
-        $this->context = $context;
+    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private ModuleStateServiceInterface $moduleStateService, private ContextInterface $context)
+    {
     }
 
 

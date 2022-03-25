@@ -13,20 +13,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class ModuleSetupEvent extends Event
 {
-    /** @var int */
-    private $shopId;
-
-    /** @var string */
-    private $moduleId;
-
-    /**
-     * @param int    $shopId
-     * @param string $moduleId
-     */
-    public function __construct(int $shopId, string $moduleId)
+    public function __construct(private int $shopId, private string $moduleId)
     {
-        $this->shopId = $shopId;
-        $this->moduleId = $moduleId;
     }
 
     /**

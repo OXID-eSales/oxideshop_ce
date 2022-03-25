@@ -14,16 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var SettingDaoInterface */
-    private $settingDao;
-
     /**
      * SettingModuleSettingHandler constructor.
-     * @param SettingDaoInterface $shopModuleSettingDao
      */
-    public function __construct(SettingDaoInterface $shopModuleSettingDao)
+    public function __construct(private SettingDaoInterface $settingDao)
     {
-        $this->settingDao = $shopModuleSettingDao;
     }
 
     /**

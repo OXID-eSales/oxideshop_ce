@@ -15,17 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
     /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
      * ModuleConfigurationDao constructor.
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
      */
-    public function __construct(ShopConfigurationDaoInterface $shopConfigurationDao)
+    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao)
     {
-        $this->shopConfigurationDao = $shopConfigurationDao;
     }
 
     /**

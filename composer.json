@@ -43,7 +43,7 @@
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
-        "composer/composer": "^1.0 || ^2.0",
+        "composer/composer": "^2.0",
         "incenteev/composer-parameter-handler": "^v2.1.4",
         "oxid-esales/azure-theme": "^v2.0.0",
         "oxid-esales/oxideshop-ide-helper": "dev-b-7.0.x",

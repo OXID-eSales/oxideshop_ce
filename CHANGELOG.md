@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - PHP v7 support
+- Composer v1 support
 - Class:
   - `Core\PasswordSaltGenerator`
   - `Internal\Transition\Utility\FallbackTokenGenerator`

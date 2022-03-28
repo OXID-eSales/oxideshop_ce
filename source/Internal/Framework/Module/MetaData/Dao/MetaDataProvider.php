@@ -59,9 +59,8 @@ class MetaDataProvider implements MetaDataProviderInterface
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
-        $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
 
-        return $normalizedMetaData;
+        return $this->addFilePathToData($normalizedMetaData);
     }
 
     /**

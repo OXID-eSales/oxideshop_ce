@@ -28,8 +28,7 @@ class DateFormatHelper
             $winFormatSearch[] = '%l';
             $winFormatReplace[] = sprintf('%\' 2d', date('h', $timestamp));
         }
-        $format = str_replace($winFormatSearch, $winFormatReplace, $format);
 
-        return $format;
+        return str_replace($winFormatSearch, $winFormatReplace, $format);
     }
 }

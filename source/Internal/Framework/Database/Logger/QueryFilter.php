@@ -57,8 +57,7 @@ class QueryFilter implements QueryFilterInterface
         if (!empty($skipLogTags)) {
             $pattern .= '(?!.*' . implode(')(?!.*', $skipLogTags) . ')';
         }
-        $pattern .= '/i';
 
-        return $pattern;
+        return $pattern . '/i';
     }
 }

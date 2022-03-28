@@ -70,8 +70,6 @@ class FormatPriceLogic
                 : $price . ' ' . $currencySymbol;
         }
 
-        $output = trim($output);
-
-        return $output;
+        return trim($output);
     }
 }

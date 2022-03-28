@@ -84,7 +84,8 @@ class QueryLogger implements SQLLogger
     private function getQueryData($query, array $params = null): array
     {
         $backTraceInfo = $this->getQueryTrace();
-        $queryData = [
+
+        return [
             'adminUserId' => $this->getAdminUserIdIfExists(),
             'shopId'      => $this->context->getCurrentShopId(),
             'class'       => $backTraceInfo['class'] ?? '',
@@ -94,8 +95,6 @@ class QueryLogger implements SQLLogger
             'query'       => $query,
             'params'      => serialize($params)
         ];
-
-        return $queryData;
     }
 
     /**

@@ -46,8 +46,7 @@ class ShopSetupCommand extends Command
         private DirectoryValidatorInterface $directoriesValidator,
         private LanguageInstallerInterface $languageInstaller,
         private HtaccessUpdaterInterface $htaccessUpdateService,
-        private ShopStateServiceInterface $shopStateService,
-        private BasicContextInterface $basicContext
+        private ShopStateServiceInterface $shopStateService
     ) {
         parent::__construct();
     }

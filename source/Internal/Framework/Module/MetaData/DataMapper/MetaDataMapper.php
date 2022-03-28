@@ -147,9 +147,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
-        $moduleConfiguration = $this->mapSettings($moduleConfiguration, $moduleData);
-
-        return $moduleConfiguration;
+        return $this->mapSettings($moduleConfiguration, $moduleData);
     }
 
     /**

@@ -33,11 +33,6 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
     private $currentValidationMetaDataVersion;
 
     /**
-     * @var string
-     */
-    private $metaDataFilePath;
-
-    /**
      * MetaDataValidator constructor.
      */
     public function __construct(private MetaDataSchemataProviderInterface $metaDataSchemataProvider)
@@ -57,7 +52,6 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
     public function validate(string $metaDataFilePath, string $metaDataVersion, array $metaData)
     {
         $this->currentValidationMetaDataVersion = $metaDataVersion;
-        $this->metaDataFilePath = $metaDataFilePath;
 
         $supportedMetaDataKeys = $this->metaDataSchemataProvider->getFlippedMetaDataSchemaForVersion(
             $this->currentValidationMetaDataVersion

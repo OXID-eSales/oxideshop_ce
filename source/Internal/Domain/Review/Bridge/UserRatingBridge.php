@@ -17,13 +17,6 @@ use OxidEsales\Eshop\Application\Model\Rating;
 class UserRatingBridge implements UserRatingBridgeInterface
 {
     /**
-     * UserRatingBridge constructor.
-     */
-    public function __construct(private UserRatingServiceInterface $userRatingService)
-    {
-    }
-
-    /**
      * Delete a Rating.
      *
      * @param string $userId

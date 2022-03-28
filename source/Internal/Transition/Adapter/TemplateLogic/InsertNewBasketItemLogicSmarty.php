@@ -47,8 +47,6 @@ class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
      */
     protected function renderTemplate(string $templateName, $templateEngine)
     {
-        $renderedTemplate = $templateEngine->fetch($templateName);
-
-        return $renderedTemplate;
+        return $templateEngine->fetch($templateName);
     }
 }

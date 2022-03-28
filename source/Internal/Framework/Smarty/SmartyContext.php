@@ -142,6 +142,6 @@ class SmartyContext implements SmartyContextInterface
      */
     private function getDemoShopMode(): bool
     {
-        return (bool) $this->config->isDemoShop();
+        return (bool)$this->config->isDemoShop();
     }
 }

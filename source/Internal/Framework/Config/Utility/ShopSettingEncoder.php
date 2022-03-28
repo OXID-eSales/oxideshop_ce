@@ -26,13 +26,11 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
     {
         $this->validateSettingValue($value);
 
-        $encodedValue = match ($encodingType) {
+        return match ($encodingType) {
             ShopSettingType::ARRAY, ShopSettingType::ASSOCIATIVE_ARRAY => serialize($value),
             ShopSettingType::BOOLEAN => $value === true ? '1' : '',
             default => $value,
         };
-
-        return $encodedValue;
     }
 
     /**
@@ -42,13 +40,11 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
      */
     public function decode(string $encodingType, $value)
     {
-        $decodedValue = match ($encodingType) {
+        return match ($encodingType) {
             ShopSettingType::ARRAY, ShopSettingType::ASSOCIATIVE_ARRAY => unserialize($value, ['allowed_classes' => false]),
             ShopSettingType::BOOLEAN => $value === 'true' || $value === '1',
             default => $value,
         };
-
-        return $decodedValue;
     }
 
     /**

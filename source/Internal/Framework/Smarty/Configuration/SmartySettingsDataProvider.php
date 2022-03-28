@@ -40,7 +40,7 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'default_template_handler_func' => [Registry::getUtilsView(), '_smartyDefaultTemplateHandler'],
             'debugging' => $this->context->getTemplateEngineDebugMode(),
             'compile_check' => $this->context->getTemplateCompileCheckMode(),
-            'php_handling' => (int) $this->context->getTemplatePhpHandlingMode(),
+            'php_handling' => $this->context->getTemplatePhpHandlingMode(),
             'security' => false
         ];
     }

@@ -20,7 +20,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
     /**
      * ActiveClassExtensionChainResolver constructor.
      */
-    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private ModuleStateServiceInterface $moduleStateService, private ContextInterface $context)
+    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private ModuleStateServiceInterface $moduleStateService)
     {
     }
 

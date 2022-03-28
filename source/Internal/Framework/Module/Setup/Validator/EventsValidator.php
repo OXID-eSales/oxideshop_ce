@@ -20,10 +20,6 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
     /** @var array $validEvents */
     private $validEvents = ['onActivate', 'onDeactivate'];
 
-    public function __construct(private ShopAdapterInterface $shopAdapter)
-    {
-    }
-
     /**
      * There is another service for syntax validation and we won't validate syntax in this method.
      *

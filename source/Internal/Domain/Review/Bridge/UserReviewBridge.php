@@ -17,13 +17,6 @@ use OxidEsales\Eshop\Application\Model\Review;
 class UserReviewBridge implements UserReviewBridgeInterface
 {
     /**
-     * UserReviewBridge constructor.
-     */
-    public function __construct(private UserReviewServiceInterface $userReviewService)
-    {
-    }
-
-    /**
      * Delete a Review.
      *
      * @param string $userId

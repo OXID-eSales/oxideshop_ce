@@ -45,9 +45,8 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
     public function getReviewAndRatingList($userId)
     {
         $reviewAndRatingList = $this->getMergedReviewAndRatingList($userId);
-        $reviewAndRatingList = $this->sortReviewAndRatingList($reviewAndRatingList);
 
-        return $reviewAndRatingList;
+        return $this->sortReviewAndRatingList($reviewAndRatingList);
     }
 
     /**

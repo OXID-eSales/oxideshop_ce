@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao, private ShopAdapterInterface $shopAdapter)
+    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao)
     {
     }
 

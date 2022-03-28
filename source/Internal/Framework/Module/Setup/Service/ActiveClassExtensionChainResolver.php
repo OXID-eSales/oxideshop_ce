@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainResolverInterface
 {

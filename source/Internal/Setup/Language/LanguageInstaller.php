@@ -59,7 +59,7 @@ class LanguageInstaller implements LanguageInstallerInterface
             $languagesSetting->setValue($settingValue);
             $this->shopConfigurationSettingDao->save($languagesSetting);
         } catch (EntryDoesNotExistDaoException) {
-            //no setting, nothing to update
+            // no setting, nothing to update
         }
     }
 }

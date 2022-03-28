@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidato
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Exception;
 
 use Exception;
-use Throwable;
 
 class InitiateDatabaseException extends Exception
 {

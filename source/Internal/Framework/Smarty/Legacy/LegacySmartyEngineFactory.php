@@ -34,7 +34,7 @@ class LegacySmartyEngineFactory implements TemplateEngineFactoryInterface
     {
         $smarty = $this->shopAdapter->getSmartyInstance();
 
-        //TODO Event for smarty object configuration
+        // TODO Event for smarty object configuration
 
         return new LegacySmartyEngine($smarty, $this->smartyBridge);
     }

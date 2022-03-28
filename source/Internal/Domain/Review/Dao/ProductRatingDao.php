@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
 class ProductRatingDao implements ProductRatingDaoInterface
 {

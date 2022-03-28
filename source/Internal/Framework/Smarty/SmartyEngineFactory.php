@@ -36,7 +36,7 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
             ->registerResources($this->smartyConfiguration->getResources())
             ->getSmarty();
 
-        //TODO Event for smarty object configuration
+        // TODO Event for smarty object configuration
 
         return new SmartyEngine($smarty, new SmartyEngineBridge());
     }

@@ -13,7 +13,6 @@ use Doctrine\DBAL\Logging\SQLLogger;
 use Psr\Log\LoggerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
-use OxidEsales\Eshop\Core\Registry;
 
 class QueryLogger implements SQLLogger
 {

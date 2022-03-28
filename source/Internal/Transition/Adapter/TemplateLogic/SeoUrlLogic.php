@@ -32,7 +32,7 @@ class SeoUrlLogic
             if ($sType == 'oxcontent' && $sIdent && $oObject->loadByIdent($sIdent)) {
                 $sUrl = $oObject->getLink();
             } elseif ($sOxid) {
-                //minimising aricle object loading
+                // minimising aricle object loading
                 if (strtolower($sType) == "oxarticle") {
                     $oObject->disablePriceLoad();
                     $oObject->setNoVariantLoading(true);

@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
-
 class MonologConfiguration implements MonologConfigurationInterface
 {
     /**

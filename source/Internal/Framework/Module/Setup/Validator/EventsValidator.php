@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 use function is_array;
 

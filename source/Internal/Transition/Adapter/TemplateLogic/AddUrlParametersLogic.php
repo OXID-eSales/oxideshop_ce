@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Core\Str;
 
 class AddUrlParametersLogic
 {
-
     /**
      * Add additional parameters to SEO url
      *

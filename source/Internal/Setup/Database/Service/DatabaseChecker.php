@@ -15,7 +15,6 @@ use PDO;
 
 class DatabaseChecker implements DatabaseCheckerInterface
 {
-
     public function __construct(private BasicContextInterface $basicContext)
     {
     }

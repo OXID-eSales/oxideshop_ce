@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 class FileSizeLogic
 {
-
     /**
      * @param int $size
      *

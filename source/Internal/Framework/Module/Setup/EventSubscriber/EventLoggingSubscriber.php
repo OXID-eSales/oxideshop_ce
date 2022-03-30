@@ -16,7 +16,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventLoggingSubscriber implements EventSubscriberInterface
 {
-
     /**
      * EventLoggingSubscriber constructor.
      */

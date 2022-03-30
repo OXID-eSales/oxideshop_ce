@@ -13,5 +13,5 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AfterAdminAjaxRequestProcessedEvent extends Event
 {
-    const NAME = self::class;
+    public const NAME = self::class;
 }

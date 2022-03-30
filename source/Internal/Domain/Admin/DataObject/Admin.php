@@ -34,8 +34,7 @@ class Admin
          * @var int
          */
         private $shopId
-    )
-    {
+    ) {
     }
 
     public function getId(): string

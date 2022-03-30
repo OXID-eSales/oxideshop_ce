@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 abstract class AbstractInsertNewBasketItemLogic
 {
-
     /**
      * @param array  $params
      * @param object $templateEngine

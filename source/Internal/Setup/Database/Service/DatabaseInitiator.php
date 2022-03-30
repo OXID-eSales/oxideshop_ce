@@ -21,7 +21,6 @@ use PDO;
  */
 class DatabaseInitiator implements DatabaseInitiatorInterface
 {
-
     /** @var PDO */
     private $dbConnection;
 

@@ -17,7 +17,6 @@ use Doctrine\DBAL\Logging\SQLLogger;
  */
 class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
 {
-
     /**
      * DatabaseLoggerFactory constructor.
      */

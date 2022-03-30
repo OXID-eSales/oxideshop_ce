@@ -21,7 +21,6 @@ class SmartWordwrapLogic
      */
     public function wrapWords($string, $length, $break, $cutRows, $tolerance, $etc)
     {
-
         $wrapTag = "<wrap>";
         $wrapChars = ["-"];
         $afterWrapChars = ["-" . $wrapTag];

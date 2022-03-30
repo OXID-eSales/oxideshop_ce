@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 
 class ConfigFileNotFoundException extends \Exception
 {
-
 }

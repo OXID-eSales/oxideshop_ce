@@ -101,7 +101,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                         new Template($key, $value)
                     );
                 }
-
             }
         }
 

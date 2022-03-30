@@ -27,7 +27,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ContainerBuilder
 {
-
     public function __construct(private BasicContextInterface $context)
     {
     }

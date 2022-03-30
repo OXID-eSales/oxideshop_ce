@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 class DateFormatHelper
 {
-
     /**
      * @param string $format
      * @param int    $timestamp

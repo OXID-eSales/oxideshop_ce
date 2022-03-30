@@ -23,7 +23,6 @@ use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
-
     /**
      * ModuleServicesActivationService constructor.
      */

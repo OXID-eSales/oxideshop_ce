@@ -20,7 +20,6 @@ use PDO;
  */
 class DatabaseCreator implements DatabaseCreatorInterface
 {
-
     /** @var PDO */
     private $dbConnection;
 

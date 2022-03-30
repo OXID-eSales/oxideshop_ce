@@ -20,7 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
  */
 class MigrationExecutor implements MigrationExecutorInterface
 {
-
     public function __construct(protected ContextInterface $context)
     {
     }

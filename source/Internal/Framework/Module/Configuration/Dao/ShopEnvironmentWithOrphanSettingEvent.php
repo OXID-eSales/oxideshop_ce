@@ -22,8 +22,7 @@ class ShopEnvironmentWithOrphanSettingEvent extends Event
         private $moduleId,
         /** @var string */
         private $settingId
-    )
-    {
+    ) {
     }
 
     /** @return int */

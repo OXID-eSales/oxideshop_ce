@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
 class CacheNotFoundException extends \Exception
 {
-
 }

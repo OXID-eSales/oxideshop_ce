@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
 class TemplateBlockNotFoundException extends \Exception
 {
-
 }

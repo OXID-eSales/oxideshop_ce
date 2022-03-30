@@ -110,7 +110,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         ModuleConfiguration $moduleConfiguration,
         ProjectConfiguration $projectConfiguration
     ): ProjectConfiguration {
-
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->moduleConfigurationMergingService->merge($shopConfiguration, $moduleConfiguration);
         }

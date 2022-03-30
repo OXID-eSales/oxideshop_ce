@@ -5,118 +5,107 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Routing;
 
+use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
+use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider;
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 
-/**
- * Test the module ControllerProvider.
- *
- * @package Unit\Core\Routing\Module
- */
-class ModuleControllerMapProviderTest extends UnitTestCase
+final class ModuleControllerMapProviderTest extends UnitTestCase
 {
-
-    /**
-     * Set up fixture
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        ModuleVariablesLocator::resetModuleVariables();
+        $this->resetUtilsObjectInstance();
+        $this->mockShopIdRequest();
     }
 
-    /**
-     * The data provider for the method testGetControllerMapWithModules.
-     *
-     * @return array
-     */
-    public function dataProviderTestPossibleCombinationsOfActiveModules()
+    public function testGetControllerMapWithEmptyConfiguration(): void
     {
-        return [
-            // no module active
-            [
-                [],
-                []
+        $this->saveControllerMapToShopConfiguration([]);
+
+        $controllerMap = oxNew(ModuleControllerMapProvider::class)->getControllerMap();
+
+        $this->assertEmpty($controllerMap);
+    }
+
+    public function testGetControllerMapWillReturnFlatArray(): void
+    {
+        $originalControllerMap = [
+            'module1' => [
+                'module1controller1' => 'a',
+                'module1controller2' => 'b',
             ],
-
-            // 2 modules active
-            [
-                [
-                    'module1' => [
-                        'module1controller1' => 'a',
-                        'module1controller2' => 'b'
-                    ],
-                    'module2' => [
-                        'module2controller1' => 'c',
-                        'module2controller2' => 'd'
-                    ]
-                ],
-                [
-                    'module1controller1' => 'a',
-                    'module1controller2' => 'b',
-                    'module2controller1' => 'c',
-                    'module2controller2' => 'd'
-                ]
-            ]
+            'module2' => [
+                'module2controller1' => 'c',
+                'module2controller2' => 'd',
+            ],
         ];
+        $controllerMapFlattened = [
+            'module1controller1' => 'a',
+            'module1controller2' => 'b',
+            'module2controller1' => 'c',
+            'module2controller2' => 'd',
+        ];
+        $this->saveControllerMapToShopConfiguration($originalControllerMap);
+
+        $controllerMap = oxNew(ModuleControllerMapProvider::class)->getControllerMap();
+
+        $this->assertEquals($controllerMapFlattened, $controllerMap);
     }
 
-    /**
-     * @dataProvider dataProviderTestPossibleCombinationsOfActiveModules
-     *
-     * @param array $controllerKeysFromStorage The controller key mapping we get by the storage
-     * @param array $expectedControllerKeys    The controller key mapping we expect to be returned
-     *
-     */
-    public function testGetControllerMapWithModules($controllerKeysFromStorage, $expectedControllerKeys)
+    public function testGetControllerMapWillUpdateFileCache(): void
     {
-        $this->getConfig()->saveShopConfVar('aarr', ShopConfigurationSetting::MODULE_CONTROLLERS, $controllerKeysFromStorage);
-        $this->assertModuleControllersNotCached();
+        $originalControllerMap = [
+            'module1' => [
+                'module1controller1' => 'a',
+            ],
+            'module2' => [
+                'module2controller1' => 'b',
+            ],
+        ];
+        $this->saveControllerMapToShopConfiguration($originalControllerMap);
+        $this->assertEmpty($this->getControllerMapFromFileCache());
 
-        /** @var \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider|\PHPUnit\Framework\MockObject\MockObject $moduleControllerMapProviderMock */
-        $moduleControllerMapProviderMock = oxNew(ModuleControllerMapProvider::class);
+        oxNew(ModuleControllerMapProvider::class)->getControllerMap();
 
-        $this->assertSame($expectedControllerKeys, $moduleControllerMapProviderMock->getControllerMap());
-        $this->assertModuleControllersCached($controllerKeysFromStorage);
+        $this->assertEquals($originalControllerMap, $this->getControllerMapFromFileCache());
     }
 
-    /**
-     * Assert that module controller data is cached in filesystem.
-     *
-     * @param array $expectedControllerKeys
-     */
-    protected function assertModuleControllersCached($expectedControllerKeys)
+    private function resetUtilsObjectInstance(): void
     {
-        $subShopSpecificCache = $this->getFileCache();
-        $this->assertEquals($expectedControllerKeys, $subShopSpecificCache->getFromCache(ShopConfigurationSetting::MODULE_CONTROLLERS));
+        Registry::set(UtilsObject::class, null);
     }
 
-    /**
-     * Assert that module controller data is not cached in filesystem.
-     */
-    protected function assertModuleControllersNotCached()
+    private function mockShopIdRequest(): void
     {
-        $subShopSpecificCache = $this->getFileCache();
-        $this->assertNull($subShopSpecificCache->getFromCache(ShopConfigurationSetting::MODULE_CONTROLLERS));
+        $_GET['shp'] = $this->getTestConfig()->getShopId();
     }
 
-    /**
-     * Get a file cache object
-     */
-    private function getFileCache()
+    private function saveControllerMapToShopConfiguration(array $controllerMap): void
     {
-        $shopId = $this->getTestConfig()->getShopId();
-
-        $shopIdCalculatorMock = $this->getMock('\OxidEsales\EshopCommunity\Core\ShopIdCalculator', array('getShopId'), array(), '', false);
-        $shopIdCalculatorMock->expects($this->any())->method('getShopId')->will($this->returnValue($shopId));
-
-        $subShopSpecificCache = oxNew('\OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache', $shopIdCalculatorMock);
-
-        return $subShopSpecificCache;
+        $this->getConfig()->saveShopConfVar(
+            'aarr', ShopConfigurationSetting::MODULE_CONTROLLERS,
+            $controllerMap,
+            $this->getTestConfig()->getShopId()
+        );
     }
+
+    private function getControllerMapFromFileCache(): ?array
+    {
+        return oxNew(
+            SubShopSpecificFileCache::class,
+            new ShopIdCalculator(new FileCache())
+        )
+            ->getFromCache(ShopConfigurationSetting::MODULE_CONTROLLERS);
+    }
+
 }

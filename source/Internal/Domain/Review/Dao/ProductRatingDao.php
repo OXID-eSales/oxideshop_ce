@@ -51,7 +51,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->select([
                 'OXID',
                 'OXRATING',
-                'OXRATINGCNT'
+                'OXRATINGCNT',
             ])
             ->from('oxarticles')
             ->where('oxid = :productId')

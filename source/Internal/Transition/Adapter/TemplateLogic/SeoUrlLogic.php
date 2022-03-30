@@ -20,9 +20,9 @@ class SeoUrlLogic
      */
     public function seoUrl(array $params): string
     {
-        $sOxid = isset($params['oxid']) ? $params['oxid'] : null;
-        $sType = isset($params['type']) ? $params['type'] : null;
-        $sUrl = $sIdent = isset($params['ident']) ? $params['ident'] : null;
+        $sOxid = $params['oxid'] ?? null;
+        $sType = $params['type'] ?? null;
+        $sUrl = $sIdent = $params['ident'] ?? null;
 
         // requesting specified object SEO url
         if ($sType) {

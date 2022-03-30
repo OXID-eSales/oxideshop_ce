@@ -88,7 +88,7 @@ class MetaDataProvider implements MetaDataProviderInterface
 
         return [
             static::METADATA_METADATA_VERSION => $metadataVersion,
-            static::METADATA_MODULE_DATA      => $normalizedMetaData
+            static::METADATA_MODULE_DATA      => $normalizedMetaData,
         ];
     }
 

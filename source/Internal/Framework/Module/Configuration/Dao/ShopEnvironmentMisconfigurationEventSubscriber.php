@@ -26,7 +26,7 @@ class ShopEnvironmentMisconfigurationEventSubscriber implements EventSubscriberI
             [
                 'shopId' => $event->getShopId(),
                 'moduleId' => $event->getModuleId(),
-                'settingId' => $event->getSettingId()
+                'settingId' => $event->getSettingId(),
             ]
         );
     }

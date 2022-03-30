@@ -38,7 +38,7 @@ class AdminDao implements AdminDaoInterface
                 'OXUSERNAME' => $admin->getEmail(),
                 'OXPASSWORD' => $admin->getPasswordHash(),
                 'OXRIGHTS' => $admin->getRights(),
-                'OXSHOPID' => $admin->getShopId()
+                'OXSHOPID' => $admin->getShopId(),
             ]);
         $queryBuilder->execute();
     }

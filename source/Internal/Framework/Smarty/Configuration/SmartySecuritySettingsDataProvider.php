@@ -35,7 +35,7 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
                 'IF_FUNCS' => ['XML_ELEMENT_NODE', 'is_int'],
                 'MODIFIER_FUNCS' => ['round', 'floor', 'trim', 'implode', 'is_array', 'getimagesize'],
                 'ALLOW_CONSTANTS' => true,
-            ]
+            ],
         ];
     }
 }

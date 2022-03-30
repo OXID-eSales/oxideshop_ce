@@ -140,7 +140,7 @@ class SettingDao implements SettingDaoInterface
                 'value'     => $this->shopSettingEncoder->encode(
                     $shopModuleSetting->getType(),
                     $shopModuleSetting->getValue()
-                )
+                ),
             ]);
 
         $queryBuilder->execute();
@@ -195,7 +195,7 @@ class SettingDao implements SettingDaoInterface
             ->setParameters([
                 'shopId'    => $shopId,
                 'moduleId'  => $this->getPrefixedModuleId($moduleId),
-                'name'      => $name
+                'name'      => $name,
             ]);
 
         $result = $queryBuilder->execute()->fetch();

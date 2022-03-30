@@ -48,7 +48,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'value'     => $this->shopSettingEncoder->encode(
                     $shopConfigurationSetting->getType(),
                     $shopConfigurationSetting->getValue()
-                )
+                ),
             ]);
 
         $queryBuilder->execute();
@@ -79,7 +79,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ->andWhere('oxmodule = ""')
             ->setParameters([
                 'shopId'    => $shopId,
-                'name'      => $name
+                'name'      => $name,
             ]);
 
         $result = $queryBuilder->execute()->fetch();

@@ -57,10 +57,10 @@ class FormatPriceLogic
     private function getFormattedPrice($currency, $price): string
     {
         $output = '';
-        $decimalSeparator = isset($currency->dec) ? $currency->dec : ',';
-        $thousandsSeparator = isset($currency->thousand) ? $currency->thousand : '.';
-        $currencySymbol = isset($currency->sign) ? $currency->sign : '';
-        $currencySymbolLocation = isset($currency->side) ? $currency->side : '';
+        $decimalSeparator = $currency->dec ?? ',';
+        $thousandsSeparator = $currency->thousand ?? '.';
+        $currencySymbol = $currency->sign ?? '';
+        $currencySymbolLocation = $currency->side ?? '';
         $decimals = isset($currency->decimal) ? (int) $currency->decimal : 2;
 
         if ((float) $price > 0 || $currencySymbol) {

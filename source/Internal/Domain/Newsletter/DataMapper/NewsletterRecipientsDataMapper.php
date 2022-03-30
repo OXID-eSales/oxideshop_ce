@@ -39,8 +39,8 @@ class NewsletterRecipientsDataMapper implements NewsletterRecipientsDataMapperIn
                 self::EMAIL,
                 self::OPT_IN_STATE,
                 self::COUNTRY,
-                self::ASSIGNED_USER_GROUPS
-            ]
+                self::ASSIGNED_USER_GROUPS,
+            ],
         ];
 
         foreach ($newsletterRecipient as $value) {

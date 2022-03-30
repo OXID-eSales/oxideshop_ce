@@ -13,7 +13,7 @@ class InputHelpLogic
      */
     public function getIdent($params)
     {
-        return isset($params['ident']) ? $params['ident'] : null;
+        return $params['ident'] ?? null;
     }
 
     /**

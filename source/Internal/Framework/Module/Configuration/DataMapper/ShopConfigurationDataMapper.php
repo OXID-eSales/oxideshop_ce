@@ -108,7 +108,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         $chain = $shopConfiguration->getClassExtensionsChain();
 
         return [
-            $chain->getName() => $chain->getChain()
+            $chain->getName() => $chain->getChain(),
         ];
     }
 }

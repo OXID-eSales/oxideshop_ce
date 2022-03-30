@@ -73,7 +73,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
                 'u.oxusername AS Email',
                 'n.oxdboptin AS OptInState',
                 'c.oxtitle AS Country',
-                'GROUP_CONCAT(g.oxtitle ORDER BY g.oxtitle ASC) AS UserGroups'
+                'GROUP_CONCAT(g.oxtitle ORDER BY g.oxtitle ASC) AS UserGroups',
             ])
             ->from('oxnewssubscribed', 'n')
             ->join('n', 'oxuser', 'u', 'u.oxid=n.oxuserid')

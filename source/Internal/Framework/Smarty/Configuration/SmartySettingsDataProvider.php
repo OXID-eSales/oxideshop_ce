@@ -41,7 +41,7 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'debugging' => $this->context->getTemplateEngineDebugMode(),
             'compile_check' => $this->context->getTemplateCompileCheckMode(),
             'php_handling' => $this->context->getTemplatePhpHandlingMode(),
-            'security' => false
+            'security' => false,
         ];
     }
 

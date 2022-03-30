@@ -92,7 +92,7 @@ class QueryLogger implements SQLLogger
             'file'        => $backTraceInfo['file'] ?? '',
             'line'        => $backTraceInfo['line'] ?? '',
             'query'       => $query,
-            'params'      => serialize($params)
+            'params'      => serialize($params),
         ];
     }
 

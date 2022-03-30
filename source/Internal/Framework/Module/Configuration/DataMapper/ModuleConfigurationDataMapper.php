@@ -39,7 +39,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'thumbnail' => $configuration->getThumbnail(),
             'author' => $configuration->getAuthor(),
             'url' => $configuration->getUrl(),
-            'email' => $configuration->getEmail()
+            'email' => $configuration->getEmail(),
         ];
 
         foreach ($this->dataMappers as $dataMapper) {

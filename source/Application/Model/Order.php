@@ -535,7 +535,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
 
-        if (!$this->oxorder__oxordernr->value) {
+        if (!$this->oxorder__oxordernr || !$this->oxorder__oxordernr->value) {
             $this->_setNumber();
         } else {
             oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
@@ -689,7 +689,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // user remark
-        if (!isset($this->oxorder__oxremark) || $this->oxorder__oxremark->value === null) {
+        if (!isset($this->oxorder__oxremark) || ($this->oxorder__oxremark && $this->oxorder__oxremark->value === null)) {
             $this->oxorder__oxremark = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
@@ -1095,7 +1095,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
          * If no then it was just created and will cause a new row in oxuserbaskets without content in oxuserbasketitems.
          * Also it will prevent creating a row for guests.
          */
-        if ($oUser->getBasket('noticelist')->oxuserbaskets__oxid->value === null) {
+        if (!$oUser->getBasket('noticelist') || !$oUser->getBasket('noticelist')->oxuserbaskets__oxid || $oUser->getBasket('noticelist')->oxuserbaskets__oxid->value === null) {
             return;
         }
 

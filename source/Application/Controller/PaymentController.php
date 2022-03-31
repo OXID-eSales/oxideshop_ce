@@ -550,6 +550,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getCheckedPaymentId()
     {
         if ($this->_sCheckedPaymentId === null) {
+            $sCheckedId = null;
             if (!($sPaymentID = Registry::getConfig()->getRequestParameter('paymentid'))) {
                 $sPaymentID = Registry::getSession()->getVariable('paymentid');
             }
@@ -654,8 +655,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *       force storing CC data on shop side (what most often is illegal).
      *
      * @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
-     *
-     * @return null
      */
     protected function _filterDynData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -684,11 +683,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             Registry::getSession()->setVariable("dynvalue", $aDynData);
         }
 
-        if (
-            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
-        ) {
+        $dynamicData = Registry::getRequest()->getRequestParameter("dynvalue");
+        if (!$this->_checkArrValuesEmpty($dynamicData, $aFields)) {
             $this->_blDynDataFiltered = true;
         }
 

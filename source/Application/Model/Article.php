@@ -42,7 +42,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var bool
      */
-    protected $_blUseLazyLoading = true;
+    protected $_blUseLazyLoading = false;
 
     /**
      * item key the usage with oxuserbasketitem
@@ -799,7 +799,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function isPriceAlarm()
     {
         // #419 disabling price alarm if article has fixed price
-        return !(($this->__isset('oxarticles__oxblfixedprice') || $this->__get('oxarticles__oxblfixedprice')) && $this->__get('oxarticles__oxblfixedprice')->value);
+        return !(isset($this->oxarticles__oxblfixedprice) && isset($this->oxarticles__oxblfixedprice->value));
     }
 
     /**
@@ -1398,12 +1398,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $aList = $this->_getSimList($sAttribs, $iCnt);
 
         if (count($aList)) {
-            uasort($aList, function ($a, $b) {
+            /*uasort($aList, function ($a, $b) {
                 if ($a->cnt == $b->cnt) {
                     return 0;
                 }
                 return ($a->cnt < $b->cnt) ? -1 : 1;
-            });
+            });*/
 
             $sSearch = $this->_generateSimListSearchStr($sArticleTable, $aList);
 

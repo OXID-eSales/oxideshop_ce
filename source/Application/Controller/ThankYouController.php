@@ -82,6 +82,8 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     protected $_blBargainAction = true;
 
+    private $_oOrder;
+
     /**
      * Current class template name.
      *

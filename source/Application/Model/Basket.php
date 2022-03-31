@@ -2711,7 +2711,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         // adding delivery price to final price
-        if ($oDeliveryPrice = $this->_aCosts['oxdelivery']) {
+        if (isset($this->_aCosts['oxdelivery']) && $oDeliveryPrice = $this->_aCosts['oxdelivery']) {
             $dPrice += $oDeliveryPrice->getBruttoPrice();
         }
 

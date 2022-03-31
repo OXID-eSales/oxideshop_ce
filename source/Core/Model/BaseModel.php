@@ -221,7 +221,6 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         } else {
             $this->_sCacheKey .= 'allviews';
         }
-
         //do not cache for admin?
         if ($this->isAdmin()) {
             $this->_sCacheKey = null;
@@ -1223,7 +1222,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         //defining the field
-        $field = false;
+        $field = null;
 
         if (isset($type)) {
             $field = new Field();
@@ -1635,7 +1634,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function isPropertyLoaded($name)
     {
-        return property_exists($this, $name) && $this->$name !== null;
+        if (property_exists($this->getClassName(), $name)) {
+            return $this->{$name} ?? null;
+        }
+        return false;
     }
 
     /**

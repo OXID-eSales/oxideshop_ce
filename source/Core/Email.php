@@ -2358,7 +2358,9 @@ class Email extends PHPMailer
     {
         if (function_exists('idn_to_ascii')) {
             $parts = explode('@', $idn);
-            return $parts[0] . '@' . idn_to_ascii($parts[1]);
+            if (isset($parts[1])) {
+                return $parts[0] . '@' . idn_to_ascii($parts[1]);
+            }
         }
 
         return $idn;

@@ -2067,6 +2067,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $pageNavigation = new StdClass();
 
         $pageNavigation->NrOfPages = $this->_iCntPages;
+        $pageNavigation->changePage = null;
         $activePage = $this->getActPage();
         $pageNavigation->actPage = $activePage + 1;
         $url = $this->generatePageNavigationUrl();

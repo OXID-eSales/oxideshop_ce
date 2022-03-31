@@ -52,7 +52,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @var int
      */
-    protected $_blIsVisible;
+    public $_blIsVisible;
 
     /**
      * expanded state of a category

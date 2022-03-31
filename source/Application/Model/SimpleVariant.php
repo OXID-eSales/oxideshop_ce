@@ -21,7 +21,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @var bool
      */
-    protected $_blUseLazyLoading = true;
+    protected $_blUseLazyLoading = false;
 
     /**
      * Variant price

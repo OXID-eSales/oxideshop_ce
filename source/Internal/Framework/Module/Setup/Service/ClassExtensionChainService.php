@@ -17,8 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ClassExtensionChainService implements ExtensionChainServiceInterface
 {
-    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao, private ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver)
-    {
+    public function __construct(
+        private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
+        private ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
+    ) {
     }
 
     /**

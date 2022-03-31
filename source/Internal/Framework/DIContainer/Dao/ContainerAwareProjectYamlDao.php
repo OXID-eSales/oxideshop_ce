@@ -17,9 +17,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ContainerAwareProjectYamlDao extends ProjectYamlDao
 {
-    /**
-     * ContainerAwareProjectYamlDao constructor.
-     */
     public function __construct(
         BasicContextInterface $context,
         private EventDispatcherInterface $eventDispatcher,

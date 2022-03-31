@@ -16,13 +16,11 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
 {
     /**
      * @var int $cost
-     *
      * The value of the option cost has to be between 4 and 31.
      */
     private $cost;
 
     /**
-     *
      * @throws PasswordHashException
      */
     public function __construct(

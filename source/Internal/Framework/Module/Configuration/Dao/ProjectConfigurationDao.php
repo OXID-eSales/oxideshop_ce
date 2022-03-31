@@ -16,11 +16,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 {
-    /**
-     * ProjectConfigurationDao constructor.
-     */
-    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private BasicContextInterface $context, private Filesystem $fileSystem)
-    {
+    public function __construct(
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private BasicContextInterface $context,
+        private Filesystem $fileSystem
+    ) {
     }
 
     /**

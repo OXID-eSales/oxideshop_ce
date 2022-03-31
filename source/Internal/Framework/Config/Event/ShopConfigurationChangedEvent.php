@@ -19,14 +19,10 @@ class ShopConfigurationChangedEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * ShopConfigurationChangedEvent constructor.
-     *
-     * @param string $configurationVariable Config varname.
-     * @param int    $shopId                Shop id.
-     */
-    public function __construct(private string $configurationVariable, private int $shopId)
-    {
+    public function __construct(
+        private string $configurationVariable,
+        private int $shopId
+    ) {
     }
 
     /**

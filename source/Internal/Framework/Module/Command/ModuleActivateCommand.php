@@ -35,7 +35,6 @@ class ModuleActivateCommand extends Command
         parent::__construct(null);
     }
 
-
     /**
      * @inheritdoc
      */

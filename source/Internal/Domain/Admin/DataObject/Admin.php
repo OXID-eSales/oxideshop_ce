@@ -14,25 +14,15 @@ class Admin
     public const MALL_ADMIN = 'malladmin';
 
     public function __construct(
-        /**
-         * @var string
-         */
+        /** @var string */
         private $id,
-        /**
-         * @var string
-         */
+        /** @var string */
         private $email,
-        /**
-         * @var string
-         */
+        /** @var string */
         private $passwordHash,
-        /**
-         * @var string
-         */
+        /** @var string */
         private $rights,
-        /**
-         * @var int
-         */
+        /** @var int */
         private $shopId
     ) {
     }

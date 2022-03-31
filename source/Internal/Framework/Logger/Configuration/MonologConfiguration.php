@@ -12,14 +12,15 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 class MonologConfiguration implements MonologConfigurationInterface
 {
     /**
-     * MonologConfiguration constructor.
-     *
      * @param string $loggerName
      * @param string $logFilePath
      * @param string $logLevel
      */
-    public function __construct(private $loggerName, private $logFilePath, private $logLevel)
-    {
+    public function __construct(
+        private $loggerName,
+        private $logFilePath,
+        private $logLevel
+    ) {
     }
 
 

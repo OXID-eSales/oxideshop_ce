@@ -13,8 +13,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class ModuleSetupEvent extends Event
 {
-    public function __construct(private int $shopId, private string $moduleId)
-    {
+    public function __construct(
+        private int $shopId,
+        private string $moduleId
+    ) {
     }
 
     /**

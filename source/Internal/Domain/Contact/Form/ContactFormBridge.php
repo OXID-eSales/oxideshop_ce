@@ -15,11 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigura
 
 class ContactFormBridge implements ContactFormBridgeInterface
 {
-    /**
-     * ContactFormBridge constructor.
-     */
-    public function __construct(private FormFactoryInterface $contactFormFactory, private ContactFormMessageBuilderInterface $contactFormMessageBuilder, private FormConfigurationInterface $contactFormConfiguration)
-    {
+    public function __construct(
+        private FormFactoryInterface $contactFormFactory,
+        private ContactFormMessageBuilderInterface $contactFormMessageBuilder,
+        private FormConfigurationInterface $contactFormConfiguration
+    ) {
     }
 
     /**

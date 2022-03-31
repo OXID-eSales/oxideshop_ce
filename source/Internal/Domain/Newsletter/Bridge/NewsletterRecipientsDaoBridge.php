@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipient
 
 class NewsletterRecipientsDaoBridge implements NewsletterRecipientsDaoInterface
 {
-    /**
-     * NewsletterRecipientsDaoBridge constructor.
-     */
     public function __construct(private NewsletterRecipientsDaoInterface $newsletterRecipientsDao)
     {
     }

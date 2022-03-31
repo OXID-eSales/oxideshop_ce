@@ -11,8 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class Template
 {
-    public function __construct(private string $templateKey, private string $templatePath)
-    {
+    public function __construct(
+        private string $templateKey,
+        private string $templatePath
+    ) {
     }
 
     /**

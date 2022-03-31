@@ -19,11 +19,10 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
      */
     private $metadataFileName = 'metadata.php';
 
-    /**
-     * ModuleConfigurationDao constructor.
-     */
-    public function __construct(private MetaDataProviderInterface $metadataProvider, private MetaDataToModuleConfigurationDataMapperInterface $metadataMapper)
-    {
+    public function __construct(
+        private MetaDataProviderInterface $metadataProvider,
+        private MetaDataToModuleConfigurationDataMapperInterface $metadataMapper
+    ) {
     }
 
     /**

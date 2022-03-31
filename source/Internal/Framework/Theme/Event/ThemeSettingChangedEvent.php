@@ -20,14 +20,13 @@ class ThemeSettingChangedEvent extends Event
     public const NAME = self::class;
 
     /**
-     * ThemeSettingChangedEvent constructor.
-     *
-     * @param string $configurationVariable Config varname.
-     * @param int    $shopId                Shop id.
-     * @param string $theme                 Theme information as in oxconfig.oxmodule
+     * @param string $theme Theme information as in oxconfig.oxmodule
      */
-    public function __construct(private string $configurationVariable, private int $shopId, private string $theme)
-    {
+    public function __construct(
+        private string $configurationVariable,
+        private int $shopId,
+        private string $theme
+    ) {
     }
 
     /**

@@ -14,11 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRat
 
 class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
 {
-    /**
-     * UserReviewAndRatingBridge constructor.
-     */
-    public function __construct(private UserReviewServiceInterface $userReviewService, private UserRatingServiceInterface $userRatingService, private ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService)
-    {
+    public function __construct(
+        private UserReviewServiceInterface $userReviewService,
+        private UserRatingServiceInterface $userRatingService,
+        private ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
+    ) {
     }
 
     /**

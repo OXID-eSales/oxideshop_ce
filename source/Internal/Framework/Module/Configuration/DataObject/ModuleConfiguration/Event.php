@@ -11,8 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class Event
 {
-    public function __construct(private string $action, private string $method)
-    {
+    public function __construct(
+        private string $action,
+        private string $method
+    ) {
     }
 
     /**

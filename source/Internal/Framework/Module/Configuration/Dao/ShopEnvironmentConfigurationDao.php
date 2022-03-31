@@ -17,11 +17,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDaoInterface
 {
-    /**
-     * ShopConfigurationDao constructor.
-     */
-    public function __construct(private FileStorageFactoryInterface $fileStorageFactory, private Filesystem $fileSystem, private NodeInterface $node, private BasicContextInterface $context)
-    {
+    public function __construct(
+        private FileStorageFactoryInterface $fileStorageFactory,
+        private Filesystem $fileSystem,
+        private NodeInterface $node,
+        private BasicContextInterface $context
+    ) {
     }
 
     /**

@@ -21,8 +21,13 @@ use function is_string;
 
 class SettingDao implements SettingDaoInterface
 {
-    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ShopSettingEncoderInterface $shopSettingEncoder, private ShopAdapterInterface $shopAdapter, private TransactionServiceInterface $transactionService, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private ShopSettingEncoderInterface $shopSettingEncoder,
+        private ShopAdapterInterface $shopAdapter,
+        private TransactionServiceInterface $transactionService,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /**

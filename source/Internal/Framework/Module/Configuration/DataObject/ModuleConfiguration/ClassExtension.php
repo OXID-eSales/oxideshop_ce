@@ -11,11 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class ClassExtension
 {
-    /**
-     * ClassExtension constructor.
-     */
-    public function __construct(private string $ShopClassName, private string $moduleExtensionClassName)
-    {
+    public function __construct(
+        private string $ShopClassName,
+        private string $moduleExtensionClassName
+    ) {
     }
 
     /**

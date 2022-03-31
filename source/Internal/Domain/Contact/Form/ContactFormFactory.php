@@ -20,13 +20,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigura
 
 class ContactFormFactory implements FormFactoryInterface
 {
-    /**
-     * ContactFormFactory constructor.
-     */
-    public function __construct(private FormConfigurationInterface $contactFormConfiguration, private FormValidatorInterface $contactFormEmailValidator, private FormValidatorInterface $requiredFieldsValidator)
-    {
+    public function __construct(
+        private FormConfigurationInterface $contactFormConfiguration,
+        private FormValidatorInterface $contactFormEmailValidator,
+        private FormValidatorInterface $requiredFieldsValidator
+    ) {
     }
-
 
     /**
      * @return FormInterface

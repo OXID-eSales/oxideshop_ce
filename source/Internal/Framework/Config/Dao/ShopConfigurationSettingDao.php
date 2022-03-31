@@ -19,8 +19,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterface
 {
-    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ShopSettingEncoderInterface $shopSettingEncoder, private ShopAdapterInterface $shopAdapter, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private ShopSettingEncoderInterface $shopSettingEncoder,
+        private ShopAdapterInterface $shopAdapter,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /**

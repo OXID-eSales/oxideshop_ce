@@ -11,8 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class ThemedTemplate extends Template
 {
-    public function __construct(string $templateKey, string $templatePath, private string $templateTheme)
-    {
+    public function __construct(
+        string $templateKey,
+        string $templatePath,
+        private string $templateTheme
+    ) {
         parent::__construct($templateKey, $templatePath);
     }
 

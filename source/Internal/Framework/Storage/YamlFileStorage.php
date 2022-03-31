@@ -17,11 +17,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFileStorage implements ArrayStorageInterface
 {
-    /**
-     * YamlFileStorage constructor.
-     */
-    public function __construct(private FileLocatorInterface $fileLocator, private string $filePath, private LockFactory $lockFactory, private Filesystem $filesystemService)
-    {
+    public function __construct(
+        private FileLocatorInterface $fileLocator,
+        private string $filePath,
+        private LockFactory $lockFactory,
+        private Filesystem $filesystemService
+    ) {
     }
 
     /**

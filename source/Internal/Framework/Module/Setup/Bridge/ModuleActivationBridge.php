@@ -16,11 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 
 class ModuleActivationBridge implements ModuleActivationBridgeInterface
 {
-    /**
-     * ModuleActivationBridge constructor.
-     */
-    public function __construct(private ModuleActivationServiceInterface $moduleActivationService, private ModuleStateServiceInterface $moduleStateService)
-    {
+    public function __construct(
+        private ModuleActivationServiceInterface $moduleActivationService,
+        private ModuleStateServiceInterface $moduleStateService
+    ) {
     }
 
     /**

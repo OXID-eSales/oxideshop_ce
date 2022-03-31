@@ -24,8 +24,11 @@ use function array_key_exists;
 
 class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
-    public function __construct(private ShopAdapterInterface $shopAdapter, private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao, private LoggerInterface $logger)
-    {
+    public function __construct(
+        private ShopAdapterInterface $shopAdapter,
+        private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
+        private LoggerInterface $logger
+    ) {
     }
 
     /**

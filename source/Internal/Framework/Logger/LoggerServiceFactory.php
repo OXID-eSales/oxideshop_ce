@@ -19,9 +19,6 @@ use Psr\Log\LoggerInterface;
 
 class LoggerServiceFactory
 {
-    /**
-     * LoggerServiceFactory constructor.
-     */
     public function __construct(private ContextInterface $context)
     {
     }

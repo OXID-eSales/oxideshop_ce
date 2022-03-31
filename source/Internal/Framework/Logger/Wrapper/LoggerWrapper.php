@@ -13,9 +13,6 @@ use Psr\Log\LoggerInterface;
 
 class LoggerWrapper implements LoggerInterface
 {
-    /**
-     * LoggerWrapper constructor.
-     */
     public function __construct(private LoggerInterface $logger)
     {
     }

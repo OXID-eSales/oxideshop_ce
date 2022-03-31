@@ -19,8 +19,11 @@ use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceI
 
 class AdminFactory implements AdminFactoryInterface
 {
-    public function __construct(private ShopAdapterInterface $shopAdapter, private EmailValidatorServiceInterface $emailValidatorService, private PasswordHashServiceInterface $passwordHashService)
-    {
+    public function __construct(
+        private ShopAdapterInterface $shopAdapter,
+        private EmailValidatorServiceInterface $emailValidatorService,
+        private PasswordHashServiceInterface $passwordHashService
+    ) {
     }
 
     /**

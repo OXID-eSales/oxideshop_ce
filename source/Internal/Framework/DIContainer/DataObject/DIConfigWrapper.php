@@ -23,9 +23,6 @@ class DIConfigWrapper
 
     private $sectionDefaults = [self::SERVICE_SECTION => ['_defaults' => ['public' => false, 'autowire' => true]]];
 
-    /**
-     * DIConfigWrapper constructor.
-     */
     public function __construct(private array $configArray)
     {
     }

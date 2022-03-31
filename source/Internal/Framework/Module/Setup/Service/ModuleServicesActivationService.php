@@ -23,11 +23,13 @@ use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
-    /**
-     * ModuleServicesActivationService constructor.
-     */
-    public function __construct(private ProjectYamlDaoInterface $dao, public EventDispatcherInterface $eventDispatcher, private ModulePathResolverInterface $modulePathResolver, private ModuleStateServiceInterface $moduleStateService, private ContextInterface $context)
-    {
+    public function __construct(
+        private ProjectYamlDaoInterface $dao,
+        public EventDispatcherInterface $eventDispatcher,
+        private ModulePathResolverInterface $modulePathResolver,
+        private ModuleStateServiceInterface $moduleStateService,
+        private ContextInterface $context
+    ) {
     }
 
     /**
@@ -62,7 +64,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
         $this->dao->saveProjectConfigFile($projectConfig);
     }
-
 
     /**
      * @param string $moduleId

@@ -32,9 +32,6 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
      */
     private $currentValidationMetaDataVersion;
 
-    /**
-     * MetaDataValidator constructor.
-     */
     public function __construct(private MetaDataSchemataProviderInterface $metaDataSchemataProvider)
     {
     }

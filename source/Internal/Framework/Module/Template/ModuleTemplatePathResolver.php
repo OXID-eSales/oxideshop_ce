@@ -15,8 +15,10 @@ use Webmozart\PathUtil\Path;
 
 class ModuleTemplatePathResolver implements ModuleTemplatePathResolverInterface
 {
-    public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private ActiveModulesDataProviderInterface $activeModulesDataProvider,
+        private Filesystem $filesystem
+    ) {
     }
 
     public function resolve(string $templateKey): string

@@ -17,14 +17,10 @@ class BeforeHeadersSendEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * BeforeHeadersSendEvent constructor.
-     *
-     * @param ShopControl               $shopControl ShopControl object
-     * @param BaseController $controller  Controller
-     */
-    public function __construct(private ShopControl $shopControl, private BaseController $controller)
-    {
+    public function __construct(
+        private ShopControl $shopControl,
+        private BaseController $controller
+    ) {
     }
 
     /**

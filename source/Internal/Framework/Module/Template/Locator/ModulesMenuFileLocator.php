@@ -19,8 +19,10 @@ class ModulesMenuFileLocator implements NavigationFileLocatorInterface
     /** @var string */
     private $fileName = 'menu.xml';
 
-    public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private ActiveModulesDataProviderInterface $activeModulesDataProvider,
+        private Filesystem $filesystem
+    ) {
     }
 
     /** @inheritDoc */

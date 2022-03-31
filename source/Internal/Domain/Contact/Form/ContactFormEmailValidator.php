@@ -21,9 +21,6 @@ class ContactFormEmailValidator implements FormValidatorInterface
      */
     private $errors;
 
-    /**
-     * ContactFormEmailValidator constructor.
-     */
     public function __construct(private EmailValidatorServiceInterface $emailValidatorService)
     {
     }

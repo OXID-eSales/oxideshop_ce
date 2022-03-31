@@ -14,8 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Factory\AdminFactoryInterfac
 
 class AdminUserService implements AdminUserServiceInterface
 {
-    public function __construct(private AdminDaoInterface $adminDao, private AdminFactoryInterface $adminFactory)
-    {
+    public function __construct(
+        private AdminDaoInterface $adminDao,
+        private AdminFactoryInterface $adminFactory
+    ) {
     }
 
     /**

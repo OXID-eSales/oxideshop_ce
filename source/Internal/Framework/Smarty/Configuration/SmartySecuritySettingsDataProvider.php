@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataProviderInterface
 {
-    /**
-     * SmartySecuritySettingsDataProvider constructor.
-     */
     public function __construct(private SmartyContextInterface $context)
     {
     }

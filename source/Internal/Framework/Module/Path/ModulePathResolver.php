@@ -15,8 +15,10 @@ use Webmozart\PathUtil\Path;
 
 class ModulePathResolver implements ModulePathResolverInterface
 {
-    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao, private BasicContextInterface $context)
-    {
+    public function __construct(
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private BasicContextInterface $context
+    ) {
     }
 
     /**

@@ -21,8 +21,11 @@ class TemplateBlock
      */
     private $theme = '';
 
-    public function __construct(private string $shopTemplatePath, private string $blockName, private string $moduleTemplatePath)
-    {
+    public function __construct(
+        private string $shopTemplatePath,
+        private string $blockName,
+        private string $moduleTemplatePath
+    ) {
     }
 
     /**

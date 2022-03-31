@@ -14,11 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 
 class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
 {
-    /**
-     * TemplateBlockExtensionDao constructor.
-     */
-    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ShopAdapterInterface $shopAdapter)
-    {
+    public function __construct(
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private ShopAdapterInterface $shopAdapter
+    ) {
     }
 
     /**

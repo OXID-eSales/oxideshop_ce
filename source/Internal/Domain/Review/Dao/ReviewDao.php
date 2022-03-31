@@ -16,8 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Review;
 
 class ReviewDao implements ReviewDaoInterface
 {
-    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory, private ReviewDataMapperInterface $reviewDataMapper)
-    {
+    public function __construct(
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private ReviewDataMapperInterface $reviewDataMapper
+    ) {
     }
 
     /**

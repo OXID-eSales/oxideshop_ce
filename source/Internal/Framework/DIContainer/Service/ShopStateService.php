@@ -22,8 +22,10 @@ class ShopStateService implements ShopStateServiceInterface
     private $dbUser;
     private $dbPwd;
 
-    public function __construct(private BasicContextInterface $basicContext, private string $anyUnifiedNamespace)
-    {
+    public function __construct(
+        private BasicContextInterface $basicContext,
+        private string $anyUnifiedNamespace
+    ) {
     }
 
     /**

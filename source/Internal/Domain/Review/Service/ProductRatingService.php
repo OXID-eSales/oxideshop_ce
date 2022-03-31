@@ -14,11 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterfa
 
 class ProductRatingService implements ProductRatingServiceInterface
 {
-    /**
-     * ProductRatingService constructor.
-     */
-    public function __construct(private RatingDaoInterface $ratingDao, private ProductRatingDaoInterface $productRatingDao, private RatingCalculatorServiceInterface $ratingCalculator)
-    {
+    public function __construct(
+        private RatingDaoInterface $ratingDao,
+        private ProductRatingDaoInterface $productRatingDao,
+        private RatingCalculatorServiceInterface $ratingCalculator
+    ) {
     }
 
     /**

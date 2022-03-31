@@ -27,9 +27,6 @@ class CreateUserCommand extends Command
     private const ADMIN_EMAIL = 'admin-email';
     private const ADMIN_PASSWORD = 'admin-password';
 
-    /**
-     * AdminUserSetupCommand constructor.
-     */
     public function __construct(
         private EmailValidatorServiceInterface $emailValidatorService,
         private AdminUserServiceInterface $adminService,

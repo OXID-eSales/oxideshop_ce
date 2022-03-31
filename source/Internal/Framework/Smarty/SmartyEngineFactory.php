@@ -16,11 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
 
 class SmartyEngineFactory implements TemplateEngineFactoryInterface
 {
-    /**
-     * SmartyEngineFactory constructor.
-     */
-    public function __construct(private SmartyBuilder $smartyBuilder, private SmartyConfigurationInterface $smartyConfiguration)
-    {
+    public function __construct(
+        private SmartyBuilder $smartyBuilder,
+        private SmartyConfigurationInterface $smartyConfiguration
+    ) {
     }
 
     /**

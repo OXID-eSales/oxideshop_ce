@@ -15,8 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ModuleSettingBridge implements ModuleSettingBridgeInterface
 {
-    public function __construct(private ContextInterface $context, private ModuleConfigurationDaoInterface $moduleConfigurationDao, private SettingDaoInterface $settingDao)
-    {
+    public function __construct(
+        private ContextInterface $context,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private SettingDaoInterface $settingDao
+    ) {
     }
 
     /**

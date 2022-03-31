@@ -22,11 +22,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
-    /**
-     * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
-     */
-    public function __construct(private ProjectConfigurationDaoInterface $projectConfigurationDao, private BasicContextInterface $context, private ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService, private ModuleConfigurationDaoInterface $metadataModuleConfigurationDao)
-    {
+    public function __construct(
+        private ProjectConfigurationDaoInterface $projectConfigurationDao,
+        private BasicContextInterface $context,
+        private ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
+        private ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
+    ) {
     }
 
     /**

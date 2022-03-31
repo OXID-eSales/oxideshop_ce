@@ -16,9 +16,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventLoggingSubscriber implements EventSubscriberInterface
 {
-    /**
-     * EventLoggingSubscriber constructor.
-     */
     public function __construct(private LoggerInterface $logger)
     {
     }

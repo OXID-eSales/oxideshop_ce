@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
 
 class UserRatingService implements UserRatingServiceInterface
 {
-    /**
-     * UserRatingService constructor.
-     */
     public function __construct(private RatingDaoInterface $ratingDao)
     {
     }

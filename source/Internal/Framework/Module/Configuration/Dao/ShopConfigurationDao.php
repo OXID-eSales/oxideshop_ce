@@ -22,8 +22,15 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ShopConfigurationDao implements ShopConfigurationDaoInterface
 {
-    public function __construct(private ShopConfigurationDataMapperInterface $shopConfigurationMapper, private FileStorageFactoryInterface $fileStorageFactory, private BasicContextInterface $context, private ShopConfigurationCacheInterface $cache, private Filesystem $fileSystem, private NodeInterface $node, private ShopConfigurationExtenderInterface $shopConfigurationExtender)
-    {
+    public function __construct(
+        private ShopConfigurationDataMapperInterface $shopConfigurationMapper,
+        private FileStorageFactoryInterface $fileStorageFactory,
+        private BasicContextInterface $context,
+        private ShopConfigurationCacheInterface $cache,
+        private Filesystem $fileSystem,
+        private NodeInterface $node,
+        private ShopConfigurationExtenderInterface $shopConfigurationExtender
+    ) {
     }
 
     /**

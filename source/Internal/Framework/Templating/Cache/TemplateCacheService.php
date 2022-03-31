@@ -21,11 +21,10 @@ use Webmozart\PathUtil\Path;
  */
 class TemplateCacheService implements TemplateCacheServiceInterface
 {
-    /**
-     * TemplateCacheService constructor.
-     */
-    public function __construct(private BasicContextInterface $basicContext, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private BasicContextInterface $basicContext,
+        private Filesystem $filesystem
+    ) {
     }
 
     public function invalidateTemplateCache(): void

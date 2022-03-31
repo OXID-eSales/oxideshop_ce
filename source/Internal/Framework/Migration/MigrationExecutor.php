@@ -13,11 +13,6 @@ use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * Class MigrationExecutor
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Migration
- */
 class MigrationExecutor implements MigrationExecutorInterface
 {
     public function __construct(protected ContextInterface $context)

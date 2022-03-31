@@ -16,8 +16,10 @@ class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderI
     /** @var int */
     private $shopId;
 
-    public function __construct(private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /** @inheritDoc */

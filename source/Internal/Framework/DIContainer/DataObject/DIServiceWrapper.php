@@ -26,11 +26,10 @@ class DIServiceWrapper
     /** @var  array $calls */
     private $calls = [];
 
-    /**
-     * DIServiceWrapper constructor.
-     */
-    public function __construct(private string $id, private array $serviceArguments)
-    {
+    public function __construct(
+        private string $id,
+        private array $serviceArguments
+    ) {
         $this->setClass();
         $this->setCalls();
     }

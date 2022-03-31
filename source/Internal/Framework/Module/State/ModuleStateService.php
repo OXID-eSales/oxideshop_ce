@@ -18,9 +18,6 @@ use function in_array;
 
 class ModuleStateService implements ModuleStateServiceInterface
 {
-    /**
-     * ModuleStateService constructor.
-     */
     public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
     }

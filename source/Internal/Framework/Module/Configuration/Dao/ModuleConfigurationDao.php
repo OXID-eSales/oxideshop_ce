@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
-    /**
-     * ModuleConfigurationDao constructor.
-     */
     public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao)
     {
     }

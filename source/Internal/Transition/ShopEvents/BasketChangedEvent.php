@@ -16,11 +16,6 @@ class BasketChangedEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * BasketChangedEvent constructor.
-     *
-     * @param BasketComponent $basketComponent Basket component
-     */
     public function __construct(private BasketComponent $basketComponent)
     {
     }

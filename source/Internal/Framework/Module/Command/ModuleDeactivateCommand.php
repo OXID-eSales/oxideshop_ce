@@ -18,9 +18,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Command deactivates module by module id.
- */
 class ModuleDeactivateCommand extends Command
 {
     public const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';

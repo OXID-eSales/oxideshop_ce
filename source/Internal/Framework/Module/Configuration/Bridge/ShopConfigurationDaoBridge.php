@@ -16,11 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
 {
-    /**
-     * ShopConfigurationDaoBridge constructor.
-     */
-    public function __construct(private ContextInterface $context, private ShopConfigurationDaoInterface $shopConfigurationDao, private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao)
-    {
+    public function __construct(
+        private ContextInterface $context,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
+    ) {
     }
 
     /**

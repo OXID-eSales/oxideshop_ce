@@ -15,8 +15,10 @@ class HtaccessUpdater implements HtaccessUpdaterInterface
 {
     private const REWRITE_BASE_FOR_EMPTY_PATH = '/';
 
-    public function __construct(private HtaccessDaoFactoryInterface $htaccessDaoFactory, private UrlParserInterface $urlParser)
-    {
+    public function __construct(
+        private HtaccessDaoFactoryInterface $htaccessDaoFactory,
+        private UrlParserInterface $urlParser
+    ) {
     }
 
     /** @inheritDoc */

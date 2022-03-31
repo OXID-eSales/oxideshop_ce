@@ -14,8 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVer
 
 class PasswordServiceBridge implements PasswordServiceBridgeInterface
 {
-    public function __construct(private PasswordHashServiceInterface $passwordHashService, private PasswordVerificationServiceInterface $passwordVerificationService)
-    {
+    public function __construct(
+        private PasswordHashServiceInterface $passwordHashService,
+        private PasswordVerificationServiceInterface $passwordVerificationService
+    ) {
     }
 
     /**

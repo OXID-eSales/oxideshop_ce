@@ -20,11 +20,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
  */
 class LegacySmartyEngineFactory implements TemplateEngineFactoryInterface
 {
-    /**
-     * LegacySmartyEngineFactory constructor.
-     */
-    public function __construct(private ShopAdapterInterface $shopAdapter, private SmartyEngineBridgeInterface $smartyBridge)
-    {
+    public function __construct(
+        private ShopAdapterInterface $shopAdapter,
+        private SmartyEngineBridgeInterface $smartyBridge
+    ) {
     }
 
     /**

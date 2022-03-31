@@ -18,11 +18,12 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class DatabaseInstaller implements DatabaseInstallerInterface
 {
-    /**
-     * DatabaseInstaller constructor.
-     */
-    public function __construct(private DatabaseCreatorInterface $creator, private DatabaseInitiatorInterface $initiator, private ConfigFileDaoInterface $configFileDao, private BasicContextInterface $basicContext)
-    {
+    public function __construct(
+        private DatabaseCreatorInterface $creator,
+        private DatabaseInitiatorInterface $initiator,
+        private ConfigFileDaoInterface $configFileDao,
+        private BasicContextInterface $basicContext
+    ) {
     }
 
     /**

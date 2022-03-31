@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 
 class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
 {
-    /**
-     * SmartyTemplateRendererBridge constructor.
-     */
     public function __construct(private TemplateRendererInterface $renderer)
     {
     }

@@ -25,11 +25,10 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
      */
     private $globals = [];
 
-    /**
-     * Constructor.
-     */
-    public function __construct(private \Smarty $engine, private SmartyEngineBridgeInterface $bridge)
-    {
+    public function __construct(
+        private \Smarty $engine,
+        private SmartyEngineBridgeInterface $bridge
+    ) {
     }
 
     /**

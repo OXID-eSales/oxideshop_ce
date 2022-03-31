@@ -16,11 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 
 class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainResolverInterface
 {
-    /**
-     * ActiveClassExtensionChainResolver constructor.
-     */
-    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao, private ModuleStateServiceInterface $moduleStateService)
-    {
+    public function __construct(
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ModuleStateServiceInterface $moduleStateService
+    ) {
     }
 
 

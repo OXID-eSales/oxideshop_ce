@@ -41,8 +41,12 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private $filePath;
 
-    public function __construct(private MetaDataNormalizerInterface $metaDataNormalizer, private BasicContextInterface $context, private MetaDataValidatorInterface $metaDataValidatorService, private MetaDataConverterInterface $metaDataConverter)
-    {
+    public function __construct(
+        private MetaDataNormalizerInterface $metaDataNormalizer,
+        private BasicContextInterface $context,
+        private MetaDataValidatorInterface $metaDataValidatorService,
+        private MetaDataConverterInterface $metaDataConverter
+    ) {
     }
 
     /**

@@ -30,9 +30,6 @@ class EditionMenuFileLocator implements NavigationFileLocatorInterface
      */
     private $fileName = 'menu.xml';
 
-    /**
-     * EditionMenuFileLocator constructor.
-     */
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
         private BasicContextInterface $context,

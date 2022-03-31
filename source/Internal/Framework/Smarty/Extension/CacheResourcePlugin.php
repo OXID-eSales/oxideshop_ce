@@ -11,9 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-/**
- * Cache resource
- */
 class CacheResourcePlugin
 {
     /**

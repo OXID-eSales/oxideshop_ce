@@ -13,11 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartyConfigurationFactory implements SmartyConfigurationFactoryInterface
 {
-    /**
-     * SmartyConfigurationFactory constructor.
-     */
-    public function __construct(private SmartyContextInterface $context, private SmartySettingsDataProviderInterface $settingsDataProvider, private SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider, private SmartyResourcesDataProviderInterface $resourcesDataProvider, private SmartyPrefiltersDataProviderInterface $prefiltersDataProvider, private SmartyPluginsDataProviderInterface $pluginsDataProvider)
-    {
+    public function __construct(
+        private SmartyContextInterface $context,
+        private SmartySettingsDataProviderInterface $settingsDataProvider,
+        private SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider,
+        private SmartyResourcesDataProviderInterface $resourcesDataProvider,
+        private SmartyPrefiltersDataProviderInterface $prefiltersDataProvider,
+        private SmartyPluginsDataProviderInterface $pluginsDataProvider
+    ) {
     }
 
     /**

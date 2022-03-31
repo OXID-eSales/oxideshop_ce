@@ -20,8 +20,12 @@ use function json_encode;
 
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {
-    public function __construct(private ShopAdapterInterface $shopAdapter, private Filesystem $fileSystem, private BasicContextInterface $basicContext, private TemplateCacheServiceInterface $templateCacheService)
-    {
+    public function __construct(
+        private ShopAdapterInterface $shopAdapter,
+        private Filesystem $fileSystem,
+        private BasicContextInterface $basicContext,
+        private TemplateCacheServiceInterface $templateCacheService
+    ) {
     }
 
     /**

@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 
 class PasswordVerificationService implements PasswordVerificationServiceInterface
 {
-    /**
-     * PasswordVerificationService constructor.
-     */
     public function __construct(private PasswordPolicyInterface $passwordPolicy)
     {
     }

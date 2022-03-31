@@ -21,8 +21,10 @@ class Executor implements ExecutorInterface
 {
     public const SHOP_ID_PARAMETER_OPTION_NAME = 'shop-id';
 
-    public function __construct(private Application $application, private CommandsProviderInterface $servicesCommandsProvider)
-    {
+    public function __construct(
+        private Application $application,
+        private CommandsProviderInterface $servicesCommandsProvider
+    ) {
     }
 
     /**

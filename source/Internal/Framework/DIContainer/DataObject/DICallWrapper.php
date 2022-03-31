@@ -16,9 +16,6 @@ class DICallWrapper
 
     private $callArray;
 
-    /**
-     * DICallWrapper constructor.
-     */
     public function __construct(array $callArray = [])
     {
         if (!$callArray) {

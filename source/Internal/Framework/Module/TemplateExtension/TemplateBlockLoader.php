@@ -16,8 +16,11 @@ use Webmozart\PathUtil\Path;
 
 class TemplateBlockLoader implements TemplateBlockLoaderInterface
 {
-    public function __construct(private ContextInterface $context, private ModulePathResolverInterface $modulePathResolver, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private ContextInterface $context,
+        private ModulePathResolverInterface $modulePathResolver,
+        private Filesystem $filesystem
+    ) {
     }
 
     /**

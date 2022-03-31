@@ -30,9 +30,6 @@ class EditionUserFileLocator implements NavigationFileLocatorInterface
      */
     private $fileName = 'user.xml';
 
-    /**
-     * EditionUserFileLocator constructor.
-     */
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
         private BasicContextInterface $context,

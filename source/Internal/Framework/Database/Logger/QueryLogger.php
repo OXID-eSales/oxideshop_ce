@@ -16,11 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNot
 
 class QueryLogger implements SQLLogger
 {
-    /**
-     * QueryLogger constructor.
-     */
-    public function __construct(private QueryFilterInterface $queryFilter, private ContextInterface $context, private LoggerInterface $psrLogger)
-    {
+    public function __construct(
+        private QueryFilterInterface $queryFilter,
+        private ContextInterface $context,
+        private LoggerInterface $psrLogger
+    ) {
     }
 
     /**

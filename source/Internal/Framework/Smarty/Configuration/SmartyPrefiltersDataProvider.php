@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartyPrefiltersDataProvider implements SmartyPrefiltersDataProviderInterface
 {
-    /**
-     * SmartyPrefiltersDataProvider constructor.
-     */
     public function __construct(private SmartyContextInterface $context)
     {
     }

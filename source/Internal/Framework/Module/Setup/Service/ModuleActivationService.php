@@ -19,13 +19,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
 {
-    /**
-     * ModuleActivationService constructor.
-     */
-    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao, private EventDispatcherInterface $eventDispatcher, private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService, private ModuleStateServiceInterface $stateService, private ExtensionChainServiceInterface $classExtensionChainService, private ModuleServicesActivationServiceInterface $moduleServicesActivationService)
-    {
+    public function __construct(
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private EventDispatcherInterface $eventDispatcher,
+        private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService,
+        private ModuleStateServiceInterface $stateService,
+        private ExtensionChainServiceInterface $classExtensionChainService,
+        private ModuleServicesActivationServiceInterface $moduleServicesActivationService
+    ) {
     }
-
 
     /**
      * @param string $moduleId

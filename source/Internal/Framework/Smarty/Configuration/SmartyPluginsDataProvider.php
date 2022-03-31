@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartyPluginsDataProvider implements SmartyPluginsDataProviderInterface
 {
-    /**
-     * SmartyPluginsDataProvider constructor.
-     */
     public function __construct(private SmartyContextInterface $context)
     {
     }

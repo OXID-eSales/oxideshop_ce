@@ -17,8 +17,10 @@ use Webmozart\PathUtil\Path;
 
 class FrontendModuleTranslationFileLocator extends LocatorAbstract implements LocatorInterface
 {
-    public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private ActiveModulesDataProviderInterface $activeModulesDataProvider,
+        private Filesystem $filesystem
+    ) {
     }
 
     /**

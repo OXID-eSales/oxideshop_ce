@@ -17,11 +17,11 @@ use Doctrine\DBAL\Logging\SQLLogger;
  */
 class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
 {
-    /**
-     * DatabaseLoggerFactory constructor.
-     */
-    public function __construct(private ContextInterface $context, private QueryLogger $queryLogger, private NullLogger $nullLogger)
-    {
+    public function __construct(
+        private ContextInterface $context,
+        private QueryLogger $queryLogger,
+        private NullLogger $nullLogger
+    ) {
     }
 
     /**

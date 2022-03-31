@@ -24,11 +24,10 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
     /** @var PDO */
     private $dbConnection;
 
-    /**
-     * DatabaseInitiator constructor.
-     */
-    public function __construct(private BasicContextInterface $context, private MigrationExecutorInterface $migrationExecutor)
-    {
+    public function __construct(
+        private BasicContextInterface $context,
+        private MigrationExecutorInterface $migrationExecutor
+    ) {
     }
 
     /**

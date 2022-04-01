@@ -7,7 +7,6 @@ parameters:
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridge

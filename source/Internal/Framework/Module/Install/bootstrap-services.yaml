@@ -1,8 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
-
 
   oxid_esales.module.install.service.bootstrap_module_installer:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller

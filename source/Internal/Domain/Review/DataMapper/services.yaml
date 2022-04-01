@@ -1,7 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapper

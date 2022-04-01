@@ -4,7 +4,6 @@ parameters:
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridge

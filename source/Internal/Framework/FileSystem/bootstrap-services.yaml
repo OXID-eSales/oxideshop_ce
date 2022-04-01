@@ -1,7 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
 
   oxid_esales.common.storage.flock_store_lock_factory:
     class: Symfony\Component\Lock\Factory

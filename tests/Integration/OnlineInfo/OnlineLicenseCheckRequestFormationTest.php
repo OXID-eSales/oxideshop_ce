@@ -23,10 +23,9 @@ use OxidEsales\Eshop\Core\SimpleXml;
 use OxidEsales\Eshop\Core\UserCounter;
 use OxidEsales\Eshop\Core\UtilsDate;
 use OxidEsales\Eshop\Core\UtilsServer;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @covers \OxidEsales\EshopCommunity\Core\OnlineServerEmailBuilder
@@ -37,7 +36,8 @@ use Psr\Container\ContainerInterface;
  */
 final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
 {
-    private ContainerInterface $container;
+    use ContainerTrait;
+
     private int $adminUserCount;
     private int $timestamp;
     private string $clusterId;
@@ -60,7 +60,6 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->container = ContainerFactory::getInstance()->getContainer();
         $this->prepareTestData();
     }
 
@@ -249,7 +248,7 @@ final class OnlineLicenseCheckRequestFormationTest extends UnitTestCase
         DatabaseProvider::getDb()->execute(
             "DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'"
         );
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem = $this->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
             $fileSystem->remove($this->packageRevisionFile);

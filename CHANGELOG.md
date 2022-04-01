@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Method:
     - `Application\Model\User::getUtilsObjectInstance()`
+- Services:
+  - `utility.context.admin_log_file_path`
+  - `utility.context.log_file_path`
+  - `utility.context.log_level`
 
 ## [6.10.2] - Unreleased
 

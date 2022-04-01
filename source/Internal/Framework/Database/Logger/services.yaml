@@ -30,9 +30,10 @@ services:
       $logLevel: !php/const Psr\Log\LogLevel::DEBUG
 
   database.psr_logger:
+    class: Monolog\Logger
     factory: ['@database.monolog_logger_factory', 'create']
 
   utility.context.admin_log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getAdminLogFilePath']
-
+    deprecated: 'The "%service_id%" service is deprecated. Use "OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface" instead.'

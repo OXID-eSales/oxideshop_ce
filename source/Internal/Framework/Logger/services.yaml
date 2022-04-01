@@ -29,7 +29,9 @@ services:
   utility.context.log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogFilePath']
+    deprecated: 'The "%service_id%" service is deprecated. Use "OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface" instead.'
 
   utility.context.log_level:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogLevel']
+    deprecated: 'The "%service_id%" service is deprecated. Use "OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface" instead.'

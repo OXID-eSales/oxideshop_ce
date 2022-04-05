@@ -1,19 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setting;
+declare(strict_types=1);
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\ShopModuleSetting;
+
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -26,9 +28,10 @@ class SettingDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testRollbackTransactionOnSave()
+    public function testRollbackTransactionOnSave(): void
     {
         $this->expectException(\Exception::class);
+
         $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
         $queryBuilderFactory
             ->method('create')
@@ -53,7 +56,7 @@ class SettingDaoTest extends TestCase
             $eventDispatcher
         );
 
-        $shopModuleSettingDao->save(new Setting(), '', 0);
+        $shopModuleSettingDao->save(new Setting(), '', 1);
     }
 
     public function testDispatchEventOnSave()
@@ -63,9 +66,8 @@ class SettingDaoTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(
-                //In the new version of EventDispatcher the entries have to be flipped.
-                $this->stringContains(SettingChangedEvent::NAME),
-                $this->isInstanceOf(SettingChangedEvent::class)
+                $this->isInstanceOf(SettingChangedEvent::class),
+                $this->stringContains(SettingChangedEvent::NAME)
             );
 
         $shopModuleSettingDao = new SettingDao(
@@ -80,6 +82,6 @@ class SettingDaoTest extends TestCase
         $moduleSetting = new Setting();
         $moduleSetting->setName('module_param')->setType('str')->setValue('module_value');
 
-        $shopModuleSettingDao->save($moduleSetting, 'phpunit_module_id', 0);
+        $shopModuleSettingDao->save($moduleSetting, 'phpunit_module_id', 1);
     }
 }

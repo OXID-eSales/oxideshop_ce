@@ -10,4 +10,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller
+    arguments:
+      - '@oxid_esales.module.install.service.bootstrap_module_installer'
     public: true

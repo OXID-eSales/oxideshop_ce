@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 interface TemplateFileResolverBridgeInterface
 {

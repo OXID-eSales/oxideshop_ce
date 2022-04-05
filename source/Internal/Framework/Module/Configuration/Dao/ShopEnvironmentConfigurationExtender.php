@@ -63,8 +63,8 @@ class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderI
     private function processOrphanSetting(string $moduleId, string $orphanSettingId): void
     {
         $this->eventDispatcher->dispatch(
-            ShopEnvironmentWithOrphanSettingEvent::NAME,
-            new ShopEnvironmentWithOrphanSettingEvent($this->shopId, $moduleId, $orphanSettingId)
+            new ShopEnvironmentWithOrphanSettingEvent($this->shopId, $moduleId, $orphanSettingId),
+            ShopEnvironmentWithOrphanSettingEvent::NAME
         );
     }
 }

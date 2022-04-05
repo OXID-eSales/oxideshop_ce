@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event;
 
@@ -38,7 +40,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
         }
     }
 
-    public function testLoggingOnConfigurationErrorEvent()
+    public function testLoggingOnConfigurationErrorEvent(): void
     {
         /** @var ContextStub $context */
         $context = $this->container->get(ContextInterface::class);
@@ -47,8 +49,8 @@ class EventLoggingSubscriberTest extends UnitTestCase
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $dispatcher->dispatch(
-            ServicesYamlConfigurationErrorEvent::NAME,
-            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml')
+            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml'),
+            ServicesYamlConfigurationErrorEvent::NAME
         );
 
         $this->assertTrue(file_exists(__DIR__ . DIRECTORY_SEPARATOR . 'test.log'));

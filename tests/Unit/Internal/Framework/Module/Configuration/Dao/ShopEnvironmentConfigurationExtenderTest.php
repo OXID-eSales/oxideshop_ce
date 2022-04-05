@@ -148,12 +148,12 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
 
         $this->eventDispatcher->dispatch(
-            ShopEnvironmentWithOrphanSettingEvent::NAME,
             new ShopEnvironmentWithOrphanSettingEvent(
                 $this->shopId,
                 'abc',
                 $missingSettingId
-            )
+            ),
+            ShopEnvironmentWithOrphanSettingEvent::NAME
         )
             ->shouldBeCalledOnce();
     }

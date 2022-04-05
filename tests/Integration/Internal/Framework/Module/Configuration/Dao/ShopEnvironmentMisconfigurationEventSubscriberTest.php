@@ -40,12 +40,12 @@ class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
     {
         $this->get(EventDispatcherInterface::class)
             ->dispatch(
-                ShopEnvironmentWithOrphanSettingEvent::NAME,
                 new ShopEnvironmentWithOrphanSettingEvent(
                     123,
                     'some-module',
                     'some-setting'
-                )
+                ),
+                ShopEnvironmentWithOrphanSettingEvent::NAME
             );
 
         $this->assertFileExists($this->testLog);

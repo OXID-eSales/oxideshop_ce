@@ -343,12 +343,12 @@ class SettingDao implements SettingDaoInterface
     private function dispatchEvent(Setting $shopModuleSetting, string $moduleId, int $shopId)
     {
         $this->eventDispatcher->dispatch(
-            SettingChangedEvent::NAME,
             new SettingChangedEvent(
                 $shopModuleSetting->getName(),
                 $shopId,
                 $moduleId
-            )
+            ),
+            SettingChangedEvent::NAME
         );
     }
 }

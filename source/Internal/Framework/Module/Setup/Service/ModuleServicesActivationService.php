@@ -179,11 +179,11 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $moduleConfig = $this->dao->loadDIConfigFile($moduleConfigFile);
         if (!$moduleConfig->checkServiceClassesCanBeLoaded()) {
             $this->eventDispatcher->dispatch(
-                ServicesYamlConfigurationErrorEvent::NAME,
                 new ServicesYamlConfigurationErrorEvent(
                     'Service class can not be loaded',
                     $moduleConfigFile
-                )
+                ),
+                ServicesYamlConfigurationErrorEvent::NAME
             );
             throw new ServicesYamlConfigurationError();
         }

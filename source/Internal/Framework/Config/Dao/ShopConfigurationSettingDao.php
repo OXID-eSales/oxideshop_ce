@@ -98,11 +98,11 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
         $queryBuilder->execute();
 
         $this->eventDispatcher->dispatch(
-            ShopConfigurationChangedEvent::NAME,
             new ShopConfigurationChangedEvent(
                 $shopConfigurationSetting->getName(),
                 $shopConfigurationSetting->getShopId()
-            )
+            ),
+            ShopConfigurationChangedEvent::NAME
         );
     }
 

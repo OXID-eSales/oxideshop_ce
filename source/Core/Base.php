@@ -212,7 +212,7 @@ class Base
     {
         $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get(EventDispatcherInterface::class);
-        return $dispatcher->dispatch($event::NAME, $event);
+        return $dispatcher->dispatch($event, $event::NAME);
     }
 
     /**

@@ -72,15 +72,15 @@ final class TemplateFileResolverTest extends TestCase
                 'template.html.twig',
             ],
             [
-                'template.tpl',
+                'template.html.twig',
                 'template.html.twig'
             ],
             [
-                'some/path/template_name.tpl',
+                'some/path/template_name.html.twig',
                 'some/path/template_name.html.twig'
             ],
             [
-                'some/path/template.name.tpl',
+                'some/path/template.name.html.twig',
                 'some/path/template.name.html.twig'
             ],
             [

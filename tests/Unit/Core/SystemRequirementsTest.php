@@ -301,7 +301,7 @@ class SystemRequirementsTest extends \OxidTestCase
             ->getMock();
         $container->expects($this->any())
             ->method('get')
-            ->with($this->equalTo('oxid_esales.templating.frontend.template.loader'))
+            ->with($this->equalTo('oxid_esales.templating.template.loader'))
             ->will($this->returnValue($templateLoader));
         $systemRequirements = $this->getMockBuilder(SystemRequirements::class)
             ->setMethods(['getContainer'])

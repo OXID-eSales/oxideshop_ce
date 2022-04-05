@@ -65,6 +65,12 @@ class SmartyEngineTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Hello Test!', $engine->render($template, $context));
     }
 
+    public function testGetDefaultFileExtension()
+    {
+        $engine = $this->getEngine();
+        $this->assertSame('tpl', $engine->getDefaultFileExtension());
+    }
+
     public function testAddAndGetGlobals()
     {
         $engine = $this->getEngine();

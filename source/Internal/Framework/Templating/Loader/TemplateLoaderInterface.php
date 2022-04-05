@@ -32,4 +32,13 @@ interface TemplateLoaderInterface
      * @return string
      */
     public function getContext($name): string;
+
+    /**
+     * Returns the path to the template.
+     *
+     * @param string $name A template name
+     *
+     * @return string
+     */
+    public function getPath($name): string;
 }

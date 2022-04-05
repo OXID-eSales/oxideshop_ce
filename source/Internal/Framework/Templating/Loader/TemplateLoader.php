@@ -11,19 +11,37 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFileNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface;
 
+/**
+ * Class TemplateLoader
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
+ */
 class TemplateLoader implements TemplateLoaderInterface
 {
-    private TemplateFileResolverInterface $templateFileResolver;
-    private FileLocatorInterface $fileLocator;
+    /**
+     * @var TemplateNameResolverInterface
+     */
+    private $templateNameResolver;
 
+    /**
+     * @var FileLocatorInterface
+     */
+    private $fileLocator;
+
+    /**
+     * TemplateLoader constructor.
+     *
+     * @param FileLocatorInterface  $fileLocator
+     * @param TemplateNameResolverInterface $templateNameResolver
+     */
     public function __construct(
         FileLocatorInterface $fileLocator,
-        TemplateFileResolverInterface $templateFileResolver
+        TemplateNameResolverInterface $templateNameResolver
     ) {
         $this->fileLocator = $fileLocator;
-        $this->templateFileResolver = $templateFileResolver;
+        $this->templateNameResolver = $templateNameResolver;
     }
 
     /**
@@ -60,6 +78,20 @@ class TemplateLoader implements TemplateLoaderInterface
     }
 
     /**
+     * Returns the path to the template.
+     *
+     * @param string $name A template name
+     *
+     * @return string
+     *
+     * @throws TemplateFileNotFoundException
+     */
+    public function getPath($name): string
+    {
+        return $this->findTemplate($name);
+    }
+
+    /**
      * @param string $name A template name
      *
      * @return string
@@ -68,8 +100,8 @@ class TemplateLoader implements TemplateLoaderInterface
      */
     private function findTemplate($name): string
     {
-        $filename = $this->templateFileResolver->getFilename($name);
-        $file = $this->fileLocator->locate($filename);
+        $templateName = $this->templateNameResolver->resolve($name);
+        $file = $this->fileLocator->locate($templateName);
 
         if (false === $file || null === $file || '' === $file) {
             throw new TemplateFileNotFoundException(sprintf('Template "%s" not found', $name));

@@ -230,8 +230,8 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 case self::CONDITION_TYPE_PRICE: // price
                     if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
                         $dAmount += $oProduct->getPrice()->getPrice();
-                    } else {
-                        $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must allready be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
+                    } elseif ($oBasketItem->getPrice()) {
+                        $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must already be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
                     }
                     break;
                 case self::CONDITION_TYPE_WEIGHT: // weight

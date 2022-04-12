@@ -18,9 +18,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
       - '%oxid_esales.templating.engine_template_extension%'
-
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProvider
     
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver
@@ -31,6 +28,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver
     arguments:
       - '%oxid_esales.templating.engine_template_extension%'
+      
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
@@ -40,11 +38,18 @@ services:
       - '@OxidEsales\Eshop\Core\Config'
 
   oxid_esales.templating.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderDelegator
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@oxid_esales.templating.admin.template.loader'
+      - '@oxid_esales.templating.frontend.template.loader'
+
+  oxid_esales.templating.frontend.template.loader:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface'
 
   oxid_esales.templating.admin.template.loader:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader

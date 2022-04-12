@@ -19,7 +19,7 @@ use function str_replace;
 use function strlen;
 use function substr;
 
-final class RandomTokenGenerator implements RandomTokenGeneratorInterface
+class RandomTokenGenerator implements RandomTokenGeneratorInterface
 {
     private const BASE_64_NON_ALPHANUMERIC_CHARACTERS = ['+', '/', '='];
 

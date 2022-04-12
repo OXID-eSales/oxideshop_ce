@@ -20,7 +20,7 @@ use OxidEsales\Eshop\Core\PasswordSaltGenerator;
  * \OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface instead.
  *
  */
-final class FallbackTokenGenerator
+class FallbackTokenGenerator
 {
     /**
      * @param int $length

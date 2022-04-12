@@ -13,7 +13,7 @@ use Exception;
 
 use function random_bytes;
 
-final class SystemSecurityChecker implements SystemSecurityCheckerInterface
+class SystemSecurityChecker implements SystemSecurityCheckerInterface
 {
     /** @inheritdoc */
     public function isCryptographicallySecure(): bool

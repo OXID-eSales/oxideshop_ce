@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecuri
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\FallbackTokenGenerator;
 use Psr\Log\LoggerInterface;
 
-final class RandomTokenGeneratorBridge implements RandomTokenGeneratorBridgeInterface
+class RandomTokenGeneratorBridge implements RandomTokenGeneratorBridgeInterface
 {
     private RandomTokenGeneratorInterface $randomTokenGenerator;
     private SystemSecurityCheckerInterface $systemSecurityChecker;

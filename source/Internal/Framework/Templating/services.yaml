@@ -14,7 +14,7 @@ services:
     public: true
     tags: ['templating']
   
-    OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
       - '%oxid_esales.templating.engine_template_extension%'

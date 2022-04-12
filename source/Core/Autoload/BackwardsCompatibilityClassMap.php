@@ -493,7 +493,6 @@ return [
     'oxopensslfunctionalitychecker' => 'OxidEsales\\Eshop\\Core\\OpenSSLFunctionalityChecker',
     'oxoutput' => 'OxidEsales\\Eshop\\Core\\Output',
     'oxpasswordhasher' => 'OxidEsales\\Eshop\\Core\\PasswordHasher',
-    'oxpasswordsaltgenerator' => 'OxidEsales\\Eshop\\Core\\PasswordSaltGenerator',
     'oxpicturehandler' => 'OxidEsales\\Eshop\\Core\\PictureHandler',
     'oxprice' => 'OxidEsales\\Eshop\\Core\\Price',
     'oxpricelist' => 'OxidEsales\\Eshop\\Core\\PriceList',

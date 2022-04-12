@@ -89,6 +89,7 @@ $aLang = [
 'MOD_BUG53632'                                  => 'Possible issues on server due to PHP Bugs',
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start must be off',
 'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 32MB, 60MB recommended)',
+'MOD_CRYPTOGRAPHICALLY_SUFFICIENT_CONFIGURATION' => 'Cryptographically sufficient',
 
 'STEP_0_ERROR_TEXT'                             => 'Your system does not fit system requirements',
 'STEP_0_ERROR_URL'                              => 'https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html',

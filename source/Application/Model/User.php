@@ -2422,15 +2422,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * @return \OxidEsales\Eshop\Core\UtilsObject
-     * @deprecated method will be removed in v7.0, use Registry::getUtilsObject() directly.
-     */
-    protected function getUtilsObjectInstance()
-    {
-        return Registry::getUtilsObject();
-    }
-
-    /**
      * Deletes User from groups.
      *
      * @param DatabaseInterface $database
@@ -2715,6 +2706,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $this
             ->getContainer()
             ->get(RandomTokenGeneratorBridgeInterface::class)
-            ->getHexTokenWithFallback(32);
+            ->getAlphanumericToken(32);
     }
 }

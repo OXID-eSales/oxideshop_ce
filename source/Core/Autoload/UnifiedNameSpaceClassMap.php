@@ -2872,12 +2872,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\PasswordSaltGenerator'                                => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\PasswordSaltGenerator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\PictureHandler'                                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\PictureHandler::class,
         'isAbstract'       => false,

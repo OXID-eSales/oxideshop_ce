@@ -5,10 +5,19 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Setup;
 
+use OxidEsales\EshopCommunity\Core\SystemRequirements;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridge;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\{Controller, Database, Exception\SetupControllerExitException, Language, Session};
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 require_once OX_BASE_PATH . 'Setup' . DIRECTORY_SEPARATOR . 'functions.php';
 
@@ -31,9 +40,6 @@ class TestSetupController extends Controller
  */
 class ControllerTest extends UnitTestCase
 {
-    /**
-     * The standard set up method.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,9 +47,6 @@ class ControllerTest extends UnitTestCase
         $this->unsetPost();
     }
 
-    /**
-     * The standard tear down method.
-     */
     protected function tearDown(): void
     {
         $this->unsetPost();
@@ -129,6 +132,26 @@ class ControllerTest extends UnitTestCase
             $this->assertNull($view->getViewParam('blCreated'));
             $this->assertNotNull($view->getViewParam('aDB'));
         }
+    }
+
+    public function testSystemReqWithCryptographicallySufficientConfigurationWillSetExpectedViewData(): void
+    {
+        $moduleId = 'cryptographically_sufficient_configuration';
+        $controller = $this->getTestController();
+
+        $controller->systemReq();
+
+        $view = $controller->getView();
+        $this->assertNotEmpty($view);
+        $serverConfigurations = $view->getViewParam('aGroupModuleInfo')['Server configuration'];
+        $key = array_search(
+            $moduleId,
+            array_column($serverConfigurations, 'module'),
+            true
+        );
+        $this->assertNotFalse($key);
+        $this->assertEquals(SystemRequirements::MODULE_STATUS_OK, $serverConfigurations[$key]['state']);
+        $this->assertNotEmpty($serverConfigurations[$key]['modulename']);
     }
 
     /**

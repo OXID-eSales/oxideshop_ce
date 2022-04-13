@@ -9,12 +9,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
     arguments:
       $loggerName: 'OXID Logger'
-      $logFilePath: '@=container.hasParameter("utility.context.log_file_path") 
-      ? parameter("utility.context.log_file_path") 
-      : service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogFilePath()'
-      $logLevel: '@=container.hasParameter("utility.context.log_level") 
-      ? parameter("utility.context.log_level") 
-      : service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogLevel()'
+      $logFilePath: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogFilePath()'
+      $logLevel: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogLevel()'
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
   oxid_esales.monolog.logger:

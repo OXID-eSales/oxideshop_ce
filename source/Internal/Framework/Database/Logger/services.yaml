@@ -27,15 +27,9 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
     arguments:
       $loggerName: 'OXID Admin Logger'
-      $logFilePath: '@utility.context.admin_log_file_path'
+      $logFilePath: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getAdminLogFilePath()'
       $logLevel: !php/const Psr\Log\LogLevel::DEBUG
 
   database.psr_logger:
     class: database.monolog_logger_factory
     factory: ['@database.monolog_logger_factory', 'create']
-
-  utility.context.admin_log_file_path:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
-    public: true
-    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getAdminLogFilePath']
-

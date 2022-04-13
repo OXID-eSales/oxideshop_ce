@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [7.0.0-rc.2] - Unreleased
 
 ### Changed
-
+- Update Symfony components to v6
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 - Switched to default PDO result set types when using PHP8.1
@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php). 
 
 ### Fixed
-
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
 - Increase the size of OXCONTENT fields in oxcontents table [#0006831](https://bugs.oxid-esales.com/view.php?id=6831)
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
@@ -23,13 +22,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix not initialized category case possible in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
 
 ### Removed
-
-- `OxidEsales\EshopCommunity\Application\Model\UserPayment` redundant methods: `load` and `insert`
+- PHP v7 support
+- Composer v1 support
 - Class:
   - `Core\PasswordSaltGenerator`
   - `Internal\Transition\Utility\FallbackTokenGenerator`
-- Method:
+- Methods:
   - `Application\Model\User::getUtilsObjectInstance()`
+  - `Application\Model\UserPayment`
+    - `load()`
+    - `insert()`
+- Services:
+  - `utility.context.log_file_path`
+  - `utility.context.log_level:`
+  - `utility.context.admin_log_file_path`
 
 ## [7.0.0-rc.1] - 2021-07-07
 

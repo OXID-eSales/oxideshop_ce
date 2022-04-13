@@ -22,7 +22,7 @@
         "doctrine/dbal": "^2.13",
         "monolog/monolog": "^v1.23.0",
         "oxid-esales/flow-theme": "^v4.0.0",
-        "oxid-esales/oxideshop-composer-plugin": "^v6.0.0",
+        "oxid-esales/oxideshop-composer-plugin": "dev-b-7.0.x",
         "oxid-esales/oxideshop-db-views-generator": "^v2.0.0",
         "oxid-esales/oxideshop-demodata-installer": "dev-b-7.0.x",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-7.0.x",

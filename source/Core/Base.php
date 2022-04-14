@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use oxSystemComponentException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -204,15 +205,18 @@ class Base
     /**
      * Dispatch given event.
      *
-     * @param \Symfony\Component\EventDispatcher\Event $event Event to dispatch
+     * @param Event $event Event to dispatch
      *
-     * @return \Symfony\Component\EventDispatcher\Event
+     * @return Event
      */
-    public function dispatchEvent(\Symfony\Component\EventDispatcher\Event $event)
+    public function dispatchEvent(Event $event)
     {
-        $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
-        $dispatcher = $container->get(EventDispatcherInterface::class);
-        return $dispatcher->dispatch($event, $event::NAME);
+        $container = ContainerFactory::getInstance()->getContainer();
+        return $container->get(EventDispatcherInterface::class)
+            /**
+             * @deprecated $event::NAME will stop being passed to dispatch() in v7.0
+             */
+            ->dispatch($event, $event::NAME);
     }
 
     /**

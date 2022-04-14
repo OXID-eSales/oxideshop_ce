@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `utility.context.admin_log_file_path`
   - `utility.context.log_file_path`
   - `utility.context.log_level`
+- Support for NAME constants in Event classes (`*Event::NAME`)
 
 ## [6.10.2] - Unreleased
 

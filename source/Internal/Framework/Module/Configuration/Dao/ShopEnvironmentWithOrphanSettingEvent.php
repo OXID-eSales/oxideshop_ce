@@ -13,6 +13,9 @@ use Symfony\Component\EventDispatcher\Event;
 
 class ShopEnvironmentWithOrphanSettingEvent extends Event
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     public const NAME = self::class;
 
     /** @var int */

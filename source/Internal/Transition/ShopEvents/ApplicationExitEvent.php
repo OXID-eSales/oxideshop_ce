@@ -13,5 +13,8 @@ use Symfony\Component\EventDispatcher\Event;
 
 class ApplicationExitEvent extends Event
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     const NAME = self::class;
 }

@@ -17,5 +17,8 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ProjectYamlChangedEvent extends Event
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     const NAME = self::class;
 }

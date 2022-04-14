@@ -17,13 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ModuleVersionHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
-    private $shopConfigurationSettingDao;
-
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
-    public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
+    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
     /**
@@ -67,7 +62,7 @@ class ModuleVersionHandler implements ModuleConfigurationHandlerInterface
                 ShopConfigurationSetting::MODULE_VERSIONS,
                 $shopId
             );
-        } catch (EntryDoesNotExistDaoException $exception) {
+        } catch (EntryDoesNotExistDaoException) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)

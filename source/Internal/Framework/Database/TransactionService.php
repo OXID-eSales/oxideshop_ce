@@ -11,17 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
 class TransactionService implements TransactionServiceInterface
 {
-    /**
-     * @var ConnectionProviderInterface
-     */
-    private $connectionProvider;
-
-    /**
-     * @param ConnectionProviderInterface $connectionProvider
-     */
-    public function __construct(ConnectionProviderInterface $connectionProvider)
+    public function __construct(private ConnectionProviderInterface $connectionProvider)
     {
-        $this->connectionProvider = $connectionProvider;
     }
 
     public function begin()

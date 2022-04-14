@@ -13,40 +13,14 @@ use Doctrine\DBAL\Logging\SQLLogger;
 use Psr\Log\LoggerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
-use OxidEsales\Eshop\Core\Registry;
 
 class QueryLogger implements SQLLogger
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $psrLogger;
-
-    /**
-     * @var QueryFilter
-     */
-    private $queryFilter;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * QueryLogger constructor.
-     *
-     * @param QueryFilterInterface      $queryFilter
-     * @param ContextInterface $context
-     * @param LoggerInterface  $psrLogger
-     */
     public function __construct(
-        QueryFilterInterface $queryFilter,
-        ContextInterface $context,
-        LoggerInterface $psrLogger
+        private QueryFilterInterface $queryFilter,
+        private ContextInterface $context,
+        private LoggerInterface $psrLogger
     ) {
-        $this->queryFilter = $queryFilter;
-        $this->psrLogger = $psrLogger;
-        $this->context = $context;
     }
 
     /**
@@ -87,7 +61,7 @@ class QueryLogger implements SQLLogger
 
         foreach ((new \Exception())->getTrace() as $item) {
             if (
-                (false === stripos($item['class'], get_class($this))) &&
+                (false === stripos($item['class'], $this::class)) &&
                 (false === stripos($item['class'], 'Doctrine'))
             ) {
                 $queryTraceItem = $item;
@@ -109,7 +83,8 @@ class QueryLogger implements SQLLogger
     private function getQueryData($query, array $params = null): array
     {
         $backTraceInfo = $this->getQueryTrace();
-        $queryData = [
+
+        return [
             'adminUserId' => $this->getAdminUserIdIfExists(),
             'shopId'      => $this->context->getCurrentShopId(),
             'class'       => $backTraceInfo['class'] ?? '',
@@ -117,10 +92,8 @@ class QueryLogger implements SQLLogger
             'file'        => $backTraceInfo['file'] ?? '',
             'line'        => $backTraceInfo['line'] ?? '',
             'query'       => $query,
-            'params'      => serialize($params)
+            'params'      => serialize($params),
         ];
-
-        return $queryData;
     }
 
     /**
@@ -156,7 +129,7 @@ class QueryLogger implements SQLLogger
     {
         try {
             $adminId = $this->context->getAdminUserId();
-        } catch (AdminUserNotFoundException $exception) {
+        } catch (AdminUserNotFoundException) {
             $adminId = '';
         }
 

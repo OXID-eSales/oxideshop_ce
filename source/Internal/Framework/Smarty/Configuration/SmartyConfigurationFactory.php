@@ -13,60 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartyConfigurationFactory implements SmartyConfigurationFactoryInterface
 {
-    /**
-     * @var SmartyContextInterface
-     */
-    private $context;
-
-    /**
-     * @var SmartySettingsDataProviderInterface
-     */
-    private $settingsDataProvider;
-
-    /**
-     * @var SmartySecuritySettingsDataProviderInterface
-     */
-    private $securitySettingsDataProvider;
-
-    /**
-     * @var SmartyResourcesDataProviderInterface
-     */
-    private $resourcesDataProvider;
-
-    /**
-     * @var SmartyPluginsDataProviderInterface
-     */
-    private $pluginsDataProvider;
-
-    /**
-     * @var SmartyPrefiltersDataProviderInterface
-     */
-    private $prefiltersDataProvider;
-
-    /**
-     * SmartyConfigurationFactory constructor.
-     *
-     * @param SmartyContextInterface                      $context
-     * @param SmartySettingsDataProviderInterface         $settingsDataProvider
-     * @param SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider
-     * @param SmartyResourcesDataProviderInterface        $resourcesDataProvider
-     * @param SmartyPrefiltersDataProviderInterface       $prefiltersDataProvider
-     * @param SmartyPluginsDataProviderInterface          $pluginsDataProvider
-     */
     public function __construct(
-        SmartyContextInterface $context,
-        SmartySettingsDataProviderInterface $settingsDataProvider,
-        SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider,
-        SmartyResourcesDataProviderInterface $resourcesDataProvider,
-        SmartyPrefiltersDataProviderInterface $prefiltersDataProvider,
-        SmartyPluginsDataProviderInterface $pluginsDataProvider
+        private SmartyContextInterface $context,
+        private SmartySettingsDataProviderInterface $settingsDataProvider,
+        private SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider,
+        private SmartyResourcesDataProviderInterface $resourcesDataProvider,
+        private SmartyPrefiltersDataProviderInterface $prefiltersDataProvider,
+        private SmartyPluginsDataProviderInterface $pluginsDataProvider
     ) {
-        $this->context = $context;
-        $this->settingsDataProvider = $settingsDataProvider;
-        $this->securitySettingsDataProvider = $securitySettingsDataProvider;
-        $this->resourcesDataProvider = $resourcesDataProvider;
-        $this->prefiltersDataProvider = $prefiltersDataProvider;
-        $this->pluginsDataProvider = $pluginsDataProvider;
     }
 
     /**

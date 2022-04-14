@@ -16,30 +16,16 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
  */
 class ShopStateService implements ShopStateServiceInterface
 {
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
-    /**
-     * @var string
-     */
-    private $anyUnifiedNamespace;
-
     private $dbHost;
     private $dbPort;
     private $dbName;
     private $dbUser;
     private $dbPwd;
 
-    /**
-     * @param BasicContextInterface $basicContext
-     * @param string                $anyUnifiedNamespace
-     */
-    public function __construct(BasicContextInterface $basicContext, string $anyUnifiedNamespace)
-    {
-        $this->basicContext = $basicContext;
-        $this->anyUnifiedNamespace = $anyUnifiedNamespace;
+    public function __construct(
+        private BasicContextInterface $basicContext,
+        private string $anyUnifiedNamespace
+    ) {
     }
 
     /**
@@ -78,7 +64,7 @@ class ShopStateService implements ShopStateServiceInterface
             $connection->exec(
                 'SELECT 1 FROM ' . $this->basicContext->getConfigTableName() . ' LIMIT 1'
             );
-        } catch (\PDOException $exception) {
+        } catch (\PDOException) {
             return false;
         }
 

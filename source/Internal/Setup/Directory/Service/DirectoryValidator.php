@@ -25,7 +25,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
         'out/pictures/media/',
         'out/media/',
         'log/',
-        '../var/'
+        '../var/',
     ];
 
     /**

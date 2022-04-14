@@ -12,21 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 class TemplateBlock
 {
     /**
-     * @var string
-     */
-    private $shopTemplatePath;
-
-    /**
-     * @var string
-     */
-    private $blockName;
-
-    /**
-     * @var string
-     */
-    private $moduleTemplatePath;
-
-    /**
      * @var int
      */
     private $position = 0;
@@ -36,16 +21,11 @@ class TemplateBlock
      */
     private $theme = '';
 
-    /**
-     * @param string $shopTemplatePath
-     * @param string $blockName
-     * @param string $moduleTemplatePath
-     */
-    public function __construct(string $shopTemplatePath, string $blockName, string $moduleTemplatePath)
-    {
-        $this->shopTemplatePath = $shopTemplatePath;
-        $this->blockName = $blockName;
-        $this->moduleTemplatePath = $moduleTemplatePath;
+    public function __construct(
+        private string $shopTemplatePath,
+        private string $blockName,
+        private string $moduleTemplatePath
+    ) {
     }
 
     /**

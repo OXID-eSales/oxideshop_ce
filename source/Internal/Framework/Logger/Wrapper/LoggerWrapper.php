@@ -13,18 +13,8 @@ use Psr\Log\LoggerInterface;
 
 class LoggerWrapper implements LoggerInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * LoggerWrapper constructor.
-     * @param LoggerInterface $logger
-     */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**

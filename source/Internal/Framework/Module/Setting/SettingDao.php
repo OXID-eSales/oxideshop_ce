@@ -15,65 +15,19 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use function is_string;
 
 class SettingDao implements SettingDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ShopSettingEncoderInterface
-     */
-    private $shopSettingEncoder;
-
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * @var TransactionServiceInterface
-     */
-    private $transactionService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ContextInterface             $context
-     * @param ShopSettingEncoderInterface  $shopSettingEncoder
-     * @param ShopAdapterInterface         $shopAdapter
-     * @param TransactionServiceInterface  $transactionService
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
     public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        ContextInterface $context,
-        ShopSettingEncoderInterface $shopSettingEncoder,
-        ShopAdapterInterface $shopAdapter,
-        TransactionServiceInterface $transactionService,
-        EventDispatcherInterface $eventDispatcher
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private ShopSettingEncoderInterface $shopSettingEncoder,
+        private ShopAdapterInterface $shopAdapter,
+        private TransactionServiceInterface $transactionService,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->context = $context;
-        $this->shopSettingEncoder = $shopSettingEncoder;
-        $this->shopAdapter = $shopAdapter;
-        $this->transactionService = $transactionService;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -191,7 +145,7 @@ class SettingDao implements SettingDaoInterface
                 'value'     => $this->shopSettingEncoder->encode(
                     $shopModuleSetting->getType(),
                     $shopModuleSetting->getValue()
-                )
+                ),
             ]);
 
         $queryBuilder->execute();
@@ -246,7 +200,7 @@ class SettingDao implements SettingDaoInterface
             ->setParameters([
                 'shopId'    => $shopId,
                 'moduleId'  => $this->getPrefixedModuleId($moduleId),
-                'name'      => $name
+                'name'      => $name,
             ]);
 
         $result = $queryBuilder->execute()->fetch();

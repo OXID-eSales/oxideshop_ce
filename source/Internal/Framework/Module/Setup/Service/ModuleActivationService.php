@@ -19,62 +19,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
 {
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var ModuleConfigurationHandlingServiceInterface
-     */
-    private $moduleConfigurationHandlingService;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $stateService;
-
-    /**
-     * @var ExtensionChainServiceInterface
-     */
-    private $classExtensionChainService;
-
-    /**
-     * @var ModuleServicesActivationServiceInterface
-     */
-    private $moduleServicesActivationService;
-
-    /**
-     * ModuleActivationService constructor.
-     *
-     * @param ModuleConfigurationDaoInterface             $moduleConfigurationDao
-     * @param EventDispatcherInterface                    $eventDispatcher
-     * @param ModuleConfigurationHandlingServiceInterface $moduleSettingsHandlingService
-     * @param ModuleStateServiceInterface                 $stateService
-     * @param ExtensionChainServiceInterface              $classExtensionChainService
-     * @param ModuleServicesActivationServiceInterface    $moduleServicesActivationService
-     */
     public function __construct(
-        ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        EventDispatcherInterface $eventDispatcher,
-        ModuleConfigurationHandlingServiceInterface $moduleSettingsHandlingService,
-        ModuleStateServiceInterface $stateService,
-        ExtensionChainServiceInterface $classExtensionChainService,
-        ModuleServicesActivationServiceInterface $moduleServicesActivationService
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private EventDispatcherInterface $eventDispatcher,
+        private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService,
+        private ModuleStateServiceInterface $stateService,
+        private ExtensionChainServiceInterface $classExtensionChainService,
+        private ModuleServicesActivationServiceInterface $moduleServicesActivationService
     ) {
-        $this->moduleConfigurationDao = $moduleConfigurationDao;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->moduleConfigurationHandlingService = $moduleSettingsHandlingService;
-        $this->stateService = $stateService;
-        $this->classExtensionChainService = $classExtensionChainService;
-        $this->moduleServicesActivationService = $moduleServicesActivationService;
     }
-
 
     /**
      * @param string $moduleId

@@ -53,7 +53,7 @@ class NewsletterRecipient
     private $otpInStateList = [
         0 => self::OPT_IN_STATE_NOT_SUBSCRIBED,
         1 => self::OPT_IN_STATE_SUBSCRIBED,
-        2 => self::OPT_IN_STATE_NOT_CONFIRMED
+        2 => self::OPT_IN_STATE_NOT_CONFIRMED,
     ];
 
     /**

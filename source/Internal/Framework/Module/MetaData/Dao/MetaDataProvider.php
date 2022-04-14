@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataProvider implements MetaDataProviderInterface
 {
@@ -42,41 +41,12 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private $filePath;
 
-    /**
-     * @var MetaDataNormalizerInterface
-     */
-    private $metaDataNormalizer;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-    /**
-     * @var MetaDataValidatorInterface
-     */
-    private $metaDataValidatorService;
-
-    /**
-     * @var MetaDataConverterInterface
-     */
-    private $metaDataConverter;
-
-    /**
-     * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param BasicContextInterface       $context
-     * @param MetaDataValidatorInterface  $metaDataValidator
-     * @param MetaDataConverterInterface  $metaDataConverter
-     */
     public function __construct(
-        MetaDataNormalizerInterface $metaDataNormalizer,
-        BasicContextInterface $context,
-        MetaDataValidatorInterface $metaDataValidator,
-        MetaDataConverterInterface $metaDataConverter
+        private MetaDataNormalizerInterface $metaDataNormalizer,
+        private BasicContextInterface $context,
+        private MetaDataValidatorInterface $metaDataValidatorService,
+        private MetaDataConverterInterface $metaDataConverter
     ) {
-        $this->metaDataNormalizer = $metaDataNormalizer;
-        $this->context = $context;
-        $this->metaDataValidatorService = $metaDataValidator;
-        $this->metaDataConverter = $metaDataConverter;
     }
 
     /**
@@ -92,9 +62,8 @@ class MetaDataProvider implements MetaDataProviderInterface
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
-        $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
 
-        return $normalizedMetaData;
+        return $this->addFilePathToData($normalizedMetaData);
     }
 
     /**
@@ -123,7 +92,7 @@ class MetaDataProvider implements MetaDataProviderInterface
 
         return [
             static::METADATA_METADATA_VERSION => $metadataVersion,
-            static::METADATA_MODULE_DATA      => $normalizedMetaData
+            static::METADATA_MODULE_DATA      => $normalizedMetaData,
         ];
     }
 

@@ -17,27 +17,11 @@ use Webmozart\PathUtil\Path;
 
 class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 {
-    /** @var Filesystem $fileSystemService */
-    private $fileSystemService;
-
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-
-    /**
-     * @var ModuleAssetsPathResolverInterface
-     */
-    private $moduleAssetsPathResolver;
-
     public function __construct(
-        Filesystem $fileSystemService,
-        ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        ModuleAssetsPathResolverInterface $moduleAssetsPathResolver
+        private Filesystem $fileSystemService,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private ModuleAssetsPathResolverInterface $moduleAssetsPathResolver
     ) {
-        $this->fileSystemService = $fileSystemService;
-        $this->moduleConfigurationDao = $moduleConfigurationDao;
-        $this->moduleAssetsPathResolver = $moduleAssetsPathResolver;
     }
 
     /**

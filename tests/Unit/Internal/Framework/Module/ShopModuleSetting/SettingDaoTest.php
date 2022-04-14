@@ -7,17 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setting;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\ShopModuleSetting;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparator;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,11 +23,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-class SettingDaoTest extends TestCase
+final class SettingDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testRollbackTransactionOnSave()
+    public function testRollbackTransactionOnSave(): void
     {
         $this->expectException(\Exception::class);
 
@@ -50,7 +48,6 @@ class SettingDaoTest extends TestCase
 
         $shopModuleSettingDao = new SettingDao(
             $queryBuilderFactory,
-            $this->getMockBuilder(ContextInterface::class)->getMock(),
             $this->getMockBuilder(ShopSettingEncoderInterface::class)->getMock(),
             $this->getMockBuilder(ShopAdapterInterface::class)->getMock(),
             $transactionService,
@@ -60,7 +57,7 @@ class SettingDaoTest extends TestCase
         $shopModuleSettingDao->save(new Setting(), '', 0);
     }
 
-    public function testDispatchEventOnSave()
+    public function testDispatchEventOnSave(): void
     {
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $eventDispatcher
@@ -74,7 +71,6 @@ class SettingDaoTest extends TestCase
 
         $shopModuleSettingDao = new SettingDao(
             $this->get(QueryBuilderFactoryInterface::class),
-            $this->get(ContextInterface::class),
             $this->get(ShopSettingEncoderInterface::class),
             $this->get(ShopAdapterInterface::class),
             $this->getMockBuilder(TransactionServiceInterface::class)->getMock(),

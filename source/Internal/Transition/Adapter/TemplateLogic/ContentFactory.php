@@ -11,7 +11,6 @@ use OxidEsales\EshopCommunity\Application\Model\Content;
 
 class ContentFactory
 {
-
     /**
      * @param string $key
      * @param string $value

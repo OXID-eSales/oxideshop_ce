@@ -21,20 +21,10 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 {
     private const SERVICE_FILE_NAME = 'services.yaml';
 
-    /**
-     * @var ProjectYamlDaoInterface
-     */
-    private $projectYamlDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    public function __construct(ProjectYamlDaoInterface $projectYamlDao, BasicContextInterface $context)
-    {
-        $this->projectYamlDao = $projectYamlDao;
-        $this->context = $context;
+    public function __construct(
+        private ProjectYamlDaoInterface $projectYamlDao,
+        private BasicContextInterface $context
+    ) {
     }
 
     /**

@@ -25,22 +25,12 @@ class ModuleUninstallCommand extends Command
     private const SUCCESS_MESSAGE = 'Module uninstalled successfully';
     private const ERROR_MESSAGE = 'Error uninstalling module: ';
 
-    /** @var ModuleInstallerInterface */
-    private $moduleInstaller;
-    /** @var ModulePathResolverInterface */
-    private $modulePathResolver;
-    /** @var ContextInterface */
-    private $context;
-
     public function __construct(
-        ModuleInstallerInterface $moduleInstaller,
-        ModulePathResolverInterface $modulePathResolver,
-        ContextInterface $context
+        private ModuleInstallerInterface $moduleInstaller,
+        private ModulePathResolverInterface $modulePathResolver,
+        private ContextInterface $context
     ) {
         parent::__construct();
-        $this->moduleInstaller = $moduleInstaller;
-        $this->modulePathResolver = $modulePathResolver;
-        $this->context = $context;
     }
 
     /** @inheritdoc */

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Language;
 
 class IncorrectLanguageException extends \Exception
 {
-
 }

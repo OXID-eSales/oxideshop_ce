@@ -25,12 +25,6 @@ class MonologLoggerFactory implements LoggerFactoryInterface
      */
     private $configuration;
 
-    /**
-     * MonologLoggerFactory constructor.
-     *
-     * @param MonologConfigurationInterface         $configuration
-     * @param LoggerConfigurationValidatorInterface $configurationValidator
-     */
     public function __construct(
         MonologConfigurationInterface $configuration,
         LoggerConfigurationValidatorInterface $configurationValidator

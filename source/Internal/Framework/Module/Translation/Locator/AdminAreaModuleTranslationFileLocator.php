@@ -9,32 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\{
-    Locator\ModuleTranslationFileLocatorAbstract as LocatorAbstract,
-    Locator\AdminAreaModuleTranslationFileLocatorInterface as LocatorInterface};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\ModuleTranslationFileLocatorAbstract as LocatorAbstract;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\AdminAreaModuleTranslationFileLocatorInterface as LocatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 class AdminAreaModuleTranslationFileLocator extends LocatorAbstract implements LocatorInterface
 {
-    /** @var ModulesDataProviderInterface */
-    private $modulesDataProvider;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $adminThemeName;
-
     public function __construct(
-        ModulesDataProviderInterface $modulesDataProvider,
-        Filesystem $filesystem,
-        string $adminThemeName
+        private ModulesDataProviderInterface $modulesDataProvider,
+        private Filesystem $filesystem,
+        private string $adminThemeName
     ) {
-        $this->modulesDataProvider = $modulesDataProvider;
-        $this->filesystem = $filesystem;
-        $this->adminThemeName = $adminThemeName;
     }
 
     /**

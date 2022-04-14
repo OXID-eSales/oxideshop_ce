@@ -21,9 +21,6 @@ class ShopConfiguration
      */
     private $chain;
 
-    /**
-     * ShopConfiguration constructor.
-     */
     public function __construct()
     {
         $classExtensionChain = new ClassExtensionsChain();

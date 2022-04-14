@@ -19,19 +19,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewAndRatingOb
 
 class UserReviewAndRatingBridge implements UserReviewAndRatingBridgeInterface
 {
-    /**
-     * @var UserReviewAndRatingServiceInterface
-     */
-    private $userReviewAndRatingService;
-
-    /**
-     * UserReviewAndRatingBridge constructor.
-     *
-     * @param UserReviewAndRatingServiceInterface $userReviewAndRatingService
-     */
-    public function __construct(UserReviewAndRatingServiceInterface $userReviewAndRatingService)
+    public function __construct(private UserReviewAndRatingServiceInterface $userReviewAndRatingService)
     {
-        $this->userReviewAndRatingService = $userReviewAndRatingService;
     }
 
     /**
@@ -146,7 +135,7 @@ class UserReviewAndRatingBridge implements UserReviewAndRatingBridgeInterface
      * @return Article|RecommendationList
      * @throws ReviewAndRatingObjectTypeException
      */
-    private function getObjectModel($type)
+    private function getObjectModel($type): Article|RecommendationList
     {
         if ($type === 'oxarticle') {
             $model = oxNew(Article::class);

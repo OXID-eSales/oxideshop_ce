@@ -62,11 +62,6 @@ class SettingsMergingService implements SettingsMergingServiceInterface
         return $settingsToMerge;
     }
 
-    /**
-     * @param Setting $existingSetting
-     * @param Setting $settingToMerge
-     * @return bool
-     */
     private function shouldMerge(Setting $existingSetting, Setting $settingToMerge): bool
     {
         $shouldMerge = $existingSetting->getValue() !== null &&

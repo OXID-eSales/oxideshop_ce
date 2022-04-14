@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception
 
 class ModuleIdNotValidException extends \Exception
 {
-
 }

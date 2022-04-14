@@ -18,51 +18,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 
 class ModuleInstaller implements ModuleInstallerInterface
 {
-    /**
-     * @var ModuleInstallerInterface
-     */
-    private $bootstrapModuleInstaller;
-
-    /**
-     * @var ModuleActivationServiceInterface
-     */
-    private $moduleActivationService;
-
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $moduleStateService;
-
-    /**
-     * ModuleInstaller constructor.
-     * @param ModuleInstallerInterface $bootstrapModuleInstaller
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
-     * @param ModuleStateServiceInterface $moduleStateService
-     */
     public function __construct(
-        ModuleInstallerInterface $bootstrapModuleInstaller,
-        ModuleActivationServiceInterface $moduleActivationService,
-        ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ModuleStateServiceInterface $moduleStateService
+        private ModuleInstallerInterface $bootstrapModuleInstaller,
+        private ModuleActivationServiceInterface $moduleActivationService,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ModuleStateServiceInterface $moduleStateService
     ) {
-        $this->bootstrapModuleInstaller = $bootstrapModuleInstaller;
-        $this->moduleActivationService = $moduleActivationService;
-        $this->moduleConfigurationDao = $moduleConfigurationDao;
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->moduleStateService = $moduleStateService;
     }
 
     /**

@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 use function is_array;
 
@@ -19,18 +18,6 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
 {
     /** @var array $validEvents */
     private $validEvents = ['onActivate', 'onDeactivate'];
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * @param ShopAdapterInterface $shopAdapter
-     */
-    public function __construct(ShopAdapterInterface $shopAdapter)
-    {
-        $this->shopAdapter = $shopAdapter;
-    }
 
     /**
      * There is another service for syntax validation and we won't validate syntax in this method.

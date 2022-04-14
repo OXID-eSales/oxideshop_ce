@@ -11,18 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class SmartyPluginDirectory
 {
-    /**
-     * @var array
-     */
-    private $directory;
-
-
-    /**
-     * @param string $directory
-     */
-    public function __construct(string $directory)
+    public function __construct(private string $directory)
     {
-        $this->directory = $directory;
     }
 
     /**

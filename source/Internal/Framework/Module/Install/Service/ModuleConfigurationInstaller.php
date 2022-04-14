@@ -22,42 +22,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
-    /**
-     * @var ProjectConfigurationDaoInterface
-     */
-    private $projectConfigurationDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ModuleConfigurationMergingServiceInterface
-     */
-    private $moduleConfigurationMergingService;
-
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $metadataModuleConfigurationDao;
-
-    /**
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface $context
-     * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
-     * @param ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
-     */
     public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
-        BasicContextInterface $context,
-        ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
-        ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
+        private ProjectConfigurationDaoInterface $projectConfigurationDao,
+        private BasicContextInterface $context,
+        private ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
+        private ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
     ) {
-        $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->context = $context;
-        $this->moduleConfigurationMergingService = $moduleConfigurationMergingService;
-        $this->metadataModuleConfigurationDao = $metadataModuleConfigurationDao;
     }
 
     /**
@@ -141,7 +111,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         ModuleConfiguration $moduleConfiguration,
         ProjectConfiguration $projectConfiguration
     ): ProjectConfiguration {
-
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->moduleConfigurationMergingService->merge($shopConfiguration, $moduleConfiguration);
         }

@@ -15,32 +15,11 @@ use Symfony\Component\Lock\LockFactory;
 
 class YamlFileStorageFactory implements FileStorageFactoryInterface
 {
-    /**
-     * @var FileLocatorInterface
-     */
-    private $fileLocator;
-
-    /**
-     * @var LockFactory
-     */
-    private $lockFactory;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystemService;
-
-    /**
-     * YamlFileStorageFactory constructor.
-     * @param FileLocatorInterface $fileLocator
-     * @param LockFactory $lockFactory
-     * @param Filesystem $filesystemService
-     */
-    public function __construct(FileLocatorInterface $fileLocator, LockFactory $lockFactory, Filesystem $filesystemService)
-    {
-        $this->fileLocator = $fileLocator;
-        $this->lockFactory = $lockFactory;
-        $this->filesystemService = $filesystemService;
+    public function __construct(
+        private FileLocatorInterface $fileLocator,
+        private LockFactory $lockFactory,
+        private Filesystem $filesystemService
+    ) {
     }
 
 

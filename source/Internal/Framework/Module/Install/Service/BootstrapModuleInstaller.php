@@ -13,28 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 
 class BootstrapModuleInstaller implements ModuleInstallerInterface
 {
-    /**
-     * @var ModuleFilesInstallerInterface
-     */
-    private $moduleFilesInstaller;
-
-    /**
-     * @var ModuleConfigurationInstallerInterface
-     */
-    private $moduleConfigurationInstaller;
-
-    /**
-     * ModuleInstaller constructor.
-     *
-     * @param ModuleFilesInstallerInterface         $moduleFilesInstaller
-     * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
-     */
     public function __construct(
-        ModuleFilesInstallerInterface $moduleFilesInstaller,
-        ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
+        private ModuleFilesInstallerInterface $moduleFilesInstaller,
+        private ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
     ) {
-        $this->moduleFilesInstaller = $moduleFilesInstaller;
-        $this->moduleConfigurationInstaller = $moduleConfigurationInstaller;
     }
 
     /**

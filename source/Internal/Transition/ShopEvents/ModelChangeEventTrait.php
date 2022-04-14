@@ -16,11 +16,6 @@ trait ModelChangeEventTrait
 {
     private $model;
 
-    /**
-     * Constructor
-     *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $model Model class object
-     */
     public function __construct(\OxidEsales\Eshop\Core\Model\BaseModel $model)
     {
         $this->model = $model;

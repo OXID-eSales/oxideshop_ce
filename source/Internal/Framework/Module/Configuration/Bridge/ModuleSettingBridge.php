@@ -10,36 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleSettingBridge implements ModuleSettingBridgeInterface
 {
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * @var SettingDaoInterface
-     */
-    private $settingDao;
-
     public function __construct(
-        ContextInterface $context,
-        ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        SettingDaoInterface $settingDao
+        private ContextInterface $context,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private SettingDaoInterface $settingDao
     ) {
-        $this->context = $context;
-        $this->moduleConfigurationDao = $moduleConfigurationDao;
-        $this->settingDao = $settingDao;
     }
 
     /**

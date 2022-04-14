@@ -16,13 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var TemplateBlockExtensionDaoInterface */
-    private $templateBlockExtensionDao;
-
-    /** @param TemplateBlockExtensionDaoInterface $templateBlockExtensionDao */
-    public function __construct(TemplateBlockExtensionDaoInterface $templateBlockExtensionDao)
+    public function __construct(private TemplateBlockExtensionDaoInterface $templateBlockExtensionDao)
     {
-        $this->templateBlockExtensionDao = $templateBlockExtensionDao;
     }
 
     /**

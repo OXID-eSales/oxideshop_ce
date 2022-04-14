@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
@@ -17,25 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ModuleConfigurationDaoInterface
-     */
-    private $moduleConfigurationDao;
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
-     * @param ShopAdapterInterface            $shopAdapter
-     */
-    public function __construct(
-        ModuleConfigurationDaoInterface $ModuleConfigurationDao,
-        ShopAdapterInterface $shopAdapter
-    ) {
-        $this->moduleConfigurationDao = $ModuleConfigurationDao;
-        $this->shopAdapter = $shopAdapter;
+    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao)
+    {
     }
 
     /**

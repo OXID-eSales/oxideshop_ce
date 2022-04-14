@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Template;
 
 class ModuleTemplateNotFoundException extends \Exception
 {
-
 }

@@ -17,43 +17,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFileStorage implements ArrayStorageInterface
 {
-    /**
-     * @var FileLocatorInterface
-     */
-    private $fileLocator;
-
-    /**
-     * @var string
-     */
-    private $filePath;
-
-    /**
-     * @var LockFactory
-     */
-    private $lockFactory;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystemService;
-
-    /**
-     * YamlFileStorage constructor.
-     * @param FileLocatorInterface $fileLocator
-     * @param string               $filePath
-     * @param LockFactory          $lockFactory
-     * @param Filesystem           $filesystemService
-     */
     public function __construct(
-        FileLocatorInterface $fileLocator,
-        string $filePath,
-        LockFactory $lockFactory,
-        Filesystem $filesystemService
+        private FileLocatorInterface $fileLocator,
+        private string $filePath,
+        private LockFactory $lockFactory,
+        private Filesystem $filesystemService
     ) {
-        $this->fileLocator = $fileLocator;
-        $this->filePath = $filePath;
-        $this->lockFactory = $lockFactory;
-        $this->filesystemService = $filesystemService;
     }
 
     /**
@@ -96,7 +65,7 @@ class YamlFileStorage implements ArrayStorageInterface
     {
         try {
             $filePath = $this->fileLocator->locate($this->filePath);
-        } catch (FileLocatorFileNotFoundException $exception) {
+        } catch (FileLocatorFileNotFoundException) {
             $this->createFileDirectory();
             $this->createFile();
             $filePath = $this->fileLocator->locate($this->filePath);

@@ -15,18 +15,8 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Email;
  */
 class EmailValidatorServiceBridge implements EmailValidatorServiceBridgeInterface
 {
-    /**
-     * @var EmailValidatorServiceInterface
-     */
-    private $emailValidatorService;
-
-    /**
-     * EmailValidatorServiceBridge constructor.
-     * @param EmailValidatorServiceInterface $emailValidatorService
-     */
-    public function __construct(EmailValidatorServiceInterface $emailValidatorService)
+    public function __construct(private EmailValidatorServiceInterface $emailValidatorService)
     {
-        $this->emailValidatorService = $emailValidatorService;
     }
 
     /**

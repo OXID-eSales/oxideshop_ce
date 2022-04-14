@@ -14,13 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\{
 
 class AdminAreaModuleTranslationFileLocatorBridge implements AdminAreaModuleTranslationFileLocatorBridgeInterface
 {
-
-    /** @var AdminAreaModuleTranslationFileLocatorInterface */
-    private $moduleTranslationFileLocator;
-
-    public function __construct(AdminAreaModuleTranslationFileLocatorInterface $moduleTranslationFileLocator)
+    public function __construct(private AdminAreaModuleTranslationFileLocatorInterface $moduleTranslationFileLocator)
     {
-        $this->moduleTranslationFileLocator = $moduleTranslationFileLocator;
     }
 
     /**

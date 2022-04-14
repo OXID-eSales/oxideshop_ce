@@ -14,18 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 
 class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
 {
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * ContactFormMessageBuilder constructor.
-     * @param ShopAdapterInterface $shopAdapter
-     */
-    public function __construct(ShopAdapterInterface $shopAdapter)
+    public function __construct(private ShopAdapterInterface $shopAdapter)
     {
-        $this->shopAdapter = $shopAdapter;
     }
 
     /**

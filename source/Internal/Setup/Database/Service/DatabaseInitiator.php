@@ -21,28 +21,13 @@ use PDO;
  */
 class DatabaseInitiator implements DatabaseInitiatorInterface
 {
-
-    /** @var BasicContextInterface */
-    private $context;
-
-    /** @var MigrationExecutorInterface */
-    private $migrationExecutor;
-
     /** @var PDO */
     private $dbConnection;
 
-    /**
-     * DatabaseInitiator constructor.
-     *
-     * @param BasicContextInterface       $context
-     * @param MigrationExecutorInterface  $migrationExecutor
-     */
     public function __construct(
-        BasicContextInterface $context,
-        MigrationExecutorInterface $migrationExecutor
+        private BasicContextInterface $context,
+        private MigrationExecutorInterface $migrationExecutor
     ) {
-        $this->context = $context;
-        $this->migrationExecutor = $migrationExecutor;
     }
 
     /**

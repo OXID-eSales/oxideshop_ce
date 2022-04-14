@@ -11,6 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
 interface MigrationExecutorInterface
 {
-
     public function execute(): void;
 }

@@ -14,13 +14,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ShopEnvironmentMisconfigurationEventSubscriber implements EventSubscriberInterface
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        LoggerInterface $logger
-    ) {
-        $this->logger = $logger;
+    public function __construct(private LoggerInterface $logger)
+    {
     }
 
     /** @param ShopEnvironmentWithOrphanSettingEvent $event */
@@ -31,7 +26,7 @@ class ShopEnvironmentMisconfigurationEventSubscriber implements EventSubscriberI
             [
                 'shopId' => $event->getShopId(),
                 'moduleId' => $event->getModuleId(),
-                'settingId' => $event->getSettingId()
+                'settingId' => $event->getSettingId(),
             ]
         );
     }

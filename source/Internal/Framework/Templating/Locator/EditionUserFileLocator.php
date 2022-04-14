@@ -21,11 +21,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class EditionUserFileLocator implements NavigationFileLocatorInterface
 {
     /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
      * @var string
      */
     private $themeName;
@@ -35,26 +30,12 @@ class EditionUserFileLocator implements NavigationFileLocatorInterface
      */
     private $fileName = 'user.xml';
 
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * EditionUserFileLocator constructor.
-     *
-     * @param AdminThemeBridgeInterface $adminThemeBridge
-     * @param BasicContextInterface     $context
-     * @param Filesystem                $fileSystem
-     */
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
-        BasicContextInterface $context,
-        Filesystem $fileSystem
+        private BasicContextInterface $context,
+        private Filesystem $fileSystem
     ) {
         $this->themeName = $adminThemeBridge->getActiveTheme();
-        $this->context = $context;
-        $this->fileSystem = $fileSystem;
     }
 
     /**

@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidato
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,66 +38,16 @@ class ShopSetupCommand extends Command
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
-    /**
-     * @var DatabaseCheckerInterface
-     */
-    private $databaseChecker;
-
-    /**
-     * @var DatabaseInstallerInterface
-     */
-    private $databaseInstaller;
-
-    /**
-     * @var ConfigFileDaoInterface
-     */
-    private $configFileDao;
-
-    /**
-     * @var DirectoryValidatorInterface
-     */
-    private $directoriesValidator;
-
-    /**
-     * @var LanguageInstallerInterface
-     */
-    private $languageInstaller;
-
-    /**
-     * @var HtaccessUpdaterInterface
-     */
-    private $htaccessUpdateService;
-
-    /**
-     * @var ShopStateServiceInterface
-     */
-    private $shopStateService;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
     public function __construct(
-        DatabaseCheckerInterface $databaseChecker,
-        DatabaseInstallerInterface $databaseInstaller,
-        ConfigFileDaoInterface $configFileDao,
-        DirectoryValidatorInterface $directoriesValidator,
-        LanguageInstallerInterface $languageInstaller,
-        HtaccessUpdaterInterface $htaccessUpdateService,
-        ShopStateServiceInterface $shopStateService,
-        BasicContextInterface $basicContext
+        private DatabaseCheckerInterface $databaseChecker,
+        private DatabaseInstallerInterface $databaseInstaller,
+        private ConfigFileDaoInterface $configFileDao,
+        private DirectoryValidatorInterface $directoriesValidator,
+        private LanguageInstallerInterface $languageInstaller,
+        private HtaccessUpdaterInterface $htaccessUpdateService,
+        private ShopStateServiceInterface $shopStateService
     ) {
         parent::__construct();
-
-        $this->databaseChecker = $databaseChecker;
-        $this->databaseInstaller = $databaseInstaller;
-        $this->configFileDao = $configFileDao;
-        $this->directoriesValidator = $directoriesValidator;
-        $this->languageInstaller = $languageInstaller;
-        $this->htaccessUpdateService = $htaccessUpdateService;
-        $this->shopStateService = $shopStateService;
-        $this->basicContext = $basicContext;
     }
 
     protected function configure()

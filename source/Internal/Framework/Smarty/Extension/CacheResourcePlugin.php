@@ -11,9 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-/**
- * Cache resource
- */
 class CacheResourcePlugin
 {
     /**
@@ -21,9 +18,6 @@ class CacheResourcePlugin
      */
     private static $context;
 
-    /**
-     * @param SmartyContextInterface $context
-     */
     public function __construct(SmartyContextInterface $context)
     {
         self::$context = $context;
@@ -66,7 +60,7 @@ class CacheResourcePlugin
      */
     public static function getTimestamp($templateName, &$templateTimestamp, $smarty)
     {
-        $templateTimestamp = isset($smarty->oxidtimecache->value) ? $smarty->oxidtimecache->value : time();
+        $templateTimestamp = $smarty->oxidtimecache->value ?? time();
 
         return true;
     }

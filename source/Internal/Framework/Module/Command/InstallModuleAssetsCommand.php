@@ -22,31 +22,12 @@ use Webmozart\PathUtil\Path;
 
 class InstallModuleAssetsCommand extends Command
 {
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * @var ModuleFilesInstallerInterface
-     */
-    private $moduleFilesInstaller;
-
     public function __construct(
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        BasicContextInterface $context,
-        ModuleFilesInstallerInterface $moduleFilesInstaller
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private BasicContextInterface $context,
+        private ModuleFilesInstallerInterface $moduleFilesInstaller
     ) {
         parent::__construct();
-
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->context = $context;
-        $this->moduleFilesInstaller = $moduleFilesInstaller;
     }
 
 

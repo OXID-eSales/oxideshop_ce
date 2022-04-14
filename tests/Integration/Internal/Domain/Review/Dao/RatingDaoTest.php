@@ -9,43 +9,44 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
 use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 
-class RatingDaoTest extends \PHPUnit\Framework\TestCase
+final class RatingDaoTest extends TestCase
 {
-    public function testGetRatingsByUserId()
+    use ContainerTrait;
+
+    public function testGetRatingsByUserId(): void
     {
         $this->createTestRatingsForGetRatingsByUserIdTest();
 
-        $ratingDao = $this->getRatingDao();
-        $ratings = $ratingDao->getRatingsByUserId('user1');
+        $ratings = $this->get(RatingDaoInterface::class)
+            ->getRatingsByUserId('user1');
 
         $this->assertCount(2, $ratings->toArray());
         $this->assertInstanceOf(Rating::class, $ratings->first());
     }
 
-    public function testGetRatingsByProductId()
+    public function testGetRatingsByProductId(): void
     {
         $this->createTestRatingsForGetRatingsByProductIdTest();
 
-        $ratingDao = $this->getRatingDao();
-        $ratings = $ratingDao->getRatingsByProductId('product1');
+        $ratings = $this->get(RatingDaoInterface::class)
+            ->getRatingsByProductId('product1');
 
         $this->assertCount(2, $ratings->toArray());
         $this->assertInstanceOf(Rating::class, $ratings->first());
     }
 
-    public function testDeleteRating()
+    public function testDeleteRating(): void
     {
         $this->createTestRatingsForDeleteRatingTest();
 
-        $ratingDao = $this->getRatingDao();
+        $ratingDao = $this->get(RatingDaoInterface::class);
 
         $ratingsBeforeDeletion = $ratingDao->getRatingsByUserId('user1');
         $ratingToDelete = $ratingsBeforeDeletion->first();
@@ -60,7 +61,7 @@ class RatingDaoTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function createTestRatingsForDeleteRatingTest()
+    private function createTestRatingsForDeleteRatingTest(): void
     {
         $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
@@ -73,7 +74,7 @@ class RatingDaoTest extends \PHPUnit\Framework\TestCase
         $rating->save();
     }
 
-    private function createTestRatingsForGetRatingsByUserIdTest()
+    private function createTestRatingsForGetRatingsByUserIdTest(): void
     {
         $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
@@ -91,7 +92,7 @@ class RatingDaoTest extends \PHPUnit\Framework\TestCase
         $rating->save();
     }
 
-    private function createTestRatingsForGetRatingsByProductIdTest()
+    private function createTestRatingsForGetRatingsByProductIdTest(): void
     {
         $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
@@ -116,17 +117,5 @@ class RatingDaoTest extends \PHPUnit\Framework\TestCase
         $rating->oxratings__oxobjectid = new Field('product1');
         $rating->oxratings__oxtype = new Field('oxrecommlist');
         $rating->save();
-    }
-
-    private function getRatingDao()
-    {
-        $bridge = ContainerFactory::getInstance()->getContainer()->get(UserRatingBridgeInterface::class);
-        $serviceProperty = new \ReflectionProperty(UserRatingBridge::class, 'userRatingService');
-        $serviceProperty->setAccessible(true);
-        $service = $serviceProperty->getValue($bridge);
-        $daoProperty = new \ReflectionProperty(UserRatingService::class, 'ratingDao');
-        $daoProperty->setAccessible(true);
-
-        return $daoProperty->getValue($service);
     }
 }

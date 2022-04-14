@@ -16,26 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\
 
 class ModuleConfigurationMergingService implements ModuleConfigurationMergingServiceInterface
 {
-    /**
-     * @var SettingsMergingService
-     */
-    private $settingsMergingService;
-
-    /**
-     * @var ModuleClassExtensionsMergingService
-     */
-    private $classExtensionsMergingService;
-
-    /**
-     * @param SettingsMergingServiceInterface $moduleSettingsMergingService
-     * @param ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
-     */
     public function __construct(
-        SettingsMergingServiceInterface $moduleSettingsMergingService,
-        ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
+        private SettingsMergingServiceInterface $settingsMergingService,
+        private ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
     ) {
-        $this->settingsMergingService = $moduleSettingsMergingService;
-        $this->classExtensionsMergingService = $classExtensionsMergingService;
     }
 
     /**

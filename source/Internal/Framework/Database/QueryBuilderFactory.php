@@ -14,17 +14,8 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 class QueryBuilderFactory implements QueryBuilderFactoryInterface
 {
-    /**
-     * @var ConnectionProviderInterface
-     */
-    private $connectionProvider;
-
-    /**
-     * @param ConnectionProviderInterface $connectionProvider
-     */
-    public function __construct(ConnectionProviderInterface $connectionProvider)
+    public function __construct(private ConnectionProviderInterface $connectionProvider)
     {
-        $this->connectionProvider = $connectionProvider;
     }
 
     /**

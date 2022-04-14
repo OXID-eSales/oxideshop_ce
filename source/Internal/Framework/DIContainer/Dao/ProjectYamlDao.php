@@ -17,25 +17,10 @@ use Webmozart\PathUtil\Path;
 
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
-    /**
-     * @var BasicContextInterface $context
-     */
-    private $context;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * ProjectYamlDao constructor.
-     * @param BasicContextInterface $context
-     * @param Filesystem            $filesystem
-     */
-    public function __construct(BasicContextInterface $context, Filesystem $filesystem)
-    {
-        $this->context = $context;
-        $this->filesystem = $filesystem;
+    public function __construct(
+        private BasicContextInterface $context,
+        private Filesystem $filesystem
+    ) {
     }
 
     /**

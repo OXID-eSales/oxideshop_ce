@@ -15,34 +15,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
 class SmartyEngine implements TemplateEngineInterface
 {
     /**
-     * The template engine.
-     *
-     * @var \Smarty
-     */
-    private $engine;
-
-    /**
-     * @var SmartyEngineBridgeInterface
-     */
-    private $bridge;
-
-    /**
      * Array of global parameters
      *
      * @var array
      */
     private $globals = [];
 
-    /**
-     * Constructor.
-     *
-     * @param \Smarty                     $engine
-     * @param SmartyEngineBridgeInterface $bridge
-     */
-    public function __construct(\Smarty $engine, SmartyEngineBridgeInterface $bridge)
-    {
-        $this->engine = $engine;
-        $this->bridge = $bridge;
+    public function __construct(
+        private \Smarty $engine,
+        private SmartyEngineBridgeInterface $bridge
+    ) {
     }
 
     /**

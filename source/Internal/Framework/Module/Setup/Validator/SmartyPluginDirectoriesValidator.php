@@ -20,17 +20,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSe
 
 class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorInterface
 {
-    /**
-     * @var ModulePathResolverInterface
-     */
-    private $modulePathResolver;
-
-    /**
-     * @param ModulePathResolverInterface $modulePathResolver
-     */
-    public function __construct(ModulePathResolverInterface $modulePathResolver)
+    public function __construct(private ModulePathResolverInterface $modulePathResolver)
     {
-        $this->modulePathResolver = $modulePathResolver;
     }
 
     /**

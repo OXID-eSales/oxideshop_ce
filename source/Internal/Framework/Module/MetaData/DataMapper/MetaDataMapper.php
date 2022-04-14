@@ -19,25 +19,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
 class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 {
-    /**
-     * @var MetaDataSchemaValidator
-     */
-    private $validator;
-
-    /**
-     * MetaDataMapper constructor.
-     *
-     * @param MetaDataSchemaValidatorInterface $validator
-     */
-    public function __construct(MetaDataSchemaValidatorInterface $validator)
+    public function __construct(private MetaDataSchemaValidatorInterface $validator)
     {
-        $this->validator = $validator;
     }
 
     /**
@@ -110,7 +98,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                         new Template($key, $value)
                     );
                 }
-
             }
         }
 
@@ -155,9 +142,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
-        $moduleConfiguration = $this->mapSettings($moduleConfiguration, $moduleData);
-
-        return $moduleConfiguration;
+        return $this->mapSettings($moduleConfiguration, $moduleData);
     }
 
     /**

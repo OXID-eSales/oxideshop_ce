@@ -19,12 +19,12 @@ class ContainerFactory
     /**
      * @var self
      */
-    private static $instance = null;
+    private static $instance;
 
     /**
      * @var ContainerInterface
      */
-    private $symfonyContainer = null;
+    private $symfonyContainer;
 
     /**
      * @var ContainerCacheInterface
@@ -32,9 +32,7 @@ class ContainerFactory
     private $cache;
 
     /**
-     * ContainerFactory constructor.
-     *
-     * Make the constructor private
+     * The constructor's private to make clas a singleton
      */
     private function __construct()
     {

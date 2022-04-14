@@ -20,7 +20,6 @@ use PDO;
  */
 class DatabaseCreator implements DatabaseCreatorInterface
 {
-
     /** @var PDO */
     private $dbConnection;
 
@@ -81,7 +80,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
     {
         try {
             $this->dbConnection->exec('USE ' . $name);
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return false;
         }
 

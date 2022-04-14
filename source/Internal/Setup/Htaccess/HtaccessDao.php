@@ -13,14 +13,10 @@ class HtaccessDao implements HtaccessDaoInterface
 {
     private const DIRECTIVE_REWRITE_BASE = 'RewriteBase';
     /** @var string */
-    private $filePath;
-    /** @var string */
     private $contents;
 
-    /** @param string $path */
-    public function __construct(string $path)
+    public function __construct(private string $filePath)
     {
-        $this->filePath = $path;
     }
 
     /** @param string $rewriteBase */

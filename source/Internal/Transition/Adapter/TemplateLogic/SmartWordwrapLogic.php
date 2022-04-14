@@ -21,7 +21,6 @@ class SmartWordwrapLogic
      */
     public function wrapWords($string, $length, $break, $cutRows, $tolerance, $etc)
     {
-
         $wrapTag = "<wrap>";
         $wrapChars = ["-"];
         $afterWrapChars = ["-" . $wrapTag];
@@ -33,7 +32,7 @@ class SmartWordwrapLogic
             return $string;
         }
 
-        //trying to wrap without cut
+        // trying to wrap without cut
         $str = wordwrap($string, $length, $wrapTag, false);
         $arr = explode($wrapTag, $str);
 
@@ -60,7 +59,7 @@ class SmartWordwrapLogic
         $arr = $alt;
 
         if (!$ok) {
-            //trying to wrap with cut
+            // trying to wrap with cut
             $str = wordwrap($string, $length, $wrapTag, true);
             $arr = explode($wrapTag, $str);
         }

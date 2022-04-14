@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Console;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\ServicesCommandsProvider;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,26 +21,10 @@ class Executor implements ExecutorInterface
 {
     public const SHOP_ID_PARAMETER_OPTION_NAME = 'shop-id';
 
-    /**
-     * @var Application
-     */
-    private $application;
-
-    /**
-     * @var ServicesCommandsProvider
-     */
-    private $servicesCommandsProvider;
-
-    /**
-     * @param Application               $application
-     * @param CommandsProviderInterface $commandsProvider
-     */
     public function __construct(
-        Application $application,
-        CommandsProviderInterface $commandsProvider
+        private Application $application,
+        private CommandsProviderInterface $servicesCommandsProvider
     ) {
-        $this->application = $application;
-        $this->servicesCommandsProvider = $commandsProvider;
     }
 
     /**

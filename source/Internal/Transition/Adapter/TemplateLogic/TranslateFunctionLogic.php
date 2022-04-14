@@ -23,9 +23,9 @@ class TranslateFunctionLogic
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeShop = $config->getActiveShop();
         $isAdmin = $language->isAdmin();
-        $ident = isset($params['ident']) ? $params['ident'] : 'IDENT MISSING';
-        $args = isset($params['args']) ? $params['args'] : false;
-        $suffix = isset($params['suffix']) ? $params['suffix'] : 'NO_SUFFIX';
+        $ident = $params['ident'] ?? 'IDENT MISSING';
+        $args = $params['args'] ?? false;
+        $suffix = $params['suffix'] ?? 'NO_SUFFIX';
         $showError = isset($params['noerror']) ? !$params['noerror'] : true;
         $tplLang = $language->getTplLanguage();
         if (!$isAdmin && $activeShop->isProductiveMode()) {
@@ -37,7 +37,7 @@ class TranslateFunctionLogic
             if ('NO_SUFFIX' != $suffix) {
                 $suffixTranslation = $language->translateString($suffix, $tplLang, $isAdmin);
             }
-        } catch (StandardException $oEx) {
+        } catch (StandardException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
         if ($translationNotFound && isset($params['alternative'])) {

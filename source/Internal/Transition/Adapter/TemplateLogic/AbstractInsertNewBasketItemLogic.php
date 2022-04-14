@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 abstract class AbstractInsertNewBasketItemLogic
 {
-
     /**
      * @param array  $params
      * @param object $templateEngine
@@ -34,13 +33,13 @@ abstract class AbstractInsertNewBasketItemLogic
             $correctMessageType = true;
         }
 
-        //name of template file where is stored message text
+        // name of template file where is stored message text
         $templateName = $params['tpl'] ? $params['tpl'] : 'inc_newbasketitem.snippet.html.twig';
 
-        //always render for ajaxstyle popup
+        // always render for ajaxstyle popup
         $render = $params['ajax'] && ($newBasketItemMessage == 2);
 
-        //fetching article data
+        // fetching article data
         $newItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem');
 
         if ($newItem && $correctMessageType) {

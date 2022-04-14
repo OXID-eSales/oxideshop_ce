@@ -16,27 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInterface
 {
-    /**
-     * @var ProjectConfigurationDaoInterface
-     */
-    private $projectConfigurationDao;
-
-    /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
-     * DefaultProjectConfigurationGenerator constructor.
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface            $context
-     */
     public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
-        BasicContextInterface $context
+        private ProjectConfigurationDaoInterface $projectConfigurationDao,
+        private BasicContextInterface $context
     ) {
-        $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->context = $context;
     }
 
     /**

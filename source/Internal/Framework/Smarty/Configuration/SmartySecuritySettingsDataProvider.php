@@ -13,19 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataProviderInterface
 {
-    /**
-     * @var SmartyContextInterface
-     */
-    private $context;
-
-    /**
-     * SmartySecuritySettingsDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
-     */
-    public function __construct(SmartyContextInterface $context)
+    public function __construct(private SmartyContextInterface $context)
     {
-        $this->context = $context;
     }
 
     /**
@@ -43,7 +32,7 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
                 'IF_FUNCS' => ['XML_ELEMENT_NODE', 'is_int'],
                 'MODIFIER_FUNCS' => ['round', 'floor', 'trim', 'implode', 'is_array', 'getimagesize'],
                 'ALLOW_CONSTANTS' => true,
-            ]
+            ],
         ];
     }
 }

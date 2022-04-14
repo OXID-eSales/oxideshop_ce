@@ -22,9 +22,7 @@ class IncludeDynamicLogic
             $content .= " $key='" . base64_encode($value) . "'";
         }
 
-        $content .= "</oxid_dynamic>";
-
-        return $content;
+        return $content . "</oxid_dynamic>";
     }
 
     /**

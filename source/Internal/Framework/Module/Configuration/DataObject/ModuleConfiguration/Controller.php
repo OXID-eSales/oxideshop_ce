@@ -11,26 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 class Controller
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $controllerClassNameSpace;
-
-    /**
-     * ClassExtension constructor.
-     *
-     * @param string $id
-     * @param string $controllerClassNameSpace
-     */
-    public function __construct(string $id, string $controllerClassNameSpace)
-    {
-        $this->id = $id;
-        $this->controllerClassNameSpace = $controllerClassNameSpace;
+    public function __construct(
+        private string $id,
+        private string $controllerClassNameSpace
+    ) {
     }
 
     /**

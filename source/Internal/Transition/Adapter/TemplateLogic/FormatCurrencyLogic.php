@@ -11,9 +11,8 @@ use stdClass;
 
 class FormatCurrencyLogic
 {
-
     /**
-     * @param string     $sFormat
+     * @param string $sFormat
      * @param string|int $sValue
      *
      * @return string

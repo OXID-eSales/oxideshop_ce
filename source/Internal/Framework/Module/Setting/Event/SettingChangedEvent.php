@@ -19,26 +19,11 @@ class SettingChangedEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * @var string
-     */
-    private $settingName;
-
-    /**
-     * @var int
-     */
-    private $shopId;
-
-    /**
-     * @var string
-     */
-    private $moduleId;
-
-    public function __construct(string $settingName, int $shopId, string $moduleId)
-    {
-        $this->settingName = $settingName;
-        $this->shopId = $shopId;
-        $this->moduleId = $moduleId;
+    public function __construct(
+        private string $settingName,
+        private int $shopId,
+        private string $moduleId
+    ) {
     }
 
     public function getSettingName(): string

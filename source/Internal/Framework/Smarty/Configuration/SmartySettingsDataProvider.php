@@ -14,19 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
 {
-    /**
-     * @var SmartyContextInterface
-     */
-    private $context;
-
-    /**
-     * SmartySettingsDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
-     */
-    public function __construct(SmartyContextInterface $context)
+    public function __construct(private SmartyContextInterface $context)
     {
-        $this->context = $context;
     }
 
     /**
@@ -48,8 +37,8 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'default_template_handler_func' => [Registry::getUtilsView(), '_smartyDefaultTemplateHandler'],
             'debugging' => $this->context->getTemplateEngineDebugMode(),
             'compile_check' => $this->context->getTemplateCompileCheckMode(),
-            'php_handling' => (int) $this->context->getTemplatePhpHandlingMode(),
-            'security' => false
+            'php_handling' => $this->context->getTemplatePhpHandlingMode(),
+            'security' => false,
         ];
     }
 

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 
 class FileNotEditableException extends \Exception
 {
-
 }

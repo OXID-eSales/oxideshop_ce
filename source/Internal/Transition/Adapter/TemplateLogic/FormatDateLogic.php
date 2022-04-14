@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 class FormatDateLogic
 {
-
     /**
      * @param object|string $oConvObject
      * @param string        $sFieldType

@@ -30,7 +30,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfiguration
     ): ClassExtensionsChain {
-
         $chain = $shopConfiguration->getClassExtensionsChain();
 
         if (!$shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {

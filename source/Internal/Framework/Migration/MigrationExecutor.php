@@ -13,23 +13,10 @@ use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * Class MigrationExecutor
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Migration
- */
 class MigrationExecutor implements MigrationExecutorInterface
 {
-
-    /** @var ContextInterface */
-    protected $context;
-
-    /**
-     * @param ContextInterface $context
-     */
-    public function __construct(ContextInterface $context)
+    public function __construct(protected ContextInterface $context)
     {
-        $this->context = $context;
     }
 
     public function execute(): void

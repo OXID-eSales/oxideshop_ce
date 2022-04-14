@@ -15,18 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidC
 
 class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
 {
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
-     * ClassExtensionsModuleSettingValidator constructor.
-     * @param ShopAdapterInterface $shopAdapter
-     */
-    public function __construct(ShopAdapterInterface $shopAdapter)
+    public function __construct(private ShopAdapterInterface $shopAdapter)
     {
-        $this->shopAdapter = $shopAdapter;
     }
 
     /**

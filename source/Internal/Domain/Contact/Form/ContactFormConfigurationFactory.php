@@ -19,29 +19,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContactFormConfigurationFactory implements FormConfigurationFactoryInterface
 {
-    /**
-     * @var FormFieldsConfigurationDataProviderInterface
-     */
-    private $contactFormConfigurationDataProvider;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * ContactFormConfigurationFactory constructor.
-     * @param FormFieldsConfigurationDataProviderInterface $contactFormConfigurationDataProvider
-     * @param ContextInterface                             $context
-     */
     public function __construct(
-        FormFieldsConfigurationDataProviderInterface $contactFormConfigurationDataProvider,
-        ContextInterface $context
+        private FormFieldsConfigurationDataProviderInterface $contactFormConfigurationDataProvider,
+        private ContextInterface $context
     ) {
-        $this->contactFormConfigurationDataProvider = $contactFormConfigurationDataProvider;
-        $this->context = $context;
     }
-
 
     /**
      * @return FormConfigurationInterface

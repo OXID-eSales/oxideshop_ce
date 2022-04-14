@@ -48,8 +48,7 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
     protected function renderTemplate(string $templateName, $templateEngine): string
     {
         $template = $templateEngine->load($templateName);
-        $renderedTemplate = $template->render();
 
-        return $renderedTemplate;
+        return $template->render();
     }
 }

@@ -22,31 +22,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ApplyModulesConfigurationCommand extends Command
 {
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
-    private $shopConfigurationDao;
-
-    /**
-     * @var ModuleActivationServiceInterface
-     */
-    private $moduleActivationService;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $moduleStateService;
-
     public function __construct(
-        ShopConfigurationDaoInterface $shopConfigurationDao,
-        ModuleActivationServiceInterface $moduleActivationService,
-        ModuleStateServiceInterface $moduleStateService
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ModuleActivationServiceInterface $moduleActivationService,
+        private ModuleStateServiceInterface $moduleStateService
     ) {
         parent::__construct();
-
-        $this->shopConfigurationDao = $shopConfigurationDao;
-        $this->moduleActivationService = $moduleActivationService;
-        $this->moduleStateService = $moduleStateService;
     }
 
     protected function configure()
@@ -146,7 +127,7 @@ class ApplyModulesConfigurationCommand extends Command
         $output->writeln(
             '<error>'
             . 'Module configuration wasn\'t applied. An exception occurred: '
-            . \get_class($exception) . ' '
+            . $exception::class . ' '
             . $exception->getMessage()
             . '</error>'
         );

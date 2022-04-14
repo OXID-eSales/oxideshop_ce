@@ -16,21 +16,8 @@ class BasketChangedEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * Url the shop wants to redirect to after product is put to basket.
-     *
-     * @var BasketComponent
-     */
-    private $basketComponent;
-
-    /**
-     * BasketChangedEvent constructor.
-     *
-     * @param BasketComponent $basketComponent Basket component
-     */
-    public function __construct(BasketComponent $basketComponent)
+    public function __construct(private BasketComponent $basketComponent)
     {
-        $this->basketComponent = $basketComponent;
     }
 
     /**

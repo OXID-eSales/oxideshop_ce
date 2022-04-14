@@ -13,19 +13,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ShopEnvironmentConfigurationExtender implements ShopConfigurationExtenderInterface
 {
-    /** @var ShopEnvironmentConfigurationDaoInterface */
-    private $shopEnvironmentConfigurationDao;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
     /** @var int */
     private $shopId;
 
     public function __construct(
-        ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao,
-        EventDispatcherInterface $eventDispatcher
+        private ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /** @inheritDoc */

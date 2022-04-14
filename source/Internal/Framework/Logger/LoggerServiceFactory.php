@@ -19,19 +19,8 @@ use Psr\Log\LoggerInterface;
 
 class LoggerServiceFactory
 {
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * LoggerServiceFactory constructor.
-     *
-     * @param ContextInterface $context
-     */
-    public function __construct(ContextInterface $context)
+    public function __construct(private ContextInterface $context)
     {
-        $this->context = $context;
     }
 
     /**

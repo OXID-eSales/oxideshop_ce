@@ -16,9 +16,6 @@ class SmartyBuilder implements SmartyBuilderInterface
      */
     private $smarty;
 
-    /**
-     * SmartyBuilder constructor.
-     */
     public function __construct()
     {
         $this->smarty = new \Smarty();

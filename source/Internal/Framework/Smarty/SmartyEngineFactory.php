@@ -16,26 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
 
 class SmartyEngineFactory implements TemplateEngineFactoryInterface
 {
-    /**
-     * @var SmartyBuilder
-     */
-    private $smartyBuilder;
-
-    /**
-     * @var SmartyConfigurationInterface
-     */
-    private $smartyConfiguration;
-
-    /**
-     * SmartyEngineFactory constructor.
-     *
-     * @param SmartyBuilder                $smartyBuilder
-     * @param SmartyConfigurationInterface $smartyConfiguration
-     */
-    public function __construct(SmartyBuilder $smartyBuilder, SmartyConfigurationInterface $smartyConfiguration)
-    {
-        $this->smartyBuilder = $smartyBuilder;
-        $this->smartyConfiguration = $smartyConfiguration;
+    public function __construct(
+        private SmartyBuilder $smartyBuilder,
+        private SmartyConfigurationInterface $smartyConfiguration
+    ) {
     }
 
     /**
@@ -51,7 +35,7 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
             ->registerResources($this->smartyConfiguration->getResources())
             ->getSmarty();
 
-        //TODO Event for smarty object configuration
+        // TODO Event for smarty object configuration
 
         return new SmartyEngine($smarty, new SmartyEngineBridge());
     }

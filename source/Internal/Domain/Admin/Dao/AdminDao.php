@@ -10,24 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\UserNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class AdminDao implements AdminDaoInterface
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    private $queryBuilderFactory;
-
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     */
-    public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory
-    ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
+    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory)
+    {
     }
+
     /**
      * @param Admin $admin
      */
@@ -48,7 +38,7 @@ class AdminDao implements AdminDaoInterface
                 'OXUSERNAME' => $admin->getEmail(),
                 'OXPASSWORD' => $admin->getPasswordHash(),
                 'OXRIGHTS' => $admin->getRights(),
-                'OXSHOPID' => $admin->getShopId()
+                'OXSHOPID' => $admin->getShopId(),
             ]);
         $queryBuilder->execute();
     }

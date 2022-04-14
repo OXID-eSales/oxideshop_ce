@@ -16,18 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ModuleCacheServiceInterface
-     */
-    private $moduleCacheService;
-
-    /**
-     * InvalidateModuleCacheEventSubscriber constructor.
-     * @param ModuleCacheServiceInterface $moduleCacheService
-     */
-    public function __construct(ModuleCacheServiceInterface $moduleCacheService)
+    public function __construct(private ModuleCacheServiceInterface $moduleCacheService)
     {
-        $this->moduleCacheService = $moduleCacheService;
     }
 
     /**

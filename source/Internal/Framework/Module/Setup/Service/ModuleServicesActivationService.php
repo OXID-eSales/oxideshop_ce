@@ -23,53 +23,13 @@ use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
-
-    /**
-     * @var ProjectYamlDaoInterface $dao
-     */
-    private $dao;
-
-    /**
-     * @var EventDispatcherInterface $eventDispatcher
-     */
-    public $eventDispatcher;
-
-    /**
-     * @var ModulePathResolverInterface
-     */
-    private $modulePathResolver;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
-    private $moduleStateService;
-
-    /**
-     * @var ContextInterface
-     */
-    private $context;
-
-    /**
-     * ModuleServicesActivationService constructor.
-     *
-     * @param ProjectYamlDaoInterface     $dao
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param ModulePathResolverInterface $modulePathResolver
-     * @param ModuleStateServiceInterface $moduleStateService
-     * @param ContextInterface            $context
-     */
     public function __construct(
-        ProjectYamlDaoInterface $dao,
-        EventDispatcherInterface $eventDispatcher,
-        ModulePathResolverInterface $modulePathResolver,
-        ModuleStateServiceInterface $moduleStateService,
-        ContextInterface $context
+        private ProjectYamlDaoInterface $dao,
+        public EventDispatcherInterface $eventDispatcher,
+        private ModulePathResolverInterface $modulePathResolver,
+        private ModuleStateServiceInterface $moduleStateService,
+        private ContextInterface $context
     ) {
-        $this->dao = $dao;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->modulePathResolver = $modulePathResolver;
-        $this->moduleStateService = $moduleStateService;
-        $this->context = $context;
     }
 
     /**
@@ -83,7 +43,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
-        } catch (NoServiceYamlException $e) {
+        } catch (NoServiceYamlException) {
             return;
         }
 
@@ -105,7 +65,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $this->dao->saveProjectConfigFile($projectConfig);
     }
 
-
     /**
      * @param string $moduleId
      * @param int    $shopId
@@ -117,9 +76,9 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
-        } catch (NoServiceYamlException $e) {
+        } catch (NoServiceYamlException) {
             return;
-        } catch (InvalidModuleServicesException $e) {
+        } catch (InvalidModuleServicesException) {
             // it could never have been activated so there is nothing to deactivate
             // and we can safely ignore this deactivation request
             return;

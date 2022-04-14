@@ -16,19 +16,8 @@ class ViewRenderedEvent extends Event
 {
     public const NAME = self::class;
 
-    /**
-     * @var ShopControl
-     */
-    private $shopControl;
-
-    /**
-     * Class constructor.
-     *
-     * @param ShopControl $shopControl ShopControl object
-     */
-    public function __construct(ShopControl $shopControl)
+    public function __construct(private ShopControl $shopControl)
     {
-        $this->shopControl = $shopControl;
     }
 
     /**

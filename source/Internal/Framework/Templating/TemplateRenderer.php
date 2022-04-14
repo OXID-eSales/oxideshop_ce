@@ -11,17 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
 class TemplateRenderer implements TemplateRendererInterface
 {
-    /**
-     * @var TemplateEngineInterface
-     */
-    private $templateEngine;
-
-    /**
-     * @param TemplateEngineInterface $templateEngine
-     */
-    public function __construct(TemplateEngineInterface $templateEngine)
+    public function __construct(private TemplateEngineInterface $templateEngine)
     {
-        $this->templateEngine = $templateEngine;
     }
 
     /**

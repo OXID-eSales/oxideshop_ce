@@ -18,9 +18,8 @@ class StyleLogic
     public function collectStyleSheets($params, $isDynamic)
     {
         $params = $this->fillDefaultParams($params);
-        $output = $this->getOutput($params, $isDynamic);
 
-        return $output;
+        return $this->getOutput($params, $isDynamic);
     }
 
     /**
@@ -36,9 +35,8 @@ class StyleLogic
             'if'       => null,
             'include'  => null,
         ];
-        $params = array_merge($defaults, $params);
 
-        return $params;
+        return array_merge($defaults, $params);
     }
 
     /**

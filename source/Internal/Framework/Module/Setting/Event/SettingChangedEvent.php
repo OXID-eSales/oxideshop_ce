@@ -17,11 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class SettingChangedEvent extends Event
 {
-    /**
-     * @deprecated constant will be removed in v7.0.
-     */
-    public const NAME = self::class;
-
     public function __construct(
         private string $settingName,
         private int $shopId,

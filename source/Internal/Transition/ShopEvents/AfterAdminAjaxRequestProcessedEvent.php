@@ -13,8 +13,4 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AfterAdminAjaxRequestProcessedEvent extends Event
 {
-    /**
-     * @deprecated constant will be removed in v7.0.
-     */
-    public const NAME = self::class;
 }

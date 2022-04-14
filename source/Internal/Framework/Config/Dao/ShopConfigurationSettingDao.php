@@ -61,8 +61,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             new ShopConfigurationChangedEvent(
                 $shopConfigurationSetting->getName(),
                 $shopConfigurationSetting->getShopId()
-            ),
-            ShopConfigurationChangedEvent::NAME
+            )
         );
     }
 

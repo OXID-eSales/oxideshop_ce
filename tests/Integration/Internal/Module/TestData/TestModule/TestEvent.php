@@ -13,8 +13,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class TestEvent extends Event
 {
-    const NAME = 'TESTEVENT';
-
     private $handled = false;
 
     public function handle()

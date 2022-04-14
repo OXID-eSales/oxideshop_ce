@@ -18,11 +18,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class ThemeSettingChangedEvent extends Event
 {
     /**
-     * @deprecated constant will be removed in v7.0.
-     */
-    public const NAME = self::class;
-
-    /**
      * @param string $theme Theme information as in oxconfig.oxmodule
      */
     public function __construct(

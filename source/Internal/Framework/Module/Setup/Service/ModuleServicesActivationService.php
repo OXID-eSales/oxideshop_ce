@@ -141,8 +141,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
                 new ServicesYamlConfigurationErrorEvent(
                     'Service class can not be loaded',
                     $moduleConfigFile
-                ),
-                ServicesYamlConfigurationErrorEvent::NAME
+                )
             );
             throw new InvalidModuleServicesException();
         }

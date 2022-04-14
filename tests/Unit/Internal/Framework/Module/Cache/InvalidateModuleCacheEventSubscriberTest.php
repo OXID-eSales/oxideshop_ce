@@ -25,8 +25,8 @@ class InvalidateModuleCacheEventSubscriberTest extends TestCase
     {
         $this->assertSame(
             [
-                FinalizingModuleActivationEvent::NAME   => 'invalidateModuleCache',
-                FinalizingModuleDeactivationEvent::NAME => 'invalidateModuleCache',
+                FinalizingModuleActivationEvent::class   => 'invalidateModuleCache',
+                FinalizingModuleDeactivationEvent::class => 'invalidateModuleCache',
             ],
             InvalidateModuleCacheEventSubscriber::getSubscribedEvents()
         );

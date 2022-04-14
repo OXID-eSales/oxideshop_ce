@@ -49,8 +49,7 @@ class EventLoggingSubscriberTest extends TestCase
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $dispatcher->dispatch(
-            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml'),
-            ServicesYamlConfigurationErrorEvent::NAME
+            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml')
         );
 
         self::assertFileExists(__DIR__ . DIRECTORY_SEPARATOR . 'test.log');

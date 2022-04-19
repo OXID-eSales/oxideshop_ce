@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  oxid_esales.command.clearcache_command:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand
+    tags:
+      - { name: 'console.command', command: 'oe:cache:clear' }

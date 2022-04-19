@@ -51,9 +51,15 @@ class ShopAdapter implements ShopAdapterInterface
          * @TODO we have to implement it in ShopModuleCacheService or use ModuleCache::resetCache() method.
          */
 
+        $this->invalidateModulesCache();
+    }
+
+    public function invalidateModulesCache(): void
+    {
         $utils = Registry::getUtils();
         $utils->resetLanguageCache();
         $utils->resetMenuCache();
+        $utils->oxResetFileCache(true);
 
         ModuleVariablesLocator::resetModuleVariables();
 

@@ -30,6 +30,8 @@ interface ShopAdapterInterface
      */
     public function invalidateModuleCache(string $moduleId);
 
+    public function invalidateModulesCache();
+
     /**
      * @return string
      */

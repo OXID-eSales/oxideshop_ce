@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use oxSystemComponentException;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

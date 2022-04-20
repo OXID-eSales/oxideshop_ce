@@ -3,7 +3,7 @@ services:
     autowire: true
 
   oxid_esales.common.storage.flock_store_lock_factory:
-    class: Symfony\Component\Lock\Factory
+    class: Symfony\Component\Lock\LockFactory
     arguments:
       - '@oxid_esales.common.storage.flock_store'
 

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClearCacheCommandTest extends TestCase
 {
-    public function testSomething()
+    public function testClearCacheTriggersRegularAndTemplatesCleaners()
     {
         $shopAdapterMock = $this->createMock(ShopAdapterInterface::class);
         $shopAdapterMock->expects($this->once())->method('invalidateModulesCache');

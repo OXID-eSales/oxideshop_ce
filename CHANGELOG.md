@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
   - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
 
+## [6.10.3] - unreleased
+
+### Fixed
+- Deadlock in oxseo table when deleting categories in backend [#0006762](https://bugs.oxid-esales.com/view.php?id=6762)
+
 ## [6.10.2] - 2022-05-17
 
 ### Fixed

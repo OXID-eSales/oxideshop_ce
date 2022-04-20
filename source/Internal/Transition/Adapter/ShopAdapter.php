@@ -59,6 +59,7 @@ class ShopAdapter implements ShopAdapterInterface
         $utils = Registry::getUtils();
         $utils->resetLanguageCache();
         $utils->resetMenuCache();
+        $utils->oxResetFileCache(true);
 
         ModuleVariablesLocator::resetModuleVariables();
 

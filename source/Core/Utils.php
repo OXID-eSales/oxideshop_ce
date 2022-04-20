@@ -690,12 +690,12 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * e.g. table files names description, are left. Excluded cache file name
      * patterns are defined in \OxidEsales\Eshop\Core\Utils::_sPermanentCachePattern parameter
      */
-    public function oxResetFileCache()
+    public function oxResetFileCache($full = false)
     {
         $aFiles = glob($this->getCacheFilePath(null, true) . '*');
         if (is_array($aFiles)) {
             // delete all the files, except cached tables field names
-            $aFiles = preg_grep($this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT);
+            $aFiles = preg_grep($this->_sPermanentCachePattern, $aFiles, $full ? 0 : PREG_GREP_INVERT);
             foreach ($aFiles as $sFile) {
                 @unlink($sFile);
             }

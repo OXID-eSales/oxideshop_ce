@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use Psr\Container\ContainerInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -115,19 +116,16 @@ class Base
     /**
      * Dispatch given event.
      *
-     * @TODO: remove psalm-suppression when new Event contract will be ready and used
+     * @param Event $event Event to dispatch
      *
-     * @psalm-suppress UndefinedConstant
-     *
-     * @param \Symfony\Contracts\EventDispatcher\Event $event Event to dispatch
-     *
-     * @return \Symfony\Contracts\EventDispatcher\Event
+     * @return Event
      */
-    public function dispatchEvent(\Symfony\Contracts\EventDispatcher\Event $event)
+    public function dispatchEvent(Event $event)
     {
-        $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
-        $dispatcher = $container->get(EventDispatcherInterface::class);
-        return $dispatcher->dispatch($event, $event::NAME);
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(EventDispatcherInterface::class)
+            ->dispatch($event);
     }
 
     /**

@@ -54,7 +54,7 @@ final class SettingDaoTest extends TestCase
             $eventDispatcher
         );
 
-        $shopModuleSettingDao->save(new Setting(), '', 0);
+        $shopModuleSettingDao->save(new Setting(), '', 1);
     }
 
     public function testDispatchEventOnSave(): void
@@ -63,11 +63,7 @@ final class SettingDaoTest extends TestCase
         $eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with(
-                //In the new version of EventDispatcher the entries have to be flipped.
-                $this->isInstanceOf(SettingChangedEvent::class),
-                $this->stringContains(SettingChangedEvent::NAME)
-            );
+            ->with($this->isInstanceOf(SettingChangedEvent::class));
 
         $shopModuleSettingDao = new SettingDao(
             $this->get(QueryBuilderFactoryInterface::class),
@@ -80,6 +76,6 @@ final class SettingDaoTest extends TestCase
         $moduleSetting = new Setting();
         $moduleSetting->setName('module_param')->setType('str')->setValue('module_value');
 
-        $shopModuleSettingDao->save($moduleSetting, 'phpunit_module_id', 0);
+        $shopModuleSettingDao->save($moduleSetting, 'phpunit_module_id', 1);
     }
 }

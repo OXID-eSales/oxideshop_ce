@@ -15,6 +15,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BeforeHeadersSendEvent extends Event
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     public const NAME = self::class;
 
     public function __construct(

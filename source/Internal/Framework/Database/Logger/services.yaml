@@ -1,7 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory
@@ -31,5 +30,5 @@ services:
       $logLevel: !php/const Psr\Log\LogLevel::DEBUG
 
   database.psr_logger:
-    class: database.monolog_logger_factory
+    class: Monolog\Logger
     factory: ['@database.monolog_logger_factory', 'create']

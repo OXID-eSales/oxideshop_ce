@@ -19,5 +19,8 @@ class AfterModelUpdateEvent extends Event
 {
     use ModelChangeEventTrait;
 
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     public const NAME = self::class;
 }

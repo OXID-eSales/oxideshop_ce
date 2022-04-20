@@ -15,5 +15,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
  */
 class FinalizingModuleDeactivationEvent extends ModuleSetupEvent
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     public const NAME = self::class;
 }

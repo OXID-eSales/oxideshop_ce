@@ -37,7 +37,6 @@ parameters:
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider

@@ -4,7 +4,6 @@ imports:
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider

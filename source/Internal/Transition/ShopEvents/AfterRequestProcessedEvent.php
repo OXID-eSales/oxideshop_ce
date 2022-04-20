@@ -13,5 +13,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AfterRequestProcessedEvent extends Event
 {
+    /**
+     * @deprecated constant will be removed in v7.0.
+     */
     public const NAME = self::class;
 }

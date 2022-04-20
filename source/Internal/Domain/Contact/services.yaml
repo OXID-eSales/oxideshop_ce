@@ -1,7 +1,6 @@
 services:
   _defaults:
     autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface:
       class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridge

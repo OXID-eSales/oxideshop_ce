@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Console\CommandsProvider;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use PHPUnit\Framework\TestCase;
@@ -21,9 +22,13 @@ class ClearCacheCommandTest extends TestCase
         $templateCacheServiceMock = $this->createMock(TemplateCacheService::class);
         $templateCacheServiceMock->expects($this->once())->method('invalidateTemplateCache');
 
+        $containerCacheMock = $this->createMock(ContainerCacheInterface::class);
+        $containerCacheMock->expects($this->once())->method('invalidate');
+
         $command = new ClearCacheCommand(
             $shopAdapterMock,
-            $templateCacheServiceMock
+            $templateCacheServiceMock,
+            $containerCacheMock
         );
 
         $command->run(

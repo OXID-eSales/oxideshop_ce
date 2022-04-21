@@ -384,6 +384,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface`
     - `Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface`
     - `Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface`
+- Console command for clearing the cache - `oe:cache:clear`
 
 - ### Changed
 - Updated Symfony components

@@ -17,8 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ShopConfigurationChangedEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(
         private string $configurationVariable,
         private int $shopId

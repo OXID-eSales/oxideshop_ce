@@ -14,8 +14,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ViewRenderedEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(private ShopControl $shopControl)
     {
     }

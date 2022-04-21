@@ -17,8 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ThemeSettingChangedEvent extends Event
 {
-    public const NAME = self::class;
-
     /**
      * @param string $theme Theme information as in oxconfig.oxmodule
      */

@@ -13,5 +13,4 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AfterRequestProcessedEvent extends Event
 {
-    public const NAME = self::class;
 }

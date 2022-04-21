@@ -1,6 +1,5 @@
 services:
     _defaults:
-        public: false
         autowire: true
 
     OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin\Fixtures\testModule\RendererInterface:

@@ -18,6 +18,4 @@ use Symfony\Contracts\EventDispatcher\Event;
 class AfterModelDeleteEvent extends Event
 {
     use ModelChangeEventTrait;
-
-    public const NAME = self::class;
 }

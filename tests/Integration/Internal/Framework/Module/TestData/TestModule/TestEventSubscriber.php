@@ -25,6 +25,6 @@ class TestEventSubscriber extends AbstractShopAwareEventSubscriber
 
     public static function getSubscribedEvents()
     {
-        return [TestEvent::NAME => 'handleEvent'];
+        return [TestEvent::class => 'handleEvent'];
     }
 }

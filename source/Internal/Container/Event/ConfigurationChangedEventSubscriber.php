@@ -28,6 +28,6 @@ class ConfigurationChangedEventSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [ProjectYamlChangedEvent::NAME => 'resetContainer'];
+        return [ProjectYamlChangedEvent::class => 'resetContainer'];
     }
 }

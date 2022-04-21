@@ -17,8 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ServicesYamlConfigurationErrorEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(
         private string $errorMessage,
         private string $configurationFilePath

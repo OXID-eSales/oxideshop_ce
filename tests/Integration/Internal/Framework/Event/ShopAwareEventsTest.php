@@ -65,7 +65,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         /**
          * @var $event TestEvent
          */
-        $event = $this->dispatcher->dispatch(new TestEvent(), 'oxidesales.testevent');
+        $event = $this->dispatcher->dispatch(new TestEvent());
         $this->assertEquals(2, $event->getNumberOfActiveHandlers());
     }
 
@@ -84,7 +84,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         /**
          * @var $event TestEvent
          */
-        $event = $this->dispatcher->dispatch(new TestEvent(), 'oxidesales.testevent');
+        $event = $this->dispatcher->dispatch(new TestEvent());
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
     }
 

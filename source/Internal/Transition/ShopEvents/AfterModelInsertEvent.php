@@ -18,6 +18,4 @@ use Symfony\Contracts\EventDispatcher\Event;
 class AfterModelInsertEvent extends Event
 {
     use ModelChangeEventTrait;
-
-    public const NAME = self::class;
 }

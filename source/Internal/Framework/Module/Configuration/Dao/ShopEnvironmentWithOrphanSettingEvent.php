@@ -13,8 +13,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ShopEnvironmentWithOrphanSettingEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(
         /** @var int */
         private $shopId,

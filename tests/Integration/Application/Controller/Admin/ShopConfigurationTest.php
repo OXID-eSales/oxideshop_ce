@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Sho
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -23,7 +24,9 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 final class ShopConfigurationTest extends UnitTestCase
 {
-    private $testModuleId = 'testModuleId';
+    use ContainerTrait;
+
+    private string $testModuleId = 'testModuleId';
 
     public function testSaveConfVars(): void
     {
@@ -53,15 +56,11 @@ final class ShopConfigurationTest extends UnitTestCase
 
         $_POST['confstrs'] = ['nonExisting' => 'newValue'];
 
-        $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
-            ->setMethods(['getModuleForConfigVars'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $shopConfigurationController = $this->createPartialMock(ShopConfiguration::class, ['getModuleForConfigVars']);
         $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
-        $container = ContainerFactory::getInstance()->getContainer();
-        $valueFromDatabase = $container->get(SettingDaoInterface::class)->get('nonExisting', $this->testModuleId, 1);
+        $valueFromDatabase = $this->get(SettingDaoInterface::class)->get('nonExisting', $this->testModuleId, 1);
 
         $this->assertSame(
             'newValue',

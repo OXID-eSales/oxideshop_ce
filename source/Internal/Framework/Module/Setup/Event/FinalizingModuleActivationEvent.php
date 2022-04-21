@@ -15,5 +15,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
  */
 class FinalizingModuleActivationEvent extends ModuleSetupEvent
 {
-    public const NAME = self::class;
 }

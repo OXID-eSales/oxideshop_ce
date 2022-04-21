@@ -1,48 +1,46 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 class ServicesYamlValidatorTest extends TestCase
 {
-    /** @var ModuleConfigurationValidatorInterface */
-    private $validator;
-
-    /** @var ModuleConfiguration */
-    private $moduleConfiguration;
-
-    /** @var ModulePathResolver */
-    private $modulePathResolver;
-
+    private ModuleConfigurationValidatorInterface $validator;
+    private ModuleConfiguration $moduleConfiguration;
+    private ModulePathResolverInterface|MockObject $modulePathResolver;
     private $testModuleId = 'testModuleId';
-
-    /**
-     * @var ContextStub
-     */
-    private $context;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->context = new BasicContextStub();
+        $context = new BasicContextStub();
         $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
         $this->moduleConfiguration = new ModuleConfiguration();
         $this->validator = new ServicesYamlValidator(
-            $this->context,
-            new ProjectYamlDao($this->context, new Filesystem()),
+            $context,
+            new ProjectYamlDao(
+                $context,
+                new Filesystem()
+            ),
             $this->modulePathResolver
         );
     }

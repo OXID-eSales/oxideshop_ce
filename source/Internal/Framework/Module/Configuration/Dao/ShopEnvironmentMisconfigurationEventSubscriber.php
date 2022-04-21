@@ -34,6 +34,6 @@ class ShopEnvironmentMisconfigurationEventSubscriber implements EventSubscriberI
     /** @return string[] */
     public static function getSubscribedEvents(): array
     {
-        return [ShopEnvironmentWithOrphanSettingEvent::NAME => 'logOrphanSetting'];
+        return [ShopEnvironmentWithOrphanSettingEvent::class => 'logOrphanSetting'];
     }
 }

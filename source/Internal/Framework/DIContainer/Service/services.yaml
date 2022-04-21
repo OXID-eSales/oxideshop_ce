@@ -1,7 +1,7 @@
 services:
   _defaults:
-    public: false
     autowire: true
+
   OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService
     public: true

@@ -146,20 +146,20 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
                 ],
             ],
         ];
+        $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
         $event =  new ShopEnvironmentWithOrphanSettingEvent(
             $this->shopId,
             'abc',
             $missingSettingId
         );
-        $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
         $this->eventDispatcher
-            ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
+            ->dispatch($event)
             ->willReturnArgument();
 
         $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);
 
         $this->eventDispatcher
-            ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
+            ->dispatch($event)
             ->shouldHaveBeenCalledOnce();
     }
 
@@ -242,7 +242,7 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
         );
         $this->environmentDao->get($this->shopId)->willReturn($environmentConfiguration);
         $this->eventDispatcher
-            ->dispatch($event, ShopEnvironmentWithOrphanSettingEvent::NAME)
+            ->dispatch($event)
             ->willReturnArgument();
 
         $result = $this->environmentExtension->getExtendedConfiguration($this->shopId, $shopConfiguration);

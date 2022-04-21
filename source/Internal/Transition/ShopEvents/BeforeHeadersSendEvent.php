@@ -15,8 +15,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BeforeHeadersSendEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(
         private ShopControl $shopControl,
         private BaseController $controller

@@ -299,8 +299,7 @@ class SettingDao implements SettingDaoInterface
                 $shopModuleSetting->getName(),
                 $shopId,
                 $moduleId
-            ),
-            SettingChangedEvent::NAME
+            )
         );
     }
 }

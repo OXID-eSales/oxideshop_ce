@@ -72,8 +72,8 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FinalizingModuleActivationEvent::NAME   => 'executeMetadataOnActivationEvent',
-            BeforeModuleDeactivationEvent::NAME     => 'executeMetadataOnDeactivationEvent',
+            FinalizingModuleActivationEvent::class   => 'executeMetadataOnActivationEvent',
+            BeforeModuleDeactivationEvent::class     => 'executeMetadataOnDeactivationEvent',
         ];
     }
 }

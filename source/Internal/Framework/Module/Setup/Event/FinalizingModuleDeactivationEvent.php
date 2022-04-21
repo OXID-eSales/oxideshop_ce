@@ -15,5 +15,4 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
  */
 class FinalizingModuleDeactivationEvent extends ModuleSetupEvent
 {
-    public const NAME = self::class;
 }

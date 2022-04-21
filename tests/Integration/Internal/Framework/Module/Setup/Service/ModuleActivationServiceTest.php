@@ -196,8 +196,7 @@ class ModuleActivationServiceTest extends TestCase
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         /** @var TestEvent $event */
         $event = $eventDispatcher->dispatch(
-            new TestEvent(),
-            TestEvent::NAME
+            new TestEvent()
         );
         $this->assertTrue($event->isHandled());
 
@@ -208,8 +207,7 @@ class ModuleActivationServiceTest extends TestCase
         $this->container = $this->setupAndConfigureContainer();
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         $event = $eventDispatcher->dispatch(
-            new TestEvent(),
-            TestEvent::NAME
+            new TestEvent()
         );
         $this->assertFalse($event->isHandled());
     }

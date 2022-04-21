@@ -44,8 +44,7 @@ class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
                     123,
                     'some-module',
                     'some-setting'
-                ),
-                ShopEnvironmentWithOrphanSettingEvent::NAME
+                )
             );
 
         $this->assertFileExists($this->testLog);

@@ -17,5 +17,4 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ProjectYamlChangedEvent extends Event
 {
-    public const NAME = self::class;
 }

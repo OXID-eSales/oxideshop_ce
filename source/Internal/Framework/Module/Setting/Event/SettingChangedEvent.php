@@ -17,8 +17,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class SettingChangedEvent extends Event
 {
-    public const NAME = self::class;
-
     public function __construct(
         private string $settingName,
         private int $shopId,

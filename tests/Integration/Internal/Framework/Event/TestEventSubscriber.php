@@ -50,6 +50,6 @@ class TestEventSubscriber extends AbstractShopAwareEventSubscriber
      */
     public static function getSubscribedEvents()
     {
-        return ['oxidesales.testevent' => 'handleEvent'];
+        return [TestEvent::class => 'handleEvent'];
     }
 }

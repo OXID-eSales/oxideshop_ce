@@ -22,7 +22,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I)
+    public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('multidimensional variants functionality in details page');
@@ -126,7 +126,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function navigateInDetailsPage(AcceptanceTester $I)
+    public function navigateInDetailsPage(AcceptanceTester $I): void
     {
         $I->wantToTest('product navigation in details page');
 
@@ -165,7 +165,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function detailsPageInformation(AcceptanceTester $I)
+    public function detailsPageInformation(AcceptanceTester $I): void
     {
         $I->wantToTest('product information in details page');
 
@@ -210,7 +210,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function sendProductSuggestionEmail(AcceptanceTester $I)
+    public function sendProductSuggestionEmail(AcceptanceTester $I): void
     {
         $I->updateConfigInDatabase('blAllowSuggestArticle', '1');
         $productNavigation = new ProductNavigation($I);
@@ -252,7 +252,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function sendProductPriceAlert(AcceptanceTester $I)
+    public function sendProductPriceAlert(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
@@ -284,7 +284,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function disableProductPriceAlert(AcceptanceTester $I)
+    public function disableProductPriceAlert(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality is disabled');
@@ -311,7 +311,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function selectProductVariant(AcceptanceTester $I)
+    public function selectProductVariant(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product simple variant selection and order in details page');
@@ -416,7 +416,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductAccessories(AcceptanceTester $I)
+    public function checkProductAccessories(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('Product\'s accessories');
@@ -453,7 +453,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkSimilarProducts(AcceptanceTester $I)
+    public function checkSimilarProducts(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('similar products on details page');
@@ -492,7 +492,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductCrossSelling(AcceptanceTester $I)
+    public function checkProductCrossSelling(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('Product\'s crossselling on details page');
@@ -524,52 +524,13 @@ final class ProductDetailsPageCest
             ->seeProductData($crossSellingProductData);
     }
 
-    //TODO: move to productList when it will be created
-    /**
-     * @group productList
-     * @group productVariants
-     *
-     * @param AcceptanceTester $I
-     */
-    public function selectMultidimensionalVariantsInLists(AcceptanceTester $I)
-    {
-        $I->wantToTest('multidimensional variants functionality in lists');
-
-        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
-
-        $productData = [
-            'id' => '10014',
-            'title' => '14 EN product šÄßüл',
-            'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 €'
-        ];
-
-        try {
-            $searchListPage = $I->openShop()
-            ->searchFor($productData['id']);
-
-            $searchListPage->seeProductData($productData, 1);
-
-            $detailsPage = $searchListPage->selectVariant(1, 'M');
-            $detailsPage->seeProductData($productData);
-        } catch (\Throwable $th) {
-            throw $th;
-        } finally {
-            $I->updateConfigInDatabase('blUseMultidimensionVariants', false, 'bool');
-            $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', false, 'bool');
-            $I->updateConfigInDatabase('bl_perfLoadSelectLists', false, 'bool');
-        }
-    }
-
     /**
      * @group product
      * @group productPrice
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductPriceA(AcceptanceTester $I)
+    public function checkProductPriceA(AcceptanceTester $I): void
     {
         $I->wantToTest('product price A');
 
@@ -646,7 +607,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductPriceC(AcceptanceTester $I)
+    public function checkProductPriceC(AcceptanceTester $I): void
     {
         $I->wantToTest('product price C and amount price discount added to this price');
 
@@ -709,7 +670,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductPriceB(AcceptanceTester $I)
+    public function checkProductPriceB(AcceptanceTester $I): void
     {
         $I->wantToTest('product price B');
 
@@ -761,7 +722,7 @@ final class ProductDetailsPageCest
      *
      * @param AcceptanceTester $I
      */
-    public function checkProductAmountPrice(AcceptanceTester $I)
+    public function checkProductAmountPrice(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product amount price');
@@ -809,7 +770,7 @@ final class ProductDetailsPageCest
      * @param string           $productId
      * @param string           $accessoryProductId
      */
-    private function prepareAccessoriesDataForProduct(AcceptanceTester $I, $productId, $accessoryProductId)
+    private function prepareAccessoriesDataForProduct(AcceptanceTester $I, $productId, $accessoryProductId): void
     {
         $data = [
             'OXID' => 'testaccessories1',
@@ -824,7 +785,7 @@ final class ProductDetailsPageCest
      * @param string           $productId
      * @param string           $crossSellingProductId
      */
-    private function prepareCrossSellingDataForProduct(AcceptanceTester $I, $productId, $crossSellingProductId)
+    private function prepareCrossSellingDataForProduct(AcceptanceTester $I, $productId, $crossSellingProductId): void
     {
         $data = [
             'OXID' => 'testcrossselling1',
@@ -839,7 +800,7 @@ final class ProductDetailsPageCest
      * @param string           $userId
      * @param string           $priceGroupId
      */
-    private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId)
+    private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId): void
     {
         $data = [
             'OXID' => 'obj2group' . $priceGroupId,
@@ -854,7 +815,7 @@ final class ProductDetailsPageCest
      * @param string           $productId
      * @param array            $amountPrice
      */
-    private function prepareAmountPriceDataForProduct(AcceptanceTester $I, $productId, $amountPrice)
+    private function prepareAmountPriceDataForProduct(AcceptanceTester $I, $productId, $amountPrice): void
     {
         $data = [
             'OXID' => 'price2article' . $amountPrice['discount'],

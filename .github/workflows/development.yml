@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.0', '8.1' ]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment v3.0.0
         run: git clone https://github.com/OXID-eSales/docker-eshop-sdk.git . && git reset --hard v3.0.0
@@ -75,7 +75,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.0', '8.1' ]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -129,7 +129,7 @@ jobs:
       matrix:
         php: [ '8.0', '8.1' ]
     needs: [ install_shop ]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
         uses: actions/cache@v2

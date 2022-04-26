@@ -1,0 +1,191 @@
+name: Development
+
+on: [ push, pull_request ]
+
+jobs:
+  install_shop:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    runs-on: self-hosted
+    steps:
+      - name: Clone testing environment v3.0.0
+        run: git clone https://github.com/OXID-eSales/docker-eshop-sdk.git . && git reset --hard v3.0.0
+
+      - name: Clone the shop
+        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch master --single-branch source
+
+      - name: Cache current installation
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Prepare container configuration
+        run: |
+          make setup
+          make addbasicservices
+          perl -pi\
+              -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
+              .env
+          perl -pi\
+              -e 's#display_errors =.*#display_errors = false#g;'\
+              -e 'print "xdebug.max_nesting_level=1000\nxdebug.mode=coverage\n\n"'\
+              -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
+              containers/php-fpm/custom.ini
+          perl -pi\
+              -e 's#/var/www/#/var/www/source/#g;'\
+              containers/httpd/project.conf
+
+      - name: Prepare shop configuration
+        run: |
+          cp source/source/config.inc.php.dist source/source/config.inc.php
+          perl -pi\
+            -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
+            source/source/.htaccess
+          perl -pi\
+            -e 's#<dbHost>#mysql#g;'\
+            -e 's#<dbUser>#root#g;'\
+            -e 's#<dbName>#example#g;'\
+            -e 's#<dbPwd>#root#g;'\
+            -e 's#<dbPort>#3306#g;'\
+            -e 's#<sShopURL>#http://localhost.local/#g;'\
+            -e 's#<sShopDir>#/var/www/source/#g;'\
+            -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
+            source/source/config.inc.php
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Install dependencies
+        run: docker-compose exec -T php composer update --no-interaction
+
+      - name: Reset shop
+        run: docker-compose exec -T php php vendor/bin/reset-shop
+
+      - name: Stop containers
+        run: |
+          docker-compose down
+          sleep 2
+
+  styles:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    runs-on: self-hosted
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+          extensions: gd, zip
+
+      - name: Syntax Test
+        id: syntax
+        if: steps.dependencies.outcome == 'success'
+        continue-on-error: true
+        run: |
+          cd source/test-module
+          composer test:syntax
+
+      - name: Lint Test
+        id: lint
+        if: steps.dependencies.outcome == 'success'
+        continue-on-error: true
+        run: |
+          cd source/test-module
+          composer test:lint
+
+      - name: Infection
+        id: infection
+        if: steps.dependencies.outcome == 'success'
+        continue-on-error: true
+        run: |
+          cd source/test-module
+          composer test:infection
+
+      - name: Static Analyzer
+        id: static
+        if: steps.dependencies.outcome == 'success'
+        continue-on-error: true
+        run: |
+          cd source/test-module
+          composer test:static
+
+      - name: Fail if any of styles status is not fine
+        if: |
+          steps.syntax.outcome != 'success' ||
+          steps.lint.outcome != 'success' ||
+          steps.infection.outcome != 'success' ||
+          steps.static.outcome != 'success'
+        run: exit 1
+
+  unit_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    needs: [ install_shop ]
+    runs-on: self-hosted
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose run -T --rm \
+            -e RUN_TESTS_FOR_SHOP=1 \
+            -e XDEBUG_MODE=coverage \
+            php php vendor/bin/runtests
+
+  codeception_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Install codeception dependencies
+        run: |
+          docker-compose exec -T php composer require codeception/c3 --dev --no-update
+          docker-compose exec -T php composer require codeception/module-rest:^1.4.2 --dev --no-update
+          docker-compose exec -T php composer require codeception/module-phpbrowser ^1.0.2 --no-update
+          docker-compose exec -T php composer update
+          sed -i 's/<?php/<?php\n\nrequire(__DIR__ . "\/..\/c3.php");/' source/source/bootstrap.php
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose exec -T \
+            -e RUN_TESTS_FOR_SHOP=1 \
+            -e XDEBUG_MODE=coverage \
+            php php vendor/bin/runtests-codeception

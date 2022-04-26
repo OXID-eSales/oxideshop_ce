@@ -1,0 +1,39 @@
+modules:
+  moduleId1:
+    id: moduleId1
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId1
+  moduleId2:
+    id: moduleId2
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId2
+  moduleId3:
+    id: moduleId3
+    moduleSource: src
+    version: 1.1.1
+    configured: true
+    title:
+      en: moduleId3
+moduleChains:
+  classExtensions:
+    Some\Class:
+      - Some\Class\Extension1
+  templateExtensions:
+    template-name-with-hyphens.html.twig:
+      - module1
+    template_name_with_underscores.html.twig:
+      - module1
+    template_name_with_underscores-and-hyphens.html.twig:
+      - module1
+    '@namespace/template-name.html.twig':
+      - module1
+    template-extended-by-multiple-modules.html.twig:
+      - module3
+      - module2
+      - module1

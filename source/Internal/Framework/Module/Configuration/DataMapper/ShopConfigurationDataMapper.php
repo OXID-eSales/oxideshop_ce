@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleTemplateExtensionChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
 class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterface
@@ -93,6 +94,12 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
             $chain->setChain($chainsData[ClassExtensionsChain::NAME]);
 
             $shopConfiguration->setClassExtensionsChain($chain);
+        }
+
+        if (isset($chainsData[ModuleTemplateExtensionChain::NAME])) {
+            $shopConfiguration->setModuleTemplateExtensionChain(
+                new ModuleTemplateExtensionChain($chainsData[ModuleTemplateExtensionChain::NAME])
+            );
         }
     }
 

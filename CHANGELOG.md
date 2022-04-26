@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Twig templates multi inheritance for modules
+- Shop configuration to define loading order for module templates
 
 ### Changed
 - Update Symfony components to v6

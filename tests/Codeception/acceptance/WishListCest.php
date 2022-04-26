@@ -5,13 +5,16 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
-class WishListCest
+final class WishListCest
 {
     /**
      * @group myAccount
@@ -19,7 +22,7 @@ class WishListCest
      *
      * @param AcceptanceTester $I
      */
-    public function addProductToUserWishList(AcceptanceTester $I)
+    public function addProductToUserWishList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('if product compare functionality is enabled');
@@ -79,7 +82,7 @@ class WishListCest
      *
      * @param AcceptanceTester $I
      */
-    public function addVariantToUserWishList(AcceptanceTester $I)
+    public function addVariantToUserWishList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $start = new Start($I);
@@ -96,47 +99,41 @@ class WishListCest
 
         $userData = $this->getExistingUserData();
 
-        try {
-            $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword']);
+        $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword']);
 
-            //open details page
-            $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-            $I->see('14 EN product šÄßüл');
-            //add parent to wish list
-            $wishListPage = $detailsPage->addToWishList()
-                ->selectVariant(1, 'S')
-                ->selectVariant(2, 'black')
-                ->selectVariant(3, 'lether')
-                ->addToWishList()
-                ->openAccountMenu()
-                ->checkWishListItemCount(2)
-                ->closeAccountMenu()
-                ->openUserWishListPage()
-                ->seeProductData($productData);
-    
-            //assert variant
-            $productData = [
-                'id' => '10014-1-1',
-                'title' => '14 EN product šÄßüл S | black | lether',
-                'description' => '',
-                'price' => '25,00 €'
-            ];
-            $wishListPage->seeProductData($productData, 2);
-    
-            $wishListPage->removeProductFromList(2)
-                ->removeProductFromList(1);
-    
-            $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
-            $I->see(Translator::translate('WISH_LIST_EMPTY'));
-        } catch (\Throwable $th) {
-            throw $th;
-        } finally {
-            $I->updateConfigInDatabase('blUseMultidimensionVariants', false, 'bool');
-        }
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $I->see('14 EN product šÄßüл');
+        //add parent to wish list
+        $wishListPage = $detailsPage->addToWishList()
+            ->selectVariant(1, 'S')
+            ->selectVariant(2, 'black')
+            ->selectVariant(3, 'lether')
+            ->addToWishList()
+            ->openAccountMenu()
+            ->checkWishListItemCount(2)
+            ->closeAccountMenu()
+            ->openUserWishListPage()
+            ->seeProductData($productData);
+
+        //assert variant
+        $productData = [
+            'id' => '10014-1-1',
+            'title' => '14 EN product šÄßüл S | black | lether',
+            'description' => '',
+            'price' => '25,00 €'
+        ];
+        $wishListPage->seeProductData($productData, 2);
+
+        $wishListPage->removeProductFromList(2)
+            ->removeProductFromList(1);
+
+        $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
+        $I->see(Translator::translate('WISH_LIST_EMPTY'));
     }
 
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 }

@@ -13,7 +13,7 @@ jobs:
         run: git clone https://github.com/OXID-eSales/docker-eshop-sdk.git . && git reset --hard v3.0.0
 
       - name: Clone the shop
-        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch master --single-branch source
+        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch master --single-branch oxideshop
 
       - name: Cache current installation
         uses: actions/cache@v2
@@ -36,15 +36,15 @@ jobs:
               -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
               containers/php-fpm/custom.ini
           perl -pi\
-              -e 's#/var/www/#/var/www/source/#g;'\
+              -e 's#/var/www/#/var/www/oxideshop/#g;'\
               containers/httpd/project.conf
 
       - name: Prepare shop configuration
         run: |
-          cp source/source/config.inc.php.dist source/source/config.inc.php
+          cp oxideshop/source/config.inc.php.dist oxideshop/source/config.inc.php
           perl -pi\
             -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
-            source/source/.htaccess
+            oxideshop/source/.htaccess
           perl -pi\
             -e 's#<dbHost>#mysql#g;'\
             -e 's#<dbUser>#root#g;'\
@@ -52,9 +52,9 @@ jobs:
             -e 's#<dbPwd>#root#g;'\
             -e 's#<dbPort>#3306#g;'\
             -e 's#<sShopURL>#http://localhost.local/#g;'\
-            -e 's#<sShopDir>#/var/www/source/#g;'\
-            -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
-            source/source/config.inc.php
+            -e 's#<sShopDir>#/var/www/oxideshop/#g;'\
+            -e 's#<sCompileDir>#/var/www/oxideshop/tmp/#g;'\
+            oxideshop/source/config.inc.php
 
       - name: Start containers
         run: |
@@ -141,7 +141,7 @@ jobs:
           docker-compose exec -T php composer require codeception/module-rest:^1.4.2 --dev --no-update
           docker-compose exec -T php composer require codeception/module-phpbrowser ^1.0.2 --no-update
           docker-compose exec -T php composer update
-          sed -i 's/<?php/<?php\n\nrequire(__DIR__ . "\/..\/c3.php");/' source/source/bootstrap.php
+          sed -i 's/<?php/<?php\n\nrequire(__DIR__ . "\/..\/c3.php");/' oxideshop/source/bootstrap.php
 
       - name: Run tests
         continue-on-error: true

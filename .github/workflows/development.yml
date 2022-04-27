@@ -26,6 +26,7 @@ jobs:
         run: |
           make setup
           make addbasicservices
+          make file=services/selenium-chrome.yml addservice
           perl -pi\
               -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
               .env

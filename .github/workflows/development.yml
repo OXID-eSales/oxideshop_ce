@@ -198,5 +198,5 @@ jobs:
         continue-on-error: true
         run: |
           docker-compose exec -T \
-            -e SELENIUM_SERVER_HOST=seleniumfirefox \
+            -e SELENIUM_SERVER_IP=seleniumfirefox \
             php php vendor/bin/runtests-selenium

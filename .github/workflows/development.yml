@@ -112,6 +112,37 @@ jobs:
           docker-compose run -T --rm \
             -e RUN_TESTS_FOR_SHOP=1 \
             -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=unit,Unit \
+            php php vendor/bin/runtests
+          
+  integration_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose run -T --rm \
+            -e RUN_TESTS_FOR_SHOP=1 \
+            -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=integration,Integration \
             php php vendor/bin/runtests
 
   codeception_tests:

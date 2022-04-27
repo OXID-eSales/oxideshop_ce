@@ -71,7 +71,7 @@ jobs:
           docker-compose down
           sleep 2
 
-  styles:
+  setup_php:
     strategy:
       matrix:
         php: [ '8.0', '8.1' ]
@@ -83,46 +83,6 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: xdebug
           extensions: gd, zip
-
-      - name: Syntax Test
-        id: syntax
-        if: steps.dependencies.outcome == 'success'
-        continue-on-error: true
-        run: |
-          cd source/test-module
-          composer test:syntax
-
-      - name: Lint Test
-        id: lint
-        if: steps.dependencies.outcome == 'success'
-        continue-on-error: true
-        run: |
-          cd source/test-module
-          composer test:lint
-
-      - name: Infection
-        id: infection
-        if: steps.dependencies.outcome == 'success'
-        continue-on-error: true
-        run: |
-          cd source/test-module
-          composer test:infection
-
-      - name: Static Analyzer
-        id: static
-        if: steps.dependencies.outcome == 'success'
-        continue-on-error: true
-        run: |
-          cd source/test-module
-          composer test:static
-
-      - name: Fail if any of styles status is not fine
-        if: |
-          steps.syntax.outcome != 'success' ||
-          steps.lint.outcome != 'success' ||
-          steps.infection.outcome != 'success' ||
-          steps.static.outcome != 'success'
-        run: exit 1
 
   unit_tests:
     strategy:

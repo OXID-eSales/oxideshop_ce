@@ -27,6 +27,7 @@ jobs:
           make setup
           make addbasicservices
           make file=services/selenium-chrome.yml addservice
+          make file=services/selenium-firefox.yml addservice
           perl -pi\
               -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
               .env
@@ -171,3 +172,31 @@ jobs:
             -e SELENIUM_SERVER_HOST=selenium \
             -e BROWSER_NAME=chrome \
             php php vendor/bin/runtests-codeception
+
+  selenium_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose exec -T \
+            -e SELENIUM_SERVER_HOST=seleniumfirefox \
+            php php vendor/bin/runtests-selenium

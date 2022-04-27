@@ -149,4 +149,6 @@ jobs:
           docker-compose exec -T \
             -e RUN_TESTS_FOR_SHOP=1 \
             -e XDEBUG_MODE=coverage \
+            -e SELENIUM_SERVER_HOST=selenium \
+            -e BROWSER_NAME=chrome \
             php php vendor/bin/runtests-codeception

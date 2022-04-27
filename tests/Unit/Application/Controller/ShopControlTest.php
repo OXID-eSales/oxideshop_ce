@@ -99,34 +99,37 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
+     * @dataProvider unknownControllerClass
      * @return null
      */
-    public function testStartSystemComponentExceptionHandled_NotDebugMode()
+    public function testStartUnknownController_Redirect404($controllerName)
     {
-        $logger = $this->getMock(LoggerInterface::class);
-        $logger
-            ->expects($this->once())
-            ->method('error');
+        Registry::set(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, null); //reset
+
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger->expects($this->once())
+               ->method('warning');
 
         Registry::set('logger', $logger);
 
-        Registry::get("oxConfigFile")->setVar('iDebug', 0);
+        $utils = $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock();
+        $utils
+            ->expects($this->once())
+            ->method('handlePageNotFoundError');
 
-        $componentException = $this->getMock(oxSystemComponentException::class);
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        $oxUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("redirect"));
-        $oxUtils->expects($this->atLeastOnce())->method("redirect");
-        oxTestModules::addModuleObject("oxUtils", $oxUtils);
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "handleSystemException"], [], '', false);
+        
+        $oControl->start($controllerName, 'functionToLoad');
+    }
 
-        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("addErrorToDisplay"));
-        $oxUtilsView->expects($this->never())->method("addErrorToDisplay")->with($componentException);
-        oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
-
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array("runOnce", "process"), array(), '', false);
-        $oControl->expects($this->any())->method('process')->will($this->throwException($componentException));
-
-        $oControl->start('classToLoad', 'functionToLoad');
+    public function unknownControllerClass()
+    {
+        return [
+            'unknown controller class' => ['unknownClass'],
+            'any oxid class not allowed' => [\OxidEsales\Eshop\Core\Utils::class],
+        ];
     }
 
     /**
@@ -401,14 +404,14 @@ class ShopControlTest extends \OxidTestCase
             ->withConsecutive(
                 [
                     'errors',
-                    array(
-                        'other'   => array('test1', 'test3'),
-                        'default' => array('test2', 'test4'),
-                    )
+                array(
+                'other'   => array('test1', 'test3'),
+                'default' => array('test2', 'test4'),
+                )
 
                 ],
                 [$controllerClassName, $this->anything()]
-            );
+        );
 
         $oOut->method('sendHeaders')->will($this->returnValue(null));
         $oOut->method('flushOutput')->will($this->returnValue(null));
@@ -556,18 +559,29 @@ class ShopControlTest extends \OxidTestCase
     public function testCannotAccessProtectedMethod()
     {
         $sCL = \OxidEsales\Eshop\Application\Controller\AccountController::class;
+        $sWebCL = 'account';
         $sFNC = 'getLoginTemplate';
-        $oProtectedMethodException = new oxSystemComponentException('Non public method cannot be accessed');
 
-        $oView = $this->getMock($sCL, array('executeFunction', 'getFncName'));
+        $oView = $this->getMock($sCL, array('executeFunction', 'getFncName', 'getClassKey'));
         $oView->expects($this->never())->method('executeFunction');
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue($sFNC));
 
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('initializeViewObject', 'handleSystemException'));
-        $oControl->expects($this->once())->method('initializeViewObject')->with($sCL, $sFNC, null, null)->will($this->returnValue($oView));
-        $oControl->expects($this->once())->method('handleSystemException')->with($oProtectedMethodException)->will($this->returnValue(true));
+        Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
+        $className = get_class($oView);
+        Registry::getLogger()->expects($this->once())->method('warning')
+            ->with("Non public method cannot be accessed: {$className}::{$sFNC}");
 
-        $oControl->start($sCL, $sFNC);
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());
+        Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->will($this->returnCallback(function () {
+            throw new \Exception('404 Page will show');
+        }));
+
+        $this->expectErrorMessage('404 Page will show');
+
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('initializeViewObject'));
+        $oControl->expects($this->once())->method('initializeViewObject')->with($sCL, $sFNC, null, null)->will($this->returnValue($oView));
+
+        $oControl->start($sWebCL, $sFNC);
     }
 
     /**
@@ -589,28 +603,7 @@ class ShopControlTest extends \OxidTestCase
 
         $control->start();
     }
-
-    /**
-     * Test case that requested controller id does not match any known class.
-     *
-     * @return null
-     */
-    public function testStartWithUnmatchedRequestControllerIdDebugModeOn()
-    {
-        $controllerId = 'unmatchedControllerId';
-        $routingException = new \OxidEsales\Eshop\Core\Exception\RoutingException($controllerId);
-
-        $this->setRequestParameter('cl', $controllerId);
-        $this->setRequestParameter('fnc', 'testFnc');
-
-        $control = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array('process', 'handleRoutingException', 'isDebugMode'), array(), '', false, false, true);
-        $control->expects($this->once())->method('process')->with($this->equalTo($controllerId));
-        $control->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
-        $control->expects($this->once())->method('handleRoutingException')->with($this->equalTo($routingException));
-
-        $control->start();
-    }
-
+    
     protected function tearDown(): void
     {
         parent::tearDown();

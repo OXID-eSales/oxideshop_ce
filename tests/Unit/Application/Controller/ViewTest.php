@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\Controller\BaseController;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use oxSystemComponentException;
@@ -16,6 +17,7 @@ use \oxView;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
+use Psr\Log\LoggerInterface;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
@@ -294,21 +296,24 @@ class ViewTest extends \OxidTestCase
         $this->assertNull($oCmp->executeFunction('yyy'));
     }
 
-    public function testExecuteFunctionThrowsExeption()
+    public function testExecuteNonExistsFunctionCall404ErrorHandler()
     {
-        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx'));
-        $oView->expects($this->never())->method('xxx');
+        //Arrange
+        $oView = new \OxidEsales\Eshop\Core\Controller\BaseController();
+        $_POST['fnc'] = 'unkownFunction';
+        $_GET['fnc'] = 'unkownFunction';
 
+        //Mock Asserts
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger->expects($this->never())->method('error');
 
-        try {
-            $oView->executeFunction('yyy');
-        } catch (oxSystemComponentException $oEx) {
-            $this->assertEquals("ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND yyy", $oEx->getMessage());
+        Registry::set('logger', $logger);
 
-            return;
-        }
+        //Act
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\RoutingException::class);
+        $this->expectExceptionMessage('Controller method is not accessible: OxidEsales\EshopCommunity\Core\Controller\BaseController::unkownFunction');
 
-        $this->fail("No exception thrown by executeFunction");
+        $oView->executeFunction('unkownFunction');
     }
 
     public function testExecuteFunctionExecutesOnlyOnce()

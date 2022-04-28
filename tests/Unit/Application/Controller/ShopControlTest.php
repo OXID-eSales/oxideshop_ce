@@ -107,8 +107,7 @@ class ShopControlTest extends \OxidTestCase
         Registry::set(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, null); //reset
 
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logger->expects($this->once())
-               ->method('warning');
+        $logger->expects($this->once())->method('error');
 
         Registry::set('logger', $logger);
 
@@ -568,7 +567,7 @@ class ShopControlTest extends \OxidTestCase
 
         Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
         $className = get_class($oView);
-        Registry::getLogger()->expects($this->once())->method('warning')
+        Registry::getLogger()->expects($this->once())->method('error')
             ->with("Non public method cannot be accessed: {$className}::{$sFNC}");
 
         Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());

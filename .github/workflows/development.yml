@@ -116,7 +116,15 @@ jobs:
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=unit,Unit \
-            php php vendor/bin/runtests
+            php php vendor/bin/runtests | tee phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-log
+          path: /var/www/phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
           
   integration_tests:
     strategy:
@@ -146,7 +154,15 @@ jobs:
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=integration,Integration \
-            php php vendor/bin/runtests
+            php php vendor/bin/runtests | tee phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-log
+          path: /var/www/phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
 
   codeception_tests:
     strategy:
@@ -188,7 +204,23 @@ jobs:
             -e TMP_PATH=/var/www/tmp_codeception \
             -e SCREEN_SHOTS_PATH=/var/www/codeception_screens \
             -e CC_SCREEN_SHOTS_PATH=/var/www/codeception_screens \
-            php php vendor/bin/runtests-codeception
+            php php vendor/bin/runtests-codeception | tee phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-log
+          path: /var/www/phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: codeception-screenshots
+          path: /var/www/codeception_screens
+          if-no-files-found: ignore
+          retention-days: 7
 
   selenium_tests:
     strategy:
@@ -217,4 +249,12 @@ jobs:
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_IP=seleniumfirefox \
-            php php vendor/bin/runtests-selenium
+            php php vendor/bin/runtests-selenium | tee phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-log
+          path: /var/www/phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7

@@ -170,12 +170,24 @@ jobs:
           make up
           sleep 2
 
+      - name: Setup Codeception
+        run: |
+          mkdir /var/www/tmp_codeception
+          mkdir /var/www/codeception_screens
+          chmod a+w /var/www/
+          chmod a+w /var/www/tmp_codeception
+          chmod a+w /var/www/codeception_screens
+
       - name: Run tests
         continue-on-error: true
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=selenium \
             -e BROWSER_NAME=chrome \
+            -e RETRY_TIMES_AFTER_TEST_FAIL=2 \
+            -e TMP_PATH=/var/www/tmp_codeception \
+            -e SCREEN_SHOTS_PATH=/var/www/codeception_screens \
+            -e CC_SCREEN_SHOTS_PATH=/var/www/codeception_screens \
             php php vendor/bin/runtests-codeception
 
   selenium_tests:

@@ -678,13 +678,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         \OxidEsales\Eshop\Core\Registry::getLogger()->warning($exception->getMessage());
 
-        if ($this->isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
-            $this->process('exceptionError', 'displayExceptionError');
-        } else {
-            unset($_GET['fnc'], $_POST['fnc']);
-            error_404_handler($_SERVER['REQUEST_URI']);
-        }
+        unset($_GET['fnc'], $_POST['fnc']);
+        error_404_handler($_SERVER['REQUEST_URI']);
     }
 
     /**

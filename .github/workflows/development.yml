@@ -188,11 +188,11 @@ jobs:
 
       - name: Setup Codeception
         run: |
-          mkdir /var/www/tmp_codeception
-          mkdir /var/www/codeception_screens
-          chmod a+w /var/www/
-          chmod a+w /var/www/tmp_codeception
-          chmod a+w /var/www/codeception_screens
+          sudo mkdir /var/www/tmp_codeception
+          sudo mkdir /var/www/codeception_screens
+          sudo chmod a+w /var/www/
+          sudo chmod a+w /var/www/tmp_codeception
+          sudo chmod a+w /var/www/codeception_screens
 
       - name: Run tests
         continue-on-error: true

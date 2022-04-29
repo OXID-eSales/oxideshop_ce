@@ -1,0 +1,260 @@
+name: Development
+
+on: [ push, pull_request ]
+
+jobs:
+  install_shop:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+        mysql: [ '5.7', '8.0' ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone testing environment master
+        run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
+
+      - name: Clone the shop
+        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch master --single-branch source
+
+      - name: Cache current installation
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Prepare container configuration
+        run: |
+          make setup
+          make addbasicservices
+          make file=services/selenium-chrome.yml addservice
+          make file=services/selenium-firefox.yml addservice
+          perl -pi\
+              -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
+              -e "s#MYSQL_VERSION=.*#MYSQL_VERSION='${{ matrix.mysql }}'#g;"\
+              .env
+          perl -pi\
+              -e 's#display_errors =.*#display_errors = false#g;'\
+              -e 'print "xdebug.max_nesting_level=1000\nxdebug.mode=coverage\n\n";'\
+              -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
+              containers/php/custom.ini
+          perl -pi\
+              -e 's#/var/www/#/var/www/source/#g;'\
+              containers/httpd/project.conf
+
+      - name: Prepare shop configuration
+        run: |
+          cp source/source/config.inc.php.dist source/source/config.inc.php
+          perl -pi\
+            -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
+            source/source/.htaccess
+          perl -pi\
+            -e 's#<dbHost>#mysql#g;'\
+            -e 's#<dbUser>#root#g;'\
+            -e 's#<dbName>#example#g;'\
+            -e 's#<dbPwd>#root#g;'\
+            -e 's#<dbPort>#3306#g;'\
+            -e 's#<sShopURL>#http://localhost.local/#g;'\
+            -e 's#<sShopDir>#/var/www/source/#g;'\
+            -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
+            source/source/config.inc.php
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Install dependencies
+        run: docker-compose exec -T php composer update --no-interaction
+
+      - name: Reset shop
+        run: docker-compose exec -T php php vendor/bin/reset-shop
+
+      - name: Stop containers
+        run: |
+          docker-compose down
+          sleep 2
+
+  setup_php:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+          extensions: gd, zip
+
+  unit_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+        mysql: [ '5.7', '8.0' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose run -T --rm \
+            -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=unit,Unit \
+            php php vendor/bin/runtests | tee unit_phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit-phpunit-log
+          path: unit_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+          
+  integration_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+        mysql: [ '5.7', '8.0' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose run -T --rm \
+            -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=integration,Integration \
+            php php vendor/bin/runtests | tee integration_phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-phpunit-log
+          path: integration_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+  codeception_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+        mysql: [ '5.7', '8.0' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Setup Codeception
+        run: |
+          mkdir source/tmp_codeception
+          mkdir source/codeception_screens
+          chmod a+w source
+          chmod a+w source/tmp_codeception
+          chmod a+w source/codeception_screens
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose exec -T \
+            -e SELENIUM_SERVER_HOST=selenium \
+            -e BROWSER_NAME=chrome \
+            -e RETRY_TIMES_AFTER_TEST_FAIL=2 \
+            -e TMP_PATH=/var/www/tmp_codeception \
+            -e SCREEN_SHOTS_PATH=/var/www/codeception_screens \
+            -e CC_SCREEN_SHOTS_PATH=/var/www/codeception_screens \
+            php php vendor/bin/runtests-codeception | tee codeception_phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: codeception-phpunit-log
+          path: codeception_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: codeception-screenshots
+          path: source/codeception_screens
+          if-no-files-found: ignore
+          retention-days: 7
+
+  selenium_tests:
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1' ]
+        mysql: [ '5.7', '8.0' ]
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        continue-on-error: true
+        run: |
+          docker-compose exec -T \
+            -e SELENIUM_SERVER_IP=seleniumfirefox \
+            php php vendor/bin/runtests-selenium | tee selenium_phpunit_log.txt
+
+      - name: Upload PHPUnit Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: selenium-phpunit-log
+          path: selenium_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7

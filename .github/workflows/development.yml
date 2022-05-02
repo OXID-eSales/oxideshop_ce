@@ -119,7 +119,7 @@ jobs:
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=unit,Unit \
-            php php vendor/bin/runtests | tee unit_phpunit_log.txt
+            php php vendor/bin/runtests | tee logs/unit_phpunit_log.txt
 
   integration_tests:
     strategy:
@@ -149,7 +149,7 @@ jobs:
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=integration,Integration \
-            php php vendor/bin/runtests | tee integration_phpunit_log.txt
+            php php vendor/bin/runtests | tee logs/integration_phpunit_log.txt
 
   codeception_tests:
     strategy:
@@ -191,7 +191,7 @@ jobs:
             -e TMP_PATH=/var/www/tmp_codeception \
             -e SCREEN_SHOTS_PATH=/var/www/codeception_screens \
             -e CC_SCREEN_SHOTS_PATH=/var/www/codeception_screens \
-            php php vendor/bin/runtests-codeception | tee codeception_phpunit_log.txt
+            php php vendor/bin/runtests-codeception | tee logs/codeception_phpunit_log.txt
 
   selenium_tests:
     strategy:
@@ -220,19 +220,12 @@ jobs:
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_IP=seleniumfirefox \
-            php php vendor/bin/runtests-selenium | tee selenium_phpunit_log.txt
+            php php vendor/bin/runtests-selenium | tee logs/selenium_phpunit_log.txt
 
   save_artifacts:
     needs: [ unit_tests, integration_tests, codeception_tests, selenium_tests ]
     runs-on: ubuntu-latest
     steps:
-      - name: Copy PHPUnit Logs
-        run: |
-          mv source/unit_phpunit_log.txt logs
-          mv source/integration_phpunit_log.txt logs
-          mv source/codeception_phpunit_log.txt logs
-          mv source/selenium_phpunit_log.txt logs
-
       - name: Upload PHPUnit Logs
         uses: actions/upload-artifact@v3
         with:

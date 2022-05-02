@@ -1228,7 +1228,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'binary'         => false,
                 'unsigned'       => false,
                 'comment'        => 'a column with type CHAR',
-                'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
             ),
             array(
@@ -1276,7 +1275,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'unsigned'       => false,
                 'has_default'    => false,
                 'comment'        => 'a column with type TEXT',
-                'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
             ),
             array(
@@ -1290,7 +1288,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'unsigned'       => false,
                 'has_default'    => false,
                 'comment'        => 'a column with type CHAR',
-                'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
             ),
             array(

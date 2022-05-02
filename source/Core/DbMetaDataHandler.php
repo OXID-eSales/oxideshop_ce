@@ -14,6 +14,12 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
  */
 class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 {
+    static $tableDefition = [];
+
+    static $primaryKeyDefinition = [];
+
+    static $primaryKeyColumns = [];
+
     /**
      *
      * @var array
@@ -221,15 +227,25 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     {
         $tableSet = getLangTableName($table, $lang);
 
-        $tableStatus = DatabaseProvider::getDb()->getRow(
-            "SHOW TABLE STATUS LIKE  '{$table}';"
-        );
+        $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
 
+        $colDef = "`OXID` char(32) NOT NULL, ";
+        $tableDef = self::getTableDefinition($table);
+        if ($primaryKeyDef = self::getPrimaryKeyDefinition($table)) {
+            if ($primaryKeyCols = self::getPrimaryKeyColumns($table)) {
+                $definitions = [];
+                foreach ($primaryKeyCols as $col) {
+                    if (preg_match("/(.*$col.*)/", $tableDef, $matches)) {
+                        $definitions[] = $matches[1];
+                    }
+                }
+                $colDef = implode("\n", $definitions);
+            }
+        }
         return "CREATE TABLE `{$tableSet}` (" .
-               "`OXID` char(32) NOT NULL, " .
-               "PRIMARY KEY (`OXID`)) " .
-               "DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci ENGINE= " . $tableStatus[1] . " " .
-               "COMMENT='" . $tableStatus[17] . "'";
+                $colDef .
+                $primaryKeyDef .
+                ") " . strstr($res[0][1], 'ENGINE=');
     }
 
     /**
@@ -694,5 +710,59 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
          */
         $config->blSkipViewUsage = null;
         $config->setConfigParam('blSkipViewUsage', 1);
+    }
+
+    /**
+     * @param string $table
+     * @return string
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public static function getTableDefinition(string $table): string
+    {
+        $tableDefinition = self::$tableDefition[$table];
+        if (!$tableDefinition) {
+            $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
+            $tableDefinition = $res[0][1];
+            self::$tableDefition[$table] = $tableDefinition;
+        }
+        return $tableDefinition;
+    }
+
+    /**
+     * @param string $table
+     * @return string
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public static function getPrimaryKeyDefinition(string $table): string
+    {
+        $primaryKeyDefinition = self::$primaryKeyDefinition[$table];
+        if (!$primaryKeyDefinition) {
+            $tableDef = self::getTableDefinition($table);
+            if (preg_match('/.*(PRIMARY KEY \(.*\)).*/', $tableDef, $matches)) {
+                $primaryKeyDefinition = $matches[1];
+            }
+            self::$primaryKeyDefinition[$table] = $primaryKeyDefinition;
+        }
+        return $primaryKeyDefinition;
+    }
+
+    /**
+     * @param string $table
+     * @return array
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public static function getPrimaryKeyColumns($table): array {
+        $primaryKeyColumns = self::$primaryKeyColumns[$table];
+        if (!$primaryKeyColumns) {
+            $primaryKeyDef = self::getPrimaryKeyDefinition($table);
+            if (preg_match('/PRIMARY KEY \((.*)\)/', $primaryKeyDef, $matches)) {
+                $primaryKeyColumns = explode(',', $matches[1]);
+                self::$primaryKeyColumns[$table] = $primaryKeyColumns;
+            }
+        }
+        return $primaryKeyColumns;
     }
 }

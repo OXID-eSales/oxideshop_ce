@@ -86,5 +86,11 @@
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "oxid-esales/oxideshop-composer-plugin": true,
+            "oxid-esales/oxideshop-unified-namespace-generator": true
+        }
     }
 }

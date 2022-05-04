@@ -47,13 +47,7 @@ register_shutdown_function(
                           " [message {$errorMessage}]";
 
             /** write to log */
-            $time = microtime(true);
-            $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-            $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
-            $timestamp = $date->format('d M H:i:s.u Y');
-            $message = "[$timestamp] " . $logMessage . PHP_EOL;
-            file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
-
+            \OxidEsales\EshopCommunity\Core\Registry::getLogger()->critical($logMessage);
 
             $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
             if (!$bootstrapConfigFileReader->isDebugMode()) {

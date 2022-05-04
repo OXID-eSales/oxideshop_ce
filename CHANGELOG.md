@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix cascading for deletion in Manufacturer- and Vendor-Model [#0006880](https://bugs.oxid-esales.com/view.php?id=6880)
 - Add CSRF check to user creation [#0007059](https://bugs.oxid-esales.com/view.php?id=7059)
 - Error in module chain generation on installing legacy module after module with namespaces
+- Allow OXID-eSales plugins by default.
 
 ## [6.10.1] - 2022-02-02
 
@@ -72,7 +73,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Core\Model\BaseModel` methods:
   - `assignRecord()`
   - `getRecordByQuery()`
-  
+
+## [6.9.1] - Unreleased
+
+### Fixed
+- Text message on `Payment Methods > RDFa` tab
+- Docblock and other coding style fixes:
+    - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
+- Allow OXID-eSales plugins by default.
+
 ## [6.9.0] - 2021-07-27
 
 ### Added

@@ -78,19 +78,6 @@ jobs:
           docker-compose down
           sleep 2
 
-  setup_php:
-    strategy:
-      matrix:
-        php: [ '8.0', '8.1' ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          coverage: xdebug
-          extensions: gd, zip
-
   unit_tests:
     strategy:
       matrix:

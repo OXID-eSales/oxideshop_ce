@@ -176,14 +176,6 @@ jobs:
           make up
           sleep 2
 
-      - name: Setup Codeception
-        run: |
-          mkdir source/tmp_codeception
-          mkdir source/codeception_screens
-          chmod a+w source
-          chmod a+w source/tmp_codeception
-          chmod a+w source/codeception_screens
-
       - name: Run tests
         continue-on-error: true
         run: |
@@ -191,9 +183,6 @@ jobs:
             -e SELENIUM_SERVER_HOST=selenium \
             -e BROWSER_NAME=chrome \
             -e RETRY_TIMES_AFTER_TEST_FAIL=2 \
-            -e TMP_PATH=/var/www/tmp_codeception \
-            -e SCREEN_SHOTS_PATH=/var/www/codeception_screens \
-            -e CC_SCREEN_SHOTS_PATH=/var/www/codeception_screens \
             php php vendor/bin/runtests-codeception | tee codeception_phpunit_log.txt
 
       - name: Upload PHPUnit Log
@@ -204,11 +193,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      - name: Upload Codeception Screenshots
+      - name: Upload Codeception Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: codeception-screenshots
-          path: source/codeception_screens
+          name: codeception-artifacts
+          path: /var/www/tests/Codeception/_output/*
           if-no-files-found: ignore
           retention-days: 7
 

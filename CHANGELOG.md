@@ -49,7 +49,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Core\Model\BaseModel` methods:
   - `assignRecord()`
   - `getRecordByQuery()`
-  
+
+## [6.9.1] - Unreleased
+
+### Fixed
+- Text message on `Payment Methods > RDFa` tab
+- Docblock and other coding style fixes:
+    - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
+- Allow OXID-eSales plugins by default.
+
 ## [6.9.0] - 2021-07-27
 
 ### Added

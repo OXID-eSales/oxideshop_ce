@@ -204,7 +204,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: codeception-artifacts
-          path: /var/www/tests/Codeception/_output/*
+          path: source/tests/Codeception/_output/*
           if-no-files-found: ignore
           retention-days: 7
 

@@ -83,6 +83,7 @@ jobs:
       matrix:
         php: [ '8.0', '8.1' ]
         mysql: [ '5.7', '8.0' ]
+      fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
     steps:
@@ -122,6 +123,7 @@ jobs:
       matrix:
         php: [ '8.0', '8.1' ]
         mysql: [ '5.7', '8.0' ]
+      fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
     steps:
@@ -161,6 +163,7 @@ jobs:
       matrix:
         php: [ '8.0', '8.1' ]
         mysql: [ '5.7', '8.0' ]
+      fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
     steps:
@@ -210,6 +213,7 @@ jobs:
       matrix:
         php: [ '8.0', '8.1' ]
         mysql: [ '5.7', '8.0' ]
+      fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
     steps:

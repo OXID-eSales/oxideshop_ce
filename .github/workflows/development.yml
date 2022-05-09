@@ -107,7 +107,7 @@ jobs:
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=unit,Unit \
             php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_phpunit_log.txt; then exit 1; fi
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
@@ -147,7 +147,7 @@ jobs:
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=integration,Integration \
             php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_phpunit_log.txt; then exit 1; fi
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
@@ -187,7 +187,7 @@ jobs:
             -e SELENIUM_SERVER_HOST=selenium \
             -e BROWSER_NAME=chrome \
             php php vendor/bin/runtests-codeception | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_phpunit_log.txt; then exit 1; fi
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
@@ -235,7 +235,7 @@ jobs:
           docker-compose exec -T \
             -e SELENIUM_SERVER_IP=seleniumfirefox \
             php php vendor/bin/runtests-selenium | tee selenium_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' selenium_phpunit_log.txt; then exit 1; fi
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' selenium_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()

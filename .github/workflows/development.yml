@@ -60,7 +60,7 @@ jobs:
             source/source/config.inc.php
 
       - name: Create logs directory
-        run: mkdir logs
+        run: mkdir -p logs
 
       - name: Start containers
         run: |

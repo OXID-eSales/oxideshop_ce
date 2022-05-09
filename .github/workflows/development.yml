@@ -21,8 +21,8 @@ jobs:
       - name: Clone testing environment master
         run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
 
-      - name: Clone the shop (${GITHUB_REF##*/})
-        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${GITHUB_REF##*/} --single-branch source
+      - name: Clone the shop (${{ env.BRANCH_NAME }})
+        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ env.BRANCH_NAME }} --single-branch source
 
       - name: Cache current installation
         uses: actions/cache@v2

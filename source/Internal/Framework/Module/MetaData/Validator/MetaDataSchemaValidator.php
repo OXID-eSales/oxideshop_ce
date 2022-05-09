@@ -14,6 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface;
 
+/**
+ * @deprecated will be removed in v7.0
+ */
 class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 {
     /**

@@ -80,6 +80,7 @@ parameters:
       settings: [group, name, type, value, constraints, position]
       12: events
       13: smartyPluginDirectories
+  deprecated: ~
 
 services:
   _defaults:
@@ -95,14 +96,17 @@ services:
 
   oxid_esales.module.metadata.datamapper.metadatamapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper
+    deprecated: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator
+    deprecated: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider
     arguments:
       - '%oxid_esales.module.metadata.service.metadata_schemata%'
+    deprecated: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer

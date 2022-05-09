@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 
+/**
+ * @deprecated will be removed in v7.0
+ */
 class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
 {
     /**

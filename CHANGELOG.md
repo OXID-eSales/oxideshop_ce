@@ -18,13 +18,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Updated Symfony components
 
 ### Deprecated
+- Support for NAME constants in Event classes (`*Event::NAME`)
+- Validation for `metaDataFilePath` in metadata
 - Method:
     - `Application\Model\User::getUtilsObjectInstance()`
 - Services:
   - `utility.context.admin_log_file_path`
   - `utility.context.log_file_path`
   - `utility.context.log_level`
-- Support for NAME constants in Event classes (`*Event::NAME`)
+  - `oxid_esales.module.metadata.datamapper.metadatamapper`
+- Interfaces:
+  - `Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface`
+  - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
+  - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
 
 ## [6.10.2] - 2022-05-17
 

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - System requirements:
   - PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php). 
 - Respond with 404 error code on controller or method miss [PR-715](https://github.com/OXID-eSales/oxideshop_ce/pull/715)
+- Change type of default value for iIndex parameter in ``OxidProfessionalServices\Bergspezl\Model\Article::getZoomPictureUrl`` [PR-893](https://github.com/OXID-eSales/oxideshop_ce/pull/893)
 
 ### Fixed
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type

@@ -3160,9 +3160,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    public function getZoomPictureUrl($iIndex = '')
+    public function getZoomPictureUrl($iIndex = 0)
     {
-        $iIndex = (int) $iIndex;
         if ($iIndex > 0 && !$this->isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
             $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
             $sSize = Registry::getConfig()->getConfigParam("sZoomImageSize");

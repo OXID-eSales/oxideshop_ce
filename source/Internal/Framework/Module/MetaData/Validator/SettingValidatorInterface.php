@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator;
 
+/**
+ * @deprecated will be removed in v7.0
+ */
 interface SettingValidatorInterface
 {
     /**

@@ -7,27 +7,26 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class MetaDataMapperTest extends TestCase
+final class MetaDataMapperTest extends TestCase
 {
-    private $metaDataValidatorStub;
+    use ContainerTrait;
 
     /**
      * @dataProvider missingMetaDataKeysDataProvider
      *
      * @param array $invalidData
      */
-    public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData)
+    public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
-        $metaDataDataMapper->fromData($invalidData);
+        $this->get(MetaDataToModuleConfigurationDataMapperInterface::class)->fromData($invalidData);
     }
 
     public function missingMetaDataKeysDataProvider(): array
@@ -41,11 +40,10 @@ class MetaDataMapperTest extends TestCase
 
     public function testSettingPositionIsConvertedToInt(): void
     {
-        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
-        $moduleConfiguration = $metaDataDataMapper->fromData(
+        $moduleConfiguration = $this->get(MetaDataToModuleConfigurationDataMapperInterface::class)->fromData(
             [
-                'metaDataVersion' => '1.1',
-                'metaDataFilePath' => 'sdasd',
+                'metaDataVersion' => '2.1',
+                'metaDataFilePath' => 'some-path',
                 'moduleData' => [
                     'id' => 'some',
                     'settings' => [
@@ -64,15 +62,5 @@ class MetaDataMapperTest extends TestCase
             2,
             $moduleConfiguration->getModuleSetting('setting')->getPositionInGroup()
         );
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->metaDataValidatorStub = $this->getMockBuilder(MetaDataSchemaValidatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->metaDataValidatorStub->method('validate');
     }
 }

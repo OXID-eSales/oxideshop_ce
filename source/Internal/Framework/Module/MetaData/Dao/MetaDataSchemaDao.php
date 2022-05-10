@@ -14,12 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 
 class MetaDataSchemaDao implements MetaDataSchemaDaoInterface
 {
-    private array $supportedMetadataSchemas;
-
     public function __construct(
-        array $supportedMetadataSchemas
+        private array $supportedMetadataSchemas,
     ) {
-        $this->supportedMetadataSchemas = $supportedMetadataSchemas;
     }
 
     /**
@@ -34,7 +31,7 @@ class MetaDataSchemaDao implements MetaDataSchemaDaoInterface
         $sections = [];
         foreach ($this->supportedMetadataSchemas[$metaDataVersion] as $key => $value) {
             $keys[] = is_int($key) ? $value : $key;
-            if (is_string($key)) {
+            if (\is_string($key)) {
                 $sections[$key] = $value;
             }
         }

@@ -34,11 +34,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     public const METADATA_TEMPLATES = 'templates';
     public const METADATA_SETTINGS = 'settings';
     public const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
-    public const METADATA_FILEPATH = 'metaDataFilePath';
-    /**
-     * @deprecated will be removed in v7.0
-     */
-    public const METADATA_FILEPATH = 'metaDataFilePath';
 
     /**
      * @var string
@@ -65,9 +60,8 @@ class MetaDataProvider implements MetaDataProviderInterface
             throw new \InvalidArgumentException('File ' . $filePath . ' is not readable or not even a file.');
         }
         $this->filePath = $filePath;
-        $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
 
-        return $this->addFilePathToData($normalizedMetaData);
+        return $this->getNormalizedMetaDataFileContent();
     }
 
     /**
@@ -98,18 +92,6 @@ class MetaDataProvider implements MetaDataProviderInterface
             static::METADATA_METADATA_VERSION => $metadataVersion,
             static::METADATA_MODULE_DATA      => $normalizedMetaData,
         ];
-    }
-
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
-    private function addFilePathToData(array $normalizedMetaData): array
-    {
-        $normalizedMetaData[static::METADATA_FILEPATH] = $this->filePath;
-
-        return $normalizedMetaData;
     }
 
     /**

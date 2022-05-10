@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\SchemaValidator;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,7 @@ class SchemaValidatorTest extends TestCase
 {
     use ContainerTrait;
 
-    private MetaDataSchemaValidatorInterface $validator;
+    private SchemaValidator $validator;
 
     protected function setUp(): void
     {
@@ -28,25 +29,44 @@ class SchemaValidatorTest extends TestCase
 
         $container = (new TestContainerFactory())->create();
         $container->compile();
-        $this->validator = $this->get(MetaDataSchemaValidatorInterface::class);
+        $this->validator = new SchemaValidator(
+            $this->get(MetaDataSchemaDaoInterface::class)
+        );
     }
 
     public function testValidateWithInvalidMetadataVersion(): void
     {
+        $metaData = [
+            'metaDataVersion' => 'wrong-version',
+            'moduleData' => [],
+        ];
+
         $this->expectException(UnsupportedMetaDataVersionException::class);
 
-        $this->validator->validate('some-path', 'wrong-version', []);
+        $this->validator->validate($metaData);
     }
 
     public function testValidateWithInvalidModuleDataKey(): void
     {
+        $metaData = [
+            'metaDataVersion' => '2.1',
+            'moduleData' => [
+                'wrong-key-name' => 123,
+            ],
+        ];
+
         $this->expectException(UnsupportedMetaDataKeyException::class);
 
-        $this->validator->validate('some-path', '2.1', ['wrong-key-name' => 123]);
+        $this->validator->validate($metaData);
     }
 
     public function testValidateWithValidMetaData(): void
     {
-        $this->validator->validate('some-path', '2.1', []);
+        $metaData = [
+            'metaDataVersion' => '2.1',
+            'moduleData' => [],
+        ];
+
+        $this->validator->validate($metaData);
     }
 }

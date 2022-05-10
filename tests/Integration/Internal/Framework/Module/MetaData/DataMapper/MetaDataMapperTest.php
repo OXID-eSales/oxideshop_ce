@@ -43,7 +43,6 @@ final class MetaDataMapperTest extends TestCase
         $moduleConfiguration = $this->get(MetaDataToModuleConfigurationDataMapperInterface::class)->fromData(
             [
                 'metaDataVersion' => '2.1',
-                'metaDataFilePath' => 'some-path',
                 'moduleData' => [
                     'id' => 'some',
                     'settings' => [

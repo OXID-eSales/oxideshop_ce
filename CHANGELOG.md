@@ -39,6 +39,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `utility.context.log_file_path`
   - `utility.context.log_level:`
   - `utility.context.admin_log_file_path`
+  - `oxid_esales.module.metadata.datamapper.metadatamapper`
+- Interfaces:
+  - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
+  - `Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface`
+  - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
 
 ## [7.0.0-rc.1] - 2021-07-07
 

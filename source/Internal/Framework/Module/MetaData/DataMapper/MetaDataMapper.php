@@ -17,14 +17,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
 class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 {
-    public function __construct(private MetaDataSchemaValidatorInterface $validator)
+    public function __construct(private MetaDataValidatorInterface $schemaValidator)
     {
     }
 
@@ -36,13 +36,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
      */
     public function fromData(array $metaData): ModuleConfiguration
     {
-        $this->validateParameterFormat($metaData);
-
-        $this->validator->validate(
-            $metaData[MetaDataProvider::METADATA_FILEPATH],
-            $metaData[MetaDataProvider::METADATA_METADATA_VERSION],
-            $metaData[MetaDataProvider::METADATA_MODULE_DATA]
-        );
+        $this->schemaValidator->validate($metaData);
 
         $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
 
@@ -61,9 +55,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);
         }
 
-        $moduleConfiguration = $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
-
-        return $moduleConfiguration;
+        return $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
     }
 
     /**
@@ -143,24 +135,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         }
 
         return $this->mapSettings($moduleConfiguration, $moduleData);
-    }
-
-    /**
-     * @param array $data
-     */
-    private function validateParameterFormat(array $data)
-    {
-        $mandatoryKeys = [
-            MetaDataProvider::METADATA_METADATA_VERSION,
-            MetaDataProvider::METADATA_MODULE_DATA,
-        ];
-        foreach ($mandatoryKeys as $mandatoryKey) {
-            if (false === \array_key_exists($mandatoryKey, $data)) {
-                throw new \InvalidArgumentException(
-                    'The key "' . $mandatoryKey . '" must be present in the array passed in the parameter'
-                );
-            }
-        }
     }
 
     /**

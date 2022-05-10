@@ -10,11 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemaDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\SchemaValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -148,10 +147,8 @@ final class SchemaValidatorTest extends TestCase
     private function getValidator(): SchemaValidator
     {
         return new SchemaValidator(
-            new MetaDataSchemaValidator(
-                new MetaDataSchemataProvider(
-                    $this->metaDataSchema
-                )
+            new MetaDataSchemaDao(
+                $this->metaDataSchema
             )
         );
     }

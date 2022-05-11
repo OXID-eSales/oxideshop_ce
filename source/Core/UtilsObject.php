@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
  * Object Factory implementation (oxNew() method is implemented in this class).
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class UtilsObject
 {

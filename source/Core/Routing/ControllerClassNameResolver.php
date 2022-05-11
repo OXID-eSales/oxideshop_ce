@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
  * It looks up map from ShopControllerMapProvider and if no match is found checks ModuleControllerMapProvider.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ControllerClassNameResolver implements ClassNameResolverInterface
 {

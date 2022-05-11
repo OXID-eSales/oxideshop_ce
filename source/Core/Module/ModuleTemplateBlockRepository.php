@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  * Provides a way to get content from module template block file.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockRepository
 {

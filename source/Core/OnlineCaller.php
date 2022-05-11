@@ -14,7 +14,6 @@ use Exception;
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */

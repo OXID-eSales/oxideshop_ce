@@ -15,7 +15,6 @@ namespace OxidEsales\EshopCommunity\Core;
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */

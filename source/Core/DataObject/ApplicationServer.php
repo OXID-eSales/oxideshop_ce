@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core\DataObject;
  * Class used as entity for server node information.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */

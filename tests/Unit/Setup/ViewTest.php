@@ -155,18 +155,33 @@ class ViewTest extends \OxidTestCase
         $this->assertTrue($oSetupView->isDeletedSetup($blDelSetupDir, $aDB));
     }
 
-    /**
-     * Testing view::getReqInfoUrl()
-     */
-    public function testGetReqInfoUrl()
+    public function testGetReqInfoUrlWillReturnStringParsableAsUrl(): void
     {
-        $sUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
+        $url = (new View())->getReqInfoUrl('', false);
 
-        $oSetupView = new View();
-        $this->assertEquals($sUrl . "#php", $oSetupView->getReqInfoUrl("php_version", false));
-        $this->assertEquals($sUrl . "#web-server", $oSetupView->getReqInfoUrl("mod_rewrite", false));
-        $this->assertEquals($sUrl . "#database", $oSetupView->getReqInfoUrl("mysql_version", false));
-        $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
+        $this->assertTrue(
+            \array_key_exists('scheme', \parse_url($url))
+        );
+    }
+
+    public function testGetReqInfoUrlWithoutPrintWillPassParameter(): void
+    {
+        $parameter = 'php_version';
+        $anchor = '#php';
+
+        $url = (new View())->getReqInfoUrl($parameter, false);
+
+        $this->assertStringContainsString($anchor, $url);
+    }
+
+    public function testGetReqInfoUrlWithPrint(): void
+    {
+        $parameter = 'php_version';
+        $anchor = '#php';
+
+        (new View())->getReqInfoUrl($parameter);
+
+        $this->expectOutputRegex("/$anchor/");
     }
 
     /**

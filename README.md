@@ -19,7 +19,7 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 
 #### Compilation installation
 
-For full installation instructions, please check the [OXID eShop compilation installation manual](https://docs.oxid-esales.com/developer/en/6.1/getting_started/installation/eshop_installation.html).
+For full installation instructions, please check the [OXID eShop compilation installation manual](https://docs.oxid-esales.com/developer/en/6.3/getting_started/installation/eshop_installation.html).
 
 #### Installation for Contributors
 
@@ -31,15 +31,14 @@ You can easily enable code completion in your IDE by installing [this script](ht
 
 ### Useful links
 
-* Project home page - https://oxidforge.org
 * Vendor home page - https://www.oxid-esales.com
 * Bug tracker - https://bugs.oxid-esales.com
-* VM and SDK - https://github.com/OXID-eSales/oxvm_eshop
-
+* VM and SDK:
+  - https://github.com/OXID-eSales/oxvm_eshop
+  - https://github.com/OXID-eSales/docker-eshop-sdk
 
 ### Contact us
 
  * [Open a new issue on our bug tracker](https://bugs.oxid-esales.com)
  * [Join our community forum](https://forum.oxid-esales.com/)
- * [Join our mailing list](https://oxidforge.org/en/mailinglists)
  * [Use the contact form](https://www.oxid-esales.com/en/contact/contact-us.html)

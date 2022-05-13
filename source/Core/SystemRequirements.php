@@ -106,14 +106,14 @@ class SystemRequirements
      *
      * @var string
      */
-    protected $_sReqInfoUrl = "https://docs.oxid-esales.com/eshop/en/6.3/installation/new-installation/server-and-system-requirements.html";
+    protected $_sReqInfoUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
 
     /**
      * Installation preparation info url
      *
      * @var string
      */
-    protected $_sPreparationInfoUrl = "https://docs.oxid-esales.com/eshop/en/6.3/installation/new-installation/preparing-for-installation.html";
+    protected $_sPreparationInfoUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/preparing-for-installation.html";
 
     /**
      * Module or system configuration mapping with installation requirements info url anchor

@@ -17,7 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
  *
  * @deprecated since v6.4.0 (2019-02-14); Use service "OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface".
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 {

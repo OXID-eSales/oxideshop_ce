@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core;
  * Calculates Shop id from request data or shop url.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ShopIdCalculator
 {

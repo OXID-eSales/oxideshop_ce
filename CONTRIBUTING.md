@@ -4,7 +4,7 @@ OXID eShop is available under two different licenses, GPLv3 and a commercial lic
 
 That's why, before contributing for the first time, you must <a href="https://cla-assistant.io/OXID-eSales/oxideshop_ce">sign the Contributor License Agreement</a>.
 You can find more information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ:
-https://oxidforge.org/en/oxid-contribution-contributor-agreement-faq
+https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/contribution.html
 
 ## Process
 
@@ -27,11 +27,11 @@ versioning of the *compilation*. The reason for this is obvious: We want to see,
 go to the next release and releases means that we publish a new *compilation* - although we
 might have several new versions of the *component* in between.
 
-For a better understanding take a look at the [release plan](https://oxidforge.org/en/release-plan) - as example the compilation version v6.1.0 contains the v6.3.0 version from this repository.
+Please take a look at our [release log](https://docs.oxid-esales.com/eshop/en/latest/releases/index.html) to see OXID eShop versioning in practice. 
 
-Of the many different branches only three types are relevant for you as a contributor in the *\<github_username\>/oxideshop_ce* repository:
+Among many, the following types of branches are relevant to you as a contributor in the *\<github_username\>/oxideshop_ce* repository:
 
-* The **next major version** branch is always named **master**: All new features including compatibility breaking changes will be developed here as well as bug fixes.
+* The **next major version** with a name like **b-{next major}.x** All new features including compatibility breaking changes will be developed here as well as bug fixes.
 * The **next minor version** branch with a name like **b-{current major}.x** for the currently maintained major version. Only Backwards compatible changes as well as new compatible features are possible.
 * The **current patch** branch with a name like **b-{current major}.{current minor}.x**: bug fixes only. (will only be created if needed)
 * The **previous patch** branch with a name like **b-{current major}.{previous minor}.x**: critical bug fixes only. (will only be created if needed)
@@ -40,7 +40,7 @@ In general, contributions can be taken over for all branches. Bug fixes committe
 
 ### Finding the best branch for a pull request
 
-* So you have found a security issue: do not create a pull request please, but instead follow the the security procedures as outlined here https://oxidforge.org/en/security - thank you!
+* So you have found a security issue: do not create a pull request please, but instead follow the security procedures as outlined here https://docs.oxid-esales.com/en/security/security.html - thank you!
 
 * You have a great idea and even a working prototype for a nice new feature/improvement, but it will break the shops backwards compatibility: **master** is the best spot for you.
 
@@ -93,12 +93,10 @@ Now you'll be asked for signing an OXID Contributor Agreement (this has to be do
 ![Image alt](git_contributor-activity.png)
 
 When sending your pull request, please provide a clear, meaningful and detailed information what your code is about and what it will do, best including a screen shot if possible.
-If you want to discuss your contribution and your code before committing it, please go to the forums or Slack channel: https://oxidforge.org/en/community-en.
 
 You will find technical help with Git and GitHub on this place:<br>
 https://help.github.com/
 
 ## Code quality
 
-Please find a collection of helpful development tools as well as a link to the OXID specific Coding style guidelines at https://oxidforge.org/en/coding-standards.html.
-We also kindly request to PHP Unit tests for your code.
+Please find an overview of helpful development tools, coding style and code quality guidelines on the corresponding [documentation page](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/quality.html).

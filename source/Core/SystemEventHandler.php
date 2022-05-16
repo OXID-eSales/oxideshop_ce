@@ -14,7 +14,6 @@ use OxidEsales\Eshop\Core\Registry;
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class SystemEventHandler
 {

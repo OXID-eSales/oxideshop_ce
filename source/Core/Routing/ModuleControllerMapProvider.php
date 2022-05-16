@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
  * Provide the controller mappings from the metadata of all active modules.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class ModuleControllerMapProvider implements ControllerMapProviderInterface
 {

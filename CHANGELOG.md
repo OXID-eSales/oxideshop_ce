@@ -1505,10 +1505,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Azure theme is deprecated and in next release it will be removed from compilation.
-- Deprecated classes and methods: Search for the notation `@deprecated` in the sourcecode. At a later time, please
-  use [this overview of source code documentation](https://oxidforge.org/en/source-code-documentation-overview),
-  pick the version you need and follow the link to it. On the navigation to the left hand side you will find a link
-  called `Deprecated list` which leads you to the wanted information.
+- Deprecated classes and methods: Search for the notation `@deprecated` in the sourcecode.
 
 ### Removed
 - config.inc.php options `iUtfMode`, `sDefaultDatabaseConnection` and `blSkipEuroReplace` because shop is utf-8.
@@ -1520,28 +1517,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.3] - 2017-03-14
 
-See
-- [OXID eShop v6.0.0 Beta3 is published](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta3-is-published.html)
-
-
 ## [6.0-beta.2] - 2017-12-13
-
-See
-- [OXID eShop v6.0.0 Beta2 is published](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta2-published.html)
-
 
 ## [6.0-beta.1] - 2016-11-30
 
-See
-- [OXID eShop v6.0.0 Beta1 released](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-released.html)
-- [OXID eShop v6.0.0 Beta1: Overview of Changes](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-overview-of-changes.html)
-- [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v7.0.0-rc.1
 [6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...b-6.5.x
 [6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.10.0
+[6.9.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...b-6.3.x
 [6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
 [6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2

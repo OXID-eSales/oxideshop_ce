@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core\Service;
  * Manages application server information.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface
 {

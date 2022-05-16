@@ -21,12 +21,7 @@ class BetaNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCont
      */
     protected $_sThisTemplate = 'widget/header/betanote.tpl';
 
-    /**
-     * Beta Note link value. Has default value
-     *
-     * @var string
-     */
-    protected $_sBetaNoteLink = 'https://oxidforge.org/en/beta-releases.html';
+    protected $_sBetaNoteLink = '';
 
     /**
      * Gets beta note link

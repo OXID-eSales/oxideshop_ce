@@ -18,7 +18,6 @@ use OxidEsales\Eshop\Core\Theme;
  * @see        'Internal\Framework\Module' package
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplatePathCalculator
 {

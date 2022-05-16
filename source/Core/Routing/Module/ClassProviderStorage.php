@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * @deprecated since v6.4.0 (2019-03-22); Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class ClassProviderStorage implements ClassProviderStorageInterface
 {

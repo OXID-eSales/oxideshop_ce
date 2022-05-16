@@ -13,7 +13,6 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
  * Those controllers are specified e.g. inside a form action with a controller key which is mapped to its class.
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface
 {

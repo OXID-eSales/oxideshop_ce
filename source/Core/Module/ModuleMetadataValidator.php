@@ -16,7 +16,6 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
  *
  * @deprecated since v6.4.0 (2019-05-24); Validation was moved to Internal\Framework\Module package and will be executed during the module activation.
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModuleValidator
 {

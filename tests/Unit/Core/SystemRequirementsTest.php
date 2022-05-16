@@ -89,20 +89,43 @@ class SystemRequirementsTest extends \OxidTestCase
         $this->assertTrue($systemRequirementsMock->getSysReqStatus());
     }
 
-    /**
-     * Testing SystemRequirements::getReqInfoUrl()
-     *
-     * @return null
-     */
-    public function testGetReqInfoUrl()
+    public function testGetReqInfoUrlWillReturnStringParsableAsUrl(): void
     {
-        $sUrl = "https://docs.oxid-esales.com/eshop/en/latest/installation/new-installation/server-and-system-requirements.html";
-        $systemRequirements = new SystemRequirements();
+        $url = (new SystemRequirements())->getReqInfoUrl('');
 
-        $this->assertEquals($sUrl . "#php", $systemRequirements->getReqInfoUrl("php_version"));
-        $this->assertEquals($sUrl . "#web-server", $systemRequirements->getReqInfoUrl("mod_rewrite"));
-        $this->assertEquals($sUrl . "#database", $systemRequirements->getReqInfoUrl("mysql_version"));
-        $this->assertEquals($sUrl, $systemRequirements->getReqInfoUrl("none"));
+        $this->assertTrue(
+            \array_key_exists('scheme', \parse_url($url))
+        );
+    }
+
+    public function testGetReqInfoUrlWithKnownParameterWillAddAnchorToUrl(): void
+    {
+        $parameter = 'php_version';
+        $anchor = '#php';
+
+        $url = (new SystemRequirements())->getReqInfoUrl($parameter);
+
+        $this->assertStringContainsString($anchor, $url);
+    }
+
+    public function testGetReqInfoUrlWithServerPermissionsParameterWillAddAnchorToUrl(): void
+    {
+        $parameter = 'server_permissions';
+        $anchor = '#schritt-customising-file-and-directory-permissions';
+
+        $url = (new SystemRequirements())->getReqInfoUrl($parameter);
+
+        $this->assertStringContainsString($anchor, $url);
+    }
+
+    public function testGetReqInfoUrlWithUnknownParameterWillReturnUnchangedUrl(): void
+    {
+        $unknownParameter = uniqid('parameter-', true);
+
+        $url1 = (new SystemRequirements())->getReqInfoUrl('');
+        $url2 = (new SystemRequirements())->getReqInfoUrl($unknownParameter);
+
+        $this->assertEquals($url1, $url2);
     }
 
     /**

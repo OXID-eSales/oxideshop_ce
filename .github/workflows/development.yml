@@ -238,6 +238,12 @@ jobs:
           make up
           sleep 2
 
+      - name: Selenium Setup
+        run: |
+          mkdir -p source/selenium_screens
+          chmod a+w source
+          chmod a+w source/selenium_screens
+
       - name: Run tests
         run: |
           docker-compose exec -T \

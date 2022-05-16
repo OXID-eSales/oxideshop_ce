@@ -18,7 +18,6 @@ use Psr\Container\ContainerInterface;
  * @package  OxidEsales\EshopCommunity\Core\Module
  *
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @deprecated 6.6.0
  */

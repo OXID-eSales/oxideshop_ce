@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * @deprecated 6.6.0
  * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockPathFormatter
 {

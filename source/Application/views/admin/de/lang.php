@@ -1975,7 +1975,7 @@ $aLang = [
     'OXDIAG_SHOP_ORIGINAL'                => 'Dieser OXID eShop wurde nicht verändert und ist original',
 
     'OXDIAG_MODIFIEDHINTS1'                       => 'OXID eShop kann durch Module funktional erweitert werden, ohne dass dabei die  ausgelieferten Dateien angepasst werden müssen. Shopdateien sollten niemals geändert werden. Siehe dazu unsere englischen <a href="http://blog.oxid-esales.com/2009/02/how-extend-oxid-eshop-with-modules-part-1/" target=_blank>Tutorials</a>.',
-    'OXDIAG_MODIFIEDHINTS2'                       => 'Seit OXID eShop 4.2.0 ist es möglich, <a href="https://oxidforge.org/en/oxid-eshop-version-4-2-0.html#New_Features" target=_blank>eigene Templates zu verwenden</a>, ohne die ausgelieferten Templates zu ändern.',
+    'OXDIAG_MODIFIEDHINTS2'                       => 'Es ist möglich eigene Templates zu verwenden, ohne die ausgelieferten Templates zu ändern.',
     'OXDIAG_VERSIONMISMATCHHINTS'                 => 'Offenbar schlug ein Update oder auch mehrere fehl. Klicken Sie auf den Details-Link, um mehr Informationen zu jeder einzelnen Datei zu erhalten. Eine übrig gebliebene Datei, die nicht mehr länger zum OXID eShop gehört, kann auch ein <u>möglicher</u> Grund für eine Versionsungleichheit sein. Informationen zum Update finden Sie in unserer <a href="http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren" target=_blank>Dokumentation und Hilfe</a>.',
 
 

@@ -241,6 +241,7 @@ jobs:
       - name: Selenium Setup
         run: |
           mkdir -p source/selenium_screens
+          chmod a+w source
           chmod a+w source/selenium_screens
 
       - name: Run tests

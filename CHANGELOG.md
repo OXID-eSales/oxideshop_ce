@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.10.2] - Unreleased
+## [6.10.2] - 2022-05-17
 
 ### Fixed
 - Error in coupon series during missconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)

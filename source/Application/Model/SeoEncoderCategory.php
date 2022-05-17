@@ -7,7 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 
 /**
  * Seo encoder category
@@ -221,29 +222,25 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * deletes Category seo entries
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
+     * @param Category $category
      */
-    public function onDeleteCategory($oCategory)
+    public function onDeleteCategory($category)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $params = [
-            ':oxobjectid' => $oCategory->getId()
-        ];
+        $this->setRelatedToCategorySeoUrlsAsExpired($category);
 
-        $oDb->execute("update oxseo, (select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory') as test set oxseo.oxexpired=1 where oxseo.oxseourl like concat(test.oxseourl, '%') and (oxtype = 'oxcategory' or oxtype = 'oxarticle')", $params);
-        $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
-            ':oxparams' => $oCategory->getId()
+        $database = DatabaseProvider::getDb();
+
+        $database->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
+            ':oxparams' => $category->getId()
         ]);
-        $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
-            ':oxobjectid' => $oCategory->getId()
+        $database->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
+            ':oxobjectid' => $category->getId()
         ]);
-        $oDb->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $oCategory->getId()
+        $database->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
+            ':oxobjectid' => $category->getId()
         ]);
-        $oDb->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $oCategory->getId()
+        $database->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
+            ':oxobjectid' => $category->getId()
         ]);
     }
 
@@ -264,5 +261,25 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         }
 
         return $sSeoUrl;
+    }
+
+    private function setRelatedToCategorySeoUrlsAsExpired(Category $category): void
+    {
+        $sql = "
+            select oxident
+            from oxseo
+            where oxseo.oxseourl like concat((select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'), '%') 
+              and (oxtype = 'oxcategory' or oxtype = 'oxarticle')
+          ";
+
+        $result = DatabaseProvider::getDb()->select($sql, [':oxobjectid' => $category->getId()]);
+
+        $urlIdents = [];
+        foreach ($result->fetchAll() as $row)
+        {
+            $urlIdents[] = $row[0];
+        }
+
+        DatabaseProvider::getDb()->execute("update oxseo set oxseo.oxexpired=1 where oxseo.oxident in ('" . implode("','", $urlIdents) . "')");
     }
 }

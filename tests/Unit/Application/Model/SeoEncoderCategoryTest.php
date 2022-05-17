@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use modDB;
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Application\Model\Category;
 use \oxTestModules;
 
 class SeoEncoderCategoryTest extends \OxidTestCase
@@ -321,7 +322,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxtype = 'oxarticle' and oxparams = 'obj_id' "));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseohistory where oxobjectid = 'obj_id'"));
 
-        $oObj = oxNew('oxBase');
+        $oObj = oxNew(Category::class);
         $oObj->setId('obj_id');
 
         $oEncoder = oxNew('oxSeoEncoderCategory');

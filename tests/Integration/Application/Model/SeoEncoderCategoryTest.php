@@ -34,7 +34,9 @@ final class SeoEncoderCategoryTest extends UnitTestCase
     private function assertSeoUrlsAreExpired(): void
     {
         $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
-        $expiredRowsCount = (int) $connection->fetchOne('SELECT COUNT(*) FROM `oxseo` WHERE `OXSEOURL` like "www-some-shop/category-%" AND `OXEXPIRED` = "1";');
+        $expiredRowsCount = (int) $connection->fetchOne(
+            'SELECT COUNT(*) FROM `oxseo` WHERE `OXSEOURL` like "www-some-shop/category-%" AND `OXEXPIRED` = "1";'
+        );
 
         $this->assertEquals($this->getCountOfProductsPerCategory(), $expiredRowsCount);
     }
@@ -43,10 +45,11 @@ final class SeoEncoderCategoryTest extends UnitTestCase
     {
         $baseUrl = uniqid('www.some-shop/', true);
         $seoEncoder = oxNew(SeoEncoder::class);
-        $utils = new UtilsObject();
 
         $category = oxNew(Category::class);
-        $category->setId($utils->generateUId());
+        $category->setId(
+            UtilsObject::getInstance()->generateUId()
+        );
         $category->save();
 
         $categoryUrl = uniqid('www.some-shop/category-', true);
@@ -62,7 +65,7 @@ final class SeoEncoderCategoryTest extends UnitTestCase
         $productCount = $this->getCountOfProductsPerCategory();
         while ($productCount > 0) {
             $seoEncoder->addSeoEntry(
-                $utils->generateUId(),
+                UtilsObject::getInstance()->generateUId(),
                 1,
                 0,
                 $categoryUrl,

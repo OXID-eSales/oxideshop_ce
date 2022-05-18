@@ -1617,7 +1617,14 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('deladr', $untrimmedDeliveryAddress);
         $this->setRequestParameter('blshowshipaddress', true);
 
-        $parent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
+        $parent = $this->getMock(
+            \OxidEsales\Eshop\Application\Controller\FrontendController::class,
+            ['isEnabledPrivateSales']
+        );
+        $parent
+            ->expects($this->any())
+            ->method('isEnabledPrivateSales')
+            ->will($this->returnValue(false));
 
         $userComponent = $this->getMock(
             $this->getProxyClassName("oxcmp_user"),

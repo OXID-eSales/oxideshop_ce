@@ -920,7 +920,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $newUserId;
     }
 
-    public function sendRegistrationEmail(bool $activePrivateSales): void
+    public function sendRegistrationEmail(bool $activePrivateSales = false): void
     {
         $email = oxNew(Email::class);
         if ($activePrivateSales) {

@@ -756,8 +756,8 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             // Individual voucher is not multiplied by article amount
             if (!$oSeries->oxvoucherseries__oxcalculateonce->value) {
                 $oDiscountPrice->multiply($aBasketItem['amount']);
-                $oProductPrice->multiply($aBasketItem['amount']);
             }
+            $oProductPrice->multiply($aBasketItem['amount']);
 
             $oVoucherPrice->add($oDiscountPrice->getBruttoPrice());
             $oProductTotal->add($oProductPrice->getBruttoPrice());

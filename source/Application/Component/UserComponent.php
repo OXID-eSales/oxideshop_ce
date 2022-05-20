@@ -536,14 +536,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // send register eMail
-        //TODO: move into user
         if ((int) Registry::getRequest()->getRequestEscapedParameter('option') == 3) {
-            $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-            if ($blActiveLogin) {
-                $oxEMail->sendRegisterConfirmEmail($oUser);
-            } else {
-                $oxEMail->sendRegisterEmail($oUser);
-            }
+            $oUser->sendRegistrationEmail($blActiveLogin);
         }
 
         // new registered

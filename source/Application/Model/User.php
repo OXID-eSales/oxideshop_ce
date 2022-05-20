@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
@@ -924,6 +925,16 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $newUserId;
     }
 
+    public function sendRegistrationEmail(bool $activePrivateSales = false): void
+    {
+        $email = oxNew(Email::class);
+        if ($activePrivateSales) {
+            $email->sendRegisterConfirmEmail($this);
+        } else {
+            $email->sendRegisterEmail($this);
+        }
+    }
+
     /**
      * Adds user to the group
      *
@@ -1182,7 +1193,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                     // double-opt-in check enabled - sending confirmation email and setting waiting status
                     if ($iOptInStatus != 2) {
                         // sending double-opt-in mail
-                        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
+                        $oEmail = oxNew(Email::class);
                         $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
                     } else {
                         // mail already was sent, so just confirming that

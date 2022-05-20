@@ -387,6 +387,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface`
     - `Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface`
 - Console command for clearing the cache - `oe:cache:clear`
+- Method ` OxidEsales\EshopCommunity\Application\Model\User::sendRegistrationEmail()`
 
 - ### Changed
 - Updated Symfony components

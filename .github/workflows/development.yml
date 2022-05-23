@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         php: [ '7.4', '8.0' ]
-        mysql: [ '5.5', '5.7' ]
+        mysql: [ '5.7' ]
     runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment master
@@ -90,7 +90,7 @@ jobs:
     strategy:
       matrix:
         php: [ '7.4', '8.0' ]
-        mysql: [ '5.5', '5.7' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -130,7 +130,7 @@ jobs:
     strategy:
       matrix:
         php: [ '7.4', '8.0' ]
-        mysql: [ '5.5', '5.7' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -170,7 +170,7 @@ jobs:
     strategy:
       matrix:
         php: [ '7.4', '8.0' ]
-        mysql: [ '5.5', '5.7' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest

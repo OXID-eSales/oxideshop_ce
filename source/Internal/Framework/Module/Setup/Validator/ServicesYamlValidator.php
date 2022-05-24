@@ -84,7 +84,9 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
     private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $definitionKey => $definition) {
-            $container->get($definitionKey);
+            if ($definition->isPublic()) {
+                $container->get($definitionKey);
+            }
         }
     }
 }

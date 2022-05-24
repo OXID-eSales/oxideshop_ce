@@ -9,94 +9,79 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Authentication\Bridge;
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGeneratorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\FallbackTokenGenerator;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder as Container;
+use Psr\Log\LoggerInterface;
 
 final class RandomTokenGeneratorBridgeTest extends TestCase
 {
-    private const FIXTURE_PATH_SHOP = '/Fixtures/shop/';
+    use ContainerTrait;
 
-    private RandomTokenGeneratorBridgeInterface $bridge;
-    private Container $container;
-    private SystemSecurityCheckerInterface $systemSecurityChecker;
-    private string $logFile = __DIR__ . self::FIXTURE_PATH_SHOP . 'log/oxideshop.log';
-
-    protected function setUp(): void
+    public function testGetAlphanumericToken(): void
     {
-        parent::setUp();
+        $length = 32;
 
-        Registry::getConfig()->setConfigParam('sShopDir', __DIR__ . self::FIXTURE_PATH_SHOP);
-        Registry::getConfig()->setConfigParam('sLogLevel', 'warning');
+        $token = $this->get(RandomTokenGeneratorBridgeInterface::class)->getAlphanumericToken($length);
 
-        ContainerFactory::getInstance()->resetContainer();
-        $this->container = (new ContainerBuilder(new BasicContextStub()))->getContainer();
-        $this->mockDependencies();
-        $this->container->compile();
-
-        $this->bridge = $this->container->get(RandomTokenGeneratorBridgeInterface::class);
+        $this->assertEquals($length, strlen($token));
+        $this->assertTrue(ctype_alnum($token));
+        $this->assertFalse(ctype_xdigit($token));
     }
 
-    protected function tearDown(): void
+    public function testGetHexToken(): void
     {
-        parent::tearDown();
+        $length = 32;
 
-        $this->cleanupTestData();
-    }
+        $token = $this->get(RandomTokenGeneratorBridgeInterface::class)->getHexToken($length);
 
-    public function testGetHexTokenWithFallbackWithSourceOfRandomnessWillNotWriteToLog(): void
-    {
-        $logSizeBefore = \filesize($this->logFile);
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(true);
-
-        $this->bridge->getHexTokenWithFallback(32);
-
-        $logSizeAfter = \filesize($this->logFile);
-        $this->assertEquals($logSizeBefore, $logSizeAfter);
-    }
-
-    public function testGetHexTokenWithFallbackWithNoSourceOfRandomnessWillWriteToLog(): void
-    {
-        $logSizeBefore = \filesize($this->logFile);
-        $this->systemSecurityChecker
-            ->method('isCryptographicallySecure')
-            ->willReturn(false);
-
-        $this->bridge->getHexTokenWithFallback(32);
-
-        $logSizeAfter = \filesize($this->logFile);
-        $this->assertGreaterThan($logSizeBefore, $logSizeAfter);
+        $this->assertEquals($length, strlen($token));
+        $this->assertTrue(ctype_alnum($token));
+        $this->assertTrue(ctype_xdigit($token));
     }
 
     public function testGetHexTokenWithFallbackWillReturnHexValue(): void
     {
-        $this->systemSecurityChecker
+        $systemSecurityChecker = $this->getMockBuilder(SystemSecurityCheckerInterface::class)->getMock();
+        $systemSecurityChecker
             ->method('isCryptographicallySecure')
             ->willReturn(false);
 
-        $token = $this->bridge->getHexTokenWithFallback(32);
 
-        $this->assertTrue(ctype_xdigit($token));
+        $bridge = new RandomTokenGeneratorBridge(
+            $this->get(RandomTokenGeneratorInterface::class),
+            $systemSecurityChecker,
+            $this->get(FallbackTokenGenerator::class),
+            $this->get(LoggerInterface::class)
+        );
+
+        $this->assertTrue(ctype_xdigit($bridge->getHexTokenWithFallback(32)));
     }
 
-    protected function mockDependencies(): void
+    public function testGetHexTokenWithFallbackWithNoSourceOfRandomnessWillWriteToLog(): void
     {
-        $this->systemSecurityChecker = $this->createMock(SystemSecurityCheckerInterface::class);
-        $this->container->set(SystemSecurityCheckerInterface::class, $this->systemSecurityChecker);
-        $this->container->autowire(SystemSecurityCheckerInterface::class);
-    }
+        $systemSecurityChecker = $this->getMockBuilder(SystemSecurityCheckerInterface::class)->getMock();
+        $systemSecurityChecker
+            ->method('isCryptographicallySecure')
+            ->willReturn(false);
 
-    private function cleanupTestData(): void
-    {
-        if (\is_file($this->logFile)) {
-            \unlink($this->logFile);
-        }
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger
+            ->expects($this->once())
+            ->method('warning');
+
+
+        $bridge = new RandomTokenGeneratorBridge(
+            $this->get(RandomTokenGeneratorInterface::class),
+            $systemSecurityChecker,
+            $this->get(FallbackTokenGenerator::class),
+            $logger
+        );
+
+        $bridge->getHexTokenWithFallback(32);
     }
 }

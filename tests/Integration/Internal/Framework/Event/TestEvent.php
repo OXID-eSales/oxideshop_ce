@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class TestEvent extends Event
 {

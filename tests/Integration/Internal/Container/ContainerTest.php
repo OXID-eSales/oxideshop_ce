@@ -27,7 +27,7 @@ final class ContainerTest extends TestCase
      */
     private $container;
 
-    private $testServicesYml = __DIR__ . '/Fixtures/Project/services.yaml';
+    private $testServicesYml = '../../tests/Integration/Internal/Container/Fixtures/Project/services.yaml';
 
     public function setup(): void
     {
@@ -56,7 +56,9 @@ final class ContainerTest extends TestCase
         $testContainer = (new TestContainerFactory())->create();
         $testContainer->compile();
         foreach ($testContainer->getDefinitions() as $key => $definition) {
-            $testContainer->get($key);
+            if ($definition->isPublic()) {
+                $testContainer->get($key);
+            }
         };
         $this->assertTrue(true);
     }

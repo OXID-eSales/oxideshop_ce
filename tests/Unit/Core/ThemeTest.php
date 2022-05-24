@@ -30,14 +30,12 @@ class ThemeTest extends \OxidTestCase
 
     public function testGetList()
     {
-        // Count themes in themes folder except admin
-        $iCount = count(glob(oxPATH . "/Application/views/*", GLOB_ONLYDIR)) - 1;
+        $themeList = $this->getProxyClass('oxTheme')->getList();
 
-        $aThemeList = $this->getProxyClass('oxTheme')->getList();
+        $this->assertGreaterThan(0, count($themeList));
 
-        $this->assertEquals($iCount, count($aThemeList));
-        foreach ($aThemeList as $oTheme) {
-            $this->assertTrue($oTheme instanceof \OxidEsales\EshopCommunity\Core\Theme);
+        foreach ($themeList as $theme) {
+            $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Theme::class, $theme);
         }
     }
 

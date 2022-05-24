@@ -75,7 +75,7 @@ class ComponentInstallerTest extends TestCase
         /** @var ProjectYamlDao $projectYamlDao */
         $projectYamlDao = $this->get(ProjectYamlDaoInterface::class);
         $DIconfig = $projectYamlDao->loadProjectConfigFile();
-        $DIconfig->removeImport($this->servicesFilePath);
+        $DIconfig->removeImport('../../tests/Integration/Internal/ComposerPlugin/' . $this->servicesFilePath);
         $projectYamlDao->saveProjectConfigFile($DIconfig);
     }
 }

@@ -71,5 +71,7 @@ class UninstallModuleConfigurationCommand extends Command
 
             throw $throwable;
         }
+
+        return 0;
     }
 }

@@ -121,7 +121,7 @@ jobs:
           sleep 2
 
       - name: Run tests (CE)
-        if: ${{ matrix.edition }} == 'CE'
+        if: matrix.edition == 'CE'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -130,7 +130,7 @@ jobs:
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Run tests (EE)
-        if: ${{ matrix.edition }} == 'EE'
+        if: matrix.edition == 'EE'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -173,7 +173,7 @@ jobs:
           sleep 2
 
       - name: Run tests (CE)
-        if: ${{ matrix.edition }} == 'CE'
+        if: matrix.edition == 'CE'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -182,7 +182,7 @@ jobs:
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Run tests (EE)
-        if: ${{ matrix.edition }} == 'EE'
+        if: matrix.edition == 'EE'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -225,7 +225,7 @@ jobs:
           sleep 2
 
       - name: Run tests (CE)
-        if: ${{ matrix.edition }} == 'CE'
+        if: matrix.edition == 'CE'
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
@@ -234,7 +234,7 @@ jobs:
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Run tests (EE)
-        if: ${{ matrix.edition }} == 'EE'
+        if: matrix.edition == 'EE'
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=seleniumfirefox \

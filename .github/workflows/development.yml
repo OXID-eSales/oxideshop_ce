@@ -9,6 +9,7 @@ jobs:
         edition: [ 'CE', 'EE' ]
         php: [ '7.4', '8.0' ]
         mysql: [ '5.7' ]
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment master

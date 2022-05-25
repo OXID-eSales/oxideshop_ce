@@ -75,6 +75,16 @@ jobs:
           make up
           sleep 2
 
+      - name: Define PE & EE versions
+        if: matrix.edition == 'EE'
+        run: |
+          if [[ ${{ github.ref_name }} == *"master"* || ${{ github.base_ref }} == *"master"* ]]; then PE_VERSION=dev-master && EE_VERSION=dev-master; fi
+          if [[ ${{ github.ref_name }} == *"b-7.0.x"* || ${{ github.base_ref }} == *"b-7.0.x"* ]]; then PE_VERSION=dev-b-7.0.x && EE_VERSION=dev-b-7.0.x; fi
+          if [[ ${{ github.ref_name }} == *"b-6.5.x"* || ${{ github.base_ref }} == *"b-6.5.x"* ]]; then PE_VERSION=dev-b-6.5.x && EE_VERSION=dev-b-6.5.x; fi
+          if [[ ${{ github.ref_name }} == *"b-6.4.x"* || ${{ github.base_ref }} == *"b-6.4.x"* ]]; then PE_VERSION=dev-b-6.4.x && EE_VERSION=dev-b-6.4.x; fi
+          echo "PE_VERSION=$PE_VERSION" >> $GITHUB_ENV
+          echo "EE_VERSION=$EE_VERSION" >> $GITHUB_ENV
+
       - name: Require Enterprise Edition
         if: matrix.edition == 'EE'
         run: |
@@ -82,8 +92,8 @@ jobs:
           docker-compose run -T --rm php composer config -g github-oauth.github.com ${{ secrets.GH_CI_JENKINS_TOKEN }}
           docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-ee git https://github.com/OXID-eSales/oxideshop_ee.git
           docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-pe git https://github.com/OXID-eSales/oxideshop_pe.git
-          docker-compose run -T --rm php composer require oxid-esales/oxideshop-pe:dev-${{ github.ref_name }} --no-update
-          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:dev-${{ github.ref_name }} --no-plugins --no-scripts
+          docker-compose run -T --rm php composer require oxid-esales/oxideshop-pe:${{ env.PE_VERSION }} --no-update
+          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:${{ env.EE_VERSION }} --no-plugins --no-scripts
 
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction

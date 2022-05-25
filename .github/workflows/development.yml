@@ -6,9 +6,9 @@ jobs:
   install_shop:
     strategy:
       matrix:
-        edition: [ 'CE', 'EE' ]
         php: [ '7.4', '8.0' ]
         mysql: [ '5.7' ]
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment master
@@ -30,7 +30,7 @@ jobs:
         with:
           path: |
             ./*
-          key: shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
 
       - name: Prepare container configuration
         run: |
@@ -75,16 +75,6 @@ jobs:
           make up
           sleep 2
 
-      - name: Require Enterprise Edition
-        if: matrix.edition == 'EE'
-        run: |
-          docker-compose run -T --rm php composer config github-protocols https
-          docker-compose run -T --rm php composer config -g github-oauth.github.com ${{ secrets.GH_CI_JENKINS_TOKEN }}
-          docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-ee git https://github.com/OXID-eSales/oxideshop_ee.git
-          docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-pe git https://github.com/OXID-eSales/oxideshop_pe.git
-          docker-compose run -T --rm php composer require oxid-esales/oxideshop-pe:dev-${{ github.ref_name }} --no-update
-          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:dev-${{ github.ref_name }} --no-plugins --no-scripts
-
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction
 
@@ -99,7 +89,6 @@ jobs:
   unit_tests:
     strategy:
       matrix:
-        edition: [ 'CE', 'EE' ]
         php: [ '7.4', '8.0' ]
         mysql: [ '5.7' ]
       fail-fast: false
@@ -111,47 +100,35 @@ jobs:
         with:
           path: |
             ./*
-          key: shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
-            shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
 
       - name: Start containers
         run: |
           make up
           sleep 2
 
-      - name: Run tests (CE)
-        if: matrix.edition == 'CE'
+      - name: Run tests
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=unit,Unit \
-            php php vendor/bin/runtests | tee unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
-
-      - name: Run tests (EE)
-        if: matrix.edition == 'EE'
-        run: |
-          docker-compose run -T --rm \
-            -e XDEBUG_MODE=coverage \
-            -e TEST_DIRS=unit,Unit \
-            -e ADDITIONAL_TEST_PATHS=vendor/oxid-esales/oxideshop-ee/Tests,vendor/oxid-esales/oxideshop-pe/Tests \
-            php php vendor/bin/runtests | tee unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+            php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
-          path: unit_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          path: unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 
   integration_tests:
     strategy:
       matrix:
-        edition: [ 'CE', 'EE' ]
         php: [ '7.4', '8.0' ]
         mysql: [ '5.7' ]
       fail-fast: false
@@ -163,47 +140,35 @@ jobs:
         with:
           path: |
             ./*
-          key: shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
-            shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
 
       - name: Start containers
         run: |
           make up
           sleep 2
 
-      - name: Run tests (CE)
-        if: matrix.edition == 'CE'
+      - name: Run tests
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=integration,Integration \
-            php php vendor/bin/runtests | tee integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
-
-      - name: Run tests (EE)
-        if: matrix.edition == 'EE'
-        run: |
-          docker-compose run -T --rm \
-            -e XDEBUG_MODE=coverage \
-            -e TEST_DIRS=integration,Integration \
-            -e ADDITIONAL_TEST_PATHS=vendor/oxid-esales/oxideshop-ee/Tests,vendor/oxid-esales/oxideshop-pe/Tests \
-            php php vendor/bin/runtests | tee integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+            php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
-          path: integration_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          path: integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 
   codeception_tests:
     strategy:
       matrix:
-        edition: [ 'CE', 'EE' ]
         php: [ '7.4', '8.0' ]
         mysql: [ '5.7' ]
       fail-fast: false
@@ -215,40 +180,29 @@ jobs:
         with:
           path: |
             ./*
-          key: shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
-            shopInstallation-${{ matrix.edition }}-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
 
       - name: Start containers
         run: |
           make up
           sleep 2
 
-      - name: Run tests (CE)
-        if: matrix.edition == 'CE'
+      - name: Run tests
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
             -e BROWSER_NAME=firefox \
-            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
-
-      - name: Run tests (EE)
-        if: matrix.edition == 'EE'
-        run: |
-          docker-compose exec -T \
-            -e SELENIUM_SERVER_HOST=seleniumfirefox \
-            -e BROWSER_NAME=firefox \
-            -e ADDITIONAL_TEST_PATHS=vendor/oxid-esales/oxideshop-ee/Tests,vendor/oxid-esales/oxideshop-pe/Tests \
-            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
-          path: codeception_${{ matrix.edition }}_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          path: codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 
@@ -256,7 +210,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: codeception-artifacts-${{ matrix.edition }}-PHP${{ matrix.php }}-MYSQL${{ matrix.mysql }}
+          name: codeception-artifacts-PHP${{ matrix.php }}-MYSQL${{ matrix.mysql }}
           path: source/tests/Codeception/_output/*
           if-no-files-found: ignore
           retention-days: 7

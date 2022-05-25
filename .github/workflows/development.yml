@@ -94,7 +94,7 @@ jobs:
           docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-ee git https://github.com/OXID-eSales/oxideshop_ee.git
           docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-pe git https://github.com/OXID-eSales/oxideshop_pe.git
           docker-compose run -T --rm php composer require oxid-esales/oxideshop-pe:${{ env.PE_VERSION }} --no-update
-          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:${{ env.EE_VERSION }} --no-plugins --no-scripts
+          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:${{ env.EE_VERSION }} --no-update --no-plugins --no-scripts
 
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction

@@ -78,12 +78,12 @@ jobs:
       - name: Require Enterprise Edition
         if: matrix.edition == 'EE'
         run: |
-          docker-compose exec php composer config github-protocols https
-          docker-compose exec php composer config -g github-oauth.github.com ${{ secrets.GH_CI_JENKINS_TOKEN }}
-          docker-compose exec php composer config repositories.oxid-esales/oxideshop-ee git https://github.com/OXID-eSales/oxideshop_ee.git
-          docker-compose exec php composer config repositories.oxid-esales/oxideshop-pe git https://github.com/OXID-eSales/oxideshop_pe.git
-          docker-compose exec php composer require oxid-esales/oxideshop-pe:dev-${{ github.ref_name }} --no-update
-          docker-compose exec php composer require oxid-esales/oxideshop-ee:dev-${{ github.ref_name }} --no-plugins --no-scripts
+          docker-compose run -T --rm php composer config github-protocols https
+          docker-compose run -T --rm php composer config -g github-oauth.github.com ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-ee git https://github.com/OXID-eSales/oxideshop_ee.git
+          docker-compose run -T --rm php composer config repositories.oxid-esales/oxideshop-pe git https://github.com/OXID-eSales/oxideshop_pe.git
+          docker-compose run -T --rm php composer require oxid-esales/oxideshop-pe:dev-${{ github.ref_name }} --no-update
+          docker-compose run -T --rm php composer require oxid-esales/oxideshop-ee:dev-${{ github.ref_name }} --no-plugins --no-scripts
 
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction

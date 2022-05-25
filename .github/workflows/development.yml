@@ -86,7 +86,7 @@ jobs:
           echo "PE_VERSION=$PE_VERSION" >> $GITHUB_ENV
           echo "EE_VERSION=$EE_VERSION" >> $GITHUB_ENV
 
-      - name: Require Enterprise Edition
+      - name: Require PE (${{ env.PE_VERSION }}) & EE (${{ env.EE_VERSION }})
         if: matrix.edition == 'EE'
         run: |
           docker-compose run -T --rm php composer config github-protocols https

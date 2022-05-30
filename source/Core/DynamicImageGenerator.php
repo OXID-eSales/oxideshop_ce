@@ -85,7 +85,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @var array
          */
-        protected $_aAllowedImgTypes = ["jpg", "jpeg", "png", "gif"];
+        protected $_aAllowedImgTypes = ["jpg", "jpeg", "png", "gif", "webp"];
 
         /**
          * Image info like size and quality is defined in directory
@@ -329,6 +329,11 @@ namespace OxidEsales\EshopCommunity\Core {
             return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], $this->validateGdVersion());
         }
 
+        protected function generateWebp(string $source, string $target, int $width, int $height, int $quality): string
+        {
+            return resizeWebp($source, $target, $width, $height, $quality);
+        }
+
         /**
          * Checks if requested image path is valid. If path is valid
          * but is not created - creates directory structure
@@ -509,6 +514,9 @@ namespace OxidEsales\EshopCommunity\Core {
                         break;
                     case "gif":
                         $generatedImagePath = $this->generateGif($imageSource, $imageTarget, $targetWidth, $targetHeight);
+                        break;
+                    case "webp":
+                        $generatedImagePath = $this->generateWebp($imageSource, $imageTarget, $targetWidth, $targetHeight, $targetQuality);
                         break;
                 }
                 // target must always be unlocked, no matter what the result of the former image generation was.

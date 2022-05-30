@@ -104,7 +104,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aAllowedFiles = ['gif', 'jpg', 'jpeg', 'png', 'pdf'];
+    protected $_aAllowedFiles = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'pdf'];
 
     /**
      * Counts how many new files added.

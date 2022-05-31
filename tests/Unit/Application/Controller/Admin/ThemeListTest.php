@@ -13,9 +13,6 @@ class ThemeListTest extends \OxidTestCase
         $this->assertEquals('theme_list.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['mylist']));
-        $this->assertIsArray($aViewData['mylist']);
-
-        $this->assertGreaterThan(0, count($aViewData['mylist']));
+        $this->assertNotEmpty($aViewData['mylist']);
     }
 }

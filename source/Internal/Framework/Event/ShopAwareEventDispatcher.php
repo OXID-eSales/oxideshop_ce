@@ -9,9 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ShopAwareEventDispatcher extends EventDispatcher
 {
@@ -26,21 +25,27 @@ class ShopAwareEventDispatcher extends EventDispatcher
      */
     protected function callListeners(iterable $listeners, string $eventName, object $event)
     {
-        $stoppable = $event instanceof StoppableEventInterface;
-
         foreach ($listeners as $listener) {
-            if ($stoppable && $event->isPropagationStopped()) {
+            if ($this->eventPropagationWasStopped($event)) {
                 break;
             }
-            if (
-                is_array($listener) &&
-                is_object($listener[0]) &&
-                in_array(ShopAwareInterface::class, class_implements($listener[0])) &&
-                ! $listener[0]->isActive()
-            ) {
+            if ($this->skipListenerForCurrentShop($listener)) {
                 continue;
             }
             $listener($event, $eventName, $this);
         }
+    }
+
+    private function eventPropagationWasStopped($event): bool
+    {
+        return $event instanceof StoppableEventInterface  && $event->isPropagationStopped();
+    }
+
+    private function skipListenerForCurrentShop($listener): bool
+    {
+        return is_array($listener)
+            && is_object($listener[0])
+            && in_array(ShopAwareInterface::class, class_implements($listener[0]))
+            && !$listener[0]->isActive();
     }
 }

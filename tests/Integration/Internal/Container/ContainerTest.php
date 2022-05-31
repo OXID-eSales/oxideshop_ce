@@ -14,13 +14,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\TestingLibrary\UnitTestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ContainerTest extends TestCase
+final class ContainerTest extends UnitTestCase
 {
     /**
      * @var ContainerInterface
@@ -39,8 +39,6 @@ final class ContainerTest extends TestCase
     public function tearDown(): void
     {
         ContainerFactory::resetContainer();
-
-        $this->cleanUpGeneratedServices();
     }
 
     public function testGetInstance(): void
@@ -97,10 +95,8 @@ final class ContainerTest extends TestCase
 
         ContainerFactory::resetContainer();
 
-        $this->assertTrue(
-            is_object(
-                ContainerFactory::getInstance()->getContainer()->get('test_service')
-            )
+        $this->assertIsObject(
+            ContainerFactory::getInstance()->getContainer()->get('test_service')
         );
     }
 
@@ -132,16 +128,7 @@ final class ContainerTest extends TestCase
             ->get(BasicContextInterface::class)
             ->getContainerCacheFilePath();
     }
-
-    private function cleanUpGeneratedServices(): void
-    {
-        $projectYamlDao = $this->getProjectYmlDao();
-
-        $projectConfigurationFile = $projectYamlDao->loadProjectConfigFile();
-        $projectConfigurationFile->removeImport($this->testServicesYml);
-        $projectYamlDao->saveProjectConfigFile($projectConfigurationFile);
-    }
-
+    
     private function getProjectYmlDao(): ProjectYamlDaoInterface
     {
         return new ProjectYamlDao(

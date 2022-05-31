@@ -30,7 +30,7 @@
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-6.5.x",
         "oxid-esales/oxideshop-db-views-generator": "^v1.3.0",
         "oxid-esales/oxideshop-demodata-installer": "dev-b-6.5.x",
-        "oxid-esales/oxideshop-composer-plugin": "^v5.2.0",
+        "oxid-esales/oxideshop-composer-plugin": "dev-b-6.5.x",
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-b-6.5.x",
         "oxid-esales/oxideshop-facts": "dev-b-6.5.x"
     },

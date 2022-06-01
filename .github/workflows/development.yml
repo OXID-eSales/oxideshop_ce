@@ -110,6 +110,16 @@ jobs:
           sleep 2
 
       - name: Run tests
+        if: matrix.php == '8.0'
+        run: |
+          docker-compose run -T --rm \
+            -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=unit,Unit \
+            php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Run tests With Coverage
+        if: matrix.php == '7.4'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -127,7 +137,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '8.0'
+        if: matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
@@ -159,6 +169,16 @@ jobs:
           sleep 2
 
       - name: Run tests
+        if: matrix.php == '8.0'
+        run: |
+          docker-compose run -T --rm \
+            -e XDEBUG_MODE=coverage \
+            -e TEST_DIRS=integration,Integration \
+            php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Run tests With Coverage
+        if: matrix.php == '7.4'
         run: |
           docker-compose run -T --rm \
             -e XDEBUG_MODE=coverage \
@@ -176,7 +196,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '8.0'
+        if: matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
@@ -208,6 +228,17 @@ jobs:
           sleep 2
 
       - name: Run tests
+        if: matrix.php == '8.0'
+        run: |
+          docker-compose exec -T \
+            -e SELENIUM_SERVER_HOST=seleniumfirefox \
+            -e BROWSER_NAME=firefox \
+            -e XDEBUG_MODE=coverage \
+            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Run tests With Coverage
+        if: matrix.php == '7.4'
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
@@ -235,7 +266,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '8.0'
+        if: matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports

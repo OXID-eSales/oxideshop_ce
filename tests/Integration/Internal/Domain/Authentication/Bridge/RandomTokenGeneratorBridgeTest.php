@@ -9,25 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Authentication\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+
+use function strlen;
 
 final class RandomTokenGeneratorBridgeTest extends TestCase
 {
-    private RandomTokenGeneratorBridgeInterface $bridge;
+    use ContainerTrait;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->bridge = ContainerFactory::getInstance()->getContainer()->get(RandomTokenGeneratorBridgeInterface::class);
-    }
+    private RandomTokenGeneratorBridgeInterface $bridge;
 
     public function testGetAlphanumericToken(): void
     {
         $length = 32;
 
-        $token = $this->bridge->getAlphanumericToken($length);
+        $token = $this->get(RandomTokenGeneratorBridgeInterface::class)->getAlphanumericToken($length);
 
         $this->assertEquals($length, strlen($token));
         $this->assertTrue(ctype_alnum($token));
@@ -38,7 +36,7 @@ final class RandomTokenGeneratorBridgeTest extends TestCase
     {
         $length = 32;
 
-        $token = $this->bridge->getHexToken($length);
+        $token = $this->get(RandomTokenGeneratorBridgeInterface::class)->getHexToken($length);
 
         $this->assertEquals($length, strlen($token));
         $this->assertTrue(ctype_alnum($token));

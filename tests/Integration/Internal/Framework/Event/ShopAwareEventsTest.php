@@ -14,9 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Facts;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
+class ShopAwareEventsTest extends TestCase
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
@@ -45,7 +46,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/generated_project.yaml');
         $context->method('getConfigurationDirectoryPath')->willReturn(__DIR__);
 
-        $builder = $this->makeContainerBuilder($context);
+        $builder = new ContainerBuilder($context);
         $this->container = $builder->getContainer();
         $definition = $this->container->getDefinition(ContextInterface::class);
         $definition->setClass(ContextStub::class);
@@ -86,15 +87,5 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
          */
         $event = $this->dispatcher->dispatch(new TestEvent());
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
-    }
-
-    /**
-     * @param BasicContext $context
-     * @return ContainerBuilder
-     */
-    private function makeContainerBuilder(BasicContext $context): ContainerBuilder
-    {
-        $containerBuilder = new ContainerBuilder($context);
-        return $containerBuilder;
     }
 }

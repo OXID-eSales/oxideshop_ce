@@ -30,7 +30,6 @@ class TestContainerFactory
     public function __construct()
     {
         $this->prepareVFS();
-        $this->context = $this->getBasicContextStub();
         $this->context = $this->getContextStub();
     }
 

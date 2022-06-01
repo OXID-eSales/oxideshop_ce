@@ -21,14 +21,10 @@ class ShopEnvironmentConfigurationExtenderTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ShopEnvironmentConfigurationDaoInterface|ObjectProphecy */
-    private $environmentDao;
-    /** @var ShopEnvironmentConfigurationExtender */
-    private $environmentExtension;
-    /** @var ObjectProphecy|EventDispatcherInterface */
-    private $eventDispatcher;
-    /** @var int */
-    private $shopId = 1;
+    private ShopEnvironmentConfigurationDaoInterface|ObjectProphecy $environmentDao;
+    private ShopEnvironmentConfigurationExtender $environmentExtension;
+    private ObjectProphecy|EventDispatcherInterface $eventDispatcher;
+    private int $shopId = 1;
 
     protected function setUp(): void
     {

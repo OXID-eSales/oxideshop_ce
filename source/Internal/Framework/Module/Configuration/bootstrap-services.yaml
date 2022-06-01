@@ -22,6 +22,7 @@ services:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao

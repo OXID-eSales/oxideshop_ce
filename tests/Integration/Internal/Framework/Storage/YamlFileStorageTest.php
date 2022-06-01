@@ -163,15 +163,9 @@ class YamlFileStorageTest extends TestCase
         return stream_get_meta_data($this->tempFileHandle)['uri'];
     }
 
-    /**
-     * @return LockFactory
-     */
     private function getLockFactoryFromContainer(): LockFactory
     {
-        /** @var LockFactory $lockFactory */
-        $lockFactory = $this->get('oxid_esales.common.storage.flock_store_lock_factory');
-
-        return $lockFactory;
+        return $this->get('oxid_esales.common.storage.flock_store_lock_factory');
     }
 
     private function getFileSystemServiceFromContainer(): Filesystem

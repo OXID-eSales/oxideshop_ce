@@ -137,7 +137,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '7.4'
+        if: always() && matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
@@ -196,7 +196,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '7.4'
+        if: always() && matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
@@ -266,7 +266,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Coverage Report
-        if: matrix.php == '7.4'
+        if: always() && matrix.php == '7.4'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports

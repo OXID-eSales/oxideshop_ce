@@ -280,5 +280,4 @@ jobs:
             -Dsonar.branch.name=${{ github.ref_name }} 
             -Dsonar.projectBaseDir=source 
             -Dsonar.sources=source 
-            -Dsonar.tests=tests 
             -Dsonar.php.coverage.reportPaths=coverage-reports/*

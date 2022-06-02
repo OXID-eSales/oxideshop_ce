@@ -1,8 +1,8 @@
 name: SonarCloud
 
-on:
-  schedule:
-    - cron: '0 7 * * 1-5'
+on: push
+#  schedule:
+#    - cron: '0 7 * * 1-5'
 
 jobs:
   install_shop:

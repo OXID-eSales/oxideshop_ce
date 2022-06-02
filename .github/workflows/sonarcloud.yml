@@ -261,6 +261,7 @@ jobs:
 
       - name: Fix Paths In Coverage Reports
         run: |
+          ls -lsa
           sed -i 's#/var/www/##' coverage-reports/unit_coverage.xml
           sed -i 's#/var/www/##' coverage-reports/integration_coverage.xml
           sed -i 's#/var/www/##' coverage-reports/codeception_coverage.xml

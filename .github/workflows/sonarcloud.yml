@@ -248,6 +248,7 @@ jobs:
   sonarcloud:
     needs: [ unit_tests, integration_tests, codeception_tests ]
     runs-on: ubuntu-latest
+    if: always()
     steps:
       - name: Checkout shop
         uses: actions/checkout@v2

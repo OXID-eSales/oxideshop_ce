@@ -1,6 +1,6 @@
 name: SonarCloud
 
-on: push
+on: workflow_dispatch
 
 jobs:
   install_shop:

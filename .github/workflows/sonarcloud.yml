@@ -1,8 +1,6 @@
 name: SonarCloud
 
 on: push
-#  schedule:
-#    - cron: '0 7 * * 1-5'
 
 jobs:
   install_shop:
@@ -17,7 +15,7 @@ jobs:
         run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
 
       - name: Clone the shop (${{ github.ref_name }})
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
 
       - name: Clone the shop (PR ${{ github.event.number }})

@@ -13,16 +13,27 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
+use OxidEsales\TestingLibrary\Helper\ProjectConfigurationHelper;
+use OxidEsales\TestingLibrary\Services\Library\ProjectConfigurationHandler;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ComponentInstallerTest extends UnitTestCase
+final class ComponentInstallerTest extends UnitTestCase
 {
     use ContainerTrait;
 
-    private $servicesFilePath = 'Fixtures/services.yaml';
+    private string $servicesFilePath = 'Fixtures/services.yaml';
+
+    protected function tearDown(): void
+    {
+        ContainerFactory::resetContainer();
+        $this->restoreProjectConfiguration();
+
+        parent::tearDown();
+    }
 
     public function testInstall(): void
     {
@@ -39,7 +50,7 @@ class ComponentInstallerTest extends UnitTestCase
 
         $this->assertTrue($this->doesServiceLineExists());
     }
-    
+
     private function createInstaller(): ComponentInstaller
     {
         $packageStub = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
@@ -59,5 +70,10 @@ class ComponentInstallerTest extends UnitTestCase
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
+    }
+
+    private function restoreProjectConfiguration(): void
+    {
+        (new ProjectConfigurationHandler(new ProjectConfigurationHelper()))->restore();
     }
 }

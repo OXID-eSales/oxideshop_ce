@@ -265,6 +265,8 @@ jobs:
     steps:
       - name: Checkout shop
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Download Coverage Reports
         uses: actions/download-artifact@v2

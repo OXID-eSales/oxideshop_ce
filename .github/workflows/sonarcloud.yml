@@ -109,6 +109,11 @@ jobs:
           make up
           sleep 2
 
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - name: Run tests
         run: |
           docker-compose run -T \
@@ -158,6 +163,11 @@ jobs:
           make up
           sleep 2
 
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - name: Run tests
         run: |
           docker-compose run -T \
@@ -206,6 +216,11 @@ jobs:
         run: |
           make up
           sleep 2
+
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
 
       - name: Run tests
         run: |

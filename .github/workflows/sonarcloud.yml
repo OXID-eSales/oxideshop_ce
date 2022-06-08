@@ -265,6 +265,8 @@ jobs:
     steps:
       - name: Checkout shop
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Download Coverage Reports
         uses: actions/download-artifact@v2
@@ -277,6 +279,15 @@ jobs:
           sed -i 's#/var/www/##' coverage-reports/unit_coverage.xml
           sed -i 's#/var/www/##' coverage-reports/integration_coverage.xml
           sed -i 's#/var/www/##' coverage-reports/codeception_coverage.xml
+
+      - name: Set target branch
+        run: |
+          TARGET_BRANCH=b-7.0.x
+          if [[ "${{ github.ref_name }}" == "b-6.5.x" ]]; then TARGET_BRANCH=b-7.0.x; fi
+          if [[ "${{ github.ref_name }}" == "b-6.4.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
+          if [[ "${{ github.ref_name }}" == *"b-6.5.x"* && "${{ github.ref_name }}" != "b-6.5.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
+          if [[ "${{ github.ref_name }}" == *"b-6.4.x"* && "${{ github.ref_name }}" != "b-6.4.x" ]]; then TARGET_BRANCH=b-6.4.x; fi
+          echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
@@ -291,6 +302,7 @@ jobs:
             -Dsonar.language=php 
             -Dsonar.scm.provider=git 
             -Dsonar.branch.name=${{ github.ref_name }} 
+            -Dsonar.branch.target=${{ env.TARGET_BRANCH }} 
             -Dsonar.sources=source 
             -Dsonar.tests=tests 
             -Dsonar.php.coverage.reportPaths=coverage-reports/unit_coverage.xml,coverage-reports/integration_coverage.xml,coverage-reports/codeception_coverage.xml

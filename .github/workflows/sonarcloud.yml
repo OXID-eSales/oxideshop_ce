@@ -111,7 +111,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose run -T --rm \
+          docker-compose run -T \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=unit,Unit \
             php php vendor/bin/runtests --coverage-clover=/var/www/unit_coverage.xml AllTestsUnit | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
@@ -160,7 +160,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose run -T --rm \
+          docker-compose run -T \
             -e XDEBUG_MODE=coverage \
             -e TEST_DIRS=integration,Integration \
             php php vendor/bin/runtests --coverage-clover=/var/www/integration_coverage.xml AllTestsUnit | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true

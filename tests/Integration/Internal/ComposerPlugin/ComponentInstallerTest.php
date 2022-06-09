@@ -19,13 +19,20 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\Helper\ProjectConfigurationHelper;
 use OxidEsales\TestingLibrary\Services\Library\ProjectConfigurationHandler;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
-final class ComponentInstallerTest extends UnitTestCase
+final class ComponentInstallerTest extends TestCase
 {
     use ContainerTrait;
 
     private string $servicesFilePath = 'Fixtures/services.yaml';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->backupProjectConfiguration();
+    }
 
     protected function tearDown(): void
     {
@@ -70,6 +77,11 @@ final class ComponentInstallerTest extends UnitTestCase
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
+    }
+
+    private function backupProjectConfiguration(): void
+    {
+        (new ProjectConfigurationHandler(new ProjectConfigurationHelper()))->backup();
     }
 
     private function restoreProjectConfiguration(): void

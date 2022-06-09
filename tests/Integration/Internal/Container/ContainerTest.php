@@ -19,13 +19,13 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Helper\ProjectConfigurationHelper;
 use OxidEsales\TestingLibrary\Services\Library\ProjectConfigurationHandler;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ContainerTest extends UnitTestCase
+final class ContainerTest extends TestCase
 {
     private ContainerInterface $container;
     private string $testServicesYml = '../../tests/Integration/Internal/Container/Fixtures/Project/services.yaml';
@@ -34,6 +34,7 @@ final class ContainerTest extends UnitTestCase
     {
         parent::setUp();
 
+        $this->backupProjectConfiguration();
         ContainerFactory::resetContainer();
         $this->container = ContainerFactory::getInstance()->getContainer();
     }
@@ -143,6 +144,11 @@ final class ContainerTest extends UnitTestCase
             $this->container->get(ContextInterface::class),
             $this->container->get('oxid_esales.symfony.file_system')
         );
+    }
+
+    private function backupProjectConfiguration(): void
+    {
+        (new ProjectConfigurationHandler(new ProjectConfigurationHelper()))->backup();
     }
 
     private function restoreProjectConfiguration(): void

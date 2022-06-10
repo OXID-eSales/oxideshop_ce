@@ -187,6 +187,18 @@ function editThis( sID )
 
             <dl>
                 <dt>
+                    <input [{$readonly}] type=hidden name=confbools[blConvertImagesToWebP] value=false>
+                    <input type=checkbox name=confbools[blConvertImagesToWebP] value=true  [{if ($confbools.blConvertImagesToWebP)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_CONVERT_IMAGES_TO_WEBP"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_SYSTEM_CONVERT_IMAGES_TO_WEBP"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
                     <input [{$readonly}] type=hidden name=confbools[blInlineImgEmail] value=false>
                     <input type=checkbox name=confbools[blInlineImgEmail] value=true  [{if ($confbools.blInlineImgEmail)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_SYSTEM_INLINEIMGEMAIL"}]

@@ -39,6 +39,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('39893a0ef6a6e11645d4beee4fd0cd51',	1,	'',	'aLanguageParams',	'aarr',	'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";}s:2:"en";a:3:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";}}'),
 ('3c4f033dfb8fd4fe692715dda19ecd28',	1,	'',	'aCurrencies',	'arr',	'a:4:{i:0;s:23:\"EUR@ 1.00@ ,@ .@ €@ 2\";i:1;s:24:\"GBP@ 0.8565@ .@  @ £@ 2\";i:2;s:40:\"CHF@ 1.4326@ ,@ .@ <small>CHF</small>@ 2\";i:3;s:23:\"USD@ 1.2994@ .@  @ $@ 2\";}'),
 ('43040112c71dfb0f2.40367454',	1,	'',	'sDefaultImageQuality',	'str',	'75'),
+('d592e41daa2d93b8244e6871282ab8c1', 1, '', 'blConvertImagesToWebP', 'bool', '0'),
 ('44bcd90bd1d059.053753111',	1,	'',	'sTagList',	'str',	'1153227019'),
 ('4994145b9e8678993.26056670',	1,	'',	'blShowSorting',	'bool',	'1'),
 ('4994145b9e8736eb6.03785000',	1,	'',	'iTop5Mode',	'str',	'1'),

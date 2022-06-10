@@ -60,6 +60,7 @@ namespace {
 namespace OxidEsales\EshopCommunity\Core {
 
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+    use OxidEsales\Eshop\Core\Registry;
 
     /**
      * Image generator class
@@ -257,7 +258,16 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             $path = $this->getShopBasePath() . $this->getImageUri();
 
-            return str_replace($this->getImageName(), "nopic.jpg", $path);
+            return str_replace($this->getImageName(), $this->getNopicFilename(), $path);
+        }
+
+        private function getNopicFilename(): string
+        {
+            if (Registry::getConfig()->getConfigParam('blConvertImagesToWebP')) {
+                return 'nopic.webp';
+            }
+
+            return 'nopic.jpg';
         }
 
         /**
@@ -615,11 +625,18 @@ namespace OxidEsales\EshopCommunity\Core {
             // building base path + extracting image name + extracting master image path
             $masterImagePath = $this->getShopBasePath() . $masterPath . $this->getImageName();
 
+            if (
+                Registry::getConfig()->getConfigParam('blConvertImagesToWebP') &&
+                !file_exists($masterImagePath)
+            ) {
+                $this->convertImageIfOriginalExists($masterImagePath);
+            }
+
             if (file_exists($masterImagePath)) {
                 $genImagePath = $this->getImageTarget();
             } else {
                 // nopic master path
-                $masterImagePath = $this->getShopBasePath() . dirname(dirname($masterPath)) . "/nopic.jpg";
+                $masterImagePath = $this->getShopBasePath() . dirname($masterPath, 2) . "/" . $this->getNopicFilename();
                 $genImagePath = $this->getNopicImageTarget();
 
                 // 404 header for nopic
@@ -644,6 +661,31 @@ namespace OxidEsales\EshopCommunity\Core {
             }
 
             return $imagePath;
+        }
+
+        private function convertImageIfOriginalExists(string $desiredFilename): void
+        {
+            $pathParts = pathinfo($desiredFilename);
+            $originalFilename = $pathParts['dirname'] . '/' . $pathParts['filename'];
+
+            $sourceImage = false;
+            switch (pathinfo($originalFilename, PATHINFO_EXTENSION)) {
+                case 'png':
+                    $sourceImage = imagecreatefrompng($originalFilename);
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    $sourceImage = imagecreatefromjpeg($originalFilename);
+                    break;
+                case 'gif':
+                    $sourceImage = imagecreatefromgif($originalFilename);
+                    break;
+            }
+
+            if ($sourceImage) {
+                $quality = Registry::getConfig()->getConfigParam('sDefaultImageQuality');
+                imagewebp($sourceImage, $desiredFilename, $quality);
+            }
         }
 
         /**

@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `utility.context.log_level:`
   - `utility.context.admin_log_file_path`
 
+### Added
+- WebP image format support with an option to convert other format images automatically
+
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added

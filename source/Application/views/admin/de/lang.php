@@ -1124,6 +1124,7 @@ $aLang = [
 
     'SHOP_SYSTEM_ATTRIBUTESPERCENT'          => 'Prozentsatz gleicher Attribute, damit Artikel ähnlich sind',
     'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'        => 'Bildqualität - von 0 (schlechteste Qualität, kleine Dateigröße) bis 100 (beste Qualität, große Dateigröße)',
+    'SHOP_SYSTEM_CONVERT_IMAGES_TO_WEBP'     => 'Bilder automatisch ins WebP-Format konvertieren',
     'SHOP_SYSTEM_DISABLENAVBARS'             => 'Einige Navigationselemente während des Bestellprozesses ausblenden',
     'SHOP_SYSTEM_GBMODERATE'                 => 'Artikelbewertungen moderieren: sie werden erst veröffentlicht, wenn sie von einem Administrator aktiv gesetzt werden',
     'SHOP_SYSTEM_ISERVERTIMESHIFT'           => 'Zeitverschiebung des Servers in Stunden',

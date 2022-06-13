@@ -1412,18 +1412,6 @@ class SessionTest extends \OxidTestCase
         $this->assertTrue($oSubj->getNonPublicVar("_blForceNewSession"));
     }
 
-    public function testIsSessionStarted()
-    {
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("allowSessionStart"));
-        $session->method('allowSessionStart')->will($this->returnValue(true));
-
-        $this->assertFalse($session->isSessionStarted());
-
-        $session->start();
-
-        $this->assertTrue($session->isSessionStarted());
-    }
-
     public function testIsActualSidInCookiePossitive()
     {
         $sOriginalVal = $_COOKIE["sid"];

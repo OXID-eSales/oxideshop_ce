@@ -116,6 +116,9 @@ jobs:
             php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
+      - name: Ensure that tests have been run
+        run: if [ ! -s unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
+
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
@@ -154,6 +157,9 @@ jobs:
             -e TEST_DIRS=integration,Integration \
             php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Ensure that tests have been run
+        run: if [ ! -s integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
@@ -203,6 +209,9 @@ jobs:
           path: codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
+
+      - name: Ensure that tests have been run
+        run: if [ ! -s codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
 
       - name: Upload Codeception Artifacts
         if: always()

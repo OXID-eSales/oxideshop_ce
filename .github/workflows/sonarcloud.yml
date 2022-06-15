@@ -67,9 +67,6 @@ jobs:
             -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
             source/source/config.inc.php
 
-      - name: Create logs directory
-        run: mkdir -p logs
-
       - name: Start containers
         run: |
           make up

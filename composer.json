@@ -39,8 +39,7 @@
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "dev-b-6.5.x",
         "oxid-esales/azure-theme": "^v1.4.1",
-        "squizlabs/php_codesniffer": "^3.5.4",
-        "phpunit/phpunit": "^8.5.14"
+        "squizlabs/php_codesniffer": "^3.5.4"
     },
     "autoload": {
         "psr-4": {

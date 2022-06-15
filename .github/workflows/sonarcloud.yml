@@ -278,9 +278,9 @@ jobs:
 
       - name: Set target branch
         run: |
-          TARGET_BRANCH=b-7.0.x
           if [[ "${{ github.ref_name }}" == "b-6.5.x" ]]; then TARGET_BRANCH=b-7.0.x; fi
           if [[ "${{ github.ref_name }}" == "b-6.4.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
+          if [[ "${{ github.ref_name }}" == *"b-7.0.x"* && "${{ github.ref_name }}" != "b-7.0.x" ]]; then TARGET_BRANCH=b-7.0.x; fi
           if [[ "${{ github.ref_name }}" == *"b-6.5.x"* && "${{ github.ref_name }}" != "b-6.5.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
           if [[ "${{ github.ref_name }}" == *"b-6.4.x"* && "${{ github.ref_name }}" != "b-6.4.x" ]]; then TARGET_BRANCH=b-6.4.x; fi
           echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV

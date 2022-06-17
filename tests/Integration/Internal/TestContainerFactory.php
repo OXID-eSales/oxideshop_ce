@@ -88,12 +88,12 @@ class TestContainerFactory
 
     private function prepareVFS(): void
     {
-        $vfsStreamDirectory = vfsStream::setup('shops');
+        $vfsStreamDirectory = vfsStream::setup('configuration');
         vfsStream::create([], $vfsStreamDirectory);
     }
 
     private function getTestProjectConfigurationDirectory(): string
     {
-        return vfsStream::url('shops/');
+        return vfsStream::url('configuration/');
     }
 }

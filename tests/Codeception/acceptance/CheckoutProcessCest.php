@@ -157,6 +157,7 @@ final class CheckoutProcessCest
     }
 
     /**
+     * @group todo_add_clean_cache_after_database_update
      * @group basketfrontend
      *
      * @param AcceptanceTester $I

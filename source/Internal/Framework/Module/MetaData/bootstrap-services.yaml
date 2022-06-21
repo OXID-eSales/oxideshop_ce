@@ -80,7 +80,10 @@ parameters:
       settings: [group, name, type, value, constraints, position]
       12: events
       13: smartyPluginDirectories
-  deprecated: ~
+  deprecated:
+    package: 'oxid-esales/oxideshop-ce'
+    version: '6.5.0'
+    message: "The attribute will be removed"
 
 services:
   _defaults:
@@ -96,17 +99,26 @@ services:
 
   oxid_esales.module.metadata.datamapper.metadatamapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper
-    deprecated: ~
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '6.5.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator
-    deprecated: ~
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '6.5.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider
     arguments:
       - '%oxid_esales.module.metadata.service.metadata_schemata%'
-    deprecated: ~
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '6.5.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer

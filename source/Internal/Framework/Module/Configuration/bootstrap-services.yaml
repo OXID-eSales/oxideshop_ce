@@ -55,7 +55,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
     arguments:
       - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
-      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
       - '@oxid_esales.module.configuration.class_extensions_data_mapper'
       - '@oxid_esales.module.configuration.controllers_data_mapper'
       - '@oxid_esales.module.configuration.events_data_mapper'
@@ -66,6 +65,10 @@ services:
 
   oxid_esales.module.configuration.classses_without_namespace_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '6.5.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   oxid_esales.module.configuration.class_extensions_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper

@@ -36,4 +36,7 @@ services:
   utility.context.admin_log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getAdminLogFilePath']
-    deprecated: 'The "%service_id%" service is deprecated. Use "OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface" instead.'
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '6.5.0'
+      message: 'The "%service_id%" service is deprecated. Use "OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface" instead.'

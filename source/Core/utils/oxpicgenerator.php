@@ -33,7 +33,7 @@ if (!function_exists("copyAlteredImage")) {
      *
      * @return bool
      */
-    function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)
+    function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget = null, $iGdVer = null)
     {
         return imagecopyresampled($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
     }
@@ -241,5 +241,29 @@ if (!function_exists("resizeJpeg")) {
         }
 
         return makeReadable($sTarget);
+    }
+}
+
+// checks if WebP resizer doesn't exist
+if (!function_exists("resizeWebp")) {
+    function resizeWebp(string $source, string $target, int $width, int $height, int $quality): string
+    {
+        list($origWidth, $origHeight) = @getimagesize($source);
+        $result = checkSizeAndCopy($source, $target, $width, $height, $origWidth, $origHeight);
+
+        if (is_array($result)) {
+            list($newWidth, $newHeight) = $result;
+            $destinationImage = imagecreatetruecolor($newWidth, $newHeight);
+            $sourceImage = imagecreatefromstring(file_get_contents($source));
+            $last = error_get_last();
+            $info = gd_info();
+            if (copyAlteredImage($destinationImage, $sourceImage, $newWidth, $newHeight, [$origWidth, $origHeight])) {
+                imagewebp($destinationImage, $target, $quality);
+                imagedestroy($destinationImage);
+                imagedestroy($sourceImage);
+            }
+        }
+
+        return makeReadable($target);
     }
 }

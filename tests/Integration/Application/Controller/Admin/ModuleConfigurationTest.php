@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration as ModuleConfigurationController;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
@@ -59,6 +60,8 @@ final class ModuleConfigurationTest extends UnitTestCase
         $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
         $moduleConfigurationController->saveConfVars();
 
+        ContainerFactory::resetContainer();
+
         $container = ContainerFactory::getInstance()->getContainer();
         $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($this->testModuleId);
 
@@ -79,12 +82,18 @@ final class ModuleConfigurationTest extends UnitTestCase
         $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
         $moduleConfigurationController->saveConfVars();
 
-        $moduleConfiguration = $this->getModuleConfiguration();
+        ContainerFactory::resetContainer();
 
         $this->assertSame(
             'newValue',
-            $moduleConfiguration->getModuleSettings()[0]->getValue(),
-            'This test is expected to pass only if run from console (headers already sent issue)'
+            $this->getModuleConfiguration()->getModuleSetting('stringSetting')->getValue()
+        );
+
+        Registry::getConfig()->reinitialize();
+
+        $this->assertSame(
+            'newValue',
+            Registry::getConfig()->getConfigParam('stringSetting')
         );
     }
 

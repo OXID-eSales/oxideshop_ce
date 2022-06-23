@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface;
 
 /**
  * Admin article main deliveryset manager.
@@ -76,23 +76,10 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     public function saveConfVars()
     {
         $this->resetContentCache();
-
-        $moduleId = $this->getSelectedModuleId();
-        $shopId = Registry::getConfig()->getShopId();
-        $this->_sModuleId = $moduleId;
+        $this->_sModuleId = $this->getSelectedModuleId();
 
         try {
-            $moduleWasActiveBeforeSaving = $this->getContainer()->get(ModuleActivationBridgeInterface::class)->isActive($moduleId, $shopId);
-
-            if ($moduleWasActiveBeforeSaving) {
-                $this->getContainer()->get(ModuleActivationBridgeInterface::class)->deactivate($moduleId, $shopId);
-            }
-
-            $this->saveModuleConfigVariables($moduleId, $this->getConfigVariablesFromRequest());
-
-            if ($moduleWasActiveBeforeSaving) {
-                $this->getContainer()->get(ModuleActivationBridgeInterface::class)->activate($moduleId, $shopId);
-            }
+            $this->saveModuleConfigVariables($this->_sModuleId, $this->getConfigVariablesFromRequest());
         } catch (\Throwable $throwable) {
             Registry::getUtilsView()->addErrorToDisplay($throwable);
             Registry::getLogger()->error($throwable->getMessage());
@@ -105,8 +92,8 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     private function getSelectedModuleId(): string
     {
         $moduleId = $this->_sEditObjectId
-                    ?? Registry::getRequest()->getRequestEscapedParameter('oxid')
-                       ?? Registry::getSession()->getVariable('saved_oxid');
+            ?? Registry::getRequest()->getRequestEscapedParameter('oxid')
+            ?? Registry::getSession()->getVariable('saved_oxid');
 
         if ($moduleId === null) {
             throw new \InvalidArgumentException('Module id not found.');
@@ -124,22 +111,24 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $moduleConfigurationDaoBridge = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class);
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
 
-        if (!empty($moduleConfiguration->getModuleSettings())) {
-            foreach ($variables as $name => $value) {
-                foreach ($moduleConfiguration->getModuleSettings() as $moduleSetting) {
-                    if ($moduleSetting->getName() === $name) {
-                        if ($moduleSetting->getType() === 'aarr') {
-                            $value = $this->multilineToAarray($value);
-                        }
-                        if ($moduleSetting->getType() === 'arr') {
-                            $value = $this->multilineToArray($value);
-                        }
-                        if ($moduleSetting->getType() === 'bool') {
-                            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-                        }
-                        $moduleSetting->setValue($value);
-                    }
+        foreach ($variables as $name => $value) {
+            if ($moduleConfiguration->hasModuleSetting($name))
+            {
+                $moduleSetting = $moduleConfiguration->getModuleSetting($name);
+
+                if ($moduleSetting->getType() === 'aarr') {
+                    $value = $this->multilineToAarray($value);
                 }
+                if ($moduleSetting->getType() === 'arr') {
+                    $value = $this->multilineToArray($value);
+                }
+                if ($moduleSetting->getType() === 'bool') {
+                    $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                }
+
+                $moduleSetting->setValue($value);
+
+                $this->getContainer()->get(SettingDaoBridgeInterface::class)->save($moduleSetting, $moduleId);
             }
 
             $moduleConfigurationDaoBridge->save($moduleConfiguration);

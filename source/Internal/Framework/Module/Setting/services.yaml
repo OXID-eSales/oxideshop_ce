@@ -4,3 +4,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridge
+    public: true

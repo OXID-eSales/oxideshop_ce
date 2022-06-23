@@ -20,9 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 class SettingDaoTest extends TestCase
 {
     use ContainerTrait;

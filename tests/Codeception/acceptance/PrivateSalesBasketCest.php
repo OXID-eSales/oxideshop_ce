@@ -73,6 +73,7 @@ final class PrivateSalesBasketCest
         $I->dontSeeElement('#scRootCatChanged');
     }
 
+    /** @group private_shopping_basket_expiration */
     public function testPrivateShoppingBasketExpiration(AcceptanceTester $I): void
     {
         $I->wantToTest('Test private basket reservation expiration');

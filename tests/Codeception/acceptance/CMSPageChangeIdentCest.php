@@ -31,7 +31,10 @@ final class CMSPageChangeIdentCest
         );
     }
 
-    /** @param AcceptanceTester $I */
+    /**
+     * @group todo_add_clean_cache_after_database_update
+     * @param AcceptanceTester $I
+     */
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {
         $I->clearShopCache();

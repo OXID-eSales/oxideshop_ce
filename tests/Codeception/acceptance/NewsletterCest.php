@@ -23,7 +23,7 @@ final class NewsletterCest
 
         $I->seeInField($newsletterPage->userEmail, $email);
     }
-
+    /** @group subscribe_without_user_name */
     public function subscribeWithoutUsername(AcceptanceTester $I)
     {
         $I->wantToTest('Skipping newsletter username');

@@ -91,6 +91,11 @@
                 "Core/**/*",
                 "Internal/**/*"
             ]
+        },
+        "branch-alias": {
+            "dev-b-7.0.x": "7.0.x-dev",
+            "dev-b-6.5.x": "6.5.x-dev",
+            "dev-b-6.4.x": "6.4.x-dev"
         }
     },
     "scripts": {

@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Console command for clearing the cache - `oe:cache:clear`
 - Method ` OxidEsales\EshopCommunity\Application\Model\User::sendRegistrationEmail()`
 
-- ### Changed
+### Changed
 - Updated Symfony components
 
 ### Deprecated
@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface`
   - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
   - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
+
+### Fixed
+- Rare fatal appearing in modified but not recalculated baskets [PR-891](https://github.com/OXID-eSales/oxideshop_ce/pull/891)
 
 ## [6.10.3] - unreleased
 

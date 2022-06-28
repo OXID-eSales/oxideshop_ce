@@ -55,48 +55,6 @@ class ModuleListTest extends UnitTestCase
         Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
     }
 
-    public function testDisabledModules(): void
-    {
-        $this->installModule('with_metadata_v21');
-        $this->installModule('with_class_extensions');
-
-        $this->assertSame(
-            [
-                'with_metadata_v21',
-                'with_class_extensions',
-            ],
-            oxNew(ModuleList::class)->getDisabledModules()
-        );
-    }
-
-    public function testDisabledModulesInfo(): void
-    {
-        $activeModuleId = 'with_metadata_v21';
-        $this->installModule($activeModuleId);
-        $this->activateModule($activeModuleId);
-
-        $notActiveModuleId = 'with_class_extensions';
-        $this->installModule($notActiveModuleId);
-
-        $basicContext = $this->container->get(ContextInterface::class);
-
-        $fullPath = __DIR__. '/Fixtures/with_class_extensions';
-        $relativePath = str_replace($basicContext->getShopRootPath(). "/","", $fullPath);
-
-        $this->assertSame(
-            ['with_class_extensions' => $relativePath],
-            oxNew(ModuleList::class)->getDisabledModuleInfo()
-        );
-    }
-
-    public function testDisabledModulesInfoWithNoModules(): void
-    {
-        $this->assertSame(
-            [],
-            oxNew(ModuleList::class)->getDisabledModuleInfo()
-        );
-    }
-
     public function testGetDisabledModuleClasses(): void
     {
         $notActiveModuleId = 'with_class_extensions';
@@ -138,20 +96,6 @@ class ModuleListTest extends UnitTestCase
         );
     }
 
-    public function testModuleIds(): void
-    {
-        $this->installModule('with_metadata_v21');
-        $this->installModule('with_class_extensions');
-
-        $this->assertSame(
-            [
-                'with_metadata_v21',
-                'with_class_extensions',
-            ],
-            oxNew(ModuleList::class)->getModuleIds()
-        );
-    }
-
     public function testGetDeletedExtensionsWithMissingExtensions(): void
     {
         $moduleId = 'InvalidNamespaceModule';
@@ -171,34 +115,6 @@ class ModuleListTest extends UnitTestCase
                 ],
             ],
             oxNew(ModuleList::class)->getDeletedExtensions()
-        );
-    }
-
-    public function testGetModulesWithExtendedClass(): void
-    {
-        $this->installModule('with_class_extensions');
-        $this->installModule('with_class_extensions2');
-        $this->activateModule('with_class_extensions');
-        $this->activateModule('with_class_extensions2');
-
-        $this->assertEquals(
-            [
-                ContentController::class                     => [\OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\with_class_extenstions2\Controllers\ContentController::class],
-                'OxidEsales\Eshop\Application\Model\Article' => ['with_class_extensions/ModuleArticle'],
-            ],
-            oxNew(ModuleList::class)->getModulesWithExtendedClass()
-        );
-    }
-
-    public function testExtractModulePaths(): void
-    {
-        $this->installModule('with_class_extensions');
-
-        $this->assertEquals(
-            [
-                'with_class_extensions' => 'with_class_extensions'
-            ],
-            oxNew(ModuleList::class)->extractModulePaths()
         );
     }
 
@@ -228,21 +144,6 @@ class ModuleListTest extends UnitTestCase
     {
         $this->installModule('with_metadata_v21');
         $this->assertSame([], oxNew(ModuleList::class)->getModuleExtensions('with_metadata_v21'));
-    }
-
-    public function testGetModules(): void
-    {
-        $extensions = [
-            'OxidEsales\Eshop\Application\Model\Article'                => 'with_multiple_extensions/articleExtension1&with_multiple_extensions/articleExtension2&with_multiple_extensions/articleExtension3',
-            Order::class                                                => 'with_multiple_extensions/oxOrder',
-            Basket::class                                               => 'with_multiple_extensions/basketExtension',
-            ContentController::class => \OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\with_class_extenstions2\Controllers\ContentController::class
-        ];
-
-        $this->installModule('with_multiple_extensions');
-        $this->installModule('with_class_extensions2');
-
-        $this->assertSame($extensions, oxNew(ModuleList::class)->getModules());
     }
 
     private function installModule(string $id): void

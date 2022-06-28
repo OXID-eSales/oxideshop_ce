@@ -452,10 +452,6 @@ class ModuleTest extends \OxidTestCase
 
     public function testGetIdByPathUnknownPath()
     {
-        $aDisabledModules = array('test1');
-        $aModulePaths = array("ModuleName2" => "oe/ModuleName2");
-        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
-        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
         $sModule = "ModuleName/myorder";
 
         $oModule = oxNew('oxModule');
@@ -465,10 +461,6 @@ class ModuleTest extends \OxidTestCase
 
     public function testGetIdByPathUnknownPathNotDir()
     {
-        $aDisabledModules = array('test1');
-        $aModulePaths = array("ModuleName2" => "oe/ModuleName2");
-        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
-        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
         $sModule = "myorder";
 
         $oModule = oxNew('oxModule');

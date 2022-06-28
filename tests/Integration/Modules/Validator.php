@@ -140,36 +140,6 @@ class Validator
     }
 
     /**
-     * Asserts that module version match expected version
-     *
-     * @param array $aExpectedVersions
-     *
-     * @return bool
-     */
-    public function checkVersions($aExpectedVersions)
-    {
-        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam('aModuleVersions');
-        $aModuleVersionsToCheck = is_null($aModuleVersionsToCheck) ? array() : $aModuleVersionsToCheck;
-
-        return $aExpectedVersions == $aModuleVersionsToCheck;
-    }
-
-    /**
-     * Asserts that module version match expected version
-     *
-     * @param array $aExpectedEvents
-     *
-     * @return bool
-     */
-    public function checkEvents($aExpectedEvents)
-    {
-        $aModuleEventsToCheck = $this->getConfig()->getConfigParam('aModuleEvents');
-        $aModuleEventsToCheck = is_null($aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
-
-        return $aExpectedEvents == $aModuleEventsToCheck;
-    }
-
-    /**
      * @param array $aExpectedBlocks
      * @param array $aBlocksToCheck
      *

@@ -403,64 +403,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     }
 
     /**
-     * @return array
-     */
-    public function providerTestModuleChainsGenerator_cleanModuleFromClassChain(): array
-    {
-        return array(
-            array(
-                // modules id to be activated
-                'without_own_module_namespace',
-
-                // modules name to be activated
-                'without_own_module_namespace',
-
-                // full class chain to assert after module was activated
-                array(
-                    TestModuleTwoPrice::class
-                ),
-            ),
-            array(
-                // modules id to be activated
-                'with_own_module_namespace',
-
-                // modules name to be activated
-                'with_own_module_namespace',
-
-                // full class chain to assert after module was activated
-                array(
-                    TestModuleOnePrice::class
-                ),
-            ),
-        );
-    }
-
-    /**
-     * Test ModuleChainsGenerator::cleanModuleFromClassChain
-     *
-     * @dataProvider providerTestModuleChainsGenerator_cleanModuleFromClassChain()
-     *
-     * @param string $moduleNameToBeActivated
-     * @param string $moduleIdToBeActivated
-     * @param array  $fullChainToAssert
-     */
-    public function testModuleChainsGenerator_cleanModuleFromClassChain(
-        string $moduleNameToBeActivated,
-        string $moduleIdToBeActivated,
-        array $fullChainToAssert
-    ): void {
-        $this->installAndActivateModule($moduleNameToBeActivated);
-
-        $utilsObject = TestUtilsObject::getInstance();
-        $chain = $utilsObject->getTheModuleChainsGenerator();
-
-        $this->assertEquals($fullChainToAssert, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));
-
-        $cleanedChain = $chain->cleanModuleFromClassChain($moduleIdToBeActivated, $fullChainToAssert);
-        $this->assertEquals(array(), $cleanedChain);
-    }
-
-    /**
      * Data provider.
      *
      * @return array

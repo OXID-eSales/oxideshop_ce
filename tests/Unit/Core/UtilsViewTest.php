@@ -601,17 +601,6 @@ class UtilsViewTest extends \OxidTestCase
     }
 
     /**
-     * base test
-     */
-    public function testGetActiveModuleInfo()
-    {
-        oxTestModules::addFunction('oxModulelist', 'getActiveModuleInfo', '{ return true; }');
-        $oUV = $this->getProxyClass('oxUtilsView');
-
-        $this->assertTrue($oUV->getActiveModuleInfo());
-    }
-
-    /**
      * tests oxutilsView::getSmartyDir()
      */
     public function testGetSmartyDir()

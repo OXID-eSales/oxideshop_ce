@@ -22,21 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
  */
 class ModuleList extends \OxidEsales\Eshop\Core\Base
 {
-    const MODULE_KEY_PATHS = 'Paths';
-    const MODULE_KEY_EVENTS = 'Events';
-    const MODULE_KEY_VERSIONS = 'Versions';
-    const MODULE_KEY_TEMPLATES = 'Templates';
-    const MODULE_KEY_EXTENSIONS = 'Extensions';
-    const MODULE_KEY_CONTROLLERS = 'Controllers';
-
-    /**
-     * Modules info array
-     *
-     *
-     * @var array<string, array>
-     */
-    protected $_aModules = [];
-
     /**
      * All module extensions.
      *
@@ -45,183 +30,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     protected $_aModuleExtensions = null;
 
     /**
-     * List of files that should be skipped while scanning module dir.
-     *
-     * @var array
-     */
-    protected $_aSkipFiles = ['functions.php', 'vendormetadata.php'];
-
-    /**
-     * Return array of modules
-     *
-     * @return array
-     */
-    public function getList()
-    {
-        return $this->_aModules;
-    }
-
-    /**
-     * Get all modules with Extended classes
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
-    {
-        $moduleExtensions = [];
-
-        $container = ContainerFactory::getInstance()->getContainer();
-        $moduleConfigurations = $container
-            ->get(ShopConfigurationDaoBridgeInterface::class)
-            ->get()
-            ->getModuleConfigurations();
-
-        foreach ($moduleConfigurations as $moduleConfiguration) {
-            if ($moduleConfiguration->hasClassExtensions()) {
-                foreach ($moduleConfiguration->getClassExtensions() as $extensions) {
-                    if (!isset($moduleExtensions[$extensions->getShopClassName()])) {
-                        $moduleExtensions[$extensions->getShopClassName()] = $extensions->getModuleExtensionClassName();
-                    } else {
-                        $moduleExtensions[$extensions->getShopClassName()] .= '&' . $extensions->getModuleExtensionClassName();
-                    }
-                }
-            }
-        }
-
-        return $this->parseModuleChains($moduleExtensions);
-    }
-
-    /**
-     * Get active modules path info
-     *
-     * @return array
-     */
-    public function getActiveModuleInfo()
-    {
-        return $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-    }
-
-    /**
-     * Get disabled module paths
-     *
-     * @return array
-     */
-    public function getDisabledModuleInfo()
-    {
-        $modulePaths = [];
-
-        foreach ($this->getDisabledModuleConfigurations() as $moduleConfiguration) {
-            $modulePaths[$moduleConfiguration->getId()] = $moduleConfiguration->getModuleSource();
-        }
-
-        return $modulePaths;
-    }
-
-    /**
-     * Get module id's with versions
-     *
-     * @return array
-     */
-    public function getModuleVersions()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleVersions');
-    }
-
-    /**
-     * Get the list of modules
-     *
-     * @return array
-     */
-    public function getModules()
-    {
-        $extendedClasses = [];
-
-        $container = ContainerFactory::getInstance()->getContainer();
-        $moduleConfigurations = $container
-            ->get(ShopConfigurationDaoBridgeInterface::class)
-            ->get()
-            ->getModuleConfigurations();
-
-        foreach ($moduleConfigurations as $moduleConfiguration) {
-            if ($moduleConfiguration->hasClassExtensions()) {
-                foreach ($moduleConfiguration->getClassExtensions() as $extensions) {
-                    if (!isset($extendedClasses[$extensions->getShopClassName()])) {
-                        $extendedClasses[$extensions->getShopClassName()] = $extensions->getModuleExtensionClassName();
-                    } else {
-                        $extendedClasses[$extensions->getShopClassName()] .= '&' . $extensions->getModuleExtensionClassName();
-                    }
-                }
-            }
-        }
-
-
-        return $extendedClasses;
-    }
-
-    /**
-     * Get disabled module id's
-     *
-     * @return array
-     */
-    public function getDisabledModules()
-    {
-        $moduleIds = [];
-
-        foreach ($this->getDisabledModuleConfigurations() as $moduleConfiguration) {
-            $moduleIds[] = $moduleConfiguration->getId();
-        }
-
-        return $moduleIds;
-    }
-
-    /**
-     * Get module id's with path
-     *
-     * @return array
-     */
-    public function getModulePaths()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
-    }
-
-    /**
-     * Get module events
-     *
-     * @return array
-     */
-    public function getModuleEvents()
-    {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
-    }
-
-    /**
-     * Extract module id's with paths from extended classes.
-     *
-     * @return array
-     */
-    public function extractModulePaths()
-    {
-        $aModules = $this->getModulesWithExtendedClass();
-        $aModulePaths = [];
-
-        if (is_array($aModules) && count($aModules) > 0) {
-            foreach ($aModules as $aModuleClasses) {
-                foreach ($aModuleClasses as $sModule) {
-                    $sModuleId = substr($sModule, 0, strpos($sModule, "/"));
-                    $aModulePaths[$sModuleId] = $sModuleId;
-                }
-            }
-        }
-
-        return $aModulePaths;
-    }
-
-    /**
-     * Returns disabled module classes with path using config aModules
-     * and aModulePaths.
-     * aModules has all extended classes
-     * aModulePaths has module id to main path array
-     *
      * @return array
      */
     public function getDisabledModuleClasses()
@@ -267,7 +75,11 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDeletedExtensions()
     {
-        $aModulesIds = $this->getModuleIds();
+        $aModulesIds = $this->getContainer()
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleIdsOfModuleConfigurations();
+
         $oModule = $this->getModule();
         $aDeletedExt = [];
 
@@ -280,63 +92,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
 
         return $aDeletedExt;
-    }
-
-    /**
-     * Diff two nested module arrays together so that the values of
-     * $aRmModuleArray are removed from $aAllModuleArray
-     *
-     * @param array $aAllModuleArray All Module array (nested format)
-     * @param array $aRemModuleArray Remove Module array (nested format)
-     *
-     * @return array
-     */
-    public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
-    {
-        if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
-            foreach ($aAllModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
-                    $aModuleChain = [$aModuleChain];
-                }
-                if (isset($aRemModuleArray[$sClass])) {
-                    if (!is_array($aRemModuleArray[$sClass])) {
-                        $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
-                    }
-                    $aAllModuleArray[$sClass] = [];
-                    foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aRemModuleArray[$sClass])) {
-                            $aAllModuleArray[$sClass][] = $sModule;
-                        }
-                    }
-                    if (!count($aAllModuleArray[$sClass])) {
-                        unset($aAllModuleArray[$sClass]);
-                    }
-                } else {
-                    $aAllModuleArray[$sClass] = $aModuleChain;
-                }
-            }
-        }
-
-        return $aAllModuleArray;
-    }
-
-    /**
-     * Build module chains from nested array
-     *
-     * @param array $aModuleArray Module array (nested format)
-     *
-     * @return array
-     */
-    public function buildModuleChains($aModuleArray)
-    {
-        $aModules = [];
-        if (is_array($aModuleArray)) {
-            foreach ($aModuleArray as $sClass => $aModuleChain) {
-                $aModules[$sClass] = implode('&', $aModuleChain);
-            }
-        }
-
-        return $aModules;
     }
 
     /**
@@ -375,78 +130,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Gets Module config parameters by key
-     *
-     * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS)
-     *
-     * @param string $key Key
-     *
-     * @return array module config parameters for given key
-     */
-    public function getModuleConfigParametersByKey($key)
-    {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModule' . $key);
-    }
-
-    /**
-     * Scans modules dir and returns collected modules list.
-     * Recursively loads also modules that are in vendor directory.
-     *
-     * @param string $sModulesDir Main module dir path
-     * @param string $sVendorDir  Vendor directory name
-     *
-     * @return array
-     */
-    public function getModulesFromDir($sModulesDir, $sVendorDir = null)
-    {
-        $sModulesDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sModulesDir);
-
-        foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
-            $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
-            $sModuleDirName = basename($sModuleDirPath);
-
-            // skipping some file
-            if (in_array($sModuleDirName, $this->_aSkipFiles) || (!is_dir($sModuleDirPath) && substr($sModuleDirName, -4) != ".php")) {
-                continue;
-            }
-
-            if ($this->isVendorDir($sModuleDirPath)) {
-                // scanning modules vendor directory
-                $this->getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
-            } else {
-                // loading module info
-                $oModule = $this->getModule();
-                $sModuleDirName = (!empty($sVendorDir)) ? $sVendorDir . '/' . $sModuleDirName : $sModuleDirName;
-                if ($oModule->loadByDir($sModuleDirName)) {
-                    $sModuleId = $oModule->getId();
-                    $this->_aModules[$sModuleId] = $oModule;
-                }
-            }
-        }
-        // sorting by name
-        if ($this->_aModules !== null) {
-            uasort($this->_aModules, [$this, '_sortModules']);
-        }
-
-        return $this->_aModules;
-    }
-
-    /**
-     * Returns module ids which have extensions or files.
-     *
-     * @return array
-     */
-    public function getModuleIds()
-    {
-        $container = ContainerFactory::getInstance()->getContainer();
-
-        return $container
-            ->get(ShopConfigurationDaoBridgeInterface::class)
-            ->get()
-            ->getModuleIdsOfModuleConfigurations();
-    }
-
-    /**
      * Returns module extensions.
      *
      * @param string $sModuleId
@@ -470,43 +153,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
 
         return $this->_aModuleExtensions[$sModuleId] ?? [];
-    }
-
-    /**
-     * Callback function for sorting module objects by name.
-     *
-     * @param object $oModule1 module object
-     * @param object $oModule2 module object
-     *
-     * @return bool
-     */
-    protected function sortModules($oModule1, $oModule2)
-    {
-        return strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
-    }
-
-    /**
-     * Checks if directory is vendor directory.
-     *
-     * @param string $sModuleDir dir path
-     *
-     * @return bool
-     */
-    protected function isVendorDir($sModuleDir)
-    {
-        if (!is_dir($sModuleDir)) {
-            return false;
-        }
-
-        $currentDirectoryContents = scandir($sModuleDir);
-        $currentDirectoryContents = array_diff($currentDirectoryContents, ['.', '..']);
-        foreach ($currentDirectoryContents as $entry) {
-            if (is_dir("$sModuleDir/$entry") && file_exists("$sModuleDir/$entry/metadata.php")) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

@@ -346,7 +346,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
     /**
      * Prepares data for storing to database.
-     * Example: $sType='aarr', $sName='aModules', $mValue='key1=>val1\nkey2=>val2'
+     * Example: $sType='aarr', $sName='someName', $mValue='key1=>val1\nkey2=>val2'
      *
      * @param string $type  var type
      * @param string $name  var name

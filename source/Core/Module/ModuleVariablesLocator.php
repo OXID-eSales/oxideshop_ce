@@ -39,7 +39,6 @@ class ModuleVariablesLocator
 
     /**
      * Retrieves module configuration variable for the base shop.
-     * Currently getModuleVar() is expected to be called with one of the values: aModules | aDisabledModules | aModulePaths
      * This method is independent from oxConfig functionality.
      *
      * @param string $name Configuration array name

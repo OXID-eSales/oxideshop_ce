@@ -20,25 +20,15 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingService
     calls:
-      - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.shop_configuration_class_extension_handler']]
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.events_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.services_yaml_validator']]
-
-  oxid_esales.module.setup.version_module_setting_handler:
-      class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModuleVersionHandler
-
-  oxid_esales.module.setup.path_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModulePathHandler
 
   oxid_esales.module.setup.controllers_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ControllersModuleSettingHandler
@@ -50,17 +40,11 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface'
 
-  oxid_esales.module.setup.shop_configuration_class_extension_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationClassExtensionsHandler
-
   oxid_esales.module.setup.template_blocks_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\TemplateBlockModuleSettingHandler
 
   oxid_esales.module.setup.shop_module_setting_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\SettingModuleSettingHandler
-
-  oxid_esales.module.setup.events_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationEventsHandler
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\SmartyPluginDirectoriesValidator

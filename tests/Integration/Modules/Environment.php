@@ -123,11 +123,6 @@ class Environment
     {
         $config = Registry::getConfig();
         $config->setConfigParam('aModules', null);
-
-        $config->setConfigParam('aDisabledModules', array());
-        $config->setConfigParam('aModulePaths', array());
-        $config->setConfigParam('aModuleVersions', null);
-        $config->setConfigParam('aModuleEvents', null);
         $config->setConfigParam('aModuleControllers', null);
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -228,7 +223,7 @@ class Environment
     protected function loadShopParameters()
     {
         $aParameters = array(
-            'aModules', 'aModuleEvents', 'aModuleVersions', 'aDisabledModules', 'aModuleControllers'
+            'aModules', 'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
             Registry::getConfig()->setConfigParam($sParameter, $this->getConfigValueFromDB($sParameter));

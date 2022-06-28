@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
@@ -519,13 +520,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         if ($this->isShopTemplateBlockOverriddenByActiveModule()) {
             $shopId = $config->getShopId();
 
-            $ids = $this->getActiveModuleInfo();
-
-            $activeModulesId = array_keys($ids);
+            $activeModulesIds = $this->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class)->getModuleIds();
             $activeThemeIds = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemesList();
 
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
-            $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
+            $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesIds, $shopId, $activeThemeIds);
 
             if ($activeBlockTemplates) {
                 $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
@@ -535,21 +534,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         }
 
         return $templateBlocksWithContent;
-    }
-
-    /**
-     * Returns active module Ids
-     *
-     * @return array
-     */
-    protected function getActiveModuleInfo()
-    {
-        if ($this->_aActiveModuleInfo === null) {
-            $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $this->_aActiveModuleInfo = $modulelist->getActiveModuleInfo();
-        }
-
-        return $this->_aActiveModuleInfo;
     }
 
     /**
@@ -804,12 +788,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $moduleOverridesTemplate = false;
 
-        $ids = $this->getActiveModuleInfo();
-        if (count($ids)) {
+        $activeModulesIds = $this->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class)->getModuleIds();
+        if (count($activeModulesIds)) {
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
-            $shopId = Registry::getConfig()->getShopId();
-            $activeModulesId = array_keys($ids);
-            $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesId, $shopId);
+
+            $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesIds, Registry::getConfig()->getShopId());
 
             if ($blocksCount) {
                 $moduleOverridesTemplate = true;

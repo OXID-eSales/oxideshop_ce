@@ -109,30 +109,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Load module by dir name
-     *
-     * @param string $sModuleDir Module dir name
-     *
-     * @return bool
-     */
-    public function loadByDir($sModuleDir)
-    {
-        $sModuleId = null;
-        $aModulePaths = $this->getModulePaths();
-
-        if (is_array($aModulePaths)) {
-            $sModuleId = array_search($sModuleDir, $aModulePaths);
-        }
-
-        // if no module id defined, using module dir as id
-        if (!$sModuleId) {
-            $sModuleId = $sModuleDir;
-        }
-
-        return $this->load($sModuleId);
-    }
-
-    /**
      * Get module description
      *
      * @return string
@@ -246,20 +222,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
 
         return $moduleId;
-    }
-
-    /**
-     * @deprecated since v6.0.0 (2017-03-21); Use self::getModuleIdByClassName()
-     *
-     * Get the module id of given extended class name or namespace.
-     *
-     * @param string $className
-     *
-     * @return string
-     */
-    public function getIdFromExtension($className)
-    {
-        return $this->getModuleIdByClassName($className);
     }
 
     /**

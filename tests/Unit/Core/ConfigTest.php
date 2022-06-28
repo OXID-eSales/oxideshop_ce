@@ -2166,32 +2166,6 @@ class ConfigTest extends \OxidTestCase
         $this->assertNotEquals(33, $oConfig->getConfigParam("iDebug"));
     }
 
-    public function testGetModulesWithExtendedClassWillReturnExpected(): void
-    {
-        $testModuleId1 = 'module-id-1';
-        $testModuleId2 = 'module-id-2';
-        $modules = [
-            $testModuleId1 => 'testExt1/module1&testExt2/module1',
-            $testModuleId2 => 'testExt2/module2',
-        ];
-        $expected = [
-            $testModuleId1 => [
-                'testExt1/module1',
-                'testExt2/module1',
-            ],
-            $testModuleId2 => ['testExt2/module2'],
-        ];
-        $configMock = $this->createPartialMock(Config::class, ['getConfigParam']);
-        $configMock->expects($this->once())
-            ->method('getConfigParam')
-            ->with($this->equalTo('aModules'))
-            ->willReturn($modules);
-
-        $return = $configMock->getModulesWithExtendedClass();
-
-        $this->assertEquals($expected, $return);
-    }
-
     /**
      * Tests that custom config is being set and variables from it are reachable
      *

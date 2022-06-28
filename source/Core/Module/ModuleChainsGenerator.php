@@ -121,37 +121,6 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Clean classes from chain for given module id.
-     * Classes might be in module chain by path (old way) or by module namespace(new way).
-     * This function removes all classes from class chain for classes inside a deactivated module's directory.
-     *
-     * @deprecated since v6.4 (2019-05-22); If you want to clean a module from the class chain, deactivate the module.
-     *
-     * @param string $moduleId
-     * @param array  $classChain
-     *
-     * @return array
-     */
-    public function cleanModuleFromClassChain($moduleId, array $classChain)
-    {
-        $variablesLocator = $this->getModuleVariablesLocator();
-        $registeredExtensions = $variablesLocator->getModuleVariable('aModuleExtensions');
-
-        $toBeRemovedFromChain = [];
-        if (isset($registeredExtensions[$moduleId])) {
-            $toBeRemovedFromChain = array_combine($registeredExtensions[$moduleId], $registeredExtensions[$moduleId]);
-        }
-
-        foreach ($classChain as $key => $moduleClass) {
-            if (isset($toBeRemovedFromChain[$moduleClass])) {
-                unset($classChain[$key]);
-            }
-        }
-
-        return $classChain;
-    }
-
-    /**
      * Creates middle classes if needed.
      *
      * @param array  $classChain Module names

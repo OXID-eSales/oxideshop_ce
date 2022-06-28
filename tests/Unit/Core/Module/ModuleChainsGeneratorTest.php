@@ -19,24 +19,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function testGetActiveModuleChain(): void
-    {
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock(
-            ModuleVariablesLocator::class,
-            array('getModuleVariable'),
-            array(),
-            '',
-            false
-        );
-
-        $valueMap = array(
-            array('aDisabledModules', array('moduleName')),
-            array('aModulePaths', array("moduleName2" => "oe/moduleName2", "moduleName" => "oe/moduleName")),
-        );
-        $moduleVariablesLocator->method('getModuleVariable')->willReturnMap($valueMap);
-    }
-
     /**
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::onModuleExtensionCreationError

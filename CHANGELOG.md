@@ -39,6 +39,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Classes:
   - `Core\PasswordSaltGenerator`
   - `Internal\Transition\Utility\FallbackTokenGenerator`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModulePathHandler`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModuleVersionHandler`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationClassExtensionsHandler`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationEventsHandler`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleCache`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleInstaller`
   - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
 - Methods:
   - `Application\Model\User::getUtilsObjectInstance()`
@@ -53,10 +59,61 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
   - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`
   - `OxidEsales\EshopCommunity\Core\Email::$_aAttachments`
+  - `OxidEsales\EshopCommunity\Core\Module\Module`
+    - `loadByDir()`
+    - `getIdFromExtension()`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator`
+    - `cleanModuleFromClassChain()`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleList`
+    - `getList`
+    - `getModulesWithExtendedClass`
+    - `getActiveModuleInfo`
+    - `getDisabledModuleInfo`
+    - `getModuleVersions`
+    - `getModules`
+    - `getDisabledModules`
+    - `getModulePaths`
+    - `getModuleEvents`
+    - `extractModulePaths`
+    - `diffModuleArrays`
+    - `buildModuleChains`
+    - `getModuleConfigParametersByKey`
+    - `getModulesFromDir`
+    - `getModuleIds`
+    - `sortModules`
+    - `isVendorDir`
+  - `OxidEsales\EshopCommunity\Core\Config`
+    - `getModulesWithExtendedClass`
+  - `OxidEsales\EshopCommunity\Core\UtilsView`
+    - `getActiveModuleInfo`
+  - `OxidEsales\EshopCommunity\Core\ViewConfig`
+    - `isModuleActive`
 - Services:
   - `utility.context.log_file_path`
   - `utility.context.log_level:`
   - `utility.context.admin_log_file_path`
+  - `oxid_esales.module.setup.path_module_setting_handler`
+  - `oxid_esales.module.setup.version_module_setting_handler`
+  - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
+  - `oxid_esales.module.setup.events_module_setting_handler`
+- Config options:
+  - `aModuleExtensions`
+  - `aModuleVersions`
+  - `aModulePaths`
+  - `aModuleEvents`
+- Constants:
+  - `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
+    - `MODULE_CLASS_EXTENSIONS`
+    - `MODULE_VERSIONS`
+    - `MODULE_PATHS`
+    - `MODULE_EVENTS`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleList`
+    - `MODULE_KEY_PATHS`
+    - `MODULE_KEY_EVENTS`
+    - `MODULE_KEY_VERSIONS`
+    - `MODULE_KEY_TEMPLATES`
+    - `MODULE_KEY_EXTENSIONS`
+    - `MODULE_KEY_CONTROLLERS`
 
 ## [7.0.0-rc.1] - 2021-07-07
 

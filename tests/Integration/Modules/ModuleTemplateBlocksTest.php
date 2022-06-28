@@ -11,6 +11,7 @@ use oxDb;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxUtilsView;
@@ -153,7 +154,7 @@ class ModuleTemplateBlocksTest extends UnitTestCase
         $this->setConfigParam('sShopDir', $shopPath);
         $this->setConfigParam('sTheme', $themeId);
         $this->setConfigParam('sCustomTheme', $customThemeId);
-        $this->setConfigParam('aModulePaths', [$this->activeModuleId => 'oe/testTemplateBlockModuleId']);
+        //$this->setConfigParam('activeModules', [$this->activeModuleId]);
 
         return oxNew('oxUtilsView');
     }
@@ -239,9 +240,19 @@ class ModuleTemplateBlocksTest extends UnitTestCase
             ->setId($this->activeModuleId)
             ->setModuleSource($relativeModulePath);
 
-        ContainerFactory::getInstance()
-            ->getContainer()
+        $this->getContainer()
             ->get(ModuleConfigurationDaoBridgeInterface::class)
             ->save($moduleConfiguration);
+
+        $moduleActivator = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        if (!$moduleActivator->isActive($this->activeModuleId, 1))
+        {
+            $moduleActivator->activate($this->activeModuleId, 1);
+        }
+    }
+
+    private function getContainer(): \Psr\Container\ContainerInterface
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

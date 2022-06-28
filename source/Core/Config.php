@@ -1993,18 +1993,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
-    {
-        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-
-        return $moduleList->parseModuleChains($this->getConfigParam('aModules'));
-    }
-
-    /**
      * Return active shop ids
      *
      * @return array

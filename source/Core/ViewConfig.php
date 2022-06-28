@@ -1202,34 +1202,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Check if module is active.
-     * If versionFrom or|and versionTo is defined - also checks module versions.
-     *
-     * @param string $sModuleId    module id.
-     * @param string $sVersionFrom module from version.
-     * @param string $sVersionTo   module to version.
-     *
-     * @return  bool
-     */
-    public function isModuleActive($sModuleId, $sVersionFrom = null, $sVersionTo = null)
-    {
-        $blModuleIsActive = false;
-
-        // use aModuleVersions instead of aModules, because aModules gives only modules which extend oxid classes
-        $aModuleVersions = Registry::getConfig()->getConfigParam('aModuleVersions');
-
-        if (is_array($aModuleVersions)) {
-            $blModuleIsActive = $this->moduleExists($sModuleId, $aModuleVersions);
-
-            if ($blModuleIsActive) {
-                $blModuleIsActive = $this->isModuleEnabled($sModuleId) && $this->isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
-            }
-        }
-
-        return $blModuleIsActive;
-    }
-
-    /**
      * return param value
      *
      * @param string $sName param name
@@ -1354,19 +1326,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if module exists.
-     *
-     * @param string $sModuleId       Module id
-     * @param array  $aModuleVersions Modules from oxconfig 'aModuleVersions'
-     *
-     * @return bool
-     */
-    private function moduleExists($sModuleId, $aModuleVersions)
-    {
-        return (in_array($sModuleId, array_keys($aModuleVersions)));
-    }
-
-    /**
      * Checks whether module is enabled.
      *
      * @param string $moduleId Module id
@@ -1382,32 +1341,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $moduleId,
             Registry::getConfig()->getShopId()
         );
-    }
-
-    /**
-     * Checks whether module version is between given range.
-     *
-     * @param string $sModuleId    Module id
-     * @param string $sVersionFrom Version from
-     * @param string $sVersionTo   Version to
-     *
-     * @return bool
-     */
-    private function isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo)
-    {
-        $blModuleIsActive = true;
-
-        $aModuleVersions = Registry::getConfig()->getConfigParam('aModuleVersions');
-
-        if ($sVersionFrom && !version_compare($aModuleVersions[$sModuleId], $sVersionFrom, '>=')) {
-            $blModuleIsActive = false;
-        }
-
-        if ($blModuleIsActive && $sVersionTo && !version_compare($aModuleVersions[$sModuleId], $sVersionTo, '<')) {
-            $blModuleIsActive = false;
-        }
-
-        return $blModuleIsActive;
     }
 
     /**

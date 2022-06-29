@@ -3,6 +3,22 @@ name: Development
 on: [ push, pull_request ]
 
 jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    if: github.ref_name == b-7.0.x || github.ref_name == b-6.5.x || github.ref_name == b-6.4.x
+    steps:
+      - name: Trigger EE workflow
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'oxid-esales',
+              repo: 'oxideshop_ee',
+              workflow_id: 'development.yml',
+              ref: '${{ github.ref_name }}'
+            })
+
   install_shop:
     strategy:
       matrix:

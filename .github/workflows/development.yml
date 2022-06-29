@@ -7,25 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ (github.ref_name == 'b-7.0.x') || (github.ref_name == 'b-6.5.x') || (github.ref_name == 'b-6.4.x') }}
     steps:
-      - name: Dispatch EE workflow and get the run ID
-        uses: codex-/return-dispatch@v1
-        id: return_dispatch
+      - name: Trigger EE workflow and wait for results
+        uses: convictional/trigger-workflow-and-wait@v1.6.3
         with:
-          token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
-          repo: oxideshop_ee
           owner: oxid-esales
-          workflow: development.yml
+          repo: oxideshop_ee
+          github_user: ${{ secrets.CI_USER }}
+          github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          workflow_file_name: development.yml
           ref: ${{ github.ref_name }}
-
-      - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
-        uses: Codex-/await-remote-run@v1.0.0
-        with:
-          token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
-          repo: oxideshop_ee
-          owner: oxid-esales
-          run_id: ${{ steps.return_dispatch.outputs.run_id }}
-          run_timeout_seconds: 3600
-          poll_interval_ms: 5000
 
   install_shop:
     strategy:

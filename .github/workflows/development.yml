@@ -3,21 +3,29 @@ name: Development
 on: [ push, pull_request ]
 
 jobs:
-  dispatch:
+  test_EE:
     runs-on: ubuntu-latest
     if: ${{ (github.ref_name == 'b-7.0.x') || (github.ref_name == 'b-6.5.x') || (github.ref_name == 'b-6.4.x') }}
     steps:
-      - name: Trigger EE workflow
-        uses: actions/github-script@v6
+      - name: Dispatch EE workflow and get the run ID
+        uses: codex-/return-dispatch@v1
+        id: return_dispatch
         with:
-          github-token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: 'oxid-esales',
-              repo: 'oxideshop_ee',
-              workflow_id: 'development.yml',
-              ref: '${{ github.ref_name }}'
-            })
+          token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          repo: oxideshop_ee
+          owner: oxid-esales
+          workflow: development.yml
+          ref: ${{ github.ref_name }}
+
+      - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
+        uses: Codex-/await-remote-run@v1.0.0
+        with:
+          token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          repo: oxideshop_ee
+          owner: oxid-esales
+          run_id: ${{ steps.return_dispatch.outputs.run_id }}
+          run_timeout_seconds: 3600
+          poll_interval_ms: 5000
 
   install_shop:
     strategy:

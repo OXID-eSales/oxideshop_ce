@@ -5,7 +5,7 @@ on: [ push, pull_request ]
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    if: github.ref_name == "b-7.0.x" || github.ref_name == "b-6.5.x" || github.ref_name == "b-6.4.x"
+    if: ${{ (github.ref_name == 'b-7.0.x') || (github.ref_name == 'b-6.5.x') || (github.ref_name == 'b-6.4.x') }}
     steps:
       - name: Trigger EE workflow
         uses: actions/github-script@v6

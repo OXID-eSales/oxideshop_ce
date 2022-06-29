@@ -128,7 +128,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     public function testGetWsdlUrl_default()
     {
         $oOnline = oxNew('oxOnlineVatIdCheck');
-        $this->assertEquals('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl', $oOnline->getWsdlUrl());
+        $this->assertEquals('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl', $oOnline->getWsdlUrl());
     }
 
     /**

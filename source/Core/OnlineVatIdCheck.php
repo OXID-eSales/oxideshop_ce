@@ -49,7 +49,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @var string
      */
-    protected $_sWsdl = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+    protected $_sWsdl = 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
      * Class constructor.

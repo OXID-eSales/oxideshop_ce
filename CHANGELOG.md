@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated Symfony components
+- Vat code checking service url protocol changed to https [PR-890](https://github.com/OXID-eSales/oxideshop_ce/pull/890)
 
 ### Deprecated
 - Support for NAME constants in Event classes (`*Event::NAME`)

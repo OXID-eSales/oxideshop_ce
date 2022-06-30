@@ -1,0 +1,240 @@
+name: Full Matrix
+
+on:
+  push:
+    branches:
+      - b-7.0.x
+      - b-6.5.x
+      - b-6.4.x
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test_EE:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger EE workflow and wait for results
+        uses: convictional/trigger-workflow-and-wait@v1.6.3
+        with:
+          owner: oxid-esales
+          repo: oxideshop_ee
+          github_user: ${{ secrets.CI_USER }}
+          github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          workflow_file_name: matrix_full.yml
+          ref: ${{ github.ref_name }}
+
+  install_shop:
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+        mysql: [ '5.7' ]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone testing environment master
+        run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
+
+      - name: Clone the shop (${{ github.ref_name }})
+        if: github.event_name == 'push'
+        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
+
+      - name: Clone the shop (PR ${{ github.event.number }})
+        if: github.event_name == 'pull_request'
+        run: |
+          git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.base_ref }} --single-branch source
+          git -C source fetch origin refs/pull/${{ github.event.number }}/head:pr_${{ github.event.number }}
+          git -C source checkout pr_${{ github.event.number }}
+
+      - name: Cache current installation
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Prepare container configuration
+        run: |
+          make setup
+          make addbasicservices
+          make file=services/selenium-firefox.yml addservice
+          perl -pi\
+              -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
+              -e "s#MYSQL_VERSION=.*#MYSQL_VERSION='${{ matrix.mysql }}'#g;"\
+              .env
+          perl -pi\
+              -e 's#display_errors =.*#display_errors = false#g;'\
+              -e 'print "xdebug.max_nesting_level=1000\n\n";'\
+              -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
+              containers/php/custom.ini
+          perl -pi\
+              -e 's#/var/www/#/var/www/source/#g;'\
+              containers/httpd/project.conf
+
+      - name: Prepare shop configuration
+        run: |
+          cp source/source/config.inc.php.dist source/source/config.inc.php
+          perl -pi\
+            -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
+            source/source/.htaccess
+          perl -pi\
+            -e 's#<dbHost>#mysql#g;'\
+            -e 's#<dbUser>#root#g;'\
+            -e 's#<dbName>#example#g;'\
+            -e 's#<dbPwd>#root#g;'\
+            -e 's#<dbPort>#3306#g;'\
+            -e 's#<sShopURL>#http://localhost.local/#g;'\
+            -e 's#<sShopDir>#/var/www/source/#g;'\
+            -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
+            source/source/config.inc.php
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Install dependencies
+        run: docker-compose exec -T php composer update --no-interaction
+
+      - name: Reset shop
+        run: docker-compose exec -T php php vendor/bin/reset-shop
+
+      - name: Stop containers
+        run: |
+          docker-compose down
+          sleep 2
+
+  unit_tests:
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+        mysql: [ '5.7' ]
+      fail-fast: false
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        run: |
+          docker-compose run -T \
+            -e TEST_DIRS=unit,Unit \
+            php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Ensure that tests have been run
+        run: if [ ! -s unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
+
+      - name: Upload PHPUnit Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-logs
+          path: unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+  integration_tests:
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+        mysql: [ '5.7' ]
+      fail-fast: false
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        run: |
+          docker-compose run -T \
+            -e TEST_DIRS=integration,Integration \
+            php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Ensure that tests have been run
+        run: if [ ! -s integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
+
+      - name: Upload PHPUnit Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-logs
+          path: integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+  codeception_tests:
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+        mysql: [ '5.7' ]
+      fail-fast: false
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Run tests
+        run: |
+          docker-compose exec -T \
+            -e SELENIUM_SERVER_HOST=seleniumfirefox \
+            -e BROWSER_NAME=firefox \
+            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Upload PHPUnit Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-logs
+          path: codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Ensure that tests have been run
+        run: if [ ! -s codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
+
+      - name: Upload Codeception Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: codeception-artifacts-PHP${{ matrix.php }}-MYSQL${{ matrix.mysql }}
+          path: source/tests/Codeception/_output/*
+          if-no-files-found: ignore
+          retention-days: 7

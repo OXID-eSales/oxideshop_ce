@@ -13,8 +13,8 @@ jobs:
   install_shop:
     strategy:
       matrix:
-        php: [ '8.0' ]
-        mysql: [ '5.7' ]
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -93,8 +93,8 @@ jobs:
   unit_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
-        mysql: [ '5.7' ]
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -135,8 +135,8 @@ jobs:
   integration_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
-        mysql: [ '5.7' ]
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -177,8 +177,8 @@ jobs:
   codeception_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
-        mysql: [ '5.7' ]
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest

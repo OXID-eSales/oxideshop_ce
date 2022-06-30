@@ -1,8 +1,22 @@
 name: Development
 
-on: [ push, pull_request ]
+on: [ push, pull_request, workflow_dispatch ]
 
 jobs:
+  test_EE:
+    runs-on: ubuntu-latest
+    if: ${{ (github.ref_name == 'b-7.0.x') || (github.ref_name == 'b-6.5.x') || (github.ref_name == 'b-6.4.x') }}
+    steps:
+      - name: Trigger EE workflow and wait for results
+        uses: convictional/trigger-workflow-and-wait@v1.6.3
+        with:
+          owner: oxid-esales
+          repo: oxideshop_ee
+          github_user: ${{ secrets.CI_USER }}
+          github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          workflow_file_name: development.yml
+          ref: ${{ github.ref_name }}
+
   install_shop:
     strategy:
       matrix:

@@ -605,7 +605,6 @@ class PaymentlistTest extends \OxidTestCase
         $sPaymentsTable = $tableViewNameGenerator->getViewName('oxpayments');
 
         $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
-        $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";
         $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; // and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and $sPaymentsTable.oxfromboni <= '0' and $sPaymentsTable.oxfromamount <= '666' and $sPaymentsTable.oxtoamount >= '666' ";
@@ -639,7 +638,6 @@ class PaymentlistTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
-        $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";
         $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; //  and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and $sTable.oxfromboni <= '1000' and $sTable.oxfromamount <= '666' and $sTable.oxtoamount >= '666' ";

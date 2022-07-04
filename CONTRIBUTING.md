@@ -6,11 +6,28 @@ That's why, before contributing for the first time, you must <a href="https://gi
 You can find more information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ:
 https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/contribution.html
 
-## Process
+## Types of contributions
+
+There can be different reasons for contributions:
+
+* Bug fixes and small tweaks/improvements
+  - For this kind of contributions - simple pull request is enough. Be sure to select correct branch for the fix. Read more about current branching strategy in next sections.
+  - Make sure you check the github workflow results (if such configured) and **add tests for your fixed case**.
+  - Please check the [bugtracker](https://bugs.oxid-esales.com/) if your bug is reported and mension the bug number(-s) in the pull request description.
+* Feature
+  - Features are NOT merged via Pull requests.
+  - Before implementing the feature, Check our [UserVoice](https://feedback.oxid-esales.com/) and see if there is anyone interested in your feature.
+    - By using this gateway, you can offer new features and check if other people are interested in it. 
+    - Most likely we will put it in our backlog if the feature is requested and voted for by a lot of people.
+  - Consider, maybe implementing the feature as a separate module would be a good idea.
+  - If your idea is popular, and you are willing to introduce the feature to shop core, contact us first, and discuss the way you are planning to implement it.
+  - Use [the form](https://www.oxid-esales.com/en/contact-us/) to contact us.
+
+## Pull request process
 
 First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list of repositories.
 
-### Branch naming introduction
+### Compilation branch naming introduction
 
 To find the correct branch to contribute to, read this introduction to our branch naming strategy:
 
@@ -31,58 +48,33 @@ Please take a look at our [release log](https://docs.oxid-esales.com/eshop/en/la
 
 Among many, the following types of branches are relevant to you as a contributor in the *\<github_username\>/oxideshop_ce* repository:
 
-* The **next major version** with a name like **b-{next major}.x** All new features including compatibility breaking changes will be developed here as well as bug fixes.
-* The **next minor version** branch with a name like **b-{current major}.x** for the currently maintained major version. Only Backwards compatible changes as well as new compatible features are possible.
+* The **next major version** with a name like **b-{next major}.x.x** All new features including compatibility breaking changes will be developed here as well as bug fixes.
+* The **next minor version** branch with a name like **b-{current major}.{next minor}.x** for the currently maintained major version. Only Backwards compatible changes as well as new compatible features are possible.
 * The **current patch** branch with a name like **b-{current major}.{current minor}.x**: bug fixes only. (will only be created if needed)
 * The **previous patch** branch with a name like **b-{current major}.{previous minor}.x**: critical bug fixes only. (will only be created if needed)
 
-In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branch.
+In general, contributions can be taken over for all branches. Bug fixes committed to specific branch, will be merged up to higher branches manually. Of course, you can also consider making pull requests to several branches, if the original code differs - it will help us merging everything up together.
 
 ### Finding the best branch for a pull request
 
-* So you have found a security issue: do not create a pull request please, but instead follow the security procedures as outlined here https://docs.oxid-esales.com/en/security/security.html - thank you!
+* In case you have found a security issue - do not create a pull request please, but instead follow the security procedures as outlined [here](https://docs.oxid-esales.com/en/security/security.html) - thank you!
 
-* You have a great idea and even a working prototype for a nice new feature/improvement, but it will break the shops backwards compatibility: **master** is the best spot for you.
-
-* Again you have a nice new feature/improvement, but you are sure it will not break backwards compatibility: if for example "6" is the current major shop version then **b-6.x** is the best spot, as it will be used for the **next minor version**.
-
-* You have found a bug and already know the best fix: this one is a bit tricky, of course you can always create a pull request for **next minor version** as described above, but we would prefer usage of the **current patch** branch. An easy way to find the best branch is to look at https://github.com/OXID-eSales/oxideshop_metapackage_ce/releases and if a.e. the topmost entry is **v6.1.0** then the best branch to use is **b-6.1.x**.
+* For any database involved changes, or anything that breaks the shops backwards compatibility - **next major version** branch is the best spot for you.
+* Small tweaks and improvements that are not breaking the compatibility goes to the **next minor version** branch.
+* If your change fixes the registered bug, and is not breaking backwards compatibility - the **current patch version** is the best spot, as it will be released with the next patch.
 
 ## Development installation
 
-1. make sure [composer](https://getcomposer.org/) is installed on your system
-2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
-3. `$ cd oxideshop_ce`
-4. `$ composer install`
-5. `$ cp source/config.inc.php.dist source/config.inc.php`
-
-If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
-
-1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
-
-### Running console command
-
-Console command located in bin directory so use `bin/oe-console` to run the commands.
-
-Example: 
-
-`$ bin/oe-console oe:module:activate module-id`
-
-### Cloning without history
-
-To reduce the size of the repository when cloning you can use a so called "shallow clone".
-With it, the history will be truncated and can save more than 90% of the disk space and traffic in comparison to a full repository clone.
-
-Here is an example of how to use a shallow clone:
-
-`$ git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git`
+We recommend using our docker based [SDK](https://github.com/OXID-eSales/docker-eshop-sdk) and [recipes](https://github.com/OXID-eSales/docker-eshop-sdk-recipes) that use the SDK as a base, and installs the development version of the shop for you.
 
 ## Best practice
 
-* please leave the the branch names as they are
-* if you want to fix a bug or develop a new feature, define an own branch in your repository off of one of the three branches above. Name it e.g. feature/foo or bug/bugname for better tracability
+* install the shop by using our SDK and recipe
+* register your repository as a git remote in place of our default one
+* create your own branch from the one you want the improvement to be merged to. Name it e.g. b-6.4.x-feature_foo or b-6.5.x-bug_bugname for better traceability
 * change whatever you want and push it to your forked repository
 * when changes are pushed, create a Pull request on github for your branch
+  - When sending your pull request, please provide a clear, meaningful and detailed information what your code is about and what it will do, best including a screenshot if possible.
 * additional changes to pull request can be done by making additional commits on your branch
 
 For more information about this, please see:<br>
@@ -92,10 +84,7 @@ Now you'll be asked for signing an OXID Contributor Agreement (this has to be do
 
 ![Image alt](git_contributor-activity.png)
 
-When sending your pull request, please provide a clear, meaningful and detailed information what your code is about and what it will do, best including a screen shot if possible.
-
-You will find technical help with Git and GitHub on this place:<br>
-https://help.github.com/
+You will find technical help with Git and GitHub on this place: [https://help.github.com/](https://help.github.com/)
 
 ## Code quality
 

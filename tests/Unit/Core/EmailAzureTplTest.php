@@ -657,39 +657,6 @@ class EmailAzureTplTest extends \OxidTestCase
     }
 
     /**
-     * Test sending backup mail to shop owner
-     */
-    public function testSendBackupMail()
-    {
-        $aAttFiles = array();
-        $sAttPath = null;
-        $sEmailAddress = 'username@useremail.nl';
-        $sSubject = 'testBackupMailSubject';
-        $sMessage = 'testBackupMailMessage';
-        $aStatus = array();
-        $aError = array();
-
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendMail", "getShop"));
-        $oEmail->expects($this->once())->method('sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('getShop')->will($this->returnValue($this->_oShop));
-
-        $blRet = $oEmail->sendBackupMail($aAttFiles, $sAttPath, $sEmailAddress, $sSubject, $sMessage, $aStatus, $aError);
-        $this->assertTrue($blRet, 'Backup mail was not sent to shop owner');
-
-        // check mail fields
-        $aFields['sRecipient'] = 'shopInfoEmail@shopOwnerEmail.nl';
-        $aFields['sRecipientName'] = '';
-        $aFields['sSubject'] = $sSubject;
-        $aFields['sBody'] = $sMessage;
-        $aFields['sFrom'] = $sEmailAddress;
-        $aFields['sFromName'] = '';
-        $aFields['sReplyTo'] = $sEmailAddress;
-        $aFields['sReplyToName'] = '';
-
-        $this->checkMailFields($aFields, $oEmail);
-    }
-
-    /**
      * Test sends reminder email to shop owner
      */
     public function testSendStockReminder()

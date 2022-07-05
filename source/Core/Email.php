@@ -1017,66 +1017,6 @@ class Email extends PHPMailer
     }
 
     /**
-     * Sets mailer additional settings and sends backup data to user.
-     * Returns true on success.
-     *
-     * @deprecated method will be removed in v7.0.
-     *
-     * @param array  $attFiles     Array of file names to attach
-     * @param string $attPath      Path to files to attach
-     * @param string $emailAddress Email address
-     * @param string $subject      Email subject
-     * @param string $message      Email body message
-     * @param array  $status       Pointer to mailing status array
-     * @param array  $error        Pointer to error status array
-     *
-     * @return bool
-     */
-    public function sendBackupMail($attFiles, $attPath, $emailAddress, $subject, $message, &$status, &$error)
-    {
-        // shop info
-        $shop = $this->getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->setMailParams($shop);
-
-        $this->setBody($message);
-        $this->setSubject($subject);
-
-        $this->setRecipient($shop->oxshops__oxinfoemail->value, "");
-        $emailAddress = $emailAddress ? $emailAddress : $shop->oxshops__oxowneremail->value;
-
-        $this->setFrom($emailAddress, "");
-        $this->setReplyTo($emailAddress, "");
-
-        //attaching files
-        $attashSucc = true;
-        $attPath = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($attPath);
-        foreach ($attFiles as $num => $attFile) {
-            $fullPath = $attPath . $attFile;
-            if (@is_readable($fullPath) && @is_file($fullPath)) {
-                $attashSucc = $this->addAttachment($fullPath, $attFile);
-            } else {
-                $attashSucc = false;
-                $error[] = [5, $attFile]; //"Error: backup file $attFile not found";
-            }
-        }
-
-        if (!$attashSucc) {
-            $error[] = [4, ""]; //"Error: backup files was not sent to email ...";
-            $this->clearAttachments();
-
-            return false;
-        }
-
-        $status[] = 3; //"Mailing backup files ...";
-        $send = $this->send();
-        $this->clearAttachments();
-
-        return $send;
-    }
-
-    /**
      * Basic wrapper for email message sending with default parameters from the oxBaseShop.
      * Returns true on success.
      *

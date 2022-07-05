@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Application\Model\UserPayment`
     - `load()`
     - `insert()`
+  - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
 - Services:
   - `utility.context.log_file_path`
   - `utility.context.log_level:`

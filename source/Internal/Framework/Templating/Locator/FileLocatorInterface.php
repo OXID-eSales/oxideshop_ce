@@ -22,5 +22,5 @@ interface FileLocatorInterface
      *
      * @return string The full path to the file
      */
-    public function locate($name): string;
+    public function locate(string $name): string;
 }

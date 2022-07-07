@@ -36,6 +36,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `load()`
     - `insert()`
   - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
+  - `OxidEsales\EshopCommunity\Core\Email::addAttachment()`
+  - `OxidEsales\EshopCommunity\Core\Email::addEmbeddedImage()`
+  - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
+  - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`
+  - `OxidEsales\EshopCommunity\Core\Email::$_aAttachments`
 - Services:
   - `utility.context.log_file_path`
   - `utility.context.log_level:`

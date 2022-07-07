@@ -221,15 +221,6 @@ class Email extends PHPMailer
     protected $_aReplies = [];
 
     /**
-     * Attachment info array
-     *
-     * @deprecated method will be removed in v7.0.
-     *
-     * @var array
-     */
-    protected $_aAttachments = [];
-
-    /**
      * Smarty instance
      *
      * @deprecated since v6.4 (2019-10-10); Will be removed
@@ -1574,92 +1565,6 @@ class Email extends PHPMailer
     public function setUseInlineImages($useImages = null)
     {
         $this->_blInlineImgEmail = $useImages;
-    }
-
-    /**
-     * @deprecated method will be removed in v7.0.
-     *
-     * @param string $path
-     * @param string $name
-     * @param string $encoding
-     * @param string $type
-     * @param string $disposition
-     *
-     * @return bool
-     */
-    public function addAttachment(
-        $path,
-        $name = '',
-        $encoding = 'base64',
-        $type = 'application/octet-stream',
-        $disposition = 'attachment'
-    ) {
-        $this->_aAttachments[] = [$path, $name, $encoding, $type, $disposition];
-        $result = false;
-
-        try {
-            $result = parent::addAttachment($path, $name, $encoding, $type, $disposition);
-        } catch (Exception $exception) {
-        }
-
-        return $result;
-    }
-
-    /**
-     * @deprecated method will be removed in v7.0.
-     *
-     * @param string $path
-     * @param string $cid
-     * @param string $name
-     * @param string $encoding
-     * @param string $type
-     * @param string $disposition
-     *
-     * @return bool
-     */
-    public function addEmbeddedImage(
-        $path,
-        $cid,
-        $name = '',
-        $encoding = 'base64',
-        $type = 'application/octet-stream',
-        $disposition = 'inline'
-    ) {
-        $this->_aAttachments[] = [
-            $path,
-            basename($path),
-            $name,
-            $encoding,
-            $type,
-            false,
-            $disposition,
-            $cid
-        ];
-
-        return parent::addEmbeddedImage($path, $cid, $name, $encoding, $type, $disposition);
-    }
-
-    /**
-     * Gets mail attachment.
-     *
-     * @deprecated method will be removed in v7.0.
-     *
-     * @return array
-     */
-    public function getAttachments()
-    {
-        return $this->_aAttachments;
-    }
-
-    /**
-     * Clears all attachments from mail.
-     *
-     * @deprecated method will be removed in v7.0.
-     */
-    public function clearAttachments()
-    {
-        $this->_aAttachments = [];
-        parent::clearAttachments();
     }
 
     /**

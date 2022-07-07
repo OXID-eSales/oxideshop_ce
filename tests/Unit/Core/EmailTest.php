@@ -571,31 +571,6 @@ final class EmailTest extends \OxidTestCase
         $this->assertTrue($this->email->getUseInlineImages());
     }
 
-    public function testAddAttachment()
-    {
-        $myConfig = $this->getConfig();
-        $sImageDir = $myConfig->getImageDir() . '/';
-
-        $this->email->AddAttachment($sImageDir, 'barrcode.gif');
-        $aAttachment = $this->email->getAttachments();
-
-        $this->assertEquals('barrcode.gif', $aAttachment[0][1]);
-    }
-
-    public function testClearAttachments()
-    {
-        $myConfig = $this->getConfig();
-        $sImageDir = $myConfig->getImageDir() . '/';
-
-        $this->email->AddAttachment($sImageDir, 'barrcode.gif');
-        $aAttachment = $this->email->getAttachments();
-        $this->assertEquals('barrcode.gif', $aAttachment[0][1]);
-
-        $this->email->clearAttachments();
-        $aAttachment = $this->email->getAttachments();
-        $this->assertEquals(0, count($aAttachment));
-    }
-
     public function testSendMailErrorMsg()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "sendMail", "sendMailErrorMsg"));

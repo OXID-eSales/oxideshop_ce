@@ -223,6 +223,8 @@ class Email extends PHPMailer
     /**
      * Attachment info array
      *
+     * @deprecated method will be removed in v7.0.
+     *
      * @var array
      */
     protected $_aAttachments = [];
@@ -1018,6 +1020,8 @@ class Email extends PHPMailer
      * Sets mailer additional settings and sends backup data to user.
      * Returns true on success.
      *
+     * @deprecated method will be removed in v7.0.
+     *
      * @param array  $attFiles     Array of file names to attach
      * @param string $attPath      Path to files to attach
      * @param string $emailAddress Email address
@@ -1633,6 +1637,8 @@ class Email extends PHPMailer
     }
 
     /**
+     * @deprecated method will be removed in v7.0.
+     *
      * @param string $path
      * @param string $name
      * @param string $encoding
@@ -1660,6 +1666,8 @@ class Email extends PHPMailer
     }
 
     /**
+     * @deprecated method will be removed in v7.0.
+     *
      * @param string $path
      * @param string $cid
      * @param string $name
@@ -1694,6 +1702,8 @@ class Email extends PHPMailer
     /**
      * Gets mail attachment.
      *
+     * @deprecated method will be removed in v7.0.
+     *
      * @return array
      */
     public function getAttachments()
@@ -1703,6 +1713,8 @@ class Email extends PHPMailer
 
     /**
      * Clears all attachments from mail.
+     *
+     * @deprecated method will be removed in v7.0.
      */
     public function clearAttachments()
     {

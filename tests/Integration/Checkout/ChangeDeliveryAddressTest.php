@@ -155,6 +155,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
 
         $user->save();
 
+        $this->getSession()->setUser($user);
         $this->getSession()->setVariable('usr', $user->getId());
 
         return $user;

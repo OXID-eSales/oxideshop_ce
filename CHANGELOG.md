@@ -398,6 +398,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Validation for `metaDataFilePath` in metadata
 - Method:
     - `Application\Model\User::getUtilsObjectInstance()`
+    - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
+    - `OxidEsales\EshopCommunity\Core\Email::addAttachment()`
+    - `OxidEsales\EshopCommunity\Core\Email::addEmbeddedImage()`
+    - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
+    - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`    
 - Services:
   - `utility.context.admin_log_file_path`
   - `utility.context.log_file_path`
@@ -407,6 +412,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface`
   - `Internal\Framework\Module\MetaData\Validator\SettingValidatorInterface`
   - `Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface`
+- Properties:
+  - `OxidEsales\EshopCommunity\Core\Email::$_aAttachments`
 
 ### Fixed
 - Rare fatal appearing in modified but not recalculated baskets [PR-891](https://github.com/OXID-eSales/oxideshop_ce/pull/891)

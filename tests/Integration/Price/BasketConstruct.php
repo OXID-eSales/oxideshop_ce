@@ -562,7 +562,7 @@ class BasketConstruct
             return null;
         }
         /** @var oxBase $object */
-        $object = new $objectClass();
+        $object = oxNew($objectClass);
         if (isset($data['oxid']) && $data['oxid']) {
             $object->setId($data['oxid']);
         }

@@ -69,7 +69,7 @@ window.onload = function ()
         [{if $listitem->blacklist == 1}]
             [{assign var="listclass" value=listitem3}]
         [{else}]
-            [{assign var="listclass" value=listitem$blWhite}]
+            [{assign var="listclass" value="listitem$blWhite"}]
         [{/if}]
         [{if $listitem->getId() == $oxid}]
             [{assign var="listclass" value=listitem4}]
@@ -107,4 +107,3 @@ if (parent.parent)
 </script>
 </body>
 </html>
-

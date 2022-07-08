@@ -89,7 +89,7 @@
                                         [{/if}]
                                     [{/if}]
                                 [{else}]
-                                    [{ oxmultilang ident="MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE" }]
+                                    [{oxmultilang ident="MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE"}]
                                 [{/if}]
                             </div>
                         </form>

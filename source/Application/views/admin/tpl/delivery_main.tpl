@@ -127,7 +127,8 @@
                 [{oxinputhelp ident="HELP_DELIVERY_MAIN_FINALIZE"}]
                 </td>
             </tr>
-        [{/block}]
+            [{/if}]
+            [{/block}]
         <tr><td colspan="2">&nbsp;</td></tr>
         [{if $oxid != "-1"}]
         <tr>
@@ -137,7 +138,6 @@
                 [{include file="language_edit.tpl"}]
             </td>
         </tr>
-        [{/if}]
         [{/if}]
         <tr>
             <td class="edittext">

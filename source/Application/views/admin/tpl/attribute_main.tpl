@@ -44,7 +44,7 @@
                 [{oxinputhelp ident="HELP_ATTRIBUTE_MAIN_SORTING"}]
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="edittext" width="120">
                 [{oxmultilang ident="ATTRIBUTE_MAIN_DISPLAYINBASKET"}]

@@ -95,7 +95,7 @@ window.onload = function ()
                     [{if $blUseTimeCheck}]
                     <tr>
                       <td class="edittext">
-                        [{ oxmultilang ident="ARTICLE_MAIN_ACTIVFROMTILL" }]&nbsp;
+                        [{oxmultilang ident="ARTICLE_MAIN_ACTIVFROMTILL"}]&nbsp;
                       </td>
                       <td class="edittext">
                         [{oxmultilang ident="ARTICLE_MAIN_ACTIVEFROM"}]&nbsp;<input type="text" class="editinput" size="27" name="editval[oxarticles__oxactivefrom]" value="[{$edit->oxarticles__oxactivefrom|oxformdate}]" [{include file="help.tpl" helpid=article_vonbis}] [{$readonly}]><br>
@@ -183,7 +183,7 @@ window.onload = function ()
                         <select class="editinput" name="editval[oxarticles__oxvendorid]" [{$readonly}]>
                         <option value="" selected>---</option>
                         [{foreach from=$oView->getVendorList() item=oVendor}]
-                        <option value="[{$oVendor->oxvendor__oxid->value}]"[{if $edit->oxarticles__oxvendorid->value == $oVendor->oxvendor__oxid->value}] selected[{/if}]>[{ $oVendor->oxvendor__oxtitle->value }]</option>
+                        <option value="[{$oVendor->oxvendor__oxid->value}]"[{if $edit->oxarticles__oxvendorid->value == $oVendor->oxvendor__oxid->value}] selected[{/if}]>[{$oVendor->oxvendor__oxtitle->value}]</option>
                         [{/foreach}]
                         </select>
                         [{oxinputhelp ident="HELP_ARTICLE_MAIN_VENDORID"}]
@@ -197,8 +197,8 @@ window.onload = function ()
                     <td class="edittext">
                         <select class="editinput" name="editval[oxarticles__oxmanufacturerid]" [{$readonly}]>
                         <option value="" selected>---</option>
-                        [{foreach from=$oView->getManufacturerList() item=oManufacturer }]
-                        <option value="[{$oManufacturer->oxmanufacturers__oxid->value}]"[{if $edit->oxarticles__oxmanufacturerid->value == $oManufacturer->oxmanufacturers__oxid->value}] selected[{/if}]>[{ $oManufacturer->oxmanufacturers__oxtitle->value }]</option>
+                        [{foreach from=$oView->getManufacturerList() item=oManufacturer}]
+                        <option value="[{$oManufacturer->oxmanufacturers__oxid->value}]"[{if $edit->oxarticles__oxmanufacturerid->value == $oManufacturer->oxmanufacturers__oxid->value}] selected[{/if}]>[{$oManufacturer->oxmanufacturers__oxtitle->value}]</option>
                         [{/foreach}]
                         </select>
                         [{oxinputhelp ident="HELP_ARTICLE_MAIN_MANUFACTURERID"}]

@@ -27,7 +27,7 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
         return;
     }
 
-    if (!empty($smarty->_tpl_vars["_render4cache"])) {
+    if (!empty($smarty->getTemplateVars()["_render4cache"])) {
         $sContent = "<oxid_dynamic>";
         foreach ($params as $key => $val) {
             $sContent .= " $key='" . base64_encode($val) . "'";
@@ -50,7 +50,7 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
 
         $smarty->assign("__oxid_include_dynamic", true);
         $sRes = $smarty->fetch($params['file']);
-        $smarty->clear_assign("__oxid_include_dynamic");
+        $smarty->clearAssign("__oxid_include_dynamic");
         return $sRes;
     }
 }

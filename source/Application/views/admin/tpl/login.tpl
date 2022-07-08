@@ -45,7 +45,7 @@
             <label for="prf">[{oxmultilang ident="LOGIN_PROFILE"}]</label>
             <select name="profile" id="prf">
                 [{foreach from=$profiles item=curr_profile key=position}]
-                   <option value="[{$position}]" [{if $curr_profile.2}]selected[{/if}]>[{$curr_profile.0}]</option>
+                   <option value="[{$position}]" [{if array_key_exists(2, $curr_profile) && $curr_profile.2}]selected[{/if}]>[{$curr_profile.0}]</option>
                 [{/foreach}]
             </select><br>
             [{/if}]

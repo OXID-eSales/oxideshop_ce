@@ -98,7 +98,7 @@ function ThisDate( sID)
                                     [{oxmultilang ident="ORDER_MAIN_PAYMENT_INFORMATION"}]
                                 </td>
                             </tr>
-    
+
                             [{if $edit->blIsPaid}]
                             <tr>
                                 <td class="edittext" valign="middle">
@@ -110,7 +110,7 @@ function ThisDate( sID)
                                 <td class="edittext"></td>
                             </tr>
                             [{/if}]
-    
+
                             <tr>
                                 <td class="edittext">
                                     [{oxmultilang ident="ORDER_MAIN_PAIDON"}]

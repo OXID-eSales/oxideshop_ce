@@ -53,7 +53,7 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
         $sEncodedString = "%" . wordwrap(current(unpack("H*", $sString)), 2, "%", true);
         return '<script type="text/javascript">eval(decodeURIComponent(\'' . $sEncodedString . '\'))</script>';
     } else {
-        include_once $oSmarty->_get_plugin_filepath('function', 'mailto');
+        include_once $oSmarty->loadPlugin('smarty_function_mailto');
         return smarty_function_mailto($aParams, $oSmarty);
     }
 }

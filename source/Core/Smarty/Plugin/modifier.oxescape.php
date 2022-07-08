@@ -5,10 +5,7 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Include the {@link modifier.escape.php} plugin
- */
-require_once $smarty->_get_plugin_filepath('modifier', 'escape');
+$smarty->loadPlugin('smarty_modifier_escape');
 
 /**
  * Smarty escape modifier plugin

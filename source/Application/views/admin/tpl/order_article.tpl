@@ -113,7 +113,7 @@ function StornoThisArticle( sID)
         [{if $listitem->oxorderarticles__oxstorno->value == 1}]
             [{assign var="listclass" value=listitem3}]
         [{else}]
-            [{assign var="listclass" value=listitem$blWhite}]
+            [{assign var="listclass" value="listitem$blWhite"}]
         [{/if}]
         <td valign="top" class="[{$listclass}]">[{if $listitem->oxorderarticles__oxstorno->value != 1 && !$listitem->isBundle()}]<input type="text" name="aOrderArticles[[{$listitem->getId()}]][oxamount]" value="[{$listitem->oxorderarticles__oxamount->value}]" class="listedit">[{else}][{$listitem->oxorderarticles__oxamount->value}][{/if}]</td>
         <td valign="top" class="[{$listclass}]" height="15">[{if $listitem->oxarticles__oxid->value}]<a href="Javascript:editThis('[{$listitem->oxarticles__oxid->value}]');" class="[{$listclass}]">[{/if}][{$listitem->oxorderarticles__oxartnum->value}]</a></td>

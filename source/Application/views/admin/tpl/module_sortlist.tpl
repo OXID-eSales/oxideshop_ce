@@ -9,7 +9,7 @@
         <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
     </form>
 
-    [{block name="admin_module_sortlist" }][{/block}]
+    [{block name="admin_module_sortlist"}][{/block}]
 
     <div id="infoContent">
 
@@ -26,7 +26,7 @@
                             <td class="listheader">[{oxmultilang ident="MODULE_PROBLEMATIC_FILES"}]</td>
                         </tr>
                         [{foreach from=$aDeletedExt item=aModules key=sModuleId}]
-                            [{assign var="listclass" value=listitem$blWhite}]
+                            [{assign var="listclass" value="listitem$blWhite"}]
                             <tr>
                                 <td valign="top" class="[{$listclass}]">[{$sModuleId}]</td>
                                 <td valign="top" class="[{$listclass}]">

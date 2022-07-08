@@ -28,7 +28,7 @@
 [{assign var="blWhite" value=""}]
 [{foreach from=$oArticlelist item=listitem}]
 <tr>
-    [{assign var="listclass" value=listitem$blWhite}]
+    [{assign var="listclass" value="listitem$blWhite"}]
     <td valign="top" class="[{$listclass}]">[{$listitem->oxorderarticles__oxamount->value}]</td>
     <td valign="top" class="[{$listclass}]" height="15">[{$listitem->oxorderarticles__oxartnum->value}]</td>
     <td valign="top" class="[{$listclass}]">[{$listitem->oxorderarticles__oxtitle->value|oxtruncate:30:""|strip_tags}]</td>

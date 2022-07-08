@@ -36,7 +36,7 @@
         [{foreach from=$edit item=listfile name=orderFiles}]
         <tr id="file.[{$smarty.foreach.orderFiles.iteration}]">
             [{block name="admin_order_downloads_filelist"}]
-            [{assign var="listclass" value=listitem$blWhite}]
+            [{assign var="listclass" value="listitem$blWhite"}]
             <td valign="top" class="[{$listclass}]">[{$listfile->oxorderfiles__oxarticleartnum->value}]</td>
             <td valign="top" class="[{$listclass}]">[{$listfile->oxorderfiles__oxarticletitle->value}]</td>
             <td valign="top" class="[{$listclass}]">[{$listfile->oxorderfiles__oxfilename->value}]</td>

@@ -29,7 +29,7 @@
  */
 function smarty_function_oxscript($params, &$smarty)
 {
-    $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
+    $isDynamic = isset($smarty->getTemplateVars()["__oxid_include_dynamic"]) ? (bool)$smarty->getTemplateVars()["__oxid_include_dynamic"] : false;
     $priority = !empty($params['priority']) ? $params['priority'] : 3;
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;

@@ -35,7 +35,7 @@ function smarty_compiler_defun($tag_args, &$compiler)
 
     $func_name = $compiler->_dequote($attrs['name']);
     $func = 'smarty_fun_' . $func_name;
-    return $func_key . "if (!function_exists('$func')) { function $func(&\$this, \$params) { \$_fun_tpl_vars = \$this->_tpl_vars; \$this->assign(\$params); ";
+    return $func_key . "if (!function_exists('$func')) { function $func(&\$this, \$params) { \$_fun_tpl_vars = \$this->getTemplateVars(); \$this->assign(\$params); ";
 }
 
 
@@ -46,7 +46,7 @@ function smarty_compiler_defun_close($tag_args, &$compiler)
     if ($name != 'defun') {
         $compiler->_syntax_error("unexpected {/defun}");
     }
-    return " \$this->_tpl_vars = \$_fun_tpl_vars; }} " . $func_key . smarty_compiler_fun($open_tag_args, $compiler);
+    return " \$this->getTemplateVars() = \$_fun_tpl_vars; }} " . $func_key . smarty_compiler_fun($open_tag_args, $compiler);
 }
 $this->register_compiler_function('/defun', 'smarty_compiler_defun_close');
 

@@ -157,15 +157,16 @@ window.onload = function ()
                     </table>
                   </td>
                 </tr>
+            [{/if}]
             [{/block}]
-        <tr>
-            <td class="edittext">
-            </td>
-            <td class="edittext"><br>
-                [{include file="language_edit.tpl"}]
-            </td>
-        </tr>
-        [{/if}]
+            [{if $oxid != "-1"}]
+                <tr>
+                    <td class="edittext"> </td>
+                    <td class="edittext"><br>
+                        [{include file="language_edit.tpl"}]
+                    </td>
+                </tr>
+            [{/if}]
         <tr>
             <td class="edittext">
             </td>

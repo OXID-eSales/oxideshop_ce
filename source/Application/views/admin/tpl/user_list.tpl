@@ -84,7 +84,7 @@ window.onload = function ()
 </tr>
 <tr>
     [{block name="admin_user_list_sorting"}]
-    	
+
 <td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxuser', 'oxactive', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_ACTIVTITLE"}]</a></td>
         <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxuser', 'oxlname', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_NAME"}]</a></td>
         <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxuser', 'oxusername', 'asc');document.search.submit();" class="listheader">[{oxmultilang ident="GENERAL_EMAIL"}]</a></td>
@@ -105,7 +105,7 @@ window.onload = function ()
         [{if $listitem->blacklist == 1}]
             [{assign var="listclass" value=listitem3}]
         [{else}]
-            [{assign var="listclass" value=listitem$blWhite}]
+            [{assign var="listclass" value="listitem$blWhite"}]
         [{/if}]
         [{if $listitem->getId() == $oxid}]
             [{assign var="listclass" value=listitem4}]

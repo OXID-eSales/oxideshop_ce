@@ -187,7 +187,7 @@ function editThis(sID)
                     </td>
                     <td class="text">
                         [{assign var="sIconFile" value=$edit->getPictureFieldValue("oxicon")}]
-                        [{if "nopic_ico.jpg" == $sIconFile || "nopic.jpg" == $sIconFile || "" == $sIconFile }]
+                        [{if "nopic_ico.jpg" == $sIconFile || "nopic.jpg" == $sIconFile || "" == $sIconFile}]
                         -------
                         [{else}]
                         [{assign var="blIcoUplodaded" value=true}]
@@ -207,7 +207,7 @@ function editThis(sID)
 
             </table>
 
-            <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="ARTICLE_PICTURES_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
+            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="ARTICLE_PICTURES_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]><br>
 
         </td>
       </tr>

@@ -121,9 +121,9 @@ window.onload = function ()
         [{block name="admin_manufacturer_main_assign_articles"}]
             [{if $oxid != "-1"}]
                 <input [{$readonly}]
-                    type="button" 
+                    type="button"
                     value="[{oxmultilang ident="GENERAL_ASSIGNARTICLES"}]"
-                    class="edittext" 
+                    class="edittext"
                     onclick="JavaScript:showDialog('&cl=manufacturer_main&aoc=1&oxid=[{$oxid}]');"
                     [{$readonly}]>
             [{/if}]

@@ -33,7 +33,7 @@ window.onload = function ()
     <input type="hidden" name="language" value="[{$actlang}]">
     <input type="hidden" name="editlanguage" value="[{$actlang}]">
 
-[{block name="admin_modules_list_table" }]
+[{block name="admin_modules_list_table"}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>
     <col width="3%">
@@ -102,4 +102,3 @@ if (parent.parent)
 </script>
 </body>
 </html>
-

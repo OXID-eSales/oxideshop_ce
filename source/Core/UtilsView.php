@@ -364,7 +364,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
 
-        $smarty->register_resource(
+        $smarty->registerResource(
             'ox',
             [
                 'ox_get_template',
@@ -391,7 +391,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $coreDirectory = Registry::getConfig()->getConfigParam('sCoreDir');
 
         include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxblock.php';
-        $smarty->register_prefilter('smarty_prefilter_oxblock');
+        $smarty->registerFilter('pre', 'smarty_prefilter_oxblock');
 
         $debugMode = $config->getConfigParam('iDebug');
         if ($debugMode == 1 || $debugMode == 3 || $debugMode == 4) {
@@ -400,27 +400,31 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         if ($debugMode == 8 && !$config->isAdmin()) {
             include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxtpldebug.php';
-            $smarty->register_prefilter('smarty_prefilter_oxtpldebug');
+            $smarty->registerFilter('pre', 'smarty_prefilter_oxtpldebug');
         }
 
         //demo shop security
         if (!$config->isDemoShop()) {
             $smarty->php_handling = (int) $config->getConfigParam('iSmartyPhpHandling');
-            $smarty->security = false;
+//            $smarty->security = false;
+            $smarty->disableSecurity();
         } else {
-            $smarty->php_handling = SMARTY_PHP_REMOVE;
-            $smarty->security = true;
-            $smarty->security_settings['IF_FUNCS'][] = 'XML_ELEMENT_NODE';
-            $smarty->security_settings['IF_FUNCS'][] = 'is_int';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'round';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'floor';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'trim';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'implode';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'is_array';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'getimagesize';
-            $smarty->security_settings['ALLOW_CONSTANTS'] = true;
+//            $smarty->enableSecurity();
+            $smarty->php_handling = Smarty::PHP_REMOVE;
+//            $smarty->security = true;
+//            $smarty->security_settings['IF_FUNCS'][] = 'XML_ELEMENT_NODE';
+//            $smarty->security_settings['IF_FUNCS'][] = 'is_int';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'round';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'floor';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'trim';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'implode';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'is_array';
+//            $smarty->security_settings['MODIFIER_FUNCS'][] = 'getimagesize';
+//            $smarty->security_settings['ALLOW_CONSTANTS'] = true;
             $smarty->secure_dir = $smarty->template_dir;
         }
+        $smarty->error_reporting = E_ALL && ~E_DEPRECATED && ~E_WARNING && ~E_NOTICE;
+        $smarty->escape_html = true;
     }
 
     /**

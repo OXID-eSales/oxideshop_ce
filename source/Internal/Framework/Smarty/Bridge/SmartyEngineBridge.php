@@ -24,7 +24,7 @@ class SmartyEngineBridge implements SmartyEngineBridgeInterface
     public function renderFragment(\Smarty $engine, string $fragment, string $fragmentId, array $context = []): string
     {
         // save old tpl data
-        $tplVars = $engine->_tpl_vars;
+        $tplVars = $engine->getTemplateVars();
         $forceRecompile = $engine->force_compile;
         $engine->force_compile = true;
         foreach ($context as $key => $value) {
@@ -32,7 +32,8 @@ class SmartyEngineBridge implements SmartyEngineBridgeInterface
         }
         $engine->oxidcache = new \OxidEsales\Eshop\Core\Field($fragment, \OxidEsales\Eshop\Core\Field::T_RAW);
         $result = $engine->fetch($fragmentId);
-        $engine->_tpl_vars = $tplVars;
+        $engine->clearAllAssign();
+        $engine->assign($tplVars);
         $engine->force_compile = $forceRecompile;
         return $result;
     }

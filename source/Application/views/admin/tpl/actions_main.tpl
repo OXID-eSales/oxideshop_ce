@@ -23,14 +23,14 @@ function DeletePic(sField)
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="actions_main">
 </form>
 
 
 <form name="myedit" enctype="multipart/form-data" id="myedit" onSubmit="copyLongDesc('oxactions__oxlongdesc');" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="actions_main">
 <input type="hidden" name="fnc" value="">
 <input type="hidden" name="oxid" value="[{$oxid}]">

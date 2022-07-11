@@ -20,7 +20,7 @@ window.onload = function ()
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="manufacturer_main">
@@ -29,7 +29,7 @@ window.onload = function ()
 
 <form name="myedit" id="myedit" enctype="multipart/form-data" action="[{$oViewConf->getSelfLink()}]" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="manufacturer_main">
 <input type="hidden" name="fnc" value="">
 <input type="hidden" name="oxid" value="[{$oxid}]">

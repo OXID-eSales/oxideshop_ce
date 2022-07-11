@@ -66,7 +66,7 @@ function StornoThisArticle( sID)
 [{assign var="oCurr" value=$edit->getOrderCurrency()}]
 
 <form name="DeleteThisArticle" id="DeleteThisArticle" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="sArtID" value="">
@@ -75,7 +75,7 @@ function StornoThisArticle( sID)
 </form>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="order_article">
@@ -84,7 +84,7 @@ function StornoThisArticle( sID)
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="cl" value="order_article">
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -168,7 +168,7 @@ function StornoThisArticle( sID)
 
 
     <form method="POST" name="searchForProduct" id="searchForProduct" action="[{$oViewConf->getSelfLink()}]">
-      [{$oViewConf->getHiddenSid()}]
+      [{$oViewConf->getHiddenSid() nofilter}]
       <input type="hidden" name="oxid" value="[{$oxid}]">
       <input type="hidden" name="cl" value="order_article">
       <input type="hidden" name="cur" value="[{$oCurr->id}]">
@@ -194,7 +194,7 @@ function StornoThisArticle( sID)
     [{assign var="oMainProd" value=$oView->getMainProduct()}]
 
     <form method="POST" name="AddThisArticle" id="AddThisArticle" action="[{$oViewConf->getSelfLink()}]">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="order_article">

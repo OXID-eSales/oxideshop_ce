@@ -21,7 +21,7 @@ function DeletePic( sField )
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="wrapping_main">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -30,7 +30,7 @@ function DeletePic( sField )
 
 <form name="myedit" id="myedit" enctype="multipart/form-data" action="[{$oViewConf->getSelfLink()}]" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="wrapping_main">
 <input type="hidden" name="fnc" value="">
 <input type="hidden" name="oxid" value="[{$oxid}]">

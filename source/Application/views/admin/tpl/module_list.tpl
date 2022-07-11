@@ -23,7 +23,7 @@ window.onload = function ()
 <div id="liste">
 
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="module_list">
     <input type="hidden" name="lstrt" value="[{$lstrt}]">
     <input type="hidden" name="sort" value="[{$sort}]">

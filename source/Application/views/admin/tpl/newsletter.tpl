@@ -8,7 +8,7 @@
 
 <form name="export_recipients" id="export_recipients" action="[{$oViewConf->getSelfLink()}]" method="get"
       onSubmit="copyLongDesc( 'oxnewsletter__oxtemplate' );">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="admin_newsletter">
     <input type="hidden" name="fnc" value="">
     <input type="hidden" name="editval[oxnewsletter__oxtemplate]" value="">

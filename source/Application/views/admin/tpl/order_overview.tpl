@@ -7,7 +7,7 @@
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="order_overview">
 </form>
@@ -147,7 +147,7 @@
             [{/block}]
             <br>
                 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-                [{$oViewConf->getHiddenSid()}]
+                [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cl" value="order_overview">
                 <input type="hidden" name="fnc" value="changefolder">
                 <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -212,7 +212,7 @@
         [{if $edit}]
         <table cellspacing="0" cellpadding="0" border="0">
         <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="order_overview">
         <input type="hidden" name="fnc" value="sendorder">
         <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -241,7 +241,7 @@
         [{/block}]
         [{if $oView->canResetShippingDate()}]
         <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="order_overview">
         <input type="hidden" name="fnc" value="resetorder">
         <input type="hidden" name="oxid" value="[{$oxid}]">

@@ -19,14 +19,14 @@ function loadLang(obj)
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="category_text">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
     <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxcategories__oxlongdesc' );" style="padding: 0px;margin: 0px;height:0px;">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="category_text">
         <input type="hidden" name="fnc" value="">
         <input type="hidden" name="oxid" value="[{$oxid}]">

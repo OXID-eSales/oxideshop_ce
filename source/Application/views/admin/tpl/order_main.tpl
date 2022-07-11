@@ -18,7 +18,7 @@ function ThisDate( sID)
 [{assign var="oCurr" value=$edit->getOrderCurrency()}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="order_main">
@@ -26,7 +26,7 @@ function ThisDate( sID)
 
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cur" value="[{$oCurr->id}]">
 <input type="hidden" name="cl" value="order_main">
 <input type="hidden" name="fnc" value="save">
@@ -240,7 +240,7 @@ function ThisDate( sID)
     <td class="edittext" align="left" valign="bottom">
         [{block name="admin_order_main_send_download_links"}]
             <form name="senddownloadlinks" id="senddownloadlinks" action="[{$oViewConf->getSelfLink()}]" method="post">
-                [{$oViewConf->getHiddenSid()}]
+                [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">
                 <input type="hidden" name="fnc" value="senddownloadlinks">
@@ -251,7 +251,7 @@ function ThisDate( sID)
         [{/block}]
         [{block name="admin_order_main_reset_order"}]
             <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-                [{$oViewConf->getHiddenSid()}]
+                [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">
                 <input type="hidden" name="fnc" value="resetorder">
@@ -261,7 +261,7 @@ function ThisDate( sID)
         [{/block}]
         [{block name="admin_order_main_send_order"}]
             <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink()}]" method="post">
-                [{$oViewConf->getHiddenSid()}]
+                [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">
                 <input type="hidden" name="fnc" value="sendorder">

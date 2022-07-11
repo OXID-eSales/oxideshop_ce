@@ -1,5 +1,5 @@
 [{block name="admin_formparams"}]
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="[{$cl}]">
     <input type="hidden" name="lstrt" value="[{$lstrt}]">
     <input type="hidden" name="actedit" value="[{$actedit}]">

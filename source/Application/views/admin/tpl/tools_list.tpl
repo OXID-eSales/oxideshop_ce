@@ -12,7 +12,7 @@ window.onload = function ()
 //-->
 </script>
 <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="actedit" value="[{$actedit}]">
     <input type="hidden" name="cl" value="tools_list">
     <input type="hidden" name="oxid" value="x">

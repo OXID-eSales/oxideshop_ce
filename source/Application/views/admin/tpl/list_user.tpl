@@ -55,7 +55,7 @@ function editThis( sID)
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="list_user">
     <input type="hidden" name="updatelist" value="1">
@@ -71,7 +71,7 @@ function editThis( sID)
 
 
 <form name="showlist" id="showlist" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="list_user">
     <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>

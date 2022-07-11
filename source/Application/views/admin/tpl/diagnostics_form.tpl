@@ -42,7 +42,7 @@
 
             <form name="diagnosticsForm" id="diagnosticsForm" action="[{$oViewConf->getSelfLink()}]" onsubmit="handleSubmit()" method="post">
                 <table border="0" cellpadding="0">
-                    [{$oViewConf->getHiddenSid()}]
+                    [{$oViewConf->getHiddenSid() nofilter}]
                     <input type="hidden" name="cl" value="diagnostics_main">
                     <input type="hidden" name="fnc" value="startDiagnostics">
 

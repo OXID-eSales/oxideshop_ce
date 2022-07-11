@@ -20,7 +20,7 @@
 
 
     <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="navigation">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="navigation">
     <input type="hidden" name="favorites[]" value="">
     <select size="25" name="favorites[]" multiple="multiple" style="min-width:30%">

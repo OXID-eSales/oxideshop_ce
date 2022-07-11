@@ -39,7 +39,7 @@ function _groupExp(el) {
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_files">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -56,7 +56,7 @@ function _groupExp(el) {
         <td valign="top" class="edittext" [{if count( $oFiles ) > 0}]align="left"[{/if}]>
           <form name="newFileUpload" id="newFileUpload" action="[{$oViewConf->getSelfLink()}]" enctype="multipart/form-data" method="post">
           <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-          [{$oViewConf->getHiddenSid()}]
+          [{$oViewConf->getHiddenSid() nofilter}]
           <input type="hidden" name="cl" value="article_files">
           <input type="hidden" name="fnc" value="">
           <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -140,7 +140,7 @@ function _groupExp(el) {
               <tr>
                   <td valign="top" class="edittext">
                       <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-                          [{$oViewConf->getHiddenSid()}]
+                          [{$oViewConf->getHiddenSid() nofilter}]
                           <input type="hidden" name="cl" value="article_files">
                           <input type="hidden" name="fnc" value="">
                           <input type="hidden" name="oxid" value="[{$oxid}]">

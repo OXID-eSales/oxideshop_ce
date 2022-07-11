@@ -3,7 +3,7 @@
 <div id="container">
 
     <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="oxid" value="[{$oxid}]">
         <input type="hidden" name="cl" value="module_main">
         <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -54,7 +54,7 @@
 
                 <div>
                     <form name="remove" action="[{$oViewConf->getSelfLink()}]" method="post">
-                        [{$oViewConf->getHiddenSid()}]
+                        [{$oViewConf->getHiddenSid() nofilter}]
                         <input type="hidden" name="cl" value="module_sortlist">
                         <input type="hidden" name="fnc" value="remove">
                         <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -106,7 +106,7 @@
     <div id="footerBox">
         <div class="buttonsBox">
             <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-                [{$oViewConf->getHiddenSid()}]
+                [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cl" value="module_sortlist">
                 <input type="hidden" name="fnc" value="save">
                 <input type="hidden" name="oxid" value="[{$oxid}]">

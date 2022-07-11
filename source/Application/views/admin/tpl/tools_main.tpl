@@ -6,14 +6,14 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="tools_main">
 </form>
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="tools_main">
     <input type="hidden" name="fnc" value="">
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -27,7 +27,7 @@
     <td valign="top" class="edittext">
         <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="list" enctype="multipart/form-data">
         <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="tools_list">
         <input type="hidden" name="fnc" value="performsql">
 
@@ -66,7 +66,7 @@
     [{if $showViewUpdate}]
       <hr>
       <form name="regerateviews" id="regerateviews" action="[{$oViewConf->getSelfLink()}]" method="post" target="list">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="tools_list">
         <input type="hidden" name="fnc" value="updateViews">
         <br>[{oxmultilang ident="TOOLS_MAIN_UPDATEVIEWSINFO"}]<br><br>

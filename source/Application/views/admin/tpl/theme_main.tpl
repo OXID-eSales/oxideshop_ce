@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="box"}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="theme_main">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -41,7 +41,7 @@
                 [{if !$_sError}]
                     <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
                         <p>
-                        [{$oViewConf->getHiddenSid()}]
+                        [{$oViewConf->getHiddenSid() nofilter}]
                         <input type="hidden" name="cl" value="theme_main">
                         <input type="hidden" name="fnc" value="setTheme">
                         <input type="hidden" name="updatelist" value="1">

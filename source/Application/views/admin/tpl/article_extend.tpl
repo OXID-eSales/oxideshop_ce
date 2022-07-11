@@ -36,7 +36,7 @@ function processUnitInput( oSelect, sInputId )
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_extend">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -44,7 +44,7 @@ function processUnitInput( oSelect, sInputId )
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" enctype="multipart/form-data" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="article_extend">
 <input type="hidden" name="fnc" value="">
 <input type="hidden" name="oxid" value="[{$oxid}]">

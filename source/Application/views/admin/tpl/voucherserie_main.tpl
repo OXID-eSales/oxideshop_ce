@@ -18,7 +18,7 @@ function changeFnc( fncName )
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="voucherserie_main">
 </form>
@@ -30,7 +30,7 @@ function changeFnc( fncName )
     <td valign="top" class="edittext" width="355">
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="voucherserie_main">
 <input type="hidden" name="fnc" value="save">
 <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -157,7 +157,7 @@ function changeFnc( fncName )
         [{if $oxid != "-1"}]
 
         <form name="myexport" id="myexport" action="[{$oViewConf->getSelfLink()}]" target="dynexport_do" method="post">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="">
         <input type="hidden" name="fnc" value="start">
         <input type="hidden" name="voucherid" value="[{$oxid}]">

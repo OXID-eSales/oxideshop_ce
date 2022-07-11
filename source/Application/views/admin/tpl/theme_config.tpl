@@ -20,7 +20,7 @@ function _groupExp(el) {
 
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oTheme->getInfo('id')}]">
     <input type="hidden" name="cl" value="theme_config">
     <input type="hidden" name="fnc" value="">
@@ -30,7 +30,7 @@ function _groupExp(el) {
 </form>
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="theme_config">
 <input type="hidden" name="fnc" value="save">
 <input type="hidden" name="oxid" value="[{$oTheme->getInfo('id')}]">

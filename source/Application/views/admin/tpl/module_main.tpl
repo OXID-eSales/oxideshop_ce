@@ -5,7 +5,7 @@
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="module_main">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
@@ -69,7 +69,7 @@
                     [{if $oModule->hasMetadata() || $oModule->isRegistered()}]
                         <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
                             <div>
-                                [{$oViewConf->getHiddenSid()}]
+                                [{$oViewConf->getHiddenSid() nofilter}]
                                 <input type="hidden" name="cl" value="module_main">
                                 <input type="hidden" name="updatelist" value="1">
                                 <input type="hidden" name="oxid" value="[{$oModule->getId()}]">

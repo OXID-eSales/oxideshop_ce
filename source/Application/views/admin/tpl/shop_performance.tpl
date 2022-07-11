@@ -28,7 +28,7 @@ function editThis( sID )
 [{cycle assign="_clear_" values=",2"}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="shop_performance">
     <input type="hidden" name="fnc" value="">
@@ -38,7 +38,7 @@ function editThis( sID )
 </form>
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="shop_performance">
     <input type="hidden" name="fnc" value="save">
     <input type="hidden" name="oxid" value="[{$oxid}]">

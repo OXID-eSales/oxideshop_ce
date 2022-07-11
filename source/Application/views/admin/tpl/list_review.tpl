@@ -63,7 +63,7 @@ function changeLanguage()
 </script>
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="">
     <input type="hidden" name="updatelist" value="1">
@@ -79,7 +79,7 @@ function changeLanguage()
 
 <div id="liste">
 <form name="showlist" id="showlist" action="[{$oViewConf->getSelfLink()}]" method="post">
-[{$oViewConf->getHiddenSid()}]
+[{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="list_review">
 <input type="hidden" name="language" value="[{$actlang}]">
 <input type="hidden" name="editlanguage" value="[{$actlang}]">

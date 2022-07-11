@@ -36,7 +36,7 @@ window.onload = function ()
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
+    [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="oxidCopy" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_main">
@@ -44,7 +44,7 @@ window.onload = function ()
 </form>
 
     <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="return copyLongDesc('oxarticles__oxlongdesc');" style="padding: 0px;margin: 0px;height:0px;">
-      [{$oViewConf->getHiddenSid()}]
+      [{$oViewConf->getHiddenSid() nofilter}]
       <input type="hidden" name="cl" value="article_main">
       <input type="hidden" name="fnc" value="">
       <input type="hidden" name="oxid" value="[{$oxid}]">

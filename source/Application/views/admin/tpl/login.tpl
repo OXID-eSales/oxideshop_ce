@@ -19,7 +19,7 @@
     <form action="[{$oViewConf->getSelfLink()}]" target="_top" method="post" name="login" id="login">
 
         [{block name="admin_login_form"}]
-            [{$oViewConf->getHiddenSid()}]
+            [{$oViewConf->getHiddenSid() nofilter}]
 
             <input type="hidden" name="fnc" value="checklogin">
             <input type="hidden" name="cl" value="login">

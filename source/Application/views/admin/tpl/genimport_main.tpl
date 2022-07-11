@@ -29,7 +29,7 @@
 
 <div id="genimportpage">
     <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="oxid" value="1">
         <input type="hidden" name="cl" value="">
     </form>
@@ -55,7 +55,7 @@
 
     <table cellspacing="0" cellpadding="0" border="0">
         <form name="myedit" id="myedit" method="post" action="[{$oViewConf->getSelfLink()}]" enctype="multipart/form-data">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="genimport_main">
         <input type="hidden" name="fnc" value="">
         <input type="hidden" name="sNavStep" value="[{$sNavStep}]">
@@ -119,7 +119,7 @@
     <p>[{oxmultilang ident="GENIMPORT_ASSIGNFIELDS"}] <b>"[{$sImportTable}]"</b></p>
     <table cellspacing="1" cellpadding="0" border="0" class="genImportFieldsAssign">
         <form name="myedit" id="myedit" method="post" action="[{$oViewConf->getSelfLink()}]">
-        [{$oViewConf->getHiddenSid()}]
+        [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="genimport_main">
         <input type="hidden" name="fnc" value="">
         <input type="hidden" name="sNavStep" value="[{$sNavStep}]">

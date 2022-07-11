@@ -64,7 +64,7 @@
                 <tr>
                     <td valign="top" class="edittext">[{$listitem->oxorderarticles__oxamount->value}] * </td>
                     <td valign="top" class="edittext">&nbsp;[{$listitem->oxorderarticles__oxartnum->value}]</td>
-                    <td valign="top" class="edittext">&nbsp;[{$listitem->oxorderarticles__oxtitle->getRawValue()|oxtruncate:20:""|strip_tags}][{if $listitem->oxwrapping__oxname->value}]&nbsp;([{$listitem->oxwrapping__oxname->value}])&nbsp;[{/if}]</td>
+                    <td valign="top" class="edittext">&nbsp;[{$listitem->oxorderarticles__oxtitle|oxtruncate:20:""|strip_tags nofilter}][{if $listitem->oxwrapping__oxname->value}]&nbsp;([{$listitem->oxwrapping__oxname->value}])&nbsp;[{/if}]</td>
                     <td valign="top" class="edittext">&nbsp;[{$listitem->oxorderarticles__oxselvariant->value}]</td>
                     [{if $edit->isNettoMode()}]
                         <td valign="top" class="edittext">&nbsp;&nbsp;[{$listitem->getNetPriceFormated()}] [{$edit->oxorder__oxcurrency->value}]</td>

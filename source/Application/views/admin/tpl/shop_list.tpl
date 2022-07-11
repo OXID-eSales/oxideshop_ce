@@ -28,7 +28,7 @@ window.onload = function ()
 
 <script type="text/javascript">
 if (parent.parent != null && parent.parent.setTitle )
-{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname|oxaddslashes nofilter}]";
     parent.parent.sMenuItem    = "[{oxmultilang ident="SHOP_LIST_MENUITEM"}]";
     parent.parent.sMenuSubItem = "[{oxmultilang ident="SHOP_LIST_MENUSUBITEM"}]";
     parent.parent.sWorkArea    = "[{$_act}]";

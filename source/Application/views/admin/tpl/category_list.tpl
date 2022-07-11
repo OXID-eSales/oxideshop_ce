@@ -53,7 +53,7 @@
 
                                 <select name="where[oxcategories][oxparentid]" class="editinput" onChange="Javascript:document.search.submit();">
                                     [{foreach from=$cattree->aList item=pcat}]
-                                        <option value="[{$pcat->oxcategories__oxid->value}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle->getRawValue()}]</option>
+                                        <option value="[{$pcat->oxcategories__oxid->value}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle nofilter}]</option>
                                     [{/foreach}]
                                 </select>
 
@@ -111,7 +111,7 @@
 
 <script type="text/javascript">
     if (parent.parent)
-    {   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+    {   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname|oxaddslashes nofilter}]";
         parent.parent.sMenuItem    = "[{oxmultilang ident="GENERAL_MENUITEM"}]";
         parent.parent.sMenuSubItem = "[{oxmultilang ident="CATEGORY_LIST_MENUSUBITEM"}]";
         parent.parent.sWorkArea    = "[{$_act}]";

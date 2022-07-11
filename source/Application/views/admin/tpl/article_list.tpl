@@ -50,7 +50,7 @@ window.onload = function ()
                 <option value="">[{oxmultilang ident="ARTICLE_LIST_ALLPRODUCTS"}]</option>
                 <optgroup label="[{oxmultilang ident="GENERAL_CATEGORY"}]">
                 [{foreach from=$cattree->aList item=pcat}]
-                <option value="cat@@[{$pcat->oxcategories__oxid->value}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle->getRawValue()}]</option>
+                <option value="cat@@[{$pcat->oxcategories__oxid->value}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle nofilter}]</option>
                 [{/foreach}]
                 </optgroup>
                 <optgroup label="[{oxmultilang ident="GENERAL_MANUFACTURER"}]">
@@ -137,7 +137,7 @@ window.onload = function ()
 
 <script type="text/javascript">
 if (parent.parent)
-{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname|oxaddslashes nofilter}]";
     parent.parent.sMenuItem    = "[{oxmultilang ident="GENERAL_MENUITEM"}]";
     parent.parent.sMenuSubItem = "[{oxmultilang ident="ARTICLE_LIST_MENUSUBITEM"}]";
     parent.parent.sWorkArea    = "[{$_act}]";

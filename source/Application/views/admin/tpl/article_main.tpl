@@ -264,7 +264,7 @@ window.onload = function ()
                 <select name="art_category" class="editinput" onChange="Javascript:top.oxid.admin.changeLstrt()" [{$readonly}]>
                 <option value="-1">[{oxmultilang ident="ARTICLE_MAIN_NONE"}]</option>
                 [{foreach from=$oView->getCategoryList() item=pcat}]
-                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle->getRawValue()|oxtruncate:40:"..":true}]</option>
+                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle|oxtruncate:40:"..":true nofilter}]</option>
                 [{/foreach}]
                 </select>
                 [{oxinputhelp ident="HELP_"}]

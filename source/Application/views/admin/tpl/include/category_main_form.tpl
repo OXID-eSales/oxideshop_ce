@@ -36,7 +36,7 @@
             <td class="edittext" colspan="2">
                 <select name="editval[oxcategories__oxparentid]" class="editinput" [{$readonly}]>
                     [{foreach from=$cattree->aList item=pcat}]
-                        <option value="[{if $pcat->oxcategories__oxid->value}][{$pcat->oxcategories__oxid->value}][{else}]oxrootid[{/if}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle->getRawValue()|oxtruncate:33:"..":true}]</option>
+                        <option value="[{if $pcat->oxcategories__oxid->value}][{$pcat->oxcategories__oxid->value}][{else}]oxrootid[{/if}]" [{if $pcat->selected}]SELECTED[{/if}]>[{$pcat->oxcategories__oxtitle|oxtruncate:33:"..":true nofilter}]</option>
                     [{/foreach}]
                 </select>
                 [{oxinputhelp ident="HELP_CATEGORY_MAIN_PARENTID"}]

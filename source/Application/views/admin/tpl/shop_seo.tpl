@@ -181,7 +181,7 @@ function editThis(sID)
                      [{assign var="oActItem" value=$oItem}]
                    [{/if}]
 
-                 <option value="[{$oItem->oxseo__oxobjectid->value}]" [{if $oItem->oxseo__oxobjectid->value == $sActSeoObject}]selected[{/if}]>[{$oItem->oxseo__oxstdurl->getRawValue()}]</option>
+                 <option value="[{$oItem->oxseo__oxobjectid->value}]" [{if $oItem->oxseo__oxobjectid->value == $sActSeoObject}]selected[{/if}]>[{$oItem->oxseo__oxstdurl nofilter}]</option>
                  [{/foreach}]
                </select>
                [{oxinputhelp ident="HELP_SHOP_SEO_STATICURLS"}]
@@ -195,7 +195,7 @@ function editThis(sID)
 
             <tr class="conftext[{cycle}]">
              <td>
-              <input type=text class="confinput" style="width:270px;" name="aStaticUrl[oxseo__oxstdurl]" id="oxseo__oxstdurl" value="[{if $oActItem->oxseo__oxstdurl}][{$oActItem->oxseo__oxstdurl->getRawValue()}][{/if}]" [{$readonly}]>
+              <input type=text class="confinput" style="width:270px;" name="aStaticUrl[oxseo__oxstdurl]" id="oxseo__oxstdurl" value="[{if $oActItem->oxseo__oxstdurl}][{$oActItem->oxseo__oxstdurl nofilter}][{/if}]" [{$readonly}]>
               [{oxinputhelp ident="HELP_SHOP_SEO_STDURL"}]
              </td>
              <td>

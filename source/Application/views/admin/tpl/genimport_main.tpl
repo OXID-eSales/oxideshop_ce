@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
     if (top)
-    {   top.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+    {   top.sShopTitle   = "[{$actshopobj->oxshops__oxname|oxaddslashes nofilter}]";
         top.sMenuItem    = "[{oxmultilang ident="GENIMPORT_MENUITEM"}]";
         top.sMenuSubItem = "[{oxmultilang ident="GENIMPORT_MENUSUBITEM"}]";
         top.sWorkArea    = "[{$_act}]";

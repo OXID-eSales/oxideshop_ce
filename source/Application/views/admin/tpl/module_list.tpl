@@ -93,7 +93,7 @@ window.onload = function ()
 
 <script type="text/javascript">
 if (parent.parent)
-{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname->getRawValue()|oxaddslashes}]";
+{   parent.parent.sShopTitle   = "[{$actshopobj->oxshops__oxname|oxaddslashes nofilter}]";
     parent.parent.sMenuItem    = "[{oxmultilang ident="mxextensions"}]";
     parent.parent.sMenuSubItem = "[{oxmultilang ident="mxmodule"}]";
     parent.parent.sWorkArea    = "[{$_act}]";

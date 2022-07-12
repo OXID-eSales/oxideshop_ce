@@ -24,7 +24,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 final class ModuleConfigurationTest extends UnitTestCase
 {
-    private $testModuleId = 'testModuleId';
+    private string $testModuleId = 'testModuleId';
 
     protected function tearDown(): void
     {

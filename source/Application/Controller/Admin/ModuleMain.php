@@ -10,12 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
-/**
- * Admin article main deliveryset manager.
- * There is possibility to change deliveryset name, article, user
- * and etc.
- * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
- */
 class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**

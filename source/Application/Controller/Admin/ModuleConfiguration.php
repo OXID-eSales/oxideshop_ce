@@ -14,17 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Mod
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface;
 
-/**
- * Admin article main deliveryset manager.
- * There is possibility to change deliveryset name, article, user
- * and etc.
- * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
- */
 class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-    /** @var string Template name. */
-    protected $_sModule = 'shop_config.tpl';
-
     /**
      * Add additional config type for modules.
      */
@@ -46,9 +37,13 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $moduleId = $this->_sModuleId;
 
         try {
-            $moduleConfiguration = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class)->get($moduleId);
+            $moduleConfiguration = $this
+                ->getContainer()
+                ->get(ModuleConfigurationDaoBridgeInterface::class)
+                ->get($moduleId);
             if (!empty($moduleConfiguration->getModuleSettings())) {
-                $formatModuleSettings = $this->formatModuleSettingsForTemplate($moduleConfiguration->getModuleSettings());
+                $formatModuleSettings = $this
+                    ->formatModuleSettingsForTemplate($moduleConfiguration->getModuleSettings());
 
                 $this->_aViewData["var_constraints"] = $formatModuleSettings['constraints'];
                 $this->_aViewData["var_grouping"] = $formatModuleSettings['grouping'];
@@ -112,8 +107,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
 
         foreach ($variables as $name => $value) {
-            if ($moduleConfiguration->hasModuleSetting($name))
-            {
+            if ($moduleConfiguration->hasModuleSetting($name)) {
                 $moduleSetting = $moduleConfiguration->getModuleSetting($name);
 
                 if ($moduleSetting->getType() === 'aarr') {

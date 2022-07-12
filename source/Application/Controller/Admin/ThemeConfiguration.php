@@ -10,12 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use oxAdminDetails;
 
-/**
- * Admin article main deliveryset manager.
- * There is possibility to change deliveryset name, article, user
- * and etc.
- * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
- */
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     protected $_sTheme = null;

@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -109,7 +108,7 @@ class SettingDaoTest extends TestCase
         $settingDao->get('onExistentSetting', 'moduleId', 1);
     }
 
-    public function testGetSettingNotExistingInOxConfigdisplayTableReturnsSettingFromOxconfigTable()
+    public function testGetSettingNotExistingInOxConfigdisplayTableReturnsSettingFromOxconfigTable(): void
     {
         $shopModuleSetting = new Setting();
         $shopModuleSetting
@@ -130,7 +129,7 @@ class SettingDaoTest extends TestCase
         $this->assertEquals($shopModuleSettingFromOxConfig, $settingDao->get('third', 'testModuleId', 1));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao = $this->getSettingDao();
@@ -291,12 +290,11 @@ class SettingDaoTest extends TestCase
         return $queryBuilder->execute()->rowCount();
     }
 
-    private function saveDataToOxConfigTable(Setting $shopModuleSetting, string $moduleId, int $shopId)
+    private function saveDataToOxConfigTable(Setting $shopModuleSetting, string $moduleId, int $shopId): void
     {
         $shopAdapter = $this->get(ShopAdapterInterface::class);
         $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-        $context = $this->get(ContextInterface::class);
 
         $queryBuilder = $queryBuilderFactory->create();
         $queryBuilder

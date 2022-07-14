@@ -15,13 +15,17 @@ There can be different reasons for contributions:
   - Make sure you check the github workflow results (if such configured) and **add tests for your fixed case**.
   - Please check the [bugtracker](https://bugs.oxid-esales.com/) if your bug is reported and mension the bug number(-s) in the pull request description.
 * Feature
-  - Features are NOT merged via Pull requests.
-  - Before implementing the feature, Check our [UserVoice](https://feedback.oxid-esales.com/) and see if there is anyone interested in your feature.
+  - New Features are NOT analyzed and merged via Pull requests, before:
+    - [quality requirements](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/quality.html#code-quality-requirements) achieved 
+    - the feature is coordinated with OXID
+  - For [partners](https://www.oxid-esales.com/en/partners/become-a-partner/) and employees, Before implementing the feature:
+    - Check our [UserVoice](https://feedback.oxid-esales.com/) and see if there is anyone interested in your feature.
     - By using this gateway, you can offer new features and check if other people are interested in it. 
-    - Most likely we will put it in our backlog if the feature is requested and voted for by a lot of people.
+    - Most likely we will put your idea in our backlog if the feature is requested and voted for by a lot of people.
   - Consider, maybe implementing the feature as a separate module would be a good idea.
-  - If your idea is popular, and you are willing to introduce the feature to shop core, contact us first, and discuss the way you are planning to implement it.
-  - Use [the form](https://www.oxid-esales.com/en/contact-us/) to contact us.
+  - If your idea is popular, and you are willing to introduce the feature to shop core:
+    - contact us first, and discuss the way you are planning to implement it, so there will be higher chances to get it merged
+  - For others than partners, use [the form](https://www.oxid-esales.com/en/contact-us/) to contact us.
 
 ## Pull request process
 

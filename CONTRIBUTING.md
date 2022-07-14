@@ -26,6 +26,7 @@ There can be different reasons for contributions:
   - If your idea is popular, and you are willing to introduce the feature to shop core:
     - contact us first, and discuss the way you are planning to implement it, so there will be higher chances to get it merged
   - For others than partners, use [the form](https://www.oxid-esales.com/en/contact-us/) to contact us.
+  - For not partners, to request new feature without implementing it yourself, please use our [bugtracker](https://bugs.oxid-esales.com/).
 
 ## Pull request process
 

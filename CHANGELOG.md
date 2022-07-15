@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change broken "Requirements" links to current shop documentation [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
 - Fix static cache variable usage in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
 - Fix not initialized category case possible in `Model\Article::getCategory` [PR-803](https://github.com/OXID-eSales/oxideshop_ce/pull/803)
+- Performance improved on possible payment list by removing unnecessary table join [PR-895](https://github.com/OXID-eSales/oxideshop_ce/pull/895)
 
 ### Removed
 - PHP v7 support

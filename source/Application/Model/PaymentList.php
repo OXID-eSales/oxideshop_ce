@@ -62,7 +62,6 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxpayments');
         $sQ = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable} ";
-        $sQ .= "left join oxobject2group ON oxobject2group.oxobjectid = {$sTable}.oxid ";
         $sQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = " . $oDb->quote($sShipSetId) . " and oxobject2payment.oxpaymentid = {$sTable}.oxid ";
         $sQ .= "where {$sTable}.oxactive='1' ";
         $sQ .= " and {$sTable}.oxfromboni <= " . $oDb->quote($sBoni) . " and {$sTable}.oxfromamount <= " . $oDb->quote($dPrice) . " and {$sTable}.oxtoamount >= " . $oDb->quote($dPrice);

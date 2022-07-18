@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Rare fatal appearing in modified but not recalculated baskets [PR-891](https://github.com/OXID-eSales/oxideshop_ce/pull/891)
 
-## [6.10.3] - unreleased
+## [6.10.3] - 2022-07-18
 
 ### Fixed
 - Deadlock in oxseo table when deleting categories in backend [#0006762](https://bugs.oxid-esales.com/view.php?id=6762)
@@ -1170,8 +1170,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
-
-[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...b-6.5.x
+[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...b-6.5.x
+[6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3
 [6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
 [6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.1...v6.10.0

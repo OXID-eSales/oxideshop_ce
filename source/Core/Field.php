@@ -21,13 +21,26 @@ class Field // extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * escaping functionality type: expected value is escaped text.
+     * @deprecated constant will be removed in v7.0. Field values won't be escaped anymore.
      */
     const T_TEXT = 1;
 
     /**
      * escaping functionality type: expected value is not escaped (raw) text.
+     * @deprecated constant will be removed in v7.0. Field values won't be escaped anymore.
      */
     const T_RAW = 2;
+
+    /**
+     * @deprecated property will be removed in v7.0. Field values won't be escaped anymore.
+     * @var mixed
+     */
+    public $rawValue;
+
+    /**
+     * @var mixed
+     */
+    public $value;
 
     /**
      * Constructor
@@ -184,6 +197,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      * Return raw value
      *
      * @return string
+     * @deprecated method will be removed in v7.0. Field values won't be escaped anymore.
      */
     public function getRawValue()
     {

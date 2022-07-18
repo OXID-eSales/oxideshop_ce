@@ -768,6 +768,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName name (eg. 'oxtitle') of a data field to get
      *
      * @return mixed value of a data field
+     * @deprecated method will be removed in v7.0. Field values won't be escaped anymore.
      *
      */
     public function getRawFieldData($fieldName)

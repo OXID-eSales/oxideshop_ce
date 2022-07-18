@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Support for NAME constants in Event classes (`*Event::NAME`)
 - Validation for `metaDataFilePath` in metadata
+- Data escaping of string values in `Core\Field`
 - Method:
     - `Application\Model\User::getUtilsObjectInstance()`
     - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`

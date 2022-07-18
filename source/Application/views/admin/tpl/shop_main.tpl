@@ -317,7 +317,7 @@ window.onload = function ()
                             [{oxmultilang ident="SHOP_MAIN_SMTPPASSWORD"}]
                 </td>
                 <td class="edittext">
-                <input autocomplete="off" type="password" name="oxsmtppwd" size="35" maxlength="50" class="editinput" [{$readonly}] onfocus="modSmtpField()" onChange="modSmtpField()">
+                <input autocomplete="off" type="password" name="oxsmtppwd" size="35" maxlength="128" class="editinput" [{$readonly}] onfocus="modSmtpField()" onChange="modSmtpField()">
                 [{oxmultilang ident="SHOP_MAIN_SMTPPWUNSET"}]
                 [{oxinputhelp ident="HELP_SHOP_MAIN_SMTPPASSWORD"}]
                 </td>

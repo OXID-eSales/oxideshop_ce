@@ -396,7 +396,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
-## [6.11.0] - Unreleased
+## [6.11.0] - 2022-07-20
 
 ### Added
 - PHP 8.1 support
@@ -1568,8 +1568,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
-[7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v7.0.0-rc.1
-[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...b-6.5.x
+[7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v7.0.0-rc.1
+[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...6.11.0
 [6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3
 [6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1

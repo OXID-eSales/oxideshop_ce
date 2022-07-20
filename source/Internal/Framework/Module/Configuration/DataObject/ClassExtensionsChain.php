@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
+use ArrayIterator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use Traversable;
 
 class ClassExtensionsChain implements \IteratorAggregate
 {
@@ -119,12 +121,8 @@ class ClassExtensionsChain implements \IteratorAggregate
         return false;
     }
 
-    /**
-     * @return \Traversable
-     */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->chain);
+        return new ArrayIterator($this->chain);
     }
 }

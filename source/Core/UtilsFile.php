@@ -62,6 +62,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                                     'M10'   => 'master/product/10',
                                     'M11'   => 'master/product/11',
                                     'M12'   => 'master/product/12',
+                                    'MPIC1' => 'master/manufacturer/1',
+                                    'MPIC2' => 'master/manufacturer/2',
+                                    'MPIC3' => 'master/manufacturer/3',
         //
                                     'P1'    => '1',
                                     'P2'    => '2',

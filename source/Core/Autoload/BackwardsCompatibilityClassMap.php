@@ -177,6 +177,7 @@ return [
     'manufacturer_main' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ManufacturerMain',
     'manufacturer_main_ajax' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ManufacturerMainAjax',
     'manufacturer_mall' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ManufacturerMall',
+    'manufacturer_pictures' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ManufacturerPictures',
     'manufacturer_seo' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ManufacturerSeo',
     'module_config' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ModuleConfiguration',
     'module' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ModuleController',

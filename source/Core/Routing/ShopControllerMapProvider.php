@@ -55,6 +55,7 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'manufacturer_list' => Controller\Admin\ManufacturerList::class,
         'manufacturer_main' => Controller\Admin\ManufacturerMain::class,
         'manufacturer_main_ajax' => Controller\Admin\ManufacturerMainAjax::class,
+        'manufacturer_pictures' => Controller\Admin\ManufacturerPictures::class,
         'manufacturer_seo' => Controller\Admin\ManufacturerSeo::class,
         'module_config' => Controller\Admin\ModuleConfiguration::class,
         'module_list' => Controller\Admin\ModuleList::class,

@@ -505,6 +505,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->setConfigParam('iPicCount', 12);
         }
 
+        if (is_null($this->getConfigParam('iManufacturerPicCount'))) {
+            $this->setConfigParam('iManufacturerPicCount', 3);
+        }
+
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
             $this->setConfigParam('iZoomPicCount', 4);
         }

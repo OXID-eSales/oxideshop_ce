@@ -915,6 +915,12 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
+    'OxidEsales\Eshop\Application\Controller\Admin\ManufacturerPictures'              => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerPictures::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
     'OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerSeo::class,
         'isAbstract'       => false,

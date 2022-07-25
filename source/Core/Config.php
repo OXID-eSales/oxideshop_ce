@@ -17,7 +17,6 @@ use OxidEsales\Facts\Facts;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 
 //max integer
@@ -307,13 +306,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     const OXMODULE_THEME_PREFIX = 'theme:';
 
     /**
-     * prefix for oxModule field for modules in oxConfig and oxConfigDisplay tables
-     *
-     * @var string
-     */
-    const OXMODULE_MODULE_PREFIX = 'module:';
-
-    /**
      * Returns config parameter value if such parameter exists
      *
      * @param string $name    config parameter name
@@ -395,9 +387,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if ($this->getConfigParam('sCustomTheme')) {
             $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
-
-        // loading all modules config
-        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX . '%');
 
         $this->loadAdditionalConfiguration();
 
@@ -2148,9 +2137,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         if (empty($extension)) {
             $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
-        } elseif (false !== strpos($extension, self::OXMODULE_MODULE_PREFIX)) {
-            $moduleId = str_replace(self::OXMODULE_MODULE_PREFIX, '', $extension);
-            $this->dispatchEvent(new SettingChangedEvent($varName, (int) $shopId, $moduleId));
         } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
             $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
         }

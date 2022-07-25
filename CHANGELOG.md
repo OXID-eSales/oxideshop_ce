@@ -122,6 +122,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `MODULE_KEY_TEMPLATES`
     - `MODULE_KEY_EXTENSIONS`
     - `MODULE_KEY_CONTROLLERS`
+  - `OxidEsales\EshopCommunity\Core\Config::OXMODULE_MODULE_PREFIX`
 
 ### Added
 - WebP image format support with an option to convert other format images automatically

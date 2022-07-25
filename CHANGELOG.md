@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.12.0] - Unreleased
+
+### Deprecated
+- Classes:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridge`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\SettingModuleSettingHandler`
+- Services:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface`
+    - `oxid_esales.module.setup.shop_module_setting_module_setting_handler`
+
 ## [6.11.0] - 2022-07-20
 
 ### Added
@@ -23,17 +35,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support for NAME constants in Event classes (`*Event::NAME`)
 - Validation for `metaDataFilePath` in metadata
 - Methods:
-    - `Application\Model\User::getUtilsObjectInstance()`
-    - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
-    - `OxidEsales\EshopCommunity\Core\Email::addAttachment()`
-    - `OxidEsales\EshopCommunity\Core\Email::addEmbeddedImage()`
-    - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
-    - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`
-    - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::getPath()`
-    - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
+  - `Application\Model\User::getUtilsObjectInstance()`
+  - `OxidEsales\EshopCommunity\Core\Email::sendBackupMail()`
+  - `OxidEsales\EshopCommunity\Core\Email::addAttachment()`
+  - `OxidEsales\EshopCommunity\Core\Email::addEmbeddedImage()`
+  - `OxidEsales\EshopCommunity\Core\Email::getAttachments()`
+  - `OxidEsales\EshopCommunity\Core\Email::clearAttachments()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::getPath()`
+  - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
 - Classes:
-    - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
-    - `Internal\Framework\Templating\Resolver\TemplateNameResolver`
+  - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
+  - `Internal\Framework\Templating\Resolver\TemplateNameResolver`
 - Services:
   - `utility.context.admin_log_file_path`
   - `utility.context.log_file_path`

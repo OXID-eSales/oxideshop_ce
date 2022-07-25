@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
+/**
+ * @deprecated will be removed in v7.0, we won't store module settings in the database.
+ */
 interface SettingDaoInterface
 {
     /**

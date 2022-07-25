@@ -20,6 +20,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use function is_string;
 
+/**
+ * @deprecated will be removed in v7.0, we won't store module settings in the database.
+ */
 class SettingDao implements SettingDaoInterface
 {
     /**

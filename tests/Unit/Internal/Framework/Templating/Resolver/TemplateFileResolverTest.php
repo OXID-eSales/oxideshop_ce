@@ -61,6 +61,10 @@ final class TemplateFileResolverTest extends TestCase
                 'some/path/template.name.tpl',
                 'some/path/template.name.tpl'
             ],
+            [
+                'some/path/template.name.html',
+                'some/path/template.name.html'
+            ],
         ];
     }
 
@@ -80,8 +84,16 @@ final class TemplateFileResolverTest extends TestCase
                 'some/path/template_name.html.twig'
             ],
             [
+                'some/path/template.name.xml.twig',
+                'some/path/template.name.xml.twig',
+            ],
+            [
                 'some/path/template.name.html.twig',
                 'some/path/template.name.html.twig'
+            ],
+            [
+                'some/path/template.name.html',
+                'some/path/template.name.html'
             ],
         ];
     }

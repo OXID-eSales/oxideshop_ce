@@ -96,10 +96,6 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
             $this->assertTrue($validator->checkControllers($expectedResult['controllers']), 'Controllers do not match expectations');
         }
 
-        if (isset($expectedResult['settings'])) {
-            $this->assertTrue($validator->checkConfigAmount($expectedResult['settings']), 'Configs do not match expectations');
-        }
-
         if (isset($expectedResult['settings_values'])) {
             $this->assertTrue(
                 $validator->checkConfigValues($expectedResult['settings_values']),

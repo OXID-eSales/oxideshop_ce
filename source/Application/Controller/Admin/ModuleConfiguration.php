@@ -12,7 +12,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface;
 
 class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
@@ -116,8 +115,6 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 }
 
                 $moduleSetting->setValue($value);
-
-                $this->getContainer()->get(SettingDaoBridgeInterface::class)->save($moduleSetting, $moduleId);
             }
 
             $moduleConfigurationDaoBridge->save($moduleConfiguration);

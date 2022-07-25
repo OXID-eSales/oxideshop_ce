@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -40,9 +39,6 @@ final class ModuleSettingBridgeTest extends TestCase
         $configurationDao = $this->get(ModuleConfigurationDaoInterface::class);
         $configuration = $configurationDao->get('test-module', 1);
         $this->assertSame($newValue, $configuration->getModuleSetting('test-setting')->getValue());
-
-        $settingsDao = $this->get(SettingDaoInterface::class);
-        $this->assertSame($newValue, $settingsDao->get('test-setting', 'test-module', 1)->getValue());
     }
 
     public function testGet(): void

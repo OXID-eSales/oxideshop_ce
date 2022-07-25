@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
@@ -60,11 +60,9 @@ final class ShopConfigurationTest extends UnitTestCase
         $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
-        $valueFromDatabase = $this->get(SettingDaoInterface::class)->get('nonExisting', $this->testModuleId, 1);
-
         $this->assertSame(
             'newValue',
-            $valueFromDatabase->getValue()
+            Registry::getConfig()->getConfigParam('nonExisting')
         );
     }
 

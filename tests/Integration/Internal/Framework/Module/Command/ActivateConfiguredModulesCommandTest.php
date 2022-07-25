@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
@@ -87,10 +86,6 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->assertTrue(
             $this->get(ModuleStateServiceInterface::class)->isActive($this->moduleId, 1)
         );
-
-        $settingsDao = $this->get(SettingDaoInterface::class);
-        $settingValue = $settingsDao->get('testSetting', $this->moduleId, 1)->getValue();
-        $this->assertSame('1', $settingValue);
     }
 
     public function testModuleActivationInAllShops(): void

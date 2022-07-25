@@ -88,13 +88,6 @@ final class ModuleConfigurationTest extends UnitTestCase
             'newValue',
             $this->getModuleConfiguration()->getModuleSetting('stringSetting')->getValue()
         );
-
-        Registry::getConfig()->reinitialize();
-
-        $this->assertSame(
-            'newValue',
-            Registry::getConfig()->getConfigParam('stringSetting')
-        );
     }
 
     private function installTestModule(): void

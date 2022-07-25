@@ -10,15 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
+/**
+ * @deprecated use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface
+ */
 class ModuleSettingBridge implements ModuleSettingBridgeInterface
 {
     public function __construct(
         private ContextInterface $context,
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private SettingDaoInterface $settingDao
     ) {
     }
 
@@ -32,7 +33,6 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
         $setting = $moduleConfiguration->getModuleSetting($name);
         $setting->setValue($value);
-        $this->settingDao->save($setting, $moduleId, $this->context->getCurrentShopId());
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
     }
 

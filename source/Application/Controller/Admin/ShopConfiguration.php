@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 use Exception;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
 
 /**
@@ -493,15 +493,19 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $preparedConfigValue = $this->serializeConfVar($existingConfigType, $configName, $configValue);
         if (strpos($module, 'module:') !== false) {
             $moduleId = explode(':', $module)[1];
-            $moduleSettingBridge = ContainerFactory::getInstance()
+            $moduleConfigurationBridge = ContainerFactory::getInstance()
                 ->getContainer()
-                ->get(ModuleSettingBridgeInterface::class);
-            try {
-                $moduleSettingBridge->save($configName, $preparedConfigValue, $moduleId);
-            } catch (ModuleSettingNotFountException $exception) {
+                ->get(ModuleConfigurationDaoBridgeInterface::class);
+            $moduleConfiguration = $moduleConfigurationBridge->get($moduleId);
+
+            if ($moduleConfiguration->hasModuleSetting($configName)) {
+                $setting = $moduleConfiguration->getModuleSetting($configName);
+                $setting->setValue($preparedConfigValue);
+
+                $moduleConfigurationBridge->save($moduleConfiguration);
+            } else {
                 Registry::getLogger()->warning(
-                    "Module \"$moduleId\" setting \"$configName\" is missing in metadata.php or configuration file.",
-                    [$exception]
+                    "Module \"$moduleId\" setting \"$configName\" is missing in metadata.php or configuration file."
                 );
                 Registry::getConfig()->saveShopConfVar($existingConfigType, $configName, $preparedConfigValue, $shopId, $module);
             }

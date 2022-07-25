@@ -23,7 +23,6 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
@@ -42,9 +41,6 @@ services:
 
   oxid_esales.module.setup.template_blocks_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\TemplateBlockModuleSettingHandler
-
-  oxid_esales.module.setup.shop_module_setting_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\SettingModuleSettingHandler
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\SmartyPluginDirectoriesValidator

@@ -12,3 +12,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProvider
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingService
+    public: true

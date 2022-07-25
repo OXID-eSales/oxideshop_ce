@@ -40,7 +40,8 @@
         "symfony/finder": "^5.4",
         "symfony/lock": "^6.0",
         "symfony/yaml": "^5.4",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "symfony/string": "^6.0"
     },
     "require-dev": {
         "composer/composer": "^2.0",

@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
+
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\String\UnicodeString;
+
+class ModuleSettingService implements ModuleSettingServiceInterface
+{
+    public function __construct(
+        private ContextInterface $context,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private ModuleCacheServiceInterface $moduleCacheService
+    ) {
+    }
+
+    public function getInteger(string $name, string $moduleId): int
+    {
+        return $this->getValue($moduleId, $name);
+    }
+
+    public function getString(string $name, string $moduleId): UnicodeString
+    {
+        return new UnicodeString($this->getValue($moduleId, $name));
+    }
+
+    public function getBoolean(string $name, string $moduleId): bool
+    {
+        return $this->getValue($moduleId, $name);
+    }
+
+    public function getCollection(string $name, string $moduleId): array
+    {
+        return $this->getValue($moduleId, $name);
+    }
+
+    public function saveInteger(string $name, int $value, string $moduleId): void
+    {
+        $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    public function saveString(string $name, string $value, string $moduleId): void
+    {
+        $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    public function saveBoolean(string $name, bool $value, string $moduleId): void
+    {
+        $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    public function saveCollection(string $name, array $value, string $moduleId): void
+    {
+        $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    private function saveSettingToModuleConfiguration(string $moduleId, string $name, mixed $value): void
+    {
+        $shopId = $this->context->getCurrentShopId();
+
+        $this->moduleCacheService->invalidate($moduleId, $shopId);
+
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+        $setting = $moduleConfiguration->getModuleSetting($name);
+        $setting->setValue($value);
+        $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
+    }
+
+    private function getValue(string $moduleId, string $name): mixed
+    {
+        $shopId = $this->context->getCurrentShopId();
+        $cacheKey = $this->getCacheKey($moduleId, $name);
+
+        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
+            $this->moduleCacheService->put(
+                $cacheKey,
+                $shopId,
+                ['value' => $this->moduleConfigurationDao->get($moduleId, $shopId)->getModuleSetting($name)->getValue()]
+            );
+        }
+
+        return $this->moduleCacheService->get($cacheKey, $shopId)['value'];
+    }
+
+    private function getCacheKey(string $moduleId, string $name): string
+    {
+        return $moduleId . '-setting-' . $name;
+    }
+}

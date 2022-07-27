@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+
 class ActiveModulesDataProviderBridge implements ActiveModulesDataProviderBridgeInterface
 {
     public function __construct(private ActiveModulesDataProviderInterface $activeModulesDataProvider)
@@ -37,5 +39,13 @@ class ActiveModulesDataProviderBridge implements ActiveModulesDataProviderBridge
     public function getTemplates(): array
     {
         return $this->activeModulesDataProvider->getTemplates();
+    }
+
+    /**
+     * @return Controller[]
+     */
+    public function getControllers(): array
+    {
+        return $this->activeModulesDataProvider->getControllers();
     }
 }

@@ -123,7 +123,6 @@ class Environment
     {
         $config = Registry::getConfig();
         $config->setConfigParam('aModules', null);
-        $config->setConfigParam('aModuleControllers', null);
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $database->execute("DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'");
@@ -223,7 +222,7 @@ class Environment
     protected function loadShopParameters()
     {
         $aParameters = array(
-            'aModules', 'aModuleControllers'
+            'aModules'
         );
         foreach ($aParameters as $sParameter) {
             Registry::getConfig()->setConfigParam($sParameter, $this->getConfigValueFromDB($sParameter));

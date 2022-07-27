@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -105,21 +107,18 @@ class ControllerClassNameResolverTest extends UnitTestCase
         return $mock;
     }
 
-    /**
-     * Test helper
-     *
-     * @return OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider mock
-     */
-    private function getModuleControllerMapProviderMock()
+    private function getActiveModulesDataProviderBridgeMock(): ActiveModulesDataProviderBridgeInterface
     {
-        $map = array('cCc' => 'Vendor1\Testmodule\SomeController',
-                     'DDD' => 'Vendor1\OtherTestModule\SomeOtherController',
-                     'eee' => 'Vendor2\OtherTestModule\SomeDifferentController');
+        $map = [
+            new Controller('cCc', 'Vendor1\Testmodule\SomeController'),
+            new Controller('DDD', 'Vendor1\OtherTestModule\SomeOtherController'),
+            new Controller('eee', 'Vendor2\OtherTestModule\SomeDifferentController')
+        ];
 
-        $mock = $this->getMock(\OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider::class, ['getControllerMap'], [], '', false);
-        $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
+        $bridge = $this->getMockBuilder(ActiveModulesDataProviderBridgeInterface::class)->getMock();
+        $bridge->method('getControllers')->willReturn($map);
 
-        return $mock;
+        return $bridge;
     }
 
     /**
@@ -129,7 +128,7 @@ class ControllerClassNameResolverTest extends UnitTestCase
      */
     private function getResolver()
     {
-        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerMapProviderMock(), $this->getModuleControllerMapProviderMock());
+        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerMapProviderMock(), $this->getActiveModulesDataProviderBridgeMock());
         return $resolver;
     }
 }

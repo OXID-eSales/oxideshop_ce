@@ -35,8 +35,7 @@ final class ActiveModulesDataProviderTest extends TestCase
     private $inactiveModulePath = 'some-path-inactive';
     private $inactiveModuleSource = 'some-source-inactive';
 
-    /** @var BasicContext */
-    private $context;
+    private BasicContext $context;
 
     protected function setUp(): void
     {
@@ -136,19 +135,35 @@ final class ActiveModulesDataProviderTest extends TestCase
         );
     }
 
+    public function testGetControllers(): void
+    {
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheServiceInterface::class));
+
+        $this->assertEquals(
+            [
+                new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'),
+                new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2')
+            ],
+            $activeModulesDataProvider->getControllers()
+        );
+    }
+
     private function prepareTestShopConfiguration(): void
     {
         $activeModule = new ModuleConfiguration();
         $activeModule
             ->setId($this->activeModuleId)
             ->setModuleSource($this->activeModuleSource)
-            ->addTemplate(new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'));
+            ->addTemplate(new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'))
+            ->addController(new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'))
+            ->addController(new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2'));
 
         $inactiveModule = new ModuleConfiguration();
         $inactiveModule
             ->setId($this->inactiveModuleId)
             ->setModuleSource($this->inactiveModuleSource)
-            ->addTemplate(new ModuleConfiguration\Template('inactiveTemplate', 'inactiveTemplatePath'));
+            ->addTemplate(new ModuleConfiguration\Template('inactiveTemplate', 'inactiveTemplatePath'))
+            ->addController(new ModuleConfiguration\Controller('inactiveController', 'inactiveControllerNamespace'));
 
         /** @var ShopConfigurationDaoInterface $dao */
         $dao = $this->get(ShopConfigurationDaoInterface::class);
@@ -174,8 +189,7 @@ final class ActiveModulesDataProviderTest extends TestCase
             $this->get(ModuleStateServiceInterface::class),
             $this->get(ModulePathResolverInterface::class),
             $this->get(ContextInterface::class),
-            $cache,
-            (new TemplatesDataMapper())
+            $cache
         );
     }
 

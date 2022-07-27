@@ -86,21 +86,6 @@ class Validator
     }
 
     /**
-     * Asserts that module controllers match expected files
-     *
-     * @param array $expectedControllers
-     *
-     * @return bool
-     */
-    public function checkControllers($expectedControllers)
-    {
-        $moduleControllersToCheck = $this->getConfig()->getConfigParam('aModuleControllers');
-        $moduleControllersToCheck = is_null($moduleControllersToCheck) ? array() : $moduleControllersToCheck;
-
-        return $expectedControllers == $moduleControllersToCheck;
-    }
-
-    /**
      * Asserts that module configs match expected configs
      *
      * @param array $aExpectedConfigs

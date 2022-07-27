@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 
 interface ActiveModulesDataProviderInterface
@@ -27,4 +28,9 @@ interface ActiveModulesDataProviderInterface
      * @return Template[][]
      */
     public function getTemplates(): array;
+
+    /**
+     * @return Controller[]
+     */
+    public function getControllers(): array;
 }

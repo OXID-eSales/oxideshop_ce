@@ -6,9 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator;
@@ -30,31 +31,33 @@ final class ControllersValidatorTest extends TestCase
                 'shopControllerName' => 'shopControllerNamespace',
             ]);
 
-        $shopConfigurationSetting = new ShopConfigurationSetting();
-        $shopConfigurationSetting->setValue(
-            [
-                'moduleId' => [
-                    'alreadyActiveModuleControllerName' => 'alreadyActiveModuleControllerNamepace'
-                ],
-            ]
-        );
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('moduleId');
+        $moduleConfiguration->addController(new Controller('alreadyActiveModuleControllerName', 'alreadyActiveModuleControllerNamespace'));
 
-        $shopConfigurationSettingDao = $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock();
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $shopConfigurationSettingDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
         $shopConfigurationSettingDao
             ->method('get')
-            ->willReturn($shopConfigurationSetting);
+            ->willReturn($shopConfiguration);
+
+        $moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
+        $moduleStateService->method('isActive')->willReturn(true);
 
         $validator = new ControllersValidator(
             $shopAdapter,
             $shopConfigurationSettingDao,
-            $this->getMockBuilder(LoggerInterface::class)->getMock()
+            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addController(
             new Controller(
                 'newModuleControllerName',
-                'newModuleControllerNamepace'
+                'newModuleControllerNamespace'
             )
         );
 
@@ -74,8 +77,9 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock(),
-            $this->getMockBuilder(LoggerInterface::class)->getMock()
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -99,8 +103,9 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock(),
-            $this->getMockBuilder(LoggerInterface::class)->getMock()
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -125,8 +130,9 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock(),
-            $logger
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $logger,
+            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();

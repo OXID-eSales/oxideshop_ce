@@ -9,6 +9,10 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
 
 use OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface;
 use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 
 /**
  * This class maps controller id to controller class name and vice versa.
@@ -18,24 +22,10 @@ use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
  */
 class ControllerClassNameResolver implements ClassNameResolverInterface
 {
-    /**
-     * @var \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider
-     */
-    private $moduleControllerMapProvider = null;
-
-    /**
-     * @var \OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider
-     */
-    private $shopControllerMapProvider = null;
-
-    /**
-     * @param \OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider   $shopControllerMapProvider   Shop map.
-     * @param \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider $moduleControllerMapProvider Module map.
-     */
-    public function __construct(ControllerMapProviderInterface $shopControllerMapProvider = null, ControllerMapProviderInterface $moduleControllerMapProvider = null)
-    {
-        $this->shopControllerMapProvider = $shopControllerMapProvider;
-        $this->moduleControllerMapProvider = $moduleControllerMapProvider;
+    public function __construct(
+        private ?ControllerMapProviderInterface           $shopControllerMapProvider = null,
+        private ?ActiveModulesDataProviderBridgeInterface $activeModulesDataProvider = null
+    ) {
     }
 
     /**
@@ -97,11 +87,13 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function getClassNameFromModuleMap($classId)
     {
-        $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
-        $idToNameMap = $moduleControllerMapProvider->getControllerMap();
-        $className = $this->arrayLookup($classId, $idToNameMap);
+        $controllersArray = [];
+        foreach ($this->getActiveModulesDataProvider()->getControllers() as $controller)
+        {
+            $controllersArray[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
 
-        return $className;
+        return $this->arrayLookup($classId, $controllersArray);
     }
 
     /**
@@ -129,11 +121,13 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function getClassIdFromModuleMap($className)
     {
-        $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
-        $idToNameMap = $moduleControllerMapProvider->getControllerMap();
-        $classId = $this->arrayLookup($className, array_flip($idToNameMap));
+        $controllersArray = [];
+        foreach ($this->getActiveModulesDataProvider()->getControllers() as $controller)
+        {
+            $controllersArray[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
 
-        return $classId;
+        return $this->arrayLookup($className, array_flip($controllersArray));
     }
 
     /**
@@ -165,17 +159,12 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
         return $this->shopControllerMapProvider;
     }
 
-    /**
-     * Getter for ModuleControllerMapProvider object
-     *
-     * @return \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider
-     */
-    protected function getModuleControllerMapProvider()
+    private function getActiveModulesDataProvider(): ActiveModulesDataProviderBridgeInterface
     {
-        if (is_null($this->moduleControllerMapProvider)) {
-            $this->moduleControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider::class);
+        if (is_null($this->activeModulesDataProvider)) {
+            $this->activeModulesDataProvider = ContainerFactory::getInstance()->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class);
         }
 
-        return $this->moduleControllerMapProvider;
+        return $this->activeModulesDataProvider;
     }
 }

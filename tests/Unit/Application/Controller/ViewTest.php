@@ -34,26 +34,6 @@ class modOxView extends oxView
     }
 }
 
-class ViewTestFirstModuleController extends BaseController
-{
-    public function doSomething()
-    {
-        return 'viewtestsecondmodulecontroller?fnc=doSomethingElse&someParameter=1';
-    }
-
-    protected function onExecuteNewAction()
-    {
-        throw new \Exception('Bail out before redirect, all is well.');
-    }
-}
-
-class ViewTestSecondModuleController extends BaseController
-{
-    public function doSomethingElse()
-    {
-    }
-}
-
 class ViewTest extends \OxidTestCase
 {
     protected $_oView = null;
@@ -691,27 +671,6 @@ class ViewTest extends \OxidTestCase
         }
 
         $this->fail('No exception thrown by executeFunction');
-    }
-
-    /**
-     * Verify that also module metadata v2 controller ids are handled correctly.
-     * Test case that controller id does match a module controller class.
-     */
-    public function testExecuteFunctionForModuleController()
-    {
-        \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
-        $controllers = ['viewtestmodule' =>
-                            ['viewtestsecondmodulecontroller' => \OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestSecondModuleController::class]
-                       ];
-        $storageKey = ShopConfigurationSetting::MODULE_CONTROLLERS;
-        $this->getModuleVariableLocator()->setModuleVariable($storageKey, $controllers);
-
-        $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));
-        $view = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestFirstModuleController::class);
-
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Bail out before redirect, all is well.');
-        $view->executeFunction('doSomething');
     }
 
     /**

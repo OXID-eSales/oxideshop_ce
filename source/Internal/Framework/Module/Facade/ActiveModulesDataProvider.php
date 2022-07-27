@@ -74,6 +74,21 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         );
     }
 
+    /** @inheritDoc */
+    public function getControllers(): array
+    {
+        $shopId = $this->context->getCurrentShopId();
+        $cacheKey = 'controllers';
+
+        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
+            $this->moduleCacheService->put($cacheKey, $shopId, $this->collectControllersForCaching());
+        }
+
+        return $this->createControllersFromData(
+            $this->moduleCacheService->get($cacheKey, $shopId)
+        );
+    }
+
     /** @return array */
     private function collectModulePathsForCaching(): array
     {
@@ -99,6 +114,18 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
             }
         }
         return $templates;
+    }
+
+    /** @return array */
+    private function collectControllersForCaching(): array
+    {
+        $controllers = [];
+        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+            foreach ($moduleConfiguration->getControllers() as $controller) {
+                $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+            }
+        }
+        return $controllers;
     }
 
     /** @return ModuleConfiguration[] */
@@ -128,5 +155,19 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
             }
         }
         return $templates;
+    }
+
+    /**
+     * @param array $data
+     * @return Template[][]
+     */
+    private function createControllersFromData(array $data): array
+    {
+        $controllers = [];
+        foreach ($data as $id => $namespace) {
+            $controllers[] = new ModuleConfiguration\Controller($id, $namespace);
+        }
+
+        return $controllers;
     }
 }

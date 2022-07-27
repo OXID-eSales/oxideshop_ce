@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Respond with 404 error code on controller or method miss [PR-715](https://github.com/OXID-eSales/oxideshop_ce/pull/715)
 - Change type of default value for iIndex parameter in ``OxidProfessionalServices\Bergspezl\Model\Article::getZoomPictureUrl`` [PR-893](https://github.com/OXID-eSales/oxideshop_ce/pull/893)
 - Switched to templating-engine agnostic names in Controller templates (e.g. `Controller::$_sThisTemplate = 'page/content'` instead of `'page/content.tpl'`)
+- Don't store module controllers in database
 - Don't store module settings in database
 - Change OXID eShop Community Edition license
 
@@ -49,6 +50,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Module\ModuleCache`
   - `OxidEsales\EshopCommunity\Core\Module\ModuleInstaller`
   - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
+  - `OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ControllersModuleSettingHandler`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridge`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\SettingModuleSettingHandler`
@@ -102,6 +105,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxid_esales.module.setup.version_module_setting_handler`
   - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
   - `oxid_esales.module.setup.events_module_setting_handler`
+  - `oxid_esales.module.setup.controllers_module_setting_handler`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface`
   - `oxid_esales.module.setup.shop_module_setting_module_setting_handler`
@@ -110,12 +114,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `aModuleVersions`
   - `aModulePaths`
   - `aModuleEvents`
+  - `aModuleControllers`
 - Constants:
   - `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
     - `MODULE_CLASS_EXTENSIONS`
     - `MODULE_VERSIONS`
     - `MODULE_PATHS`
     - `MODULE_EVENTS`
+    - `MODULE_CONTROLLERS`
   - `OxidEsales\EshopCommunity\Core\Module\ModuleList`
     - `MODULE_KEY_PATHS`
     - `MODULE_KEY_EVENTS`

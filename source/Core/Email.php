@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
+use OxidEsales\Eshop\Core\DynamicImageGenerator;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
@@ -310,7 +312,7 @@ class Email extends PHPMailer
     protected function _getSmarty() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oSmarty === null) {
-            $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
+            $this->_oSmarty = Registry::getUtilsView()->getSmarty();
         }
 
         return $this->_oSmarty;
@@ -561,7 +563,7 @@ class Email extends PHPMailer
         // send not pretending from order user, as different email domain rise spam filters
         $this->setFrom($shop->oxshops__oxowneremail->value);
 
-        $language = \OxidEsales\Eshop\Core\Registry::getLang();
+        $language = Registry::getLang();
         $orderLanguage = $language->getObjectTplLanguage();
 
         // if running shop language is different from admin lang. set in config
@@ -605,7 +607,7 @@ class Email extends PHPMailer
         $this->onOrderEmailToOwnerSent($user, $order);
 
         if ($config->getConfigParam('iDebug') == 6) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
+            Registry::getUtils()->showMessageAndExit("");
         }
 
         return $result;
@@ -791,7 +793,7 @@ class Email extends PHPMailer
 
         $this->setBody($renderer->renderTemplate($this->_sNewsletterOptInTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sNewsletterOptInTemplatePlain, $this->getViewData()));
-        $this->setSubject(($subject !== null) ? $subject : \OxidEsales\Eshop\Core\Registry::getLang()->translateString("NEWSLETTER") . " " . $shop->oxshops__oxname->getRawValue());
+        $this->setSubject(($subject !== null) ? $subject : Registry::getLang()->translateString("NEWSLETTER") . " " . $shop->oxshops__oxname->getRawValue());
 
         $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
 
@@ -853,14 +855,14 @@ class Email extends PHPMailer
 
         //setting recommended user id
         if ($myConfig->getActiveView()->isActive('Invitations') && $activeUser = $shop->getUser()) {
-            $homeUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
+            $homeUrl = Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
             $homeUrl .= "su=" . $activeUser->getId();
         }
 
         if (is_array($user->rec_email) && count($user->rec_email) > 0) {
             foreach ($user->rec_email as $email) {
                 if (!empty($email)) {
-                    $registerUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
+                    $registerUrl = Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
                     //setting recipient user email
                     $registerUrl .= "re=" . md5($email);
                     $this->setViewData("sHomeUrl", $registerUrl);
@@ -908,7 +910,7 @@ class Email extends PHPMailer
         $this->setMailParams($shop);
 
         //create messages
-        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $lang = Registry::getLang();
         $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
@@ -971,7 +973,7 @@ class Email extends PHPMailer
         $this->setMailParams($shop);
 
         //create messages
-        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $lang = Registry::getLang();
         $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
@@ -1062,7 +1064,7 @@ class Email extends PHPMailer
 
             //set mail params (from, fromName, smtp... )
             $this->setMailParams($shop);
-            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
+            $lang = Registry::getLang();
 
             $renderer = $this->getRenderer();
             $this->setViewData("articles", $articleList);
@@ -1138,7 +1140,7 @@ class Email extends PHPMailer
         $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         //$article->setSkipAbPrice( true );
         $article->loadInLang($alarmLang, $params['aid']);
-        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $lang = Registry::getLang();
 
         // create messages
         $renderer = $this->getRenderer();
@@ -1227,7 +1229,7 @@ class Email extends PHPMailer
     {
         $body = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
-            $fileUtils = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
+            $fileUtils = Registry::getUtilsFile();
             $reSetBody = false;
 
             // preparing input
@@ -1237,18 +1239,18 @@ class Email extends PHPMailer
 
             if (is_array($matches) && count($matches)) {
                 $imageCache = [];
-                $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+                $myUtils = Registry::getUtils();
                 $myUtilsObject = $this->getUtilsObjectInstance();
-                $imgGenerator = oxNew(\OxidEsales\Eshop\Core\DynamicImageGenerator::class);
+                $imgGenerator = oxNew(DynamicImageGenerator::class);
 
                 foreach ($matches as $image) {
                     $imageName = $image[1];
                     $fileName = '';
-                    if (is_string($dynImageDir) && strpos($imageName, $dynImageDir) === 0) {
+                    if (is_string($dynImageDir) && str_starts_with($imageName, $dynImageDir)) {
                         $fileName = $fileUtils->normalizeDir($absDynImageDir) . str_replace($dynImageDir, '', $imageName);
-                    } elseif (strpos($imageName, $imageDir) === 0) {
+                    } elseif (str_starts_with($imageName, $imageDir)) {
                         $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDir, '', $imageName);
-                    } elseif (strpos($imageName, $imageDirNoSSL) === 0) {
+                    } elseif (str_starts_with($imageName, $imageDirNoSSL)) {
                         $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDirNoSSL, '', $imageName);
                     }
 
@@ -1262,7 +1264,7 @@ class Email extends PHPMailer
                         } else {
                             $cId = $myUtilsObject->generateUId();
                             $mIME = $myUtils->oxMimeContentType($fileName);
-                            if ($mIME == 'image/jpeg' || $mIME == 'image/gif' || $mIME == 'image/png') {
+                            if (in_array($mIME, ['image/jpeg', 'image/gif', 'image/png', 'image/webp'])) {
                                 if ($this->addEmbeddedImage($fileName, $cId, "image", "base64", $mIME)) {
                                     $imageCache[$fileName] = $cId;
                                 } else {
@@ -1501,7 +1503,7 @@ class Email extends PHPMailer
         if ($charSet) {
             $this->_sCharSet = $charSet;
         } else {
-            $this->_sCharSet = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
+            $this->_sCharSet = Registry::getLang()->translateString("charset");
         }
         $this->set("CharSet", $this->_sCharSet);
     }
@@ -1789,7 +1791,7 @@ class Email extends PHPMailer
             if ($this->isDebugModeEnabled()) {
                 throw $ex;
             } else {
-                \OxidEsales\Eshop\Core\Registry::getLogger()->error($ex->getMessage(), [$ex]);
+                Registry::getLogger()->error($ex->getMessage(), [$ex]);
             }
         }
 
@@ -1817,7 +1819,7 @@ class Email extends PHPMailer
     public function getCharset()
     {
         if (!$this->_sCharSet) {
-            return \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
+            return Registry::getLang()->translateString("charset");
         } else {
             return $this->CharSet;
         }
@@ -1861,7 +1863,7 @@ class Email extends PHPMailer
      */
     public function getCurrency()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         return $config->getActShopCurrencyObject();
     }
@@ -1957,7 +1959,7 @@ class Email extends PHPMailer
      */
     protected function getUtilsObjectInstance()
     {
-        return \OxidEsales\Eshop\Core\Registry::getUtilsObject();
+        return Registry::getUtilsObject();
     }
 
     /**
@@ -1983,7 +1985,7 @@ class Email extends PHPMailer
           WHERE `OXACTIVE` = 1 
           AND `OXUSERNAME` = :oxusername 
           AND `OXPASSWORD` != ''";
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallUsers')) {
+        if (Registry::getConfig()->getConfigParam('blMallUsers')) {
             $select .= " ORDER BY OXSHOPID = :oxshopid DESC";
         } else {
             $select .= " AND OXSHOPID = :oxshopid";
@@ -2002,7 +2004,7 @@ class Email extends PHPMailer
      */
     private function shouldProductReviewLinksBeIncluded(): bool
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         $reviewsEnabled = $config->getConfigParam('bl_perfLoadReviews', false);
         $productReviewLinkInclusionEnabled = $config->getConfigParam('includeProductReviewLinksInEmail', false);

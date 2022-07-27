@@ -84,13 +84,26 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/test.jpg", $oGen->getImageTarget());
     }
 
-    public function testGetNopicImageTarget(): void
+    /**
+     * @dataProvider getNopicImageTargetDataProvider
+     */
+    public function testGetNopicImageTarget(string $filename, bool $convertToWebP): void
     {
+        $this->setConfigParam('blConvertImagesToWebP', $convertToWebP);
+
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("getImageUri", "getImageName"));
         $oGen->method('getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
         $oGen->method('getImageName')->will($this->returnValue("test.jpg"));
 
-        $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/nopic.jpg", $oGen->getNopicImageTarget());
+        $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/$filename", $oGen->getNopicImageTarget());
+    }
+
+    public function getNopicImageTargetDataProvider(): array
+    {
+        return [
+            ['nopic.jpg', false],
+            ['nopic.webp', true],
+        ];
     }
 
     public function testIsTargetPathValid(): void

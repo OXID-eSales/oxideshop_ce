@@ -1204,23 +1204,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $sFileName = strtolower($sFileName);
         $iLastDot = strrpos($sFileName, '.');
 
+        $sType = false;
         if ($iLastDot !== false) {
             $sType = substr($sFileName, $iLastDot + 1);
-            switch ($sType) {
-                case 'gif':
-                    $sType = 'image/gif';
-                    break;
-                case 'jpeg':
-                case 'jpg':
-                    $sType = 'image/jpeg';
-                    break;
-                case 'png':
-                    $sType = 'image/png';
-                    break;
-                default:
-                    $sType = false;
-                    break;
-            }
+            $sType = match ($sType) {
+                'gif'         => 'image/gif',
+                'jpeg', 'jpg' => 'image/jpeg',
+                'png'         => 'image/png',
+                'webp'        => 'image/webp',
+                default       => false,
+            };
         }
 
         return $sType;

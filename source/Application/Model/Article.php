@@ -2345,6 +2345,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if (
                 !$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
                 !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg') &&
+                !$oStr->strstr($sIcoVal, 'nopic.webp') && !$oStr->strstr($sPicVal, 'nopic.webp') &&
                 $sPicVal !== null
             ) {
                 if ($iCntr) {

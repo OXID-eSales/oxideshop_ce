@@ -255,8 +255,6 @@ if (!function_exists("resizeWebp")) {
             list($newWidth, $newHeight) = $result;
             $destinationImage = imagecreatetruecolor($newWidth, $newHeight);
             $sourceImage = imagecreatefromstring(file_get_contents($source));
-            $last = error_get_last();
-            $info = gd_info();
             if (copyAlteredImage($destinationImage, $sourceImage, $newWidth, $newHeight, [$origWidth, $origHeight])) {
                 imagewebp($destinationImage, $target, $quality);
                 imagedestroy($destinationImage);

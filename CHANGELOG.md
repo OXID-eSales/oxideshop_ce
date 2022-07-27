@@ -115,6 +115,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `MODULE_KEY_EXTENSIONS`
     - `MODULE_KEY_CONTROLLERS`
 
+### Added
+- WebP image format support with an option to convert other format images automatically
+
 ## [7.0.0-rc.1] - 2021-07-07
 
 ### Added

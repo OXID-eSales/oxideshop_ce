@@ -1124,6 +1124,7 @@ $aLang = [
 
     'SHOP_SYSTEM_ATTRIBUTESPERCENT'                      => 'Number of equal Attributes for similar Products (%)',
     'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'                    => 'Picture Quality - from 0 (poor Quality, small File Size) to 100 (best Quality, large File Size)',
+    'SHOP_SYSTEM_CONVERT_IMAGES_TO_WEBP'                 => 'Automatically convert images to WebP format',
     'SHOP_SYSTEM_DISABLENAVBARS'                         => "Don't display most Navigation Elements during Checkout",
     'SHOP_SYSTEM_GBMODERATE'                             => ' Moderate Product Reviews: They are only published after they are activated by an Administrator User',
     'SHOP_SYSTEM_ISERVERTIMESHIFT'                       => 'Server Time shift (hours)',

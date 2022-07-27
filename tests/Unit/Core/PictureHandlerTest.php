@@ -689,13 +689,11 @@ final class PictureHandlerTest extends \OxidTestCase
     /**
      * Product picture url getter test
      *
-     * @return null
+     * @dataProvider getProductPicUrlDataProvider
      */
-    public function testGetProductPicUrl(
-        string $filename = '30-360-back_p1_z_f_th_665.jpg',
-        string $expectedFilename = '30-360-back_p1_z_f_th_665.jpg'
-    ) {
+    public function testGetProductPicUrl(string $filename, string $expectedFilename, bool $convertToWebP):void {
         $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blConvertImagesToWebP', $convertToWebP);
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/' . $expectedFilename;
 
@@ -703,20 +701,23 @@ final class PictureHandlerTest extends \OxidTestCase
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", $filename, $sSize, "oxpic1"));
     }
 
-    public function testGetProductPicUrlConvertedWebp(): void
+    public function getProductPicUrlDataProvider(): array
     {
-        $this->setConfigParam('blConvertImagesToWebP', 1);
-        $this->testGetProductPicUrl('30-360-back_p1_z_f_th_665.jpg', '30-360-back_p1_z_f_th_665.jpg.webp');
+        return [
+            ['30-360-back_p1_z_f_th_665.jpg', '30-360-back_p1_z_f_th_665.jpg', false],
+            ['30-360-back_p1_z_f_th_665.jpg', '30-360-back_p1_z_f_th_665.jpg.webp', true],
+        ];
     }
 
     /**
      * Product picture url getter test
      *
-     * @return null
+     * @dataProvider getProductPicUrlNopicDataProvider
      */
-    public function testGetProductPicUrlNopic(string $filename = 'nopic.jpg'): void
+    public function testGetProductPicUrlNopic(string $filename, bool $convertToWebP): void
     {
         $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blConvertImagesToWebP', $convertToWebP);
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/' . $filename;
 
@@ -724,9 +725,11 @@ final class PictureHandlerTest extends \OxidTestCase
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", false, $sSize, "oxpic1"));
     }
 
-    public function testGetProductPicUrlNoPicConvertWebp(): void
+    public function getProductPicUrlNopicDataProvider(): array
     {
-        $this->setConfigParam('blConvertImagesToWebP', 1);
-        $this->testGetProductPicUrlNopic('nopic.webp');
+        return [
+            ['nopic.jpg', false],
+            ['nopic.webp', true],
+        ];
     }
 }

@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ModuleSettingsCest
 {
-    private $testModule1Id = 'codeception/testModule';
-    private $testModule1Path = __DIR__ . '/../_data/modules/testModule';
+    private string $testModule1Id = 'codeception/testModule';
+    private string $testModule1Path = __DIR__ . '/../_data/modules/testModule';
 
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)
@@ -39,7 +40,7 @@ final class ModuleSettingsCest
         $module =  $moduleList->selectModule('Codeception test module #1');
         $module->openModuleTab('Settings');
 
-        $I->click($I->see('Empty Settings Group'));
+        $I->click(Translator::translate('Empty Settings Group'));
         $this->checkEmptyInitialSettingsLoaded($I);
 
         $this->modifyEmptyInitialSettings($I);
@@ -60,7 +61,7 @@ final class ModuleSettingsCest
         $module =  $moduleList->selectModule('Codeception test module #1');
         $module->openModuleTab('Settings');
 
-        $I->click($I->see('Filled Settings Group'));
+        $I->click(Translator::translate('Filled Settings Group'));
         $this->checkFilledInitialSettingsLoaded($I);
     }
 
@@ -82,7 +83,7 @@ final class ModuleSettingsCest
         $I->seeInField('confstrs[testFilledStrConfig]', 'testStr');
         $I->seeInField('confarrs[testFilledArrConfig]', "option1\noption2");
         $I->seeInField('confaarrs[testFilledAArrConfig]', "key1 => option1\nkey2 => option2");
-        $I->seeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 0');
+        $I->seeInField('confselects[testFilledSelectConfig]', 'Option 2');
         $I->dontSee('confpassword[testFilledPasswordConfig]');
         $I->seeInField('confpassword[testFilledPasswordConfig]', '');
     }

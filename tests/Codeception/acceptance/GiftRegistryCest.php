@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use OxidEsales\Codeception\Page\Account\UserAccount;
@@ -70,7 +72,7 @@ class GiftRegistryCest
 
         $giftRegistryPage = $detailsPage->openUserGiftRegistryPage()
             ->addProductToBasket(1, 2);
-        $I->see(2, $giftRegistryPage->miniBasketMenuElement);
+        $I->see('2', $giftRegistryPage->miniBasketMenuElement);
 
         $giftRegistryPage->removeFromGiftRegistry(1);
         $I->see(Translator::translate('GIFT_REGISTRY_EMPTY'));

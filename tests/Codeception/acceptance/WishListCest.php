@@ -65,7 +65,7 @@ final class WishListCest
 
         $wishListPage = $detailsPage->openUserWishListPage()
             ->addProductToBasket(1, 2);
-        $I->see(2, $wishListPage->miniBasketMenuElement);
+        $I->see('2', $wishListPage->miniBasketMenuElement);
         $wishListPage = $wishListPage->removeProductFromList(1);
 
         $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);

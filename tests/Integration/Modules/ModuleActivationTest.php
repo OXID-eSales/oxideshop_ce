@@ -386,7 +386,7 @@ final class ModuleActivationTest extends BaseModuleTestCase
 
     private function prepareProjectConfigurationWitSubshops()
     {
-        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfigurationDao = $this->getContainer()->get(ProjectConfigurationDaoInterface::class);
         $projectConfiguration = $projectConfigurationDao->getConfiguration();
 
         $projectConfiguration->addShopConfiguration(2, new ShopConfiguration());

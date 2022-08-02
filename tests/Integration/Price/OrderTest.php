@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
 use oxField;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use oxOrder;
 use oxOrderArticle;
 use oxRegistry;
@@ -52,6 +53,8 @@ class OrderTest extends BaseTestCase
     {
         parent::setUp();
         $this->reset();
+
+        ContainerFactory::resetContainer();
     }
 
     /**

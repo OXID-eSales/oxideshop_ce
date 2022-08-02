@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingTy
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 
+/**
+ * @deprecated will be completely removed.
+ */
 class ClassExtensionChainService implements ExtensionChainServiceInterface
 {
     /**

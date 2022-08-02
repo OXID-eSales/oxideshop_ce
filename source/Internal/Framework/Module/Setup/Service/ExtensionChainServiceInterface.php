@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
+/**
+ * @deprecated will be completely removed.
+ */
 interface ExtensionChainServiceInterface
 {
     /**

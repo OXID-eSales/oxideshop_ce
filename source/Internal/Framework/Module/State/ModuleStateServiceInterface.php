@@ -19,6 +19,8 @@ interface ModuleStateServiceInterface
     public function isActive(string $moduleId, int $shopId): bool;
 
     /**
+     * @deprecated will be completely removed in v7.0
+     *
      * @param string $moduleId
      * @param int    $shopId
      *
@@ -27,6 +29,8 @@ interface ModuleStateServiceInterface
     public function setActive(string $moduleId, int $shopId);
 
     /**
+     * @deprecated will be completely removed in v7.0
+     *
      * @param string $moduleId
      * @param int    $shopId
      *

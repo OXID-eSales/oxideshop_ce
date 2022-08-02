@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.13.0] - unreleased
+
+### Deprecated
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+- Constants:
+- `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
+  - `MODULE_CLASS_EXTENSIONS`
+  - `MODULE_VERSIONS`
+  - `MODULE_PATHS`
+  - `MODULE_EVENTS`
+  - `MODULE_CONTROLLERS`
+  - `ACTIVE_MODULES`
+  - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
+  - `MODULE_CLASS_EXTENSIONS_CHAIN`
+- Config options:
+  - `aModuleExtensions`
+  - `aModuleVersions`
+  - `aModulePaths`
+  - `aModuleEvents`
+  - `activeModules`
+  - `aModules`
+  - `aModuleControllers`
+- Services:
+  - `oxid_esales.module.setup.path_module_setting_handler`
+  - `oxid_esales.module.setup.version_module_setting_handler`
+  - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
+  - `oxid_esales.module.setup.events_module_setting_handler`
+  - `oxid_esales.module.setup.class_extension_chain_service`
+
 ## [6.12.0] - 2022-08-15
 
 ### Changed

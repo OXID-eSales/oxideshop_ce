@@ -254,6 +254,7 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated will be completely removed in v7.0
      * @return bool
      */
     public function isConfigured(): bool
@@ -262,6 +263,8 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated will be completely removed in v7.0
+     *
      * @param bool $configured
      * @return ModuleConfiguration
      */

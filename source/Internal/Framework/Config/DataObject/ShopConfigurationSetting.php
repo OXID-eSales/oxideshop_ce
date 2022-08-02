@@ -11,22 +11,25 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
 class ShopConfigurationSetting
 {
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_CLASS_EXTENSIONS           = 'aModuleExtensions';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_CLASS_EXTENSIONS_CHAIN     = 'aModules';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_CONTROLLERS                = 'aModuleControllers';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_VERSIONS                   = 'aModuleVersions';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_PATHS                      = 'aModulePaths';
-    /**
-     * @deprecated 6.6.0
-     */
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_TEMPLATES                  = 'aModuleTemplates';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_SMARTY_PLUGIN_DIRECTORIES  = 'moduleSmartyPluginDirectories';
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_EVENTS                     = 'aModuleEvents';
-    /**
-     * @deprecated 6.6 Will be removed completely
-     */
+    /* @deprecated will be removed completely in 7.0 */
     const MODULE_CLASSES_WITHOUT_NAMESPACES = 'aModuleFiles';
-
+    /* @deprecated will be removed completely in 7.0 */
     const ACTIVE_MODULES = 'activeModules';
 
     /**

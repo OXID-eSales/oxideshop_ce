@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge;
 
 /**
  * @stable
+ * @deprecated will be completely removed.
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface ClassExtensionChainBridgeInterface

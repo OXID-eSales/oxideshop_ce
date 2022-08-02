@@ -32,7 +32,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'id' => $configuration->getId(),
             'moduleSource' => $configuration->getModuleSource(),
             'version' => $configuration->getVersion(),
-            'configured' => $configuration->isConfigured(),
+            'activated' => $configuration->isActivated(),
             'title' => $configuration->getTitle(),
             'description' => $configuration->getDescription(),
             'lang' => $configuration->getLang(),
@@ -61,7 +61,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             ->setId($data['id'])
             ->setModuleSource($data['moduleSource'])
             ->setVersion($data['version'])
-            ->setConfigured($data['configured'])
+            ->setActivated($data['activated'])
             ->setTitle($data['title']);
 
         if (isset($data['description'])) {

@@ -3,21 +3,21 @@ modules:
     id: moduleId1
     moduleSource: src
     version: 1.1.1
-    configured: true
+    activated: true
     title:
       en: moduleId1
   moduleId2:
     id: moduleId2
     moduleSource: src
     version: 1.1.1
-    configured: true
+    activated: true
     title:
       en: moduleId2
   moduleId3:
     id: moduleId3
     moduleSource: src
     version: 1.1.1
-    configured: true
+    activated: true
     title:
       en: moduleId3
 moduleChains:

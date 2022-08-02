@@ -9,9 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
@@ -26,7 +24,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
     public function __construct(
         private ShopAdapterInterface $shopAdapter,
-        private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
         private LoggerInterface $logger
     ) {
     }
@@ -77,17 +75,12 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     {
         $moduleControllersClassMap = [];
 
-        try {
-            $controllersGroupedByModule = $this
-                ->shopConfigurationSettingDao
-                ->get(ShopConfigurationSetting::MODULE_CONTROLLERS, $shopId);
-
-            if (is_array($controllersGroupedByModule->getValue())) {
-                foreach ($controllersGroupedByModule->getValue() as $moduleControllers) {
-                    $moduleControllersClassMap = array_merge($moduleControllersClassMap, $moduleControllers);
+        foreach ($this->shopConfigurationDao->get($shopId)->getModuleConfigurations() as $moduleConfiguration) {
+            if ($moduleConfiguration->isActivated()) {
+                foreach ($moduleConfiguration->getControllers() as $controller) {
+                    $moduleControllersClassMap[$controller->getId()] = $controller->getControllerClassNameSpace();
                 }
             }
-        } catch (EntryDoesNotExistDaoException) {
         }
 
         return $moduleControllersClassMap;

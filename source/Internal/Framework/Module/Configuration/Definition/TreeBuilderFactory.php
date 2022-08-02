@@ -45,7 +45,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                             ->end()
                             ->scalarNode('version')
                             ->end()
-                            ->scalarNode('configured')
+                            ->scalarNode('activated')
                             ->end()
                             ->arrayNode('title')
                                 ->scalarPrototype()->end()

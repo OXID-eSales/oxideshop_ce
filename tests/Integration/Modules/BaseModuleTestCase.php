@@ -34,6 +34,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         parent::setUp();
 
         $this->container = ContainerFactory::getInstance()->getContainer();
+        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
 
         $environment = new Environment();
         $environment->clean();

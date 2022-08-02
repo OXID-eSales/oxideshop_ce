@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ExtensionChainServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationService;
@@ -39,19 +40,26 @@ class ModuleActivationServiceTest extends TestCase
 
     private function getTestModuleActivationService(): ModuleActivationService
     {
-        $moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
-        $moduleStateService
-            ->method('isActive')
+        $activeModuleConfiguration = new ModuleConfiguration();
+        $activeModuleConfiguration->setId('alreadyActiveModuleId');
+        $activeModuleConfiguration->setActivated(true);
+
+        $inactiveModuleConfiguration = new ModuleConfiguration();
+        $inactiveModuleConfiguration->setId('alreadyDeactiveModuleId');
+        $inactiveModuleConfiguration->setActivated(false);
+
+        $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $moduleConfigurationDao
+            ->method('get')
             ->willReturnMap([
-                ['alreadyActiveModuleId', $this->shopId, true],
-                ['alreadyDeactiveModuleId', $this->shopId, false],
+                ['alreadyActiveModuleId', $this->shopId, $activeModuleConfiguration],
+                ['alreadyDeactiveModuleId', $this->shopId, $inactiveModuleConfiguration],
             ]);
 
         $moduleActivationService = new ModuleActivationService(
-            $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock(),
+            $moduleConfigurationDao,
             $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
             $this->getMockBuilder(ModuleConfigurationHandlingServiceInterface::class)->getMock(),
-            $moduleStateService,
             $this->getMockBuilder(ExtensionChainServiceInterface::class)->getMock(),
             $this->getMockBuilder(ModuleServicesActivationServiceInterface::class)->getMock()
         );

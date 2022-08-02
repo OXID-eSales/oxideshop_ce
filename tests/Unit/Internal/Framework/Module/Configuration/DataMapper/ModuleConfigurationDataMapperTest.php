@@ -34,7 +34,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
             'id'          => 'moduleId',
             'moduleSource' => 'relativePath',
             'version'     => '7.0',
-            'configured'  => true,
+            'activated'   => true,
             'title'       => ['en' => 'title'],
             'description' => [
                 'de' => 'description de',

@@ -38,7 +38,7 @@ class ModuleConfiguration
     /**
      * @var bool
      */
-    private $configured = false;
+    private $activated = false;
 
     /**
      * @var array
@@ -243,18 +243,18 @@ class ModuleConfiguration
     /**
      * @return bool
      */
-    public function isConfigured(): bool
+    public function isActivated(): bool
     {
-        return $this->configured;
+        return $this->activated;
     }
 
     /**
-     * @param bool $configured
+     * @param bool $activated
      * @return ModuleConfiguration
      */
-    public function setConfigured(bool $configured): ModuleConfiguration
+    public function setActivated(bool $activated): ModuleConfiguration
     {
-        $this->configured = $configured;
+        $this->activated = $activated;
 
         return $this;
     }

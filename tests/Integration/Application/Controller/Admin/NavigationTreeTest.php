@@ -48,6 +48,7 @@ final class NavigationTreeTest extends TestCase
     protected function tearDown(): void
     {
         $this->cleanUpTestData();
+        ContainerFactory::resetContainer();
 
         parent::tearDown();
     }

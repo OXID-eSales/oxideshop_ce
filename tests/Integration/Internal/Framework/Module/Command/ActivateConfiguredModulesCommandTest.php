@@ -106,14 +106,14 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         );
     }
 
-    private function prepareTestModuleConfigurations(bool $isConfigured, int $shopId, array $settings): void
+    private function prepareTestModuleConfigurations(bool $activated, int $shopId, array $settings): void
     {
         $moduleToActivate = new ModuleConfiguration();
         $moduleToActivate
             ->setId($this->moduleId)
             ->setModuleSource(Path::join($this->modulesPath, $this->moduleId))
             ->setModuleSettings($settings)
-            ->setConfigured($isConfigured);
+            ->setActivated($activated);
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleToActivate);

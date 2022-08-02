@@ -87,7 +87,7 @@ class ModuleActivationServiceTest extends TestCase
         $this->assertFalse($moduleStateService->isActive($this->testModuleId, $this->shopId));
     }
 
-    public function testSetConfiguredInModuleConfiguration()
+    public function testSetActivatedInModuleConfiguration()
     {
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
@@ -97,12 +97,12 @@ class ModuleActivationServiceTest extends TestCase
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
-        $this->assertTrue($moduleConfiguration->isConfigured());
+        $this->assertTrue($moduleConfiguration->isActivated());
 
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
-        $this->assertFalse($moduleConfiguration->isConfigured());
+        $this->assertFalse($moduleConfiguration->isActivated());
     }
 
     public function testClassExtensionChainUpdate()
@@ -221,20 +221,17 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $moduleConfiguration->setAuthor($author);
         $moduleConfiguration->setUrl($url);
-        $moduleConfiguration->setConfigured(true);
         $this->persistModuleConfiguration($moduleConfiguration);
 
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
 
         $this->assertSame($author, $moduleConfiguration->getAuthor());
         $this->assertSame($url, $moduleConfiguration->getUrl());
-        $this->assertTrue($moduleConfiguration->isConfigured());
 
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
 
         $this->assertSame($author, $moduleConfiguration->getAuthor());
         $this->assertSame($url, $moduleConfiguration->getUrl());
-        $this->assertTrue($moduleConfiguration->isConfigured());
     }
 
     /**

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change type of default value for iIndex parameter in ``OxidProfessionalServices\Bergspezl\Model\Article::getZoomPictureUrl`` [PR-893](https://github.com/OXID-eSales/oxideshop_ce/pull/893)
 - Switched to templating-engine agnostic names in Controller templates (e.g. `Controller::$_sThisTemplate = 'page/content'` instead of `'page/content.tpl'`)
 - Don't store module controllers in database
+- Store information about active modules state in the module configuration (yml files), not in the database (`activeModules` config option is completely removed)
 - Don't store module settings in database
 - Change OXID eShop Community Edition license
 
@@ -97,6 +98,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `getActiveModuleInfo`
   - `OxidEsales\EshopCommunity\Core\ViewConfig`
     - `isModuleActive`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured`
 - Services:
   - `utility.context.log_file_path`
   - `utility.context.log_level:`
@@ -115,6 +120,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `aModulePaths`
   - `aModuleEvents`
   - `aModuleControllers`
+  - `activeModules`
 - Constants:
   - `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
     - `MODULE_CLASS_EXTENSIONS`
@@ -122,6 +128,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `MODULE_PATHS`
     - `MODULE_EVENTS`
     - `MODULE_CONTROLLERS`
+    - `ACTIVE_MODULES`
   - `OxidEsales\EshopCommunity\Core\Module\ModuleList`
     - `MODULE_KEY_PATHS`
     - `MODULE_KEY_EVENTS`

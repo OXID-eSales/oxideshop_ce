@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingMo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
@@ -23,7 +22,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
         private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService,
-        private ModuleStateServiceInterface $stateService,
         private ExtensionChainServiceInterface $classExtensionChainService,
         private ModuleServicesActivationServiceInterface $moduleServicesActivationService
     ) {
@@ -38,19 +36,17 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function activate(string $moduleId, int $shopId)
     {
-        if ($this->stateService->isActive($moduleId, $shopId) === true) {
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+
+        if ($moduleConfiguration->isActivated()) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is already active.');
         }
-
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleConfigurationHandlingService->handleOnActivation($moduleConfiguration, $shopId);
 
         $this->moduleServicesActivationService->activateModuleServices($moduleId, $shopId);
 
-        $this->stateService->setActive($moduleId, $shopId);
-
-        $moduleConfiguration->setConfigured(true);
+        $moduleConfiguration->setActivated(true);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->classExtensionChainService->updateChain($shopId);
@@ -69,7 +65,9 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivate(string $moduleId, int $shopId)
     {
-        if ($this->stateService->isActive($moduleId, $shopId) === false) {
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+
+        if (!$moduleConfiguration->isActivated()) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is not active.');
         }
 
@@ -77,15 +75,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             new BeforeModuleDeactivationEvent($shopId, $moduleId)
         );
 
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
-
         $this->moduleConfigurationHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
 
         $this->moduleServicesActivationService->deactivateModuleServices($moduleId, $shopId);
 
-        $this->stateService->setDeactivated($moduleId, $shopId);
-
-        $moduleConfiguration->setConfigured(false);
+        $moduleConfiguration->setActivated(false);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->classExtensionChainService->updateChain($shopId);

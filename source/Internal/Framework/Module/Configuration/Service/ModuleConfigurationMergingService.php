@@ -44,7 +44,7 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
             $moduleConfigurationClone
         );
 
-        $this->setConfiguredOptionToMergedConfiguration($shopConfiguration, $mergedModuleConfiguration);
+        $this->setActivatedOptionToMergedConfiguration($shopConfiguration, $mergedModuleConfiguration);
 
         $shopConfiguration->addModuleConfiguration($mergedModuleConfiguration);
 
@@ -71,13 +71,13 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      * @param ModuleConfiguration $mergedModuleConfiguration
      * @throws ModuleConfigurationNotFoundException
      */
-    private function setConfiguredOptionToMergedConfiguration(
+    private function setActivatedOptionToMergedConfiguration(
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $mergedModuleConfiguration
     ): void {
         if ($shopConfiguration->hasModuleConfiguration($mergedModuleConfiguration->getId())) {
-            $isConfigured = $shopConfiguration->getModuleConfiguration($mergedModuleConfiguration->getId())->isConfigured();
-            $mergedModuleConfiguration->setConfigured($isConfigured);
+            $isConfigured = $shopConfiguration->getModuleConfiguration($mergedModuleConfiguration->getId())->isActivated();
+            $mergedModuleConfiguration->setActivated($isConfigured);
         }
     }
 }

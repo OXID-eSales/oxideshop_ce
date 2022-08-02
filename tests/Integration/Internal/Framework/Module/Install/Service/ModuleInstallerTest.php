@@ -48,10 +48,6 @@ class ModuleInstallerTest extends TestCase
         $this->assertFalse(
             $moduleInstaller->isInstalled($package)
         );
-
-        $this->assertFalse(
-            $this->get(ModuleStateServiceInterface::class)->isActive($this->moduleId, 1)
-        );
     }
 
     private function installModule(): void

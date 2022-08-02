@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,8 +23,7 @@ class ApplyModulesConfigurationCommand extends Command
 {
     public function __construct(
         private ShopConfigurationDaoInterface $shopConfigurationDao,
-        private ModuleActivationServiceInterface $moduleActivationService,
-        private ModuleStateServiceInterface $moduleStateService
+        private ModuleActivationServiceInterface $moduleActivationService
     ) {
         parent::__construct();
     }
@@ -82,42 +80,17 @@ class ApplyModulesConfigurationCommand extends Command
                 . '</info>'
             );
             try {
-                $this->deactivateNotConfiguredActivateModules($moduleConfiguration, $shopId);
                 $this->reactivateConfiguredActiveModules($moduleConfiguration, $shopId);
-                $this->activateConfiguredNotActiveModules($moduleConfiguration, $shopId);
             } catch (\Exception $exception) {
                 $this->showErrorMessage($output, $exception);
             }
         }
     }
 
-    private function deactivateNotConfiguredActivateModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
-    {
-        if (
-            $moduleConfiguration->isConfigured() === false
-            && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
-        ) {
-            $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
-        }
-    }
-
     private function reactivateConfiguredActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
-        if (
-            $moduleConfiguration->isConfigured() === true
-            && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === true
-        ) {
+        if ($moduleConfiguration->isActivated()) {
             $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
-            $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);
-        }
-    }
-
-    private function activateConfiguredNotActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
-    {
-        if (
-            $moduleConfiguration->isConfigured() === true
-            && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === false
-        ) {
             $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);
         }
     }

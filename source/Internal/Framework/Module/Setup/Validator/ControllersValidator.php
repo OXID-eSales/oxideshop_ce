@@ -77,7 +77,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
         $moduleControllersClassMap = [];
 
         foreach ($this->shopConfigurationDao->get($shopId)->getModuleConfigurations() as $moduleConfiguration) {
-            if ($this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)) {
+            if ($moduleConfiguration->isActivated()) {
                 foreach ($moduleConfiguration->getControllers() as $controller) {
                     $moduleControllersClassMap[$controller->getId()] = $controller->getControllerClassNameSpace();
                 }

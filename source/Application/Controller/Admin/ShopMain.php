@@ -155,7 +155,6 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             'sUtilModule',
             'aModules',
             'moduleSmartyPluginDirectories',
-            'activeModules',
         ];
         //adding non copable multishop field options
         $multiShopTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiShopTables');

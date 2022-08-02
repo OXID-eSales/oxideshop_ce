@@ -50,7 +50,6 @@ final class ControllersValidatorTest extends TestCase
             $shopAdapter,
             $shopConfigurationSettingDao,
             $this->getMockBuilder(LoggerInterface::class)->getMock(),
-            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -79,7 +78,6 @@ final class ControllersValidatorTest extends TestCase
             $shopAdapter,
             $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
             $this->getMockBuilder(LoggerInterface::class)->getMock(),
-            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -105,7 +103,6 @@ final class ControllersValidatorTest extends TestCase
             $shopAdapter,
             $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
             $this->getMockBuilder(LoggerInterface::class)->getMock(),
-            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -132,7 +129,6 @@ final class ControllersValidatorTest extends TestCase
             $shopAdapter,
             $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
             $logger,
-            $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock()
         );
 
         $moduleConfiguration = new ModuleConfiguration();

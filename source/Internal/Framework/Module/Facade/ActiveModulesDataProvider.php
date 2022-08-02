@@ -14,14 +14,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
 {
     public function __construct(
         private ShopConfigurationDaoInterface $shopConfigurationDao,
-        private ModuleStateServiceInterface $moduleStateService,
         private ModulePathResolverInterface $modulePathResolver,
         private ContextInterface $context,
         private ModuleCacheServiceInterface $moduleCacheService
@@ -135,7 +133,7 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         $shopId = $this->context->getCurrentShopId();
 
         foreach ($this->shopConfigurationDao->get($shopId)->getModuleConfigurations() as $moduleConfiguration) {
-            if ($this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)) {
+            if ($moduleConfiguration->isActivated()) {
                 $moduleConfigurations[] = $moduleConfiguration;
             }
         }

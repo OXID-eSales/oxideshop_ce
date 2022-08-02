@@ -154,7 +154,6 @@ class ModuleTemplateBlocksTest extends UnitTestCase
         $this->setConfigParam('sShopDir', $shopPath);
         $this->setConfigParam('sTheme', $themeId);
         $this->setConfigParam('sCustomTheme', $customThemeId);
-        //$this->setConfigParam('activeModules', [$this->activeModuleId]);
 
         return oxNew('oxUtilsView');
     }

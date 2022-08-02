@@ -186,7 +186,6 @@ final class ActiveModulesDataProviderTest extends TestCase
     {
         return new ActiveModulesDataProvider(
             $this->get(ShopConfigurationDaoInterface::class),
-            $this->get(ModuleStateServiceInterface::class),
             $this->get(ModulePathResolverInterface::class),
             $this->get(ContextInterface::class),
             $cache

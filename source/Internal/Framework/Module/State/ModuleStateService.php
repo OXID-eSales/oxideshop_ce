@@ -9,16 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\State;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-
-use function in_array;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 
 class ModuleStateService implements ModuleStateServiceInterface
 {
-    public function __construct(private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
+    public function __construct(private ModuleConfigurationDaoInterface $moduleConfigurationDao)
     {
     }
 
@@ -29,78 +24,6 @@ class ModuleStateService implements ModuleStateServiceInterface
      */
     public function isActive(string $moduleId, int $shopId): bool
     {
-        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
-
-        return in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
-    }
-
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @throws ModuleStateIsAlreadySetException
-     */
-    public function setActive(string $moduleId, int $shopId)
-    {
-        if ($this->isActive($moduleId, $shopId)) {
-            throw new ModuleStateIsAlreadySetException(
-                'Active status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
-            );
-        }
-
-        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
-
-        $activeModuleIds = $activeModuleIdsSetting->getValue();
-        $activeModuleIds[] = $moduleId;
-        $activeModuleIdsSetting->setValue($activeModuleIds);
-
-        $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);
-    }
-
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @throws ModuleStateIsAlreadySetException
-     */
-    public function setDeactivated(string $moduleId, int $shopId)
-    {
-        if (!$this->isActive($moduleId, $shopId)) {
-            throw new ModuleStateIsAlreadySetException(
-                'Deactivated status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
-            );
-        }
-
-        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
-
-        $activeModuleIds = $activeModuleIdsSetting->getValue();
-
-        $activeModuleIds = array_diff($activeModuleIds, [$moduleId]);
-        $activeModuleIdsSetting->setValue($activeModuleIds);
-
-        $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);
-    }
-
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
-    private function getActiveModulesShopConfigurationSetting(int $shopId): ShopConfigurationSetting
-    {
-        try {
-            $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(
-                ShopConfigurationSetting::ACTIVE_MODULES,
-                $shopId
-            );
-        } catch (EntryDoesNotExistDaoException) {
-            $activeModuleIdsSetting = new ShopConfigurationSetting();
-            $activeModuleIdsSetting
-                ->setShopId($shopId)
-                ->setName(ShopConfigurationSetting::ACTIVE_MODULES)
-                ->setType(ShopSettingType::ARRAY)
-                ->setValue([]);
-        }
-
-        return $activeModuleIdsSetting;
+        return $this->moduleConfigurationDao->get($moduleId, $shopId)->isActivated();
     }
 }

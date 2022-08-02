@@ -13,7 +13,6 @@ class ShopConfigurationSetting
 {
     public const MODULE_CLASS_EXTENSIONS_CHAIN = 'aModules';
     public const MODULE_SMARTY_PLUGIN_DIRECTORIES = 'moduleSmartyPluginDirectories';
-    public const ACTIVE_MODULES = 'activeModules';
 
     /**
      * @var int

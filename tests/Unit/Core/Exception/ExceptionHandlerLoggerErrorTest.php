@@ -58,10 +58,6 @@ final class ExceptionHandlerLoggerErrorTest extends UnitTestCase
         $this->instanceProperty->setAccessible(true);
         // Save the container factory instance to restore it after the test
         $this->containerFactoryInstance = $this->instanceProperty->getValue();
-        // This will provoke an exception when somebody wants to use the
-        // container factory
-        $this->instanceProperty->setValue(new \stdClass());
-
 
         // write our own log file
         $this->configInstance = Registry::getConfig();
@@ -83,17 +79,6 @@ final class ExceptionHandlerLoggerErrorTest extends UnitTestCase
         $this->instanceProperty->setValue($this->containerFactoryInstance);
 
         parent::tearDown();
-    }
-
-    public function testDIContainerFailure(): void
-    {
-        // This is a test for the test setup :-)
-
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined method stdClass::getContainer()');
-
-        $containerFactory = ContainerFactory::getInstance();
-        $containerFactory->getContainer();
     }
 
     public function testErrorLoggingOnFailingDIContainer(): void

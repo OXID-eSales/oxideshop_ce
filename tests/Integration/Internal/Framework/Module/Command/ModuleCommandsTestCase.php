@@ -29,22 +29,15 @@ class ModuleCommandsTestCase extends TestCase
 
     protected $moduleId = 'testmodule';
 
-    private $container;
-
     protected function tearDown(): void
     {
         $this->cleanupTestData();
-        ContainerFactory::resetContainer();
         parent::tearDown();
     }
 
     protected function get(string $serviceId)
     {
-        if ($this->container === null) {
-            $this->container = ContainerFactory::getInstance()->getContainer();
-        }
-
-        return $this->container->get($serviceId);
+        return ContainerFactory::getInstance()->getContainer()->get($serviceId);
     }
 
     /**

@@ -7,9 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
 
 /**
  * Selects module variables from database or cache.
@@ -56,7 +57,7 @@ class ModuleVariablesLocator
         $value = $cache->getFromCache($name);
 
         if (is_null($value)) {
-            $value = $this->getModuleVarFromDB($name);
+            $value = $name === 'aModules' ? $this->getClassExtensionsChain() : $this->getModuleVarFromDB($name);
             $cache->setToCache($name, $value);
         }
 
@@ -130,5 +131,13 @@ class ModuleVariablesLocator
     protected function getShopIdCalculator()
     {
         return $this->shopIdCalculator;
+    }
+
+    private function getClassExtensionsChain(): array
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ActiveClassExtensionChainResolverInterface::class)
+            ->getActiveExtensionChain($this->getShopIdCalculator()->getShopId())->getChain();
     }
 }

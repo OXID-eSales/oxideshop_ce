@@ -153,7 +153,6 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             'IMA',
             'sBackTag',
             'sUtilModule',
-            'aModules',
             'aModuleControllers',
             'moduleSmartyPluginDirectories',
         ];

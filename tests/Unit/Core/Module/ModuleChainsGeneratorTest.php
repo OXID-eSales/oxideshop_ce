@@ -48,7 +48,7 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
             false
         );
         $valueMap = [
-            ['aModules', ['content' => 'notExistingClass']],
+            ['aModules', ['content' => ['notExistingClass']]],
             ['aDisabledModules', []]
         ];
         $moduleVariablesLocatorMock

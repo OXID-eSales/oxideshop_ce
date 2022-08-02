@@ -75,7 +75,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         $chain = $moduleChainsGeneratorMock->getActiveChain(\OxidEsales\Eshop\Application\Model\User::class, 'oxuser');
 
         //verify that the chain is filled and that the last class in chain is as expected
-        self::assertCount(4, $chain, $message);
+        self::assertCount(2, $chain, $message);
         self::assertSame(basename($expectedResult), basename($chain[count($chain) - 1]), $message);
     }
 
@@ -96,35 +96,17 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         return [
             [
                 'modulesArray'   => [
-                    'oxuser'    => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
-                    User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
+                    User::class => [$mockedModules['module_3'] , $mockedModules['module_4']],
                 ],
                 'expectedResult' => $mockedModules['module_4'],
                 'message'        => 'oemodulefouruser is the last class in the chain'
             ],
             [
                 'modulesArray'   => [
-                    User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
-                    'oxuser'    => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
+                    'oxuser'    => [$mockedModules['module_1'] , $mockedModules['module_2']],
                 ],
                 'expectedResult' => $mockedModules['module_2'],
                 'message'        => 'oemoduletwouser is the last class in the chain'
-            ],
-            [
-                'modulesArray'   => [
-                    User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
-                    'oxuser'    => $mockedModules['module_2'] . '&' . $mockedModules['module_1'],
-                ],
-                'expectedResult' => $mockedModules['module_1'],
-                'message'        => 'oemoduleoneuser is the last class in the chain'
-            ],
-            [
-                'modulesArray'   => [
-                    'oxuser'    => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
-                    User::class => $mockedModules['module_4'] . '&' . $mockedModules['module_3'],
-                ],
-                'expectedResult' => $mockedModules['module_3'],
-                'message'        => 'oemodulethreeuser is the last class in the chain'
             ],
         ];
     }

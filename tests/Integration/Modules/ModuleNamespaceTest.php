@@ -498,24 +498,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->installAndActivateModule($moduleId);
         $this->runAsserts($resultToAsserts[0]);
 
-        // information should not not only be in the database but also in the file cache, so let's check this:
-        // config.1.adisabledmodules.txt
-        // config.1.amodules.txt
-        // NOTE: file cache is filled a different times, and 'adisabledmodules' are only generated
-        //       when oxPrice object is created here
-
-        $subShopSpecificCache = $this->getFileCache();
-        $this->assertEquals($resultToAsserts[0]['extend'], $subShopSpecificCache->getFromCache('amodules'));
-
-        // Deactivating a module via shop admin means: the module id is marked as disabled and module deactivation event
-        // is called if any exists (which is not the case here).
-        // Now deactivate the module and check what's left in cache and database
-        $this->deactivateModule($module, $moduleId); //this is done via module installer
-
-        //NOTE: moduleInstaller also cleans the moduleCache which in turn calls ModuleVariablesLocator::resetModuleVariables();
-        //      and this cleans the file cache.
-        $this->assertEquals($resultToAsserts[1]['extend'], $subShopSpecificCache->getFromCache('amodules'));
-        $this->runAsserts($resultToAsserts[1]);
+        $this->deactivateModule($module, $moduleId);
 
         $moduleList = oxNew('OxidEsales\Eshop\Core\Module\ModuleList');
 

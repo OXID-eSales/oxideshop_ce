@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
+
 /**
  * Generates class chains for extended classes by modules.
  * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
@@ -58,9 +62,6 @@ class ModuleChainsGenerator
      */
     public function getActiveChain($className, $classAlias = null)
     {
-        if (!$classAlias) {
-            $classAlias = $className;
-        }
         return $this->getFullChain($className, $classAlias);
     }
 
@@ -74,50 +75,12 @@ class ModuleChainsGenerator
      */
     public function getFullChain($className, $classAlias)
     {
-        $fullChain = [];
-        $lowerCaseClassAlias = strtolower($classAlias);
-        $lowerCaseClassName = strtolower($className);
+        $chain = $this->getClassExtensionChain($this->getModuleVariablesLocator());
+        $classChain = $chain[$className] ?? [];
 
-        $variablesLocator = $this->getModuleVariablesLocator();
-        $modules = $this->getClassExtensionChain($variablesLocator);
-        $modules = array_change_key_case($modules);
-        $allExtendedClasses = array_keys($modules);
-        $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
-        if (!empty($currentExtendedClasses)) {
-            /*
-             * there may be 2 class chains, matching the same class:
-             * - one for the class alias like 'oxUser' - metadata v1.1
-             * - another for the real class name like 'OxidEsales\Eshop\Application\Model\User' - metadata v1.2
-             * These chains must be merged in the same order as they appear in the modules array
-             */
-            $classChains = [];
-            /* Get the position of the class name */
-            if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassName]);
-            }
-            /* Get the position of the alias class name */
-            if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassAlias]);
-            }
-
-            /* Notice that the array keys will be ordered, but do not necessarily start at 0 */
-            ksort($classChains);
-            $fullChain = [];
-            if (1 === count($classChains)) {
-                /**
-                 * @var array $fullChain uses the one and only element of the array
-                 */
-                $fullChain = reset($classChains);
-            }
-            if (2 === count($classChains)) {
-                /**
-                 * @var array $fullChain merges the first and then the second array from the $classChains
-                 */
-                $fullChain = array_merge(reset($classChains), next($classChains));
-            }
-        }
-
-        return $fullChain;
+        return $classAlias && $classAlias !== $className
+            ? array_merge($classChain, $this->getChainForBCClassAlias($chain, $classAlias))
+            : $classChain;
     }
 
     /**
@@ -278,5 +241,10 @@ class ModuleChainsGenerator
     protected function isUnitTest()
     {
         return defined('OXID_PHP_UNIT');
+    }
+
+    private function getChainForBCClassAlias(array $chain, string $classAlias): array
+    {
+        return array_change_key_case($chain)[strtolower($classAlias)] ?? [];
     }
 }

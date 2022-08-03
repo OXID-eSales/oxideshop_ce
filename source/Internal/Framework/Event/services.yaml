@@ -5,3 +5,6 @@ services:
   Symfony\Component\EventDispatcher\EventDispatcherInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher
     public: true
+
+  event_dispatcher:
+    alias: Symfony\Component\EventDispatcher\EventDispatcherInterface

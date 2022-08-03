@@ -6,4 +6,5 @@ services:
 
     OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber:
         class: OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber
-        tags: ['kernel.event_subscriber']
+        tags:
+            - { name: kernel.event_subscriber }

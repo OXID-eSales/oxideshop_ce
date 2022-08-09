@@ -60,7 +60,6 @@ class ModuleActivationServiceTest extends TestCase
             $moduleConfigurationDao,
             $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
             $this->getMockBuilder(ModuleConfigurationHandlingServiceInterface::class)->getMock(),
-            $this->getMockBuilder(ExtensionChainServiceInterface::class)->getMock(),
             $this->getMockBuilder(ModuleServicesActivationServiceInterface::class)->getMock()
         );
 

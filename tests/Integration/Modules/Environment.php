@@ -122,7 +122,6 @@ class Environment
     public function clean()
     {
         $config = Registry::getConfig();
-        $config->setConfigParam('aModules', null);
         $config->setConfigParam('aModuleControllers', null);
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -223,7 +222,7 @@ class Environment
     protected function loadShopParameters()
     {
         $aParameters = array(
-            'aModules', 'aModuleControllers'
+            'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
             Registry::getConfig()->setConfigParam($sParameter, $this->getConfigValueFromDB($sParameter));

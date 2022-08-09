@@ -105,41 +105,6 @@ class ModuleActivationServiceTest extends TestCase
         $this->assertFalse($moduleConfiguration->isActivated());
     }
 
-    public function testClassExtensionChainUpdate()
-    {
-        $shopConfigurationSettingDao = $this->container->get(ShopConfigurationSettingDaoInterface::class);
-
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addClassExtension(new ClassExtension('originalClassNamespace', 'moduleClassNamespace'));
-
-        $this->persistModuleConfiguration($moduleConfiguration);
-
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
-
-        $moduleClassExtensionChain = $shopConfigurationSettingDao->get(
-            ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN,
-            $this->shopId
-        );
-
-        $this->assertSame(
-            ['originalClassNamespace' => 'moduleClassNamespace'],
-            $moduleClassExtensionChain->getValue()
-        );
-
-        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
-
-        $moduleClassExtensionChain = $shopConfigurationSettingDao->get(
-            ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN,
-            $this->shopId
-        );
-
-        $this->assertSame(
-            [],
-            $moduleClassExtensionChain->getValue()
-        );
-    }
-
     public function testModuleWithThemedBlocksActivation(): void
     {
         $expected = 'flow_theme';

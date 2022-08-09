@@ -83,14 +83,6 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
             $this->assertTrue($validator->checkBlocks($expectedResult['blocks']), 'Blocks do not match expectations');
         }
 
-        if (isset($expectedResult['extend'])) {
-            $this->assertEquals(
-                $expectedResult['extend'],
-                $config->getConfigParam('aModules'),
-                'Extensions do not match expectations'
-            );
-        }
-
         if (isset($expectedResult['controllers'])) {
             $this->assertTrue($validator->checkControllers($expectedResult['controllers']), 'Controllers do not match expectations');
         }

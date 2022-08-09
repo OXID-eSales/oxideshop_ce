@@ -9,11 +9,12 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
 
 /**
  * Selects module variables from database or cache.
+ *
+ * @deprecated We don't store module variables in the database. Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface instead.
  *
  * @internal Do not make a module extension for this class.
  */
@@ -57,6 +58,10 @@ class ModuleVariablesLocator
         $value = $cache->getFromCache($name);
 
         if (is_null($value)) {
+            /**
+             * @todo we still use this class to get class extensions chain for BC and support of oxTestModules::addFunction().
+             *       The whole class should be removed in the future.
+             */
             $value = $name === 'aModules' ? $this->getClassExtensionsChain() : $this->getModuleVarFromDB($name);
             $cache->setToCache($name, $value);
         }

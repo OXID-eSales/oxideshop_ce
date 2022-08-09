@@ -79,7 +79,7 @@ class ModuleChainsGenerator
         $classChain = $chain[$className] ?? [];
 
         return $classAlias && $classAlias !== $className
-            ? array_merge($classChain, $this->getChainForBCClassAlias($chain, $classAlias))
+            ? array_merge($classChain, $this->getChainForBackwardsCompatibilityClassAlias($chain, $classAlias))
             : $classChain;
     }
 
@@ -243,7 +243,7 @@ class ModuleChainsGenerator
         return defined('OXID_PHP_UNIT');
     }
 
-    private function getChainForBCClassAlias(array $chain, string $classAlias): array
+    private function getChainForBackwardsCompatibilityClassAlias(array $chain, string $classAlias): array
     {
         return array_change_key_case($chain)[strtolower($classAlias)] ?? [];
     }

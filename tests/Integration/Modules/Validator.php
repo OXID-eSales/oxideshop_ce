@@ -58,34 +58,6 @@ class Validator
     }
 
     /**
-     * Asserts that module extensions match expected extensions
-     *
-     * @param array $aExpectedExtensions
-     *
-     * @return bool
-     */
-    public function checkExtensions($aExpectedExtensions)
-    {
-        $aExtensionsToCheck = $this->getConfig()->getConfigParam('aModules');
-
-        return ($aExpectedExtensions === $aExtensionsToCheck);
-    }
-
-    /**
-     * Asserts that disabled module is in disabled modules list
-     *
-     * @param array $aExpectedDisabledModules
-     *
-     * @return bool
-     */
-    public function checkDisabledModules($aExpectedDisabledModules)
-    {
-        $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
-
-        return $aExpectedDisabledModules == $aDisabledModules;
-    }
-
-    /**
      * Asserts that module configs match expected configs
      *
      * @param array $aExpectedConfigs

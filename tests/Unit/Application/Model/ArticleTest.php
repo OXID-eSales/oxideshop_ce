@@ -63,9 +63,6 @@ class ArticleTest extends \OxidTestCase
 
         $this->cleanUpTable('oxobject2attribute');
 
-        // ensure modules detached
-        oxTestModules::cleanAllModules();
-
         $oDB = oxDb::getDB();
         $oDB->execute('delete from oxaccessoire2article where oxarticlenid="_testArt" ');
         $oDB->execute("update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' ");

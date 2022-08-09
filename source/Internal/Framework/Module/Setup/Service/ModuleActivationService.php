@@ -22,7 +22,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
         private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService,
-        private ExtensionChainServiceInterface $classExtensionChainService,
         private ModuleServicesActivationServiceInterface $moduleServicesActivationService
     ) {
     }
@@ -32,7 +31,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param int    $shopId
      *
      * @throws ModuleSetupException
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
      */
     public function activate(string $moduleId, int $shopId)
     {
@@ -49,8 +47,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration->setActivated(true);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
-        $this->classExtensionChainService->updateChain($shopId);
-
         $this->eventDispatcher->dispatch(
             new FinalizingModuleActivationEvent($shopId, $moduleId)
         );
@@ -61,7 +57,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param int    $shopId
      *
      * @throws ModuleSetupException
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
      */
     public function deactivate(string $moduleId, int $shopId)
     {
@@ -81,8 +76,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $moduleConfiguration->setActivated(false);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
-
-        $this->classExtensionChainService->updateChain($shopId);
 
         $this->eventDispatcher->dispatch(
             new FinalizingModuleDeactivationEvent($shopId, $moduleId)

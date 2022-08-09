@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Psr\Log\LoggerInterface;
 
@@ -25,8 +24,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     public function __construct(
         private ShopAdapterInterface $shopAdapter,
         private ShopConfigurationDaoInterface $shopConfigurationDao,
-        private LoggerInterface $logger,
-        private ModuleStateServiceInterface $moduleStateService
+        private LoggerInterface $logger
     ) {
     }
 

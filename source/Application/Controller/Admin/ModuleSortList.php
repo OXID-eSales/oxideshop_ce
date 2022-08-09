@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface;
 
 /**
  * Extensions sorting list handler.
@@ -83,10 +82,6 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $shopConfiguration->setClassExtensionsChain($chain);
 
         $shopConfigurationDao->save($shopConfiguration);
-
-        $container->get(ClassExtensionChainBridgeInterface::class)->updateChain(
-            Registry::getConfig()->getShopId()
-        );
     }
 
     /**

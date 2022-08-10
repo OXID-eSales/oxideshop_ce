@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
+/**
+ * @deprecated will be removed in v7.0, we won't store module settings in the database.
+ */
 class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     public function __construct(private SettingDaoInterface $settingDao)

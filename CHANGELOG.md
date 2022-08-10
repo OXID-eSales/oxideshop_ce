@@ -457,6 +457,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [6.12.0] - Unreleased
+
+### Deprecated
+- Classes:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridge`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\SettingModuleSettingHandler`
+- Services:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface`
+    - `oxid_esales.module.setup.shop_module_setting_module_setting_handler`
+
 ## [6.11.0] - 2022-07-20
 
 ### Added

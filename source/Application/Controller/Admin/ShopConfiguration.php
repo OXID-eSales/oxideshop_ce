@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInte
 use Exception;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 
 /**
  * Admin shop config manager.
@@ -503,6 +504,8 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 $setting->setValue($preparedConfigValue);
 
                 $moduleConfigurationBridge->save($moduleConfiguration);
+
+                $this->dispatchEvent(new SettingChangedEvent($configName, $shopId, $moduleId));
             } else {
                 Registry::getLogger()->warning(
                     "Module \"$moduleId\" setting \"$configName\" is missing in metadata.php or configuration file."

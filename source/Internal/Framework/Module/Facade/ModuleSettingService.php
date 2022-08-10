@@ -11,7 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\String\UnicodeString;
 
 class ModuleSettingService implements ModuleSettingServiceInterface
@@ -19,7 +21,8 @@ class ModuleSettingService implements ModuleSettingServiceInterface
     public function __construct(
         private ContextInterface $context,
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private ModuleCacheServiceInterface $moduleCacheService
+        private ModuleCacheServiceInterface $moduleCacheService,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -73,6 +76,8 @@ class ModuleSettingService implements ModuleSettingServiceInterface
         $setting = $moduleConfiguration->getModuleSetting($name);
         $setting->setValue($value);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
+
+        $this->eventDispatcher->dispatch(new SettingChangedEvent($name, $shopId, $moduleId));
     }
 
     private function getValue(string $moduleId, string $name): mixed

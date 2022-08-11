@@ -481,6 +481,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoBridgeInterface`
     - `oxid_esales.module.setup.shop_module_setting_module_setting_handler`
 
+### Fixed
+- PHP 8.1 added to php version validation as supported [PR-899](https://github.com/OXID-eSales/oxideshop_ce/pull/899)
+
 ## [6.11.0] - 2022-07-20
 
 ### Added
@@ -1654,7 +1657,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.0-beta.1] - 2016-11-30
 
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v7.0.0-rc.1
-[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...6.11.0
+[6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...b-6.5.x
+[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0
 [6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3
 [6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
 [6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1

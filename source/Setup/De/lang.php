@@ -67,7 +67,7 @@ $aLang = [
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
 // @deprecated since v.6.5.1 (2020-02-12);
-'MOD_PHP_VERSION'                               => 'PHP Version ab 7.4 bis 8.0',
+'MOD_PHP_VERSION'                               => 'PHP Version ab 7.4 bis 8.1',
 // END deprecated
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',
 'MOD_LIB_XML2'                                  => 'LIB XML2',

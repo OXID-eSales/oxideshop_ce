@@ -144,6 +144,12 @@ require_once CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityAutoload.php';
 spl_autoload_register([OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload::class, 'autoload']);
 
 /**
+ * Register the module autoloader.
+ */
+require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';
+spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);
+
+/**
  * Store the shop configuration in the Registry prior including the custom bootstrap functionality.
  * Like this the shop configuration is available there.
  */

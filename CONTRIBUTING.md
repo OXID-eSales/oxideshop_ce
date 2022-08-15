@@ -2,7 +2,7 @@
 
 OXID eShop is available under two different licenses, OXID Community License and a commercial license.
 
-That's why, before contributing for the first time, you must <a href="https://gist.github.com/OXID-Admin/6df6ed126d074a54507d">sign the Contributor License Agreement</a>.
+That's why, before contributing for the first time, you must <a href="https://gist.github.com/oxid-devops/6d1ae6df18ab7d54ab122762b76c48a5">sign the Contributor License Agreement</a>.
 You can find more information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ:
 https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/contribution.html
 

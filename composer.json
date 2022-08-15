@@ -1,7 +1,6 @@
 {
     "name": "oxid-esales/oxideshop-ce",
     "description": "This package contains OXID eShop CE source code.",
-    "license": "GPL-3.0-only",
     "type": "oxideshop",
     "keywords": [
         "oxid",
@@ -9,6 +8,7 @@
         "eShop"
     ],
     "homepage": "https://www.oxid-esales.com/en/home.html",
+    "license": "SEE LICENSE IN LICENSE.md",
     "require": {
         "php": "^8.0",
         "ext-dom": "*",

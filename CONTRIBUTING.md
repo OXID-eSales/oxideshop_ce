@@ -1,6 +1,6 @@
 # Getting involved
 
-OXID eShop is available under two different licenses, GPLv3 and a commercial license.
+OXID eShop is available under two different licenses, OXID Community License and a commercial license.
 
 That's why, before contributing for the first time, you must <a href="https://cla-assistant.io/OXID-eSales/oxideshop_ce">sign the Contributor License Agreement</a>.
 You can find more information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ:

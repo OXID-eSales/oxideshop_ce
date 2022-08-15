@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.12.0] - Unreleased
 
+### Changed
+- Change OXID eShop Community Edition license
+
 ### Deprecated
 - Classes:
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao`

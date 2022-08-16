@@ -162,7 +162,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clickAndWait("//dl[@id='footerInformation']//a[text()='Credits']");
         $this->assertEquals("%YOU_ARE_HERE%: / Credits", $this->getText("breadCrumb"));
         $this->assertEquals("Credits", $this->getText("//h1"));
-        $this->assertTextPresent("What is OXID eShop?");
+        $this->assertTextPresent("Please add your text here");
 
         $this->clickAndWait("//dl[@id='footerInformation']//a[text()='%NEWSLETTER%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %STAY_INFORMED%", $this->getText("breadCrumb"));

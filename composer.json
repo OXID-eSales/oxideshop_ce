@@ -8,7 +8,7 @@
         "eShop"
     ],
     "homepage": "https://www.oxid-esales.com/en/home.html",
-    "license": "SEE LICENSE IN LICENSE.md",
+    "license": "proprietary",
     "require": {
         "php": "^8.0",
         "ext-dom": "*",

@@ -90,6 +90,29 @@ final class ModuleConfigurationTest extends UnitTestCase
         );
     }
 
+    public function testSaveConfVarsSavesNumAsInteger(): void
+    {
+        $this->installTestModule();
+        $this->activateTestModule();
+
+        $_POST['oxid'] = $this->testModuleId;
+        $_POST['confstrs'] = ['testInt' => '321', 'testFloat' => '123.321'];
+
+        $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
+        $moduleConfigurationController->saveConfVars();
+
+        ContainerFactory::resetContainer();
+
+        $this->assertSame(
+            321,
+            $this->getModuleConfiguration()->getModuleSetting('testInt')->getValue()
+        );
+        $this->assertSame(
+            123.321,
+            $this->getModuleConfiguration()->getModuleSetting('testFloat')->getValue()
+        );
+    }
+
     private function installTestModule(): void
     {
         $container = ContainerFactory::getInstance()->getContainer();

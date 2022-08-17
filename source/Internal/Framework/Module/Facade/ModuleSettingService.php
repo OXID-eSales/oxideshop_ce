@@ -31,6 +31,11 @@ class ModuleSettingService implements ModuleSettingServiceInterface
         return $this->getValue($moduleId, $name);
     }
 
+    public function getFloat(string $name, string $moduleId): float
+    {
+        return $this->getValue($moduleId, $name);
+    }
+
     public function getString(string $name, string $moduleId): UnicodeString
     {
         return new UnicodeString($this->getValue($moduleId, $name));
@@ -47,6 +52,11 @@ class ModuleSettingService implements ModuleSettingServiceInterface
     }
 
     public function saveInteger(string $name, int $value, string $moduleId): void
+    {
+        $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    public function saveFloat(string $name, float $value, string $moduleId): void
     {
         $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
     }

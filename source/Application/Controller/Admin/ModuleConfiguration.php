@@ -114,6 +114,11 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 if ($moduleSetting->getType() === 'bool') {
                     $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 }
+                if ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_INT)) {
+                    $value = (int)$value;
+                } elseif ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_FLOAT)) {
+                    $value = (float)$value;
+                }
 
                 $moduleSetting->setValue($value);
 

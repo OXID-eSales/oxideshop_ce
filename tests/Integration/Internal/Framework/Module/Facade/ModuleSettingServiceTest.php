@@ -41,6 +41,13 @@ final class ModuleSettingServiceTest extends TestCase
         $this->assertSame(777, $this->settingFacade->getInteger('intSetting', $this->testModuleId));
     }
 
+    public function testFloat(): void
+    {
+        $this->settingFacade->saveFloat('floatSetting', 1.1, $this->testModuleId);
+
+        $this->assertSame(1.1, $this->settingFacade->getFloat('floatSetting', $this->testModuleId));
+    }
+
     public function testBoolean(): void
     {
         $this->settingFacade->saveBoolean('boolSetting', true, $this->testModuleId);
@@ -99,6 +106,11 @@ final class ModuleSettingServiceTest extends TestCase
             ->setName('intSetting')
             ->setValue(0);
 
+        $floatSetting = new Setting();
+        $floatSetting
+            ->setName('floatSetting')
+            ->setValue(0.0);
+
         $booleanSetting = new Setting();
         $booleanSetting
             ->setName('boolSetting')
@@ -120,6 +132,7 @@ final class ModuleSettingServiceTest extends TestCase
             ->setId($this->testModuleId)
             ->setModuleSource('testPath')
             ->addModuleSetting($integerSetting)
+            ->addModuleSetting($floatSetting)
             ->addModuleSetting($booleanSetting)
             ->addModuleSetting($stringSetting)
             ->addModuleSetting($collectionSetting);

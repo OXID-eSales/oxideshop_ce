@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
@@ -21,8 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ModuleDeactivateCommand extends Command
 {
     public const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
-    public const MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE =
-        'It was not possible to deactivate module - "%s", maybe it was not active?';
     public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
     private const ARGUMENT_MODULE_ID = 'module-id';
 
@@ -67,16 +64,10 @@ class ModuleDeactivateCommand extends Command
      */
     protected function deactivateModule(OutputInterface $output, string $moduleId)
     {
-        try {
-            $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
-            $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
-            );
-        } catch (ModuleSetupException) {
-            $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
-            );
-        }
+        $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
+        $output->writeLn(
+            '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
+        );
     }
 
     /**

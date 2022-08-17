@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
@@ -23,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ModuleActivateCommand extends Command
 {
-    public const MESSAGE_MODULE_ALREADY_ACTIVE = 'Module - "%s" already active.';
     public const MESSAGE_MODULE_ACTIVATED = 'Module - "%s" was activated.';
     public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
 
@@ -68,14 +66,8 @@ class ModuleActivateCommand extends Command
      */
     protected function activateModule(OutputInterface $output, string $moduleId)
     {
-        try {
-            $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
-        } catch (ModuleSetupException) {
-            $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId) . '</info>'
-            );
-        }
+        $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
+        $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
     }
 
     /**

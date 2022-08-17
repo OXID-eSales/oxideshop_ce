@@ -22,8 +22,3 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Command\InstallModuleAssetsCommand:
     tags:
       - { name: 'console.command', command: 'oe:module:install-assets' }
-
-  oxid_esales.command.apply_modules_configuration_command:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ApplyModulesConfigurationCommand
-    tags:
-      - { name: 'console.command', command: 'oe:module:apply-configuration' }

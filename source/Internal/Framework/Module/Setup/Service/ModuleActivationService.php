@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
@@ -29,16 +28,10 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
-     *
-     * @throws ModuleSetupException
      */
     public function activate(string $moduleId, int $shopId)
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
-
-        if ($moduleConfiguration->isActivated()) {
-            throw new ModuleSetupException('Module with id "' . $moduleId . '" is already active.');
-        }
 
         $this->moduleConfigurationHandlingService->handleOnActivation($moduleConfiguration, $shopId);
 
@@ -55,20 +48,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
-     *
-     * @throws ModuleSetupException
      */
     public function deactivate(string $moduleId, int $shopId)
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
-        if (!$moduleConfiguration->isActivated()) {
-            throw new ModuleSetupException('Module with id "' . $moduleId . '" is not active.');
-        }
-
-        $this->eventDispatcher->dispatch(
-            new BeforeModuleDeactivationEvent($shopId, $moduleId)
-        );
+        $this->eventDispatcher->dispatch(new BeforeModuleDeactivationEvent($shopId, $moduleId));
 
         $this->moduleConfigurationHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
 

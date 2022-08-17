@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 
@@ -25,8 +24,6 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
-     *
-     * @throws ModuleSetupException
      */
     public function activate(string $moduleId, int $shopId)
     {
@@ -37,8 +34,6 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
-     *
-     * @throws ModuleSetupException
      */
     public function deactivate(string $moduleId, int $shopId)
     {

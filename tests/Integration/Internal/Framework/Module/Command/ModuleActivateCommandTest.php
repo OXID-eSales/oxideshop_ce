@@ -35,22 +35,6 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
         $this->cleanupTestData();
     }
 
-    public function testWhenModuleAlreadyActive(): void
-    {
-        $this->installTestModule();
-
-        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
-
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
-
-        $this->assertSame(
-            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ALREADY_ACTIVE, $this->moduleId) . PHP_EOL,
-            $consoleOutput
-        );
-
-        $this->cleanupTestData();
-    }
-
     public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';

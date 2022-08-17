@@ -36,20 +36,6 @@ final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
         $this->cleanupTestData();
     }
 
-    public function testWhenModuleNotActive(): void
-    {
-        $this->installTestModule();
-
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
-
-        $this->assertSame(
-            sprintf(ModuleDeactivateCommand::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $this->moduleId) . PHP_EOL,
-            $consoleOutput
-        );
-
-        $this->cleanupTestData();
-    }
-
     public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.3] - Unreleased
 
+### Removed
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
+- `oxid_esales.command.apply_modules_configuration_command` service
+- `ApplyModulesConfigurationCommand` moved to another repository
+
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
 

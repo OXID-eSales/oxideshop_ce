@@ -128,8 +128,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
      * As a side effect this tests also that the deactivation works in such a way
      * that shop aware services do not throw exceptions when the module is not
      * active any more.
-     *
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException
      */
     public function testDeActivationOfModuleServices()
     {

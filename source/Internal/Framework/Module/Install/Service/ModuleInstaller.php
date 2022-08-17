@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 
@@ -37,8 +36,6 @@ class ModuleInstaller implements ModuleInstallerInterface
 
     /**
      * @param OxidEshopPackage $package
-     *
-     * @throws ModuleSetupException
      */
     public function uninstall(OxidEshopPackage $package): void
     {
@@ -60,8 +57,6 @@ class ModuleInstaller implements ModuleInstallerInterface
 
     /**
      * @param string $moduleId
-     *
-     * @throws ModuleSetupException
      */
     private function deactivateModule(string $moduleId): void
     {

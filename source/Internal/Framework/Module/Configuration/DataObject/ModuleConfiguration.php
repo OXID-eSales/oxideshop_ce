@@ -241,6 +241,7 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated will be completely removed in v7.0
      * @return bool
      */
     public function isActivated(): bool

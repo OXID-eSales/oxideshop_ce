@@ -205,7 +205,7 @@ class ModuleInheritanceTest extends UnitTestCase
         $this->installModules($moduleToActivate);
         $this->activateModules($moduleToActivate);
 
-        $this->assertClassInheritance($extensionClass, $classToExtend);
+        $this->assertClassInheritance($extensionClass, [$classToExtend]);
     }
 
     public function dataProviderTestNativeExtensionOfChainExtendingClass(): array
@@ -215,15 +215,18 @@ class ModuleInheritanceTest extends UnitTestCase
                 'moduleToActivate' => ['module_native_extension'],
                 'extensionClass' => ModuleContentController::class,
                 'classToExtend' => EshopContentController::class,
-            ], [
+            ],
+            [
                 'moduleToActivate' => ['module_native_extension'],
                 'extensionClass' => NativeExtendingContentController::class,
                 'classToExtend' => ModuleContentController::class,
-            ], [
+            ],
+            [
                 'moduleToActivate' => ['module_native_extension'],
                 'extensionClass' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
                 'classToExtend' => Article::class,
-            ], [
+            ],
+            [
                 'moduleToActivate' => ['module_native_extension'],
                 'extensionClass' => NativeExtendingArticle::class,
                 'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,

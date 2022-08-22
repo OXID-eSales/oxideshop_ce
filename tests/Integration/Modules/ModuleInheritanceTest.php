@@ -210,26 +210,33 @@ class ModuleInheritanceTest extends UnitTestCase
 
     public function dataProviderTestNativeExtensionOfChainExtendingClass(): array
     {
+        $modules = ['module_chain_extension_3_1', 'module_native_extension'];
+
         return [
             [
-                'moduleToActivate' => ['module_native_extension'],
+                'moduleToActivate' => $modules,
                 'extensionClass' => ModuleContentController::class,
                 'classToExtend' => EshopContentController::class,
             ],
             [
-                'moduleToActivate' => ['module_native_extension'],
+                'moduleToActivate' => $modules,
                 'extensionClass' => NativeExtendingContentController::class,
                 'classToExtend' => ModuleContentController::class,
             ],
             [
-                'moduleToActivate' => ['module_native_extension'],
+                'moduleToActivate' => $modules,
                 'extensionClass' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
                 'classToExtend' => Article::class,
             ],
             [
-                'moduleToActivate' => ['module_native_extension'],
+                'moduleToActivate' => $modules,
                 'extensionClass' => NativeExtendingArticle::class,
                 'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
+            ],
+            [
+                'moduleToActivate' => $modules,
+                'extensionClass' => NativeExtendingArticle::class,
+                'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass::class,
             ]
         ];
     }

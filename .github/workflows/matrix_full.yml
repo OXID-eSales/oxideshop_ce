@@ -23,6 +23,22 @@ jobs:
           workflow_file_name: matrix_full.yml
           ref: ${{ github.ref_name }}
 
+  test_module-template:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'b-7.0.x'
+    steps:
+      - name: Trigger module-template workflow and wait for results
+        uses: convictional/trigger-workflow-and-wait@v1.6.3
+        with:
+          owner: oxid-esales
+          repo: module-template
+          github_user: ${{ secrets.CI_USER }}
+          github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          workflow_file_name: development.yml
+          ref: ${{ github.ref_name }}
+          propagate_failure: false
+          wait_workflow: false
+
   install_shop:
     strategy:
       matrix:

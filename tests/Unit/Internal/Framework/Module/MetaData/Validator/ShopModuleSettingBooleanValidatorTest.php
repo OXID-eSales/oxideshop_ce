@@ -37,6 +37,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
      *
      * @param $value
      *
+     * @doesNotPerformAssertions
      * @deprecated   since v6.4.0 (2019-06-10);This is not recommended values for use,
      *               only boolean values should be used.
      */
@@ -56,6 +57,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
     /**
      * @param bool $value
      * @dataProvider validationPassDataProvider
+     * @doesNotPerformAssertions
      */
     public function testValidationPass(bool $value)
     {
@@ -81,6 +83,9 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $this->executeValidationForBoolSetting($value);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testWhenStringTypeProvided()
     {
         $settings =
@@ -97,6 +102,9 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $validator->validate($settings);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testWhenNoTypeProvided()
     {
         $settings =

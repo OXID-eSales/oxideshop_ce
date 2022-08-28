@@ -32,6 +32,8 @@ final class ProjectYamlDaoTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
         $contextStub = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
             ->setMethods(['getGeneratedServicesFilePath'])->getMock();
@@ -45,7 +47,7 @@ final class ProjectYamlDaoTest extends TestCase
         );
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         parent::tearDown();
         $projectFilePath = $this->getTestGeneratedServicesFilePath();

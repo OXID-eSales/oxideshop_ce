@@ -29,10 +29,11 @@ final class ModulePackageInstallerTest extends TestCase
     private $packageName = 'test-module-package-installation';
     private $moduleId = 'testModule';
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
         $installer->uninstall($this->modulePackagePath);
+        parent::tearDown();
     }
 
     public function testModuleNotInstalledByDefault(): void

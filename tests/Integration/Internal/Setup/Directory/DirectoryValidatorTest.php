@@ -19,6 +19,9 @@ final class DirectoryValidatorTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDirectoriesExistentAndPermission(): void
     {
         $directoryValidator = new DirectoryValidator();

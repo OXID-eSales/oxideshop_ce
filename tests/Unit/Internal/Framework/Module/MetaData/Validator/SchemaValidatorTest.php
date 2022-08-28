@@ -32,6 +32,9 @@ final class SchemaValidatorTest extends TestCase
         ],
     ];
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidateWithMinimalValidStructure(): void
     {
         $this->getValidator()->validate('', '2.1', []);
@@ -78,6 +81,9 @@ final class SchemaValidatorTest extends TestCase
         $this->getValidator()->validate('', '2.1', $metadata);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidateWithSectionExcludedFromValidation(): void
     {
         $sectionExcludedFromValidation = MetaDataProvider::METADATA_EXTEND;

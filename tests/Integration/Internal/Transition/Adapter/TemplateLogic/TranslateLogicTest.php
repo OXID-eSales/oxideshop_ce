@@ -5,22 +5,19 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
-use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class TranslateLogicTest extends UnitTestCase
 {
-    /** @var TranslateFilterLogic */
-    private $multiLangFilterLogic;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->multiLangFilterLogic = new TranslateFilterLogic();
-    }
+    use ProphecyTrait;
 
     /**
      * Provides data to testSimpleAssignments
@@ -47,8 +44,9 @@ class TranslateLogicTest extends UnitTestCase
      */
     public function testSimpleAssignments($ident, $languageId, $result)
     {
-        $this->setLanguage($languageId);
-        $this->assertEquals($result, $this->multiLangFilterLogic->multiLang($ident));
+        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+
+        $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident));
     }
 
     /**
@@ -78,8 +76,9 @@ class TranslateLogicTest extends UnitTestCase
      */
     public function testAssignmentsWithArguments($ident, $languageId, $arguments, $result)
     {
-        $this->setLanguage($languageId);
-        $this->assertEquals($result, $this->multiLangFilterLogic->multiLang($ident, $arguments));
+        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+
+        $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident, $arguments));
     }
 
     /**
@@ -112,42 +111,31 @@ class TranslateLogicTest extends UnitTestCase
      */
     public function testTranslateFrontend_isMissingTranslation($isProductiveMode, $ident, $translation)
     {
-        $this->setAdminMode(false);
-        $this->setLanguage(1);
+        $context = $this->prophesize(ContextInterface::class);
+        $context->isShopInProductiveMode()->willReturn($isProductiveMode);
+        $multiLangFilterLogic = new TranslateFilterLogic($context->reveal(), $this->getTranslator(1));
 
-        $oShop = $this->getConfig()->getActiveShop();
-        $oShop->oxshops__oxproductive = new Field($isProductiveMode);
-        $oShop->save();
-
-        $this->assertEquals($translation, $this->multiLangFilterLogic->multiLang($ident));
+        $this->assertEquals($translation, $multiLangFilterLogic->multiLang($ident));
     }
 
     /**
-     * testTranslateAdmin_isMissingTranslation data provider
-     *
-     * @return array
+     * @return ContextInterface
      */
-    public function missingTranslationProviderAdmin(): array
+    private function getContextMock()
     {
-        return [
-            [
-                'MY_MISING_TRANSLATION',
-                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
-            ],
-        ];
+        return $this->getMockBuilder(ContextInterface::class)->getMock();
     }
 
     /**
-     * @param string $ident
-     * @param string $translation
-     *
-     * @dataProvider missingTranslationProviderAdmin
+     * @param $languageId
+     * @return LegacyTemplateTranslator
      */
-    public function testTranslateAdmin_isMissingTranslation($ident, $translation)
+    private function getTranslator($languageId)
     {
-        $this->setLanguage(1);
-        $this->setAdminMode(true);
-
-        $this->assertEquals($translation, $this->multiLangFilterLogic->multiLang($ident));
+        $language = Registry::getLang();
+        $language->setTplLanguage($languageId);
+        $language->setAdminMode(false);
+        Registry::set(Language::class, $language);
+        return new LegacyTemplateTranslator();
     }
 }

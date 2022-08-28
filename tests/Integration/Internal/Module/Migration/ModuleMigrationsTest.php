@@ -64,6 +64,9 @@ class ModuleMigrationsTest extends TestCase
         $this->removeTestModule($this->moduleIdWithMigrations);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNoErrorWhenModuleHasNoMigrations(): void
     {
         $this->installModule($this->moduleIdWithoutMigrations);

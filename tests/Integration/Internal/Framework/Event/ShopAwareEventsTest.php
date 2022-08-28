@@ -31,6 +31,7 @@ class ShopAwareEventsTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $context = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
             ->setMethods([

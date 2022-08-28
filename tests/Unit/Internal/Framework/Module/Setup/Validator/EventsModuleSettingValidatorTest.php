@@ -19,6 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSe
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidate()
     {
         $validator = $this->createValidator();
@@ -47,6 +50,8 @@ class EventsModuleSettingValidatorTest extends TestCase
      * @dataProvider invalidEventsProvider
      *
      * @param Event $invalidEvent
+     *
+     * @doesNotPerformAssertions
      *
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException
      */

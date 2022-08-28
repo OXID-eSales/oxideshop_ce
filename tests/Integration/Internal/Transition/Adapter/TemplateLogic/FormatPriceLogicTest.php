@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\TemplateLogic;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +18,10 @@ class FormatPriceLogicTest extends TestCase
      */
     private $formatPriceLogic;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->formatPriceLogic = new FormatPriceLogic();
         parent::setUp();
+        $this->formatPriceLogic = new FormatPriceLogic();
     }
 
     /**

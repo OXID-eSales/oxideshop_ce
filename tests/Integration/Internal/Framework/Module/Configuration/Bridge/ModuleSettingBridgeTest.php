@@ -21,12 +21,12 @@ final class ModuleSettingBridgeTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
         $modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
         $configurationInstaller->install($modulePath);
-
-        parent::setUp();
     }
 
     public function testSave(): void

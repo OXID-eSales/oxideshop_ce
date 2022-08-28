@@ -128,6 +128,14 @@ class Context extends BasicContext implements ContextInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isShopInProductiveMode(): bool
+    {
+        return (bool) Registry::getConfig()->isProductiveMode();
+    }
+
+    /**
      * @param string $name
      * @param null   $default
      *

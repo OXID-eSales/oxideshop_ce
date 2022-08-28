@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator

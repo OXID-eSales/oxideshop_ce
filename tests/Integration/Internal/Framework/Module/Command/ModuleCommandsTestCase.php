@@ -29,7 +29,7 @@ class ModuleCommandsTestCase extends TestCase
 
     protected $moduleId = 'testmodule';
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanupTestData();
         parent::tearDown();

@@ -1,0 +1,73 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ContentFactory:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ContentFactory
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\SeoUrlLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\SeoUrlLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\AddUrlParametersLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\AddUrlParametersLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IfContentLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IfContentLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatTimeLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatTimeLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FileSizeLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FileSizeLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\StyleLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\StyleLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeWidgetLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeWidgetLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\SmartWordwrapLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\SmartWordwrapLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InputHelpLogic:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InputHelpLogic
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicSmarty:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicSmarty
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicTwig:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicTwig

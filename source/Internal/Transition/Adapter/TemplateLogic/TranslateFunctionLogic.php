@@ -7,10 +7,34 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 
 class TranslateFunctionLogic
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
+     * TranslateFunctionLogic constructor.
+     * @param ContextInterface $context
+     * @param TranslatorInterface           $translator
+     */
+    public function __construct(ContextInterface $context, TranslatorInterface $translator)
+    {
+        $this->context = $context;
+        $this->translator = $translator;
+    }
+
     /**
      * @param array $params
      *
@@ -19,47 +43,67 @@ class TranslateFunctionLogic
     public function getTranslation(array $params): string
     {
         startProfile("smarty_function_oxmultilang");
-        $language = \OxidEsales\Eshop\Core\Registry::getLang();
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $activeShop = $config->getActiveShop();
-        $isAdmin = $language->isAdmin();
         $ident = $params['ident'] ?? 'IDENT MISSING';
         $args = $params['args'] ?? false;
         $suffix = $params['suffix'] ?? 'NO_SUFFIX';
-        $showError = isset($params['noerror']) ? !$params['noerror'] : true;
-        $tplLang = $language->getTplLanguage();
-        if (!$isAdmin && $activeShop->isProductiveMode()) {
-            $showError = false;
-        }
+        $translation = $ident;
+        $suffixTranslation = $suffix;
+        $translationFound = true;
+
         try {
-            $translation = $language->translateString($ident, $tplLang, $isAdmin);
-            $translationNotFound = !$language->isTranslated();
+            $translation = $this->translator->translate($ident);
             if ('NO_SUFFIX' != $suffix) {
-                $suffixTranslation = $language->translateString($suffix, $tplLang, $isAdmin);
+                $suffixTranslation = $this->translator->translate($suffix);
             }
+        } catch (TranslationNotFoundException $exception) {
+            $translationFound = false;
         } catch (StandardException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
-        if ($translationNotFound && isset($params['alternative'])) {
+        if (!$translationFound && isset($params['alternative'])) {
             $translation = $params['alternative'];
-            $translationNotFound = false;
+            $translationFound = true;
         }
-        if (!$translationNotFound) {
-            if ($args !== false) {
-                if (is_array($args)) {
-                    $translation = vsprintf($translation, $args);
-                } else {
-                    $translation = sprintf($translation, $args);
-                }
-            }
+        if ($translationFound) {
+            $translation = $this->assignArgumentsToTranslation($translation, $args);
             if ('NO_SUFFIX' != $suffix) {
                 $translation .= $suffixTranslation;
             }
-        } elseif ($showError) {
+        } elseif ($this->showError($params)) {
             $translation = 'ERROR: Translation for ' . $ident . ' not found!';
         }
         stopProfile("smarty_function_oxmultilang");
 
         return $translation;
+    }
+
+    /**
+     * @param string $translation
+     * @param mixed  $args
+     * @return string
+     */
+    private function assignArgumentsToTranslation(string $translation, $args): string
+    {
+        if ($args) {
+            if (is_array($args)) {
+                $translation = vsprintf($translation, $args);
+            } else {
+                $translation = sprintf($translation, $args);
+            }
+        }
+        return $translation;
+    }
+
+    /**
+     * @param array $params
+     * @return bool
+     */
+    private function showError(array $params): bool
+    {
+        $showError = isset($params['noerror']) ? !$params['noerror'] : true;
+        if (!$this->context->isAdmin() && $this->context->isShopInProductiveMode()) {
+            $showError = false;
+        }
+        return $showError;
     }
 }

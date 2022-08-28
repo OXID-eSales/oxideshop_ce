@@ -30,7 +30,7 @@ final class ContainerTest extends TestCase
     private ContainerInterface $container;
     private string $testServicesYml = '../../tests/Integration/Internal/Container/Fixtures/Project/services.yaml';
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ final class ContainerTest extends TestCase
         $this->container = ContainerFactory::getInstance()->getContainer();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         ContainerFactory::resetContainer();
         $this->restoreProjectConfiguration();

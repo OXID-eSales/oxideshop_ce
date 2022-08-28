@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
@@ -77,7 +77,7 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
         $templateDirs = Registry::getUtilsView()->getTemplateDirs();
         return [
             'security' => true,
-            'php_handling' => SMARTY_PHP_REMOVE,
+            'php_handling' => 2,
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,

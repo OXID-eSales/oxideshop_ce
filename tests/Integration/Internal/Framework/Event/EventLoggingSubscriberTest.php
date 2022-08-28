@@ -26,6 +26,7 @@ class EventLoggingSubscriberTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $containerBuilder = new ContainerBuilder(new BasicContextStub());
         $this->container = $containerBuilder->getContainer();
         $contextDefinition = $this->container->getDefinition(ContextInterface::class);
@@ -38,6 +39,7 @@ class EventLoggingSubscriberTest extends TestCase
         if (file_exists($this->testlog)) {
             unlink($this->testlog);
         }
+        parent::tearDown();
     }
 
     public function testLoggingOnConfigurationErrorEvent(): void

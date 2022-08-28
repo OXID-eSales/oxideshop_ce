@@ -39,7 +39,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         parent::setUp();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 

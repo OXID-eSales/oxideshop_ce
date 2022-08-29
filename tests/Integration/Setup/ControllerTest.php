@@ -14,8 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\{Controller, Database, Exception\SetupControllerExitException, Language, Session};
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

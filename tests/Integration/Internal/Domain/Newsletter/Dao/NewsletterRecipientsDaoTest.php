@@ -14,39 +14,22 @@ use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRe
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class NewsletterRecipientsDaoTest extends TestCase
+class NewsletterRecipientsDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /**
      * @var object|QueryBuilderFactoryInterface|null
      */
     private $queryBuilderFactory;
 
-    /**
-     * @var DatabaseRestorer
-     */
-    private $databaseRestorer;
-
-    protected function setup(): void
+    public function setup(): void
     {
-        $this->databaseRestorer = new DatabaseRestorer();
-        $this->databaseRestorer->dumpDB(__CLASS__);
+        parent::setUp();
+
         $this->queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
         $this->prepareTestData();
 
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->databaseRestorer->restoreDB(__CLASS__);
-
-        parent::tearDown();
     }
 
     public function testGetNewsletterRecipients(): void

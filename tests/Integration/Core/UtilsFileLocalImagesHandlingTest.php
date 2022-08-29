@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler as LocalImageHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;

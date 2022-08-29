@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
  */
-class FormatDateLogicTest extends TestCase
+class FormatDateLogicTest extends IntegrationTestCase
 {
 
     /** @var FormatDateLogic */

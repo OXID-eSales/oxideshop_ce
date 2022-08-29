@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class UtilsServerTest extends TestCase

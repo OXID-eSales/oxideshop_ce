@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\Argon2IPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class PasswordHashServiceTest extends TestCase

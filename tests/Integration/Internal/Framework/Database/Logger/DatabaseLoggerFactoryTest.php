@@ -13,8 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerF
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 
-class DatabaseLoggerFactoryTest extends \PHPUnit\Framework\TestCase
+class DatabaseLoggerFactoryTest extends TestCase
 {
     public function testCreationForAdminLogEnabled()
     {

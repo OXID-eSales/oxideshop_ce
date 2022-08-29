@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Authentication\Generator;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGenerator;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class RandomTokenGeneratorTest extends TestCase

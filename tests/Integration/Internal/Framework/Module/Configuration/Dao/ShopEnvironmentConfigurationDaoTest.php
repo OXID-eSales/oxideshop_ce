@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class ShopEnvironmentConfigurationDaoTest extends TestCase
@@ -50,6 +50,9 @@ final class ShopEnvironmentConfigurationDaoTest extends TestCase
         $this->assertEquals([], $environmentConfiguration);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testRemoveOverwriteAlreadyBackupEnvironmentFile(): void
     {
         $this->prepareTestEnvironmentShopConfigurationFile();
@@ -59,6 +62,9 @@ final class ShopEnvironmentConfigurationDaoTest extends TestCase
         $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testRemoveWithNonExistingEnvironmentFile(): void
     {
         $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);

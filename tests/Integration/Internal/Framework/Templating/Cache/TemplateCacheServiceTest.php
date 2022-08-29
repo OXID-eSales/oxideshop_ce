@@ -4,7 +4,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Templat
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;

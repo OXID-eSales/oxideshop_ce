@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Dao
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ReviewDaoInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class ReviewDaoTest extends TestCase

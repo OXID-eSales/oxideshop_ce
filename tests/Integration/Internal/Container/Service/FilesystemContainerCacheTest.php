@@ -11,7 +11,7 @@ namespace Integration\Internal\Container\Service;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class FilesystemContainerCacheTest extends TestCase

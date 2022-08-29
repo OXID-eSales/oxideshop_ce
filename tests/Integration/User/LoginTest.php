@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxField;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use oxRegistry;
 use oxUser;
 

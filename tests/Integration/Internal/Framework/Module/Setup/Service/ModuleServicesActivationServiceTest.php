@@ -63,6 +63,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $this->projectYamlDao = $this->getMockBuilder(ProjectYamlDaoInterface::class)->getMock();
         $this->projectYamlDao
             ->method('saveProjectConfigFile')
@@ -237,6 +238,9 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDeactivationWorksIfModuleServiceIsNotInProjectConfiguration(): void
     {
         $shopAwareService = TestEventSubscriber::class;

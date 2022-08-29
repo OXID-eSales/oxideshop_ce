@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 

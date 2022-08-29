@@ -13,10 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologCon
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
-class MonologFactoryTest extends \PHPUnit\Framework\TestCase
+class MonologFactoryTest extends TestCase
 {
     public function testCreation()
     {

@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
+use Symfony\Component\Console\Input\ArrayInput;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -24,16 +24,9 @@ use Webmozart\PathUtil\Path;
 final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 {
     private $commandName = "oe:module:apply-configuration";
-    /**
-     * @var DatabaseRestorer
-     */
-    private $databaseRestorer;
 
     public function setup(): void
     {
-        $this->databaseRestorer = new DatabaseRestorer();
-        $this->databaseRestorer->dumpDB(__CLASS__);
-
         $this->installTestModule();
 
         parent::setUp();
@@ -41,8 +34,6 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 
     public function tearDown(): void
     {
-        $this->databaseRestorer->restoreDB(__CLASS__);
-
         $this->cleanupTestData();
 
         parent::tearDown();

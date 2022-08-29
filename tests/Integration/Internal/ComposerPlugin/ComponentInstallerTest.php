@@ -13,12 +13,11 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Facts;
-use OxidEsales\TestingLibrary\Helper\ProjectConfigurationHelper;
-use OxidEsales\TestingLibrary\Services\Library\ProjectConfigurationHandler;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentInstallerTest extends TestCase
@@ -27,19 +26,11 @@ final class ComponentInstallerTest extends TestCase
 
     private string $servicesFilePath = 'Fixtures/services.yaml';
 
-    protected function setUp(): void
+    public function tearDown(): void
     {
-        parent::setUp();
-
-        $this->backupProjectConfiguration();
-    }
-
-    protected function tearDown(): void
-    {
-        ContainerFactory::resetContainer();
-        $this->restoreProjectConfiguration();
-
         parent::tearDown();
+
+        $this->removeGeneratedLineFromProjectFile();
     }
 
     public function testInstall(): void
@@ -79,13 +70,12 @@ final class ComponentInstallerTest extends TestCase
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
     }
 
-    private function backupProjectConfiguration(): void
+    private function removeGeneratedLineFromProjectFile()
     {
-        (new ProjectConfigurationHandler(new ProjectConfigurationHelper()))->backup();
-    }
-
-    private function restoreProjectConfiguration(): void
-    {
-        (new ProjectConfigurationHandler(new ProjectConfigurationHelper()))->restore();
+        /** @var ProjectYamlDao $projectYamlDao */
+        $projectYamlDao = $this->get(ProjectYamlDaoInterface::class);
+        $DIconfig = $projectYamlDao->loadProjectConfigFile();
+        $DIconfig->removeImport($this->servicesFilePath);
+        $projectYamlDao->saveProjectConfigFile($DIconfig);
     }
 }

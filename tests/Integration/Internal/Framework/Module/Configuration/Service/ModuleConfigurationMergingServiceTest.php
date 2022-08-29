@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
     ModuleConfigurationMergingServiceInterface
 };
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 

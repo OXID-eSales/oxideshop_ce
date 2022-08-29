@@ -12,10 +12,10 @@ use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class TranslateLogicTest extends UnitTestCase
+class TranslateLogicTest extends IntegrationTestCase
 {
     use ProphecyTrait;
 

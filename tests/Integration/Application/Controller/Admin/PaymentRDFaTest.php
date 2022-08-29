@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class PaymentRDFaTest extends UnitTestCase

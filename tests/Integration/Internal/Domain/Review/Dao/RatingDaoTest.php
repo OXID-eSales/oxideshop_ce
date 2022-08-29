@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class RatingDaoTest extends TestCase

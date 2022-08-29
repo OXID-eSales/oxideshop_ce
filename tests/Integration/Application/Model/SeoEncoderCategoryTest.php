@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
 use OxidEsales\Eshop\Core\SeoEncoder;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class SeoEncoderCategoryTest extends UnitTestCase

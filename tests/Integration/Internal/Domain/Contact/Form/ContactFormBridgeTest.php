@@ -13,8 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
+use PHPUnit\Framework\TestCase;
 
-class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase
+class ContactFormBridgeTest extends TestCase
 {
     public function testFormGetter()
     {

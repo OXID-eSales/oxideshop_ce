@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingArticle;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingContentController;

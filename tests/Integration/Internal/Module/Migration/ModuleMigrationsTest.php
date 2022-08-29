@@ -11,13 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Migration;
 
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -25,32 +23,10 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 /**
  * Class ModuleMigrationsTest
  */
-class ModuleMigrationsTest extends TestCase
+class ModuleMigrationsTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    /**
-     * @var DatabaseRestorer
-     */
-    private $databaseRestorer;
-
     private $moduleIdWithMigrations= 'myTestModuleWithMigrations';
     private $moduleIdWithoutMigrations = 'myTestModuleWithoutMigrations';
-
-    public function setUp(): void
-    {
-        $this->databaseRestorer = new DatabaseRestorer();
-        $this->databaseRestorer->dumpDB(__CLASS__);
-
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->databaseRestorer->restoreDB(__CLASS__);
-
-        parent::tearDown();
-    }
 
     public function testMigrationsExecutionWithSpecificModule(): void
     {

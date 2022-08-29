@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Admin\Serv
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 final class AdminUserServiceTest extends TestCase

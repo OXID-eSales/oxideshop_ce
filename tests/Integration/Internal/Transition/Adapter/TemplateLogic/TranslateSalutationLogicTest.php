@@ -11,12 +11,12 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * Class TranslateSalutationLogic
  */
-class TranslateSalutationLogicTest extends UnitTestCase
+class TranslateSalutationLogicTest extends IntegrationTestCase
 {
     /**
      * Provides data for testTranslateSalutation

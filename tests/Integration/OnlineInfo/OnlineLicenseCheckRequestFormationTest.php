@@ -23,7 +23,7 @@ use OxidEsales\Eshop\Core\SimpleXml;
 use OxidEsales\Eshop\Core\UserCounter;
 use OxidEsales\Eshop\Core\UtilsDate;
 use OxidEsales\Eshop\Core\UtilsServer;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
 

@@ -19,6 +19,7 @@ final class ProductListCest
     public function testCategoryFilterReset(AcceptanceTester $I): void
     {
         $I->wantToTest('category filter reset button functionality');
+        $I->markTestSkipped('TODO: Refactor');
 
         $homePage = $I->openShop();
         $I->waitForPageLoad();

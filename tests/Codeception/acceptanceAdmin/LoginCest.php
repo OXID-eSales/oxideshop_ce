@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class LoginCest
@@ -18,9 +19,17 @@ final class LoginCest
     {
         $I->wantToTest('correct session ID name is set in cookies');
 
-        $I->loginAdmin();
+        $userData = $this->getAdminUserData();
+
+        $loginPage = $I->openAdmin();
+        $loginPage->login($userData['userLoginName'], $userData['userPassword']);
 
         $I->seeCookie('admin_sid');
         $I->dontSeeCookie('sid');
+    }
+
+    private function getAdminUserData(): array
+    {
+        return Fixtures::get('adminUser');
     }
 }

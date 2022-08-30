@@ -96,6 +96,7 @@ final class UserRegistrationCest
         $I->openShop();
 
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         // prepare user data
         $userId = '2';
         $userLoginData = $this->getUserLoginData($userId);
@@ -356,6 +357,7 @@ final class UserRegistrationCest
 
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
+        $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         // prepare user data
         $userId = '8';
         $userLoginData = $this->getUserLoginData($userId);

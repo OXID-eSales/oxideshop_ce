@@ -335,6 +335,7 @@ final class CheckoutProcessCest
     public function checkGuestUserNameSwitching(AcceptanceTester $I): void
     {
         $I->wantToTest('guest checkout with username switching');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);
@@ -417,6 +418,7 @@ final class CheckoutProcessCest
     public function checkForceIdDisabledDuringCheckout(AcceptanceTester $I): void
     {
         $I->wantToTest('Change session during payment');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);
@@ -438,7 +440,8 @@ final class CheckoutProcessCest
     public function checkNoSessionCookiesCheckout(AcceptanceTester $I): void
     {
         $I->wantToTest('Check if checkout is possible without cookies');
-       
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+
         file_put_contents(
             (new Facts())->getShopRootPath() . '/cust_config.inc.php',
             '<?php $this->blSessionUseCookies = false;'
@@ -469,7 +472,7 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('Check if attributes are visible in basket');
 
-        $I->updateInDatabase('oxattribute', ['OXDISPLAYINBASKET' => 1], ['OXID' => '9438ac75bac3e344628b14bf7ed82c15']);
+        $I->updateInDatabase('oxattribute', ['OXDISPLAYINBASKET' => 1], ['OXID' => 'testattribute1']);
         $I->haveInDatabase(
             'oxobject2attribute',
             [
@@ -496,7 +499,7 @@ final class CheckoutProcessCest
 
         $homePage->openMiniBasket()->openBasketDisplay();
 
-        $I->see('Black', "#table_cartItem_1");
+        $I->see('attr value 11 [EN] šÄßüл', "#table_cartItem_1");
     }
 
     /**

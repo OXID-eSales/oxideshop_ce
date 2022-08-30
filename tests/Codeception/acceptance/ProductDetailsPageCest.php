@@ -168,6 +168,8 @@ final class ProductDetailsPageCest
     public function detailsPageInformation(AcceptanceTester $I): void
     {
         $I->wantToTest('product information in details page');
+        $I->updateConfigInDatabase('blStockOffDefaultMessage', true, 'bool');
+        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
 
         $productNavigation = new ProductNavigation($I);
         $productData = [
@@ -217,6 +219,7 @@ final class ProductDetailsPageCest
 
         $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
 
+        $I->updateConfigInDatabase('blAllowSuggestArticle', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',

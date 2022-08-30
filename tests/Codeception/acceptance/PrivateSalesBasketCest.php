@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptance;
 
 use OxidEsales\Codeception\Module\Translation\Translator;
-use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceTester;
 
 final class PrivateSalesBasketCest
@@ -20,6 +19,18 @@ final class PrivateSalesBasketCest
         $I->wantToTest('Test if blBasketExcludeEnabled blocks rootCatChange and continue shopping clears basket.');
 
         $I->updateConfigInDatabase('blBasketExcludeEnabled', 'true', 'bool');
+
+        $I->updateInDatabase('oxcategories', ['OXACTIVE' => 1], ['OXID' => 'testcategory2']);
+        $I->haveInDatabase(
+            'oxobject2category',
+            [
+                'OXID' => 'testobject2category1002',
+                'OXOBJECTID' => '1002',
+                'OXCATNID' => 'testcategory2',
+                'OXPOS' => 0,
+            ]
+        );
+
         $I->clearShopCache();
 
         $homePage = $I->openShop();
@@ -41,7 +52,7 @@ final class PrivateSalesBasketCest
         $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
         $I->dontSeeElement('#scRootCatChanged');
 
-        $homePage->openCategoryPage('Kiteboarding');
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
         $I->waitForElementVisible('#scRootCatChanged', 5);
 
         $I->click(Translator::translate('CONTINUE_SHOPPING'));
@@ -54,6 +65,18 @@ final class PrivateSalesBasketCest
         $I->wantToTest('Test if blBasketExcludeEnabled rootCatChange is no longer blocked by an empty basket.');
 
         $I->updateConfigInDatabase('blBasketExcludeEnabled', 'true', 'bool');
+
+        $I->updateInDatabase('oxcategories', ['OXACTIVE' => 1], ['OXID' => 'testcategory2']);
+        $I->haveInDatabase(
+            'oxobject2category',
+            [
+                'OXID' => 'testobject2category1002',
+                'OXOBJECTID' => '1002',
+                'OXCATNID' => 'testcategory2',
+                'OXPOS' => 0,
+            ]
+        );
+
         $I->clearShopCache();
 
         $homePage = $I->openShop();
@@ -63,13 +86,13 @@ final class PrivateSalesBasketCest
             ->addProductToBasket(1)
             ->openBasket();
 
-        $homePage->openCategoryPage('Kiteboarding');
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
         $I->waitForElementVisible('#scRootCatChanged', 5);
 
         $basket = $homePage->openBasket();
         $basket->updateProductAmount(0);
 
-        $homePage->openCategoryPage('Kiteboarding');
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
         $I->dontSeeElement('#scRootCatChanged');
     }
 
@@ -83,26 +106,20 @@ final class PrivateSalesBasketCest
         $I->updateConfigInDatabase('iPsBasketReservationTimeout', '10', 'str');
 
         $I->clearShopCache();
+        $homePage = $I->openShop();
 
-        $productNavigation = new ProductNavigation($I);
+        $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
+            ->openDetailsPage(1)
+            ->addProductToBasket(2);
 
-        $productData = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
-        ];
-
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-
-        $I->see($productData['title']);
-
-        $detailsPage->addProductToBasket(2)->seeCountdownWithinBasket();
+        $homePage->seeCountdownWithinBasket();
 
         $I->openShop()->searchFor('1000');
         $I->see(Translator::translate('NO_ITEMS_FOUND'));
         //we need to wait for the timeout
         $I->wait(12);
+
+        $I->dontSee("expired products are still visible in basket popup...", "modalbasketFlyout");
 
         $homePage = $I->openShop();
         $homePage->checkBasketEmpty();

@@ -61,7 +61,7 @@ final class AdminNotRegisteredUserOrderCest
                 'OXBILLSTREET' => 'street',
                 'OXBILLSTREETNR' => '1',
                 'OXBILLCITY' => 'city',
-                'OXBILLCOUNTRYID' => 'a7c40f631fc920687.20179984',
+                'OXBILLCOUNTRYID' => 'testcountry_be',
                 'OXBILLSTATEID' => 'BB',
                 'OXBILLZIP' => '3000',
                 'OXPAYMENTID' => 'NotRegisteredPaymentId',

@@ -24,8 +24,11 @@ final class DownloadableProductCest
     /** @param AcceptanceTester $I */
     public function _before(AcceptanceTester $I)
     {
+        $I->updateConfigInDatabase('blEnableDownloads', true, 'bool');
         $I->updateConfigInDatabase('iMaxDownloadsCount', "2", 'str');
         $I->updateConfigInDatabase('iLinkExpirationTime', "240", 'str');
+        $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', true, 'bool');
+
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
     }
 
@@ -34,6 +37,7 @@ final class DownloadableProductCest
     {
         $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
         $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
+        $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', false, 'bool');
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 0], ['oxartnum' => '1002-1']);
         $I->deleteFromDatabase('oxorder', ['OXID' => $this->orderId]);
         $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);

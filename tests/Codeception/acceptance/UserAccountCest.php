@@ -207,6 +207,8 @@ final class UserAccountCest
     /**
      * @group myAccount
      *
+     * @after cleanUpUserData
+     *
      * @param AcceptanceTester $I
      */
     public function changeUserBillingAddress(AcceptanceTester $I)
@@ -259,7 +261,7 @@ final class UserAccountCest
     public function modifyUserShippingAddress(AcceptanceTester $I)
     {
         $start = new Start($I);
-        $I->wantToTest('modify user shipping address in my account');
+        $I->wantToTest('user shipping address in my account');
 
         $userData = $this->getExistingUserData();
 

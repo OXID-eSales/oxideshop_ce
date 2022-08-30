@@ -5,11 +5,11 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\DoctrineMigrationWrapper;
+declare(strict_types=1);
 
+use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Facts;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseDefaultsFileGenerator;
+use OxidEsales\Codeception\Module\Database\DatabaseDefaultsFileGenerator;
 
 $facts = new Facts();
 
@@ -20,8 +20,8 @@ $selenium_server_host = ($selenium_server_host) ? : '127.0.0.1';
 $php = (getenv('PHPBIN')) ? : 'php';
 $cc_screen_shot_url = getenv('CC_SCREEN_SHOTS_URL');
 $cc_screen_shot_url = ($cc_screen_shot_url) ? : '';
-$selenium_browser = getenv('SELENIUM_BROWSER');
-$selenium_browser = ($selenium_browser) ? : 'firefox';
+$browser = getenv('BROWSER_NAME');
+$browser = ($browser) ? : 'firefox';
 
 return [
     'SHOP_URL' => $facts->getShopUrl(),
@@ -33,16 +33,21 @@ return [
     'DB_HOST' => $facts->getDatabaseHost(),
     'DB_PORT' => $facts->getDatabasePort(),
     'DUMP_PATH' => getTestDataDumpFilePath(),
+    'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
     'SELENIUM_SERVER_HOST' => $selenium_server_host,
-    'BROWSER_NAME' => getenv('BROWSER_NAME') ?: 'firefox',
     'PHP_BIN' => $php,
     'SCREEN_SHOT_URL' => $cc_screen_shot_url,
-    'BROWSER' => $selenium_browser
+    'BROWSER' => $browser
 ];
 
 function getTestDataDumpFilePath()
+{
+    return getShopTestPath() . '/Codeception/_data/generated/shop-dump.sql';
+}
+
+function getTestFixtureSqlFilePath()
 {
     return getShopTestPath() . '/Codeception/_data/dump.sql';
 }
@@ -70,8 +75,7 @@ function getShopTestPath()
 
 function getMysqlConfigPath()
 {
-    $facts = new Facts();
-    $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
+    $configFile = new ConfigFile();
 
     $generator = new DatabaseDefaultsFileGenerator($configFile);
 

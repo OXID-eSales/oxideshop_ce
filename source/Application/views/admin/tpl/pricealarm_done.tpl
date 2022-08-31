@@ -12,7 +12,7 @@ window.onload = function ()
 //-->
 </script>
 
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{include file="_formparams.tpl" cl="pricealarm_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 </form>
 

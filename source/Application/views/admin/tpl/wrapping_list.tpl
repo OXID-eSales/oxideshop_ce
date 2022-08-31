@@ -20,7 +20,7 @@ window.onload = function ()
 </script>
 
 <div id="liste">
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{include file="_formparams.tpl" cl="wrapping_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>

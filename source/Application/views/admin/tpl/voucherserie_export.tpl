@@ -1,6 +1,6 @@
 [{include file="headitem.tpl" box="none "
     meta_refresh_sec=$refresh
-    meta_refresh_url=$oViewConf->getSelfLink()|cat:"`&cl=`$sClassDo`&iStart=`$iStart`&fnc=run"
+    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl='$sClassDo'&iStart='$iStart'&fnc=run"
 }]
 [{assign var='blShowStatus' value=true}]
 

@@ -40,7 +40,7 @@
                 <span style="color: red">[{$sErrorMessage}]</span>
             [{elseif !$oView->getParam('runAnalysis')}]
 
-            <form name="diagnosticsForm" id="diagnosticsForm" action="[{$oViewConf->getSelfLink()}]" onsubmit="handleSubmit()" method="post">
+            <form name="diagnosticsForm" id="diagnosticsForm" action="[{$oViewConf->getSelfLink() nofilter}]" onsubmit="handleSubmit()" method="post">
                 <table border="0" cellpadding="0">
                     [{$oViewConf->getHiddenSid() nofilter}]
                     <input type="hidden" name="cl" value="diagnostics_main">
@@ -83,7 +83,7 @@
 
 [{if !empty($sResult)}]
 <h1>[{oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL"}]</h1>
-<h2><strong><a class="underlined" href="[{$oViewConf->getSelfLink()}]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{oxmultilang ident="OXDIAG_DOWNLOAD_FILE"}]</a></strong>.</h2>
+<h2><strong><a class="underlined" href="[{$oViewConf->getSelfLink() nofilter}]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{oxmultilang ident="OXDIAG_DOWNLOAD_FILE"}]</a></strong>.</h2>
 
 <h3>[{oxmultilang ident="OXDIAG_RESULT"}]:</h3>
 <div class="result">

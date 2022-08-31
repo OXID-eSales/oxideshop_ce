@@ -22,14 +22,14 @@ function DeletePic(sField)
 //-->
 </script>
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="actions_main">
 </form>
 
 
-<form name="myedit" enctype="multipart/form-data" id="myedit" onSubmit="copyLongDesc('oxactions__oxlongdesc');" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" enctype="multipart/form-data" id="myedit" onSubmit="copyLongDesc('oxactions__oxlongdesc');" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="actions_main">
 <input type="hidden" name="fnc" value="">
@@ -173,7 +173,7 @@ function DeletePic(sField)
                         <!-- Promotions editor -->
                         <tr>
                             <td class="edittext" width="100%" colspan="2">
-                                [{$editor}]
+                                [{$editor nofilter}]
                             </td>
                         </tr>
                     [{/block}]
@@ -278,7 +278,7 @@ function DeletePic(sField)
 
     [{if $sHelpURL}]
     [{* HELP *}]
-    <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.help" href="[{$sHelpURL}]/[{$oViewConf->getActiveClassName()|oxlower}].html" OnClick="window.open('[{$sHelpURL}]/[{	$oViewConf->getActiveClassName()|lower}].html','OXID_Help','width=800,height=600,resizable=no,scrollbars=yes');return false;">[{oxmultilang ident="TOOLTIPS_OPENHELP"}]</a></li>
+    <li><a [{if !$firstitem}]class="firstitem"[{assign var="firstitem" value="1"}][{/if}] id="btn.help" href="[{$sHelpURL nofilter}]/[{$oViewConf->getActiveClassName()|oxlower}].html" OnClick="window.open('[{$sHelpURL nofilter}]/[{$oViewConf->getActiveClassName()|lower}].html','OXID_Help','width=800,height=600,resizable=no,scrollbars=yes');return false;">[{oxmultilang ident="TOOLTIPS_OPENHELP"}]</a></li>
     [{/if}]
   </ul>
 [{/strip}]

@@ -14,7 +14,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=selectlist_main&synchoxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=selectlist_main&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
@@ -30,7 +30,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=selectlist_main&oxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=selectlist_main&oxid=[{$oxid}]'
                                                     );
         YAHOO.oxid.container1.modRequest = function( sRequest )
         {
@@ -79,7 +79,7 @@
                                                    sortable: false
                                                    [{/if}]},
                                                   [{/foreach}] ],
-                                                '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=selectlist_order&oxid='+sOxid,
+                                                '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=selectlist_order&oxid='+sOxid,
                                                 { selectionMode:'single' }
                                                 )
                 //
@@ -176,4 +176,3 @@
 
 </body>
 </html>
-

@@ -6,8 +6,8 @@
 </head>
 
 <!-- frames -->
-<frameset  rows="62,*" border="0" onload="document.getElementById('edit').src='[{$oViewConf->getSelfLink()}]&[{$editurl}]&oxid=[{$currentadminshop}]';">
-    <frame src="[{$oViewConf->getSelfLink()}]&[{$listurl}]&oxid=[{$currentadminshop}]" name="list" id="list" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
+<frameset  rows="62,*" border="0" onload="document.getElementById('edit').src='[{$oViewConf->getSelfLink() nofilter}]&[{$editurl}]&oxid=[{$currentadminshop}]';">
+    <frame src="[{$oViewConf->getSelfLink() nofilter}]&[{$listurl}]&oxid=[{$currentadminshop}]" name="list" id="list" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
     <frame src="" name="edit" id="edit" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
 </frameset>
 

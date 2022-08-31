@@ -70,7 +70,7 @@ window.onload = function ()
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="shop_main">
@@ -88,7 +88,7 @@ window.onload = function ()
    <div class="errorbox">[{oxmultilang ident="SHOP_MAIN_MAXSHOP_WARNING"}]</div>
 [{/if}]
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="unsetSmtpField()">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post" onSubmit="unsetSmtpField()">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="shop_main">
     <input type="hidden" name="fnc" value="">

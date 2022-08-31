@@ -1,1 +1,1 @@
-[{$editor}]
+[{$editor nofilter}]

@@ -41,7 +41,7 @@ window.onload = function ()
 <div id="liste">
 
 
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{include file="_formparams.tpl" cl="order_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
@@ -72,7 +72,7 @@ window.onload = function ()
                 <select name="addsearchfld" class="folderselect" >
                     <option value="-1" style="color: #000000;">[{oxmultilang ident="ORDER_LIST_PAID"}]</option>
                     [{foreach from=$asearch key=table item=desc}]
-                    [{assign var="ident" value=ORDER_SEARCH_FIELD_$desc}]
+                    [{assign var="ident" value="ORDER_SEARCH_FIELD_$desc"}]
                     [{assign var="ident" value=$ident|oxupper}]
                     <option value="[{$table}]" [{if $addsearchfld == $table}]SELECTED[{/if}]>[{oxmultilang|oxtruncate:20:"..":true ident=$ident}]</option>
                     [{/foreach}]

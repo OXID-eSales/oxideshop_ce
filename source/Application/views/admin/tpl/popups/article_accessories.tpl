@@ -15,7 +15,7 @@
                 [{/strip}]
                 [{assign var="sSep" value=","}]
                 [{/foreach}]],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=article_accessories&synchoxid=[{$oxid}]'
+            '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=article_accessories&synchoxid=[{$oxid}]'
         );
 
         [{assign var="sSep" value=""}]
@@ -33,7 +33,7 @@
                 [{/strip}]
                 [{assign var="sSep" value=","}]
                 [{/foreach}]],
-            '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=article_accessories&oxid=[{$oxid}]'
+            '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=article_accessories&oxid=[{$oxid}]'
         )
         YAHOO.oxid.container1.modRequest = function (request) {
             var selectedArticleCategory = $('artcat');
@@ -174,4 +174,3 @@
 
 </body>
 </html>
-

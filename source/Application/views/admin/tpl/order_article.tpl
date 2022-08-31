@@ -65,7 +65,7 @@ function StornoThisArticle( sID)
 
 [{assign var="oCurr" value=$edit->getOrderCurrency()}]
 
-<form name="DeleteThisArticle" id="DeleteThisArticle" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="DeleteThisArticle" id="DeleteThisArticle" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -74,7 +74,7 @@ function StornoThisArticle( sID)
     <input type="hidden" name="fnc" value="DeleteThisArticle">
 </form>
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -83,7 +83,7 @@ function StornoThisArticle( sID)
 
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="cl" value="order_article">
@@ -167,7 +167,7 @@ function StornoThisArticle( sID)
 <br />
 
 
-    <form method="POST" name="searchForProduct" id="searchForProduct" action="[{$oViewConf->getSelfLink()}]">
+    <form method="POST" name="searchForProduct" id="searchForProduct" action="[{$oViewConf->getSelfLink() nofilter}]">
       [{$oViewConf->getHiddenSid() nofilter}]
       <input type="hidden" name="oxid" value="[{$oxid}]">
       <input type="hidden" name="cl" value="order_article">
@@ -193,7 +193,7 @@ function StornoThisArticle( sID)
     [{if $oSearchProd}]
     [{assign var="oMainProd" value=$oView->getMainProduct()}]
 
-    <form method="POST" name="AddThisArticle" id="AddThisArticle" action="[{$oViewConf->getSelfLink()}]">
+    <form method="POST" name="AddThisArticle" id="AddThisArticle" action="[{$oViewConf->getSelfLink() nofilter}]">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">

@@ -13,7 +13,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=delivery_users&synchoxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=delivery_users&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
@@ -28,7 +28,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=delivery_users&oxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=delivery_users&oxid=[{$oxid}]'
                                                     );
 
         YAHOO.oxid.container1.getDropAction = function()

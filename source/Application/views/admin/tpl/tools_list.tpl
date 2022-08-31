@@ -11,7 +11,7 @@ window.onload = function ()
 }
 //-->
 </script>
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="actedit" value="[{$actedit}]">
     <input type="hidden" name="cl" value="tools_list">

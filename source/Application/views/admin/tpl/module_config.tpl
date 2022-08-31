@@ -19,7 +19,7 @@ function _groupExp(el) {
 
 
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oModule->getInfo('id')}]">
     <input type="hidden" name="cl" value="module_config">
@@ -29,7 +29,7 @@ function _groupExp(el) {
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="module_configuration" id="moduleConfiguration" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="module_configuration" id="moduleConfiguration" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="module_config">
 <input type="hidden" name="fnc" value="save">
@@ -44,7 +44,7 @@ function _groupExp(el) {
         [{block name="admin_module_config_group"}]
         <div class="groupExp">
             <div class="[{block name="admin_module_config_group_class"}][{/block}]">
-                <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_MODULE_GROUP_`$var_group`"}]</b></a>
+                <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_MODULE_GROUP_$var_group"}]</b></a>
                 [{foreach from=$var_list item=var_type key=module_var}]
                     [{block name="admin_module_config_var"}]
                     <dl>
@@ -76,7 +76,7 @@ function _groupExp(el) {
                                 [{block name="admin_module_config_var_type_select"}]
                                 <select class="select" name="confselects[[{$module_var}]]" [{$readonly}]>
                                     [{foreach from=$var_constraints.$module_var item='_field'}]
-                                        <option value="[{$_field|escape}]"  [{if ($confselects.$module_var==$_field)}]selected[{/if}]>[{oxmultilang ident="SHOP_MODULE_`$module_var`_`$_field`"}]</option>
+                                        <option value="[{$_field|escape}]"  [{if ($confselects.$module_var==$_field)}]selected[{/if}]>[{oxmultilang ident="SHOP_MODULE_$module_var'_'$_field"}]</option>
                                     [{/foreach}]
                                 </select>
                                 [{/block}]
@@ -87,10 +87,10 @@ function _groupExp(el) {
                             [{/if}]
 
                             [{/block}]
-                            [{oxinputhelp ident="HELP_SHOP_MODULE_`$module_var`"}]
+                            [{oxinputhelp ident="HELP_SHOP_MODULE_$module_var"}]
                         </dt>
                         <dd>
-                            [{oxmultilang ident="SHOP_MODULE_`$module_var`"}]
+                            [{oxmultilang ident="SHOP_MODULE_$module_var"}]
                         </dd>
                         <div class="spacer"></div>
                     </dl>

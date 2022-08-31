@@ -38,7 +38,7 @@ function _groupExp(el) {
 //-->
 </script>
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_files">
@@ -54,7 +54,7 @@ function _groupExp(el) {
     [{/if}]
      <tr>
         <td valign="top" class="edittext" [{if count( $oFiles ) > 0}]align="left"[{/if}]>
-          <form name="newFileUpload" id="newFileUpload" action="[{$oViewConf->getSelfLink()}]" enctype="multipart/form-data" method="post">
+          <form name="newFileUpload" id="newFileUpload" action="[{$oViewConf->getSelfLink() nofilter}]" enctype="multipart/form-data" method="post">
           <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
           [{$oViewConf->getHiddenSid() nofilter}]
           <input type="hidden" name="cl" value="article_files">
@@ -139,7 +139,7 @@ function _groupExp(el) {
           <table cellspacing="0" cellpadding="0" border="0" width="98%">
               <tr>
                   <td valign="top" class="edittext">
-                      <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                      <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                           [{$oViewConf->getHiddenSid() nofilter}]
                           <input type="hidden" name="cl" value="article_files">
                           <input type="hidden" name="fnc" value="">
@@ -173,7 +173,7 @@ function _groupExp(el) {
                                         [{block name="admin_article_downloads_filelist"}]
                                             <div class="groupExp">
                                                 <div>
-                                                    <a class="delete" href="[{$oViewConf->getSelfLink()}]&cl=article_files&amp;fileid=[{$oArticleFile->getId()}]&amp;fnc=deletefile&amp;oxid=[{$oxid}]&amp;editlanguage=[{$editlanguage}]" onClick='return confirm("[{oxmultilang ident="GENERAL_YOUWANTTODELETE"}]")'></a>
+                                                    <a class="delete" href="[{$oViewConf->getSelfLink() nofilter}]&cl=article_files&amp;fileid=[{$oArticleFile->getId()}]&amp;fnc=deletefile&amp;oxid=[{$oxid}]&amp;editlanguage=[{$editlanguage}]" onClick='return confirm("[{oxmultilang ident="GENERAL_YOUWANTTODELETE"}]")'></a>
                                                     <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{$oArticleFile->oxfiles__oxfilename->value}]</b></a>
                                                     <dl style="padding-top:5px;">
                                                         <table cellspacing="0" cellpadding="0" border="0">

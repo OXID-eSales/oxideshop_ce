@@ -35,7 +35,7 @@ window.onload = function ()
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="oxidCopy" value="[{$oxid}]">
@@ -43,7 +43,7 @@ window.onload = function ()
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="return copyLongDesc('oxarticles__oxlongdesc');" style="padding: 0px;margin: 0px;height:0px;">
+    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post" onSubmit="return copyLongDesc('oxarticles__oxlongdesc');" style="padding: 0px;margin: 0px;height:0px;">
       [{$oViewConf->getHiddenSid() nofilter}]
       <input type="hidden" name="cl" value="article_main">
       <input type="hidden" name="fnc" value="">

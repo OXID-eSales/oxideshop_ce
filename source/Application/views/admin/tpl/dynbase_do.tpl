@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" box="export "
     title="AUCTMASTER_DO_TITLE"|oxmultilangassign
     meta_refresh_sec=$refresh
-    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=`$sClassDo`&iStart=`$iStart`&fnc=run"
+    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl='$sClassDo'&iStart='$iStart'&fnc=run"
 }]
 
 [{if !isset($refresh)}]

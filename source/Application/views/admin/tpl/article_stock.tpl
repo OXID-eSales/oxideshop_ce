@@ -32,13 +32,13 @@ function editThis( sID )
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_stock">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="article_stock">
     <input type="hidden" name="fnc" value="">
@@ -210,7 +210,7 @@ function editThis( sID )
                     [{/if}]
                 </td>
                 <td class=listitem[{$oddclass}]>
-                  <a href="[{$oViewConf->getSelfLink()}]&cl=article_stock&priceid=[{$amountprice->oxprice2article__oxid->value}]&fnc=deleteprice&oxid=[{$oxid}]" onClick='return confirm("[{oxmultilang ident="GENERAL_YOUWANTTODELETE"}]")' class="delete"></a>
+                  <a href="[{$oViewConf->getSelfLink() nofilter}]&cl=article_stock&priceid=[{$amountprice->oxprice2article__oxid->value}]&fnc=deleteprice&oxid=[{$oxid}]" onClick='return confirm("[{oxmultilang ident="GENERAL_YOUWANTTODELETE"}]")' class="delete"></a>
                 </td>
               </tr>
             [{/foreach}]

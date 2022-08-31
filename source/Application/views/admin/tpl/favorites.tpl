@@ -2,8 +2,8 @@
 <html id="top" >
 <head>
     <title>[{oxmultilang ident="MAIN_TITLE"}]</title>
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]main.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]colors_[{$oViewConf->getEdition()|lower}].css">
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
 </head>
 <body>
@@ -19,7 +19,7 @@
 </p>
 
 
-    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="navigation">
+    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post" target="navigation">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="navigation">
     <input type="hidden" name="favorites[]" value="">

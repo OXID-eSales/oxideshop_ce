@@ -46,7 +46,7 @@ class SmartyDefaultTemplateHandler
             $resourceName = $context->getTemplatePath($resourceName);
             $fileLoaded = is_file($resourceName) && is_readable($resourceName);
             if ($fileLoaded) {
-                $resourceContent = $smarty->_read_file($resourceName);
+                $resourceContent = (string) \file_get_contents($resourceName);
                 $resourceTimestamp = filemtime($resourceName);
             }
 

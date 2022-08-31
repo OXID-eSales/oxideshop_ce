@@ -49,14 +49,14 @@ function editThis( sID )
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_variant">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="myedit1" id="myedit1" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit1" id="myedit1" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="article_variant">
     <input type="hidden" name="fnc" value="">
@@ -75,7 +75,7 @@ function editThis( sID )
       <td class="edittext">
         <table cellspacing="0" cellpadding="0" border="0">
 
-          <form name="myedit3" id="myedit3" action="[{$oViewConf->getSelfLink()}]" method="post">
+          <form name="myedit3" id="myedit3" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
           [{$oViewConf->getHiddenSid() nofilter}]
           <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
           <input type="hidden" name="cl" value="article_variant">
@@ -122,7 +122,7 @@ function editThis( sID )
       <td>&nbsp;</td>
       <td class="edittext" valign=top>
 
-        <form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+        <form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
         [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
         <input type="hidden" name="cl" value="article_variant">
@@ -177,7 +177,7 @@ function editThis( sID )
 
           </form>
 
-          <form name="myedit2" id="myedit2" action="[{$oViewConf->getSelfLink()}]" method="post">
+          <form name="myedit2" id="myedit2" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
           [{$oViewConf->getHiddenSid() nofilter}]
           <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
           <input type="hidden" name="cl" value="article_variant">
@@ -237,7 +237,7 @@ function editThis( sID )
           <tr>
 
             [{assign var="listclass" value="listitem$blWhite"}]
-            <form name="myedit4" id="myedit4" action="[{$oViewConf->getSelfLink()}]" method="post">
+            <form name="myedit4" id="myedit4" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
             [{$oViewConf->getHiddenSid() nofilter}]
             <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
             <input type="hidden" name="cl" value="article_variant">
@@ -270,7 +270,7 @@ function editThis( sID )
 
           </form>
 
-          <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+          <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
           [{block name="admin_article_variant_language_edit"}]
           <tr>
             <td  colspan=9><br>

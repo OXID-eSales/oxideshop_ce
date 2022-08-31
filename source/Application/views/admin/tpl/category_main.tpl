@@ -37,7 +37,7 @@ function LockAssignment(obj)
 //-->
 </script>
 <!-- END add to *.css file -->
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" id="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="category_main">
@@ -56,7 +56,7 @@ function LockAssignment(obj)
     [{assign var="readonly_fields" value=""}]
 [{/if}]
 
-<form name="myedit" id="myedit" enctype="multipart/form-data" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" enctype="multipart/form-data" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="[{$iMaxUploadFileSize}]">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="category_main">

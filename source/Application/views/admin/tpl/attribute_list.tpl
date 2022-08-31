@@ -28,7 +28,7 @@ window.onload = function ()
             <col width="2%">
         [{/block}]
     </colgroup>
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{include file="_formparams.tpl" cl="attribute_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <tr class="listitem">
     [{block name="admin_attribute_list_filter"}]

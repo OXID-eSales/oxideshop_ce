@@ -6,14 +6,14 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="article_review">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="article_review">
 <input type="hidden" name="fnc" value="">

@@ -19,7 +19,7 @@ function _groupExp(el) {
 
 
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oTheme->getInfo('id')}]">
     <input type="hidden" name="cl" value="theme_config">
@@ -29,7 +29,7 @@ function _groupExp(el) {
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="theme_config">
 <input type="hidden" name="fnc" value="save">
@@ -44,7 +44,7 @@ function _groupExp(el) {
         <div class="groupExp">
             <div>
             [{block name="admin_theme_config_form"}]
-                <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_THEME_GROUP_`$var_group`"}]</b></a>
+                <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_THEME_GROUP_$var_group"}]</b></a>
                 [{foreach from=$var_list item=var_type key=theme_var}]
                     <dl>
                         <dt>
@@ -62,14 +62,14 @@ function _groupExp(el) {
                             [{elseif $var_type == 'select'}]
                                 <select class="select" name=confselects[[{$theme_var}]] [{$readonly}]>
                                     [{foreach from=$var_constraints.$theme_var item='_field'}]
-                                        <option value="[{$_field|escape}]"  [{if ($confselects.$theme_var==$_field)}]selected[{/if}]>[{oxmultilang ident="SHOP_THEME_`$theme_var`_`$_field`"}]</option>
+                                        <option value="[{$_field|escape}]"  [{if ($confselects.$theme_var==$_field)}]selected[{/if}]>[{oxmultilang ident="SHOP_THEME_$theme_var'_'$_field"}]</option>
                                     [{/foreach}]
                                 </select>
                             [{/if}]
-                            [{oxinputhelp ident="HELP_SHOP_THEME_`$theme_var`"}]
+                            [{oxinputhelp ident="HELP_SHOP_THEME_$theme_var"}]
                         </dt>
                         <dd>
-                            [{oxmultilang ident="SHOP_THEME_`$theme_var`"}]
+                            [{oxmultilang ident="SHOP_THEME_$theme_var"}]
                         </dd>
                         <div class="spacer"></div>
                     </dl>

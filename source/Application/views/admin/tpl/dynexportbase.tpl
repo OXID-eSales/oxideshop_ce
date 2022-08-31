@@ -7,8 +7,8 @@
 
 <!-- frames -->
 <frameset  rows="62,*" border="0">
-    <frame name="dynexport_do" src="[{$oViewConf->getSelfLink()}]&cl=[{$sClassDo}]" marginwidth="0" marginheight="0" scrolling="auto" frameborder="0">
-    <frame name="dynexport_main" src="[{$oViewConf->getSelfLink()}]&cl=[{$editclass|default:$sClassMain}]" marginwidth="0" marginheight="0" scrolling="auto" frameborder="0">
+    <frame name="dynexport_do" src="[{$oViewConf->getSelfLink() nofilter}]&cl=[{$sClassDo}]" marginwidth="0" marginheight="0" scrolling="auto" frameborder="0">
+    <frame name="dynexport_main" src="[{$oViewConf->getSelfLink() nofilter}]&cl=[{$editclass|default:$sClassMain}]" marginwidth="0" marginheight="0" scrolling="auto" frameborder="0">
 </frameset>
 
 

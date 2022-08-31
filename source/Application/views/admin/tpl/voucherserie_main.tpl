@@ -17,7 +17,7 @@ function changeFnc( fncName )
 //-->
 </script>
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="voucherserie_main">
@@ -29,7 +29,7 @@ function changeFnc( fncName )
 <tr>
     <td valign="top" class="edittext" width="355">
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="voucherserie_main">
 <input type="hidden" name="fnc" value="save">
@@ -156,7 +156,7 @@ function changeFnc( fncName )
 
         [{if $oxid != "-1"}]
 
-        <form name="myexport" id="myexport" action="[{$oViewConf->getSelfLink()}]" target="dynexport_do" method="post">
+        <form name="myexport" id="myexport" action="[{$oViewConf->getSelfLink() nofilter}]" target="dynexport_do" method="post">
         [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="">
         <input type="hidden" name="fnc" value="start">
@@ -164,7 +164,7 @@ function changeFnc( fncName )
 
         <fieldset title="[{oxmultilang ident="VOUCHERSERIE_MAIN_VOUCHERSTATISTICS"}]" style="padding-left: 5px; padding-right: 5px;">
             <legend>[{oxmultilang ident="VOUCHERSERIE_MAIN_VOUCHERSTATISTICS"}]</legend>
-            <iframe src="[{$oViewConf->getSelfLink()}]&cl=[{$sClassDo}]&voucherid=[{$oxid}]" width="100%" height="80" frameborder="0" name="dynexport_do" align="left"></iframe>
+            <iframe src="[{$oViewConf->getSelfLink() nofilter}]&cl=[{$sClassDo}]&voucherid=[{$oxid}]" width="100%" height="80" frameborder="0" name="dynexport_do" align="left"></iframe>
         </fieldset>
         <br>
 

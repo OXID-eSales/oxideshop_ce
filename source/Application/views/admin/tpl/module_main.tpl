@@ -1,10 +1,10 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="box"}]
 
 [{if $updatenav}]
-    [{oxscript add="top.oxid.admin.reloadNavigation('`$shopid`');" priority=10}]
+    [{oxscript add="top.oxid.admin.reloadNavigation('$shopid');" priority=10}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="module_main">
@@ -21,7 +21,7 @@
                 [{if $oModule->getInfo('thumbnail')}]
                     <img src="[{$oViewConf->getModuleUrl($oModule->getId(), $oModule->getInfo('thumbnail'))}]" hspace="20" vspace="10"></td>
                 [{else}]
-                    <img src="[{$oViewConf->getResourceUrl()}]bg/module.png" hspace="20" vspace="10">
+                    <img src="[{$oViewConf->getResourceUrl() nofilter}]bg/module.png" hspace="20" vspace="10">
                 [{/if}]
             </td>
             <td width="" valign="top">
@@ -67,7 +67,7 @@
                 [{/if}]
                 [{if !$_sError}]
                     [{if $oModule->hasMetadata() || $oModule->isRegistered()}]
-                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                             <div>
                                 [{$oViewConf->getHiddenSid() nofilter}]
                                 <input type="hidden" name="cl" value="module_main">

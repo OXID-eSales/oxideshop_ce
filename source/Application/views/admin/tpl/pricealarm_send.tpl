@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" box="list"
     title="PRICEALARM_SEND_TITLE"|oxmultilangassign box="list"
     meta_refresh_sec="2"
-    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=pricealarm_send&iStart=`$iStart`&iAllCnt=`$iAllCnt`"
+    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=pricealarm_send&iStart=$iStart&iAllCnt=$iAllCnt"
 }]
 
 <script type="text/javascript">
@@ -17,7 +17,7 @@ window.onload = function ()
 </script>
 <body>
 
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{include file="_formparams.tpl" cl="pricealarm_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 </form>
 

@@ -14,7 +14,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=actions_article&synchoxid=[{$oxid}]',
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=actions_article&synchoxid=[{$oxid}]',
                                                      { selectionMode: "single" }
                                                     );
 
@@ -55,7 +55,7 @@
                 oParam = YAHOO.oxid.container1.getRecord(aSelRows[0]);
                 sRequest = '&oxarticleid=' + oParam._oData._6;
             }
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=actions_article&fnc=setactionarticle&oxid=[{$oxid}]'+sRequest, callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink() nofilter}]&cmpid=container1&container=actions_article&fnc=setactionarticle&oxid=[{$oxid}]'+sRequest, callback );
         }
         YAHOO.oxid.container1.onRemove = function()
         {
@@ -74,7 +74,7 @@
                 failure: YAHOO.oxid.container1.onFailure,
                 scope:   YAHOO.oxid.container1
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container1&container=actions_article&fnc=removeactionarticle&oxid=[{$oxid}]', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink() nofilter}]&cmpid=container1&container=actions_article&fnc=removeactionarticle&oxid=[{$oxid}]', callback );
 
         }
         // subscribint event listeners on buttons
@@ -131,4 +131,3 @@
 
 </body>
 </html>
-

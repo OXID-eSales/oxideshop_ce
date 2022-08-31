@@ -17,7 +17,7 @@ function ThisDate( sID)
 
 [{assign var="oCurr" value=$edit->getOrderCurrency()}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cur" value="[{$oCurr->id}]">
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -25,7 +25,7 @@ function ThisDate( sID)
 </form>
 
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cur" value="[{$oCurr->id}]">
 <input type="hidden" name="cl" value="order_main">
@@ -198,8 +198,8 @@ function ThisDate( sID)
                                 <td class="edittext">
                                     <select name="setDelSet" class="editinput" style="width: 135px;" [{$readonly}]>
                                     <option value="">----</option>
-                                    [{foreach from=$oShipSet key=sShipSetId item=oShipSet}]
-                                    <option value="[{$sShipSetId}]" [{if $edit->oxorder__oxdeltype->value == $sShipSetId}]SELECTED[{/if}]>[{$oShipSet->oxdeliveryset__oxtitle->value}]</option>
+                                    [{foreach from=$oShipSet key=sShipSetId item=oShipSetItem}]
+                                    <option value="[{$sShipSetId}]" [{if $edit->oxorder__oxdeltype->value == $sShipSetId}]SELECTED[{/if}]>[{$oShipSetItem->oxdeliveryset__oxtitle->value}]</option>
                                     [{/foreach}]
                                     </select>
                                     [{oxinputhelp ident="HELP_ORDER_MAIN_DELTYPE"}]
@@ -239,7 +239,7 @@ function ThisDate( sID)
     <!-- Anfang rechte Seite -->
     <td class="edittext" align="left" valign="bottom">
         [{block name="admin_order_main_send_download_links"}]
-            <form name="senddownloadlinks" id="senddownloadlinks" action="[{$oViewConf->getSelfLink()}]" method="post">
+            <form name="senddownloadlinks" id="senddownloadlinks" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                 [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">
@@ -250,7 +250,7 @@ function ThisDate( sID)
             </form>
         [{/block}]
         [{block name="admin_order_main_reset_order"}]
-            <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink()}]" method="post">
+            <form name="resetorder" id="resetorder" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                 [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">
@@ -260,7 +260,7 @@ function ThisDate( sID)
             </form>
         [{/block}]
         [{block name="admin_order_main_send_order"}]
-            <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink()}]" method="post">
+            <form name="sendorder" id="sendorder" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                 [{$oViewConf->getHiddenSid() nofilter}]
                 <input type="hidden" name="cur" value="[{$oCurr->id}]">
                 <input type="hidden" name="cl" value="order_main">

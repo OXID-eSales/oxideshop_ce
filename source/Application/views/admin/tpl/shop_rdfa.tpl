@@ -21,14 +21,14 @@ function _groupExp(el) {
 [{assign var="aContents" value=$oView->getContentList()}]
 [{assign var="customers" value=$oView->getCustomers()}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="actshop" value="[{$oViewConf->getActiveShopId()}]">
     <input type="hidden" name="cl" value="shop_rdfa">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="shop_rdfa">
     <input type="hidden" name="fnc" value="">
@@ -228,7 +228,7 @@ function _groupExp(el) {
             <dl>
                 <dt>
                     <input type=text class="txt" name=confstrs[sRDFaGLN] value="[{$confstrs.sRDFaGLN}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_RDFA_GLN}]
+                    [{oxinputhelp ident="HELP_SHOP_RDFA_GLN"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_RDFA_GLN"}]
@@ -238,7 +238,7 @@ function _groupExp(el) {
             <dl>
                 <dt>
                     <input type=text class="txt" name=confstrs[sRDFaNAICS] value="[{$confstrs.sRDFaNAICS}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_RDFA_NAICS}]
+                    [{oxinputhelp ident="HELP_SHOP_RDFA_NAICS"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_RDFA_NAICS"}]
@@ -248,7 +248,7 @@ function _groupExp(el) {
             <dl>
                 <dt>
                     <input type=text class="txt" name=confstrs[sRDFaISIC] value="[{$confstrs.sRDFaISIC}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_RDFA_ISIC}]
+                    [{oxinputhelp ident="HELP_SHOP_RDFA_ISIC"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_RDFA_ISIC"}]
@@ -258,7 +258,7 @@ function _groupExp(el) {
             <dl>
                 <dt>
                     <input type=text class="txt" name=confstrs[sRDFaDUNS] value="[{$confstrs.sRDFaDUNS}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_RDFA_DUNS}]
+                    [{oxinputhelp ident="HELP_SHOP_RDFA_DUNS"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_RDFA_DUNS"}]
@@ -279,7 +279,7 @@ function _groupExp(el) {
                 <dt>
                     <input type=hidden name="confbools[blShowRDFaProductStock]" value="false">
                     <input type=checkbox name="confbools[blShowRDFaProductStock]" value="true"  [{if ($confbools.blShowRDFaProductStock)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_RDFA_SHOW_PRODUCTSTOCK}]
+                    [{oxinputhelp ident="HELP_SHOP_RDFA_SHOW_PRODUCTSTOCK"}]
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_RDFA_SHOW_PRODUCTSTOCK"}]

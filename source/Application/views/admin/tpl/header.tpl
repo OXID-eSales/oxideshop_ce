@@ -3,8 +3,8 @@
 <head>
     [{block name="admin_header_head"}]
         <title>[{oxmultilang ident="NAVIGATION_TITLE"}]</title>
-        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]nav.css">
-        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]nav.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]colors_[{$oViewConf->getEdition()|lower}].css">
         <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
     [{/block}]
 </head>

@@ -489,12 +489,15 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = Registry::getConfig();
-        if ($resourceType == 'file' && !is_readable($resourceName)) {
+        if ($resourceType === 'file' && !is_readable($resourceName)) {
             $resourceName = $config->getTemplatePath($resourceName, $config->isAdmin());
-            $resourceContent = $smarty->_read_file($resourceName);
-            $resourceTimestamp = filemtime($resourceName);
+            $fileLoaded = is_file($resourceName) && is_readable($resourceName);
+            if ($fileLoaded) {
+                $resourceContent = (string) \file_get_contents($resourceName);
+                $resourceTimestamp = filemtime($resourceName);
+            }
 
-            return is_file($resourceName) && is_readable($resourceName);
+            return $fileLoaded;
         }
 
         return false;

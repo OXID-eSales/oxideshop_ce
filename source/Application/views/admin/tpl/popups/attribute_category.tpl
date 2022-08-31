@@ -14,7 +14,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=attribute_category&synchoxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=attribute_category&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
@@ -30,7 +30,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=attribute_category&oxid=[{$oxid}]',
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=attribute_category&oxid=[{$oxid}]',
                                                     { selectionMode:'single' }
                                                     );
 
@@ -99,7 +99,7 @@
                                                    formatter: YAHOO.oxid.aoc.custFormatter
                                                    [{/if}]},
                                                   [{/foreach}] ],
-                                                '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=attribute_order&oxid='+sOxid,
+                                                '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=attribute_order&oxid='+sOxid,
                                                 { selectionMode:'single' }
                                                 )
                 //
@@ -187,4 +187,3 @@
 
 </body>
 </html>
-

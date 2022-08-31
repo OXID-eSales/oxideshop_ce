@@ -6,7 +6,7 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="voucherserie_groups">
@@ -19,7 +19,7 @@
             <tr>
                 <td>
                     [{block name="admin_voucherserie_groups_form"}]
-                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                             [{$oViewConf->getHiddenSid() nofilter}]
                             <input type="hidden" name="cl" value="voucherserie_groups">
                             <input type="hidden" name="fnc" value="">
@@ -31,7 +31,7 @@
                 </td>
                 <td>
                     [{block name="admin_voucherserie_categories_form"}]
-                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                             [{$oViewConf->getHiddenSid() nofilter}]
                             <input type="hidden" name="cl" value="discount_articles">
                             <input type="hidden" name="fnc" value="">
@@ -43,7 +43,7 @@
                 </td>
                 <td>
                     [{block name="admin_voucherserie_articles_form"}]
-                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                             [{$oViewConf->getHiddenSid() nofilter}]
                             <input type="hidden" name="cl" value="discount_articles">
                             <input type="hidden" name="fnc" value="">

@@ -1,6 +1,6 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="box"}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="theme_main">
@@ -19,7 +19,7 @@
                 <strong>[{oxmultilang ident="THEME_PARENT_THEME_TITLE"}]: </strong>
                 [{assign var='_oParent' value=$oTheme->getParent()}]
                 [{if $_oParent}]
-                    <a class="themetitle" href="[{$oViewConf->getSelfLink()}]&amp;cl=theme_main&amp;oxid=[{$oTheme->getInfo('parentTheme')}]&amp;updatelist=1">[{$_oParent->getInfo('title')}]</a>
+                    <a class="themetitle" href="[{$oViewConf->getSelfLink() nofilter}]&amp;cl=theme_main&amp;oxid=[{$oTheme->getInfo('parentTheme')}]&amp;updatelist=1">[{$_oParent->getInfo('title')}]</a>
                 [{else}]
                     <span class="error">[{$oTheme->getInfo('parentTheme')}]</span>
                 [{/if}]
@@ -39,7 +39,7 @@
             <td width="19%" valign="top">
                 [{assign var='_sError' value=$oTheme->checkForActivationErrors()}]
                 [{if !$_sError}]
-                    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+                    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
                         <p>
                         [{$oViewConf->getHiddenSid() nofilter}]
                         <input type="hidden" name="cl" value="theme_main">

@@ -5,8 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     <link rel="shortcut icon" href="[{$oViewConf->getImageUrl()}]favicon.ico">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]login.css">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]login.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]colors_[{$oViewConf->getEdition()|lower}].css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
 
     <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo_dark.svg')}]" /></div>
 
-    <form action="[{$oViewConf->getSelfLink()}]" target="_top" method="post" name="login" id="login">
+    <form action="[{$oViewConf->getSelfLink() nofilter}]" target="_top" method="post" name="login" id="login">
 
         [{block name="admin_login_form"}]
             [{$oViewConf->getHiddenSid() nofilter}]

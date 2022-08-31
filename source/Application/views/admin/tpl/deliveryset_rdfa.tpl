@@ -6,14 +6,14 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
 [{assign var="aAllRDFaDeliveries" value=$oView->getAllRDFaDeliveries()}]
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="deliveryset_rdfa">
     <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
 </form>
 
-<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
 [{$oViewConf->getHiddenSid() nofilter}]
 <input type="hidden" name="cl" value="deliveryset_rdfa">
 <input type="hidden" name="fnc" value="">
@@ -31,7 +31,7 @@
         [{block name="admin_payment_main_form"}]
             [{foreach key=key item=oDelivery from=$aAllRDFaDeliveries}]
                 [{assign var="name" value=$oDelivery->name}]
-                [{assign var="ident" value=DELIVERY_RDFA_$name}]
+                [{assign var="ident" value="DELIVERY_RDFA_$name"}]
                 [{assign var="ident" value=$ident|oxupper}]
                 [{if $oDelivery->type == 0}]
                 <tr>
@@ -53,7 +53,7 @@
         [{block name="admin_payment_main_form"}]
             [{foreach key=key item=oDelivery from=$aAllRDFaDeliveries}]
                 [{assign var="name" value=$oDelivery->name}]
-                [{assign var="ident" value=DELIVERY_RDFA_$name}]
+                [{assign var="ident" value="DELIVERY_RDFA_$name"}]
                 [{assign var="ident" value=$ident|oxupper}]
                 [{if $oDelivery->type == 1}]
                 <tr>

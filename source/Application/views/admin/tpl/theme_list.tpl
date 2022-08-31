@@ -21,7 +21,7 @@ window.onload = function ()
 
 <div id="liste">
 
-<form name="search" id="search" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="search" id="search" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="cl" value="theme_list">
     <input type="hidden" name="lstrt" value="[{$lstrt}]">

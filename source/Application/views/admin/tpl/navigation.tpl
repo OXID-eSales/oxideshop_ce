@@ -2,8 +2,8 @@
 <html id="nav">
 <head>
     <title>[{oxmultilang ident="NAVIGATION_TITLE"}]</title>
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]nav.css">
-    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]nav.css">
+    <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]colors_[{$oViewConf->getEdition()|lower}].css">
     <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
     <script type="text/javascript">
         [{if $loadbasefrm}]
@@ -11,17 +11,17 @@
         window.onload = function ()
         {
             if ( '[{$listview}]' != '' ) {
-                top.basefrm.list.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$listview}]&oxid=[{$oViewConf->getActiveShopId()}]&actedit=[{$actedit}]";
-                top.basefrm.edit.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=[{$editview}]&oxid=[{$oViewConf->getActiveShopId()}]";
+                top.basefrm.list.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&" nofilter}]&cl=[{$listview}]&oxid=[{$oViewConf->getActiveShopId()}]&actedit=[{$actedit}]";
+                top.basefrm.edit.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&" nofilter}]&cl=[{$editview}]&oxid=[{$oViewConf->getActiveShopId()}]";
             } else if ( top.basefrm ) {
-                top.basefrm.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]&cl=navigation&item=home.tpl";
+                top.basefrm.location = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&" nofilter}]&cl=navigation&item=home.tpl";
             }
         }
         [{/if}]
     </script>
 </head>
 <body>
-    <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo.svg')}]" /></div>
+    <div id="shopLogo"><img src="[{$oViewConf->getImageUrl('logo.svg') nofilter}]" /></div>
     <table>
     <tr><td class="main">
     [{include file="include/navigation_shopselect.tpl"}]
@@ -32,7 +32,7 @@
             [{assign var='mh' value=$mh+1}]
             [{assign var='mn' value=0}]
             <h2>
-                [{if $menuholder->getAttribute('url')}]<a href="[{$oViewConf->getSelfLink()}]&cl=navigation&amp;fnc=exturl&amp;url=[{$menuholder->getAttribute('url')|escape:'url'}]" target="basefrm" >[{/if}]
+                [{if $menuholder->getAttribute('url')}]<a href="[{$oViewConf->getSelfLink() nofilter}]&cl=navigation&fnc=exturl&url=[{$menuholder->getAttribute('url')|escape:'url' nofilter}]" target="basefrm" >[{/if}]
                 [{oxmultilang ident=$menuholder->getAttribute('name')|default:$menuholder->getAttribute('id') noerror=true}]
                 [{if $menuholder->getAttribute('url')}]</a>[{/if}]
             </h2>
@@ -43,11 +43,11 @@
                 [{if $menuitem->nodeType == XML_ELEMENT_NODE}]
                     [{assign var='mn' value=$mn+1}]
                     [{assign var='sm' value=0}]
-                    <li class="[{if $menuitem->getAttribute('active')}]exp[{assign var='sNavExpId' value="nav-`$mh`-`$mn`"}][{/if}]" id="nav-[{$mh}]-[{$mn}]">
+                    <li class="[{if $menuitem->getAttribute('active')}]exp[{assign var='sNavExpId' value="nav-$mh-$mn"}][{/if}]" id="nav-[{$mh}]-[{$mn}]">
                         [{if $menuitem->getAttribute('url')}]
-                            <a href="[{$menuitem->getAttribute('url')}]" onclick="_navAct(this);" class="rc" target="[{if $menuitem->getAttribute('target')}][{$menuitem->getAttribute('target')}][{else}]basefrm[{/if}]"><b>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') noerror=true}]</b></a>
+                            <a href="[{$menuitem->getAttribute('url') nofilter}]" onclick="_navAct(this);" class="rc" target="[{if $menuitem->getAttribute('target')}][{$menuitem->getAttribute('target')}][{else}]basefrm[{/if}]"><b>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') noerror=true}]</b></a>
                         [{elseif $menuitem->getAttribute('expand') == 'none'}]
-                            <a href="[{$menuitem->getAttribute('link')}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') noerror=true}]</b></a>
+                            <a href="[{$menuitem->getAttribute('link') nofilter}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') noerror=true}]</b></a>
                         [{else}]
                             <a href="#" onclick="_navExp(this);return false;" class="rc"><b>[{oxmultilang ident=$menuitem->getAttribute('name')|default:$menuitem->getAttribute('id') noerror=true}]</b></a>
                         [{/if}]
@@ -57,8 +57,8 @@
                             [{if $submenuitem->nodeType == XML_ELEMENT_NODE}]
                                 [{assign var='sm' value=$sm+1}]
                                 [{if $submenuitem->getAttribute('linkicon')}] [{assign var='linkicon' value=$submenuitem->getAttribute('linkicon')}][{/if}]
-                                <li class="[{if $submenuitem->getAttribute('active')}]act[{assign var='sNavActId' value="nav-`$mh`-`$mn`-`$sm`"}][{/if}]" id="nav-[{$mh}]-[{$mn}]-[{$sm}]" name="nav_[{$submenuitem->getAttribute('cl')}]" rel="nav-[{$mh}]-[{$mn}]">
-                                    <a href="[{if $submenuitem->getAttribute('url')}][{$submenuitem->getAttribute('url')}][{else}][{$submenuitem->getAttribute('link')}][{/if}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{if $linkicon}]<span class="[{$linkicon}]">[{/if}][{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}][{if $linkicon}]</span>[{/if}]</b></a>
+                                <li class="[{if $submenuitem->getAttribute('active')}]act[{assign var='sNavActId' value="nav-$mh-$mn-$sm"}][{/if}]" id="nav-[{$mh}]-[{$mn}]-[{$sm}]" name="nav_[{$submenuitem->getAttribute('cl')}]" rel="nav-[{$mh}]-[{$mn}]">
+                                    <a href="[{if $submenuitem->getAttribute('url')}][{$submenuitem->getAttribute('url') nofilter}][{else}][{$submenuitem->getAttribute('link') nofilter}][{/if}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{if $linkicon}]<span class="[{$linkicon}]">[{/if}][{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}][{if $linkicon}]</span>[{/if}]</b></a>
                                 </li>
                                 [{assign var='linkicon' value=''}]
                             [{/if}]
@@ -82,15 +82,15 @@
                 [{assign var='mh' value=$mh+1}]
                 [{assign var='mn' value=1}]
                 [{assign var='sm' value=0}]
-                <li id="nav-[{$mh}]-[{$mn}]" class="[{if $blOpenHistory}]exp[{assign var='sHistoryId' value="nav-`$mh`-`$mn`"}][{/if}]">
-                    <a class="rc" name="_hist" href="[{$oViewConf->getSelfLink()}]&cl=navigation&item=navigation.tpl&openHistory=1&[{$smarty.now}]#_hist"><b>[{oxmultilang ident=NAVIGATION_HISTORY noerror=true}]</b></a>
+                <li id="nav-[{$mh}]-[{$mn}]" class="[{if $blOpenHistory}]exp[{assign var='sHistoryId' value="nav-$mh-$mn"}][{/if}]">
+                    <a class="rc" name="_hist" href="[{$oViewConf->getSelfLink() nofilter}]&cl=navigation&item=navigation.tpl&openHistory=1&[{$smarty.now}]#_hist"><b>[{oxmultilang ident=NAVIGATION_HISTORY noerror=true}]</b></a>
 
                     <ul>
                         [{foreach from=$menuhistory item=submenuitem}]
                             [{if $submenuitem->nodeType == XML_ELEMENT_NODE}]
                                 [{assign var='sm' value=$sm+1}]
                                 <li id="nav-[{$mh}]-[{$mn}]-[{$sm}]" class="">
-                                    <a href="[{$submenuitem->getAttribute('link')}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}]</b></a>
+                                    <a href="[{$submenuitem->getAttribute('link') nofilter}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}]</b></a>
                                 </li>
                             [{/if}]
                         [{/foreach}]
@@ -108,13 +108,13 @@
                 [{assign var='sm' value=0}]
                 <li id="nav-[{$mh}]-[{$mn}]">
                     <a class="rc" onclick="_navExp(this);return false;" href="#" ><b>[{oxmultilang ident=NAVIGATION_FAVORITES noerror=true}]</b></a>
-                    <a class="ed" href="[{$oViewConf->getSelfLink()}]&cl=navigation&amp;item=favorites.tpl" target="basefrm" >[{oxmultilang ident=NAVIGATION_FAVORITES_EDIT noerror=true}]</a>
+                    <a class="ed" href="[{$oViewConf->getSelfLink() nofilter}]&cl=navigation&amp;item=favorites.tpl" target="basefrm" >[{oxmultilang ident=NAVIGATION_FAVORITES_EDIT noerror=true}]</a>
                     <ul>
                         [{foreach from=$menufavorites item=submenuitem}]
                             [{if $submenuitem->nodeType == XML_ELEMENT_NODE}]
                                 [{assign var='sm' value=$sm+1}]
                                 <li id="nav-[{$mh}]-[{$mn}]-[{$sm}]" class="">
-                                    <a href="[{$submenuitem->getAttribute('link')}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}]</b></a>
+                                    <a href="[{$submenuitem->getAttribute('link') nofilter}]" onclick="_navAct(this);" target="basefrm" class="rc"><b>[{oxmultilang ident=$submenuitem->getAttribute('name')|default:$submenuitem->getAttribute('id') noerror=true}]</b></a>
                                 </li>
                             [{/if}]
                         [{/foreach}]

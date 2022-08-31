@@ -6,7 +6,7 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 
-<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
+<form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink() nofilter}]" method="post">
     [{$oViewConf->getHiddenSid() nofilter}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="cl" value="adminlinks_main">
@@ -15,7 +15,7 @@
 
       <table cellspacing="0" cellpadding="0" border="0" width="98%">
         <colgroup><col width="20%"><col width="5%"><col width="75%"></colgroup>
-        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" onSubmit="copyLongDesc( 'oxlinks__oxurldesc' );">
+        <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink() nofilter}]" method="post" onSubmit="copyLongDesc( 'oxlinks__oxurldesc' );">
         [{$oViewConf->getHiddenSid() nofilter}]
         <input type="hidden" name="cl" value="adminlinks_main">
         <input type="hidden" name="fnc" value="">

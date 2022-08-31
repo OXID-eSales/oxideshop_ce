@@ -13,7 +13,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=category_order&synchoxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=category_order&synchoxid=[{$oxid}]'
                                                     );
 
         [{assign var="sSep" value=""}]
@@ -29,7 +29,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=category_order&oxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=category_order&oxid=[{$oxid}]'
                                                     );
         // disabling filters for second container
         if ( YAHOO.oxid.container2._aFilters ) {
@@ -76,7 +76,7 @@
                 failure: YAHOO.oxid.container2.onFailure,
                 scope:   YAHOO.oxid.container2
             };
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=category_order&fnc=saveneworder&oxid=[{$oxid}]&aoc=1', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink() nofilter}]&cmpid=container2&container=category_order&fnc=saveneworder&oxid=[{$oxid}]&aoc=1', callback );
         };
         YAHOO.oxid.container2.deleteOrder = function( oEvt )
         {
@@ -86,7 +86,7 @@
                 scope:   YAHOO.oxid.container2
             };
 
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=category_order&fnc=remneworder&oxid=[{$oxid}]', callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink() nofilter}]&cmpid=container2&container=category_order&fnc=remneworder&oxid=[{$oxid}]', callback );
         };
         // subscribing event listeners on buttons
         YAHOO.oxid.container1.oDeleteBtn.on("click", YAHOO.oxid.container2.deleteOrder);

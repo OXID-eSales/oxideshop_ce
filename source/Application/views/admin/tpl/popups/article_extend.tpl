@@ -15,7 +15,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container1&container=article_extend&synchoxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container1&container=article_extend&synchoxid=[{$oxid}]'
                                                     );
 
         YAHOO.oxid.aoc.custFormatter = function( elCell, oRecord, oColumn, oData )
@@ -49,7 +49,7 @@
                                                       [{/strip}]
                                                       [{assign var="sSep" value=","}]
                                                       [{/foreach}] ],
-                                                    '[{$oViewConf->getAjaxLink()}]cmpid=container2&container=article_extend&oxid=[{$oxid}]'
+                                                    '[{$oViewConf->getAjaxLink() nofilter}]cmpid=container2&container=article_extend&oxid=[{$oxid}]'
                                                     );
 
         YAHOO.oxid.container1.getDropAction = function()
@@ -91,7 +91,7 @@
                 scope:   YAHOO.oxid.container2
             };
 
-            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink()}]&cmpid=container2&container=article_extend&fnc=setasdefault&oxid=[{$oxid}]'+'&defcat='+$('defcat').value, callback );
+            YAHOO.util.Connect.asyncRequest( 'GET', '[{$oViewConf->getAjaxLink() nofilter}]&cmpid=container2&container=article_extend&fnc=setasdefault&oxid=[{$oxid}]'+'&defcat='+$('defcat').value, callback );
             YAHOO.oxid.container2.oActiveBtn.disable();
         }
 
@@ -128,4 +128,3 @@
 
 </body>
 </html>
-

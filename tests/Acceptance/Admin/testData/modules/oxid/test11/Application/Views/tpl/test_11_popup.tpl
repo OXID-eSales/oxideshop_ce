@@ -6,7 +6,7 @@
     {
         YAHOO.oxid.container1 = new YAHOO.oxid.aoc( 'container1',
             '[{$oxajax}]',
-            '[{$oViewConf->getAjaxLink()}]&container=test_11_ajax_controller'
+            '[{$oViewConf->getAjaxLink() nofilter}]&container=test_11_ajax_controller'
         );
     }
     $E.onDOMReady( initAoc );

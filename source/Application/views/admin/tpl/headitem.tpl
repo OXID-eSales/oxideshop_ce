@@ -4,20 +4,20 @@
   <title>[{$title}]</title>
   <meta http-equiv="Content-Type" content="text/html; charset=[{$charset}]">
   [{if isset($meta_refresh_sec,$meta_refresh_url)}]
-  <meta http-equiv=Refresh content="[{$meta_refresh_sec}];URL=[{$meta_refresh_url|replace:"&amp;":"&"}]">
+  <meta http-equiv=Refresh content="[{$meta_refresh_sec}];URL=[{$meta_refresh_url|replace:"&amp;":"&" nofilter}]">
   [{/if}]
   <link rel="shortcut icon" href="[{$oViewConf->getBaseDir()}]favicon.ico">
 
   [{block name="admin_headitem_inccss"}]
-        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]main.css">
-        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl()}]colors_[{$oViewConf->getEdition()|lower}].css">
-        <link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl()}]yui/build/assets/skins/sam/container.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]main.css">
+        <link rel="stylesheet" href="[{$oViewConf->getResourceUrl() nofilter}]colors_[{$oViewConf->getEdition()|lower}].css">
+        <link rel="stylesheet" type="text/css" href="[{$oViewConf->getResourceUrl() nofilter}]yui/build/assets/skins/sam/container.css">
   [{/block}]
 
   [{block name="admin_headitem_incjs"}]
-      <script type="text/javascript" src="[{$oViewConf->getResourceUrl()}]yui/build/utilities/utilities.js"></script>
-      <script type="text/javascript" src="[{$oViewConf->getResourceUrl()}]yui/build/container/container-min.js"></script>
-      <script type="text/javascript" src="[{$oViewConf->getResourceUrl()}]yui/oxid-help.js"></script>
+      <script type="text/javascript" src="[{$oViewConf->getResourceUrl() nofilter}]yui/build/utilities/utilities.js"></script>
+      <script type="text/javascript" src="[{$oViewConf->getResourceUrl() nofilter}]yui/build/container/container-min.js"></script>
+      <script type="text/javascript" src="[{$oViewConf->getResourceUrl() nofilter}]yui/oxid-help.js"></script>
   [{/block}]
 
   [{block name="admin_headitem_js"}]
@@ -42,7 +42,7 @@
         var ajaxpopup = null;
         function showDialog( sParams )
         {
-            ajaxpopup = window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]'+sParams, 'ajaxpopup', 'width=850,height=680,scrollbars=yes,resizable=yes');
+            ajaxpopup = window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&" nofilter}]'+sParams, 'ajaxpopup', 'width=850,height=680,scrollbars=yes,resizable=yes');
         }
 
         function focusPopup()

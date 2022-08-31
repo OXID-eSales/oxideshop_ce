@@ -52,7 +52,7 @@
         "codeception/module-db": "^1.0",
         "codeception/module-filesystem": "^1.0",
         "codeception/module-webdriver": "^1.1",
-        "oxid-esales/codeception-modules": "dev-b-7.0.x",
+        "oxid-esales/codeception-modules": "dev-master",
         "oxid-esales/codeception-page-objects": "dev-b-7.0.x",
         "composer/composer": "^2.0",
         "incenteev/composer-parameter-handler": "^v2.1.4",

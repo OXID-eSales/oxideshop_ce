@@ -59,7 +59,7 @@
         "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-ide-helper": "dev-b-7.0.x",
         "squizlabs/php_codesniffer": "^3.5.4",
-        "oxid-esales/developer-tools": "dev-7.0.x",
+        "oxid-esales/developer-tools": "dev-b-7.0.x",
         "vimeo/psalm": "^4.4.1"
     },
     "minimum-stability": "dev",

@@ -7,22 +7,20 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Config\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\Configuration\Dao;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-class ShopConfigurationSettingDaoTest extends TestCase
+class ShopConfigurationSettingDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
 
     /**
      * @dataProvider settingValueDataProvider

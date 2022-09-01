@@ -14,13 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
-final class LanguageInstallerTest extends TestCase
+final class LanguageInstallerTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function testInstallSetsDefaultLanguage(): void
     {
         $english = new DefaultLanguage('en');

@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Language;
+use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -126,16 +125,11 @@ class TranslateLogicTest extends IntegrationTestCase
         return $this->getMockBuilder(ContextInterface::class)->getMock();
     }
 
-    /**
-     * @param $languageId
-     * @return LegacyTemplateTranslator
-     */
-    private function getTranslator($languageId)
+    private function getTranslator(int $languageId): LegacyTemplateTranslator
     {
-        $language = Registry::getLang();
+        $language = new Language();
         $language->setTplLanguage($languageId);
         $language->setAdminMode(false);
-        Registry::set(Language::class, $language);
-        return new LegacyTemplateTranslator();
+        return new LegacyTemplateTranslator($language);
     }
 }

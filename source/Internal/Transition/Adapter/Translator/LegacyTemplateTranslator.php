@@ -6,20 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator;
 
-use OxidEsales\EshopCommunity\Core\Language;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
 
 class LegacyTemplateTranslator implements TranslatorInterface
 {
-    /**
-     * @var Language
-     */
-    private $language;
-
-    public function __construct()
+    public function __construct(private Language $language)
     {
-        $this->language = Registry::getLang();
     }
 
     /**

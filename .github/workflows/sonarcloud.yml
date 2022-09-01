@@ -75,15 +75,12 @@ jobs:
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction
 
-      - name: Reset shop
-        run: docker-compose exec -T php php vendor/bin/reset-shop
-
       - name: Stop containers
         run: |
           docker-compose down
           sleep 2
 
-  unit_tests:
+  all_tests:
     strategy:
       matrix:
         php: [ '8.0' ]
@@ -111,20 +108,22 @@ jobs:
         with:
           swap-size-gb: 10
 
+      - name: Reset shop
+        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+
       - name: Run tests
         run: |
           docker-compose run -T \
             -e XDEBUG_MODE=coverage \
-            -e TEST_DIRS=unit,Unit \
-            php php vendor/bin/runtests --coverage-clover=/var/www/unit_coverage.xml AllTestsUnit | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+            php php vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php tests --coverage-clover=/var/www/tests_coverage.xml | tee tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
-          path: unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          path: tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 
@@ -133,11 +132,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
-          path: source/unit_coverage.xml
+          path: source/tests_coverage.xml
           if-no-files-found: error
           retention-days: 7
 
-  integration_tests:
+  deprecated_all_tests:
     strategy:
       matrix:
         php: [ '8.0' ]
@@ -165,20 +164,25 @@ jobs:
         with:
           swap-size-gb: 10
 
+      - name: Install dependencies
+        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce --with-all-dependencies
+
+      - name: Reset shop
+        run: docker-compose exec -T php php vendor/bin/reset-shop
+
       - name: Run tests
         run: |
           docker-compose run -T \
             -e XDEBUG_MODE=coverage \
-            -e TEST_DIRS=integration,Integration \
-            php php vendor/bin/runtests --coverage-clover=/var/www/integration_coverage.xml AllTestsUnit | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+            php php vendor/bin/runtests --coverage-clover=/var/www/deprecated_tests_coverage.xml AllTestsUnit | tee deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
-          path: integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          path: deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 
@@ -187,7 +191,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage-reports
-          path: source/integration_coverage.xml
+          path: source/deprecated_tests_coverage.xml
           if-no-files-found: error
           retention-days: 7
 
@@ -225,7 +229,7 @@ jobs:
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
             -e BROWSER_NAME=firefox \
             -e XDEBUG_MODE=coverage \
-            php php vendor/bin/codecept run acceptance -c tests/codeception.yml --ext DotReporter --coverage-xml=/var/www/codeception_coverage.xml | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            php php vendor/bin/codecept run acceptance,acceptanceAdmin -c tests/codeception.yml --coverage-xml=/var/www/codeception_coverage.xml | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
@@ -256,7 +260,7 @@ jobs:
           retention-days: 7
 
   sonarcloud:
-    needs: [ unit_tests, integration_tests, codeception_tests ]
+    needs: [ all_tests, deprecated_all_tests, codeception_tests ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout shop
@@ -272,8 +276,8 @@ jobs:
 
       - name: Fix Paths In Coverage Reports
         run: |
-          sed -i 's#/var/www/##' coverage-reports/unit_coverage.xml
-          sed -i 's#/var/www/##' coverage-reports/integration_coverage.xml
+          sed -i 's#/var/www/##' coverage-reports/tests_coverage.xml
+          sed -i 's#/var/www/##' coverage-reports/deprecated_tests_coverage.xml
           sed -i 's#/var/www/##' coverage-reports/codeception_coverage.xml
 
       - name: Set target branch
@@ -301,7 +305,7 @@ jobs:
             -Dsonar.branch.target=${{ env.TARGET_BRANCH }} 
             -Dsonar.sources=source 
             -Dsonar.tests=tests 
-            -Dsonar.php.coverage.reportPaths=coverage-reports/unit_coverage.xml,coverage-reports/integration_coverage.xml,coverage-reports/codeception_coverage.xml
+            -Dsonar.php.coverage.reportPaths=coverage-reports/tests_coverage.xml,coverage-reports/deprecated_tests_coverage.xml,coverage-reports/codeception_coverage.xml
 
       - name: SonarCloud Scan (oxideshop_ce_internal)
         uses: sonarsource/sonarcloud-github-action@master
@@ -319,4 +323,4 @@ jobs:
             -Dsonar.branch.target=${{ env.TARGET_BRANCH }} 
             -Dsonar.sources=source/Internal 
             -Dsonar.tests=tests 
-            -Dsonar.php.coverage.reportPaths=coverage-reports/unit_coverage.xml,coverage-reports/integration_coverage.xml,coverage-reports/codeception_coverage.xml
+            -Dsonar.php.coverage.reportPaths=coverage-reports/tests_coverage.xml,coverage-reports/deprecated_tests_coverage.xml,coverage-reports/codeception_coverage.xml

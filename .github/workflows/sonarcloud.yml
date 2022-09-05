@@ -167,6 +167,9 @@ jobs:
       - name: Install dependencies
         run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce --with-all-dependencies
 
+      - name: Copy config file
+        run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/source/test_config.yml
+
       - name: Reset shop
         run: docker-compose exec -T php php vendor/bin/reset-shop
 
@@ -229,7 +232,7 @@ jobs:
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
             -e BROWSER_NAME=firefox \
             -e XDEBUG_MODE=coverage \
-            php php vendor/bin/codecept run acceptance,acceptanceAdmin -c tests/codeception.yml --coverage-xml=/var/www/codeception_coverage.xml | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            php php vendor/bin/codecept run acceptance,acceptanceAdmin -c tests/codeception.yml --ext DotReporter --coverage-xml=/var/www/codeception_coverage.xml | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log

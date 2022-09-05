@@ -70,14 +70,6 @@ class TestContainerFactory
         return $container;
     }
 
-    private function getBasicContextStub(): BasicContextStub
-    {
-        $context = new BasicContextStub();
-        $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
-
-        return $context;
-    }
-
     private function getContextStub(): ContextStub
     {
         $context = new ContextStub();

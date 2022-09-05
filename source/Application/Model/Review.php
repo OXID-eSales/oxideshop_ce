@@ -7,32 +7,23 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 
-/**
- * Article review manager.
- * Performs loading, updating, inserting of article review.
- */
-class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
+class Review extends BaseModel
 {
-
     /**
-     * Shop control variable
-     *
      * @var string
      */
     protected $_blDisableShopCheck = true;
 
     /**
-     * Current class name
-     *
      * @var string
      */
     protected $_sClassName = 'oxreview';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
     public function __construct()
     {
         parent::__construct();
@@ -76,7 +67,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($blRet = parent::load($oxId)) {
             // convert date's to international format
-            $this->oxreviews__oxcreate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxreviews__oxcreate->value));
+            $this->oxreviews__oxcreate->setValue(Registry::getUtilsDate()->formatDBDate($this->oxreviews__oxcreate->value));
         }
 
         return $blRet;
@@ -90,7 +81,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function insert()
     {
         // set oxcreate
-        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', Registry::getUtilsDate()->getTime()));
 
         return parent::insert();
     }
@@ -107,12 +98,12 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function loadList($sType, $aIds, $blLoadEmpty = false, $iLoadInLang = null)
     {
-        $oRevs = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oRevs->init('oxreview');
+        $reviews = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+        $reviews->init('oxreview');
 
         $params = [
             ':oxtype' => $sType,
-            ':oxlang' => is_null($iLoadInLang) ? (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
+            ':oxlang' => is_null($iLoadInLang) ? (int) Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
         ];
 
         if (is_array($aIds) && count($aIds)) {
@@ -121,7 +112,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sObjectIdWhere = "oxreviews.oxobjectid = :oxobjectid";
             $params[':oxobjectid'] = $aIds;
         } else {
-            return $oRevs;
+            return $reviews;
         }
 
         $sSelect = "select oxreviews.* from oxreviews where oxreviews.oxtype = :oxtype and $sObjectIdWhere and oxreviews.oxlang = :oxlang";
@@ -130,7 +121,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sSelect .= ' and oxreviews.oxtext != "" ';
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blGBModerate')) {
+        if (Registry::getConfig()->getConfigParam('blGBModerate')) {
             $sSelect .= ' and ( oxreviews.oxactive = "1" ';
 
             if ($oUser = $this->getUser()) {
@@ -143,15 +134,23 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $sSelect .= ' order by oxreviews.oxcreate desc ';
 
-        $oRevs->selectString($sSelect, $params);
+        $reviews->selectString($sSelect, $params);
 
-        // change date
-        foreach ($oRevs as $oItem) {
-            $oItem->oxreviews__oxcreate->convertToFormattedDbDate();
-            $oItem->oxreviews__oxtext->convertToPseudoHtml();
+        foreach ($reviews as $review) {
+            $reviewCreationDate = $review->oxreviews__oxcreate->getRawValue();
+            $review->oxreviews__oxcreate->setValue(
+                Registry::getUtilsDate()->formatDBDate($reviewCreationDate),
+                Field::T_RAW
+            );
+
+            $reviewText = (string)$review->oxreviews__oxtext->value;
+            $review->oxreviews__oxtext->setValue(
+                $this->isFieldValueHtmlEcaped() ? $this->insertHtmlLineBreaks($reviewText) : $reviewText,
+                Field::T_RAW
+            );
         }
 
-        return $oRevs;
+        return $reviews;
     }
 
     /**
@@ -187,5 +186,15 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
             ->getContainer()
             ->get(UserReviewAndRatingBridgeInterface::class)
             ->getReviewAndRatingList($userId);
+    }
+
+    private function isFieldValueHtmlEcaped(): bool
+    {
+        return !$this->getContainer()->getParameter('oxid_esales.templating.engine_autoescapes_html');
+    }
+
+    private function insertHtmlLineBreaks(string $text): string
+    {
+        return \str_replace("\r", '', \nl2br($text));
     }
 }

@@ -54,6 +54,9 @@ final class ContainerTest extends IntegrationTestCase
         );
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testAllServicesAreCorrectlyConfigured(): void
     {
         $testContainer = (new TestContainerFactory())->create();
@@ -62,8 +65,7 @@ final class ContainerTest extends IntegrationTestCase
             if ($definition->isPublic()) {
                 $testContainer->get($key);
             }
-        };
-        $this->assertTrue(true);
+        }
     }
 
     /**

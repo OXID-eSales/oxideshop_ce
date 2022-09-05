@@ -6,10 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.3] - Unreleased
 
+### Added
+- Configuration parameter `oxid_esales.templating.engine_autoescapes_html` that delegates HTML-escaping to templating engine
+  (when set to true, `Core\Field` will contain non-escaped HTML special characters)
+
 ### Removed
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
 - `ApplyModulesConfigurationCommand` moved to another repository
+- Methods:
+  - `Core\Field`
+    - `convertToFormattedDbDate()`
+    - `convertToPseudoHtml()`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`

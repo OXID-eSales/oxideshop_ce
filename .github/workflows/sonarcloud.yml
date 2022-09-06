@@ -168,7 +168,7 @@ jobs:
         run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce --with-all-dependencies
 
       - name: Copy config file
-        run: cp source/source/vendor/oxid-esales/testing-library/test_config.yml.dist source/source/source/test_config.yml
+        run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
 
       - name: Reset shop
         run: docker-compose exec -T php php vendor/bin/reset-shop

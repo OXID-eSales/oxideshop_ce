@@ -1,6 +1,7 @@
 {
     "name": "oxid-esales/oxideshop-ce",
     "description": "This package contains OXID eShop CE source code.",
+    "license": "proprietary",
     "type": "oxideshop",
     "keywords": [
         "oxid",
@@ -8,7 +9,6 @@
         "eShop"
     ],
     "homepage": "https://www.oxid-esales.com/en/home.html",
-    "license": "proprietary",
     "require": {
         "php": "^8.0",
         "ext-dom": "*",
@@ -39,26 +39,26 @@
         "symfony/filesystem": "^6.0",
         "symfony/finder": "^6.0",
         "symfony/lock": "^6.0",
+        "symfony/string": "^6.0",
         "symfony/yaml": "^6.0",
-        "webmozart/path-util": "^2.3",
-        "symfony/string": "^6.0"
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.1.1",
-        "phpspec/prophecy-phpunit": "^v2.0.1",
-        "mikey179/vfsstream": "~1.6.8",
         "codeception/codeception": "^5.0",
         "codeception/module-asserts": "^3.0",
         "codeception/module-db": "^3.0",
         "codeception/module-filesystem": "^3.0",
         "codeception/module-webdriver": "^3.1",
-        "oxid-esales/codeception-modules": "dev-b-7.0.x",
-        "oxid-esales/codeception-page-objects": "dev-b-7.0.x",
         "composer/composer": "^2.0",
         "incenteev/composer-parameter-handler": "^v2.1.4",
-        "oxid-esales/oxideshop-ide-helper": "dev-b-7.0.x",
-        "squizlabs/php_codesniffer": "^3.5.4",
+        "mikey179/vfsstream": "~1.6.8",
+        "oxid-esales/codeception-modules": "dev-b-7.0.x",
+        "oxid-esales/codeception-page-objects": "dev-b-7.0.x",
         "oxid-esales/developer-tools": "dev-b-7.0.x",
+        "oxid-esales/oxideshop-ide-helper": "dev-b-7.0.x",
+        "phpspec/prophecy-phpunit": "^v2.0.1",
+        "phpunit/phpunit": "^9.1.1",
+        "squizlabs/php_codesniffer": "^3.5.4",
         "vimeo/psalm": "^4.4.1"
     },
     "minimum-stability": "dev",
@@ -83,6 +83,11 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-b-6.4.x": "6.4.x-dev",
+            "dev-b-6.5.x": "6.5.x-dev",
+            "dev-b-7.0.x": "7.0.x-dev"
+        },
         "oxideshop": {
             "blacklist-filter": [
                 "Application/Component/**/*",
@@ -91,11 +96,6 @@
                 "Core/**/*",
                 "Internal/**/*"
             ]
-        },
-        "branch-alias": {
-            "dev-b-7.0.x": "7.0.x-dev",
-            "dev-b-6.5.x": "6.5.x-dev",
-            "dev-b-6.4.x": "6.4.x-dev"
         }
     },
     "scripts": {

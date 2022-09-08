@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configu
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\InvalidModuleIdException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use PHPUnit\Framework\TestCase;
@@ -92,5 +93,13 @@ class ModuleConfigurationTest extends TestCase
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->getModuleSetting('nonExistingSetting');
+    }
+
+    public function testInvalidModuleId(): void
+    {
+        $this->expectException(InvalidModuleIdException::class);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('idWith/Slash');
     }
 }

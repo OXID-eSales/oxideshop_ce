@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\Facts\Facts;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -289,5 +290,10 @@ class BasicContextStub implements BasicContextInterface
     public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;
+    }
+
+    public function getShopConfigurationDirectory(int $shopId): string
+    {
+        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string) $shopId);
     }
 }

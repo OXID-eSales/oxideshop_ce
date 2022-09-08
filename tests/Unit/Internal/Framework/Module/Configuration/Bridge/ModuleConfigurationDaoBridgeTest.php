@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configu
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +32,7 @@ class ModuleConfigurationDaoBridgeTest extends TestCase
             ->with('testModuleId', 1789);
 
         $shopEnvironmentConfigurationDao =
-            $this->getMockBuilder(ShopEnvironmentConfigurationDaoInterface::class)->getMock();
+            $this->getMockBuilder(ModuleEnvironmentConfigurationDaoInterface::class)->getMock();
 
         $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);
         $bridge->get('testModuleId');
@@ -46,6 +46,7 @@ class ModuleConfigurationDaoBridgeTest extends TestCase
             ->willReturn(1799);
 
         $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testId');
 
         $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
         $moduleConfigurationDao
@@ -54,7 +55,7 @@ class ModuleConfigurationDaoBridgeTest extends TestCase
             ->with($moduleConfiguration, 1799);
 
         $shopEnvironmentConfigurationDao =
-            $this->getMockBuilder(ShopEnvironmentConfigurationDaoInterface::class)->getMock();
+            $this->getMockBuilder(ModuleEnvironmentConfigurationDaoInterface::class)->getMock();
         $shopEnvironmentConfigurationDao->expects($this->once())->method('remove');
 
         $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);

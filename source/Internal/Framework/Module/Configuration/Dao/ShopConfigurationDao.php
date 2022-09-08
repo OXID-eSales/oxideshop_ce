@@ -9,27 +9,21 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\TemplateExtensionChainDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ShopConfigurationDao implements ShopConfigurationDaoInterface
 {
     public function __construct(
-        private ShopConfigurationDataMapperInterface $shopConfigurationMapper,
-        private FileStorageFactoryInterface $fileStorageFactory,
-        private BasicContextInterface $context,
-        private ShopConfigurationCacheInterface $cache,
-        private Filesystem $fileSystem,
-        private NodeInterface $node,
-        private ShopConfigurationExtenderInterface $shopConfigurationExtender
+        private BasicContextInterface              $context,
+        private Filesystem                         $fileSystem,
+        private ModuleConfigurationDaoInterface    $moduleConfigurationDao,
+        private ClassExtensionsChainDaoInterface   $classExtensionsChainDao,
+        private TemplateExtensionChainDaoInterface $templateExtensionChainDao
     ) {
     }
 
@@ -47,14 +41,15 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
             );
         }
 
-        if ($this->cache->exists($shopId)) {
-            $shopConfiguration = $this->cache->get($shopId);
-        } else {
-            $shopConfiguration = $this->getConfigurationFromStorage($shopId);
-            $this->cache->put($shopId, $shopConfiguration);
+        $configuration = new ShopConfiguration();
+        $configuration->setClassExtensionsChain($this->classExtensionsChainDao->getChain($shopId));
+        $configuration->setModuleTemplateExtensionChain($this->templateExtensionChainDao->getChain($shopId));
+
+        foreach ($this->moduleConfigurationDao->getAll($shopId) as $moduleConfiguration) {
+            $configuration->addModuleConfiguration($moduleConfiguration);
         }
 
-        return $shopConfiguration;
+        return $configuration;
     }
 
     /**
@@ -63,11 +58,11 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void
     {
-        $this->cache->evict($shopId);
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
+            $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
+        }
 
-        $this->getStorage($shopId)->save(
-            $this->shopConfigurationMapper->toData($shopConfiguration)
-        );
+        $this->classExtensionsChainDao->saveChain($shopId, $shopConfiguration->getClassExtensionsChain());
     }
 
     /**
@@ -108,7 +103,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
             $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
 
             foreach ($dir as $fileInfo) {
-                if ($fileInfo->isFile()) {
+                if ($fileInfo->isDir() && is_numeric($fileInfo->getFilename())) {
                     $shopIds[] = (int)$fileInfo->getFilename();
                 }
             }
@@ -116,29 +111,6 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
         return $shopIds;
     }
-
-    /**
-     * @param int $shopId
-     *
-     * @return ArrayStorageInterface
-     */
-    private function getStorage(int $shopId): ArrayStorageInterface
-    {
-        return $this->fileStorageFactory->create(
-            $this->getShopConfigurationFilePath($shopId)
-        );
-    }
-
-    /**
-     * @param int $shopId
-     *
-     * @return string
-     */
-    private function getShopConfigurationFilePath(int $shopId): string
-    {
-        return $this->getShopsConfigurationDirectory() . $shopId . '.yaml';
-    }
-
 
     /**
      * @return string
@@ -151,45 +123,10 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     /**
      * @param int $shopId
      *
-     * @return ShopConfiguration
-     * @throws \Exception
-     */
-    private function getConfigurationFromStorage(int $shopId): ShopConfiguration
-    {
-        $extendedShopConfiguration = $this->shopConfigurationExtender->getExtendedConfiguration(
-            $shopId,
-            $this->getShopConfigurationData($shopId)
-        );
-        return $this->shopConfigurationMapper->fromData($extendedShopConfiguration);
-    }
-
-    /**
-     * @param int $shopId
-     *
      * @return bool
      */
     private function isShopIdExists(int $shopId): bool
     {
         return \in_array($shopId, $this->getShopIds(), true);
-    }
-
-    /**
-     * @param int $shopId
-     *
-     * @return array
-     * @throws \Exception
-     */
-    private function getShopConfigurationData(int $shopId): array
-    {
-        try {
-            $data = $this->node->normalize($this->getStorage($shopId)->get());
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
-                'File ' . $this->getShopConfigurationFilePath($shopId) . ' is broken: ' . $exception->getMessage(),
-                $exception->getCode(),
-                $exception
-            );
-        }
-        return $data;
     }
 }

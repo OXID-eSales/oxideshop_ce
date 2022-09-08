@@ -8,7 +8,7 @@
 $sMetadataVersion = '2.1';
 
 $aModule = [
-    'id' => 'codeception/testModule',
+    'id' => 'codeception_testModule',
     'title' => 'Codeception test module #1',
     'description' => 'Working module configuration with possible data types in settings',
     'thumbnail' => '',

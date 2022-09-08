@@ -8,7 +8,7 @@
 $sMetadataVersion = '2.1';
 
 $aModule = [
-    'id' => 'codeception/test-module-problems',
+    'id' => 'codeception_test-module-problems',
     'title' => 'Module with problems (Namespaced)',
     'description' => 'Test module validation for modules, which use namespaces',
     'thumbnail' => '',

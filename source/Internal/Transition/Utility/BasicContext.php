@@ -148,6 +148,14 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
+    public function getShopConfigurationDirectory(int $shopId): string
+    {
+        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string) $shopId);
+    }
+
+    /**
+     * @return string
+     */
     public function getShopRootPath(): string
     {
         return $this->getFacts()->getShopRootPath();

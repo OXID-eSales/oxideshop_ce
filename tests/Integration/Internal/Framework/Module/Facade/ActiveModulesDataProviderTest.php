@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Integration\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -185,7 +186,7 @@ final class ActiveModulesDataProviderTest extends TestCase
     private function getActiveModulesDataProviderWithCache(ModuleCacheServiceInterface $cache): ActiveModulesDataProvider
     {
         return new ActiveModulesDataProvider(
-            $this->get(ShopConfigurationDaoInterface::class),
+            $this->get(ModuleConfigurationDaoInterface::class),
             $this->get(ModulePathResolverInterface::class),
             $this->get(ContextInterface::class),
             $cache

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
 {
     public function __construct(
-        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private ModulePathResolverInterface $modulePathResolver,
         private ContextInterface $context,
         private ModuleCacheServiceInterface $moduleCacheService
@@ -132,7 +132,7 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         $moduleConfigurations = [];
         $shopId = $this->context->getCurrentShopId();
 
-        foreach ($this->shopConfigurationDao->get($shopId)->getModuleConfigurations() as $moduleConfiguration) {
+        foreach ($this->moduleConfigurationDao->getAll($shopId) as $moduleConfiguration) {
             if ($moduleConfiguration->isActivated()) {
                 $moduleConfigurations[] = $moduleConfiguration;
             }

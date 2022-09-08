@@ -29,10 +29,10 @@ final class ShopConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    private $testModuleId = 'testModuleId';
-    private $testedSetting = 'settingToOverwrite';
-    private $originalValue = 'some-original-value';
-    private $newValue = 'some-new-value';
+    private string $testModuleId = 'testModuleId';
+    private string $testedSetting = 'settingToOverwrite';
+    private string $originalValue = 'some-original-value';
+    private string $newValue = 'some-new-value';
 
     public function testSave(): void
     {
@@ -76,19 +76,6 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void
-    {
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1);
-
-        $shopConfiguration = $shopConfigurationDao->get(1);
-
-        $this->assertSame(
-            $shopConfiguration,
-            $shopConfigurationDao->get(1)
-        );
-    }
-
     public function testGetAll(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
@@ -110,26 +97,6 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    public function testWithIncorrectNode(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1);
-
-        $yamlStorage = $this->get(FileStorageFactoryInterface::class)->create(
-            Path::join(
-                $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
-                'shops/1.yaml'
-            )
-        );
-
-        $yamlStorage->save(['incorrectKey']);
-
-        $this->expectException(InvalidConfigurationException::class);
-        $shopConfigurationDao->get(1);
-    }
-
     public function testGetIncorrectShopId(): void
     {
         $this->expectException(ShopConfigurationNotFoundException::class);
@@ -149,41 +116,10 @@ final class ShopConfigurationDaoTest extends TestCase
 
         $shopConfiguration = $shopConfigurationDao->get(1);
 
-        $this->assertSame(
+        $this->assertEquals(
             $shopConfiguration,
             $shopConfigurationDao->get(1)
         );
-    }
-
-    public function testBadShopConfigurationFile(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
-        $storage = $fileStorageFactory->create(
-            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/shops/1.yaml'
-        );
-        $storage->save(["test" => "test"]);
-
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-
-        $this->expectException(InvalidConfigurationException::class);
-        $shopConfigurationDao->get(1);
-    }
-
-    public function testBadEnvironmentConfigurationFile(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1);
-
-        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
-        $storage = $fileStorageFactory->create(
-            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
-        );
-        $storage->save(["test" => "test"]);
-
-        $this->expectException(InvalidConfigurationException::class);
-        $shopConfigurationDao->get(1);
     }
 
     public function testDeleteAll(): void
@@ -208,16 +144,12 @@ final class ShopConfigurationDaoTest extends TestCase
         $storage = $this->get(FileStorageFactoryInterface::class)
             ->create(
                 $this->get(ContextInterface::class)
-                    ->getProjectConfigurationDirectory() . 'environment/1.yaml'
+                    ->getProjectConfigurationDirectory() . "environment/shops/1/modules/{$this->testModuleId}.yaml"
             );
 
         $storage->save([
-            'modules' => [
-                $this->testModuleId => [
-                    ModuleSettingsDataMapper::MAPPING_KEY => [
-                        $this->testedSetting => ['value' => $this->newValue],
-                    ]
-                ]
+            ModuleSettingsDataMapper::MAPPING_KEY => [
+                $this->testedSetting => ['value' => $this->newValue],
             ]
         ]);
     }

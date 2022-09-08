@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDaoInterface
+class ModuleEnvironmentConfigurationDao implements ModuleEnvironmentConfigurationDaoInterface
 {
     public function __construct(
         private FileStorageFactoryInterface $fileStorageFactory,
@@ -25,20 +25,15 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
     ) {
     }
 
-    /**
-     * @param int $shopId
-     *
-     * @return array
-     */
-    public function get(int $shopId): array
+    public function get(string $moduleId, int $shopId): array
     {
         $data = [];
 
-        $configurationFilePath = $this->getEnvironmentConfigurationFilePath($shopId);
+        $configurationFilePath = $this->getEnvironmentConfigurationFilePath($moduleId, $shopId);
 
         if ($this->fileSystem->exists($configurationFilePath)) {
             $storage = $this->fileStorageFactory->create(
-                $this->getEnvironmentConfigurationFilePath($shopId)
+                $this->getEnvironmentConfigurationFilePath($moduleId, $shopId)
             );
 
             try {
@@ -46,7 +41,7 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
             } catch (InvalidConfigurationException $exception) {
                 throw new InvalidConfigurationException(
                     'File ' .
-                    $this->getEnvironmentConfigurationFilePath($shopId) .
+                    $this->getEnvironmentConfigurationFilePath($moduleId, $shopId) .
                     ' is broken: ' . $exception->getMessage()
                 );
             }
@@ -60,9 +55,9 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
      *
      * @param int $shopId
      */
-    public function remove(int $shopId): void
+    public function remove(string $moduleId, int $shopId): void
     {
-        $path = $this->getEnvironmentConfigurationFilePath($shopId);
+        $path = $this->getEnvironmentConfigurationFilePath($moduleId, $shopId);
 
         if ($this->fileSystem->exists($path)) {
             $this->fileSystem->rename($path, $path . '.bak', true);
@@ -74,8 +69,8 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
      *
      * @return string
      */
-    private function getEnvironmentConfigurationFilePath(int $shopId): string
+    private function getEnvironmentConfigurationFilePath(string $moduleId, int $shopId): string
     {
-        return $this->context->getProjectConfigurationDirectory() . 'environment/' . $shopId . '.yaml';
+        return $this->context->getProjectConfigurationDirectory() . 'environment/shops/' . $shopId . '/modules/' . $moduleId . '.yaml';
     }
 }

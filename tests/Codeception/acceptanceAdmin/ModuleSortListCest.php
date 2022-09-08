@@ -15,9 +15,9 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 final class ModuleSortListCest
 {
     private $module;
-    private $testModuleId = 'codeception/testModule';
+    private $testModuleId = 'codeception_testModule';
     private $testModulePath = __DIR__ . '/../_data/modules/testModule';
-    private $testModuleWithProblemsId = 'codeception/test-module-problems';
+    private $testModuleWithProblemsId = 'codeception_test-module-problems';
     private $testModuleWithProblemsPath = __DIR__ . '/../_data/modules/test-module-problems';
 
     /** @param AcceptanceAdminTester $I */

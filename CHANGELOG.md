@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
 - `ApplyModulesConfigurationCommand` moved to another repository
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapper`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyShopConfigurationCache`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
 - Methods:
   - `Core\Field`
     - `convertToFormattedDbDate()`
@@ -21,6 +31,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
+
+### Changed
+- Shop configuration files structure
 
 ## [7.0.0-rc.2] - 2022-08-15
 

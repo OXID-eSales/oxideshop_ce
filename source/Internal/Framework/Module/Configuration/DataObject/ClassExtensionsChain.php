@@ -23,6 +23,11 @@ class ClassExtensionsChain implements \IteratorAggregate
      */
     private $chain = [];
 
+    public function __construct(array $chain = [])
+    {
+        $this->chain = $chain;
+    }
+
     /**
      * @return string
      */

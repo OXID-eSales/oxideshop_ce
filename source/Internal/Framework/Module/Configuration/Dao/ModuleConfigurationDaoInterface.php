@@ -25,4 +25,12 @@ interface ModuleConfigurationDaoInterface
      * @param int                 $shopId
      */
     public function save(ModuleConfiguration $moduleConfiguration, int $shopId);
+
+    /**
+     * @param int $shopId
+     * @return ModuleConfiguration[]
+     */
+    public function getAll(int $shopId): array;
+
+    public function exists(string $moduleId, int $shopId): bool;
 }

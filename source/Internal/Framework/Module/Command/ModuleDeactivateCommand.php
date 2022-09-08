@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +24,7 @@ class ModuleDeactivateCommand extends Command
     private const ARGUMENT_MODULE_ID = 'module-id';
 
     public function __construct(
-        private ShopConfigurationDaoInterface $shopConfigurationDao,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private ContextInterface $context,
         private ModuleActivationServiceInterface $moduleActivationService
     ) {
@@ -76,12 +76,6 @@ class ModuleDeactivateCommand extends Command
      */
     private function isInstalled(string $moduleId): bool
     {
-        $shopConfiguration = $this
-            ->shopConfigurationDao
-            ->get(
-                $this->context->getCurrentShopId()
-            );
-
-        return $shopConfiguration->hasModuleConfiguration($moduleId);
+        return $this->moduleConfigurationDao->exists($moduleId, $this->context->getCurrentShopId());
     }
 }

@@ -82,6 +82,12 @@ interface BasicContextInterface
     public function getProjectConfigurationDirectory(): string;
 
     /**
+     * @param int $shopId
+     * @return string
+     */
+    public function getShopConfigurationDirectory(int $shopId): string;
+
+    /**
      * @return string
      */
     public function getConfigurationDirectoryPath(): string;

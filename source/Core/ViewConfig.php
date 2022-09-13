@@ -385,6 +385,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return '';
     }
 
+    public function getShopUrl()
+    {
+        return Registry::getConfig()->getShopUrl();
+    }
+
     /**
      * Returns shops self link
      *

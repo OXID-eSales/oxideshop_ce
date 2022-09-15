@@ -181,19 +181,18 @@ class OrderRecalculationTest extends \OxidTestCase
      * Place order and simulate clicking admin->order_main.
      * Test case: vouchers applied. (20% off each)
      */
-    public function testPlaceOrderWithPercentageVouchersSaveOrderMain()
+    public function testPlaceOrderWithPercentageVouchersSaveOrderMain(): void
     {
         //relative discount, 20% off on each voucher
         $this->createVouchers();
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
-        $expectedOrderTotalBruttoSum = $buyAmount * self::TEST_ARTICLE_PRICE; //119.0
-        $expectedOrderTotalSum       = $buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8; //two 20% vouchers applied 76.16
-        $expectedVoucherDiscount     = $buyAmount * self::TEST_ARTICLE_PRICE * (1.0 -0.8*0.8); //42.84
-        $expectedOrderTotalNettoSum  = $expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat); //64.0
+        $expectedOrderTotalBruttoSum = 119.00; //$buyAmount * self::TEST_ARTICLE_PRICE;
+        $expectedOrderTotalSum       = 76.16; //$expectedOrderTotalBruttoSum * 0.8 * 0.8; //two 20% vouchers applied
+        $expectedVoucherDiscount     = 42.84; //$expectedOrderTotalBruttoSum * (1.0 - 0.8 * 0.8);
+        $expectedOrderTotalNettoSum  = 64.00; //$expectedOrderTotalSum * 100.0 / (100.0 + getConfigParam('dDefaultVAT'))
         $expectedDiscount = 0.0;
 
         $vouchers = array(self::TESTVOUCHER_ID_PREFIX . '1',

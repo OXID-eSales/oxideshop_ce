@@ -468,7 +468,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $data['once_per_product_three_products'][0]['rules'][1]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_PRODUCT;
         $data['once_per_product_three_products'][0]['rules'][2]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_PRODUCT;
         $data['once_per_product_three_products'][0]['rules'][3]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_PRODUCT;
-        $data['once_per_product_three_products'][0]['expected_costs']      = 3 * 4.9;
+        $data['once_per_product_three_products'][0]['expected_costs']      = 14.70; //3 * 4.9
         $data['once_per_product_three_products'][0]['rules_fit']           = array('first', 'fourth');
         $data['once_per_product_three_products'][0]['buyamount']           = array(2, 1, 1);
 
@@ -478,7 +478,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $data['once_per_different_product_three_products'][0]['rules'][1]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT;
         $data['once_per_different_product_three_products'][0]['rules'][2]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT;
         $data['once_per_different_product_three_products'][0]['rules'][3]['oxfixed'] = oxDelivery::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT;
-        $data['once_per_different_product_three_products'][0]['expected_costs']      = 2 * 4.9;
+        $data['once_per_different_product_three_products'][0]['expected_costs']      = 9.80; //2 * 4.9
         $data['once_per_different_product_three_products'][0]['rules_fit']           = array('first', 'fourth');
         $data['once_per_different_product_three_products'][0]['buyamount']           = array(1, 1, 1);
 
@@ -505,7 +505,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      *
      * @dataProvider providerQuantityCostRulesWithCategoryAssigned
      */
-    public function testQuantityDeliveryCostRulesWithCategoryAssigned($data)
+    public function testQuantityDeliveryCostRulesWithCategoryAssigned($data): void
     {
         $firstArticleId  = $this->insertArticle('UNIT-666', array('943927cd5d60751015b567794d3239bb'));
         $secondArticleId = $this->insertArticle('UNIT-777', array('94342f1d6f3b6fe9f1520d871f566511'));

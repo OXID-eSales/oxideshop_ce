@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `convertToPseudoHtml()`
   - `Core\Module\Module:getSmartyPluginDirectories()`
   - `Core\SystemRequirements::getMissingTemplateBlocks()`
+  - `Core\Utils::resetTemplateCache()`
   - `Core\UtilsView::`
     - `addActiveThemeId()`
     - `getRenderedContent()`

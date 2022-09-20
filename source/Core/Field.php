@@ -134,6 +134,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Converts to formatted db date
+     * @deprecated method will be removed in v7.0. Use \OxidEsales\EshopCommunity\Core\UtilsDate::formatDBDate() directly.
      */
     public function convertToFormattedDbDate()
     {
@@ -142,6 +143,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Converts to pseudo html - new lines to <br /> tags
+     * @deprecated method will be removed in v7.0. Use htmlspecialchars() abd nl2br() directly.
      */
     public function convertToPseudoHtml()
     {

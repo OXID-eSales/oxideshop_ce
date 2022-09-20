@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
   - `oxid_esales.module.setup.events_module_setting_handler`
   - `oxid_esales.module.setup.class_extension_chain_service`
+- Methods:
+  - `Core\Field`
+    - `convertToFormattedDbDate()`
+    - `convertToPseudoHtml()`
 
 ## [6.12.0] - 2022-08-15
 

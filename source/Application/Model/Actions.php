@@ -196,6 +196,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * get long description, parsed through smarty
      *
+     * @deprecated please use $this->oxactions__oxlongdesc->getRawValue() and parse it when used
+     *
      * @return string
      */
     public function getLongDesc()

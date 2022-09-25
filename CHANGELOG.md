@@ -504,6 +504,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.13.0] - unreleased
 
 ### Deprecated
+- `OxidEsales\EshopCommunity\Application\Model\Actions::getLongDesc`
+- `OxidEsales\EshopCommunity\Application\Model\Article::getLongDesc`
+- `OxidEsales\EshopCommunity\Application\Model\Category::getLongDesc`
+- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getTemplateCompileId`
+- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getRenderedContent`
+- `OxidEsales\EshopCommunity\Core\UtilsView::getSmartyDir`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`

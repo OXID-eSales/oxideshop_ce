@@ -217,6 +217,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Runs long description through template engine.
      *
+     * @deprecated will be removed in 7.0, please use TemplateRendererInterface::renderFragment
+     *
      * @param string $description Description
      * @param array $context View data to use its view data (optional)
      * @param ?string $oxid Current object id
@@ -318,6 +320,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Get template compile id.
      *
+     * @deprecated since 6.13.0 please define in TemplateRendererBridgeInterface
+     *
      * @return string
      */
     public function getTemplateCompileId()
@@ -330,6 +334,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns a full path to Smarty compile dir
+     *
+     * @deprecated since 6.13.0 please use
      *
      * @return string
      */

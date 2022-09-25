@@ -2588,6 +2588,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * get long description, parsed through smarty. should only be used by exports or so.
      * In templates use [{oxeval var=$oProduct->getLongDescription()->getRawValue()}]
      *
+     * @deprecated please use getLongDescription() method and parse it when used
+     *
      * @return string
      */
     public function getLongDesc()

@@ -18,6 +18,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 {
     /**
      * Global editor object.
+     * @deprecated property will be remove in v7.0
      *
      * @var object
      */
@@ -93,7 +94,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string $sValue string to process
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processEditValue" in next major
+     * @deprecated method will be removed in v7.0
      */
     protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

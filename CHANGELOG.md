@@ -49,6 +49,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
+    - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
+- Property:
+  - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
 ## [6.12.0] - 2022-08-15
 

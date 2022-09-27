@@ -114,6 +114,8 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
             }
         }
 
+        sort($moduleIds);
+
         return $moduleIds;
     }
 

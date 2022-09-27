@@ -50,6 +50,38 @@ class ModuleConfigurationDaoTest extends TestCase
         );
     }
 
+    public function testGetAllOrdersConfigurationsById(): void
+    {
+        $aModuleConfiguration = new ModuleConfiguration();
+        $aModuleConfiguration
+            ->setId('aTestId')
+            ->setModuleSource('test');
+
+        $bModuleConfiguration = new ModuleConfiguration();
+        $bModuleConfiguration
+            ->setId('bTestId')
+            ->setModuleSource('test');
+
+        $cModuleConfiguration = new ModuleConfiguration();
+        $cModuleConfiguration
+            ->setId('cTestId')
+            ->setModuleSource('test');
+
+        $dao = $this->get(ModuleConfigurationDaoInterface::class);
+        $dao->save($bModuleConfiguration, 1);
+        $dao->save($cModuleConfiguration, 1);
+        $dao->save($aModuleConfiguration, 1);
+
+        $this->assertSame(
+            [
+                'aTestId',
+                'bTestId',
+                'cTestId',
+            ],
+            array_keys($dao->getAll(1))
+        );
+    }
+
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void
     {
         $moduleConfiguration = new ModuleConfiguration();

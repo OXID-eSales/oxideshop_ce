@@ -16,9 +16,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDao
     public: true
-    arguments:
-      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
-      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ModuleConfigurationCacheInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyModuleConfigurationCache

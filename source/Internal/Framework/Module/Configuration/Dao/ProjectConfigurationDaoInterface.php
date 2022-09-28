@@ -21,7 +21,7 @@ interface ProjectConfigurationDaoInterface
     /**
      * @param ProjectConfiguration $configuration
      */
-    public function save(ProjectConfiguration $configuration);
+    public function save(ProjectConfiguration $configuration): void;
 
     /**
      * @return bool

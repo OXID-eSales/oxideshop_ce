@@ -9,18 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 {
-    public function __construct(
-        private ShopConfigurationDaoInterface $shopConfigurationDao,
-        private BasicContextInterface $context,
-        private Filesystem $fileSystem
-    ) {
+    public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao)
+    {
     }
 
     /**
@@ -29,17 +24,28 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function getConfiguration(): ProjectConfiguration
     {
-        if ($this->isConfigurationEmpty()) {
+        $shopConfigurations = $this->shopConfigurationDao->getAll();
+
+        if (!$shopConfigurations) {
             throw new ProjectConfigurationIsEmptyException('Project configuration cannot be empty.');
         }
 
-        return $this->getConfigurationFromStorage();
+        $projectConfiguration = new ProjectConfiguration();
+
+        foreach ($shopConfigurations as $shopId => $shopConfiguration) {
+            $projectConfiguration->addShopConfiguration(
+                $shopId,
+                $shopConfiguration
+            );
+        }
+
+        return $projectConfiguration;
     }
 
     /**
      * @param ProjectConfiguration $configuration
      */
-    public function save(ProjectConfiguration $configuration)
+    public function save(ProjectConfiguration $configuration): void
     {
         $this->shopConfigurationDao->deleteAll();
 
@@ -53,30 +59,6 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function isConfigurationEmpty(): bool
     {
-        return $this->projectConfigurationDirectoryExists() === false;
-    }
-
-    /**
-     * @return ProjectConfiguration
-     */
-    private function getConfigurationFromStorage(): ProjectConfiguration
-    {
-        $projectConfiguration = new ProjectConfiguration();
-
-        foreach ($this->shopConfigurationDao->getAll() as $shopId => $shopConfiguration) {
-            $projectConfiguration->addShopConfiguration(
-                $shopId,
-                $shopConfiguration
-            );
-        }
-
-        return $projectConfiguration;
-    }
-
-    private function projectConfigurationDirectoryExists(): bool
-    {
-        return $this->fileSystem->exists(
-            $this->context->getProjectConfigurationDirectory()
-        );
+        return count($this->shopConfigurationDao->getAll()) === 0;
     }
 }

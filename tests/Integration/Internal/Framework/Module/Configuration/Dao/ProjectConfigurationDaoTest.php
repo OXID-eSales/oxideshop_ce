@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\Dao;
 
-use org\bovigo\vfs\vfsStream;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
@@ -29,80 +27,41 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @internal
- */
 class ProjectConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testProjectConfigurationGetterThrowsExceptionIfStorageIsEmpty(): void
+    public function testProjectConfigurationGetterThrowsExceptionIfIsEmpty(): void
     {
-        $this->expectException(ProjectConfigurationIsEmptyException::class);
-        $vfsStreamDirectory = vfsStream::setup();
-        vfsStream::create([], $vfsStreamDirectory);
+        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao->method('getAll')->willReturn([]);
 
-        $context = $this
-            ->getMockBuilder(BasicContextInterface::class)
-            ->getMock();
-
-        $context
-            ->method('getProjectConfigurationDirectory')
-            ->willReturn(vfsStream::url('root'));
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $context,
-            $this->get('oxid_esales.symfony.file_system')
-        );
+        $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);
 
         $this->expectException(ProjectConfigurationIsEmptyException::class);
         $projectConfigurationDao->getConfiguration();
     }
 
-    public function testConfigurationIsEmptyIfNoEnvironment(): void
+    public function testConfigurationIsEmptyIfNoShopConfigurations(): void
     {
-        $vfsStreamDirectory = vfsStream::setup();
-        vfsStream::create([], $vfsStreamDirectory);
+        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao->method('getAll')->willReturn([]);
 
-        $context = $this
-            ->getMockBuilder(BasicContextInterface::class)
-            ->getMock();
-
-        $context
-            ->method('getProjectConfigurationDirectory')
-            ->willReturn(vfsStream::url('root'));
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $context,
-            $this->get('oxid_esales.symfony.file_system')
-        );
+        $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);
 
         $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
     }
 
-    public function testConfigurationIsEmptyIfDirectoryDoesNotExist(): void
+    public function testConfigurationIsNotEmpty(): void
     {
-        $vfsStreamDirectory = vfsStream::setup();
-        vfsStream::create([], $vfsStreamDirectory);
+        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao->method('getAll')->willReturn([new ShopConfiguration()]);
 
-        $context = $this
-            ->getMockBuilder(BasicContextInterface::class)
-            ->getMock();
+        $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);
 
-        $context
-            ->method('getProjectConfigurationDirectory')
-            ->willReturn(vfsStream::url('root') . '/nonExistent');
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $context,
-            $this->get('oxid_esales.symfony.file_system')
-        );
-
-        $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
+        $this->assertFalse($projectConfigurationDao->isConfigurationEmpty());
     }
 
     public function testProjectConfigurationSaving(): void
@@ -216,7 +175,7 @@ class ProjectConfigurationDaoTest extends TestCase
         return $projectConfiguration;
     }
 
-    private function getContainer()
+    private function getContainer(): ContainerBuilder
     {
         $container = (new TestContainerFactory())->create();
         $container->compile();

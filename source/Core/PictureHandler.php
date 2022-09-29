@@ -99,40 +99,6 @@ class PictureHandler extends Base
     }
 
     /**
-     * Deletes master picture and all images generated from it.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oObject               manufacturer object
-     * @param int                                              $iIndex                master picture index
-     *
-     * @return null
-     */
-    public function deleteManufacturerMasterPicture(Manufacturer $oObject, int $iIndex)
-    {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
-        $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
-
-        $sAbsDynImageDir = $myConfig->getPictureDir(false);
-        $sMasterImage = basename($oObject->{"oxmanufacturers__oxpic" . $iIndex}->value);
-        if (!$sMasterImage || $sMasterImage == "nopic.jpg") {
-            return;
-        }
-
-        $aPic = [
-            "sField"    => "oxpic" . $iIndex,
-            "sDir"      => $oUtilsFile->getImageDirByType("MPIC" . $iIndex),
-            "sFileName" => $sMasterImage
-        ];
-
-        $myUtilsPic->safePictureDelete(
-            $aPic["sFileName"],
-            $sAbsDynImageDir . $aPic["sDir"],
-            "oxmanufacturers",
-            $aPic["sField"]
-        );
-    }
-
-    /**
      * Deletes custom main icon, which name is specified in oxicon field.
      *
      * @param Article $oObject article object

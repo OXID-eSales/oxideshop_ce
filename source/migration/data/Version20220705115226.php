@@ -24,9 +24,8 @@ final class Version20220705115226 extends AbstractMigration
     {
         $query = "ALTER TABLE oxmanufacturers
             ADD COLUMN `OXTHUMB` varchar(128) NOT NULL default '' COMMENT 'Thumbnail filename',
-            ADD COLUMN `OXPIC1` varchar(128) NOT NULL default '' COMMENT '1# Picture filename',
-            ADD COLUMN `OXPIC2` varchar(128) NOT NULL default '' COMMENT '2# Picture filename',
-            ADD COLUMN `OXPIC3` varchar(128) NOT NULL default '' COMMENT '3# Picture filename';";
+            ADD COLUMN `OXPROMOICON` varchar(128) NOT NULL default '' COMMENT 'Promo icon filename',
+            ADD COLUMN `OXPIC` varchar(128) NOT NULL default '' COMMENT 'Picture filename';";
 
         $this->addSql($query);
     }
@@ -36,9 +35,8 @@ final class Version20220705115226 extends AbstractMigration
         $query = 
             $query = "ALTER TABLE oxmanufacturers
             DROP COLUMN `OXTHUMB`,
-            DROP COLUMN `OXPIC1`,
-            DROP COLUMN `OXPIC2`,
-            DROP COLUMN `OXPIC3`;";
+            DROP COLUMN `OXPROMOICON`,
+            DROP COLUMN `OXPIC`;";
             
         $this->addSql($query);
     }

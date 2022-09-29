@@ -122,8 +122,10 @@ namespace OxidEsales\EshopCommunity\Core {
             "aDetailImageSizes"     => '/.*\/generated\/product\/\d+\/\d+\_\d+\_\d+$/', // Product picture size
 
             // ** manufacturer/vendor
-            "sManufacturerIconsize" => '/.*\/generated\/(manufacturer|vendor)\/icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand logo size
-            "aDetailImageSizes"     => '/.*\/generated\/manufacturer\/\d+\/\d+\_\d+\_\d+$/', // Product picture size
+            "sManufacturerIconsize"        => '/.*\/generated\/(manufacturer|vendor)\/icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand logo size
+            "sManufacturerThumbnailsize"   => '/.*\/generated\/(manufacturer|vendor)\/thumb\/\d+\_\d+\_\d+$/', // Manufacturer picture size
+            "sManufacturerDetailImagesize" => '/.*\/generated\/(manufacturer|vendor)\/\d+\/\d+\_\d+\_\d+$/', // Manufacturer picture size"
+            "sManufacturerPromotionsize"   => '/.*\/generated\/(manufacturer|vendor)\/promo_icon\/\d+\_\d+\_\d+$/' // Manufacturer picture size for promotion on startpage
 
             // ** category
             "sCatThumbnailsize"     => '/.*\/generated\/category\/thumb\/\d+\_\d+\_\d+$/', // Category picture size

@@ -7,19 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\Registry;
-
 /**
  * Manufacturer manager
  */
 class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-    public $picturesIdens = [
-        1 => 'MANUFACTURER_PICTURE',
-        2 => 'GENERAL_THUMB',
-        3 => 'MANUFACTURER_PROMOTIONS_PICTURE'
-    ];
-
     protected static $_aRootManufacturer = [];
 
     /**
@@ -104,6 +96,9 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             case 'hasVisibleSubCats':
                 $sValue = $this->getHasVisibleSubCats();
                 break;
+            case 'dimagedir':
+                return $this->getPictureUrl();
+                break;
             default:
                 $sValue = parent::__get($sName);
                 break;
@@ -164,6 +159,9 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     {
         $this->setId('root');
         $this->oxmanufacturers__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxmanufacturers__oxthumb = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxmanufacturers__oxpromoicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxmanufacturers__oxpic = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->oxmanufacturers__oxtitle = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false), \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->oxmanufacturers__oxshortdesc = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
 
@@ -346,7 +344,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns manufacture icon
+     * Returns manufacturer icon
      *
      * @return string
      */
@@ -364,55 +362,58 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns false, becouse manufacturer has not thumbnail
+     * Returns manufacturer thumbnail picture url if exist, false - if not
      *
-     * @return false
+     * @return mixed
      */
     public function getThumbUrl()
     {
-        return false;
-    }
+        if (($sIcon = $this->oxmanufacturers__oxthumb->value)) {
+            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sThumbnailsize');
 
-    /**
-     * Returns manufacturer picture
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getPictureUrl($iIndex = 1)
-    {
-        if ($iIndex) {
-            $sImgName = false;
-            if (!$this->isFieldEmpty("oxmanufacturers__oxpic" . $iIndex)) {
-                $sImgName = basename($this->{"oxmanufacturers__oxpic$iIndex"}->value);
-            }
-
-            $imgGenerator = oxNew(\OxidEsales\Eshop\Core\DynamicImageGenerator::class);
-            $imgGenerator->getImagePath();
-
-            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aDetailImageSizes');
-
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()
-                ->getProductPicUrl("manufacturer/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("manufacturer/thumb/", $sIcon, $sSize);
         }
     }
 
     /**
-     * Return manufacturer picture file name
+     * Returns manufacturer promotion icon picture url if exist, false - if not
      *
-     * @param string $sFieldName manufacturer picture field name
-     * @param int    $iIndex     manufacturer picture index
+     * @return mixed
+     */
+    public function getPromotionIconUrl()
+    {
+        if (($sIcon = $this->oxmanufacturers__oxpromoicon->value)) {
+            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sManufacturerPromotionsize');
+
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("manufacturer/promo_icon/", $sIcon, $sSize);
+        }
+    }
+
+    /**
+     * Returns manufacturer promotion icon picture url if exist, false - if not
+     *
+     * @return mixed
+     */
+    public function getBrandPicture()
+    {
+        if (($sIcon = $this->oxmanufacturers__oxpic->value)) {
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("manufacturer/picture/", $sIcon, $null);
+        }
+    }
+
+    /**
+     * Returns dyn image dir
      *
      * @return string
      */
-    public function getPictureFieldValue($sFieldName, $iIndex = null)
+    public function getPictureUrl()
     {
-        if ($sFieldName) {
-            $sFieldName = "oxmanufacturers__" . $sFieldName . $iIndex;
-
-            return $this->$sFieldName->value;
+        if ($this->_sDynImageDir === null) {
+            $sThisShop = $this->oxmanufacturers__oxshopid->value;
+            $this->_sDynImageDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
         }
+
+        return $this->_sDynImageDir;
     }
 
     /**
@@ -433,43 +434,5 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     public function getShortDescription()
     {
         return $this->oxmanufacturers__oxshortdesc->value;
-    }
-
-    /**
-     * Returns image ident to the template based on image index.
-     * 
-     * @param int $index index from 1 to 3
-     * @return string|null
-     */
-    public function getImgIdentByIndex(int $index): ?string
-    {
-        //check this again
-        return $this->picturesIdens[$index] ?? null;
-    }
-
-    /**
-     * Detects if field is empty.
-     *
-     * @param string $sFieldName Field name
-     *
-     * @return bool
-     */
-    protected function isFieldEmpty($sFieldName)
-    {
-        $mValue = $this->$sFieldName->value;
-
-        if (is_null($mValue)) {
-            return true;
-        }
-
-        if ($mValue === '') {
-            return true;
-        }
-
-        if (!strcmp($mValue, '0000-00-00 00:00:00') || !strcmp($mValue, '0000-00-00')) {
-            return true;
-        }
-
-        return false;
     }
 }

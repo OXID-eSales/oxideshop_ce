@@ -158,4 +158,90 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         // set oxid if inserted
         $this->setEditObjectId($oManufacturer->getId());
     }
+
+    /**
+     * Deletes selected master picture.
+     *
+     * @return null
+     */
+    public function deletePicture()
+    {
+        $myConfig = Registry::getConfig();
+
+        if ($myConfig->isDemoShop()) {
+            // disabling uploading pictures if this is demo shop
+            $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();
+            $oEx->setMessage('MANUFACTURER_PICTURES_UPLOADISDISABLED');
+
+            /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
+            $oUtilsView = Registry::getUtilsView();
+
+            $oUtilsView->addErrorToDisplay($oEx, false);
+
+            return;
+        }
+
+        $sOxId = $this->getEditObjectId();
+        $sField = Registry::getRequest()->getRequestEscapedParameter('masterPicField');
+        if (empty($sField)) {
+            return;
+        }
+
+        /** @var \OxidEsales\Eshop\Application\Model\Manufacturer $oItem */
+        $oItem = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
+        $oItem->load($sOxId);
+        $this->deleteManufacturerPicture($oItem, $sField);
+    }
+
+    /**
+     * Delete manufacturer picture, specified in $sField parameter
+     *
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $item  active manufacturer object
+     * @param string                                           $field picture field name
+     *
+     * @return null
+     */
+    protected function deleteManufacturerPicture($item, $field)
+    {
+        if ($item->isDerived()) {
+            return;
+        }
+
+        $myConfig = Registry::getConfig();
+        $sItemKey = 'oxmanufacturers__' . $field;
+
+        switch ($field) {
+            case 'oxthumb':
+                $sImgType = 'TM';
+                break;
+
+            case 'oxicon':
+                $sImgType = 'MICO';
+                break;
+
+            case 'oxpromoicon':
+                $sImgType = 'MPICO';
+                break;
+
+            case 'oxpic':
+                $sImgType = 'MPIC';
+                break;
+
+            default:
+                $sImgType = false;
+        }
+
+        if ($sImgType !== false) {
+            /** @var \OxidEsales\Eshop\Core\UtilsPic $myUtilsPic */
+            $myUtilsPic = Registry::getUtilsPic();
+            /** @var \OxidEsales\Eshop\Core\UtilsFile $oUtilsFile */
+            $oUtilsFile = Registry::getUtilsFile();
+
+            $sDir = $myConfig->getPictureDir(false);
+            $myUtilsPic->safePictureDelete($item->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxmanufacturers', $field);
+
+            $item->$sItemKey = new \OxidEsales\Eshop\Core\Field();
+            $item->save();
+        }
+    }
 }

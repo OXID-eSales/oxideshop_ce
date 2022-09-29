@@ -152,6 +152,9 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
         $oManufacturer->oxcategories__oxtitle = $oManufacturer->oxmanufacturers__oxtitle;
         $oManufacturer->oxcategories__oxdesc = $oManufacturer->oxmanufacturers__oxshortdesc;
+        $oManufacturer->oxcategories__oxthumb = $oManufacturer->oxmanufacturers__oxthumb;
+        $oManufacturer->oxcategories__oxpromoicon = $oManufacturer->oxmanufacturers__oxpromoicon;
+        $oManufacturer->oxcategories__oxpic = $oManufacturer->oxmanufacturers__oxpic;
 
         $oManufacturer->setIsVisible(true);
         $oManufacturer->setHasVisibleSubCats(false);

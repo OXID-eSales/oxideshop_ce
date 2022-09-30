@@ -81,6 +81,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\State\ModuleStateServiceInterface::`
     - `setActive()`
     - `setDeactivated()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::`
+    - `hasService()`
+    - `getService()`
+    - `addOrUpdateService()`
+    - `checkServices()`
+    - `checkServiceClassesCanBeLoaded()`
+    - `getServices()`
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`

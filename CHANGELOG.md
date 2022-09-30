@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Event\ShopAwareServiceTrait`
   - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
   - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
-
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
     - `oxid_esales.module.setup.events_module_setting_handler`

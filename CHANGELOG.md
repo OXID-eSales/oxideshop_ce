@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
 - Classes:
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Core\Module\ModuleTemplateBlockRepository`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
 - Services:
@@ -44,16 +48,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Application\Model\Actions::getLongDesc()`
   - `Application\Model\Article::getLongDesc()`
   - `Application\Model\Category::getLongDesc()`
-  - `Application\Model\UtilsView::getRenderedContent()`
-  - `Application\Model\UtilsView::getTemplateCompileId()`
   - `Core\Field::`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-  - `Core\UtilsView::getSmartyDir()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated()`
+  - `Core\Module\Module:getSmartyPluginDirectories()`
+  - `Core\SystemRequirements::getMissingTemplateBlocks()`
+  - `Core\UtilsView::`
+    - `getRenderedContent()`
+    - `getSmartyDir()`
+    - `getTemplateBlocks()`
+    - `getTemplateCompileId()`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::`
+    - `isConfigured()`
+    - `setConfigured()`
+  - `Internal\Framework\Module\State\ModuleStateServiceInterface::`
+    - `setActive()`
+    - `setDeactivated()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 

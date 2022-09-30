@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
+/**
+ * @deprecated will be moved to smarty component
+ */
 class SmartyPluginDirectory
 {
     /**

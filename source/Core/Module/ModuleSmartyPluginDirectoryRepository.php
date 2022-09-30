@@ -19,6 +19,7 @@ use OxidEsales\Eshop\Core\Module\Module                         as EshopModule;
  *
  * @ignore   This class will not be included in documentation.
  *
+ * @deprecated will be moved to smarty component
  */
 class ModuleSmartyPluginDirectoryRepository
 {

@@ -11,6 +11,8 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  * Provides a way to get content from module template block file.
  *
  * @internal Do not make a module extension for this class.
+ *
+ * @deprecated will be moved to smarty component
  */
 class ModuleTemplateBlockRepository
 {

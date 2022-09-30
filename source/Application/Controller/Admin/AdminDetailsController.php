@@ -19,6 +19,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 {
     /**
      * Global editor object.
+     * @deprecated property will be remove in v7.0
      *
      * @var object
      */
@@ -89,6 +90,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string $sValue string to process
      *
      * @return string
+     * @deprecated method will be removed in v7.0
      */
     protected function processEditValue($sValue)
     {

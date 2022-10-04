@@ -728,7 +728,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @see BaseModel::assign()
      * @see \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
      */
-    public function assignRecord($select)
+    protected function assignRecord($select)
     {
         $record = $this->getRecordByQuery($select);
 

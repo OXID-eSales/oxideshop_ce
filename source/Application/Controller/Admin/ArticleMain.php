@@ -172,7 +172,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $sSelect = "select oxid from " . $tableViewNameGenerator->getViewName('oxarticles');
             $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']);
             $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']);
-            if ($oArticle->assignRecord($sSelect)) {
+            $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sSelect);
+            if ($record && $record->count() > 0) {
+                $oArticle->assign($record->fields);
                 $this->_aViewData["errorsavingatricle"] = 1;
             }
         }
@@ -357,7 +359,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                                " where oxartnum = " . $oDb->quote($oArticle->$sArtNumField->value) .
                                " and oxid != " . $oDb->quote($sNewId);
 
-                    if ($oArticle->assignRecord($sSelect)) {
+                    $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sSelect);
+                    if ($record && $record->count() > 0) {
+                        $oArticle->assign($record->fields);
                         $this->_aViewData["errorsavingatricle"] = 1;
                     }
                 }

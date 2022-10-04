@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -38,7 +39,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function getQuery()
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $sArtId = Registry::getRequest()->getRequestEscapedParameter('oxid');
         $sSynchArtId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
 
@@ -69,11 +70,11 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sO2AViewName = $this->getViewName('oxobject2attribute');
             $sQ = $this->addFilter("delete $sO2AViewName.* " . $this->getQuery());
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
+            DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in ({$sChosenArticles}) ";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
+            DatabaseProvider::getDb()->Execute($sQ);
         }
 
         $this->onArticleAttributeRelationChange($sOxid);
@@ -112,7 +113,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function saveAttributeValue()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $database = DatabaseProvider::getDb();
         $this->resetContentCache();
 
         $articleId = Registry::getRequest()->getRequestEscapedParameter("oxid");
@@ -135,7 +136,10 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $objectToAttribute = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $objectToAttribute->setLanguage(Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
                 $objectToAttribute->init("oxobject2attribute");
-                if ($objectToAttribute->assignRecord($select)) {
+
+                $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
+                if ($record && $record->count() > 0) {
+                    $objectToAttribute->assign($record->fields);
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);
                     $objectToAttribute->save();
                 }

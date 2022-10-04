@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Shop configuration files structure
+- Change `BaseModel::assignRecord()` function visibility form public to protected 
 
 ## [7.0.0-rc.2] - 2022-08-15
 

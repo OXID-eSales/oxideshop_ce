@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxList;
 
 // defining supported link types
@@ -1723,12 +1724,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
 
         // category not found ?
-        if (!$category->assignRecord($select)) {
+        $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
+        if ($record && $record->count() > 0) {
+            $category->assign($record->fields);
+        } else {
             $select = $this->generateSearchStr($id, true);
             $select .= ($str->strstr($select, 'where') ? ' and ' : ' where ') . $where . " limit 1";
 
             // looking for price category
-            if (!$category->assignRecord($select)) {
+            $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
+            if ($record && $record->count() > 0) {
+                $category->assign($record->fields);
+            } else {
                 $category = null;
             }
         }

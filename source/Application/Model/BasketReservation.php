@@ -62,9 +62,13 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     {
         $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
         $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
+        $query = $oReservations->buildSelectString($aWhere);
 
-        // creating if it does not exist
-        if (!$oReservations->assignRecord($oReservations->buildSelectString($aWhere))) {
+        $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+        if ($record && $record->count() > 0) {
+            $oReservations->assign($record->fields);
+        } else {
+            // creating if it does not exist
             $oReservations->oxuserbaskets__oxtitle = new \OxidEsales\Eshop\Core\Field('reservations');
             $oReservations->oxuserbaskets__oxuserid = new \OxidEsales\Eshop\Core\Field($sBasketId);
             // marking basket as new (it will not be saved in DB yet)

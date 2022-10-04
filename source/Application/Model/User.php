@@ -1033,8 +1033,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
             $aWhere = ['oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName];
 
-            // creating if it does not exist
-            if (!$oBasket->assignRecord($oBasket->buildSelectString($aWhere))) {
+            $query = $oBasket->buildSelectString($aWhere);
+            $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+            if ($record && $record->count() > 0) {
+                $oBasket->assign($record->fields);
+            } else {
+                //creating if it does not exist
                 $oBasket->oxuserbaskets__oxtitle = new \OxidEsales\Eshop\Core\Field($sName);
                 $oBasket->oxuserbaskets__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId());
 

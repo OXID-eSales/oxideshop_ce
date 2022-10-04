@@ -1026,7 +1026,12 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 } else {
                     $aWhere = ['oxuserbaskets.oxuserid' => $sWishId, 'oxuserbaskets.oxtitle' => 'wishlist'];
                     $oUserBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
-                    $oUserBasket->assignRecord($oUserBasket->buildSelectString($aWhere));
+
+                    $query = $oUserBasket->buildSelectString($aWhere);
+                    $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+                    if ($record && $record->count() > 0) {
+                        $oUserBasket->assign($record->fields);
+                    }
                 }
 
                 // updating users wish list

@@ -165,7 +165,8 @@ jobs:
           swap-size-gb: 10
 
       - name: Install dependencies
-        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce --with-all-dependencies
+        run: |
+          docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x --with-all-dependencies
 
       - name: Copy config file
         run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml

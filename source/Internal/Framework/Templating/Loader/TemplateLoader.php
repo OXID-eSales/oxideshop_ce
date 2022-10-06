@@ -45,11 +45,7 @@ class TemplateLoader implements TemplateLoaderInterface
     }
 
     /**
-     * Check a template exists.
-     *
-     * @param string $name The name of the template
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function exists($name): bool
     {

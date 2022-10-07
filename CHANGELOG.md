@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
 - Classes:
   - `Core\Module\ModuleSmartyPluginDirectoryRepository`
   - `Core\Module\ModuleTemplateBlockRepository`
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `oxid_esales.module.setup.path_module_setting_handler`
     - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
     - `oxid_esales.module.setup.version_module_setting_handler`
+    - `oxid_esales.templating.template.loader`
 - Constants:
   - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
     - `MODULE_CLASS_EXTENSIONS`

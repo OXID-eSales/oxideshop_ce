@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNam
 
 /**
  * Class TemplateLoader
+ * @deprecated will be removed in v7.0
  *
  * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
  */

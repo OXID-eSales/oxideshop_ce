@@ -11,13 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
 /**
  * Interface TemplateLoaderInterface
+ * @deprecated will be removed in v7.0
  * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
  */
 interface TemplateLoaderInterface
 {
     /**
      * Check a template exists.
-     * @deprecated method will be removed in v7.0
      *
      * @param string $name The name of the template
      *

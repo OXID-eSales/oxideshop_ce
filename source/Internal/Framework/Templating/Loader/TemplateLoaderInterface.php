@@ -18,7 +18,6 @@ interface TemplateLoaderInterface
 {
     /**
      * Check a template exists.
-     * @deprecated method will be removed in v7.0
      *
      * @param string $name The name of the template
      *

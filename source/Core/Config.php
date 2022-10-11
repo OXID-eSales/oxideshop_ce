@@ -478,7 +478,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function setDefaults()
     {
-        $this->setConfigParam('sTheme', 'azure');
+        $this->setConfigParam('sTheme', 'twig');
 
         if (is_null($this->getConfigParam('sDefaultLang'))) {
             $this->setConfigParam('sDefaultLang', 0);

@@ -105,7 +105,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Abstract function for smarty tag processing
+     * Abstract function for template tag processing
      * This function is called from index.php
      *
      * @param array  $aViewData  viewarray

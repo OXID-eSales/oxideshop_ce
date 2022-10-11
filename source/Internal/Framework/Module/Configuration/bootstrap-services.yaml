@@ -50,8 +50,6 @@ services:
       - '@oxid_esales.module.configuration.controllers_data_mapper'
       - '@oxid_esales.module.configuration.events_data_mapper'
       - '@oxid_esales.module.configuration.module_settings_data_mapper'
-      - '@oxid_esales.module.configuration.smarty_plugin_directories_data_mapper'
-      - '@oxid_esales.module.configuration.template_blocks_data_mapper'
       - '@oxid_esales.module.configuration.templates_data_mapper'
 
   oxid_esales.module.configuration.class_extensions_data_mapper:
@@ -65,12 +63,6 @@ services:
 
   oxid_esales.module.configuration.module_settings_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper
-
-  oxid_esales.module.configuration.smarty_plugin_directories_data_mapper:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper
-
-  oxid_esales.module.configuration.template_blocks_data_mapper:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper
 
   oxid_esales.module.configuration.templates_data_mapper:
       class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper

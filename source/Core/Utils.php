@@ -685,34 +685,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Removes smarty template cache for given templates
-     *
-     * @param array $aTemplates Template name array
-     */
-    public function resetTemplateCache($aTemplates)
-    {
-        $sSmartyDir = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmartyDir();
-        //$aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        $aFiles = glob($sSmartyDir . '*');
-
-        if (is_array($aFiles) && is_array($aTemplates) && count($aTemplates)) {
-            // delete all template cache files
-            foreach ($aTemplates as &$sTemplate) {
-                $sTemplate = preg_quote(basename(strtolower($sTemplate), '.tpl'));
-            }
-
-            $sPattern = sprintf("/%%(%s)\.tpl\.php$/i", implode('|', $aTemplates));
-            $aFiles = preg_grep($sPattern, $aFiles);
-
-            if (is_array($aFiles)) {
-                foreach ($aFiles as $sFile) {
-                    @unlink($sFile);
-                }
-            }
-        }
-    }
-
-    /**
      * Removes language constant cache
      */
     public function resetLanguageCache()

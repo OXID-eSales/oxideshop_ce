@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -46,22 +48,23 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
     /**
      * Does Export line by line on position iCnt
      *
-     * @param integer $iCnt export position
+     * @param integer $cnt export position
      *
      * @return bool
      */
-    public function nextTick($iCnt)
+    public function nextTick($cnt)
     {
-        $iExportedItems = $iCnt;
-        $blContinue = false;
-        if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $exportedItems = $cnt;
+        $continue = false;
+        if ($article = $this->getOneArticle($cnt, $continue)) {
+            $config = Registry::getConfig();
+            $article->longDescription = $this->prepareLongDescription($article);
             $context = [
-                "sCustomHeader" => \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"),
-                "linenr"        => $iCnt,
-                "article"       => $oArticle,
-                "spr"           => $myConfig->getConfigParam('sCSVSign'),
-                "encl"          => $myConfig->getConfigParam('sGiCsvFieldEncloser')
+                "sCustomHeader" => Registry::getSession()->getVariable("sExportCustomHeader"),
+                "linenr"        => $cnt,
+                "article"       => $article,
+                "spr"           => $config->getConfigParam('sCSVSign'),
+                "encl"          => $config->getConfigParam('sGiCsvFieldEncloser')
             ];
             $context['oxEngineTemplateId'] = $this->getViewId();
 
@@ -72,10 +75,24 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
                 )
             );
 
-            return ++$iExportedItems;
+            return ++$exportedItems;
         }
 
-        return $blContinue;
+        return $continue;
+    }
+
+    private function prepareLongDescription(Article $article): string
+    {
+        if ($article->getLongDescription() && $article->getLongDescription()->getRawValue()) {
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            $oxid = (string) $article->getId() . (string) $article->getLanguage();
+            return $this->getRenderer()->renderFragment(
+                $article->getLongDescription()->getRawValue(),
+                "ox:{$oxid}{$activeLanguageId}",
+                $this->getViewData()
+            );
+        }
+        return '';
     }
 
     /**

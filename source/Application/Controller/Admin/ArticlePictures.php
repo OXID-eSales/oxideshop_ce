@@ -18,7 +18,7 @@ use OxidEsales\Eshop\Core\Registry;
 class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
-     * Loads article information - pictures, passes data to Smarty
+     * Loads article information - pictures, passes data to template engine
      * engine, returns name of template file "article_pictures".
      *
      * @return string

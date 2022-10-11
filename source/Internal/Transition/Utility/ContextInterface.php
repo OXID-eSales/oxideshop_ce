@@ -64,4 +64,9 @@ interface ContextInterface extends BasicContextInterface
      * @return bool
      */
     public function isShopInProductiveMode(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isShopInDemoMode(): bool;
 }

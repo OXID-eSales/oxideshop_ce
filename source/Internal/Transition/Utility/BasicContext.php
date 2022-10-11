@@ -211,4 +211,12 @@ class BasicContext implements BasicContextInterface
         }
         return $this->facts;
     }
+
+    public function getTemplateCacheDirectory(): string
+    {
+        return Path::join(
+            $this->getCacheDirectory(),
+            'template_cache'
+        );
+    }
 }

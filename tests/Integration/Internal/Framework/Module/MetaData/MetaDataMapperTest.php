@@ -7,9 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
@@ -129,8 +128,6 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
-        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
 
         $moduleSettings = [];
 
@@ -287,8 +284,6 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
-        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
 
         $moduleSettings = [];
 
@@ -330,17 +325,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame(
             $expectedModuleData['events'],
             $events
-        );
-
-        $smartyPluginDirectories = [];
-
-        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
-            $smartyPluginDirectories[] = $directory->getDirectory();
-        }
-
-        $this->assertSame(
-            $expectedModuleData['smartyPluginDirectories'],
-            $smartyPluginDirectories
         );
     }
 
@@ -424,9 +408,7 @@ class MetaDataMapperTest extends TestCase
      */
     private function getMetaDataFilePath(string $testModuleDirectory): string
     {
-        $metaDataFilePath = Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
-
-        return $metaDataFilePath;
+        return Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
     }
 
     /**
@@ -438,24 +420,5 @@ class MetaDataMapperTest extends TestCase
         $container->compile();
 
         return $container;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return array
-     */
-    private function mapTemplateBlocksForAssertion(ModuleConfiguration $moduleConfiguration): array
-    {
-        $templateBlocks = [];
-        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
-            if ($templateBlock->getTheme() !== '') {
-                $templateBlocks[$key]['theme'] = $templateBlock->getTheme();
-            }
-            $templateBlocks[$key]['template'] = $templateBlock->getShopTemplatePath();
-            $templateBlocks[$key]['block'] = $templateBlock->getBlockName();
-            $templateBlocks[$key]['file'] = $templateBlock->getModuleTemplatePath();
-            $templateBlocks[$key]['position'] = $templateBlock->getPosition();
-        }
-        return $templateBlocks;
     }
 }

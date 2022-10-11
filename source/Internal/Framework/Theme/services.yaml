@@ -1,5 +1,5 @@
 parameters:
-  oxid_esales.theme.admin.name: 'admin'
+  oxid_esales.theme.admin.name: 'admin_twig'
 
 services:
   _defaults:

@@ -66,8 +66,5 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper
 
-  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicSmarty:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicSmarty
-
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicTwig:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicTwig

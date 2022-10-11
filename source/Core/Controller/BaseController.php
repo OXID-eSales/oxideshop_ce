@@ -268,7 +268,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             $oViewConf->setViewShop($oShop, $this->_aViewData);
         }
 
-        //sending all view to smarty
+        //sending all view to template engine
         $this->_aViewData['oView'] = $this;
         $this->_aViewData['oViewConf'] = $this->getViewConfig();
 

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator;
 
 use OxidEsales\Eshop\Core\Language;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
 
 class LegacyTemplateTranslator implements TranslatorInterface

@@ -224,6 +224,12 @@ jobs:
           make up
           sleep 2
 
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+
+      - name: Install twig theme
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
+
       - name: Run tests
         run: |
           docker-compose exec -T \

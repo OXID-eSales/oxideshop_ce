@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
 use oxList;
 
 // defining supported link types
@@ -843,7 +844,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted price per unit
      *
-     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formatting in templates
+     * @deprecated since v5.1 (2013-09-25); use oxPrice template engine plugin for formatting in templates
      * @return string
      */
     public function getFUnitPrice()
@@ -883,7 +884,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted article min price
      *
-     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     * @deprecated since v5.1 (2013-10-04); use oxPrice template engine plugin for formatting in templates
      *
      * @return string
      */
@@ -901,7 +902,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted min article variant price
      *
-     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     * @deprecated since v5.1 (2013-10-04); use oxPrice template engine plugin for formatting in templates
      *
      * @return string
      */
@@ -2592,19 +2593,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * get long description, parsed through smarty. should only be used by exports or so.
-     * In templates use [{oxeval var=$oProduct->getLongDescription()->getRawValue()}]
-     *
-     * @deprecated please use getLongDescription() method and parse it when used
-     *
-     * @return string
-     */
-    public function getLongDesc()
-    {
-        return Registry::getUtilsView()->parseThroughSmarty($this->getLongDescription()->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
-    }
-
-    /**
      * Save article long description to oxartext table
      *
      * @param string $longDescription description to set
@@ -3008,7 +2996,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted product's price.
      *
-     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     * @deprecated since v5.1 (2013-10-04); use oxPrice template engine plugin for formatting in templates
      *
      * @return double
      */

@@ -1,5 +1,5 @@
 parameters:
-  oxid_esales.templating.engine_template_extension: 'tpl'
+  oxid_esales.templating.engine_template_extension: 'html.twig'
   oxid_esales.templating.engine_autoescapes_html: false
 
 services:
@@ -12,7 +12,13 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true
-    tags: ['templating']
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngine
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
@@ -26,26 +32,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
-
-  oxid_esales.templating.template.loader:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderDelegator
-    public: true
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
-      - '@oxid_esales.templating.admin.template.loader'
-      - '@oxid_esales.templating.frontend.template.loader'
-
-  oxid_esales.templating.frontend.template.loader:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
-    public: true
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator'
-
-  oxid_esales.templating.admin.template.loader:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
-    public: true
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator'
 
   oxid_esales.templating.admin.navigation.file.locator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator

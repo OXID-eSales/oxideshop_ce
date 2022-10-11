@@ -19,23 +19,24 @@ use Webmozart\PathUtil\Path;
  */
 class BasicContextStub implements BasicContextInterface
 {
-    private $communityEditionSourcePath;
-    private $containerCacheFilePath;
-    private $edition;
-    private $enterpriseEditionRootPath;
-    private $generatedServicesFilePath;
-    private $configurableServicesFilePath;
-    private $professionalEditionRootPath;
-    private $sourcePath;
-    private $shopRootPath;
-    private $configFilePath;
-    private $projectConfigurationDirectory;
-    private $backwardsCompatibilityClassMap;
-    private $facts;
-    private $outPath;
-    private $vendorPath;
-    private $composerVendorName;
-    private $cacheDirectory;
+    private string $communityEditionSourcePath;
+    private string $containerCacheFilePath;
+    private string $edition;
+    private string $enterpriseEditionRootPath;
+    private string $generatedServicesFilePath;
+    private string $configurableServicesFilePath;
+    private string $professionalEditionRootPath;
+    private string $sourcePath;
+    private string $shopRootPath;
+    private string $configFilePath;
+    private string $projectConfigurationDirectory;
+    private array $backwardsCompatibilityClassMap;
+    private Facts $facts;
+    private string $outPath;
+    private string $vendorPath;
+    private string $composerVendorName;
+    private string $cacheDirectory;
+    private string $templateCacheDirectory;
 
     public function __construct()
     {
@@ -58,6 +59,7 @@ class BasicContextStub implements BasicContextInterface
         $this->vendorPath = $basicContext->getVendorPath();
         $this->composerVendorName = $basicContext->getComposerVendorName();
         $this->cacheDirectory = $basicContext->getCacheDirectory();
+        $this->templateCacheDirectory = $basicContext->getTemplateCacheDirectory();
     }
 
     /**
@@ -295,5 +297,15 @@ class BasicContextStub implements BasicContextInterface
     public function getShopConfigurationDirectory(int $shopId): string
     {
         return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string) $shopId);
+    }
+
+    public function getTemplateCacheDirectory(): string
+    {
+        return $this->templateCacheDirectory;
+    }
+
+    public function setTemplateCacheDirectory(string $templateCacheDirectory): void
+    {
+        $this->templateCacheDirectory = $templateCacheDirectory;
     }
 }

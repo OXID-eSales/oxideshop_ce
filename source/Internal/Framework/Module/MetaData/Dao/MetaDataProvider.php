@@ -28,21 +28,16 @@ class MetaDataProvider implements MetaDataProviderInterface
     public const METADATA_EMAIL = 'email';
     public const METADATA_VERSION = 'version';
     public const METADATA_EXTEND = 'extend';
-    public const METADATA_BLOCKS = 'blocks';
     public const METADATA_CONTROLLERS = 'controllers';
     public const METADATA_EVENTS = 'events';
     public const METADATA_TEMPLATES = 'templates';
     public const METADATA_SETTINGS = 'settings';
-    public const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     /**
      * @deprecated will be removed in v7.0
      */
     public const METADATA_FILEPATH = 'metaDataFilePath';
 
-    /**
-     * @var string
-     */
-    private $filePath;
+    private string $filePath;
 
     public function __construct(
         private MetaDataNormalizerInterface $metaDataNormalizer,

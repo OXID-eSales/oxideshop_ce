@@ -42,7 +42,7 @@ modules:
             depends: Db
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
-            paths: 'Application/views/admin'
+            paths: 'Application/views/admin_twig'
         - \OxidEsales\Codeception\Module\OxideshopModules:
 step_decorators:
     - \Codeception\Step\Retry

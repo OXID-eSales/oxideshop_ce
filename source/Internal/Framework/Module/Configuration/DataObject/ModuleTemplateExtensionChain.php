@@ -13,8 +13,6 @@ use RecursiveArrayIterator;
 
 class ModuleTemplateExtensionChain extends RecursiveArrayIterator
 {
-    public const NAME = 'templateExtensions';
-
     public function getTemplateLoadingPriority(string $templateName): ModuleIdChain
     {
         return new ModuleIdChain(

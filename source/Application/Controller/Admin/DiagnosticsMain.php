@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 
 /**
  * Checks Version of System files.
@@ -38,13 +39,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * @var mixed
      */
     protected $_oDiagnostics = null;
-
-    /**
-     * Smarty renderer
-     *
-     * @var mixed
-     */
-    protected $_oRenderer = null;
 
     /**
      * Result output object
@@ -90,7 +84,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $this->_sShopDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir');
         $this->_oOutput = oxNew(\OxidEsales\Eshop\Application\Model\DiagnosticsOutput::class);
-        $this->_oRenderer = oxNew(\OxidEsales\Eshop\Application\Model\SmartyRenderer::class);
     }
 
     /**
@@ -112,15 +105,13 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function startDiagnostics()
     {
-        $sReport = "";
+        $this->_oOutput->storeResult(
+            $this->getRenderedReport(
+                $this->_runBasicDiagnostics()
+            )
+        );
 
-        $aDiagnosticsResult = $this->runBasicDiagnostics();
-        $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main", $aDiagnosticsResult);
-
-        $this->_oOutput->storeResult($sReport);
-
-        $sResult = $this->_oOutput->readResultFile();
-        $this->_aViewData['sResult'] = $sResult;
+        $this->_aViewData['sResult'] = $this->_oOutput->readResultFile();
     }
 
     /**
@@ -252,5 +243,19 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         }
 
         return $modules;
+    }
+
+    /**
+     * @param array $diagnosticsResult
+     *
+     * @return string
+     */
+    private function getRenderedReport(array $diagnosticsResult): string
+    {
+        $renderer = $this->getContainer()
+            ->get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
+
+        return $renderer->renderTemplate("diagnostics_main.tpl", $diagnosticsResult);
     }
 }

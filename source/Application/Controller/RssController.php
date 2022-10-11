@@ -71,13 +71,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         parent::render();
 
         $renderer = $this->getRenderer();
-        // TODO: can we move it?
-        // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
-        // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
-        if (Registry::getConfig()->isDemoShop()) {
-            $renderer->php_handling = SMARTY_PHP_PASSTHRU;
-        }
-
         $this->_aViewData['oxEngineTemplateId'] = $this->getViewId();
         // return rss xml, no further processing
         $sCharset = Registry::getLang()->translateString("charset");

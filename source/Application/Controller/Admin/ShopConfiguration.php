@@ -39,7 +39,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
     /**
      * Executes parent method parent::render(), passes shop configuration parameters
-     * to Smarty and returns name of template file "shop_config".
+     * to template engine and returns name of template file "shop_config".
      *
      * @return string
      */

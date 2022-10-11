@@ -98,22 +98,11 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     }
 
     /**
-     * Returns string which must be edited by editor
-     *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object with field will be used for editing
-     * @param string                                 $sField  name of editable field
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function getEditValue($oObject, $sField)
+    protected function getEditValue($object, $fieldName)
     {
-        $sEditObjectValue = '';
-        if ($oObject) {
-            $oDescField = $oObject->getLongDescription();
-            $sEditObjectValue = $this->processEditValue($oDescField->getRawValue());
-        }
-
-        return $sEditObjectValue;
+        return $object ? $object->getLongDescription()->getRawValue() : '';
     }
 
     /**

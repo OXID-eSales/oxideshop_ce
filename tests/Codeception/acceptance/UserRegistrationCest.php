@@ -54,8 +54,8 @@ final class UserRegistrationCest
         $start = new Start($I);
         $I->wantToTest('the user standard registration and the newsletter subscription with the same email');
 
-        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool', 1, 'theme:flow');
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool', 1, 'theme:flow');
+        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool', 1, 'theme:twig');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool', 1, 'theme:twig');
         $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
 
         // prepare user data

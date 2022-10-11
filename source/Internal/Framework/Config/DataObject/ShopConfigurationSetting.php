@@ -11,8 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
 class ShopConfigurationSetting
 {
-    public const MODULE_SMARTY_PLUGIN_DIRECTORIES = 'moduleSmartyPluginDirectories';
-
     /**
      * @var int
      */

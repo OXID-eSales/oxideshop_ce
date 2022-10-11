@@ -2037,12 +2037,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Model\SmartyRenderer'                          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\SmartyRenderer::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Model\State'                                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\State::class,
         'isAbstract'       => false,
@@ -2757,12 +2751,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
         'isAbstract'       => false,
@@ -2991,24 +2979,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\Emos'                                   => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter'                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem'                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Str'                                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Str::class,
         'isAbstract'       => false,
@@ -3170,17 +3140,5 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository'         => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
     ],
 ];

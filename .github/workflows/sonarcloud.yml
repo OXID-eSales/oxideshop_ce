@@ -164,9 +164,14 @@ jobs:
         with:
           swap-size-gb: 10
 
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+
+      - name: Install flow theme
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
+
       - name: Install dependencies
-        run: |
-          docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x-remove-deprecated-methods-OXDEV-1682 --with-all-dependencies
 
       - name: Copy config file
         run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
@@ -226,6 +231,12 @@ jobs:
         uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 10
+
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+
+      - name: Install twig theme
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
 
       - name: Run tests
         run: |

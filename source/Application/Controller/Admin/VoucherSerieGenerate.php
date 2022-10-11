@@ -52,13 +52,13 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Generates vouchers by offset iCnt
      *
-     * @param integer $iCnt voucher offset
+     * @param integer $cnt voucher offset
      *
      * @return bool
      */
-    public function nextTick($iCnt)
+    public function nextTick($cnt)
     {
-        if ($iGeneratedItems = $this->generateVoucher($iCnt)) {
+        if ($iGeneratedItems = $this->generateVoucher($cnt)) {
             return $iGeneratedItems;
         }
 

@@ -9,9 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
 class TemplateRenderer implements TemplateRendererInterface
 {
-    public function __construct(private TemplateEngineInterface $templateEngine)
+    public function __construct(
+        private TemplateEngineInterface $templateEngine,
+        private ContextInterface $context
+    )
     {
     }
 
@@ -37,6 +43,9 @@ class TemplateRenderer implements TemplateRendererInterface
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
+        if ($this->doNotRenderForDemoShop()) {
+            return $fragment;
+        }
         return $this->getTemplateEngine()->renderFragment($fragment, $fragmentId, $context);
     }
 
@@ -60,5 +69,10 @@ class TemplateRenderer implements TemplateRendererInterface
     public function exists(string $name): bool
     {
         return $this->getTemplateEngine()->exists($name);
+    }
+
+    private function doNotRenderForDemoShop(): bool
+    {
+        return $this->context->isShopInDemoMode();
     }
 }

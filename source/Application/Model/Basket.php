@@ -2223,7 +2223,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Formatted Products net price getter
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2235,7 +2235,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Formatted Products price getter
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2247,7 +2247,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return double
      */
@@ -2259,7 +2259,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2278,7 +2278,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2300,7 +2300,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return double
      */
@@ -2312,7 +2312,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2331,7 +2331,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2351,7 +2351,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns payment costs brutto value
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return double|bool
      */
@@ -2376,7 +2376,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted payment costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2407,7 +2407,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted voucher discount
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2426,7 +2426,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return double
      */
@@ -2439,7 +2439,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns VAT of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return double
      */
@@ -2451,7 +2451,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2472,7 +2472,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2493,7 +2493,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted wrapping costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2521,7 +2521,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted VAT of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2542,7 +2542,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted netto price of gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2563,7 +2563,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted gift card costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2591,7 +2591,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted basket total price
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string
      */
@@ -2603,7 +2603,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists formatted delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2621,7 +2621,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns if exists delivery costs
      *
-     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      *
      * @return string|bool
      */
@@ -2911,7 +2911,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns price list object of not discounted products
      *
-     * @return \OxidEsales\Eshop\Core\PriceList in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     * @return \OxidEsales\Eshop\Core\PriceList in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
      */
     public function getNotDiscountProductsPrice()
     {

@@ -10,8 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 
-class TemplateRendererTest extends \PHPUnit\Framework\TestCase
+class TemplateRendererTest extends TestCase
 {
     public function testRenderTemplate()
     {
@@ -22,7 +25,7 @@ class TemplateRendererTest extends \PHPUnit\Framework\TestCase
             ->with('template')
             ->will($this->returnValue($response));
 
-        $renderer = new TemplateRenderer($engine);
+        $renderer = new TemplateRenderer($engine, $this->getContextMock());
 
         $this->assertSame($response, $renderer->renderTemplate('template', []));
     }
@@ -36,16 +39,32 @@ class TemplateRendererTest extends \PHPUnit\Framework\TestCase
             ->with('template')
             ->will($this->returnValue($response));
 
-        $renderer = new TemplateRenderer($engine);
+        $renderer = new TemplateRenderer($engine, $this->getContextMock());
 
         $this->assertSame($response, $renderer->renderFragment('template', 'testId', []));
+    }
+
+    public function testRenderFragmentIfDemoShop()
+    {
+        $engine = $this->getEngineMock();
+        $engine->expects($this->never())
+            ->method('renderFragment')
+            ->with('template');
+
+        $context = $this->getContextMock();
+        $context->expects($this->once())
+            ->method('isShopInDemoMode')
+            ->will($this->returnValue(true));
+        $renderer = new TemplateRenderer($engine, $context);
+
+        $this->assertSame('template', $renderer->renderFragment('template', 'testId', []));
     }
 
     public function testGetExistingEngine()
     {
         $engine = $this->getEngineMock();
 
-        $renderer = new TemplateRenderer($engine);
+        $renderer = new TemplateRenderer($engine, $this->getContextMock());
 
         $this->assertSame($engine, $renderer->getTemplateEngine());
     }
@@ -58,7 +77,7 @@ class TemplateRendererTest extends \PHPUnit\Framework\TestCase
             ->with('template')
             ->will($this->returnValue(true));
 
-        $renderer = new TemplateRenderer($engine);
+        $renderer = new TemplateRenderer($engine, $this->getContextMock());
 
         $this->assertTrue($renderer->exists('template'));
     }
@@ -73,5 +92,10 @@ class TemplateRendererTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         return $engine;
+    }
+
+    private function getContextMock(): ContextInterface
+    {
+        return $this->getMockBuilder(ContextInterface::class)->getMock();
     }
 }

@@ -1,78 +1,69 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Templating\Cache;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use Symfony\Component\Filesystem\Filesystem;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 final class TemplateCacheServiceTest extends TestCase
 {
     use ContainerTrait;
 
-    private $templateCacheDirectory;
-
-    /** @var Filesystem */
-    private $filesystem;
+    private string $templateCachePath;
+    private Filesystem $filesystem;
 
     protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
-        $this->templateCacheDirectory = __DIR__ . '/Fixtures/tmp/smarty';
+        $this->templateCachePath = $this->get(BasicContextInterface::class)->getTemplateCacheDirectory();
+
+        $this->clearTemplateCache();
+        $this->populateTemplateCache();
 
         parent::setUp();
     }
 
-    protected function tearDown(): void
-    {
-        $this->filesystem->dumpFile(
-            Path::join($this->templateCacheDirectory, 'sample.tpl.php'),
-            ""
-        );
-
-        parent::tearDown();
-    }
-
     public function testInvalidateTemplateCache(): void
     {
-        $this->putFilesInTemplateCache();
+        $this->assertNotCount(0, \glob($this->selectAllCacheFiles()));
 
-        $basicContext = $this->getMockBuilder(BasicContext::class)
-            ->setMethods(['getCacheDirectory'])
-            ->getMock();
-        $basicContext->method('getCacheDirectory')->willReturn(__DIR__ . '/Fixtures/tmp');
+        $this->get(TemplateCacheServiceInterface::class)->invalidateTemplateCache();
 
-        $templateCacheService = new TemplateCacheService($basicContext, $this->filesystem);
-
-        $templateCacheService->invalidateTemplateCache();
-
-        self::assertCount(
-            0,
-            glob("{$this->templateCacheDirectory}/*.php")
-        );
+        self::assertCount(0, \glob($this->selectAllCacheFiles()));
     }
 
-    private function putFilesInTemplateCache(): void
+    private function clearTemplateCache(): void
     {
-        $templates = [
-            'notice.tpl.php',
-            'errors.tpl.php',
-            'success.tpl.php'
-        ];
+        $this->filesystem->remove($this->selectAllCacheFiles());
+    }
 
-        foreach ($templates as $template) {
-            $this->filesystem->dumpFile(
-                Path::join($this->templateCacheDirectory, $template),
-                ""
+    private function selectAllCacheFiles(): string
+    {
+        return "$this->templateCachePath/*";
+    }
+
+    private function populateTemplateCache(): void
+    {
+        $numberOfTestFiles = 3;
+        $this->filesystem->mkdir($this->templateCachePath);
+        for ($i = 0; $i < $numberOfTestFiles; $i++) {
+            $this->filesystem->touch(
+                Path::join(
+                    $this->templateCachePath,
+                    uniqid('template-file-', true)
+                )
             );
         }
-
-        self::assertCount(
-            4,
-            glob("{$this->templateCacheDirectory}/*.tpl.php")
-        );
     }
 }

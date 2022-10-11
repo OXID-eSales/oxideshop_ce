@@ -53,7 +53,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     }
 
     /**
-     * Loads category tree, passes data to Smarty and returns name of
+     * Loads category tree, passes data to template engine and returns name of
      * template file "category_list".
      *
      * @return string

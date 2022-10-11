@@ -929,7 +929,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted regular unit price
      *
-     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice template engine formatter
      *
      * @return string
      */
@@ -941,7 +941,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted unit price
      *
-     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice template engine formatter
      *
      * @return string
      */
@@ -953,7 +953,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns formatted total price
      *
-     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice template engine formatter
      *
      * @return string
      */

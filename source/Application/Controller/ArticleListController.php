@@ -12,6 +12,8 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
 /**
  * List of articles for a selected product group.
@@ -550,29 +552,48 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         //formatting description tag
         $category = $this->getActiveCategory();
 
-        $additionalText = (($category instanceof Category)) ? trim($category->getLongDesc()) : '';
+        $additionalText = ($category instanceof Category) ? $this->collectCategoryMetaDescription($category) : '';
 
-        $articleList = $this->getArticleList();
-        if (!$additionalText && count($articleList)) {
-            foreach ($articleList as $article) {
-                if ($additionalText) {
-                    $additionalText .= ', ';
-                }
-                $additionalText .= $article->oxarticles__oxtitle->value;
-            }
+        if (!$additionalText) {
+            $additionalText = $this->collectProductMetaDescription();
         }
-
         if (!$meta) {
             $meta = trim($this->getCatPathString());
         }
-
-        if ($meta) {
-            $meta = "{$meta} - {$additionalText}";
-        } else {
-            $meta = $additionalText;
-        }
-
+        $meta = ($meta) ? "{$meta} - {$additionalText}" : $additionalText;
         return parent::prepareMetaDescription($meta, $length, $descriptionTag);
+    }
+
+    private function collectCategoryMetaDescription(Category $category): string
+    {
+        if (isset($category->oxcategories__oxlongdesc) && $category->oxcategories__oxlongdesc instanceof Field) {
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            $oxid = (string) $category->getId() . (string) $category->getLanguage();
+            return trim($this->getRenderer()->renderFragment(
+                $category->oxcategories__oxlongdesc->getRawValue(),
+                "ox:{$oxid}{$activeLanguageId}",
+                $this->getViewData()
+            ));
+        }
+        return '';
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+    }
+
+    private function collectProductMetaDescription(): string
+    {
+        $articleList = $this->getArticleList();
+        if ($articleList && $articleList->count()) {
+            $articleTitles = [];
+            foreach ($articleList as $article) {
+                $articleTitles[] = $article->oxarticles__oxtitle->value;
+            }
+            return implode(', ', $articleTitles);
+        }
+        return '';
     }
 
     /**

@@ -7,9 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -319,11 +322,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if (!$meta) {
             $article = $this->getProduct();
 
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-                $meta = $article->getLongDesc();
-            } else {
-                $meta = $article->getLongDescription()->value;
-            }
+            $meta = $this->prepareLongDescription($article);
             if ($meta == '') {
                 $meta = $article->oxarticles__oxshortdesc->value;
             }
@@ -331,6 +330,27 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         }
 
         return parent::prepareMetaDescription($meta, $length, $descriptionTag);
+    }
+
+    private function prepareLongDescription(Article $article)
+    {
+        if (Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty') && $article->getLongDescription()->getRawValue()) {
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            $oxid = (string) $article->getId() . (string) $article->getLanguage();
+            $meta = $this->getRenderer()->renderFragment(
+                $article->getLongDescription()->getRawValue(),
+                "ox:{$oxid}{$activeLanguageId}",
+                $this->getViewData()
+            );
+        } else {
+            $meta = $article->getLongDescription()->value;
+        }
+        return $meta;
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 
     /**

@@ -89,9 +89,6 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
             $sMailBody = isset($aParams['oxpricealarm__oxlongdesc']) ? stripslashes($aParams['oxpricealarm__oxlongdesc']) : '';
-            if ($sMailBody) {
-                $sMailBody = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($sMailBody, $oPricealarm->getId());
-            }
 
             $sRecipient = $oPricealarm->oxpricealarm__oxemail->value;
 

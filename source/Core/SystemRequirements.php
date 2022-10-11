@@ -7,12 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
 /**
  * System requirements class.
@@ -1010,97 +1008,6 @@ class SystemRequirements
         }
 
         return $sBytes;
-    }
-
-    /**
-     * check if given template contains the given block
-     *
-     * @param string $sTemplate  template file name
-     * @param string $sBlockName block name
-     *
-     * @see getMissingTemplateBlocks
-     *
-     * @return bool
-     */
-    protected function checkTemplateBlock($sTemplate, $sBlockName)
-    {
-        /** @var TemplateLoaderInterface $templateLoader */
-        $templateLoader = $this->getContainer()->get('oxid_esales.templating.frontend.template.loader');
-        if (!$templateLoader->exists($sTemplate)) {
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
-            if (!$templateLoader->exists($sTemplate)) {
-                return false;
-            }
-        }
-
-        $sFile = $templateLoader->getContext($sTemplate);
-        $sBlockNameQuoted = preg_quote($sBlockName, '/');
-
-        return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
-    }
-
-    /**
-     * returns array of missing template block files:
-     *  1. checks db for registered blocks
-     *  2. checks each block if it exists in currently used theme templates
-     * returned array components are of form array(module name, block name, template file)
-     * only active (oxactive==1) blocks are checked
-     *
-     * @return array
-     */
-    public function getMissingTemplateBlocks()
-    {
-        $result = [];
-        $analized = [];
-
-        $blockRecords = $this->fetchBlockRecords();
-
-        if ($blockRecords != false && $blockRecords->count() > 0) {
-            while (!$blockRecords->EOF) {
-                $template = $blockRecords->fields['OXTEMPLATE'];
-                $blockName = $blockRecords->fields['OXBLOCKNAME'];
-
-                if (isset($analized[$template], $analized[$template][$blockName])) {
-                    $blockExistsInTemplate = $analized[$template][$blockName];
-                } else {
-                    $blockExistsInTemplate = $this->checkTemplateBlock($template, $blockName);
-                    $analized[$template][$blockName] = $blockExistsInTemplate;
-                }
-
-                if (!$blockExistsInTemplate) {
-                    $result[] = [
-                        'module'   => $blockRecords->fields['OXMODULE'],
-                        'block'    => $blockName,
-                        'template' => $template,
-                    ];
-                }
-
-                $blockRecords->fetchRow();
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Fetch the active template blocks for the active shop and the active theme.
-     *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
-     * @return ResultSetInterface The active template blocks for the active shop and the active theme.
-     */
-    protected function fetchBlockRecords()
-    {
-        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
-        $config = Registry::getConfig();
-        $database = DatabaseConnectionProvider::getDb(DatabaseConnectionProvider::FETCH_MODE_ASSOC);
-
-        $query = "select * from oxtplblocks where oxactive = 1 and oxshopid = :oxshopid and oxtheme in ('', :oxtheme)";
-
-        return $database->select($query, [
-            ':oxshopid' => $config->getShopId(),
-            ':oxtheme' => $activeThemeId
-        ]);
     }
 
     /**

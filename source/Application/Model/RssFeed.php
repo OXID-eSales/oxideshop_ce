@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\Facts\Facts;
 use stdClass;
@@ -240,9 +243,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $oItem->guid = $oItem->link = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
             $oItem->isGuidPermalink = true;
             // $oItem->description             = $oArticle->getLongDescription()->value; //oxarticles__oxshortdesc->value;
-            //#4038: Smarty not parsed in RSS, although smarty parsing activated for longdescriptions
+            //#4038: Template not parsed in RSS, although template parsing activated for longdescriptions
             if (Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-                $oItem->description = $oArticle->getLongDesc();
+                $oItem->description = $this->prepareLongDescription($oArticle);
             } else {
                 $oItem->description = $oArticle->getLongDescription()->value;
             }
@@ -270,6 +273,27 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         return $aItems;
+    }
+
+    private function prepareLongDescription(\OxidEsales\Eshop\Application\Model\Article $article): string
+    {
+        if ($article->getLongDescription() && $article->getLongDescription()->value) {
+            $activeView = oxNew(FrontendController::class);
+            $activeView->addGlobalParams();
+            $oxid = (string) $article->getId() . (string) $article->getLanguage();
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            return $this->getRenderer()->renderFragment(
+                $article->getLongDescription()->value,
+                "ox:{$oxid}{$activeLanguageId}",
+                $activeView->getViewData()
+            );
+        }
+        return '';
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 
     /**

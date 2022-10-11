@@ -180,18 +180,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @return array
-     */
-    public function getSmartyPluginDirectories()
-    {
-        if (isset($this->_aModule['smartyPluginDirectories']) && !is_array($this->_aModule['smartyPluginDirectories'])) {
-            throw new \InvalidArgumentException('Value for metadata key "smartyPluginDirectories" must be an array');
-        }
-
-        return isset($this->_aModule['smartyPluginDirectories']) ? $this->_aModule['smartyPluginDirectories'] : [];
-    }
-
-    /**
      * Get module ID
      *
      * @param string $module extension full path
@@ -348,33 +336,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return templates affected by template blocks for given module id.
-     *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
-     * @param string $sModuleId Module id
-     *
-     * @return array
-     */
-    public function getTemplates($sModuleId = null)
-    {
-        if (is_null($sModuleId)) {
-            $sModuleId = $this->getId();
-        }
-
-        if (!$sModuleId) {
-            return [];
-        }
-
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid", [
-            ':oxmodule' => $sModuleId,
-            ':oxshopid' => $sShopId
-        ]);
-    }
-
-    /**
      * Include data from metadata.php
      *
      * @param string $metadataPath Path to metadata.php
@@ -453,9 +414,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplatesToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
-            $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);
 
@@ -503,52 +461,12 @@ class Module extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function convertSmartyPluginDirectoriesToArray(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
-            $data[] = $directory->getDirectory();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertControllersToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
 
         foreach ($moduleConfiguration->getControllers() as $controller) {
             $data[$controller->getId()] = $controller->getControllerClassNameSpace();
-        }
-
-        return $data;
-    }
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return array
-     */
-    private function convertTemplateBlocksToArray(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
-            $data[$key] = [
-                'template' => $templateBlock->getShopTemplatePath(),
-                'block' => $templateBlock->getBlockName(),
-                'file' => $templateBlock->getModuleTemplatePath(),
-            ];
-            if ($templateBlock->getTheme() !== '') {
-                $data[$key]['theme'] = $templateBlock->getTheme();
-            }
-            if ($templateBlock->getPosition() !== 0) {
-                $data[$key]['position'] = $templateBlock->getPosition();
-            }
         }
 
         return $data;

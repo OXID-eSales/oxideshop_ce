@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 
@@ -33,10 +34,10 @@ class TranslateSalutationLogic
      */
     public function translateSalutation(string $ident = ''): string
     {
-        $translation = '';
+        $translation = $ident;
         try {
             $translation = $this->translator->translate($ident);
-        } catch (StandardException) {
+        } catch (TranslationNotFoundException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 

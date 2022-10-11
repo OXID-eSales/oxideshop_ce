@@ -11,18 +11,15 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
 interface TemplateRendererBridgeInterface
 {
-    /**
-     * @return TemplateRendererInterface
-     */
     public function getTemplateRenderer(): TemplateRendererInterface;
 
     /**
-     * @param mixed $engine
+     * @deprecated since 7.0.0 will be removed in next major
      */
     public function setEngine($engine);
 
     /**
-     * @return mixed
+     * @deprecated since 7.0.0 will be removed in next major
      */
     public function getEngine();
 }

@@ -13,8 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -95,34 +93,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
                     ]
                 ],
                 'dataMapper' => new ModuleSettingsDataMapper()
-
-            ],
-            [
-                'data' => [
-                    SmartyPluginDirectoriesDataMapper::MAPPING_KEY => [
-                        'Smarty/PluginDirectory1WithMetadataVersion21',
-                        'Smarty/PluginDirectory2WithMetadataVersion21'
-                    ]
-                ],
-                'dataMapper' => new SmartyPluginDirectoriesDataMapper()
-
-            ],
-            [
-                'data' => [
-                    TemplateBlocksDataMapper::MAPPING_KEY => [
-                        [
-                            'template' => 'page/checkout/basket.tpl',
-                            'block' => 'basket_btn_next_top',
-                            'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'
-                        ],
-                        [
-                            'template' => 'page/checkout/basket.tpl',
-                            'block' => 'basket_btn_next_bottom',
-                            'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'
-                        ],
-                    ]
-                ],
-                'dataMapper' => new TemplateBlocksDataMapper()
 
             ],
             [

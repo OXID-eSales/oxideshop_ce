@@ -11,9 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\Facts\Facts;
 
-/**
- * Contains necessary methods to provide basic information about the application.
- */
 interface BasicContextInterface
 {
     /**
@@ -126,4 +123,6 @@ interface BasicContextInterface
      * @return string
      */
     public function getCacheDirectory(): string;
+
+    public function getTemplateCacheDirectory(): string;
 }

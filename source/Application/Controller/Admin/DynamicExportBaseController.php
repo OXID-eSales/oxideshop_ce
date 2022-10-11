@@ -202,11 +202,11 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * virtual function must be overloaded
      *
-     * @param integer $iCnt counter
+     * @param integer $cnt counter
      *
      * @return bool
      */
-    public function nextTick($iCnt)
+    public function nextTick($cnt)
     {
         return false;
     }

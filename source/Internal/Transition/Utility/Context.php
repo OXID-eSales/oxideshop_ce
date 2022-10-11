@@ -136,6 +136,14 @@ class Context extends BasicContext implements ContextInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isShopInDemoMode(): bool
+    {
+        return (bool) Registry::getConfig()->isDemoShop();
+    }
+
+    /**
      * @param string $name
      * @param null   $default
      *

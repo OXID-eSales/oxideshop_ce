@@ -8,9 +8,11 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
@@ -19,11 +21,6 @@ use ReflectionMethod;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 
-/**
- * Main shop actions controller. Processes user actions, logs
- * them (if needed), controls output, redirects according to
- * processed methods logic. This class is initialized from index.php
- */
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
     /**
@@ -96,9 +93,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected $offlineWarningTimestampFile;
 
-    /**
-     * ShopControl constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -127,7 +121,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $controllerClass = $this->getControllerClass($controllerKey);
 
             $this->process($controllerClass, $function, $parameters, $viewsChain);
-        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $exception) {
+        } catch (SystemComponentException $exception) {
             $this->handleSystemException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
             $this->handleCookieException($exception);
@@ -166,7 +160,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         // Use default route in case no controller id is given
         if (!$controllerKey) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             if ($this->isAdmin()) {
                 $controllerKey = $session->getVariable("auth") ? 'admin_start' : 'login';
             } else {
@@ -230,7 +224,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function process($class, $function, $parameters = null, $viewsChain = null)
     {
         startProfile('process');
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         // executing maintenance tasks
         $this->executeMaintenanceTasks();
@@ -260,7 +254,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $outputManager->sendHeaders();
 
         //Send headers that have been registered
-        $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+        $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
         $header->sendHeader();
 
         $this->sendAdditionalHeaders($view);
@@ -353,7 +347,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $view->setFncName($function);
         $view->setViewParameters($parameters);
 
-        \OxidEsales\Eshop\Core\Registry::getConfig()->setActiveView($view);
+        Registry::getConfig()->setActiveView($view);
 
         $this->onViewCreation($view);
 
@@ -424,44 +418,27 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function render($view)
     {
-        $renderer = $this->getRenderer();
-
-        // render it
         $templateName = $view->render();
-
-        /** @var TemplateLoaderInterface $templateLoader */
-        $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
-
-        if (!$templateLoader->exists($templateName)) {
-            $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-            $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
-            $ex->setComponent($templateName);
-
-            $templateName = "message/exception";
-
-            if ($this->isDebugMode()) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
-            }
-            \OxidEsales\Eshop\Core\Registry::getLogger()->error($ex->getMessage(), [$ex]);
-        }
-
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
         $outputManager = $this->getOutputManager();
         $viewData = $outputManager->processViewArray($view->getViewData(), $view->getClassKey());
         $view->setViewData($viewData);
 
-        //add all exceptions to display
-        $errors = $this->getErrors($view->getClassKey());
-        if (is_array($errors) && count($errors)) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
-        }
-
-        // passing current view object to smarty
+        $renderer = $this->getRenderer();
+        // passing current view object to template engine
         // TODO: remove it! Also in varnish module
         $renderer->oxobject = $view;
 
         $viewData['oxEngineTemplateId'] = $view->getViewId();
-        $output = $renderer->renderTemplate($templateName, $viewData);
+        $viewData = $this->passSessionErrorsToViewData($view, $viewData);
+        try {
+            $output = $renderer->renderTemplate($templateName, $viewData);
+        } catch (\Throwable $exception) {
+            $this->processTemplateRenderError($templateName, $exception);
+            $viewData = $this->passSessionErrorsToViewData($view, $viewData);
+            $output = $renderer->renderTemplate('message/exception', $viewData);
+        }
+
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassKey());
@@ -505,8 +482,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function getErrors($currentControllerName)
     {
         if (null === $this->_aErrors) {
-            $this->_aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
-            $this->_aControllerErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ErrorController');
+            $this->_aErrors = Registry::getSession()->getVariable('Errors');
+            $this->_aControllerErrors = Registry::getSession()->getVariable('ErrorController');
             if (null === $this->_aErrors) {
                 $this->_aErrors = [];
             }
@@ -523,8 +500,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         } else {
             $this->_aAllErrors = [];
         }
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', $this->_aAllErrors);
+        Registry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
+        Registry::getSession()->setVariable('Errors', $this->_aAllErrors);
 
         return $this->_aErrors;
     }
@@ -535,13 +512,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function runOnce()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         //Ensures config values are available, database connection is established,
         //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
         $config->init();
 
-        $runOnceExecuted = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blRunOnceExecuted');
+        $runOnceExecuted = Registry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
@@ -553,10 +530,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 ];
                 $renderer = $this->getRenderer();
                 $errorOutput = $renderer->renderTemplate($tpl, $context);
-                \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($errorOutput);
+                Registry::getUtils()->showMessageAndExit($errorOutput);
             }
 
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blRunOnceExecuted', true);
+            Registry::getSession()->setVariable('blRunOnceExecuted', true);
         }
     }
 
@@ -594,7 +571,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($this->isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
+            $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
@@ -633,7 +610,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-        $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
+        $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
 
         $message = '';
 
@@ -660,19 +637,19 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleSystemException($exception)
     {
-        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        Registry::getLogger()->error($exception->getMessage(), [$exception]);
 
         if ($this->isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
+            Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->process('exceptionError', 'displayExceptionError');
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
         }
     }
 
     protected function handleRoutingException(RoutingException $exception)
     {
-        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        Registry::getLogger()->error($exception->getMessage(), [$exception]);
 
         unset($_GET['fnc'], $_POST['fnc']);
         error_404_handler($_SERVER['REQUEST_URI']);
@@ -686,9 +663,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function handleCookieException($exception)
     {
         if ($this->isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
+            Registry::getUtilsView()->addErrorToDisplay($exception);
         }
-        \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+        Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**
@@ -737,7 +714,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $this->logException($exception);
 
         if ($this->isDebugMode()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
+            Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->process('exceptionError', 'displayExceptionError');
         }
     }
@@ -754,7 +731,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
         }
-        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**
@@ -877,5 +854,29 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function getControllerClass($controllerKey)
     {
         return $this->resolveControllerClass($controllerKey);
+    }
+
+    private function processTemplateRenderError(string $templateName, \Throwable $rendererError): void
+    {
+        $displayMessage = sprintf(
+            Registry::getLang()->translateString('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND'),
+            $templateName
+        );
+        $displayedException = oxNew(Exception\SystemComponentException::class, $displayMessage);
+        $displayedException->setComponent($templateName);
+        if ($this->isDebugMode()) {
+            $this->_aErrors = null;
+            Registry::getUtilsView()->addErrorToDisplay($displayedException);
+        }
+        Registry::getLogger()->error($displayedException->getMessage(), [$rendererError]);
+    }
+
+    private function passSessionErrorsToViewData(BaseController $view, array $viewData): array
+    {
+        $errors = $this->getErrors($view->getClassKey());
+        if (\is_array($errors) && count($errors)) {
+            Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
+        }
+        return $viewData;
     }
 }

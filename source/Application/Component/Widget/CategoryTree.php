@@ -8,7 +8,7 @@
 namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 
 /**
  * Category tree widget.
@@ -33,21 +33,23 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     protected $_sThisTemplate = 'widget/sidebar/categorytree';
 
     /**
-     * Executes parent::render(), assigns template name and returns it
-     *
      * @return string
      */
     public function render()
     {
         parent::render();
 
-        if ($sTpl = $this->getViewParameter("sWidgetType")) {
-            $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist';
-            /** @var TemplateLoaderInterface $templateLoader */
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
-            if ($templateLoader->exists($sTemplateName)) {
-                $this->_sThisTemplate = $sTemplateName;
-            }
+        $widgetType = \basename($this->getViewParameter('sWidgetType'));
+        if (!$widgetType) {
+            return $this->_sThisTemplate;
+        }
+        $template = "widget/$widgetType/categorylist";
+        $templateExists = $this->getContainer()
+            ->get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer()
+            ->exists($template);
+        if ($templateExists) {
+            $this->_sThisTemplate = $template;
         }
 
         return $this->_sThisTemplate;

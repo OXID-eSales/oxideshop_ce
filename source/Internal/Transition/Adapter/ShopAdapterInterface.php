@@ -54,13 +54,14 @@ interface ShopAdapterInterface
     public function isShopEditionNamespace(string $namespace): bool;
 
     /**
-     * @return \Smarty
-     */
-    public function getSmartyInstance(): \Smarty;
-
-    /**
      * @param int $shopId
      * @return bool
      */
     public function validateShopId(int $shopId): bool;
+
+    public function getActiveThemesList(): array;
+
+    public function getCustomTheme(): string;
+
+    public function getActiveThemeId(): string;
 }

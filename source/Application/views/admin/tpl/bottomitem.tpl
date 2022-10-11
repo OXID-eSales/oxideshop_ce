@@ -1,6 +1,0 @@
-</div>
-
-[{oxscript}]
-
-</body>
-</html>

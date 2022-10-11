@@ -55,8 +55,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $this->eventDispatcher->dispatch(new BeforeModuleDeactivationEvent($shopId, $moduleId));
 
-        $this->moduleConfigurationHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
-
         $this->moduleServicesActivationService->deactivateModuleServices($moduleId, $shopId);
 
         $moduleConfiguration->setActivated(false);

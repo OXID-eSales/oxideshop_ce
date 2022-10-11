@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+  - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
 - Classes:
   - `Application\Model\SmartyRenderer`
   - `Core\Module\ModuleSmartyPluginDirectoryRepository`
@@ -69,6 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions::ox_get_template()`
   - `oxfunctions::ox_get_timestamp()`
   - `oxfunctions::ox_get_trusted()`
+  - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingService::handleOnDeactivation()`
+  - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingService::addHandler()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
   - `Core\UtilsView::$_aTemplateDir`

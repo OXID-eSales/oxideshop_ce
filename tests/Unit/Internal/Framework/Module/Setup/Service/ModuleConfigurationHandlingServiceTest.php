@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\S
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingService;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use PHPUnit\Framework\TestCase;
@@ -22,54 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ModuleConfigurationHandlingServiceTest extends TestCase
 {
-    public function testHandlingOnActivation()
-    {
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModule');
-
-        $setting = new Setting();
-        $setting
-            ->setName('testSetting')
-            ->setValue('value');
-
-        $moduleConfiguration->addModuleSetting($setting);
-
-        $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
-        $handler
-            ->expects($this->atLeastOnce())
-            ->method('handleOnModuleActivation');
-
-        $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
-        $moduleSettingsHandlingService->addHandler($handler);
-
-        $moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, 1);
-    }
-
-    public function testHandlingOnDeactivation()
-    {
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModule');
-        $setting = new Setting();
-        $setting
-            ->setName('testSetting')
-            ->setValue('value');
-
-        $moduleConfiguration->addModuleSetting($setting);
-
-
-        $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
-
-        $handler
-            ->expects($this->atLeastOnce())
-            ->method('handleOnModuleDeactivation');
-
-        $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
-        $moduleSettingsHandlingService->addHandler($handler);
-
-        $moduleSettingsHandlingService->handleOnDeactivation($moduleConfiguration, 1);
-    }
-
-    public function testModuleSettingInvalid()
+    public function testModuleSettingInvalid(): void
     {
         $this->expectException(ModuleSettingNotValidException::class);
 

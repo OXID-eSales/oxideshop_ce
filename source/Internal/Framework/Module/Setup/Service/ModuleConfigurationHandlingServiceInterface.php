@@ -17,11 +17,5 @@ interface ModuleConfigurationHandlingServiceInterface
      * @param ModuleConfiguration $moduleConfiguration
      * @param int                 $shopId
      */
-    public function handleOnActivation(ModuleConfiguration $moduleConfiguration, int $shopId);
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param int                 $shopId
-     */
-    public function handleOnDeactivation(ModuleConfiguration $moduleConfiguration, int $shopId);
+    public function handleOnActivation(ModuleConfiguration $moduleConfiguration, int $shopId): void;
 }

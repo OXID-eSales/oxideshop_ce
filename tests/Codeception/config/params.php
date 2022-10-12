@@ -13,16 +13,6 @@ use OxidEsales\Codeception\Module\Database\DatabaseDefaultsFileGenerator;
 
 $facts = new Facts();
 
-$selenium_server_port = getenv('SELENIUM_SERVER_PORT');
-$selenium_server_port = ($selenium_server_port) ? : '4444';
-$selenium_server_host = getenv('SELENIUM_SERVER_HOST');
-$selenium_server_host = ($selenium_server_host) ? : '127.0.0.1';
-$php = (getenv('PHPBIN')) ? : 'php';
-$cc_screen_shot_url = getenv('CC_SCREEN_SHOTS_URL');
-$cc_screen_shot_url = ($cc_screen_shot_url) ? : '';
-$browser = getenv('BROWSER_NAME');
-$browser = ($browser) ? : 'firefox';
-
 return [
     'SHOP_URL' => $facts->getShopUrl(),
     'SHOP_SOURCE_PATH' => $facts->getSourcePath(),
@@ -35,33 +25,34 @@ return [
     'DUMP_PATH' => getTestDataDumpFilePath(),
     'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
-    'SELENIUM_SERVER_PORT' => $selenium_server_port,
-    'SELENIUM_SERVER_HOST' => $selenium_server_host,
-    'PHP_BIN' => $php,
-    'SCREEN_SHOT_URL' => $cc_screen_shot_url,
-    'BROWSER' => $browser
+    'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
+    'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: '127.0.0.1',
+    'PHP_BIN' => (getenv('PHPBIN')) ?: 'php',
+    'SCREEN_SHOT_URL' => getenv('CC_SCREEN_SHOTS_URL') ?: '',
+    'BROWSER' => getenv('BROWSER_NAME') ?: 'firefox',
+    'THEME_ID' => getenv('THEME_ID') ?: 'twig',
 ];
 
-function getTestDataDumpFilePath()
+function getTestDataDumpFilePath(): string
 {
     return getShopTestPath() . '/Codeception/_data/generated/shop-dump.sql';
 }
 
-function getTestFixtureSqlFilePath()
+function getTestFixtureSqlFilePath(): string
 {
     return getShopTestPath() . '/Codeception/_data/dump.sql';
 }
 
-function getShopSuitePath($facts)
+function getShopSuitePath(Facts $facts): string
 {
-    $testSuitePath = getenv('TEST_SUITE');
+    $testSuitePath = (string) getenv('TEST_SUITE');
     if (!$testSuitePath) {
         $testSuitePath = $facts->getShopRootPath() . '/tests';
     }
     return $testSuitePath;
 }
 
-function getShopTestPath()
+function getShopTestPath(): string
 {
     $facts = new Facts();
 
@@ -73,11 +64,9 @@ function getShopTestPath()
     return $shopTestPath;
 }
 
-function getMysqlConfigPath()
+function getMysqlConfigPath(): string
 {
     $configFile = new ConfigFile();
 
-    $generator = new DatabaseDefaultsFileGenerator($configFile);
-
-    return $generator->generate();
+    return (new DatabaseDefaultsFileGenerator($configFile))->generate();
 }

@@ -43,7 +43,10 @@ modules:
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/admin_twig'
+        - \OxidEsales\Codeception\Module\SelectTheme:
+              depends:
+                  - \OxidEsales\Codeception\Module\Database
+              theme_id: '%THEME_ID%'
         - \OxidEsales\Codeception\Module\OxideshopModules:
 step_decorators:
     - \Codeception\Step\Retry
-

@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingMo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDependencyHandlingService;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -50,6 +51,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleServicesActivationService;
 
     /**
+     * @var ModuleDependencyHandlingService
+     */
+    private $moduleDependencyHandlingService;
+
+    /**
      * ModuleActivationService constructor.
      *
      * @param ModuleConfigurationDaoInterface             $moduleConfigurationDao
@@ -58,6 +64,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param ModuleStateServiceInterface                 $stateService
      * @param ExtensionChainServiceInterface              $classExtensionChainService
      * @param ModuleServicesActivationServiceInterface    $moduleServicesActivationService
+     * @param ModuleDependencyHandlingService             $moduleDependencyHandlingService
      */
     public function __construct(
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
@@ -65,7 +72,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         ModuleConfigurationHandlingServiceInterface $moduleSettingsHandlingService,
         ModuleStateServiceInterface $stateService,
         ExtensionChainServiceInterface $classExtensionChainService,
-        ModuleServicesActivationServiceInterface $moduleServicesActivationService
+        ModuleServicesActivationServiceInterface $moduleServicesActivationService,
+        ModuleDependencyHandlingService $moduleDependencyHandlingService
     ) {
         $this->moduleConfigurationDao = $moduleConfigurationDao;
         $this->eventDispatcher = $eventDispatcher;
@@ -73,6 +81,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $this->stateService = $stateService;
         $this->classExtensionChainService = $classExtensionChainService;
         $this->moduleServicesActivationService = $moduleServicesActivationService;
+        $this->moduleDependencyHandlingService = $moduleDependencyHandlingService;
     }
 
 
@@ -88,6 +97,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         if ($this->stateService->isActive($moduleId, $shopId) === true) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is already active.');
         }
+
+        $this->moduleDependencyHandlingService->canActivateModule($moduleId, $shopId);
 
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
@@ -120,6 +131,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         if ($this->stateService->isActive($moduleId, $shopId) === false) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is not active.');
         }
+
+        $this->moduleDependencyHandlingService->canDeactivateModule($moduleId, $shopId);
 
         $this->eventDispatcher->dispatch(
             new BeforeModuleDeactivationEvent($shopId, $moduleId),

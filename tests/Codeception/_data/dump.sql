@@ -82,15 +82,7 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 'a:2:{s:2:"de";s:7:"Deutsch";s:2:"en";s:7:"
 
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
                        ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       'true'),
-                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       'true'),
-                       ('8563fba1965a219c9.51133322', 1, 'theme:twig', 'bl_showWishlist',      'bool',       '1'),
-                       ('8563fba1965a219c9.23424456', 1, 'theme:twig', 'bl_showPriceAlarm',      'bool',       '1'),
-                       ('8563fba1965a219c9.345345', 1, 'theme:twig', 'bl_showGiftWrapping',      'bool',       '1'),
-                       ('8563fba1965a219c9.123123', 1, 'theme:twig', 'blFooterShowNewsletterForm',      'bool',       '1'),
-                       ('8563fba1965a219c9.22222', 1, 'theme:twig', 'bl_showCompareList',      'bool',       '1');
-
-REPLACE INTO `oxconfigdisplay` (`OXID`, `OXCFGVARNAME`, `OXGROUPING`,   `OXCFGMODULE`) VALUES
-                       ('8563fba1965a219c9.4742', 'bl_showWishlist', 'features', 'theme:twig');
+                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       'true');
 
 UPDATE `oxcountry` SET `OXACTIVE` = 1 , `OXID` = 'testcountry_be' WHERE `OXISOALPHA2` = 'BE';
 UPDATE `oxcountry` SET `OXACTIVE` = 1 , `OXID` = 'testcountry_de' WHERE `OXISOALPHA2` = 'DE';

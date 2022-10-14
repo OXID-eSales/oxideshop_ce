@@ -144,8 +144,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $aChosenArt = $this->getActionIds('oxactions2article.oxid');
         $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
 
-        $this->getOxRssFeed()->removeCacheFile($sOxid);
-
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sQ = parent::addFilter("delete oxactions2article.* " . $this->getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
@@ -168,8 +166,6 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aArticles = $this->getActionIds('oxarticles.oxid');
         $soxId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
-
-        $this->getOxRssFeed()->removeCacheFile($soxId);
 
         if (Registry::getRequest()->getRequestEscapedParameter('all')) {
             $sArtTable = $this->getViewName('oxarticles');
@@ -266,15 +262,5 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $sCountQ = 'select count( * ) ' . $sQAdd;
 
         $this->outputResponse($this->getData($sCountQ, $sQ));
-    }
-
-    /**
-     * Getter for the rss feed handler.
-     *
-     * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
-     */
-    protected function getOxRssFeed()
-    {
-        return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }
 }

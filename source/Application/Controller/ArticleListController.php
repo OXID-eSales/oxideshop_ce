@@ -180,20 +180,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if (!$isCategoryActive) {
             Registry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
         }
-
-        $activeCategory = $this->getActiveCategory();
-        if ($activeCategory && $config->getConfigParam('bl_rssCategories')) {
-            $rss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
-            $this->addRssFeed(
-                $rss->getCategoryArticlesTitle($activeCategory),
-                $rss->getCategoryArticlesUrl($activeCategory),
-                'activeCategory'
-            );
-        }
-
         //checking if actual pages count does not exceed real articles page count
         $this->getArticleList();
-
         if ($this->_blIsCat) {
             $this->checkRequestedPage();
         }

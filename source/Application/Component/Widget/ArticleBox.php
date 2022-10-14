@@ -207,21 +207,6 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns RSS links
-     *
-     * @return array|null
-     */
-    public function getRSSLinks()
-    {
-        $aRSS = $this->getViewParameter('rsslinks');
-        if (!is_array($aRSS)) {
-            $aRSS = null;
-        }
-
-        return $aRSS;
-    }
-
-    /**
      * Returns the answer if main link must be showed
      *
      * @return bool

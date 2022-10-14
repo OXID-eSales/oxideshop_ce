@@ -228,7 +228,6 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'order' => Controller\OrderController::class,
         'payment' => Controller\PaymentController::class,
         'recommlist' => Controller\RecommListController::class,
-        'rss' => Controller\RssController::class,
         'search' => Controller\SearchController::class,
         'start' => Controller\StartController::class,
         'thankyou' => Controller\ThankYouController::class,

@@ -1539,12 +1539,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\RssController'                      => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\RssController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Controller\SearchController'                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\SearchController::class,
         'isAbstract'       => false,
@@ -1943,12 +1937,6 @@ return [
     ],
     'OxidEsales\Eshop\Application\Model\Review'                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Review::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Application\Model\RssFeed'                                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\RssFeed::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

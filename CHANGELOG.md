@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 
 ### Removed
+- RSS functionality
 - Services:
   - `oxid_esales.command.apply_modules_configuration_command`
   - `oxid_esales.templating.template.loader`

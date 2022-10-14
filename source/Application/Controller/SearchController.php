@@ -212,19 +212,6 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function render()
     {
         parent::render();
-
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        if ($oConfig->getConfigParam('bl_rssSearch')) {
-            $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
-            $sSearch = Registry::getRequest()->getRequestParameter('searchparam');
-            $sCnid = Registry::getRequest()->getRequestParameter('searchcnid');
-            $sVendor = Registry::getRequest()->getRequestParameter('searchvendor');
-            $sManufacturer = Registry::getRequest()->getRequestParameter('searchmanufacturer');
-            $sSearchArticlesTitle = $oRss->getSearchArticlesTitle($sSearch, $sCnid, $sVendor, $sManufacturer);
-            $sSearchArticlesUrl = $oRss->getSearchArticlesUrl($sSearch, $sCnid, $sVendor, $sManufacturer);
-            $this->addRssFeed($sSearchArticlesTitle, $sSearchArticlesUrl, 'searchArticles');
-        }
-
         // processing list articles
         $this->processListArticles();
 

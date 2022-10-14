@@ -111,20 +111,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         if (Registry::getRequest()->getRequestEscapedParameter('showexceptionpage') == '1') {
             return 'message/exception';
         }
-
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
-        if ($myConfig->getConfigParam('iTop5Mode') && $myConfig->getConfigParam('bl_rssTopShop')) {
-            $this->addRssFeed($oRss->getTopInShopTitle(), $oRss->getTopInShopUrl(), 'topArticles');
-        }
-        if ($myConfig->getConfigParam('iNewestArticlesMode') && $myConfig->getConfigParam('bl_rssNewest')) {
-            $this->addRssFeed($oRss->getNewestArticlesTitle(), $oRss->getNewestArticlesUrl(), 'newestArticles');
-        }
-        if ($myConfig->getConfigParam('bl_rssBargain')) {
-            $this->addRssFeed($oRss->getBargainTitle(), $oRss->getBargainUrl(), 'bargainArticles');
-        }
-
         parent::render();
 
         return $this->_sThisTemplate;

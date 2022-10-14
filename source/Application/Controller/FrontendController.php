@@ -154,13 +154,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected $_iTopCatNavItmCnt = null;
 
     /**
-     * Rss links
-     *
-     * @var array
-     */
-    protected $_aRssLinks = null;
-
-    /**
      * List's "order by"
      *
      * @var string
@@ -829,28 +822,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         return $this->_iTopCatNavItmCnt;
-    }
-
-    /**
-     * addRssFeed adds link to rss
-     *
-     * @param string $title feed page title
-     * @param string $url   feed url
-     * @param int    $key   feed number
-     */
-    public function addRssFeed($title, $url, $key = null)
-    {
-        if (!is_array($this->_aRssLinks)) {
-            $this->_aRssLinks = [];
-        }
-
-        $url = Registry::getUtilsUrl()->prepareUrlForNoSession($url);
-
-        if ($key === null) {
-            $this->_aRssLinks[] = ['title' => $title, 'link' => $url];
-        } else {
-            $this->_aRssLinks[$key] = ['title' => $title, 'link' => $url];
-        }
     }
 
     /**
@@ -1743,16 +1714,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function showSearch()
     {
         return !(Registry::getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep());
-    }
-
-    /**
-     * Returns RSS links
-     *
-     * @return array
-     */
-    public function getRssLinks()
-    {
-        return $this->_aRssLinks;
     }
 
     /**

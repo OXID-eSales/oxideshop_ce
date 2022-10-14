@@ -110,16 +110,6 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             if (($oList = $this->getArticleList()) && $oList->count()) {
                 $this->_iAllArtCnt = $oActiveRecommList->getArtCount();
             }
-
-            if ($myConfig->getConfigParam('bl_rssRecommListArts')) {
-                /** @var \OxidEsales\Eshop\Application\Model\RssFeed $oRss */
-                $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
-                $this->addRssFeed(
-                    $oRss->getRecommListArticlesTitle($oActiveRecommList),
-                    $oRss->getRecommListArticlesUrl($this->_oActiveRecommList),
-                    'recommlistarts'
-                );
-            }
         } else {
             if (($oList = $this->getRecommLists()) && $oList->count()) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);

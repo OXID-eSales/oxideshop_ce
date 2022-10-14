@@ -293,15 +293,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $locator = oxNew('oxLocator', $this->getListType());
                 $locator->setLocatorData($article, $this);
 
-                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-                if ($config->getConfigParam('bl_rssRecommLists') && $this->getSimilarRecommListIds()) {
-                    $rssFeeds = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
-                    $title = $rssFeeds->getRecommListsTitle($article);
-                    $url = $rssFeeds->getRecommListsUrl($article);
-                    $this->addRssFeed($title, $url, 'recommlists');
-                }
-                // END deprecated
-
                 return $this->_sThisTemplate;
         }
     }

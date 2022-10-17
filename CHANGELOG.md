@@ -577,30 +577,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.13.0] - unreleased
 
 ### Deprecated
-- `OxidEsales\EshopCommunity\Application\Model\Actions::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\Article::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\Category::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getTemplateCompileId`
-- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getRenderedContent`
-- `OxidEsales\EshopCommunity\Core\UtilsView::getSmartyDir`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+- Interfaces:
+  - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
+  - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
+  - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+- Classes:
+  - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
+  - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+- Services:
+    - `oxid_esales.module.setup.class_extension_chain_service`
+    - `oxid_esales.module.setup.events_module_setting_handler`
+    - `oxid_esales.module.setup.path_module_setting_handler`
+    - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
+    - `oxid_esales.module.setup.version_module_setting_handler`
 - Constants:
-- `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
-  - `MODULE_CLASS_EXTENSIONS`
-  - `MODULE_VERSIONS`
-  - `MODULE_PATHS`
-  - `MODULE_EVENTS`
-  - `MODULE_CONTROLLERS`
-  - `ACTIVE_MODULES`
-  - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
-  - `MODULE_CLASS_EXTENSIONS_CHAIN`
+  - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
+    - `MODULE_CLASS_EXTENSIONS`
+    - `MODULE_VERSIONS`
+    - `MODULE_PATHS`
+    - `MODULE_EVENTS`
+    - `MODULE_CONTROLLERS`
+    - `ACTIVE_MODULES`
+    - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
+    - `MODULE_CLASS_EXTENSIONS_CHAIN`
 - Config options:
   - `aModuleExtensions`
   - `aModuleVersions`
@@ -609,18 +609,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `activeModules`
   - `aModules`
   - `aModuleControllers`
-- Services:
-  - `oxid_esales.module.setup.path_module_setting_handler`
-  - `oxid_esales.module.setup.version_module_setting_handler`
-  - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
-  - `oxid_esales.module.setup.events_module_setting_handler`
-  - `oxid_esales.module.setup.class_extension_chain_service`
 - Methods:
-  - `Core\Field`
+  - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
+  - `Application\Model\Actions::getLongDesc()`
+  - `Application\Model\Article::getLongDesc()`
+  - `Application\Model\Category::getLongDesc()`
+  - `Application\Model\UtilsView::getRenderedContent()`
+  - `Application\Model\UtilsView::getTemplateCompileId()`
+  - `Core\Field::`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-    - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
-- Property:
+  - `Core\UtilsView::getSmartyDir()`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured()`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
+  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`
+  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated()`
+- Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
 ## [6.12.0] - 2022-08-15

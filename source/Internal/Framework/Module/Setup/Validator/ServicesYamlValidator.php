@@ -32,7 +32,7 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
      * @param int $shopId
      * @throws \Throwable
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         $projectYaml = $this->projectYamlDao->loadProjectConfigFile();
         $originalProjectYaml = clone $projectYaml;
@@ -83,7 +83,7 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @throws \Exception
      */
-    private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
+    private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $definitionKey => $definition) {
             if ($definition->isPublic()) {

@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
@@ -20,7 +21,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     public function __construct(
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
-        private ModuleConfigurationHandlingServiceInterface $moduleConfigurationHandlingService,
+        private ModuleConfigurationValidatorInterface $moduleConfigurationValidator,
         private ModuleServicesActivationServiceInterface $moduleServicesActivationService
     ) {
     }
@@ -33,7 +34,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
-        $this->moduleConfigurationHandlingService->handleOnActivation($moduleConfiguration, $shopId);
+        $this->moduleConfigurationValidator->validate($moduleConfiguration, $shopId);
 
         $this->moduleServicesActivationService->activateModuleServices($moduleId, $shopId);
 

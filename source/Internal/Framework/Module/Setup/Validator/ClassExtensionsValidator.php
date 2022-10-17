@@ -25,7 +25,7 @@ class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
      *
      * @throws InvalidClassExtensionNamespaceException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasClassExtensions()) {
             foreach ($configuration->getClassExtensions() as $extension) {

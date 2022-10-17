@@ -9,52 +9,49 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * @internal
- */
-class ModuleActivationServiceTest extends IntegrationTestCase
+final class ModuleActivationServiceTest extends IntegrationTestCase
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    private $shopId = 1;
-    private $testModuleId = 'testModuleId';
-    private $testContainerFactory = null;
+    use ProphecyTrait;
+
+    private ContainerInterface $container;
+    private int $shopId = 1;
+    private string $testModuleId = 'testModuleId';
+    private ?TestContainerFactory $testContainerFactory = null;
 
     public function setup(): void
     {
         $this->container = $this->setupAndConfigureContainer();
+        $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
         parent::setUp();
     }
 
     public function testActivation()
     {
-        $this->persistModuleConfiguration($this->getTestModuleConfiguration());
-
         $moduleStateService = $this->container->get(ModuleStateServiceInterface::class);
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
@@ -69,8 +66,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function testSetActivatedInModuleConfiguration()
     {
-        $this->persistModuleConfiguration($this->getTestModuleConfiguration());
-
         $moduleConfigurationDao = $this->container->get(ModuleConfigurationDaoInterface::class);
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
@@ -87,9 +82,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function testActivationOfModuleServices()
     {
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $this->persistModuleConfiguration($moduleConfiguration);
-
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
 
@@ -101,17 +93,14 @@ class ModuleActivationServiceTest extends IntegrationTestCase
 
     /**
      * This checks the deactivation of the module by asserting that the test event
-     * is not handled any more.
+     * is not handled anymore.
      *
      * As a side effect this tests also that the deactivation works in such a way
      * that shop aware services do not throw exceptions when the module is not
-     * active any more.
+     * active anymore.
      */
     public function testDeActivationOfModuleServices()
     {
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $this->persistModuleConfiguration($moduleConfiguration);
-
         /** @var ModuleActivationServiceInterface $moduleActivationService */
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
@@ -138,42 +127,43 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         $this->assertFalse($event->isHandled());
     }
 
-    public function testActivationWillNotAffectPersistedConfigs(): void
+    public function testActivationWillCallValidatorsAggregate(): void
     {
-        $author = 'abc';
-        $url = 'xyz';
-        /** @var ModuleActivationServiceInterface $moduleActivationService */
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->setAuthor($author);
-        $moduleConfiguration->setUrl($url);
-        $this->persistModuleConfiguration($moduleConfiguration);
+        $controllersValidator = $this->prophesize(ModuleConfigurationValidatorInterface::class);
+        $classExtensionsValidator = $this->prophesize(ModuleConfigurationValidatorInterface::class);
+        $eventsValidator = $this->prophesize(ModuleConfigurationValidatorInterface::class);
+        $servicesValidator = $this->prophesize(ModuleConfigurationValidatorInterface::class);
 
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+        $container = $this->testContainerFactory->create();
+        $container->set(
+            'oxid_esales.module.setup.validator.controllers_module_setting_validator',
+            $controllersValidator->reveal()
+        );
+        $container->set(
+            'oxid_esales.module.setup.validator.class_extensions_module_setting_validator',
+            $classExtensionsValidator->reveal()
+        );
+        $container->set(
+            'oxid_esales.module.setup.validator.events_module_setting_validator',
+            $eventsValidator->reveal()
+        );
+        $container->set(
+            'oxid_esales.module.setup.validator.services_yaml_validator',
+            $servicesValidator->reveal()
+        );
+        $container->compile();
 
-        $this->assertSame($author, $moduleConfiguration->getAuthor());
-        $this->assertSame($url, $moduleConfiguration->getUrl());
+        $container->get(ModuleActivationServiceInterface::class)
+            ->activate($this->testModuleId, $this->shopId);
 
-        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
-
-        $this->assertSame($author, $moduleConfiguration->getAuthor());
-        $this->assertSame($url, $moduleConfiguration->getUrl());
-    }
-
-    /**
-     * @return ShopAdapterInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getModulePathResolverMock()
-    {
-        $modulePathResolverMock = $this
-            ->getMockBuilder(ModulePathResolverInterface::class)
-            ->getMock();
-
-        $modulePathResolverMock
-            ->method('getFullModulePathFromConfiguration')
-            ->willReturn(__DIR__ . '/../../TestData/TestModule');
-
-        return $modulePathResolverMock;
+        $controllersValidator->validate(Argument::type(ModuleConfiguration::class), $this->shopId)
+            ->shouldHaveBeenCalledOnce();
+        $classExtensionsValidator->validate(Argument::type(ModuleConfiguration::class), $this->shopId)
+            ->shouldHaveBeenCalledOnce();
+        $eventsValidator->validate(Argument::type(ModuleConfiguration::class), $this->shopId)
+            ->shouldHaveBeenCalledOnce();
+        $servicesValidator->validate(Argument::type(ModuleConfiguration::class), $this->shopId)
+            ->shouldHaveBeenCalledOnce();
     }
 
     private function getTestModuleConfiguration(): ModuleConfiguration
@@ -269,7 +259,10 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         }
         $container = $this->testContainerFactory->create();
 
-        $container->set(ModulePathResolverInterface::class, $this->getModulePathResolverMock());
+        $modulePathResolver = $this->prophesize(ModulePathResolverInterface::class);
+        $modulePathResolver->getFullModulePathFromConfiguration($this->testModuleId, $this->shopId)
+            ->willReturn(__DIR__ . '/../../TestData/TestModule');
+        $container->set(ModulePathResolverInterface::class, $modulePathResolver->reveal());
         $container->autowire(ModulePathResolverInterface::class, ModulePathResolver::class);
 
         $container->compile();

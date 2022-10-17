@@ -9,13 +9,13 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationService
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingService
-    calls:
-      - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
-      - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
-      - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
-      - [addValidator, ['@oxid_esales.module.setup.validator.services_yaml_validator']]
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorAggregate
+    arguments:
+      - '@oxid_esales.module.setup.validator.controllers_module_setting_validator'
+      - '@oxid_esales.module.setup.validator.class_extensions_module_setting_validator'
+      - '@oxid_esales.module.setup.validator.events_module_setting_validator'
+      - '@oxid_esales.module.setup.validator.services_yaml_validator'
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator

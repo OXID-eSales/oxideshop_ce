@@ -27,7 +27,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
      *
      * @throws ModuleSettingNotValidException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasEvents()) {
             $events = [];
@@ -48,7 +48,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
      *
      * @throws ModuleSettingNotValidException
      */
-    private function checkIfMethodIsCallable(string $method)
+    private function checkIfMethodIsCallable(string $method): void
     {
         if (!\is_callable($method)) {
             throw new ModuleSettingNotValidException('The method ' . $method . ' is not callable.');

@@ -13,9 +13,5 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleConfigurationValidatorInterface
 {
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function validate(ModuleConfiguration $configuration, int $shopId);
+    public function validate(ModuleConfiguration $configuration, int $shopId): void;
 }

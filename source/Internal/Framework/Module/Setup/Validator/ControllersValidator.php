@@ -34,7 +34,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
      *
      * @throws ControllersDuplicationModuleConfigurationException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasControllers()) {
             $controllerClassMap = $this->getControllersClassMap($shopId);

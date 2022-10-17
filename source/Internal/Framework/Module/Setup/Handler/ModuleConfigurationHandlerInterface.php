@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
+/**
+ * @deprecated will be removed in v7.0
+ */
 interface ModuleConfigurationHandlerInterface
 {
     /**

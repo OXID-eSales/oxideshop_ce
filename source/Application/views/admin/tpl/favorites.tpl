@@ -19,7 +19,7 @@
 </p>
 
 
-    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="navigation">
+    <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post" target="navigationfrm">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="navigation">
     <input type="hidden" name="favorites[]" value="">

@@ -7,21 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-/**
- * Media URL handler
- */
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
     protected $_sClassName = 'oxmediaurls';
 
-    /**
-     * Class constructor, initiates parent constructor (parent::oxI18n()).
-     */
     public function __construct()
     {
         parent::__construct();
@@ -113,26 +102,31 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Transforms the link to YouTube object, and returns it.
-     *
      * @return string
      */
     protected function getYoutubeHtml()
     {
-        $sUrl = $this->oxmediaurls__oxurl->value;
-        $sDesc = $this->oxmediaurls__oxdesc->value;
+        $url = $this->oxmediaurls__oxurl->value;
+        $youTubeUrl = '';
 
-        if (strpos($sUrl, 'youtube.com')) {
-            $sYoutubeUrl = str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
-            $sYoutubeUrl = preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);
+        if (strpos($url, 'youtube.com')) {
+            $youTubeUrl = str_replace('www.youtube.com/watch?v=', 'www.youtube.com/embed/', $url);
+            $ampersand = $this->isFieldValueHtmlEcaped() ? '&amp;' : '&';
+            $youTubeUrl = preg_replace("/$ampersand/", '?', $youTubeUrl, 1);
         }
-        if (strpos($sUrl, 'youtu.be')) {
-            $sYoutubeUrl = str_replace("youtu.be/", "www.youtube.com/embed/", $sUrl);
+        if (strpos($url, 'youtu.be')) {
+            $youTubeUrl = str_replace('youtu.be/', 'www.youtube.com/embed/', $url);
         }
 
-        $sYoutubeTemplate = '%s<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>';
-        $sYoutubeHtml = sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
+        return sprintf(
+            '%s<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>',
+            $this->oxmediaurls__oxdesc->value,
+            $youTubeUrl
+        );
+    }
 
-        return $sYoutubeHtml;
+    private function isFieldValueHtmlEcaped(): bool
+    {
+        return !$this->getContainer()->getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 }

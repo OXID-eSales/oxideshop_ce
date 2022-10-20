@@ -627,6 +627,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
+### Fixed
+- Errors accessing navigation admin frame in chrome by renaming it to navigationfrm
+
 ## [6.12.0] - 2022-08-15
 
 ### Changed

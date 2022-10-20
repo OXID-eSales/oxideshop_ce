@@ -1410,12 +1410,12 @@ class Database implements DatabaseInterface
 
     private function configureSqlLogger(Configuration $configuration): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        /** logger instantiation requires auto-wiring(compiled container) */
-        if ($container->isCompiled()) {
-            $databaseLogger = $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger();
-            $configuration->setSQLLogger($databaseLogger);
-        }
+//        $container = ContainerFactory::getInstance()->getContainer();
+//        /** logger instantiation requires auto-wiring(compiled container) */
+//        if ($container->isCompiled()) {
+//            $databaseLogger = $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger();
+//            $configuration->setSQLLogger($databaseLogger);
+//        }
     }
 
     /**

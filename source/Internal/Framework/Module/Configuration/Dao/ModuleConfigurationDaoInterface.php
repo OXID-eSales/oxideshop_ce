@@ -32,5 +32,7 @@ interface ModuleConfigurationDaoInterface
      */
     public function getAll(int $shopId): array;
 
+    public function deleteAll(int $shopId): void;
+
     public function exists(string $moduleId, int $shopId): bool;
 }

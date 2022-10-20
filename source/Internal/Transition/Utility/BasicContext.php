@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
+use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Config\ConfigFile;
@@ -33,9 +34,9 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
-    public function getContainerCacheFilePath(): string
+    public function getContainerCacheFilePath(int $shopId): string
     {
-        return Path::join($this->getCacheDirectory(), 'container_cache.php');
+        return Path::join($this->getCacheDirectory(), 'container', 'container_cache_shop_' . $shopId . '.php');
     }
 
     /**
@@ -52,6 +53,11 @@ class BasicContext implements BasicContextInterface
     public function getConfigurableServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'configuration', 'configurable_services.yaml');
+    }
+
+    public function getActiveModuleServicesFilePath(int $shopId): string
+    {
+        return Path::join($this->getShopConfigurationDirectory($shopId), 'active_module_services.yaml');
     }
 
     /**
@@ -109,6 +115,17 @@ class BasicContext implements BasicContextInterface
     public function getDefaultShopId(): int
     {
         return ShopIdCalculator::BASE_SHOP_ID;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentShopId(): int
+    {
+        $shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator(
+            new FileCache()
+        );
+        return $shopIdCalculator->getShopId();
     }
 
     /**

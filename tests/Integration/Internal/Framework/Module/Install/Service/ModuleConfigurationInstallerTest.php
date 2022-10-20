@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
     ModuleConfiguration\ModuleSettingsDataMapper};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
@@ -169,11 +170,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
     private function assertModuleConfigurationDeletedForAllShops(): void
     {
-        $environmentConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration();
-
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+        foreach ($this->get(ShopConfigurationDaoInterface::class)->getAll() as $shopConfiguration) {
             $this->assertFalse($shopConfiguration->hasModuleConfiguration($this->testModuleId));
         }
     }

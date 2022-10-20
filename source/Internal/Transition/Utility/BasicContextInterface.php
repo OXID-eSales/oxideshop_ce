@@ -16,7 +16,7 @@ interface BasicContextInterface
     /**
      * @return string
      */
-    public function getContainerCacheFilePath(): string;
+    public function getContainerCacheFilePath(int $shopId): string;
 
     /**
      * @return string
@@ -27,6 +27,11 @@ interface BasicContextInterface
      * @return string
      */
     public function getConfigurableServicesFilePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getActiveModuleServicesFilePath(int $shopId): string;
 
     /**
      * @return string
@@ -62,6 +67,11 @@ interface BasicContextInterface
      * @return int
      */
     public function getDefaultShopId(): int;
+
+    /**
+     * @return int
+     */
+    public function getCurrentShopId(): int;
 
     /**
      * @return array

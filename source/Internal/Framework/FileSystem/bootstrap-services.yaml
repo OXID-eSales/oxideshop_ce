@@ -17,6 +17,9 @@ services:
     class: Symfony\Component\Filesystem\Filesystem
     public: true
 
+  Symfony\Component\Filesystem\Filesystem:
+    alias: oxid_esales.symfony.file_system
+
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactory
 

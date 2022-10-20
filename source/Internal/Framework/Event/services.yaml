@@ -3,7 +3,7 @@ services:
     autowire: true
 
   Symfony\Component\EventDispatcher\EventDispatcherInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher
+    class: Symfony\Component\EventDispatcher\EventDispatcher
     public: true
 
   event_dispatcher:

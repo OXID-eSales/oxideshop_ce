@@ -13,37 +13,39 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FilesystemContainerCache implements ContainerCacheInterface
 {
-    public function __construct(private BasicContextInterface $context)
+    public function __construct(private BasicContextInterface $context, private Filesystem $filesystem)
     {
     }
 
-    public function put(ContainerBuilder $container): void
+    public function put(ContainerBuilder $container, int $shopId): void
     {
         $dumper = new PhpDumper($container);
-        file_put_contents($this->context->getContainerCacheFilePath(), $dumper->dump());
+        $this->filesystem->dumpFile($this->context->getContainerCacheFilePath($shopId), $dumper->dump());
     }
 
     /**
      * @psalm-suppress UndefinedClass
      */
-    public function get(): ContainerInterface
+    public function get(int $shopId): ContainerInterface
     {
-        include_once $this->context->getContainerCacheFilePath();
+        include_once $this->context->getContainerCacheFilePath($shopId);
         return new \ProjectServiceContainer();
     }
 
-    public function exists(): bool
+    public function exists(int $shopId): bool
     {
-        return file_exists($this->context->getContainerCacheFilePath());
+        $path = $this->context->getContainerCacheFilePath($shopId);
+        return $this->filesystem->exists($path);
     }
 
-    public function invalidate(): void
+    public function invalidate(int $shopId): void
     {
-        if (file_exists($this->context->getContainerCacheFilePath())) {
-            unlink($this->context->getContainerCacheFilePath());
+        if ($this->filesystem->exists($this->context->getContainerCacheFilePath($shopId))) {
+            $this->filesystem->remove($this->context->getContainerCacheFilePath($shopId));
         }
     }
 }

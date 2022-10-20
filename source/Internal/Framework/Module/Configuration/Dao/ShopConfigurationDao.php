@@ -58,6 +58,8 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void
     {
+        $this->moduleConfigurationDao->deleteAll($shopId);
+
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
         }

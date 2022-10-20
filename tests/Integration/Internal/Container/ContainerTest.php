@@ -13,15 +13,14 @@ use Monolog\Logger;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ContainerTest extends IntegrationTestCase
@@ -118,15 +117,10 @@ final class ContainerTest extends IntegrationTestCase
         $this->assertFileExists($this->getCacheFilePath());
     }
 
-    /**
-     * Tests that an event dispatcher is available and implements
-     * the correct interface.
-     *
-     */
     public function testEventDispatcher(): void
     {
         $this->assertInstanceOf(
-            ShopAwareEventDispatcher::class,
+            EventDispatcher::class,
             $this->container->get(EventDispatcherInterface::class)
         );
     }
@@ -136,7 +130,7 @@ final class ContainerTest extends IntegrationTestCase
         return $this
             ->container
             ->get(BasicContextInterface::class)
-            ->getContainerCacheFilePath();
+            ->getContainerCacheFilePath(1);
     }
 
     private function cleanUpGeneratedServices(): void

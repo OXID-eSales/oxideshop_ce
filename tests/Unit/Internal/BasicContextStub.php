@@ -37,6 +37,8 @@ class BasicContextStub implements BasicContextInterface
     private string $composerVendorName;
     private string $cacheDirectory;
     private string $templateCacheDirectory;
+    private int $currentShopId;
+    private string $activeModuleServicesFilePath;
 
     public function __construct()
     {
@@ -44,7 +46,7 @@ class BasicContextStub implements BasicContextInterface
         $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 
         $this->communityEditionSourcePath = $basicContext->getCommunityEditionSourcePath();
-        $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath();
+        $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath($this->getDefaultShopId());
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
         $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
@@ -60,6 +62,8 @@ class BasicContextStub implements BasicContextInterface
         $this->composerVendorName = $basicContext->getComposerVendorName();
         $this->cacheDirectory = $basicContext->getCacheDirectory();
         $this->templateCacheDirectory = $basicContext->getTemplateCacheDirectory();
+        $this->currentShopId = $basicContext->getCurrentShopId();
+        $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getCurrentShopId());
     }
 
     /**
@@ -81,7 +85,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @return string
      */
-    public function getContainerCacheFilePath(): string
+    public function getContainerCacheFilePath(int $shopId): string
     {
         return $this->containerCacheFilePath;
     }
@@ -307,5 +311,20 @@ class BasicContextStub implements BasicContextInterface
     public function setTemplateCacheDirectory(string $templateCacheDirectory): void
     {
         $this->templateCacheDirectory = $templateCacheDirectory;
+    }
+
+    public function getActiveModuleServicesFilePath(int $shopId): string
+    {
+        return $this->activeModuleServicesFilePath;
+    }
+
+    public function getCurrentShopId(): int
+    {
+        return $this->currentShopId;
+    }
+
+    public function setCurrentShopId(int $shopId): void
+    {
+        $this->currentShopId = $shopId;
     }
 }

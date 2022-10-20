@@ -14,11 +14,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface ContainerCacheInterface
 {
-    public function put(ContainerBuilder $container): void;
+    public function put(ContainerBuilder $container, int $shopId): void;
 
-    public function get(): ContainerInterface;
+    public function get(int $shopId): ContainerInterface;
 
-    public function exists(): bool;
+    public function exists(int $shopId): bool;
 
-    public function invalidate(): void;
+    public function invalidate(int $shopId): void;
 }

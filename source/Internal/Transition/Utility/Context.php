@@ -52,14 +52,6 @@ class Context extends BasicContext implements ContextInterface
     }
 
     /**
-     * @return int
-     */
-    public function getCurrentShopId(): int
-    {
-        return (int)Registry::getConfig()->getShopId();
-    }
-
-    /**
      * @return array
      */
     public function getAllShopIds(): array

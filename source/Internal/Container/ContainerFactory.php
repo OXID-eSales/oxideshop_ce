@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
+use OxidEsales\Eshop\Core\FileCache;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ContainerFactory
 {
@@ -36,7 +40,7 @@ class ContainerFactory
      */
     private function __construct()
     {
-        $this->cache = new FilesystemContainerCache(new BasicContext());
+        $this->cache = new FilesystemContainerCache(new BasicContext(), new Filesystem());
     }
 
     /**
@@ -57,11 +61,13 @@ class ContainerFactory
      */
     private function initializeContainer()
     {
-        if ($this->cache->exists()) {
-            $this->symfonyContainer = $this->cache->get();
+        $shopId = self::getShopId();
+
+        if ($this->cache->exists($shopId)) {
+            $this->symfonyContainer = $this->cache->get($shopId);
         } else {
             $this->getCompiledSymfonyContainer();
-            $this->cache->put($this->symfonyContainer);
+            $this->cache->put($this->symfonyContainer, $shopId);
         }
     }
 
@@ -88,7 +94,14 @@ class ContainerFactory
      */
     public static function resetContainer()
     {
-        self::getInstance()->cache->invalidate();
+        self::getInstance()->cache->invalidate(self::getShopId());
         self::$instance = null;
+    }
+
+    private static function getShopId(): int
+    {
+        $shopIdCalculator = new ShopIdCalculator(new FileCache());
+
+        return (int) $shopIdCalculator->getShopId();
     }
 }

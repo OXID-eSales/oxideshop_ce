@@ -56,10 +56,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Core\Module\Module:getSmartyPluginDirectories()`
   - `Core\SystemRequirements::getMissingTemplateBlocks()`
   - `Core\UtilsView::`
+    - `addActiveThemeId()`
     - `getRenderedContent()`
     - `getSmartyDir()`
     - `getTemplateBlocks()`
     - `getTemplateCompileId()`
+    - `getTemplateDirs()`
+    - `setTemplateDir()`
   - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::`
     - `isConfigured()`
     - `setConfigured()`
@@ -69,6 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+  - `Core\UtilsView::$_aTemplateDir`
 
 ### Fixed
 - Error in chrome accessing navigation admin frame in javascript via top.navigation

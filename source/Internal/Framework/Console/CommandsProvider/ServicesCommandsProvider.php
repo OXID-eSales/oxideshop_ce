@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Console\AbstractShopAwareCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ServicesCommandsProvider implements CommandsProviderInterface
@@ -40,9 +38,7 @@ class ServicesCommandsProvider implements CommandsProviderInterface
         if ($this->container->has('console.command_loader')) {
             $commandLoader = $this->container->get('console.command_loader');
             foreach ($commandLoader->getNames() as $aliases) {
-                $service =  $commandLoader->get($aliases);
-                $this->setShopAwareCommands($service);
-                $this->setNonShopAwareCommands($service);
+                $this->commands[] =  $commandLoader->get($aliases);
             }
         }
     }
@@ -51,34 +47,8 @@ class ServicesCommandsProvider implements CommandsProviderInterface
     {
         if ($this->container->hasParameter('console.command.ids')) {
             foreach ($this->container->getParameter('console.command.ids') as $id) {
-                $service = $this->container->get($id);
-                $this->setShopAwareCommands($service);
-                $this->setNonShopAwareCommands($service);
+                $this->commands[] = $this->container->get($id);
             }
-        }
-    }
-
-    /**
-     * Set commands for modules.
-     *
-     * @param Command $service
-     */
-    private function setShopAwareCommands(Command $service)
-    {
-        if ($service instanceof AbstractShopAwareCommand && $service->isActive()) {
-            $this->commands[] = $service;
-        }
-    }
-
-    /**
-     * Sets commands which should be shown independently from active shop.
-     *
-     * @param Command $service
-     */
-    private function setNonShopAwareCommands(Command $service)
-    {
-        if (!$service instanceof AbstractShopAwareCommand && $service instanceof Command) {
-            $this->commands[] = $service;
         }
     }
 }

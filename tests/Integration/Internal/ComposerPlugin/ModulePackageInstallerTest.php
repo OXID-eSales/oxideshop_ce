@@ -71,7 +71,9 @@ final class ModulePackageInstallerTest extends TestCase
         $installer->install($this->modulePackagePath);
 
         $this->assertFileDoesNotExist(
-            $this->get(ContextInterface::class)->getContainerCacheFilePath()
+            $this->get(ContextInterface::class)->getContainerCacheFilePath(
+                $this->get(ContextInterface::class)->getCurrentShopId()
+            )
         );
     }
 
@@ -83,7 +85,9 @@ final class ModulePackageInstallerTest extends TestCase
         $installer->update($this->modulePackagePath);
 
         $this->assertFileDoesNotExist(
-            $this->get(ContextInterface::class)->getContainerCacheFilePath()
+            $this->get(ContextInterface::class)->getContainerCacheFilePath(
+                $this->get(ContextInterface::class)->getCurrentShopId()
+            )
         );
     }
 

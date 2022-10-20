@@ -14,11 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNot
 interface ContextInterface extends BasicContextInterface
 {
     /**
-     * @return int
-     */
-    public function getCurrentShopId(): int;
-
-    /**
      * @return string
      */
     public function getLogLevel(): string;

@@ -122,6 +122,26 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
+    public function testRemovingModuleConfiguration(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+
+        $module = new ModuleConfiguration();
+        $module
+            ->setId('test')
+            ->setModuleSource('test');
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($module);
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $shopConfiguration->deleteModuleConfiguration('test');
+
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $this->assertEquals([], $shopConfigurationDao->get(1)->getModuleConfigurations());
+    }
+
     public function testDeleteAll(): void
     {
         $this->expectException(ShopConfigurationNotFoundException::class);

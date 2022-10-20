@@ -37,7 +37,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
         $this->logLevel = $context->getLogLevel();
         $this->shopIds = $context->getAllShopIds();
-        $this->currentShopId = $context->getCurrentShopId();
         $this->logFilePath = $context->getLogFilePath();
         $this->adminLogFilePath = $context->getAdminLogFilePath();
         $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
@@ -93,22 +92,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function setRequiredContactFormFields(array $requiredContactFormFields)
     {
         $this->requiredContactFormFields = $requiredContactFormFields;
-    }
-
-    /**
-     * @param int $shopId
-     */
-    public function setCurrentShopId($shopId)
-    {
-        $this->currentShopId = $shopId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCurrentShopId(): int
-    {
-        return $this->currentShopId;
     }
 
     /**
@@ -205,11 +188,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         return $this->skipLogTags;
     }
 
-    /**
-     * @param array $skipLogTags
-     *
-     * @return mixed
-     */
     public function setSkipLogTags(array $skipLogTags)
     {
         $this->skipLogTags = $skipLogTags;

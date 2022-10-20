@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
 class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInterface
 {
     public function __construct(
-        private ProjectConfigurationDaoInterface $projectConfigurationDao,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
         private BasicContextInterface $context
     ) {
     }
@@ -27,20 +26,9 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
      */
     public function generate(): void
     {
-        $this->projectConfigurationDao->save($this->createProjectConfiguration());
-    }
-
-    /**
-     * @return ProjectConfiguration
-     */
-    private function createProjectConfiguration(): ProjectConfiguration
-    {
-        $projectConfiguration = new ProjectConfiguration();
-
+        $this->shopConfigurationDao->deleteAll();
         foreach ($this->context->getAllShopIds() as $shopId) {
-            $projectConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
+            $this->shopConfigurationDao->save(new ShopConfiguration(), $shopId);
         }
-
-        return $projectConfiguration;
     }
 }

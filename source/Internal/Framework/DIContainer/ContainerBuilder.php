@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporter;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
@@ -41,6 +42,7 @@ class ContainerBuilder
         $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $this->loadEditionServices($symfonyContainer);
+        $this->loadModuleServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
 
         return $symfonyContainer;
@@ -111,5 +113,21 @@ class ContainerBuilder
         ];
 
         return $allEditionPaths[$this->context->getEdition()];
+    }
+
+    private function loadModuleServices(SymfonyContainerBuilder $symfonyContainer): void
+    {
+        $this->cleanupModuleServicesYaml();
+
+        $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
+        try {
+            $loader->load($this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId()));
+        } catch (FileLocatorFileNotFoundException) {
+        }
+    }
+
+    private function cleanupModuleServicesYaml(): void
+    {
+        (new ModuleServicesImporter($this->context))->removeNonExistingImports($this->context->getCurrentShopId());
     }
 }

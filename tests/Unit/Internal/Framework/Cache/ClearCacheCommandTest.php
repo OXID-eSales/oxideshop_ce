@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
 class ClearCacheCommandTest extends TestCase
@@ -25,10 +26,14 @@ class ClearCacheCommandTest extends TestCase
         $containerCacheMock = $this->createMock(ContainerCacheInterface::class);
         $containerCacheMock->expects($this->once())->method('invalidate');
 
+        $contextMock = $this->createMock(ContextInterface::class);
+        $contextMock->expects($this->once())->method('getAllShopIds')->willReturn([1]);
+
         $command = new ClearCacheCommand(
             $shopAdapterMock,
             $templateCacheServiceMock,
-            $containerCacheMock
+            $containerCacheMock,
+            $contextMock
         );
 
         $command->run(

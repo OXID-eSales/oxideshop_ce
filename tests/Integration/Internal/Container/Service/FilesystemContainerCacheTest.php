@@ -20,40 +20,40 @@ final class FilesystemContainerCacheTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->get(ContainerCacheInterface::class)->invalidate();
+        $this->get(ContainerCacheInterface::class)->invalidate(2);
         parent::setUp();
     }
 
     public function testExists(): void
     {
         $cache = $this->get(ContainerCacheInterface::class);
-        $cache->put($this->getContainer());
+        $cache->put($this->getContainer(), 2);
 
         $this->assertTrue(
-            $cache->exists()
+            $cache->exists(2)
         );
     }
 
     public function testGet(): void
     {
         $cache = $this->get(ContainerCacheInterface::class);
-        $cache->put($this->getContainer());
+        $cache->put($this->getContainer(), 2);
 
         $this->assertInstanceOf(
             \ProjectServiceContainer::class,
-            $cache->get()
+            $cache->get(2)
         );
     }
 
     public function testInvalidate(): void
     {
         $cache = $this->get(ContainerCacheInterface::class);
-        $cache->put($this->getContainer());
+        $cache->put($this->getContainer(), 2);
 
-        $cache->invalidate();
+        $cache->invalidate(2);
 
         $this->assertFalse(
-            $cache->exists()
+            $cache->exists(2)
         );
     }
 

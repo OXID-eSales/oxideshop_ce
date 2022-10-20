@@ -82,6 +82,23 @@ class ModuleConfigurationDaoTest extends TestCase
         );
     }
 
+
+
+    public function testDeleteAll(): void
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId('testId')
+            ->setModuleSource('test');
+
+        $dao = $this->get(ModuleConfigurationDaoInterface::class);
+        $dao->save($moduleConfiguration, 1);
+
+        $dao->deleteAll(1);
+
+        $this->assertEquals([],$dao->getAll(1));
+    }
+
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void
     {
         $moduleConfiguration = new ModuleConfiguration();

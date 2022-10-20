@@ -9,6 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
@@ -25,13 +29,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 final class ModuleActivationServiceTest extends IntegrationTestCase
 {
@@ -41,6 +43,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
     private int $shopId = 1;
     private string $testModuleId = 'testModuleId';
     private ?TestContainerFactory $testContainerFactory = null;
+    private string $testModulePath = __DIR__ . '/../../TestData/TestModule';
 
     public function setup(): void
     {
@@ -48,6 +51,15 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
         parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->getContainer()->get(ModuleInstallerInterface::class)->uninstall(
+            new OxidEshopPackage($this->testModulePath)
+        );
     }
 
     public function testActivation()
@@ -91,40 +103,56 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         );
     }
 
-    /**
-     * This checks the deactivation of the module by asserting that the test event
-     * is not handled anymore.
-     *
-     * As a side effect this tests also that the deactivation works in such a way
-     * that shop aware services do not throw exceptions when the module is not
-     * active anymore.
-     */
-    public function testDeActivationOfModuleServices()
+    public function testDeActivationOfModuleServices(): void
     {
-        /** @var ModuleActivationServiceInterface $moduleActivationService */
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
-
-        // We need a new container to assert that the even subscriber now is active
-        $this->container = $this->setupAndConfigureContainer();
-        /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
-        /** @var TestEvent $event */
-        $event = $eventDispatcher->dispatch(
-            new TestEvent()
+        $this->getContainer()->get(ModuleInstallerInterface::class)->install(
+            new OxidEshopPackage($this->testModulePath)
         );
-        $this->assertTrue($event->isHandled());
 
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
+        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationService->activate('test-module', $this->shopId);
 
-        // Again we need a new container to assert that our changes worked
-        $this->container = $this->setupAndConfigureContainer();
-        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
-        $event = $eventDispatcher->dispatch(
-            new TestEvent()
+        ContainerFactory::resetContainer();
+
+        $this->getContainer()->get(SomeModuleService::class);
+
+        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationService->deactivate('test-module', $this->shopId);
+
+        ContainerFactory::resetContainer();
+
+        $this->expectException(ServiceNotFoundException::class);
+        $this->getContainer()->get(SomeModuleService::class);
+    }
+
+    public function testDeActivationOfModuleServicesInSubShop(): void
+    {
+        $subShopId = 2;
+        $this->getContainer()->get(ShopConfigurationDaoInterface::class)->save(new ShopConfiguration(), $subShopId);
+
+        $this->getContainer()->get(ModuleInstallerInterface::class)->install(
+            new OxidEshopPackage($this->testModulePath)
         );
-        $this->assertFalse($event->isHandled());
+
+        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationService->activate('test-module', $subShopId);
+
+        ContainerFactory::resetContainer();
+
+        $this->assertFalse($this->getContainer()->has(SomeModuleService::class));
+
+        $this->switchShop($subShopId);
+        ContainerFactory::resetContainer();
+
+        $this->assertTrue($this->getContainer()->has(SomeModuleService::class));
+
+        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationService->deactivate('test-module', $subShopId);
+
+        $this->switchShop($subShopId);
+        ContainerFactory::resetContainer();
+
+        $this->assertFalse($this->getContainer()->has(SomeModuleService::class));
     }
 
     public function testActivationWillCallValidatorsAggregate(): void
@@ -268,5 +296,15 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $container->compile();
 
         return $container;
+    }
+
+    private function getContainer(): ContainerInterface
+    {
+        return ContainerFactory::getInstance()->getContainer();
+    }
+
+    private function switchShop(int $shopId): void
+    {
+        $_POST['shp'] = $shopId;
     }
 }

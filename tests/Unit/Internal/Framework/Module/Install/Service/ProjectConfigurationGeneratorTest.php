@@ -9,9 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Install;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ProjectConfigurationGenerator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
@@ -22,32 +20,17 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ProjectConfigurationGeneratorTest extends TestCase
 {
-    private $shops = [1, 2, 3];
+    private array $shops = [1, 2, 3];
 
-    public function testGenerateDefaultConfiguration()
+    public function testGenerateDefaultConfiguration(): void
     {
-        $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
-        $projectConfigurationDao
-            ->expects($this->once())
-            ->method('save')
-            ->with($this->getExpectedDefaultProjectConfiguration($this->shops));
+        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao
+            ->expects($this->exactly(3))
+            ->method('save');
 
-        $context = $this->getContext();
-
-        $generator = new ProjectConfigurationGenerator($projectConfigurationDao, $context);
-
+        $generator = new ProjectConfigurationGenerator($shopConfigurationDao, $this->getContext());
         $generator->generate();
-    }
-
-    private function getExpectedDefaultProjectConfiguration(array $shops): ProjectConfiguration
-    {
-        $projectConfiguration = new ProjectConfiguration();
-
-        foreach ($shops as $shopId) {
-            $projectConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
-        }
-
-        return $projectConfiguration;
     }
 
     /**

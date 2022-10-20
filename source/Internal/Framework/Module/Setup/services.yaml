@@ -9,6 +9,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationService
 
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporter
+
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorAggregate
     arguments:
@@ -38,9 +41,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\EventLoggingSubscriber
     tags:
       - { name: kernel.event_subscriber }
-
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolver

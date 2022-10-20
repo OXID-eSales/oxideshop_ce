@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
@@ -29,6 +30,7 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         private ModuleConfigurationCacheInterface $cache,
         private ModuleConfigurationExtenderInterface $moduleConfigurationExtender,
         private NodeInterface $node,
+        private Filesystem $filesystem
     )
     {
     }
@@ -81,6 +83,11 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         }
 
         return $moduleConfigurations;
+    }
+
+    public function deleteAll(int $shopId): void
+    {
+        $this->filesystem->remove($this->getModulesConfigurationDirectory($shopId));
     }
 
     public function exists(string $moduleId, int $shopId): bool

@@ -224,6 +224,9 @@ jobs:
           make up
           sleep 2
 
+      - name: Reset shop
+        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+
       - name: Install admin theme and template engine
         run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
 

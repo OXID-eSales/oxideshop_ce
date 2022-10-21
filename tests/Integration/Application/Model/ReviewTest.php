@@ -113,33 +113,4 @@ class ReviewTest extends TestCase
             $this->assertEquals($formattedDate, $review->getFieldData('oxcreate'));
         }
     }
-
-    public function testLoadListEscapesHtmlAndAddsLineBreakHtmlTags(): void
-    {
-        $reviewType = 'oxrecommlist';
-        $objectId = uniqid('id-', true);
-        $text = "<script>alert();
-
-new\nline
-carriage\rreturn";
-        $escapedText = "&lt;script&gt;alert();<br />
-<br />
-new<br />
-line<br />
-carriage<br />return";
-        for ($i = 0; $i < 2; $i++) {
-            $review = oxNew(Review::class);
-            $review->oxreviews__oxobjectid = new Field($objectId);
-            $review->oxreviews__oxtype = new Field($reviewType);
-            $review->oxreviews__oxlang = new Field(0);
-            $review->oxreviews__oxtext = new Field($text);
-            $review->save();
-        }
-
-        $list = (oxNew(Review::class))->loadList($reviewType, $objectId, true, 0);
-
-        foreach ($list as $review) {
-            $this->assertEquals($escapedText, $review->getFieldData('oxtext'));
-        }
-    }
 }

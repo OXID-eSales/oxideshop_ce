@@ -29,10 +29,10 @@ function editThis( sID)
               [{foreach from=$menuitem->childNodes item=submenuitem}]
                 [{if $submenuitem->nodeType == XML_ELEMENT_NODE && $submenuitem->getAttribute('cl') == 'admin_user'}]
 
-                    if ( top && top.frames['navigation'] && top.frames['navigation'].adminnav ) {
-                        var _sbli = top.frames['navigation'].adminnav.document.getElementById( 'nav-1-[{$mn}]-1' );
+                    if ( top && top.document.getElementById('navigation') && top.document.getElementById('navigation').contentWindow.adminnav ) {
+                        var _sbli = top.document.getElementById('navigation').contentWindow.adminnav.document.getElementById( 'nav-1-[{$mn}]-1' );
                         var _sba = _sbli.getElementsByTagName( 'a' );
-                        top.frames['navigation'].adminnav._navAct( _sba[0] );
+                        top.document.getElementById('navigation').contentWindow.adminnav._navAct( _sba[0] );
                     }
 
                 [{/if}]

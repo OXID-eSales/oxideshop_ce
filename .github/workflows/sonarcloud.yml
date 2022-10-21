@@ -227,6 +227,9 @@ jobs:
           make up
           sleep 2
 
+      - name: Reset shop
+        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+
       - name: Set swap space
         uses: pierotofy/set-swap-space@master
         with:

@@ -228,7 +228,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->select("chlanguage", "English");
         $this->select("profile", "Standard");
         $this->clickAndWait("//input[@type='submit']");
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->frame("basefrm");
         $this->waitForText("Home");
         $this->assertTextPresent("Welcome to the OXID eShop Admin.", "Missing text: Welcome to the OXID eShop Admin.");

@@ -452,7 +452,7 @@ class FunctionalityInAdminTest extends AdminTestCase
 
         $this->loginAdmin("Administer Products", "Products");
         //testing export
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->click("link=Service");
         $this->click("link=Product Export");
         $this->waitForFrameToLoad("dynexport_main", 5000, true);
@@ -488,7 +488,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertElementText("5 [DE] category šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
         $this->close();
         $this->selectWindow(null);
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->checkForErrors();
         $this->click("link=Service");
         $this->click("link=Product Export");
@@ -525,7 +525,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->close();
         $this->selectWindow(null);
         $this->windowMaximize();
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->checkForErrors();
         $this->click("link=Service");
         $this->click("link=Product Export");
@@ -555,7 +555,7 @@ class FunctionalityInAdminTest extends AdminTestCase
 
         $this->loginAdmin();
         $this->waitForText("Welcome to the OXID eShop Admin");
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->checkForErrors();
         $this->assertElementPresent("link=Master Settings");
         $this->assertElementPresent("link=Shop Settings");
@@ -576,7 +576,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginAdmin(null, null, false, "admin@myoxideshop.com", "admin0303", "Deutsch");
         $this->waitForText("Willkommen im OXID eShop Administrationsbereich");
         $this->checkForErrors();
-        $this->frame("navigationfrm");
+        $this->frame("navigation");
         $this->checkForErrors();
         $this->assertElementPresent("link=Stammdaten");
         $this->assertElementPresent("link=Shopeinstellungen");
@@ -594,12 +594,12 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->select("lng", "English");
         $this->select("prf", "Standard");
         $this->clickAndWait("//input[@type='submit']");
-        $this->assertElementPresent("//frame[@id='navigationfrm']");
+        $this->assertElementPresent("//frame[@id='navigation']");
 
         $this->getMinkSession()->restart();
         $this->openNewWindow($shopUrl . "admin");
         $this->open($url);
-        $this->assertElementNotPresent("//frame[@id='navigationfrm']");
+        $this->assertElementNotPresent("//frame[@id='navigation']");
     }
 
     /**

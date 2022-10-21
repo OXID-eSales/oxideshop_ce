@@ -113,7 +113,7 @@ var oxid = {
         },
 
         reloadNavigation : function ( sID ) {
-            var oNavigation = top.document.getElementById("navigationfrm");
+            var oNavigation = top.document.getElementById("navigation");
             oNavigation.src = oNavigation.src + "&shp=" + sID;
         },
         reloadHeader: function (shopId) {

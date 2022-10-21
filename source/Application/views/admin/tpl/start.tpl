@@ -76,7 +76,7 @@ function loadEditFrame(sUrl)
 </html>
 
 <frameset cols="200,*" border="0">
-    <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation" name="navigationfrm" id="navigationfrm" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">
+    <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation" name="navigation" id="navigation" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">
     <frameset  rows="54,*" border="0">
         <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=header.tpl" name="header" id="header" frameborder="0" scrolling="No" noresize marginwidth="0" marginheight="0">
         <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=home.tpl" name="basefrm" id="basefrm" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">

@@ -63,7 +63,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      *
      * @return string
      */
-    public function getStackTrace()
+    public function getStackTrace() : string
     {
         return $this->_sStackTrace;
     }

@@ -58,7 +58,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             }
 
             // favorite navigation
-            $aFavorites = explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
+            $aFavorites = explode('|', (string)$myUtilsServer->getOxCookie('oxidadminfavorites'));
 
             if (is_array($aFavorites) && count($aFavorites)) {
                 $this->_aViewData["menufavorites"] = $oNavTree->getListNodes($aFavorites);

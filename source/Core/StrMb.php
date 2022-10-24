@@ -47,7 +47,7 @@ class StrMb
      *
      * @return int
      */
-    public function strlen($sStr)
+    public function strlen(string $sStr) : int
     {
         return mb_strlen($sStr, $this->_sEncoding);
     }
@@ -196,7 +196,7 @@ class StrMb
      *
      * @return string
      */
-    public function preg_replace($aPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
+    public function preg_replace(mixed $aPattern, mixed $sString, string $sSubject, int $iLimit = -1, $iCount = null)
     {
         if (is_array($aPattern)) {
             foreach ($aPattern as &$sPattern) {
@@ -244,7 +244,7 @@ class StrMb
      *
      * @return string
      */
-    public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
+    public function preg_match(string $sPattern, string $sSubject, &$aMatches = null, $iFlags = 0, $iOffset = 0)
     {
         return preg_match($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }

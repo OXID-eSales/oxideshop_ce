@@ -116,7 +116,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $this->runOnce();
 
-            $function = !is_null($function) ? $function : Registry::getRequest()->getRequestEscapedParameter('fnc');
+            $function = !is_null($function) ? $function : (string)Registry::getRequest()->getRequestEscapedParameter('fnc');
             $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
 
@@ -221,7 +221,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
      */
-    protected function process($class, $function, $parameters = null, $viewsChain = null)
+    protected function process(string $class, string $function, $parameters = null, $viewsChain = null)
     {
         startProfile('process');
         $config = Registry::getConfig();
@@ -290,10 +290,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Executes provided function on view object.
      * If this function can not be executed (is protected or so), a RoutingException is thrown
      *
-     * @param FrontendController $view
-     * @param string             $functionName
+     * @param BaseController $view
+     * @param string         $functionName
      */
-    protected function executeAction($view, $functionName)
+    protected function executeAction(BaseController $view, string $functionName)
     {
         if (!$this->canExecuteFunction($view, $functionName)) {
             throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
@@ -335,7 +335,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @return FrontendController
      */
-    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
+    protected function initializeViewObject(string $class, string $function, $parameters = null, $viewsChain = null)
     {
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
         $classKey = !is_null($classKey) ? $classKey : $class; //fallback
@@ -368,12 +368,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Check if method can be executed.
      *
-     * @param FrontendController $view     View object to check if its method can be executed.
-     * @param string             $function Method to check if it can be executed.
+     * @param BaseController  $view     View object to check if its method can be executed.
+     * @param string          $function Method to check if it can be executed.
      *
      * @return bool
      */
-    protected function canExecuteFunction($view, $function)
+    protected function canExecuteFunction(BaseController $view, string $function) : bool
     {
         $canExecute = true;
         if (method_exists($view, $function)) {

@@ -1936,7 +1936,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBillCountry()
     {
-        if (!$this->oxorder__oxbillcountry->value) {
+        if (!isset($this->oxorder__oxbillcountry)) {
             $this->oxorder__oxbillcountry = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxbillcountryid->value));
         }
 

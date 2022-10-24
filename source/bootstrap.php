@@ -46,7 +46,7 @@ register_shutdown_function(
             /** write to log */
             $time = microtime(true);
             $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-            $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+            $date = new \DateTime(date('Y-m-d H:i:s.' . $micro));
             $timestamp = $date->format('d M H:i:s.u Y');
             $message = "[$timestamp] " . $logMessage . PHP_EOL;
             file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
@@ -55,11 +55,12 @@ register_shutdown_function(
             $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
             if (!$bootstrapConfigFileReader->isDebugMode()) {
                 \oxTriggerOfflinePageDisplay();
-            }
 
-            if (in_array($error['type'], $sessionResetErrorTypes)) {
-                setcookie('sid', null, null, '/');
-                setcookie('admin_sid', null, null, '/');
+				// Logout user if not in debug mode:
+                if (in_array($error['type'], $sessionResetErrorTypes)) {
+                    setcookie('sid', '', strtotime("-1 day"), '/');
+                    setcookie('admin_sid', '', strtotime("-1 day"), '/');
+                }
             }
         }
     }

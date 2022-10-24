@@ -36,4 +36,11 @@ interface IDisplayError
      * @return string An additional value (string) by its name
      */
     public function getValue($sName);
+
+    /**
+     * Returns the stacktrace as string
+     * (Can get called in message/exception.html)
+     * @return string
+     */
+    public function getStackTrace() : string;
 }

@@ -272,19 +272,19 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
 
         // active controller id
-        $controllerId = Registry::getConfig()->getRequestControllerId();
+        $controllerId = (string)Registry::getConfig()->getRequestControllerId();
         $controllerId = $controllerId ? $controllerId . '?' : 'start?';
         $sPosition = '';
 
         // setting redirect parameters
         foreach ($this->aRedirectParams as $sParamName) {
-            $sParamVal = Registry::getRequest()->getRequestEscapedParameter($sParamName);
+            $sParamVal = (string)Registry::getRequest()->getRequestEscapedParameter($sParamName);
             $sPosition .= $sParamVal ? $sParamName . '=' . $sParamVal . '&' : '';
         }
 
         // special treatment
         // search param
-        $sParam = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
+        $sParam = rawurlencode((string)Registry::getRequest()->getRequestParameter('searchparam'));
         $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
 
         // current page number
@@ -292,7 +292,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        $iNewBasketItemMessage=(int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage');
+        if ($iNewBasketItemMessage == 3) {
             // saving return to shop link to session
             Registry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 

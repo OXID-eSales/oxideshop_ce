@@ -109,29 +109,29 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      */
     protected function getActCat()
     {
-        $sActManufacturer = Registry::getRequest()->getRequestEscapedParameter('mnid');
+        $sActManufacturer = (string)Registry::getRequest()->getRequestEscapedParameter('mnid');
 
-        $sActCat = $sActManufacturer ? null : Registry::getRequest()->getRequestEscapedParameter('cnid');
+        $sActCat = $sActManufacturer ? '' : (string)Registry::getRequest()->getRequestEscapedParameter('cnid');
 
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
         if ($oProduct) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-            $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : null;
+            $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : '';
 
-            $sActVendor = (Str::getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
+            $sActVendor = (Str::getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : '';
 
             $sActCat = $this->addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }
 
         // Checking for the default category
-        if ($sActCat === null && !$oProduct && !$sActManufacturer) {
+        if (!$sActCat && !$oProduct && !$sActManufacturer) {
             // set remote cat
             $sActCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
             if ($sActCat == 'oxrootid') {
                 // means none selected
-                $sActCat = null;
+                $sActCat = '';
             }
         }
 

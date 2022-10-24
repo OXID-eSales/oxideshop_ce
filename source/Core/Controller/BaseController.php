@@ -87,14 +87,14 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @var string
      */
-    protected $classKey = null;
+    protected $classKey = '';
 
     /**
      * Action function name
      *
      * @var string
      */
-    protected $_sFnc = null;
+    protected $_sFnc = '';
 
     /**
      * Marker if user defined function was executed
@@ -364,7 +364,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sFncName action function name
      */
-    public function setFncName($sFncName)
+    public function setFncName(string $sFncName) : void
     {
         $this->_sFnc = $sFncName;
     }
@@ -374,7 +374,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getFncName()
+    public function getFncName() : string
     {
         return $this->_sFnc;
     }

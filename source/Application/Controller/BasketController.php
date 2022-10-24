@@ -79,6 +79,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     protected $_oWrappings = null;
 
+    protected $_iWrapCnt=null;
+
     /**
      * Card objects list
      *

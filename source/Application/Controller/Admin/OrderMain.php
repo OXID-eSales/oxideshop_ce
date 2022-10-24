@@ -49,6 +49,9 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
                 $oOrder->$sOxPaidField = new \OxidEsales\Eshop\Core\Field($oUtilsDate->formatDBDate($oOrder->$sOxPaidField->value));
             }
+            else{
+                $oOrder->blIsPaid = false;
+            }
 
             $this->_aViewData["edit"] = $oOrder;
             $this->_aViewData["paymentType"] = $oOrder->getPaymentType();

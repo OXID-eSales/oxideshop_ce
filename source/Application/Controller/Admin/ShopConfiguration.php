@@ -224,6 +224,9 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 list($name, $type, $value, $constraint, $grouping) = $rs->fields;
+                if(!$constraint){
+                    $constraint='';
+                }
                 $configurationVariables[$type][$name] = $this->unserializeConfVar($type, $name, $value);
                 $constraints[$name] = $this->parseConstraint($type, $constraint);
                 if ($grouping) {
@@ -268,7 +271,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return mixed
      */
-    protected function parseConstraint($type, $constraint)
+    protected function parseConstraint(string $type, string $constraint)
     {
         switch ($type) {
             case "select":
@@ -286,7 +289,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function serializeConstraint($type, $constraint)
+    protected function serializeConstraint(string $type, mixed $constraint)
     {
         switch ($type) {
             case "select":
@@ -434,7 +437,9 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 if ($multiline) {
                     $multiline .= "\n";
                 }
-                $multiline .= $key . " => " . $value;
+
+                // Using print_r() as $value could be a non scalar data type (eg array)
+                $multiline .= $key . " => " .print_r($value,true);
             }
 
             return $multiline;

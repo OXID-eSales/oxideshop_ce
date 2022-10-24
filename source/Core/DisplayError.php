@@ -12,6 +12,14 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
+    private $stackTrace;
+
+    public function __construct()
+    {
+        $tmpEx=new \Exception();
+        $this->stackTrace=$tmpEx->getTraceAsString();
+    }
+
     /**
      * Error message
      *
@@ -77,5 +85,11 @@ class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
     public function getValue($name)
     {
         return '';
+    }
+
+	// Can get called from message/exception.tpl
+    public function getStackTrace(): string
+    {
+        return $this->stackTrace;
     }
 }

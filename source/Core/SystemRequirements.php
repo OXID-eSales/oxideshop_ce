@@ -404,7 +404,7 @@ class SystemRequirements
      */
     protected function getShopSSLHostInfoFromConfig()
     {
-        $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
+        $sSSLShopURL = (string)Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];

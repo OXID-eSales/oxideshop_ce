@@ -165,7 +165,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             }
 
             $sUrl = $this->appendParamSeparator($urlWithoutQuery);
-            $sUrl .= http_build_query($finalParameters, null, $paramSeparator);
+            $sUrl .= http_build_query($finalParameters, '', $paramSeparator);
         }
 
         if ($sUrl && !$blFinalUrl) {

@@ -18,9 +18,9 @@ class FormatDateLogic
      */
     public function formdate($oConvObject, string $sFieldType = null, bool $blPassedValue = false): ?string
     {
-        // creating fake bject
-        if ($blPassedValue || is_string($oConvObject)) {
-            $sValue = $oConvObject;
+        // creating fake object
+        if ($blPassedValue || !is_object($oConvObject)) {
+            $sValue = print_r($oConvObject,true);
             $oConvObject = new \OxidEsales\Eshop\Core\Field();
             $oConvObject->fldmax_length = "0";
             $oConvObject->fldtype = $sFieldType;

@@ -137,9 +137,9 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $query = parent::buildSelectString($listObject);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $searchQuery = Registry::getRequest()->getRequestEscapedParameter('addsearch');
+        $searchQuery = (string)Registry::getRequest()->getRequestEscapedParameter('addsearch');
         $searchQuery = trim($searchQuery);
-        $searchField = Registry::getRequest()->getRequestEscapedParameter('addsearchfld');
+        $searchField = (string)Registry::getRequest()->getRequestEscapedParameter('addsearchfld');
 
         if ($searchQuery) {
             switch ($searchField) {

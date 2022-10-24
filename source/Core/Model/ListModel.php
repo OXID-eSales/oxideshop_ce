@@ -60,7 +60,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset) : bool
     {
         return isset($this->_aArray[$offset]);
     }
@@ -72,7 +72,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return BaseModel
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset) : mixed
     {
         if ($this->offsetExists($offset)) {
             return $this->_aArray[$offset];
@@ -87,7 +87,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param mixed     $offset SPL array offset
      * @param BaseModel $oBase  Array element
      */
-    public function offsetSet($offset, $oBase)
+    public function offsetSet($offset, $oBase) : void
     {
         if (isset($offset)) {
             $this->_aArray[$offset] = & $oBase;
@@ -107,7 +107,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @param mixed $offset SPL array offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset) : void
     {
         if (strcmp($offset, $this->key()) === 0) {
             // #0002184: active element removed, next element will be prev / first
@@ -130,7 +130,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * rewind for SPL
      */
-    public function rewind()
+    public function rewind() : void
     {
         $this->_blRemovedActive = false;
         $this->_blValid = (false !== reset($this->_aArray));
@@ -141,7 +141,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return null
      */
-    public function current()
+    public function current() : mixed
     {
         return current($this->_aArray);
     }
@@ -151,7 +151,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return mixed
      */
-    public function key()
+    public function key() : mixed
     {
         return key($this->_aArray);
     }
@@ -176,7 +176,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * next for SPL
      */
-    public function next()
+    public function next() : void
     {
         if ($this->_blRemovedActive === true && current($this->_aArray)) {
             $oVar = $this->prev();
@@ -192,7 +192,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return boolean
      */
-    public function valid()
+    public function valid() : bool
     {
         return $this->_blValid;
     }
@@ -202,7 +202,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return integer
      */
-    public function count()
+    public function count() : int
     {
         return count($this->_aArray);
     }

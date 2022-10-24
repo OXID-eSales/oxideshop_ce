@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use Exception;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Category list manager.
@@ -453,13 +454,21 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aPath = [];
-        $sCurrentCat = $this->_sActCat;
+        $sInitialCat= $sCurrentCat = $this->_sActCat;
+        $aPathIds=[];
 
-        while ($sCurrentCat != 'oxrootid' && isset($this[$sCurrentCat])) {
+        while ($sCurrentCat !== 'oxrootid' && isset($this[$sCurrentCat])) {
+            $aPathIds[]=$sCurrentCat;
             $oCat = $this[$sCurrentCat];
             $oCat->setExpanded(true);
             $aPath[$sCurrentCat] = $oCat;
             $sCurrentCat = $oCat->oxcategories__oxparentid->value;
+
+            if (in_array($sCurrentCat, $aPathIds, true))
+            {
+                $msg="Path to category '".$sInitialCat."' seems to be broken/looping. Path: ".implode(", ",$aPathIds);
+                throw new StandardException($msg);
+            }
         }
 
         $this->_aPath = array_reverse($aPath);

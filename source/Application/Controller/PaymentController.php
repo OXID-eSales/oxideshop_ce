@@ -508,6 +508,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getCheckedPaymentId()
     {
         if ($this->_sCheckedPaymentId === null) {
+            $sCheckedId='';
             if (!($sPaymentID = Registry::getRequest()->getRequestEscapedParameter('paymentid'))) {
                 $sPaymentID = Registry::getSession()->getVariable('paymentid');
             }

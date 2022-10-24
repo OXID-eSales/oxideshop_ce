@@ -95,7 +95,8 @@ return [
     'article_variant' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ArticleVariant',
     'attribute_category' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeCategory',
     'attribute_category_ajax' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeCategoryAjax',
-    'attribute' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeController',
+    // PHP8.x introduces an attribute class itself which causes 'cannot declare class attribute' errors:
+    //'attribute' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeController',
     'attribute_list' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeList',
     'attribute_main' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeMain',
     'attribute_main_ajax' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\AttributeMainAjax',

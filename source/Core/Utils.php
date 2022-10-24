@@ -102,7 +102,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    public function assignValuesFromText($sIn, $dVat = null)
+    public function assignValuesFromText(string $sIn, $dVat = null)
     {
         $aRet = [];
         $aPieces = explode('@@', $sIn);

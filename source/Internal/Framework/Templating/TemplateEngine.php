@@ -42,7 +42,7 @@ class TemplateEngine implements TemplateEngineInterface
      */
     public function render(string $name, array $context = []): string
     {
-        return $name;
+        return 'no template engine active ("'.$name.'")';
     }
 
     /**
@@ -56,7 +56,7 @@ class TemplateEngine implements TemplateEngineInterface
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
-        return $fragment;
+        return 'no template engine active ("'.$fragment.'")';
     }
 
     /**

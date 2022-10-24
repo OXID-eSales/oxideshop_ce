@@ -38,7 +38,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @var string
      */
-    protected $_sOXID = null;
+    protected $_sOXID = '';
 
     /**
      * ID of running shop session (default null).

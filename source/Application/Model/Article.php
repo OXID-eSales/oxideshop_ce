@@ -3434,9 +3434,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getPictureFieldValue($sFieldName, $iIndex = null)
     {
         if ($sFieldName) {
-            $sFieldName = "oxarticles__" . $sFieldName . $iIndex;
-
-            return $this->$sFieldName->value;
+            return $this->getFieldData($sFieldName.$iIndex);
         }
     }
 

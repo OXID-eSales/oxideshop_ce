@@ -234,7 +234,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         // store navigation history
-        $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
+        $aHistory = explode('|', (string)$myUtilsServer->getOxCookie('oxidadminhistory'));
         if (!is_array($aHistory)) {
             $aHistory = [];
         }

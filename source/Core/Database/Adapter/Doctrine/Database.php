@@ -20,9 +20,15 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use PDO;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * The doctrine implementation of our database.
@@ -1410,12 +1416,23 @@ class Database implements DatabaseInterface
 
     private function configureSqlLogger(Configuration $configuration): void
     {
-//        $container = ContainerFactory::getInstance()->getContainer();
-//        /** logger instantiation requires auto-wiring(compiled container) */
-//        if ($container->isCompiled()) {
-//            $databaseLogger = $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger();
-//            $configuration->setSQLLogger($databaseLogger);
-//        }
+        $context = new Context();
+        if ($context->isAdmin() && $context->isEnabledAdminQueryLog()) {
+            $logger = new QueryLogger(new QueryFilter(), $context, $this->getPsrLogger($context));
+
+            $configuration->setSQLLogger($logger);
+        }
+    }
+
+    private function getPsrLogger(Context $context): LoggerInterface
+    {
+        $loggerConfiguration = new MonologConfiguration(
+            'OXID Admin Logger',
+            $context->getAdminLogFilePath(),
+            LogLevel::DEBUG
+        );
+
+        return (new MonologLoggerFactory($loggerConfiguration, new PsrLoggerConfigurationValidator()))->create();
     }
 
     /**

@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxid_esales.command.apply_modules_configuration_command`
   - `oxid_esales.templating.template.loader`
 - Commands:
-- `ApplyModulesConfigurationCommand` moved to another repository
+  - `ApplyModulesConfigurationCommand` moved to another repository
 - Interfaces:
   - `Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface`
   - `Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+  - `Internal\Framework\Event\ShopAwareInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
 - Classes:
   - `Application\Model\SmartyRenderer`
   - `Core\Module\ModuleSmartyPluginDirectoryRepository`
@@ -46,6 +48,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `Internal\Framework\Console\AbstractShopAwareCommand` use `Symfony\Component\Console\Command\Command`
+  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `Internal\Framework\Event\ShopAwareEventDispatcher` use `Symfony\Component\EventDispatcher\EventDispatcher`
+  - `Internal\Framework\Event\ShopAwareServiceTrait`
+  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Core\Email::_getSmarty()`
@@ -72,6 +81,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions::ox_get_template()`
   - `oxfunctions::ox_get_timestamp()`
   - `oxfunctions::ox_get_trusted()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
   - `Core\UtilsView::$_aTemplateDir`
@@ -81,7 +96,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Shop configuration files structure
-- Change `BaseModel::assignRecord()` function visibility form public to protected 
+- Change `BaseModel::assignRecord()` function visibility form public to protected
+- Only module DI services, event subscribers, commands etc. of the modules which are active in the current shop will be loaded,
+  no need to implement `ShopAwareInterface` or extend `ShopAwareEventDispatcher`, `AbstractShopAwareCommand`.
 
 ### Deprecated
 - Methods

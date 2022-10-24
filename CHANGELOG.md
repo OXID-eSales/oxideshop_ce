@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
 - Classes:
   - `Application\Model\SmartyRenderer`
   - `Core\Module\ModuleSmartyPluginDirectoryRepository`
@@ -45,6 +47,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\AbstractShopAwareCommand` use `Symfony\Component\Console\Command\Command`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher` use `Symfony\Component\EventDispatcher\EventDispatcher`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareServiceTrait`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Core\Email::_getSmarty()`
@@ -71,6 +80,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions::ox_get_template()`
   - `oxfunctions::ox_get_timestamp()`
   - `oxfunctions::ox_get_trusted()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
   - `Core\UtilsView::$_aTemplateDir`
@@ -80,7 +95,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Shop configuration files structure
-- Change `BaseModel::assignRecord()` function visibility form public to protected 
+- Change `BaseModel::assignRecord()` function visibility form public to protected
+- Only module DI services, event subscribers, commands etc. of the modules which are active in the current shop will be loaded,
+  no need to implement `ShopAwareInterface` or extend `ShopAwareEventDispatcher`, `AbstractShopAwareCommand`.
 
 ### Deprecated
 - Methods

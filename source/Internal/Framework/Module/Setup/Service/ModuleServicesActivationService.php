@@ -21,6 +21,9 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\PathUtil\Path;
 
+/**
+ * @deprecated will be removed completely in 7.0
+ */
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
 

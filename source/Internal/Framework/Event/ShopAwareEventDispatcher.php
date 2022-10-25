@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @deprecated will be removed completely in 7.0. All module services will be "shop aware" (available only in shops where the module is active) by default.
+ */
 class ShopAwareEventDispatcher extends EventDispatcher
 {
     /**

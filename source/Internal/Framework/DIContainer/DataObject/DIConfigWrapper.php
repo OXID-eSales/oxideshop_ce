@@ -79,7 +79,7 @@ class DIConfigWrapper
 
     /**
      * @param string $serviceKey
-     *
+     * @deprecated will be removed completely in 7.0.
      * @return bool
      */
     public function hasService(string $serviceKey): bool
@@ -94,7 +94,7 @@ class DIConfigWrapper
 
     /**
      * @param string $serviceKey
-     *
+     * @deprecated will be removed completely in 7.0.
      * @return DIServiceWrapper
      * @throws MissingServiceException
      */
@@ -110,6 +110,7 @@ class DIConfigWrapper
     }
 
     /**
+     * @deprecated will be removed completely in 7.0.
      * @param DIServiceWrapper $service
      */
     public function addOrUpdateService(DIServiceWrapper $service)
@@ -130,7 +131,7 @@ class DIConfigWrapper
 
     /**
      * @param ContainerInterface $container
-     *
+     * @deprecated will be removed completely in 7.0.
      * @throws SystemServiceOverwriteException
      */
     public function checkServices(ContainerInterface $container)
@@ -150,7 +151,7 @@ class DIConfigWrapper
      * but is removed from autoloading. In this case, the
      * services.yaml file should not be evaluated in any
      * way.
-     *
+     * @deprecated will be removed completely in 7.0.
      * @return bool
      */
     public function checkServiceClassesCanBeLoaded(): bool
@@ -176,6 +177,7 @@ class DIConfigWrapper
     }
 
     /**
+     * @deprecated will be removed completely in 7.0.
      * @return DIServiceWrapper[]
      */
     public function getServices(): array

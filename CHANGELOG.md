@@ -12,9 +12,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
 - Classes:
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\AbstractShopAwareCommand`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareServiceTrait`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
     - `oxid_esales.module.setup.events_module_setting_handler`
@@ -54,6 +63,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
   - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`
   - `Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
+  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 

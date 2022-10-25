@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 
 /**
  * Class is being used to detect if command active for active shop.
+ * @deprecated will be removed completely in 7.0. All module services will be "shop aware" (available only in shops where the module is active) by default.
  */
 abstract class AbstractShopAwareCommand extends Command implements ShopAwareInterface
 {

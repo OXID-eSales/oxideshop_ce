@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
+/**
+ * @deprecated will be removed completely in 7.0. All module services will be "shop aware" (available only in shops where the module is active) by default.
+ */
 trait ShopAwareServiceTrait
 {
     /**

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
+/* @deprecated will be removed completely in 7.0 */
 class DICallWrapper
 {
     const METHOD_KEY = 'method';

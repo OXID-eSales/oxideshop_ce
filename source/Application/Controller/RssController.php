@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 
 /**
  * Shop RSS page.
+ * @deprecated will be removed in v7.0
  */
 class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -48,7 +49,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      * get RssFeed
      *
      * @return RssFeed
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getRssFeed" in next major
      */
     protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -106,7 +106,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      * @param string $sInput input to process
      *
      * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "processOutput" in next major
      */
     protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -180,8 +179,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     /**
      * loads recommendation lists
      *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
      * @access public
      * @return void
      */
@@ -200,8 +197,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
 
     /**
      * loads recommendation list articles
-     *
-     * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @access public
      * @return void

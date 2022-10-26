@@ -1663,7 +1663,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\RssController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Controller\SearchController'                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\SearchController::class,
@@ -2107,7 +2107,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\RssFeed::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Model\Search'                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Search::class,

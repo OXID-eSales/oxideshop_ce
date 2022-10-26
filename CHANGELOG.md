@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.13.0] - unreleased
 
 ### Deprecated
+- RSS functionality
 - Interfaces:
   - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`

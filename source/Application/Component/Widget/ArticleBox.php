@@ -208,6 +208,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
 
     /**
      * Returns RSS links
+     * @deprecated will be removed in v7.0
      *
      * @return array|null
      */

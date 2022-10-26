@@ -243,7 +243,9 @@ class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\Contr
         'order'                                => \OxidEsales\Eshop\Application\Controller\OrderController::class,
         'payment'                              => \OxidEsales\Eshop\Application\Controller\PaymentController::class,
         'recommlist'                           => \OxidEsales\Eshop\Application\Controller\RecommListController::class,
+        // @deprecated will be removed in v7.0
         'rss'                                  => \OxidEsales\Eshop\Application\Controller\RssController::class,
+        // END deprecated
         'search'                               => \OxidEsales\Eshop\Application\Controller\SearchController::class,
         'start'                                => \OxidEsales\Eshop\Application\Controller\StartController::class,
         'thankyou'                             => \OxidEsales\Eshop\Application\Controller\ThankYouController::class,

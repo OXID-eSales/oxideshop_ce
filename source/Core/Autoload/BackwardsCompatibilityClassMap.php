@@ -325,7 +325,9 @@ return [
     'recommadd'                           => 'OxidEsales\\Eshop\\Application\\Controller\\RecommendationAddController',
     'register'                            => 'OxidEsales\\Eshop\\Application\\Controller\\RegisterController',
     'review'                              => 'OxidEsales\\Eshop\\Application\\Controller\\ReviewController',
+    // @deprecated will be removed in v7.0
     'rss'                                 => 'OxidEsales\\Eshop\\Application\\Controller\\RssController',
+    // END deprecated
     'search'                              => 'OxidEsales\\Eshop\\Application\\Controller\\SearchController',
     'start'                               => 'OxidEsales\\Eshop\\Application\\Controller\\StartController',
     'suggest'                             => 'OxidEsales\\Eshop\\Application\\Controller\\SuggestController',
@@ -401,7 +403,9 @@ return [
     'oxreview'                            => 'OxidEsales\\Eshop\\Application\\Model\\Review',
     'oxrights'                            => 'OxidEsales\\Eshop\\Application\\Model\\Rights',
     'oxrole'                              => 'OxidEsales\\Eshop\\Application\\Model\\Role',
+    // @deprecated will be removed in v7.0
     'oxrssfeed'                           => 'OxidEsales\\Eshop\\Application\\Model\\RssFeed',
+    // END deprecated
     'oxsearch'                            => 'OxidEsales\\Eshop\\Application\\Model\\Search',
     'oxselectlist'                        => 'OxidEsales\\Eshop\\Application\\Model\\SelectList',
     'oxselection'                         => 'OxidEsales\\Eshop\\Application\\Model\\Selection',

@@ -13,8 +13,7 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Facts;
@@ -72,10 +71,8 @@ final class ComponentInstallerTest extends TestCase
 
     private function removeGeneratedLineFromProjectFile()
     {
-        /** @var ProjectYamlDao $projectYamlDao */
-        $projectYamlDao = $this->get(ProjectYamlDaoInterface::class);
-        $DIconfig = $projectYamlDao->loadProjectConfigFile();
-        $DIconfig->removeImport($this->servicesFilePath);
-        $projectYamlDao->saveProjectConfigFile($DIconfig);
+        /** @var ProjectYamlImportServiceInterface $projectYamlImportService */
+        $projectYamlImportService = $this->get(ProjectYamlImportServiceInterface::class);
+        $projectYamlImportService->removeImport(__DIR__ . '/Fixtures');
     }
 }

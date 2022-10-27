@@ -22,7 +22,6 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
     private static array $sectionsExcludedFromItemValidation = [
         MetaDataProvider::METADATA_EXTEND,
         MetaDataProvider::METADATA_CONTROLLERS,
-        MetaDataProvider::METADATA_TEMPLATES,
         MetaDataProvider::METADATA_EVENTS
     ];
 

@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -55,24 +54,6 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     }
 
     /** @inheritDoc */
-    public function getTemplates(): array
-    {
-        $shopId = $this->context->getCurrentShopId();
-        $cacheKey = 'templates';
-
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put(
-                $cacheKey,
-                $shopId,
-                $this->collectModuleTemplatesForCaching()
-            );
-        }
-        return $this->createTemplatesFromData(
-            $this->moduleCacheService->get($cacheKey, $shopId)
-        );
-    }
-
-    /** @inheritDoc */
     public function getControllers(): array
     {
         $shopId = $this->context->getCurrentShopId();
@@ -103,18 +84,6 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     }
 
     /** @return array */
-    private function collectModuleTemplatesForCaching(): array
-    {
-        $templates = [];
-        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
-            foreach ($moduleConfiguration->getTemplates() as $template) {
-                $templates[$moduleConfiguration->getId()][$template->getTemplateKey()] = $template->getTemplatePath();
-            }
-        }
-        return $templates;
-    }
-
-    /** @return array */
     private function collectControllersForCaching(): array
     {
         $controllers = [];
@@ -140,25 +109,6 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         return $moduleConfigurations;
     }
 
-    /**
-     * @param array $data
-     * @return Template[][]
-     */
-    private function createTemplatesFromData(array $data): array
-    {
-        $templates = [];
-        foreach ($data as $moduleId => $templateData) {
-            foreach ($templateData as $templateKey => $templatePath) {
-                $templates[$moduleId][] = new Template($templateKey, $templatePath);
-            }
-        }
-        return $templates;
-    }
-
-    /**
-     * @param array $data
-     * @return Template[][]
-     */
     private function createControllersFromData(array $data): array
     {
         $controllers = [];

@@ -7,11 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use Exception;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\Facts\Facts;
 use stdClass;
@@ -1446,20 +1444,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplatePath($templateName, $isAdmin)
     {
-        $finalTemplatePath = $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
-
-        if (!$finalTemplatePath) {
-            try {
-                $finalTemplatePath = $this
-                    ->getContainer()
-                    ->get(ModuleTemplatePathResolverInterface::class)
-                    ->resolve($templateName);
-            } catch (Exception $e) {
-                $finalTemplatePath = '';
-            }
-        }
-
-        return $finalTemplatePath;
+        return $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
     }
 
     /**

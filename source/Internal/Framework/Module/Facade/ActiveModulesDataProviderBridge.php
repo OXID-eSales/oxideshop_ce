@@ -34,14 +34,6 @@ class ActiveModulesDataProviderBridge implements ActiveModulesDataProviderBridge
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getTemplates(): array
-    {
-        return $this->activeModulesDataProvider->getTemplates();
-    }
-
-    /**
      * @return Controller[]
      */
     public function getControllers(): array

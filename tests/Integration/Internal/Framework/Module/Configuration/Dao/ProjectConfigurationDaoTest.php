@@ -111,8 +111,6 @@ class ProjectConfigurationDaoTest extends TestCase
                     'moduleClassNamespace'
                 )
             )
-            ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
-            ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

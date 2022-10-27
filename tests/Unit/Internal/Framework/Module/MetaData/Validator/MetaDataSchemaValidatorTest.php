@@ -97,13 +97,6 @@ class MetaDataSchemaValidatorTest extends TestCase
             MetaDataProvider::METADATA_EXTEND                    => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
-            ],
-            MetaDataProvider::METADATA_TEMPLATES                 => [
-                'excludedsectionkey1' => 'value1',
-                'excludedsectionkey2' => [
-                    'excludedsubkey1' => 'value2',
-                    'excludedsubkey2' => 'value2',
-                ]
             ]
         ];
 
@@ -204,7 +197,6 @@ class MetaDataSchemaValidatorTest extends TestCase
                  'subKey2',
                 ],
             'extend',
-            'templates',
         ];
         $this->metaDataSchemaVersion21 = [
             '21only',
@@ -213,7 +205,6 @@ class MetaDataSchemaValidatorTest extends TestCase
                  'subKey2',
                 ],
             'extend',
-            'templates',
         ];
         $this->metaDataSchemata = [
             '2.0' => $this->metaDataSchemaVersion20,

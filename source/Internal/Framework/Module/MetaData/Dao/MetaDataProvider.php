@@ -30,7 +30,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     public const METADATA_EXTEND = 'extend';
     public const METADATA_CONTROLLERS = 'controllers';
     public const METADATA_EVENTS = 'events';
-    public const METADATA_TEMPLATES = 'templates';
     public const METADATA_SETTINGS = 'settings';
     /**
      * @deprecated will be removed in v7.0

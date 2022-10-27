@@ -21,10 +21,6 @@ $aModule = array(
     'extend'       => [
         'shopClass' => 'testModuleClassExtendsShopClass',
     ],
-    'smartyPluginDirectories'  => [
-        'SmartyPlugins/directory1',
-        'SmartyPlugins/directory2',
-    ],
     'settings' => [
         [
             'group' => 'main',

@@ -12,13 +12,11 @@ namespace Integration\Internal\Framework\Module\Facade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -96,46 +94,6 @@ final class ActiveModulesDataProviderTest extends TestCase
         );
     }
 
-    public function testGetTemplates(): void
-    {
-        $templates = $this->get(ActiveModulesDataProviderInterface::class)->getTemplates();
-        $this->assertEquals(
-            [
-                $this->activeModuleId => [
-                    new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'),
-                ]
-            ],
-            $templates
-        );
-    }
-
-    public function testGetTemplatesUsesCacheIfItExists(): void
-    {
-        $templatePathInCache = uniqid('some-path', true);
-        $cachedData = ['some-module' => ['some-template.tpl' => $templatePathInCache]];
-        $cache = $this->getDummyCache();
-        $cache->put('templates', 1, $cachedData);
-
-        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
-        $templatePath = $activeModulesDataProvider->getTemplates()['some-module'][0]->getTemplatePath();
-
-        $this->assertEquals($templatePathInCache, $templatePath);
-    }
-
-    public function testGetTemplatesUsesCacheIfItDoesNotExist(): void
-    {
-        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->getDummyCache());
-
-        $this->assertEquals(
-            [
-                $this->activeModuleId => [
-                    new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'),
-                ]
-            ],
-            $activeModulesDataProvider->getTemplates()
-        );
-    }
-
     public function testGetControllers(): void
     {
         $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheServiceInterface::class));
@@ -155,7 +113,6 @@ final class ActiveModulesDataProviderTest extends TestCase
         $activeModule
             ->setId($this->activeModuleId)
             ->setModuleSource($this->activeModuleSource)
-            ->addTemplate(new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'))
             ->addController(new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'))
             ->addController(new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2'));
 
@@ -163,7 +120,6 @@ final class ActiveModulesDataProviderTest extends TestCase
         $inactiveModule
             ->setId($this->inactiveModuleId)
             ->setModuleSource($this->inactiveModuleSource)
-            ->addTemplate(new ModuleConfiguration\Template('inactiveTemplate', 'inactiveTemplatePath'))
             ->addController(new ModuleConfiguration\Controller('inactiveController', 'inactiveControllerNamespace'));
 
         /** @var ShopConfigurationDaoInterface $dao */

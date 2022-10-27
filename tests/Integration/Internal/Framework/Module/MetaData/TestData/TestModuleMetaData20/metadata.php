@@ -34,25 +34,6 @@ $aModule = [
         'myvendor_mymodule_MyModuleController'      => 'TestModuleMetaData20\Controller',
         'myvendor_mymodule_MyOtherModuleController' => 'TestModuleMetaData20\OtherController',
     ],
-    'templates'   => [
-        'mymodule.tpl'       => 'TestModuleMetaData20/mymodule.tpl',
-        'mymodule_other.tpl' => 'TestModuleMetaData20/mymodule_other.tpl'
-    ],
-    'blocks'      => [
-        [
-            'theme'    => 'theme_id',
-            'template' => 'template_1.tpl',
-            'block'    => 'block_1',
-            'file'     => '/blocks/template_1.tpl',
-            'position' => '1'
-        ],
-        [
-            'template' => 'template_2.tpl',
-            'block'    => 'block_2',
-            'file'     => '/blocks/template_2.tpl',
-            'position' => '2'
-        ],
-    ],
     'settings'    => [
         [
             'group' => 'main',

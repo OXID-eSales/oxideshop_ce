@@ -19,7 +19,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
@@ -193,8 +192,6 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
                     'moduleClassNamespace'
                 )
             )
-            ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
-            ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

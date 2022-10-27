@@ -50,7 +50,6 @@ services:
       - '@oxid_esales.module.configuration.controllers_data_mapper'
       - '@oxid_esales.module.configuration.events_data_mapper'
       - '@oxid_esales.module.configuration.module_settings_data_mapper'
-      - '@oxid_esales.module.configuration.templates_data_mapper'
 
   oxid_esales.module.configuration.class_extensions_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper
@@ -63,9 +62,6 @@ services:
 
   oxid_esales.module.configuration.module_settings_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper
-
-  oxid_esales.module.configuration.templates_data_mapper:
-      class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingService

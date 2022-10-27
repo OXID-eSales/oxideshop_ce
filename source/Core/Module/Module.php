@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ThemedTemplate;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
@@ -412,7 +411,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data = [];
 
         $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplatesToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);
@@ -431,26 +429,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
             $data[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
-    private function convertTemplatesToArray(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getTemplates() as $template) {
-            if ($template instanceof ThemedTemplate) {
-                $data[$template->getTemplateTheme()][$template->getTemplateKey()] = $template->getTemplatePath();
-            } else {
-                $data[$template->getTemplateKey()] = $template->getTemplatePath();
-            }
         }
 
         return $data;

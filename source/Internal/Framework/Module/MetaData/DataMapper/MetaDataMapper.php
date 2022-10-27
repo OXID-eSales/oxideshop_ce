@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
@@ -76,22 +75,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 $moduleConfiguration->addClassExtension(
                     new ClassExtension($shopClass, $moduleClass)
                 );
-            }
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
-            foreach ($moduleData[MetaDataProvider::METADATA_TEMPLATES] as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $themedTemplateKey => $themedTemplatePath) {
-                        $moduleConfiguration->addTemplate(
-                            new ModuleConfiguration\ThemedTemplate($themedTemplateKey, $themedTemplatePath, $key)
-                        );
-                    }
-                } else {
-                    $moduleConfiguration->addTemplate(
-                        new Template($key, $value)
-                    );
-                }
             }
         }
 

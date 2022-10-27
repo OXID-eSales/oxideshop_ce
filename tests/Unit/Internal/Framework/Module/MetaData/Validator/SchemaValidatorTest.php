@@ -28,7 +28,6 @@ final class SchemaValidatorTest extends TestCase
                     'sub-key-in-schema-2',
                 ],
             'extend' => [],
-            'templates' => [],
         ],
     ];
 

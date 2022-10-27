@@ -27,7 +27,7 @@ class ModuleServicesImporter implements ModuleServicesImporterInterface
 
     public function addImport(string $serviceDir, int $shopId): void
     {
-        if (!realpath($serviceDir)) {
+        if (!file_exists($this->getServiceFilePath($serviceDir))) {
             throw new NoServiceYamlException();
         }
         $services = $this->loadDIConfigFile($this->context->getActiveModuleServicesFilePath($shopId));
@@ -44,22 +44,10 @@ class ModuleServicesImporter implements ModuleServicesImporterInterface
         $this->saveServicesFile($services, $shopId);
     }
 
-    public function removeNonExistingImports(int $shopId): void
-    {
-        $services = $this->loadDIConfigFile($this->context->getActiveModuleServicesFilePath($shopId));
-
-        foreach ($services->getImportFileNames() as $fileName) {
-            if (!file_exists($this->getAbsolutePath($fileName, $shopId))) {
-                $services->removeImport($fileName);
-                $this->saveServicesFile($services, $shopId);
-            }
-        }
-    }
-
     private function getServiceRelativeFilePath(string $serviceDir, int $shopId): string
     {
         return Path::makeRelative(
-            Path::join($serviceDir, 'services.yaml'),
+            $this->getServiceFilePath($serviceDir),
             Path::getDirectory($this->context->getActiveModuleServicesFilePath($shopId))
         );
     }
@@ -83,11 +71,8 @@ class ModuleServicesImporter implements ModuleServicesImporterInterface
         );
     }
 
-    private function getAbsolutePath(string $fileName, int $shopId): string
+    private function getServiceFilePath(string $serviceDir): string
     {
-        return Path::makeAbsolute(
-            $fileName,
-            Path::getDirectory($this->context->getActiveModuleServicesFilePath($shopId))
-        );
+        return Path::join($serviceDir, 'services.yaml');
     }
 }

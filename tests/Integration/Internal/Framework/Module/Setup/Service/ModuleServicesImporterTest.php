@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -48,6 +49,8 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
         $moduleDirectory = Path::join(__DIR__, 'Fixtures');
 
         $importer = $this->get(ModuleServicesImporterInterface::class);
+
+        $this->expectException(NoServiceYamlException::class);
         $importer->addImport($moduleDirectory, 1);
     }
 

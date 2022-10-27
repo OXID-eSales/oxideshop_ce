@@ -16,5 +16,4 @@ interface ModuleServicesImporterInterface
 {
     public function addImport(string $serviceDir, int $shopId): void;
     public function removeImport(string $serviceDir, int $shopId): void;
-    public function removeNonExistingImports(int $shopId): void;
 }

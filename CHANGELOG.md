@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - RSS functionality
+- Support for Smarty-specific keys in `metadata.php` moved to the `oxid-esales/smarty-component`:
+  - `blocks`
+  - `smartyPluginDirectories`
+  - `templates`
 - Services:
   - `oxid_esales.command.apply_modules_configuration_command`
   - `oxid_esales.templating.template.loader`

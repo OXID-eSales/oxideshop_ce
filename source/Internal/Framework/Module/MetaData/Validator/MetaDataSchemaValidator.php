@@ -101,7 +101,7 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 
     /**
      * Validate a section of metadata like 'blocks' or 'settings', which are multidimensional arrays of well
-     * defined items. There are sections (e.g. extend or templates, ), which are arrays or multidimensional arrays
+     * defined items. There are sections (e.g. extend), which are arrays or multidimensional arrays
      * of not well defined items. In these cases the items cannot be validated.
      *
      * @param array  $supportedMetaDataKeys

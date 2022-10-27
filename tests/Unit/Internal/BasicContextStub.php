@@ -318,6 +318,11 @@ class BasicContextStub implements BasicContextInterface
         return $this->activeModuleServicesFilePath;
     }
 
+    public function setActiveModuleServicesFilePath(string $path): void
+    {
+        $this->activeModuleServicesFilePath = $path;
+    }
+
     public function getCurrentShopId(): int
     {
         return $this->currentShopId;

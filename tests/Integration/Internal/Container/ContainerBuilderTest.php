@@ -98,8 +98,9 @@ class ContainerBuilderTest extends TestCase
         $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
         $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/PE');
         $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');
-        $context->setGeneratedServicesFilePath("nonexiting.yaml");
+        $context->setGeneratedServicesFilePath('nonexisting.yaml');
         $context->setConfigurableServicesFilePath('nonexisting.yaml');
+        $context->setActiveModuleServicesFilePath('nonexisting.yaml');
         return $context;
     }
 }

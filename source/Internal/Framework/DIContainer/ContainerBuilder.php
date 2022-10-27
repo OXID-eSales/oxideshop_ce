@@ -11,9 +11,12 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -116,10 +119,19 @@ class ContainerBuilder
 
     private function loadModuleServices(SymfonyContainerBuilder $symfonyContainer): void
     {
-        $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
+        $moduleServicesFilePath = $this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId());
         try {
-            $loader->load($this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId()));
+            $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
+            $loader->load($moduleServicesFilePath);
         } catch (FileLocatorFileNotFoundException) {
+            //no active modules, do nothing.
+        } catch (LoaderLoadException $exception) {
+            $loggerServiceFactory = new LoggerServiceFactory(new Context());
+            $logger = $loggerServiceFactory->getLogger();
+            $logger->error(
+                "Can't load module services file path $moduleServicesFilePath. Please check if file exists and all imports in the file are correct.",
+                [$exception]
+            );
         }
     }
 }

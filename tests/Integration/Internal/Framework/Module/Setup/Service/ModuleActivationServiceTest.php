@@ -125,36 +125,6 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $this->getContainer()->get(SomeModuleService::class);
     }
 
-    public function testDeActivationOfModuleServicesInSubShop(): void
-    {
-        $subShopId = 2;
-        $this->getContainer()->get(ShopConfigurationDaoInterface::class)->save(new ShopConfiguration(), $subShopId);
-
-        $this->getContainer()->get(ModuleInstallerInterface::class)->install(
-            new OxidEshopPackage($this->testModulePath)
-        );
-
-        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-        $moduleActivationService->activate('test-module', $subShopId);
-
-        ContainerFactory::resetContainer();
-
-        $this->assertFalse($this->getContainer()->has(SomeModuleService::class));
-
-        $this->switchShop($subShopId);
-        ContainerFactory::resetContainer();
-
-        $this->assertTrue($this->getContainer()->has(SomeModuleService::class));
-
-        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-        $moduleActivationService->deactivate('test-module', $subShopId);
-
-        $this->switchShop($subShopId);
-        ContainerFactory::resetContainer();
-
-        $this->assertFalse($this->getContainer()->has(SomeModuleService::class));
-    }
-
     public function testActivationWillCallValidatorsAggregate(): void
     {
         $controllersValidator = $this->prophesize(ModuleConfigurationValidatorInterface::class);

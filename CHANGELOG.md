@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [7.0.0-rc.4] - Unreleased
+
+### Fixed
+- PHP-warning if varselid is not an array [PR-897](https://github.com/OXID-eSales/oxideshop_ce/pull/897)
+
 ## [7.0.0-rc.3] - 2022-10-28
 
 ### Added
@@ -1842,6 +1847,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
+[7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...b-7.0.x
 [7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
 [7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v7.0.0-rc.1

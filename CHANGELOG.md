@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - PHP-warning if varselid is not an array [PR-897](https://github.com/OXID-eSales/oxideshop_ce/pull/897)
+- Removed Google Webfonts usage in offline.html [PR-900](https://github.com/OXID-eSales/oxideshop_ce/pull/900)
 
 ## [7.0.0-rc.3] - 2022-10-28
 

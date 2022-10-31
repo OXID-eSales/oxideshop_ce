@@ -211,13 +211,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             return $parameters;
         }
 
-        if ($variantSelectionListId) {
+        if (is_array($variantSelectionListId)) {
             foreach ($variantSelectionListId as $key => $value) {
                 $parameters["varselid[$key]"] = $value;
             }
         }
 
-        if ($selectListParameters) {
+        if (is_array($selectListParameters)) {
             foreach ($selectListParameters as $key => $value) {
                 $parameters["sel[$key]"] = $value;
             }

@@ -165,7 +165,7 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket->removeVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEqualsWithDelta(7.56, $basket->getNettoSum(), 0.001);
         $this->assertEquals(5.0, $basket->getVoucherDiscount()->getPrice());
 
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 1);
@@ -175,7 +175,7 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         // Test with another voucher in same userGroup
         $basket->addVoucher(self::SECOND_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
-        $this->assertEquals(7.56, $basket->getNettoSum());
+        $this->assertEqualsWithDelta(7.56, $basket->getNettoSum(), 0.001);
         $this->assertEquals(15.0, $basket->getVoucherDiscount()->getPrice());
 
         // Test with increasing quantity of one of the products

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Event:
   - `Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent`
+- Sorting field for Manufacturer
 
 ### Fixed
 - Invalidate module cache on module settings/configuration change

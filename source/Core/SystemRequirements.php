@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityChecker;
 
 /**
  * System requirements class.
@@ -296,9 +296,7 @@ class SystemRequirements
      */
     public function checkCryptographicallySufficientConfiguration(): int
     {
-        return $this
-            ->getContainer()
-            ->get(SystemSecurityCheckerBridgeInterface::class)
+        return (new SystemSecurityChecker())
             ->isCryptographicallySecure()
             ? self::MODULE_STATUS_OK
             : self::MODULE_STATUS_BLOCKS_SETUP;

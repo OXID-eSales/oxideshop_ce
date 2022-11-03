@@ -4,7 +4,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityChecker
-
-  OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridge
-    public: true

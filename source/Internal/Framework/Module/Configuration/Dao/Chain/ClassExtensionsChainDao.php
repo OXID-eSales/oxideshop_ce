@@ -10,9 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Event\ModuleClassExtensionChainChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\PathUtil\Path;
 
 class ClassExtensionsChainDao implements ClassExtensionsChainDaoInterface
@@ -20,6 +22,7 @@ class ClassExtensionsChainDao implements ClassExtensionsChainDaoInterface
     public function __construct(
         private BasicContextInterface $context,
         private FileStorageFactoryInterface $fileStorageFactory,
+        private EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -34,6 +37,8 @@ class ClassExtensionsChainDao implements ClassExtensionsChainDaoInterface
     public function saveChain(int $shopId, ClassExtensionsChain $chain): void
     {
         $this->getStorage($shopId)->save($chain->getChain());
+
+        $this->eventDispatcher->dispatch(new ModuleClassExtensionChainChangedEvent());
     }
 
     private function storageExists(int $shopId): bool

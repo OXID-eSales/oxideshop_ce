@@ -4,13 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [7.0.0-rc.4] - Unreleased
-
-### Fixed
-- PHP-warning if varselid is not an array [PR-897](https://github.com/OXID-eSales/oxideshop_ce/pull/897)
-- Removed Google Webfonts usage in offline.html [PR-900](https://github.com/OXID-eSales/oxideshop_ce/pull/900)
-
-## [7.0.0-rc.3] - 2022-10-28
+## [7.0.0-rc.3] - 2022-11-04
 
 ### Added
 - Configuration parameter `oxid_esales.templating.engine_autoescapes_html` that delegates HTML-escaping to templating engine
@@ -24,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `blocks`
   - `smartyPluginDirectories`
   - `templates`
+- Google Webfonts usage in offline.html [PR-900](https://github.com/OXID-eSales/oxideshop_ce/pull/900)
 - Services:
   - `oxid_esales.command.apply_modules_configuration_command`
   - `oxid_esales.templating.template.loader`
@@ -103,6 +98,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Partly revert `Core\Autoload\ModuleAutoload`
+- PHP-warning if varselid is not an array [PR-897](https://github.com/OXID-eSales/oxideshop_ce/pull/897)
 
 ### Changed
 - Shop configuration files structure

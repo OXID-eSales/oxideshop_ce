@@ -22,7 +22,6 @@ use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -41,7 +40,7 @@ class ContainerBuilder
     public function getContainer(): SymfonyContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
-        $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
+        $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);

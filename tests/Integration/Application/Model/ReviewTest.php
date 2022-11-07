@@ -110,7 +110,7 @@ class ReviewTest extends TestCase
         $list = (oxNew(Review::class))->loadList($reviewType, $objectId, true, 0);
 
         foreach ($list as $review) {
-            $this->assertEquals($formattedDate, $review->getFieldData('oxcreate'));
+            $this->assertEqualsWithDelta($formattedDate, $review->getFieldData('oxcreate'), 1);
         }
     }
 }

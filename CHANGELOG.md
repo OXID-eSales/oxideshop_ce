@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Event:
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Event\ModuleClassExtensionChainChangedEvent`
+  - `Internal\Framework\Module\Configuration\Event\ModuleClassExtensionChainChangedEvent`
 
 ## [7.0.0-rc.3] - 2022-11-04
 
@@ -608,13 +608,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Interfaces:
-  - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
-  - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
+  - `Internal\Framework\Event\ShopAwareInterface`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
+  - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
 - Classes:
+  - `Internal\Framework\Console\AbstractShopAwareCommand`
+  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `Internal\Framework\Event\ShopAwareEventDispatcher`
+  - `Internal\Framework\Event\ShopAwareServiceTrait`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
     - `oxid_esales.module.setup.events_module_setting_handler`
@@ -623,22 +632,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `oxid_esales.module.setup.version_module_setting_handler`
 - Constants:
   - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
-    - `MODULE_CLASS_EXTENSIONS`
-    - `MODULE_VERSIONS`
-    - `MODULE_PATHS`
-    - `MODULE_EVENTS`
-    - `MODULE_CONTROLLERS`
     - `ACTIVE_MODULES`
-    - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
     - `MODULE_CLASS_EXTENSIONS_CHAIN`
+    - `MODULE_CLASS_EXTENSIONS`
+    - `MODULE_CONTROLLERS`
+    - `MODULE_EVENTS`
+    - `MODULE_PATHS`
+    - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
+    - `MODULE_VERSIONS`
 - Config options:
-  - `aModuleExtensions`
-  - `aModuleVersions`
-  - `aModulePaths`
-  - `aModuleEvents`
-  - `activeModules`
-  - `aModules`
   - `aModuleControllers`
+  - `aModuleEvents`
+  - `aModuleExtensions`
+  - `aModulePaths`
+  - `aModuleVersions`
+  - `aModules`
+  - `activeModules`
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Application\Model\Actions::getLongDesc()`
@@ -650,6 +659,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
   - `Core\UtilsView::getSmartyDir()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
   - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured()`
   - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
   - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`

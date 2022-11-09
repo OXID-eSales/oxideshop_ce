@@ -269,9 +269,4 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
     {
         return ContainerFactory::getInstance()->getContainer();
     }
-
-    private function switchShop(int $shopId): void
-    {
-        $_POST['shp'] = $shopId;
-    }
 }

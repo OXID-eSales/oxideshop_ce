@@ -9,16 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Utility;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 final class ContextTest extends TestCase
 {
-    use ContainerTrait;
-
     public function testGetLogLevelWithConfigSetWillReturnValue(): void
     {
         $configValue = (new ConfigFile())->getVar('sLogLevel');
@@ -26,7 +24,7 @@ final class ContextTest extends TestCase
             $this->markTestSkipped('Skipping because "sLogLevel" is not set in config.inc.php.');
         }
 
-        $logLevel = $this->get(ContextInterface::class)->getLogLevel();
+        $logLevel = $this->getContext()->getLogLevel();
 
         $this->assertSame($configValue, $logLevel);
     }
@@ -39,7 +37,7 @@ final class ContextTest extends TestCase
             $this->markTestSkipped('Skipping because "sLogLevel" is set in config.inc.php.');
         }
 
-        $logLevel = $this->get(ContextInterface::class)->getLogLevel();
+        $logLevel = $this->getContext()->getLogLevel();
 
         $this->assertSame($defaultLogLevel, $logLevel);
     }
@@ -48,8 +46,30 @@ final class ContextTest extends TestCase
     {
         $configValue = (new ConfigFile())->getVar('sShopDir');
 
-        $logFilePath = $this->get(ContextInterface::class)->getLogFilePath();
+        $logFilePath = $this->getContext()->getLogFilePath();
 
         $this->assertStringStartsWith($configValue, $logFilePath);
+    }
+
+    public function testGetCurrentShopId(): void
+    {
+        $subShopId = 2020;
+
+        $this->switchShop($subShopId);
+
+        $this->assertSame($subShopId, $this->getContext()->getCurrentShopId());
+    }
+
+    private function switchShop(int $shopId): void
+    {
+        $_POST['shp'] = $shopId;
+    }
+
+    private function getContext(): ContextInterface
+    {
+        return (new ContainerBuilderFactory())
+            ->create()
+            ->getContainer()
+            ->get(ContextInterface::class);
     }
 }

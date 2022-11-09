@@ -79,7 +79,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
 
     private function resetConfigFileOpcache(): void
     {
-        if (opcache_get_status() !== false) {
+        if (function_exists('opcache_get_status') && opcache_get_status() !== false) {
             opcache_invalidate($this->basicContext->getConfigFilePath());
         }
     }

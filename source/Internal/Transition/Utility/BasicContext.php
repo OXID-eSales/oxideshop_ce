@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
-use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Config\ConfigFile;
@@ -122,10 +121,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getCurrentShopId(): int
     {
-        $shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator(
-            new FileCache()
-        );
-        return $shopIdCalculator->getShopId();
+        return $this->getDefaultShopId();
     }
 
     /**

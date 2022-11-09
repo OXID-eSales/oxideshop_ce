@@ -10,7 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
 class ContainerBuilderFactory
 {
@@ -20,9 +22,10 @@ class ContainerBuilderFactory
     public function create(): ContainerBuilder
     {
         $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
+        $shopStateService = $bootstrapContainer->get(ShopStateServiceInterface::class);
 
-        return new ContainerBuilder(
-            $bootstrapContainer->get(BasicContextInterface::class)
-        );
+        $context = $shopStateService->isLaunched() ? new Context() : $bootstrapContainer->get(BasicContextInterface::class);
+
+        return new ContainerBuilder($context);
     }
 }

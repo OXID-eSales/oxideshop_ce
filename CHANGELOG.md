@@ -674,6 +674,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Error in chrome accessing navigation admin frame in javascript via top.navigation
+- Deleting Categories with more than one SEO Entry [#0007362](https://bugs.oxid-esales.com/view.php?id=7362)
 
 ## [6.12.0] - 2022-08-15
 
@@ -1869,6 +1870,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
 [7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v7.0.0-rc.1
+[6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...b-6.5.x
 [6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v6.12.0
 [6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0
 [6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3

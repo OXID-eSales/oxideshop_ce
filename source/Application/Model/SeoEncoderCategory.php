@@ -265,21 +265,43 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 
     private function setRelatedToCategorySeoUrlsAsExpired(Category $category): void
     {
-        $sql = "
+        foreach ($this->getSeoUrlsForCategory($category) as $seoUrl) {
+            $this->setSeoUrlsAsExpired(
+                $this->getRelatedProductsAndSubCategories($seoUrl)
+            );
+        }
+    }
+
+    private function getSeoUrlsForCategory(Category $category): array
+    {
+        return DatabaseProvider::getDb()
+            ->getCol(
+                "select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'",
+                [':oxobjectid' => $category->getId()]
+            );
+    }
+
+    private function getRelatedProductsAndSubCategories(string $rootCategoryUrl): array
+    {
+        return DatabaseProvider::getDb()
+            ->getCol(
+                "
             select oxident
             from oxseo
-            where oxseo.oxseourl like concat((select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'), '%') 
-              and (oxtype = 'oxcategory' or oxtype = 'oxarticle')
-          ";
+            where oxseo.oxseourl like CONCAT(:url, '%') 
+              and oxtype in ('oxarticle', 'oxcategory')",
+                [':url' => $rootCategoryUrl]
+            );
+    }
 
-        $result = DatabaseProvider::getDb()->select($sql, [':oxobjectid' => $category->getId()]);
-
-        $urlIdents = [];
-        foreach ($result->fetchAll() as $row)
-        {
-            $urlIdents[] = $row[0];
-        }
-
-        DatabaseProvider::getDb()->execute("update oxseo set oxseo.oxexpired=1 where oxseo.oxident in ('" . implode("','", $urlIdents) . "')");
+    private function setSeoUrlsAsExpired(array $idents): void
+    {
+        DatabaseProvider::getDb()
+            ->execute(
+                sprintf(
+                    "update oxseo set oxseo.oxexpired=1 where oxseo.oxident in ('%s')",
+                    implode("','", $idents)
+                )
+            );
     }
 }

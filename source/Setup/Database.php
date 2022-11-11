@@ -205,37 +205,36 @@ class Database extends Core
         $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
-        // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                                              values (:oxid, :shopId, :name, :type, :value)");
         $oInsert->execute(
             [
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'blSendTechnicalInformationToOxid',
-                'type' => 'bool',
-                'value' => $blSendTechnicalInformationToOxid
+                ':oxid' => $oUtils->generateUid(),
+                ':shopId' => $sBaseShopId,
+                ':name' => 'blSendTechnicalInformationToOxid',
+                ':type' => 'bool',
+                ':value' => $blSendTechnicalInformationToOxid
             ]
         );
 
         $oInsert->execute(
             [
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'blCheckForUpdates',
-                'type' => 'bool',
-                'value' => $blCheckForUpdates
+                ':oxid' => $oUtils->generateUid(),
+                ':shopId' => $sBaseShopId,
+                ':name' => 'blCheckForUpdates',
+                ':type' => 'bool',
+                ':value' => $blCheckForUpdates
             ]
         );
 
         $oInsert->execute(
             [
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'sDefaultLang',
-                'type' => 'str',
-                'value' => $sShopLang
+                ':oxid' => $oUtils->generateUid(),
+                ':shopId' => $sBaseShopId,
+                ':name' => 'sDefaultLang',
+                ':type' => 'str',
+                ':value' => $sShopLang
             ]
         );
 
@@ -263,11 +262,11 @@ class Database extends Core
             $oPdo->exec("delete from oxconfig where oxvarname = 'aLanguageParams'");
             $oInsert->execute(
                 [
-                    'oxid' => $oUtils->generateUid(),
-                    'shopId' => $sBaseShopId,
-                    'name' => 'aLanguageParams',
-                    'type' => 'aarr',
-                    'value' => $sValue
+                    ':oxid' => $oUtils->generateUid(),
+                    ':shopId' => $sBaseShopId,
+                    ':name' => 'aLanguageParams',
+                    ':type' => 'aarr',
+                    ':value' => $sValue
                 ]
             );
         }
@@ -343,11 +342,11 @@ class Database extends Core
             "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
                              values(:oxid, :oxusername, :oxpassword, :oxpasssalt, 'malladmin', :oxshopid)",
             [
-                "oxid"       => $uniqueId,
-                "oxusername" => $loginName,
-                "oxpassword" => $password,
-                "oxpasssalt" => $uniqueId,
-                "oxshopid"   => $baseShopId,
+                ':oxid' => $uniqueId,
+                ':oxusername' => $loginName,
+                ':oxpassword' => $password,
+                ':oxpasssalt' => $uniqueId,
+                ':oxshopid' => $baseShopId,
             ]
         );
     }
@@ -370,9 +369,9 @@ class Database extends Core
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                              values(:oxid, :oxshopid, 'blSendShopDataToOxid', 'bool', :oxvarvalue)",
             [
-                ":oxid" => $sID,
-                ":oxshopid" => $baseShopId,
-                ":oxvarvalue" => (bool) $blSendShopDataToOxid
+                ':oxid' => $sID,
+                ':oxshopid' => $baseShopId,
+                ':oxvarvalue' => (bool) $blSendShopDataToOxid
             ]
         );
     }

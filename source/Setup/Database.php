@@ -159,8 +159,7 @@ class Database extends Core
     {
         try {
             $this->execSql(
-                "CREATE DATABASE :dbname CHARACTER SET utf8 COLLATE utf8_general_ci;",
-                ["dbname" => $dbname]
+                "CREATE DATABASE `$dbname` CHARACTER SET utf8 COLLATE utf8_general_ci;",
             );
             $this->executeUseStatement($dbname);
         } catch (Exception $e) {

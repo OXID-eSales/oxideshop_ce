@@ -244,7 +244,7 @@ class StrMb
      *
      * @return string
      */
-    public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
+    public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = 0, $iOffset = 0)
     {
         return preg_match($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }

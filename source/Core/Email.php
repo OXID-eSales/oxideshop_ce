@@ -1430,7 +1430,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    public function setFrom($address, $name = null, $auto = true)
+    public function setFrom($address, $name = '', $auto = true)
     {
         $address = substr($address, 0, 150);
         $name = substr($name, 0, 150);

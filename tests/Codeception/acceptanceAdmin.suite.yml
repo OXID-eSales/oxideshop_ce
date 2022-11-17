@@ -9,7 +9,7 @@ modules:
             browser: '%BROWSER_NAME%'
             port: '%SELENIUM_SERVER_PORT%'
             host: '%SELENIUM_SERVER_HOST%'
-            window_size: 1600x1000
+            window_size: maximize
             clear_cookies: true
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
@@ -44,4 +44,3 @@ modules:
         - \OxidEsales\Codeception\Module\OxideshopModules:
 step_decorators:
     - \Codeception\Step\Retry
-

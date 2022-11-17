@@ -49,7 +49,6 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
         );
     }
 
-    /** @doesNotPerformAssertions  */
     public function testImportWithNoServicesFileInDirectory(): void
     {
         $moduleDirectory = Path::join(__DIR__, 'Fixtures');

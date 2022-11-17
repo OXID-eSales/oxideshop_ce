@@ -19,33 +19,16 @@ final class ProductListCest
     public function testCategoryFilterReset(AcceptanceTester $I): void
     {
         $I->wantToTest('category filter reset button functionality');
-        $I->markTestSkipped('TODO: Refactor');
 
         $homePage = $I->openShop();
         $I->waitForPageLoad();
-        $homePage->openCategoryPage('Kiteboarding');
-        $I->waitForPageLoad();
-        $homePage->openCategoryPage('Kites');
-        $I->waitForPageLoad();
-        $I->seeElement("//form[@id='filterList']");
+        $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
+        $productList->selectFilter('Test attribute 1 [EN] šÄßüл:', 'attr value 1 [EN] šÄßüл')
+            ->resetFilter()
+            ->selectFilter('Test attribute 2 [EN] šÄßüл:', 'attr value 12 [EN] šÄßüл')
+            ->resetFilter();
 
-        $I->click("//*[@id='filterList']/div[@class='btn-group'][1]/button");
-        $I->waitForText("Freeride");
-        $I->click("Freeride");
-        $I->waitForPageLoad();
-        $I->seeElement("//*[@id='resetFilter']/button");
-        $I->click("//*[@id='resetFilter']/button");
-        $I->waitForPageLoad();
-
-        $I->click("//*[@id='filterList']/div[@class='btn-group'][2]/button");
-        $I->waitForText("kite");
-        $I->click("kite");
-        $I->waitForPageLoad();
-        $I->seeElement("//*[@id='resetFilter']/button");
-
-        $I->click("//*[@id='resetFilter']/button");
-        $I->waitForPageLoad();
-        $I->dontSeeElement("//*[@id='resetFilter']/button");
+        $I->dontSeeElement($productList->resetListFilter);
     }
 
     /**

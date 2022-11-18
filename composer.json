@@ -51,7 +51,7 @@
         "incenteev/composer-parameter-handler": "^v2.1.4",
         "mikey179/vfsstream": "~1.6.8",
         "oxid-esales/codeception-modules": "^v3.0",
-        "oxid-esales/codeception-page-objects": "^v4.0",
+        "oxid-esales/codeception-page-objects": "dev-b-7.0.x",
         "oxid-esales/developer-tools": "^v2.1",
         "oxid-esales/oxideshop-ide-helper": "^v6.0",
         "phpspec/prophecy-phpunit": "^v2.0.1",

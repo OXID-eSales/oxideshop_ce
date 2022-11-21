@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger EE workflow and wait for results
-        uses: convictional/trigger-workflow-and-wait
+        uses: convictional/trigger-workflow-and-wait@v1.6.3
         with:
           owner: oxid-esales
           repo: oxideshop_ee
@@ -46,7 +46,7 @@ jobs:
           git -C source checkout pr_${{ github.event.number }}
 
       - name: Cache current installation
-        uses: actions/cache
+        uses: actions/cache@v2
         with:
           path: |
             ./*
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache
+        uses: actions/cache@v2
         with:
           path: |
             ./*
@@ -138,7 +138,7 @@ jobs:
 
       - name: Upload PHPUnit Log
         if: always()
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
           path: unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache
+        uses: actions/cache@v2
         with:
           path: |
             ./*
@@ -180,7 +180,7 @@ jobs:
 
       - name: Upload PHPUnit Log
         if: always()
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
           path: integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
@@ -197,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache
+        uses: actions/cache@v2
         with:
           path: |
             ./*
@@ -220,7 +220,7 @@ jobs:
 
       - name: Upload PHPUnit Log
         if: always()
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v3
         with:
           name: phpunit-logs
           path: codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
@@ -232,7 +232,7 @@ jobs:
 
       - name: Upload Codeception Artifacts
         if: always()
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v3
         with:
           name: codeception-artifacts-PHP${{ matrix.php }}-MYSQL${{ matrix.mysql }}
           path: source/tests/Codeception/_output/*

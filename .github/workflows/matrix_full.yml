@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger EE workflow and wait for results
-        uses: convictional/trigger-workflow-and-wait@v1.6.3
+        uses: convictional/trigger-workflow-and-wait@v1
         with:
           owner: oxid-esales
           repo: oxideshop_ee
@@ -46,7 +46,7 @@ jobs:
           git -C source checkout pr_${{ github.event.number }}
 
       - name: Cache current installation
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./*
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./*
@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./*
@@ -197,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./*

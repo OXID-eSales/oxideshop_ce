@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
@@ -19,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBu
  */
 class TestContainerFactory
 {
+    private const CONFIGURATION_ROOT_DIRECTORY = 'shops';
     /**
      * @var BasicContextStub
      */
@@ -85,12 +89,20 @@ class TestContainerFactory
 
     private function prepareVFS(): void
     {
-        $vfsStreamDirectory = vfsStream::setup('shops');
+        $vfsStreamDirectory = vfsStream::setup(
+            self::CONFIGURATION_ROOT_DIRECTORY,
+            null,
+            [
+                'shops' => [
+                    '1.yaml' => '[]'
+                ],
+            ]
+        );
         vfsStream::create([], $vfsStreamDirectory);
     }
 
     private function getTestProjectConfigurationDirectory(): string
     {
-        return vfsStream::url('shops/');
+        return vfsStream::url(self::CONFIGURATION_ROOT_DIRECTORY . DIRECTORY_SEPARATOR);
     }
 }

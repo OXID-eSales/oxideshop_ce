@@ -61,7 +61,7 @@ class Context extends BasicContext implements ContextInterface
         $shopIdCalculator = new ShopIdCalculator(
             new FileCache()
         );
-        return $shopIdCalculator->getShopId();
+        return (int) $shopIdCalculator->getShopId();
     }
 
     /**

@@ -7,16 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-/**
- * Class contains OXID eShop version.
- */
 class ShopVersion
 {
     /**
-     * @return string
+     * @return string OXID eShop compilation version.
      */
     public static function getVersion()
     {
-        return '7.0.0-rc.3';
+        return '7.0.0-rc.2';
     }
 }

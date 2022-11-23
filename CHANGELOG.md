@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [7.0.0-rc.4] - Unreleased
+## [7.0.0-rc.4] - 2022-11-23
 
 ### Added
 - Event:
   - `Internal\Framework\Module\Configuration\Event\ModuleClassExtensionChainChangedEvent`
+
+### Fixed
+- Fix prepared statements in GUI Setup
+- Fix deprecation warnings
 
 ## [7.0.0-rc.3] - 2022-11-04
 
@@ -1866,7 +1870,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
-[7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...b-7.0.x
+[7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4
 [7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
 [7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
 [7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v7.0.0-rc.1

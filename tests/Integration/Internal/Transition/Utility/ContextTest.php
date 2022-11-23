@@ -51,20 +51,6 @@ final class ContextTest extends TestCase
         $this->assertStringStartsWith($configValue, $logFilePath);
     }
 
-    public function testGetCurrentShopId(): void
-    {
-        $subShopId = 2020;
-
-        $this->switchShop($subShopId);
-
-        $this->assertSame($subShopId, $this->getContext()->getCurrentShopId());
-    }
-
-    private function switchShop(int $shopId): void
-    {
-        $_POST['shp'] = $shopId;
-    }
-
     private function getContext(): ContextInterface
     {
         return (new ContainerBuilderFactory())

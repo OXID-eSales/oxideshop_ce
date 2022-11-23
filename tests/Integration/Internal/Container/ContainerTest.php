@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
 use Monolog\Logger;
+use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
@@ -59,6 +60,7 @@ final class ContainerTest extends IntegrationTestCase
     public function testAllServicesAreCorrectlyConfigured(): void
     {
         $testContainer = (new TestContainerFactory())->create();
+        $this->generateShopConfigurationStubForVfs();
         $testContainer->compile();
         foreach ($testContainer->getDefinitions() as $key => $definition) {
             if ($definition->isPublic()) {
@@ -147,6 +149,19 @@ final class ContainerTest extends IntegrationTestCase
         return new ProjectYamlDao(
             $this->container->get(ContextInterface::class),
             $this->container->get('oxid_esales.symfony.file_system')
+        );
+    }
+
+    private function generateShopConfigurationStubForVfs(): void
+    {
+        vfsStream::setup(
+            'configuration',
+            null,
+            [
+                'shops' => [
+                    '1' => [],
+                ],
+            ]
         );
     }
 }

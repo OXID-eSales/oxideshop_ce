@@ -11,6 +11,7 @@ modules:
             host: '%SELENIUM_SERVER_HOST%'
             window_size: maximize
             clear_cookies: true
+            restart: true
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
             user: '%DB_USERNAME%'

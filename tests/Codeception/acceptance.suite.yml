@@ -17,6 +17,7 @@ modules:
             host: '%SELENIUM_SERVER_HOST%'
             window_size: maximize
             clear_cookies: true
+            restart: true
         - \OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'

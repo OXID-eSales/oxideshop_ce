@@ -77,4 +77,9 @@ abstract class AbstractInsertNewBasketItemLogic
      * @return mixed
      */
     abstract protected function renderTemplate(string $templateName, $templateEngine);
+
+    public function getGlobals(): array
+    {
+        return [];
+    }
 }

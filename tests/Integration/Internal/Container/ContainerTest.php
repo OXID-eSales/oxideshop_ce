@@ -57,8 +57,8 @@ final class ContainerTest extends UnitTestCase
 
     public function testAllServicesAreCorrectlyConfigured(): void
     {
-        $this->generateShopConfigurationStubForVfs();
         $testContainer = (new TestContainerFactory())->create();
+        $this->generateShopConfigurationStubForVfs();
         $testContainer->compile();
         foreach ($testContainer->getDefinitions() as $key => $definition) {
             if ($definition->isPublic()) {

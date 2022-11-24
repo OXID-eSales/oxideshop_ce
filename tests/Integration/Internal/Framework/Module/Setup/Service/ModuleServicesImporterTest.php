@@ -31,8 +31,13 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
         $importer = $this->get(ModuleServicesImporterInterface::class);
         $importer->addImport($moduleDirectory, 1);
 
+        $expectedImport = Path::makeRelative(
+            Path::join($moduleDirectory, 'services.yaml'),
+            Path::getDirectory($this->getActiveModuleServicesFilePath())
+        );
+
         $this->assertEquals(
-            ['../../../../tests/Integration/Internal/Framework/Module/Setup/Service/Fixtures/Module/services.yaml'],
+            [$expectedImport],
             $this->getDIConfigWrapper()->getImportFileNames()
         );
 
@@ -57,7 +62,13 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
 
     private function getDIConfigWrapper(): DIConfigWrapper
     {
-        $path = $this->get(ContextInterface::class)->getActiveModuleServicesFilePath($this->shopId);
-        return new DIConfigWrapper(Yaml::parse(file_get_contents($path), Yaml::PARSE_CUSTOM_TAGS));
+        return new DIConfigWrapper(
+            Yaml::parse(file_get_contents($this->getActiveModuleServicesFilePath()), Yaml::PARSE_CUSTOM_TAGS)
+        );
+    }
+
+    private function getActiveModuleServicesFilePath(): string
+    {
+        return $this->get(ContextInterface::class)->getActiveModuleServicesFilePath($this->shopId);
     }
 }

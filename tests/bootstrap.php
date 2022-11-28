@@ -1,6 +1,6 @@
 <?php
 
-define('INSTALLATION_ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR . '..');
+define('INSTALLATION_ROOT_PATH', (new \OxidEsales\Facts\Facts())->getShopRootPath());
 # Yes, adding a directory separator is stupid, but that's how the code expects it
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 //require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';

@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+  - `Internal\Framework\Event\ShopAwareInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
   - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
 - Classes:
   - `Core\Module\ModuleSmartyPluginDirectoryRepository`
@@ -21,6 +23,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+  - `Internal\Framework\Console\AbstractShopAwareCommand`
+  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `Internal\Framework\Event\ShopAwareEventDispatcher`
+  - `Internal\Framework\Event\ShopAwareServiceTrait`
+  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
+
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
     - `oxid_esales.module.setup.events_module_setting_handler`
@@ -28,27 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
     - `oxid_esales.module.setup.version_module_setting_handler`
     - `oxid_esales.templating.template.loader`
-- `OxidEsales\EshopCommunity\Application\Model\Actions::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\Article::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\Category::getLongDesc`
-- `OxidEsales\EshopCommunity\Core\UtilsView::getTemplateCompileId`
-- `OxidEsales\EshopCommunity\Core\UtilsView::getRenderedContent`
-- `OxidEsales\EshopCommunity\Core\UtilsView::getTemplateBlocks`
-- `OxidEsales\EshopCommunity\Core\UtilsView::getSmartyDir`
-- `OxidEsales\EshopCommunity\Core\Module\Module:getSmartyPluginDirectories`
-- `OxidEsales\EshopCommunity\Core\SystemRequirements::getMissingTemplateBlocks`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
-- `OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository`
-- `OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
 - Constants:
   - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
     - `MODULE_CLASS_EXTENSIONS`

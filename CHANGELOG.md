@@ -96,6 +96,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Error in chrome accessing navigation admin frame in javascript via top.navigation
 - Deleting Categories with more than one SEO Entry [#0007362](https://bugs.oxid-esales.com/view.php?id=7362)
 
+### Changed
+- Avoid using Google Fonts API in offline page
+
 ## [6.12.0] - 2022-08-15
 
 ### Changed

@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -43,6 +44,7 @@ final class ShopSetupCommandTest extends TestCase
     private const LANG = 'de';
     private const DEFAULT_LANG = 'en';
     private const DEFAULT_SHOP_ID = 12345;
+    private const DEFAULT_THEME = 'twig';
 
     /** @var CommandTester */
     private $commandTester;
@@ -62,6 +64,8 @@ final class ShopSetupCommandTest extends TestCase
     private $shopStateService;
     /** @var BasicContextInterface|ObjectProphecy */
     private $basicContext;
+    /** @var ShopAdapterInterface|ObjectProphecy */
+    private $shopAdapter;
 
     protected function setUp(): void
     {
@@ -153,6 +157,8 @@ final class ShopSetupCommandTest extends TestCase
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->shopStateService->isLaunched()
             ->willReturn(false);
+        $this->shopAdapter->themeExists(self::DEFAULT_THEME)
+            ->willReturn(false);
 
         $exitCode = $this->commandTester->execute([
             '--db-host' => self::HOST,
@@ -177,6 +183,10 @@ final class ShopSetupCommandTest extends TestCase
         $this->shopStateService->isLaunched()
             ->willReturn(false);
 
+        $this->shopAdapter->themeExists(self::DEFAULT_THEME)
+            ->willReturn(true);
+
+        $this->shopAdapter->activateTheme(self::DEFAULT_THEME);
 
         $exitCode = $this->commandTester->execute([
             '--db-host' => self::HOST,
@@ -204,7 +214,7 @@ final class ShopSetupCommandTest extends TestCase
             $this->languageInstaller->reveal(),
             $this->htaccessUpdateService->reveal(),
             $this->shopStateService->reveal(),
-            $this->basicContext->reveal()
+            $this->shopAdapter->reveal()
         );
     }
 
@@ -218,6 +228,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->htaccessUpdateService = $this->prophesize(HtaccessUpdaterInterface::class);
         $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
+        $this->shopAdapter = $this->prophesize(ShopAdapterInterface::class);
     }
 
     private function assertServiceCallsWithCompleteArgs(): void

@@ -64,4 +64,8 @@ interface ShopAdapterInterface
     public function getCustomTheme(): string;
 
     public function getActiveThemeId(): string;
+
+    public function themeExists(string $themeId): bool;
+
+    public function activateTheme(string $themeId): void;
 }

@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
+use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
@@ -149,4 +150,15 @@ class ShopAdapter implements ShopAdapterInterface
         return Registry::getConfig()->getConfigParam('sTheme');
     }
 
+    public function themeExists(string $themeId): bool
+    {
+        return oxNew(Theme::class)->load($themeId);
+    }
+
+    public function activateTheme(string $themeId): void
+    {
+        $theme = oxNew(Theme::class);
+        $theme->load($themeId);
+        $theme->activate();
+    }
 }

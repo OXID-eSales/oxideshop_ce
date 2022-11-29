@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidato
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -38,6 +39,8 @@ class ShopSetupCommand extends Command
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
+    private string $defaultTheme = 'twig';
+
     public function __construct(
         private DatabaseCheckerInterface $databaseChecker,
         private DatabaseInstallerInterface $databaseInstaller,
@@ -45,7 +48,8 @@ class ShopSetupCommand extends Command
         private DirectoryValidatorInterface $directoriesValidator,
         private LanguageInstallerInterface $languageInstaller,
         private HtaccessUpdaterInterface $htaccessUpdateService,
-        private ShopStateServiceInterface $shopStateService
+        private ShopStateServiceInterface $shopStateService,
+        private ShopAdapterInterface $shopAdapter
     ) {
         parent::__construct();
     }
@@ -88,6 +92,11 @@ class ShopSetupCommand extends Command
 
         $output->writeln('<info>Installing language...</info>');
         $this->languageInstaller->install($this->getLanguage($input));
+
+        if ($this->shopAdapter->themeExists($this->defaultTheme)) {
+            $output->writeln("<info>Activating default ($this->defaultTheme) theme...</info>");
+            $this->shopAdapter->activateTheme($this->defaultTheme);
+        }
 
         $output->writeln('<info>Setup has been finished.</info>');
 

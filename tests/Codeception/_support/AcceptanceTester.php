@@ -40,6 +40,7 @@ class AcceptanceTester extends AcceptanceActor
         $I = $this;
         $homePage = new Home($I);
         $I->amOnPage($homePage->URL);
+        $I->waitForPageLoad();
         return $homePage;
     }
 

@@ -530,14 +530,14 @@ final class ProductDetailsPageCest
 
         $productDetailsPage = $productListPage->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->seeProductData($productData1, 1)
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->seeProductData($productData1)
             ->seeProductUnitPrice('17,50 €/kg')
             ->addProductToBasket(3);
 
         $basketPage = $productDetailsPage->openCategoryPage('Test category 0 [EN] šÄßüл')
             ->seeProductData($productData2, 2)
-            ->openDetailsPage(2)
+            ->openProductDetailsPage(2)
             ->seeProductData($productData2)
             ->addProductToBasket(1)
             ->openBasket();
@@ -604,7 +604,7 @@ final class ProductDetailsPageCest
 
         $basketPage = $productListPage->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->seeProductData($productData, 1)
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->seeProductData($productData)
             ->seeProductUnitPrice('27,50 €/kg')
             ->addProductToBasket(5)
@@ -659,7 +659,7 @@ final class ProductDetailsPageCest
 
         $basketPage = $productListPage->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->seeProductData($productData, 1)
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->seeProductData($productData)
             ->seeProductUnitPrice('22,50 €/kg')
             ->addProductToBasket(2)

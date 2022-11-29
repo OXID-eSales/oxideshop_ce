@@ -36,7 +36,7 @@ final class PrivateSalesBasketCest
         $homePage = $I->openShop();
 
         $basketPage = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->addProductToBasket(1)
             ->openBasket();
 
@@ -82,7 +82,7 @@ final class PrivateSalesBasketCest
         $homePage = $I->openShop();
 
         $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->addProductToBasket(1)
             ->openBasket();
 
@@ -109,7 +109,7 @@ final class PrivateSalesBasketCest
         $homePage = $I->openShop();
 
         $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
-            ->openDetailsPage(1)
+            ->openProductDetailsPage(1)
             ->addProductToBasket(2);
 
         $homePage->seeCountdownWithinBasket();

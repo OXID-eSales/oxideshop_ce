@@ -51,7 +51,8 @@ class SearchCest
         $searchListPage = $searchListPage->searchFor('100')
             ->seeSearchCount(4)
             ->selectSorting('oxtitle', 'asc')
-            ->selectProductsPerPage(2);
+            ->seeProductData($productData3, 1)
+            ->selectProductsPerPage('2');
 
         $I->see(Translator::translate('PRODUCTS_PER_PAGE').' 2');
 

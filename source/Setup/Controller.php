@@ -438,8 +438,9 @@ class Controller extends Core
 
             /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            $oTheme->load("flow");
-            $oTheme->activate();
+            if ($oTheme->load("twig")) {
+                $oTheme->activate();
+            }
         } catch (CommandExecutionFailedException $exception) {
             $this->handleCommandExecutionFailedException($exception);
 

@@ -13,7 +13,7 @@
  * -------------------------------------------------------------
  *
  * @param string $sIdent language constant ident
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxmultilangsal($sIdent)

@@ -1251,6 +1251,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sVersionFrom module from version.
      * @param string $sVersionTo   module to version.
      *
+     * @deprecated will be removed in v7.0
+     *
      * @return  bool
      */
     public function isModuleActive($sModuleId, $sVersionFrom = null, $sVersionTo = null)

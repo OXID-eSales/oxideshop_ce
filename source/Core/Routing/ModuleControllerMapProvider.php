@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Provide the controller mappings from the metadata of all active modules.
- *
+ * @deprecated since v6.13.0 and will be removed in v7.0
  * @internal Do not make a module extension for this class.
  */
 class ModuleControllerMapProvider implements ControllerMapProviderInterface

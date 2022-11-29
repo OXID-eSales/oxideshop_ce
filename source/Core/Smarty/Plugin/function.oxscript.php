@@ -24,7 +24,7 @@
  *
  * @param array  $params Params
  * @param Smarty $smarty Clever simulation of a method
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_function_oxscript($params, &$smarty)

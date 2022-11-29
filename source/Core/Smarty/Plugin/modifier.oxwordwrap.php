@@ -17,7 +17,7 @@
  * @param integer $iLength To length
  * @param string  $sWraper wrap using
  * @param bool    $blCut   Cut
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxwordwrap($sString, $iLength = 80, $sWraper = "\n", $blCut = false)

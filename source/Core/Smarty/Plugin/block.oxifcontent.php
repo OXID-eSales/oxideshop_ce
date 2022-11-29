@@ -20,6 +20,8 @@
  * @param Smarty &$smarty clever simulation of a method
  * @param bool   &$repeat repeat
  *
+ * @deprecated will be moved to the separate smarty component
+ *
  * @return string
  */
 function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)

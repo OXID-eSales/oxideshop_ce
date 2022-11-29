@@ -2193,7 +2193,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Get parsed modules
-     *
+     * @deprecated will be removed in v7.0
      * @return array
      */
     public function getModulesWithExtendedClass()

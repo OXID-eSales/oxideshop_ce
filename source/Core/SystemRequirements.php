@@ -1094,7 +1094,7 @@ class SystemRequirements
      * @see getMissingTemplateBlocks
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "checkTemplateBlock" in next major
+     * @deprecated will be moved to the separate smarty component
      */
     protected function _checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1161,7 +1161,7 @@ class SystemRequirements
     /**
      * Fetch the active template blocks for the active shop and the active theme.
      *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     * @deprecated will be moved to the separate smarty component
      *
      * @return ResultSetInterface The active template blocks for the active shop and the active theme.
      */

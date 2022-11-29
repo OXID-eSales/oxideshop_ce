@@ -32,7 +32,7 @@ class OnlineLicenseCheckRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 
     /**
      * Build revision number.
-     *
+     * @deprecated will be removed in v7.0
      * @var string
      */
     public $revision;

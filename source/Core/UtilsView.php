@@ -47,6 +47,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Templates directories array
+     * @deprecated will be removed in v7.0
      *
      * @var array
      */
@@ -54,12 +55,15 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Active module Ids array
+     * @deprecated will be removed in v7.0
      *
      * @var array
      */
     protected $_aActiveModuleInfo = null;
 
-    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
+    /**
+     * @var \OxidEsales\Eshop\Core\ShopIdCalculator
+     */
     private $shopIdCalculator;
 
     /**
@@ -540,6 +544,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * @param string $templateFileName filename of rendered template
      *
      * @see smarty_prefilter_oxblock
+     *
+     * @deprecated will be removed in v7.0
      *
      * @return array
      */

@@ -15,7 +15,7 @@
  *
  * @param string $sFormat Number formatting rules (use default currency formatting rules defined in Admin)
  * @param string $sValue  Number to format
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxnumberformat($sFormat = "EUR@ 1.00@ ,@ .@ EUR@ 2", $sValue = 0)

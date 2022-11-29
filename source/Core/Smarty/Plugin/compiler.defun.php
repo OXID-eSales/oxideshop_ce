@@ -1,6 +1,9 @@
 <?php
 
-/* create code for a function call */
+/**
+ * create code for a function call
+ * @deprecated will be moved to the separate smarty component
+ */
 function smarty_compiler_fun($tag_args, &$compiler)
 {
     $_attrs = $compiler->_parse_attrs($tag_args);
@@ -23,7 +26,10 @@ function smarty_compiler_fun($tag_args, &$compiler)
 $this->register_compiler_function('fun', 'smarty_compiler_fun');
 
 
-/* create code for a function declaration */
+/**
+ * create code for a function declaration
+ * @deprecated will be moved to the separate smarty component
+ */
 function smarty_compiler_defun($tag_args, &$compiler)
 {
     $attrs = $compiler->_parse_attrs($tag_args);
@@ -39,7 +45,10 @@ function smarty_compiler_defun($tag_args, &$compiler)
 }
 
 
-/* create code for closing a function definition and calling said function */
+/**
+ * create code for closing a function definition and calling said function
+ * @deprecated will be moved to the separate smarty component
+ */
 function smarty_compiler_defun_close($tag_args, &$compiler)
 {
     list($name, $attrs, $open_tag_args, $func_key) = array_pop($compiler->_tag_stack);
@@ -51,7 +60,10 @@ function smarty_compiler_defun_close($tag_args, &$compiler)
 $this->register_compiler_function('/defun', 'smarty_compiler_defun_close');
 
 
-/* callback to replace all $this with $smarty */
+/**
+ * callback to replace all $this with $smarty
+ * @deprecated will be moved to the separate smarty component
+ */
 function smarty_replace_fun($match)
 {
     $tokens = token_get_all('<?php ' . $match[2]);
@@ -84,7 +96,10 @@ function smarty_replace_fun($match)
 }
 
 
-/* postfilter to squeeze the code to make php5 happy */
+/**
+ * postfilter to squeeze the code to make php5 happy
+ * @deprecated will be moved to the separate smarty component
+ */
 function smarty_postfilter_defun($source, &$compiler)
 {
     $search = '("' . md5('php-5') . '\[\[[0-9a-f]{32}";)';

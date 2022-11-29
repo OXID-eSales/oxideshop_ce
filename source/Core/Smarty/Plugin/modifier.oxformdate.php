@@ -16,7 +16,7 @@
  * @param object $oConvObject   oxField object
  * @param string $sFieldType    additional type if field (this may help to force formatting)
  * @param bool   $blPassedValue bool if true, will simulate object as sometimes we need to apply formatting to some regulat values
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxformdate($oConvObject, $sFieldType = null, $blPassedValue = false)

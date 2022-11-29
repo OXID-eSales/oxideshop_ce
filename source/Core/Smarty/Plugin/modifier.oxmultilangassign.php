@@ -14,7 +14,7 @@
  *
  * @param string $sIdent language constant ident
  * @param mixed  $args   for constants using %s notations
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxmultilangassign($sIdent, $args = null)

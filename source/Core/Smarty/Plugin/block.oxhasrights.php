@@ -17,6 +17,8 @@
  * @param Smarty $smarty  Clever simulation of a method
  * @param bool   $repeat  Repeat
  *
+ * @deprecated will be moved to the separate smarty component
+ *
  * @return string $content re-formatted
  */
 function smarty_block_oxhasrights($params, $content, &$smarty, &$repeat)

@@ -14,7 +14,7 @@
  *
  * @param array  $params  Params
  * @param Smarty $oSmarty Clever simulation of a method
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_function_oxid_include_widget($params, &$oSmarty)

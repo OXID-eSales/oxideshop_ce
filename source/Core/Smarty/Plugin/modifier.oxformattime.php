@@ -14,7 +14,7 @@
  * -------------------------------------------------------------
  *
  * @param int $iSeconds timespan in seconds
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxformattime($iSeconds)

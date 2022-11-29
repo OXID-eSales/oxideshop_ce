@@ -2197,7 +2197,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\SmartyRenderer::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Model\State'                                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\State::class,
@@ -2899,7 +2899,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\MailValidator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Model\BaseModel'                                      => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Model\BaseModel::class,
@@ -2971,19 +2971,19 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator'                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator::class,
@@ -3163,7 +3163,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider'                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\ShopControllerMapProvider::class,
@@ -3247,19 +3247,19 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter'                            => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Str'                                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Str::class,

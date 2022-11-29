@@ -13,7 +13,7 @@
  * -------------------------------------------------------------
  *
  * @param string $string String to escape
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxaddslashes($string)

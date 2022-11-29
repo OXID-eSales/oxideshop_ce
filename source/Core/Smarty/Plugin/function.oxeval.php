@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * @param array  $aParams  parameters to process
  * @param smarty &$oSmarty smarty object
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_function_oxeval($aParams, &$oSmarty)

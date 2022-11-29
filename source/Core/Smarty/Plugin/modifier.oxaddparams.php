@@ -14,7 +14,7 @@
  *
  * @param string $sUrl       Url
  * @param string $sDynParams Dynamic URL parameters
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxaddparams($sUrl, $sDynParams)

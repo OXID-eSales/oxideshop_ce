@@ -10,7 +10,7 @@
  *
  * @param string $sSource          Incoming source
  * @param object &$oSmartyCompiler smarty compiler instance
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_prefilter_oxtpldebug($sSource, &$oSmartyCompiler)

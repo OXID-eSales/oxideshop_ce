@@ -23,7 +23,7 @@
  * @param string  $sSufix       Truncation mark
  * @param bool    $blBreakWords break words
  * @param bool    $middle       middle ?
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxtruncate($sString, $iLength = 80, $sSufix = '...', $blBreakWords = false, $middle = false)

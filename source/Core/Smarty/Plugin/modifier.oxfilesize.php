@@ -13,7 +13,7 @@
  * -------------------------------------------------------------
  *
  * @param int $iSize Integer size value
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxfilesize($iSize)

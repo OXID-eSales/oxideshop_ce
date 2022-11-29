@@ -13,7 +13,7 @@
  * Type:     modifier<br>
  * Name:     smartwordwrap<br>
  * Purpose:  wrap a string of text at a given length and row count
- *
+ * @deprecated will be moved to the separate smarty component
  * @param string
  * @param integer
  * @param string

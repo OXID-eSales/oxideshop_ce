@@ -17,7 +17,7 @@
  * TRANSLATION_INDENT = 'translation' COLON = ' :', $variable = 'translation :'
  *
  * @param string $string String to add colon to.
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_colon($string)

@@ -13,7 +13,7 @@
  * -------------------------------------------------------------
  *
  * @param string $sString String to uppercase
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 

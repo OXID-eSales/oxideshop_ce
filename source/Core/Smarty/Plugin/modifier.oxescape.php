@@ -20,7 +20,7 @@ require_once $smarty->_get_plugin_filepath('modifier', 'escape');
  * @param string $sString  string to escape
  * @param string $sEscType escape type "html|htmlall|url|quotes|hex|hexentity|javascript" [optional]
  * @param string $sCharSet charset [optional]
- *
+ * @deprecated will be moved to the separate smarty component
  * @return string
  */
 function smarty_modifier_oxescape($sString, $sEscType = 'html', $sCharSet = null)

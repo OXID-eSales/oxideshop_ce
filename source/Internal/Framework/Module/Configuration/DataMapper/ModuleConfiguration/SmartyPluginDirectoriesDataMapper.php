@@ -13,6 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
+/**
+ * @deprecated will be moved to smarty component
+ */
 class SmartyPluginDirectoriesDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'smartyPluginDirectories';

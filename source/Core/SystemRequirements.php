@@ -1121,6 +1121,8 @@ class SystemRequirements
      * only active (oxactive==1) blocks are checked
      *
      * @return array
+     *
+     * @deprecated will be moved to smarty component
      */
     public function getMissingTemplateBlocks()
     {

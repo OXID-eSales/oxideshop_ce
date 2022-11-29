@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
 /**
  * Interface TemplateLoaderInterface
+ * @deprecated will be removed in v7.0
  * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
  */
 interface TemplateLoaderInterface

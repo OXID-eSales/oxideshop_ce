@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNam
 
 /**
  * Class TemplateLoader
+ * @deprecated will be removed in v7.0
  *
  * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
  */
@@ -45,11 +46,7 @@ class TemplateLoader implements TemplateLoaderInterface
     }
 
     /**
-     * Check a template exists.
-     *
-     * @param string $name The name of the template
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function exists($name): bool
     {

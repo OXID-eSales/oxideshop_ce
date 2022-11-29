@@ -7,29 +7,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.13.0] - unreleased
 
 ### Deprecated
+- RSS functionality
 - Interfaces:
   - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
+  - `Internal\Framework\Event\ShopAwareInterface`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
 - Classes:
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Core\Module\ModuleTemplateBlockRepository`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Console\AbstractShopAwareCommand`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DICallWrapper`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareServiceTrait`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Event\AbstractShopAwareEventSubscriber`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
+  - `Internal\Framework\Console\AbstractShopAwareCommand`
+  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `Internal\Framework\Event\ShopAwareEventDispatcher`
+  - `Internal\Framework\Event\ShopAwareServiceTrait`
+  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
+  - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
     - `oxid_esales.module.setup.events_module_setting_handler`
     - `oxid_esales.module.setup.path_module_setting_handler`
     - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
     - `oxid_esales.module.setup.version_module_setting_handler`
+    - `oxid_esales.templating.template.loader`
 - Constants:
   - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
     - `MODULE_CLASS_EXTENSIONS`
@@ -53,24 +60,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Application\Model\Actions::getLongDesc()`
   - `Application\Model\Article::getLongDesc()`
   - `Application\Model\Category::getLongDesc()`
-  - `Application\Model\UtilsView::getRenderedContent()`
-  - `Application\Model\UtilsView::getTemplateCompileId()`
   - `Core\Field::`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-  - `Core\UtilsView::getSmartyDir()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
-  - `OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
+  - `Core\Module\Module:getSmartyPluginDirectories()`
+  - `Core\SystemRequirements::getMissingTemplateBlocks()`
+  - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::`
+    - `addActiveThemeId()`
+    - `getRenderedContent()`
+    - `getSmartyDir()`
+    - `getTemplateBlocks()`
+    - `getTemplateCompileId()`
+    - `getTemplateDirs()`
+    - `setTemplateDir()`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::`
+    - `isConfigured()`
+    - `setConfigured()`
+  - `Internal\Framework\Module\State\ModuleStateServiceInterface::`
+    - `setActive()`
+    - `setDeactivated()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::`
+    - `hasService()`
+    - `getService()`
+    - `addOrUpdateService()`
+    - `checkServices()`
+    - `checkServiceClassesCanBeLoaded()`
+    - `getServices()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+  - `Core\UtilsView::$_aTemplateDir`
 
 ### Fixed
 - Error in chrome accessing navigation admin frame in javascript via top.navigation

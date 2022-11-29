@@ -38,6 +38,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     protected static $_oSmarty = null;
 
     /**
+     * @deprecated will be removed in v7.0
      * Templates directories array
      *
      * @var array
@@ -288,7 +289,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Templates directory setter
-     *
+     * @deprecated method will be removed in v7.0
      * @param string $templatesDirectory templates path
      */
     public function setTemplateDir($templatesDirectory)
@@ -300,7 +301,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Initializes and returns templates directory info array
-     *
+     * @deprecated method will be removed in v7.0. Use \OxidEsales\Eshop\Core\Config::getTemplateDir()
      * @return array
      */
     public function getTemplateDirs()
@@ -339,7 +340,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns a full path to Smarty compile dir
      *
-     * @deprecated since 6.13.0 please use
+     * @deprecated since 6.13.0
      *
      * @return string
      */
@@ -593,7 +594,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Add active theme at the end of theme path to form full path to templates.
-     *
+     * @deprecated method will be removed in v7.0
      * @param string $themePath
      *
      * @return string

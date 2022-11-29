@@ -218,6 +218,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
     /**
      * @return array
+     *
+     * @deprecated will be moved to smarty component
      */
     public function getSmartyPluginDirectories()
     {

@@ -172,7 +172,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Rss links
-     *
+     * @deprecated will be removed in v7.0
      * @var array
      */
     protected $_aRssLinks = null;
@@ -857,7 +857,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * addRssFeed adds link to rss
-     *
+     * @deprecated will be removed in v7.0
      * @param string $title feed page title
      * @param string $url   feed url
      * @param int    $key   feed number
@@ -1782,7 +1782,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Returns RSS links
-     *
+     * @deprecated will be removed in v7.0
      * @return array
      */
     public function getRssLinks()

@@ -707,6 +707,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Removes smarty template cache for given templates
+     * @deprecated method will be removed in v7.0.
+     * Use \OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface::invalidateTemplateCache()
      *
      * @param array $aTemplates Template name array
      */

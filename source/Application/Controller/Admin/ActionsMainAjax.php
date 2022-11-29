@@ -276,7 +276,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Getter for the rss feed handler.
      *
      * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getOxRssFeed" in next major
+     * @deprecated will be removed in v7.0
      */
     protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

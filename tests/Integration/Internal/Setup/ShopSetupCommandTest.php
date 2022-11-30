@@ -7,8 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
@@ -23,6 +24,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -32,6 +34,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class ShopSetupCommandTest extends TestCase
 {
     use ProphecyTrait;
+    use ContainerTrait;
 
     private const HOST = 'some-host';
     private const PORT = 123;
@@ -203,6 +206,33 @@ final class ShopSetupCommandTest extends TestCase
         $this->assertSame(0, $exitCode);
     }
 
+    public function testInstallationTimeSaved(): void
+    {
+        $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
+        $this->shopAdapter->themeExists(self::DEFAULT_THEME)
+            ->willReturn(false);
+
+        $timeBeforeInstallation = time();
+
+        $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB,
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--language' => self::LANG,
+        ]);
+
+        $shopInstallationTimeSetting = $this->get(ShopConfigurationSettingDaoInterface::class)->get('sTagList', self::DEFAULT_SHOP_ID);
+
+        $this->assertGreaterThanOrEqual($timeBeforeInstallation, $shopInstallationTimeSetting->getValue());
+    }
+
     private function createCommand(): Command
     {
         $this->prepareMocks();
@@ -214,7 +244,9 @@ final class ShopSetupCommandTest extends TestCase
             $this->languageInstaller->reveal(),
             $this->htaccessUpdateService->reveal(),
             $this->shopStateService->reveal(),
-            $this->shopAdapter->reveal()
+            $this->shopAdapter->reveal(),
+            $this->basicContext->reveal(),
+            $this->get(ShopConfigurationSettingDaoInterface::class)
         );
     }
 

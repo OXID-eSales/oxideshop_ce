@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
@@ -19,6 +22,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -49,7 +53,9 @@ class ShopSetupCommand extends Command
         private LanguageInstallerInterface $languageInstaller,
         private HtaccessUpdaterInterface $htaccessUpdateService,
         private ShopStateServiceInterface $shopStateService,
-        private ShopAdapterInterface $shopAdapter
+        private ShopAdapterInterface $shopAdapter,
+        private BasicContextInterface $basicContext,
+        private ShopConfigurationSettingDaoInterface $settingDao
     ) {
         parent::__construct();
     }
@@ -97,6 +103,8 @@ class ShopSetupCommand extends Command
             $output->writeln("<info>Activating default ($this->defaultTheme) theme...</info>");
             $this->shopAdapter->activateTheme($this->defaultTheme);
         }
+
+        $this->saveShopSetupTime();
 
         $output->writeln('<info>Setup has been finished.</info>');
 
@@ -177,5 +185,17 @@ class ShopSetupCommand extends Command
     private function getLanguage(InputInterface $input): DefaultLanguage
     {
         return new DefaultLanguage($input->getOption(self::LANGUAGE));
+    }
+
+    private function saveShopSetupTime(): void
+    {
+        $setting = new ShopConfigurationSetting();
+        $setting
+            ->setName('sTagList')
+            ->setValue(time())
+            ->setType(ShopSettingType::STRING)
+            ->setShopId($this->basicContext->getDefaultShopId());
+
+        $this->settingDao->save($setting);
     }
 }

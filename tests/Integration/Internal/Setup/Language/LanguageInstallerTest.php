@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Setup\Language;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Language;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingTy
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\TestCase;
 
 final class LanguageInstallerTest extends IntegrationTestCase
 {

@@ -611,22 +611,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.13.0] - unreleased
 
 ### Deprecated
+- RSS functionality
 - Interfaces:
-  - `Internal\Framework\Event\ShopAwareInterface`
-  - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
   - `Internal\Framework\Module\Setup\Handler\ModuleConfigurationHandlerInterface`
-  - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
   - `Internal\Framework\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface`
+  - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridgeInterface`
+  - `Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
+  - `Internal\Framework\Event\ShopAwareInterface`
   - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
 - Classes:
-  - `Internal\Framework\Console\AbstractShopAwareCommand`
-  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
-  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
-  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
-  - `Internal\Framework\Event\ShopAwareEventDispatcher`
-  - `Internal\Framework\Event\ShopAwareServiceTrait`
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Core\Module\ModuleTemplateBlockRepository`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
   - `Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
   - `Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+  - `Internal\Framework\Console\AbstractShopAwareCommand`
+  - `Internal\Framework\DIContainer\DataObject\DIServiceWrapper`
+  - `Internal\Framework\DIContainer\DataObject\DICallWrapper`
+  - `Internal\Framework\Event\ShopAwareEventDispatcher`
+  - `Internal\Framework\Event\ShopAwareServiceTrait`
+  - `Internal\Framework\Event\AbstractShopAwareEventSubscriber`
   - `Internal\Framework\Module\Setup\Service\ModuleServicesActivationService`
 - Services:
     - `oxid_esales.module.setup.class_extension_chain_service`
@@ -634,51 +640,68 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `oxid_esales.module.setup.path_module_setting_handler`
     - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
     - `oxid_esales.module.setup.version_module_setting_handler`
+    - `oxid_esales.templating.template.loader`
 - Constants:
   - `Internal\Framework\Config\DataObject\ShopConfigurationSetting::`
-    - `ACTIVE_MODULES`
-    - `MODULE_CLASS_EXTENSIONS_CHAIN`
     - `MODULE_CLASS_EXTENSIONS`
-    - `MODULE_CONTROLLERS`
-    - `MODULE_EVENTS`
-    - `MODULE_PATHS`
-    - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
     - `MODULE_VERSIONS`
+    - `MODULE_PATHS`
+    - `MODULE_EVENTS`
+    - `MODULE_CONTROLLERS`
+    - `ACTIVE_MODULES`
+    - `MODULE_SMARTY_PLUGIN_DIRECTORIES`
+    - `MODULE_CLASS_EXTENSIONS_CHAIN`
 - Config options:
-  - `aModuleControllers`
-  - `aModuleEvents`
   - `aModuleExtensions`
-  - `aModulePaths`
   - `aModuleVersions`
-  - `aModules`
+  - `aModulePaths`
+  - `aModuleEvents`
   - `activeModules`
+  - `aModules`
+  - `aModuleControllers`
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Application\Model\Actions::getLongDesc()`
   - `Application\Model\Article::getLongDesc()`
   - `Application\Model\Category::getLongDesc()`
-  - `Application\Model\UtilsView::getRenderedContent()`
-  - `Application\Model\UtilsView::getTemplateCompileId()`
   - `Core\Field::`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-  - `Core\UtilsView::getSmartyDir()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::addOrUpdateService()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServiceClassesCanBeLoaded()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::checkServices()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getService()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::getServices()`
-  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::hasService()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured()`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setConfigured()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setActive()`
-  - `Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated()`
+  - `Core\Module\Module:getSmartyPluginDirectories()`
+  - `Core\SystemRequirements::getMissingTemplateBlocks()`
+  - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::`
+    - `addActiveThemeId()`
+    - `getRenderedContent()`
+    - `getSmartyDir()`
+    - `getTemplateBlocks()`
+    - `getTemplateCompileId()`
+    - `getTemplateDirs()`
+    - `setTemplateDir()`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::`
+    - `isConfigured()`
+    - `setConfigured()`
+  - `Internal\Framework\Module\State\ModuleStateServiceInterface::`
+    - `setActive()`
+    - `setDeactivated()`
+  - `Internal\Framework\DIContainer\DataObject\DIConfigWrapper::`
+    - `hasService()`
+    - `getService()`
+    - `addOrUpdateService()`
+    - `checkServices()`
+    - `checkServiceClassesCanBeLoaded()`
+    - `getServices()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+  - `Core\UtilsView::$_aTemplateDir`
 
 ### Fixed
 - Error in chrome accessing navigation admin frame in javascript via top.navigation
 - Deleting Categories with more than one SEO Entry [#0007362](https://bugs.oxid-esales.com/view.php?id=7362)
+
+### Changed
+- Avoid using Google Fonts API in offline page
 
 ## [6.12.0] - 2022-08-15
 

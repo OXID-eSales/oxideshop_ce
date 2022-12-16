@@ -1236,7 +1236,7 @@ DROP TABLE IF EXISTS `oxremark`;
 CREATE TABLE `oxremark` (
   `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Record id',
   `OXPARENTID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id (oxuser)',
-  `OXTYPE` enum('o','r','n','c') NOT NULL default 'r' COMMENT 'Record type: o - order, r - remark, n - newsletter, c - registration',
+  `OXTYPE` varchar(2) NOT NULL default 'r' COMMENT 'Record type: o - order, r - remark, n - newsletter, c - registration',
   `OXHEADER` varchar(255) NOT NULL default '' COMMENT 'Header (default: Creation time)',
   `OXTEXT` text NOT NULL COMMENT 'Remark text',
   `OXCREATE` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Creation time',

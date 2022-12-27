@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Facts\Facts;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * View config data access class. Keeps most
@@ -1197,8 +1199,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         }
         $shopUrl = rtrim($shopUrl, '/');
 
+        // Normalize sShopDir (causes '/' to be used as directory separator):
+        $sShopDir = Path::normalize($c->getConfigParam('sShopDir'));
+
         $sUrl = str_replace(
-            rtrim($c->getConfigParam('sShopDir'), '/'),
+            rtrim($sShopDir, '/'),
             $shopUrl,
             $this->getModulePath($sModule, $sFile)
         );

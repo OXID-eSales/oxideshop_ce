@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal

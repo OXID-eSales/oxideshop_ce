@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 abstract class ModuleTranslationFileLocatorAbstract
 {

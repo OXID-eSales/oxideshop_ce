@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Path;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ModulePathResolver implements ModulePathResolverInterface
 {

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Path;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ModuleAssetsPathResolver implements ModuleAssetsPathResolverInterface
 {

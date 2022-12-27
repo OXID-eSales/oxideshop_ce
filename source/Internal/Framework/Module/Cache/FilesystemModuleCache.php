@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheS
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 use function json_decode;
 use function json_encode;

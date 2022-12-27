@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Directory\Service;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NoPermissionDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 

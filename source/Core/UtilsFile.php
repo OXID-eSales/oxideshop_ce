@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
@@ -394,7 +394,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sProcessPath = $sTmpFolder . basename($sSource);
 
                     if ($sProcessPath) {
-                        $destination = Path::join("$sImagePath$sValue");
+                        $destination = Path::join($sImagePath, $sValue);
                         $blMoved = $blUseMasterImage
                             ? $this->copyMasterImage($sSource, $destination)
                             : $this->uploadMasterImage($sSource, $destination);
@@ -530,7 +530,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $masterImageHandler = $this->getContainer()->get(MasterImageHandlerBridgeInterface::class);
         while (
             $masterImageHandler->exists(
-                $this->makePathRelativeToShopSource(Path::join($directory, "$filename$suffix.$extension"))
+                $this->makePathRelativeToShopSource(Path::join($directory, $filename.$suffix.'.'.$extension))
             )
         ) {
             $fileCounter++;

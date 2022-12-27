@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-use Webmozart\PathUtil\Path;
+use \Symfony\Component\Filesystem\Path;
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
 
 // This is acceptance bootstrap

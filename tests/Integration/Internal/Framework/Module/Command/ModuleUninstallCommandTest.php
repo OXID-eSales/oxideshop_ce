@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 final class ModuleUninstallCommandTest extends TestCase
 {

@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 final class ModuleServicesImporterTest extends IntegrationTestCase
 {

@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
 {

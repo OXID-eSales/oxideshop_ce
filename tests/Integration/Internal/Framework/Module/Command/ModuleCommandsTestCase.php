@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**

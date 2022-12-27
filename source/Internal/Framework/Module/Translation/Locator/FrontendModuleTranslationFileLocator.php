@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\Modu
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\FrontendModuleTranslationFileLocatorInterface as LocatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class FrontendModuleTranslationFileLocator extends LocatorAbstract implements LocatorInterface
 {

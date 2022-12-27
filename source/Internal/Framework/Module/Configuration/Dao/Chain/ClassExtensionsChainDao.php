@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ClassExtensionsChainDao implements ClassExtensionsChainDaoInterface
 {

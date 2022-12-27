@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 final class ActiveModulesDataProviderTest extends TestCase
 {

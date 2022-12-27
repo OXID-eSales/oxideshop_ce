@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 final class TemplateFileResolver implements TemplateFileResolverInterface
 {

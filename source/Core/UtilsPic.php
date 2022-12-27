@@ -11,7 +11,7 @@ use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
 use OxidEsales\Eshop\Core\Registry;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Including pictures generator functions file

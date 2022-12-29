@@ -237,6 +237,20 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_oOrderBasket = null;
 
     /**
+     * Billing country name from billing country id
+     * (Call getBillCountry())
+     * @var null|string
+     */
+    protected $_sBillCountryTitle=null;
+
+    /**
+     * Delivery country name from delivery country id
+     * (Call getDelCountry())
+     * @var null|string
+     */
+    protected $_sDelCountryTitle=null;
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
@@ -257,15 +271,15 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function __get($sName)
     {
-        if ($sName == 'oDelSet') {
+        if ($sName === 'oDelSet') {
             return $this->getDelSet();
         }
 
-        if ($sName == 'oxorder__oxbillcountry') {
+        if ($sName === 'oxorder__oxbillcountry') {
             return $this->getBillCountry();
         }
 
-        if ($sName == 'oxorder__oxdelcountry') {
+        if ($sName === 'oxorder__oxdelcountry') {
             return $this->getDelCountry();
         }
     }
@@ -1936,11 +1950,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBillCountry()
     {
-        if (!$this->oxorder__oxbillcountry->value) {
-            $this->oxorder__oxbillcountry = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxbillcountryid->value));
+        if ($this->_sBillCountryTitle === null) {
+            $this->_sBillCountryTitle = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxbillcountryid->value));
         }
 
-        return $this->oxorder__oxbillcountry;
+        return $this->_sBillCountryTitle;
     }
 
     /**
@@ -1950,11 +1964,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDelCountry()
     {
-        if (!$this->oxorder__oxdelcountry->value) {
-            $this->oxorder__oxdelcountry = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxdelcountryid->value));
+        if ($this->_sDelCountryTitle === null) {
+            $this->_sDelCountryTitle = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxdelcountryid->value));
         }
 
-        return $this->oxorder__oxdelcountry;
+        return $this->_sDelCountryTitle;
     }
 
     /**

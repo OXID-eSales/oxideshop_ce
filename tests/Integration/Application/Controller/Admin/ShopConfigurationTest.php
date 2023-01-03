@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -47,11 +47,11 @@ final class ShopConfigurationTest extends UnitTestCase
         );
     }
 
-    public function testSaveWhenSettingIsMissingInMetadata(): void
+    public function testSaveInDatabaseWhenSettingIsMissingInMetadata(): void
     {
         $this->prepareTestModuleConfiguration();
 
-        $_POST['confstrs'] = ['nonExisting' => 'newValue'];
+        $_POST['confstrs'] = ['missingModuleSettingInMetadata' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
             ->setMethods(['_getModuleForConfigVars'])
@@ -60,12 +60,9 @@ final class ShopConfigurationTest extends UnitTestCase
         $shopConfigurationController->method('_getModuleForConfigVars')->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
-        $container = ContainerFactory::getInstance()->getContainer();
-        $valueFromDatabase = $container->get(SettingDaoInterface::class)->get('nonExisting', $this->testModuleId, 1);
-
         $this->assertSame(
             'newValue',
-            $valueFromDatabase->getValue()
+            Registry::getConfig()->getShopConfVar('missingModuleSettingInMetadata', 1, 'module:testModuleId')
         );
     }
 

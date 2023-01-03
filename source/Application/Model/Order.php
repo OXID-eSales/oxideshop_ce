@@ -235,21 +235,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var \OxidEsales\Eshop\Application\Model\Basket
      */
     protected $_oOrderBasket = null;
-
-    /**
-     * Billing country name from billing country id
-     * (Call getBillCountry())
-     * @var null|string
-     */
-    protected $_sBillCountryTitle=null;
-
-    /**
-     * Delivery country name from delivery country id
-     * (Call getDelCountry())
-     * @var null|string
-     */
-    protected $_sDelCountryTitle=null;
-
+    
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
@@ -1950,11 +1936,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBillCountry()
     {
-        if ($this->_sBillCountryTitle === null) {
-            $this->_sBillCountryTitle = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxbillcountryid->value));
+        $sLongFieldName = $this->getFieldLongName('oxbillcountry');
+        if (!property_exists($this, $sLongFieldName)) {
+            $countryTitle = $this->getCountryTitle($this->getFieldData('oxbillcountryid'));
+            $this->setFieldData('oxbillcountry', $countryTitle);
         }
 
-        return $this->_sBillCountryTitle;
+        return $this->$sLongFieldName;
     }
 
     /**
@@ -1964,11 +1952,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDelCountry()
     {
-        if ($this->_sDelCountryTitle === null) {
-            $this->_sDelCountryTitle = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxdelcountryid->value));
+        $sLongFieldName = $this->getFieldLongName('oxdelcountry');
+        if (!property_exists($this, $sLongFieldName)) {
+            $countryTitle = $this->getCountryTitle($this->getFieldData('oxdelcountryid'));
+            $this->setFieldData('oxdelcountry', $countryTitle);
         }
 
-        return $this->_sDelCountryTitle;
+        return $this->$sLongFieldName;
     }
 
     /**

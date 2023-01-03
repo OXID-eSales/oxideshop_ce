@@ -29,6 +29,22 @@ class FormatDateLogicTest extends IntegrationTestCase
         $this->formDateLogic = new FormatDateLogic();
     }
 
+    public function testFormdateWithEmptyValue(): void
+    {
+        $input = '';
+        $expected = "0000-00-00 00:00:00";
+
+        $this->assertEquals($expected, $this->formDateLogic->formdate($input, 'datetime', true));
+    }
+
+    public function testFormdateWithNullValue(): void
+    {
+        $input = null;
+        $expected = "0000-00-00 00:00:00";
+
+        $this->assertEquals($expected, $this->formDateLogic->formdate($input, 'datetime', true));
+    }
+
     public function testFormdateWithDatetime(): void
     {
         $input = '01.08.2007 11.56.25';

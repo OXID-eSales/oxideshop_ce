@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix prepared statements in GUI Setup
 - Fix deprecation warnings
+- Fix notices during FormatDateLogic modifier handling of empty values
 
 ## [7.0.0-rc.3] - 2022-11-04
 

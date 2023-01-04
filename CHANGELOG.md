@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix prepared statements in GUI Setup
 - Fix deprecation warnings
 - Fix notices during FormatDateLogic modifier handling of empty values
+- Fix notices in ``Order::getBillCountry`` and ``Order::getDelCountry`` methods [PR-906](https://github.com/OXID-eSales/oxideshop_ce/pull/906)
 
 ## [7.0.0-rc.3] - 2022-11-04
 

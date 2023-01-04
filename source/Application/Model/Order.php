@@ -1936,7 +1936,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBillCountry()
     {
-        if (!$this->oxorder__oxbillcountry->value) {
+        if (!property_exists($this, 'oxorder__oxbillcountry')) {
             $this->oxorder__oxbillcountry = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxbillcountryid->value));
         }
 
@@ -1950,7 +1950,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDelCountry()
     {
-        if (!$this->oxorder__oxdelcountry->value) {
+        if (!property_exists($this, 'oxorder__oxdelcountry')) {
             $this->oxorder__oxdelcountry = new \OxidEsales\Eshop\Core\Field($this->getCountryTitle($this->oxorder__oxdelcountryid->value));
         }
 

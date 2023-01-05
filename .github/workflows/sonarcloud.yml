@@ -165,10 +165,10 @@ jobs:
           swap-size-gb: 10
 
       - name: Install admin theme and template engine
-        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Install flow theme
-        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Install dependencies
         run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x --with-all-dependencies
@@ -237,10 +237,10 @@ jobs:
           swap-size-gb: 10
 
       - name: Install admin theme and template engine
-        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Install twig theme
-        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Run tests
         run: |

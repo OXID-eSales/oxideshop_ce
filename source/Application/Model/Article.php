@@ -1365,12 +1365,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $aList = $this->getSimList($sAttribs, $iCnt);
 
         if (count($aList)) {
-            uasort($aList, function ($a, $b) {
-                if ($a->cnt == $b->cnt) {
-                    return 0;
-                }
-                return ($a->cnt < $b->cnt) ? -1 : 1;
-            });
+            uasort($aList, function ($a, $b) { return $a <=> $b; });
 
             $sSearch = $this->generateSimListSearchStr($sArticleTable, $aList);
 

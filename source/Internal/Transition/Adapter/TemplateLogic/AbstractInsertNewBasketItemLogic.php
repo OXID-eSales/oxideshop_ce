@@ -27,7 +27,8 @@ abstract class AbstractInsertNewBasketItemLogic
         $newBasketItemMessage = $config->getConfigParam('iNewBasketItemMessage');
 
         // If correct type of message is expected
-        if ($newBasketItemMessage && $params['type'] && ($params['type'] != $types[$newBasketItemMessage])) {
+        if ($newBasketItemMessage && $params['type']
+            && (!isset($types[$newBasketItemMessage]) || $params['type'] != $types[$newBasketItemMessage])) {
             $correctMessageType = false;
         } else {
             $correctMessageType = true;
@@ -37,7 +38,7 @@ abstract class AbstractInsertNewBasketItemLogic
         $templateName = $params['tpl'] ? $params['tpl'] : 'inc_newbasketitem.snippet.html.twig';
 
         // always render for ajaxstyle popup
-        $render = $params['ajax'] && ($newBasketItemMessage == 2);
+        $render = isset($params['ajax']) && $params['ajax'] && ($newBasketItemMessage == 2);
 
         // fetching article data
         $newItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem');

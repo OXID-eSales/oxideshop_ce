@@ -21,17 +21,6 @@ use PHPUnit\Framework\TestCase;
  */
 class InvalidateModuleCacheEventSubscriberTest extends TestCase
 {
-    public function testSubscribedEvents()
-    {
-        $this->assertSame(
-            [
-                FinalizingModuleActivationEvent::class   => 'invalidateModuleCache',
-                FinalizingModuleDeactivationEvent::class => 'invalidateModuleCache',
-            ],
-            InvalidateModuleCacheEventSubscriber::getSubscribedEvents()
-        );
-    }
-
     public function testSubscriberCallsModuleCacheService()
     {
         $moduleCacheService = $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock();

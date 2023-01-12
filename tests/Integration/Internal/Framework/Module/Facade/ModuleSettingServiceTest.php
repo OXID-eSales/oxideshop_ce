@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use function Symfony\Component\String\u;
@@ -79,10 +78,10 @@ final class ModuleSettingServiceTest extends TestCase
         $setting->setValue('newValue');
         $this->get(ModuleConfigurationDaoInterface::class)->save($moduleConfiguration, 1);
 
-        $this->assertEquals('cachedValue', $this->settingFacade->getString('stringSetting', $this->testModuleId));
+        $this->assertEquals('newValue', $this->settingFacade->getString('stringSetting', $this->testModuleId));
     }
 
-    public function testModuleActivationCleansCache(): void
+    public function testSaveModuleConfigurationCleansCache(): void
     {
         $this->settingFacade->saveString('stringSetting', 'cachedValue', $this->testModuleId);
         $this->settingFacade->getString('stringSetting', $this->testModuleId);
@@ -91,10 +90,6 @@ final class ModuleSettingServiceTest extends TestCase
         $setting = $moduleConfiguration->getModuleSetting('stringSetting');
         $setting->setValue('newValue');
         $this->get(ModuleConfigurationDaoInterface::class)->save($moduleConfiguration, 1);
-
-        $this->assertEquals('cachedValue', $this->settingFacade->getString('stringSetting', $this->testModuleId));
-
-        $this->get(ModuleActivationServiceInterface::class)->activate($this->testModuleId, 1);
 
         $this->assertEquals('newValue', $this->settingFacade->getString('stringSetting', $this->testModuleId));
     }

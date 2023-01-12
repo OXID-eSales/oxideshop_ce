@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [7.0.0] - Unreleased
+
+### Added
+- Event:
+  - `Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent`
+
+### Fixed
+- Invalidate module cache on module settings/configuration change
+
 ## [7.0.0-rc.4] - 2022-11-23
 
 ### Added

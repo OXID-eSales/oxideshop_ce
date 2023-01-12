@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ModuleSetupEvent;
@@ -20,22 +21,18 @@ class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
     {
     }
 
-    /**
-     * @param ModuleSetupEvent $event
-     */
-    public function invalidateModuleCache(ModuleSetupEvent $event)
-    {
+    public function invalidateModuleCache(
+        ModuleSetupEvent|ModuleConfigurationChangedEvent $event
+    ): void {
         $this->moduleCacheService->invalidate($event->getModuleId(), $event->getShopId());
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
             FinalizingModuleActivationEvent::class   => 'invalidateModuleCache',
             FinalizingModuleDeactivationEvent::class => 'invalidateModuleCache',
+            ModuleConfigurationChangedEvent::class => 'invalidateModuleCache',
         ];
     }
 }

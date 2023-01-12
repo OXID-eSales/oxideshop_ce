@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ModuleConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
@@ -18,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
@@ -30,7 +32,8 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         private ModuleConfigurationCacheInterface $cache,
         private ModuleConfigurationExtenderInterface $moduleConfigurationExtender,
         private NodeInterface $node,
-        private Filesystem $filesystem
+        private Filesystem $filesystem,
+        private EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -69,6 +72,8 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         $this->getStorage($shopId, $moduleConfiguration->getId())->save(
             $this->moduleConfigurationDataMapper->toData($moduleConfiguration)
         );
+
+        $this->eventDispatcher->dispatch(new ModuleConfigurationChangedEvent($moduleConfiguration, $shopId));
     }
 
     /**

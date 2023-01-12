@@ -128,9 +128,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $moduleId
                 ));
             }
-
-            $moduleConfigurationDaoBridge->save($moduleConfiguration);
         }
+
+        $moduleConfigurationDaoBridge->save($moduleConfiguration);
     }
 
     /**

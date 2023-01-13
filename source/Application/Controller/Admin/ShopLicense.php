@@ -25,7 +25,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
     protected $_sThisTemplate = "shop_license";
 
     /** @var string Current shop version links for edition. */
-    private $versionCheckLink = 'http://admin.oxid-esales.com/CE/onlinecheck.php';
+    private $versionCheckLink = 'https://admin.oxid-esales.com/CE/onlinecheck.php';
 
     /** @inheritdoc */
     public function render()

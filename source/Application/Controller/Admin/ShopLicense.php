@@ -136,13 +136,13 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
     private function insertUpdateLinkIntoResponse(string $response): string
     {
         $response = strip_tags($response, "<br>, <b>");
-        $result = explode("<br>", $response);
-        if (!isset($result[5]) || !strstr($result[5], "update")) {
+        $result = explode("<br/>", $response);
+        if (!isset($result[5]) || !(str_contains($result[5], "update") || str_contains($result[5], "aktualisieren"))) {
             return $response;
         }
         /** URL is set through i18n (lang file) */
         $sUpdateLink = Registry::getLang()->translateString("VERSION_UPDATE_LINK");
         $result[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $result[5] . "</a>";
-        return implode("<br>", $result);
+        return implode("<br/>", $result);
     }
 }

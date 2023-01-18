@@ -77,11 +77,14 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester = new CommandTester($this->createCommand());
     }
 
-    public function testExecuteWithMissingArgs(): void
+    /**
+     * @dataProvider missingOptions
+     */
+    public function testExecuteWithMissingArgs(array $commands): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->commandTester->execute([]);
+        $this->commandTester->execute($commands);
     }
 
     public function testExecuteWithShopAlreadyLaunched(): void
@@ -231,6 +234,108 @@ final class ShopSetupCommandTest extends TestCase
         $shopInstallationTimeSetting = $this->get(ShopConfigurationSettingDaoInterface::class)->get('sTagList', self::DEFAULT_SHOP_ID);
 
         $this->assertGreaterThanOrEqual($timeBeforeInstallation, $shopInstallationTimeSetting->getValue());
+    }
+
+    public function missingOptions(): array
+    {
+        return [
+            'Missing db-host' => [
+                [
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing db-port' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing db-name' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing db-user' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing db-password' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing shop-url' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-directory' => self::DIR,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing shop-directory' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--compile-directory' => self::TMP_DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+            'Missing compile-directory' => [
+                [
+                    '--db-host' => self::HOST,
+                    '--db-port' => self::PORT,
+                    '--db-name' => self::DB,
+                    '--db-user' => self::DB_USER,
+                    '--db-password' => self::DB_PASS,
+                    '--shop-url' => self::URL,
+                    '--shop-directory' => self::DIR,
+                    '--language' => self::LANG,
+                ]
+            ],
+        ];
     }
 
     private function createCommand(): Command

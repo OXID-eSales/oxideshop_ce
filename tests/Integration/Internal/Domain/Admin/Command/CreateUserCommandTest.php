@@ -30,11 +30,14 @@ final class CreateUserCommandTest extends TestCase
         parent::tearDown();
     }
 
-    public function testExecuteWithMissingArgs(): void
+    /**
+     * @dataProvider missingOptions
+     */
+    public function testExecuteWithMissingArgs(array $commands): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $commandTester = new CommandTester($this->getCommand());
-        $commandTester->execute([]);
+        $commandTester->execute($commands);
     }
 
     public function testExecuteWithInvalidAdminEmail(): void
@@ -57,6 +60,22 @@ final class CreateUserCommandTest extends TestCase
 
         $this->assertSame(Command::SUCCESS, $exitCode);
         $this->assertUserExists();
+    }
+
+    public function missingOptions(): array
+    {
+        return [
+            'Missing admin-email' => [
+                [
+                    '--admin-password' => 'some-admin-pass'
+                ]
+            ],
+            'Missing admin-password' => [
+                [
+                    '--admin-email' => self::ADMIN_EMAIL,
+                ]
+            ],
+        ];
     }
 
     private function getCommand(): Command

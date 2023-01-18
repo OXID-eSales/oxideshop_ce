@@ -73,11 +73,23 @@ class ShopSetupCommand extends Command
             ->addOption(self::COMPILE_DIRECTORY, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
         $this->setDescription('Performs initial shop setup');
+
+        $this->setRequiredOptions([
+            self::DB_HOST,
+            self::DB_PORT,
+            self::DB_NAME,
+            self::DB_USER,
+            self::DB_PASSWORD,
+            self::SHOP_URL,
+            self::SHOP_DIRECTORY,
+            self::COMPILE_DIRECTORY,
+        ]);
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -171,7 +183,7 @@ class ShopSetupCommand extends Command
     {
         $this->databaseInstaller->install(
             $input->getOption(self::DB_HOST),
-            (int) $input->getOption(self::DB_PORT),
+            (int)$input->getOption(self::DB_PORT),
             $input->getOption(self::DB_USER),
             $input->getOption(self::DB_PASSWORD),
             $input->getOption(self::DB_NAME)
@@ -180,6 +192,7 @@ class ShopSetupCommand extends Command
 
     /**
      * @param InputInterface $input
+     *
      * @return DefaultLanguage
      */
     private function getLanguage(InputInterface $input): DefaultLanguage

@@ -38,18 +38,25 @@ class CreateUserCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(self::ADMIN_EMAIL, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::ADMIN_PASSWORD, null, InputOption::VALUE_REQUIRED);
         $this->setDescription('Creates admin user');
+
+        $this->setRequiredOptions([
+            self::ADMIN_EMAIL,
+            self::ADMIN_PASSWORD,
+        ]);
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
+     * @throws InvalidEmailException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -67,6 +74,7 @@ class CreateUserCommand extends Command
 
     /**
      * @param string $email
+     *
      * @throws InvalidEmailException
      */
     private function validateAdminEmail(string $email): void

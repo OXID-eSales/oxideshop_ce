@@ -9,29 +9,35 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Console\Command;
 
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Trait NamedArgumentsTrait
- * Turns Symfony command options with VALUE_REQUIRED into "named arguments"
- * @see https://github.com/symfony/symfony/issues/14716
+ * @deprecated trait will be removed in v8.0
  */
 trait NamedArgumentsTrait
 {
+    private array $requiredOptions = [];
+
     /**
-     * @param InputOption[] $inputOptions
+     * @param InputOption[]  $inputOptions
      * @param InputInterface $input
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function checkRequiredCommandOptions(array $inputOptions, InputInterface $input): void
     {
-        foreach ($inputOptions as $option) {
-            $name  = $option->getName();
-            $value = $input->getOption($name);
-            if (!isset($value) && $option->isValueRequired()) {
-                throw new \InvalidArgumentException("The \"--$name\" option is required.");
+        foreach ($this->requiredOptions as $option) {
+            if (!$input->getOption($option)) {
+                throw new InvalidArgumentException("The \"--{$option}\" option is required.");
             }
         }
+    }
+
+    public function setRequiredOptions(array $options): void
+    {
+        $this->requiredOptions = $options;
     }
 }

@@ -85,11 +85,6 @@
                 "shop_tests_path": "SHOP_TESTS_PATH",
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
-        },
-        "branch-alias": {
-            "dev-b-7.0.x": "7.0.x-dev",
-            "dev-b-6.5.x": "6.5.x-dev",
-            "dev-b-6.4.x": "6.4.x-dev"
         }
     },
     "config": {

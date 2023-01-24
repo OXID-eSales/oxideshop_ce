@@ -10,9 +10,10 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Curl;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\OnlineCaller;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
+use Throwable;
 
 /**
  * Admin shop license setting manager.
@@ -22,31 +23,31 @@ use OxidEsales\Eshop\Core\ShopVersion;
 class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Current class template */
-    protected $_sThisTemplate = "shop_license";
+    protected $_sThisTemplate = 'shop_license';
 
     /** @var string Current shop version links for edition. */
-    private $versionCheckLink = 'https://admin.oxid-esales.com/CE/onlinecheck.php';
+    private string $versionCheckLink = 'https://admin.oxid-esales.com/CE/onlinecheck.php';
 
     /** @inheritdoc */
     public function render()
     {
         if (Registry::getConfig()->isDemoShop()) {
             /** @var SystemComponentException $oSystemComponentException */
-            $oSystemComponentException = oxNew(SystemComponentException::class, "license");
+            $oSystemComponentException = oxNew(SystemComponentException::class, 'license');
             throw $oSystemComponentException;
         }
 
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if ($soxId != '-1') {
             // load object
             $oShop = oxNew(Shop::class);
             $oShop->load($soxId);
-            $this->_aViewData["edit"] = $oShop;
+            $this->_aViewData['edit'] = $oShop;
         }
 
-        $this->_aViewData["version"] = ShopVersion::getVersion();
+        $this->_aViewData['version'] = ShopVersion::getVersion();
 
         $this->_aViewData['aCurVersionInfo'] = $this->fetchCurVersionInfo($this->versionCheckLink);
 
@@ -62,7 +63,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      *
      * @return bool
      */
-    protected function canUpdate()
+    protected function canUpdate(): bool
     {
         $myConfig = Registry::getConfig();
 
@@ -79,27 +80,35 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
 
     /**
      * Fetch current shop version information from url
+     *
      * @param string $sUrl current version info fetching url by edition
+     *
      * @return string
      */
-    protected function fetchCurVersionInfo($sUrl)
+    protected function fetchCurVersionInfo($sUrl): string
     {
         try {
             $response = $this->requestVersionInfo($sUrl);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             /** Exception is not logged! */
             $this->handleConnectionError($e);
             return '';
         }
-        return $this->insertUpdateLinkIntoResponse($response);
+
+        $response = $this->filterVersionCheckerResponse($response);
+        $newestShopVersion = $this->parseResponseForTheNewestShopVersion($response);
+
+        return $newestShopVersion && $this->shopIsOutdated($newestShopVersion)
+            ? $this->insertLinkToShopUpdateDocumentation($response)
+            : $response;
     }
 
     private function requestVersionInfo(string $url): string
     {
         $curl = oxNew(Curl::class);
-        $curl->setMethod("POST");
+        $curl->setMethod('POST');
         $curl->setUrl(sprintf('%s/%s', $url, $this->getLanguageAbbreviation()));
-        $curl->setParameters(["myversion" => ShopVersion::getVersion()]);
+        $curl->setParameters(['myversion' => ShopVersion::getVersion()]);
         $curl->setOption(
             Curl::CONNECT_TIMEOUT_OPTION,
             OnlineCaller::CURL_CONNECT_TIMEOUT
@@ -117,12 +126,12 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         return $language->getLanguageAbbr($language->getTplLanguage());
     }
 
-    private function handleConnectionError(\Throwable $e)
+    private function handleConnectionError(Throwable $e): void
     {
         $this->displayErrorMessage($e->getMessage());
     }
 
-    private function displayErrorMessage(string $message)
+    private function displayErrorMessage(string $message): void
     {
         Registry::getUtilsView()->addErrorToDisplay(
             sprintf(
@@ -133,16 +142,34 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         );
     }
 
-    private function insertUpdateLinkIntoResponse(string $response): string
+    private function filterVersionCheckerResponse(string $response): string
     {
-        $response = strip_tags($response, "<br>, <b>");
-        $result = explode("<br/>", $response);
-        if (!isset($result[5]) || !(str_contains($result[5], "update") || str_contains($result[5], "aktualisieren"))) {
-            return $response;
-        }
-        /** URL is set through i18n (lang file) */
-        $sUpdateLink = Registry::getLang()->translateString("VERSION_UPDATE_LINK");
-        $result[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $result[5] . "</a>";
-        return implode("<br/>", $result);
+        $response = strip_tags(trim($response), '<br><b>');
+
+        return str_replace(['<br/>', '<br />'], '<br>', $response);
+    }
+
+    private function parseResponseForTheNewestShopVersion(string $response): string
+    {
+        preg_match_all('/[1-9]{1,3}\.\d{1,3}\.\d{1,3}/', $response, $matches);
+
+        return $matches[0][1] ?? '';
+    }
+
+    private function shopIsOutdated(string $newestShopVersion): bool
+    {
+        return version_compare(ShopVersion::getVersion(), $newestShopVersion, '<');
+    }
+
+    private function insertLinkToShopUpdateDocumentation(string $response): string
+    {
+        $lines = explode('<br>', $response);
+        $lineWithUpdateText = array_key_last($lines) - 1;
+        $documentationUrl = Registry::getLang()->translateString('VERSION_UPDATE_LINK');
+
+        $lines[$lineWithUpdateText] =
+            "<a id='linkToUpdate' href='$documentationUrl' target='_blank'>{$lines[$lineWithUpdateText]}</a>";
+
+        return implode('<br>', $lines);
     }
 }

@@ -435,12 +435,6 @@ class Controller extends Core
 
         try {
             $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand(); // move to last step possible?
-
-            /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
-            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            if ($oTheme->load("twig")) {
-                $oTheme->activate();
-            }
         } catch (CommandExecutionFailedException $exception) {
             $this->handleCommandExecutionFailedException($exception);
 

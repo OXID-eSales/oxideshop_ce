@@ -43,8 +43,6 @@ class ShopSetupCommand extends Command
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
-    private string $defaultTheme = 'twig';
-
     public function __construct(
         private DatabaseCheckerInterface $databaseChecker,
         private DatabaseInstallerInterface $databaseInstaller,
@@ -98,11 +96,6 @@ class ShopSetupCommand extends Command
 
         $output->writeln('<info>Installing language...</info>');
         $this->languageInstaller->install($this->getLanguage($input));
-
-        if ($this->shopAdapter->themeExists($this->defaultTheme)) {
-            $output->writeln("<info>Activating default ($this->defaultTheme) theme...</info>");
-            $this->shopAdapter->activateTheme($this->defaultTheme);
-        }
 
         $this->saveShopSetupTime();
 

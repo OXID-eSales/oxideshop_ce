@@ -133,8 +133,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('mla50c74dd79703312ffb8cfd82c3741',	1,	'',	'aLanguageURLs',	'arr',	'a:2:{i:0;s:0:\"\";i:1;N;}'),
 ('mlabefd7ebdb5946e8f3f7e7a953b323',	1,	'',	'aLanguageSSLURLs',	'arr',	'a:2:{i:0;s:0:\"\";i:1;N;}'),
 ('mlae44cdad808d9b994c58540db39e7a',	1,	'',	'aLanguages',	'aarr',	'a:2:{s:2:\"de\";s:7:\"Deutsch\";s:2:\"en\";s:7:\"English\";}'),
-('omc4555952125c3c2.98253113',	1,	'',	'blDisableNavBars',	'bool',	'1'),
-('rgk2a8c9cf8c9d23b3a7c8e9c090baf1',	1,	'',	'sTheme',	'str',	'twig');
+('omc4555952125c3c2.98253113',	1,	'',	'blDisableNavBars',	'bool',	'1');
 
 INSERT INTO `oxcontents` (`OXID`, `OXLOADID`, `OXSHOPID`, `OXSNIPPET`, `OXTYPE`, `OXACTIVE`, `OXACTIVE_1`, `OXPOSITION`, `OXTITLE`, `OXCONTENT`, `OXTITLE_1`, `OXCONTENT_1`, `OXACTIVE_2`, `OXTITLE_2`, `OXCONTENT_2`, `OXACTIVE_3`, `OXTITLE_3`, `OXCONTENT_3`, `OXCATID`, `OXFOLDER`, `OXTERMVERSION`) VALUES
 ('8709e45f31a86909e9f999222e80b1d0', 'oxstdfooter', 1, 1, 0, 1, 1, '', 'Standard Footer', '<div>OXID Online Shop - Alles rund um das Thema Wassersport, Sportbekleidung und Mode </div>', 'standard footer', '<div>OXID Online Shop - All about watersports, sportswear and fashion </div>', 1, '', '', 1, '', '', '30e44ab83fdee7564.23264141', '', ''),

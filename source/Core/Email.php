@@ -243,9 +243,6 @@ class Email extends PHPMailer
      */
     protected $_sCharSet = null;
 
-    /**
-     * Class constructor.
-     */
     public function __construct()
     {
         //enabling exception handling in phpMailer class
@@ -254,17 +251,14 @@ class Email extends PHPMailer
         $myConfig = Registry::getConfig();
 
         $this->setSmtp();
-        $this::$validator = function($email) {
+        $this::$validator = static function ($email) {
             return filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_FLAG_EMAIL_UNICODE) !== false;
         };
 
         $this->setUseInlineImages($myConfig->getConfigParam('blInlineImgEmail'));
         $this->setMailWordWrap(100);
 
-        $this->isHTML(true);
-        $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
-
-        $this->getRenderer();
+        $this->isHTML();
 
         //setting default view
         $this->setViewData('oEmailView', $this);
@@ -1175,7 +1169,6 @@ class Email extends PHPMailer
         if ($body === null) {
             $body = $renderer->renderTemplate($this->_sPricealamrCustomerTemplate, $this->getViewData());
         }
-        print_r($body);
         $this->setBody($body);
 
         $this->addAddress($recipient, $recipient);

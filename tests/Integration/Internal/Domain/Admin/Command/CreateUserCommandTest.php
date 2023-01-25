@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Admin\Command;
 
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -31,13 +32,28 @@ final class CreateUserCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider missingOptions
+     * @dataProvider missingOptionsDataProvider
      */
-    public function testExecuteWithMissingArgs(array $commands): void
+    public function testExecuteWithMissingArgs(string $command): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $options = [
+            '--admin-password' => 'some-admin-pass',
+            '--admin-email'    => self::ADMIN_EMAIL,
+        ];
+
+        $this->expectException(InvalidArgumentException::class);
+
         $commandTester = new CommandTester($this->getCommand());
-        $commandTester->execute($commands);
+        unset($options[$command]);
+        $commandTester->execute($options);
+    }
+
+    public function missingOptionsDataProvider(): array
+    {
+        return [
+            'Missing admin-email'    => ['--admin-password'],
+            'Missing admin-password' => ['--admin-email'],
+        ];
     }
 
     public function testExecuteWithInvalidAdminEmail(): void
@@ -45,7 +61,7 @@ final class CreateUserCommandTest extends TestCase
         $this->expectException(InvalidEmailException::class);
         $commandTester = new CommandTester($this->getCommand());
         $commandTester->execute([
-            '--admin-email' => 'admin',
+            '--admin-email'    => 'admin',
             '--admin-password' => 'admin',
         ]);
     }
@@ -54,28 +70,12 @@ final class CreateUserCommandTest extends TestCase
     {
         $commandTester = new CommandTester($this->getCommand());
         $exitCode = $commandTester->execute([
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => 'some-admin-pass'
+            '--admin-email'    => self::ADMIN_EMAIL,
+            '--admin-password' => 'some-admin-pass',
         ]);
 
         $this->assertSame(Command::SUCCESS, $exitCode);
         $this->assertUserExists();
-    }
-
-    public function missingOptions(): array
-    {
-        return [
-            'Missing admin-email' => [
-                [
-                    '--admin-password' => 'some-admin-pass'
-                ]
-            ],
-            'Missing admin-password' => [
-                [
-                    '--admin-email' => self::ADMIN_EMAIL,
-                ]
-            ],
-        ];
     }
 
     private function getCommand(): Command
@@ -83,7 +83,7 @@ final class CreateUserCommandTest extends TestCase
         return $this->get('console.command_loader')->get('oe:admin:create-user');
     }
 
-    private function assertUserExists()
+    private function assertUserExists(): void
     {
         $this->assertNotFalse((new User())->getIdByUserName(self::ADMIN_EMAIL));
     }

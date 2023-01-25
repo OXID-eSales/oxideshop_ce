@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup;
 
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
@@ -49,26 +50,16 @@ final class ShopSetupCommandTest extends TestCase
     private const DEFAULT_SHOP_ID = 12345;
     private const DEFAULT_THEME = 'twig';
 
-    /** @var CommandTester */
-    private $commandTester;
-    /** @var DatabaseCheckerInterface|ObjectProphecy */
-    private $databaseChecker;
-    /** @var DatabaseInstallerInterface|ObjectProphecy */
-    private $databaseInstall;
-    /** @var ConfigFileDaoInterface|ObjectProphecy */
-    private $configFileDao;
-    /** @var DirectoryValidatorInterface|ObjectProphecy */
-    private $directoryValidator;
-    /** @var LanguageInstallerInterface|ObjectProphecy */
-    private $languageInstaller;
-    /** @var HtaccessUpdaterInterface|ObjectProphecy */
-    private $htaccessUpdateService;
-    /** @var ShopStateServiceInterface|ObjectProphecy */
-    private $shopStateService;
-    /** @var BasicContextInterface|ObjectProphecy */
-    private $basicContext;
-    /** @var ShopAdapterInterface|ObjectProphecy */
-    private $shopAdapter;
+    private CommandTester $commandTester;
+    private DatabaseCheckerInterface|ObjectProphecy $databaseChecker;
+    private DatabaseInstallerInterface|ObjectProphecy $databaseInstall;
+    private ConfigFileDaoInterface|ObjectProphecy $configFileDao;
+    private ObjectProphecy|DirectoryValidatorInterface $directoryValidator;
+    private ObjectProphecy|LanguageInstallerInterface $languageInstaller;
+    private HtaccessUpdaterInterface|ObjectProphecy $htaccessUpdateService;
+    private ShopStateServiceInterface|ObjectProphecy $shopStateService;
+    private ObjectProphecy|BasicContextInterface $basicContext;
+    private ObjectProphecy|ShopAdapterInterface $shopAdapter;
 
     protected function setUp(): void
     {
@@ -78,13 +69,40 @@ final class ShopSetupCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider missingOptions
+     * @dataProvider missingOptionsDataProvider
      */
-    public function testExecuteWithMissingArgs(array $commands): void
+    public function testExecuteWithMissingArgs(string $command): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $options = [
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB,
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--language'          => self::LANG,
+        ];
 
-        $this->commandTester->execute($commands);
+        $this->expectException(InvalidArgumentException::class);
+
+        unset($options[$command]);
+        $this->commandTester->execute($options);
+    }
+
+    public function missingOptionsDataProvider(): array
+    {
+        return [
+            'Missing db-host'           => ['--db-host'],
+            'Missing db-port'           => ['--db-port'],
+            'Missing db-name'           => ['--db-name'],
+            'Missing db-user'           => ['--db-user'],
+            'Missing db-password'       => ['--db-password'],
+            'Missing shop-url'          => ['--shop-url'],
+            'Missing shop-directory'    => ['--shop-directory'],
+            'Missing compile-directory' => ['--compile-directory'],
+        ];
     }
 
     public function testExecuteWithShopAlreadyLaunched(): void
@@ -95,15 +113,15 @@ final class ShopSetupCommandTest extends TestCase
         $this->expectException(ShopIsLaunchedException::class);
 
         $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB . uniqid('_', false),
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB . uniqid('_', false),
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--language' => self::LANG,
+            '--language'          => self::LANG,
         ]);
     }
 
@@ -117,15 +135,15 @@ final class ShopSetupCommandTest extends TestCase
         $this->expectException(FileNotEditableException::class);
 
         $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB . uniqid('_', false),
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB . uniqid('_', false),
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--language' => self::LANG,
+            '--language'          => self::LANG,
         ]);
     }
 
@@ -146,15 +164,15 @@ final class ShopSetupCommandTest extends TestCase
         $this->expectException(DatabaseExistsAndNotEmptyException::class);
 
         $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB,
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--language' => self::LANG,
+            '--language'          => self::LANG,
         ]);
     }
 
@@ -167,15 +185,15 @@ final class ShopSetupCommandTest extends TestCase
             ->willReturn(false);
 
         $exitCode = $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB,
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--language' => self::LANG,
+            '--language'          => self::LANG,
         ]);
 
         $this->assertServiceCallsWithCompleteArgs();
@@ -195,14 +213,14 @@ final class ShopSetupCommandTest extends TestCase
         $this->shopAdapter->activateTheme(self::DEFAULT_THEME);
 
         $exitCode = $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
-            '--compile-directory' => self::TMP_DIR
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB,
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
@@ -220,122 +238,21 @@ final class ShopSetupCommandTest extends TestCase
         $timeBeforeInstallation = time();
 
         $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
+            '--db-host'           => self::HOST,
+            '--db-port'           => self::PORT,
+            '--db-name'           => self::DB,
+            '--db-user'           => self::DB_USER,
+            '--db-password'       => self::DB_PASS,
+            '--shop-url'          => self::URL,
+            '--shop-directory'    => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--language' => self::LANG,
+            '--language'          => self::LANG,
         ]);
 
-        $shopInstallationTimeSetting = $this->get(ShopConfigurationSettingDaoInterface::class)->get('sTagList', self::DEFAULT_SHOP_ID);
+        $shopInstallationTimeSetting =
+            $this->get(ShopConfigurationSettingDaoInterface::class)->get('sTagList', self::DEFAULT_SHOP_ID);
 
         $this->assertGreaterThanOrEqual($timeBeforeInstallation, $shopInstallationTimeSetting->getValue());
-    }
-
-    public function missingOptions(): array
-    {
-        return [
-            'Missing db-host' => [
-                [
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing db-port' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing db-name' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing db-user' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing db-password' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing shop-url' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-directory' => self::DIR,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing shop-directory' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--compile-directory' => self::TMP_DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-            'Missing compile-directory' => [
-                [
-                    '--db-host' => self::HOST,
-                    '--db-port' => self::PORT,
-                    '--db-name' => self::DB,
-                    '--db-user' => self::DB_USER,
-                    '--db-password' => self::DB_PASS,
-                    '--shop-url' => self::URL,
-                    '--shop-directory' => self::DIR,
-                    '--language' => self::LANG,
-                ]
-            ],
-        ];
     }
 
     private function createCommand(): Command

@@ -50,7 +50,7 @@ jobs:
               .env
           perl -pi\
               -e 's#display_errors =.*#display_errors = false#g;'\
-              -e 'print "xdebug.max_nesting_level=1000\n\n";'\
+              -e 'print "xdebug.mode=off\n\n";'\
               -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
               containers/php/custom.ini
           perl -pi\
@@ -169,6 +169,64 @@ jobs:
         with:
           name: phpunit-logs
           path: integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
+  deprecated_all_tests:
+    strategy:
+      matrix:
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
+      fail-fast: false
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
+
+      - name: Install flow theme
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.0.x --with-all-dependencies
+
+      - name: Install dependencies
+        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x --with-all-dependencies
+
+      - name: Copy config file
+        run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
+
+      - name: Reset shop
+        run: docker-compose exec -T php php vendor/bin/reset-shop
+
+      - name: Run tests
+        run: |
+          docker-compose run -T \
+            php php vendor/bin/runtests AllTestsUnit | tee deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
+      - name: Upload PHPUnit Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-logs
+          path: deprecated_tests_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt
           if-no-files-found: error
           retention-days: 7
 

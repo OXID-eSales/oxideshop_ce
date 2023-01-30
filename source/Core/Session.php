@@ -370,7 +370,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $sessionId = $this->_getNewSessionId(false);
+        $sessionId = $this->_getNewSessionId();
         $this->setId($sessionId);
         $this->setSessionCookie($sessionId);
 

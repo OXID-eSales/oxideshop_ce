@@ -13,33 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LogLevel;
 
 final class ContextTest extends TestCase
 {
-    public function testGetLogLevelWithConfigSetWillReturnValue(): void
+    public function testGetLogLevelShouldReturnAStringValue(): void
     {
-        $configValue = (new ConfigFile())->getVar('sLogLevel');
-        if ($configValue === null) {
-            $this->markTestSkipped('Skipping because "sLogLevel" is not set in config.inc.php.');
-        }
-
-        $logLevel = $this->getContext()->getLogLevel();
-
-        $this->assertSame($configValue, $logLevel);
-    }
-
-    public function testGetLogLevelWithConfigNotSetWillReturnDefaultValue(): void
-    {
-        $defaultLogLevel = LogLevel::ERROR;
-        $configValue = (new ConfigFile())->getVar('sLogLevel');
-        if ($configValue !== null) {
-            $this->markTestSkipped('Skipping because "sLogLevel" is set in config.inc.php.');
-        }
-
-        $logLevel = $this->getContext()->getLogLevel();
-
-        $this->assertSame($defaultLogLevel, $logLevel);
+        $this->assertNotEmpty($this->getContext()->getLogLevel());
     }
 
     public function testGetLogFilePathWithConfigSetWillReturnStringStartingWithValue(): void

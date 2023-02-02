@@ -11,5 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Helper;
 
 class Acceptance extends \Codeception\Module
 {
-
+    public function getCurrentURL(): string
+    {
+        return $this->getModule('WebDriver')->webDriver->getCurrentURL();
+    }
 }

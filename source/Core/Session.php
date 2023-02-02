@@ -208,7 +208,10 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sid = null;
 
         $forceSidParam = null;
-        if (!in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)) {
+        if (
+            !$this->isForceSidBlocked() &&
+            !in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)
+        ) {
             $forceSidParam = $myConfig->getRequestParameter($this->getForcedName());
         }
         $sidParam = $myConfig->getRequestParameter($this->getName());
@@ -502,7 +505,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function sid($blForceSid = false)
     {
         $myConfig = $this->getConfig();
-        $blUseCookies = $this->_getSessionUseCookies();
         $sRet = '';
 
         $blDisableSid = Registry::getUtils()->isSearchEngine()
@@ -510,7 +512,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                         && !$this->isAdmin();
 
         //no cookie?
-        if (!$blDisableSid && $this->getId() && ($blForceSid || !$blUseCookies || !$this->_getCookieSid())) {
+        if (!$blDisableSid && $this->getId() && $this->canSendSidWithRequest($blForceSid)) {
             $sRet = ($blForceSid ? $this->getForcedName() : $this->getName()) . "=" . $this->getId();
         }
 
@@ -859,7 +861,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 // - no cookie set and user executes no session connected action
                 if (
                     !Registry::getUtilsServer()->getOxCookie($this->getName()) &&
-                    !($myConfig->getRequestParameter($this->getName()) || $myConfig->getRequestParameter($this->getForcedName())) &&
+                    !$this->canTakeSidFromRequest() &&
                     !$this->_isSessionRequiredAction()
                 ) {
                     $blAllowSessionStart = false;
@@ -1176,5 +1178,25 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 Registry::getUtilsServer()->setOxCookie($this->getName(), $sessionId);
             }
         }
+    }
+
+    private function isForceSidBlocked(): bool
+    {
+        return (bool)Registry::getConfig()->getConfigParam('disallowForceSessionIdInRequest');
+    }
+
+    private function canSendSidWithRequest(bool $useForceSid): bool
+    {
+        return ($useForceSid || !$this->_getSessionUseCookies() || !$this->_getCookieSid())
+            && !($useForceSid && $this->isForceSidBlocked());
+    }
+
+    private function canTakeSidFromRequest(): bool
+    {
+        return Registry::getConfig()->getRequestParameter($this->getName())
+            || (
+                Registry::getConfig()->getRequestParameter($this->getForcedName())
+                && !$this->isForceSidBlocked()
+            );
     }
 }

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [6.14.0] - Unreleased
+
+### Added
+- Configuration `disallowForceSessionIdInRequest` to disable processing of `force_sid` URL parameter
+
 ## [6.13.0] - 2022-12-01
 
 ### Deprecated

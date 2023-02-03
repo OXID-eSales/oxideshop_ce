@@ -92,11 +92,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         return $moduleId;
     }
 
-    /**
-     * @param string $moduleId
-     * @param array  $variables
-     */
-    private function saveModuleConfigVariables(string $moduleId, array $variables)
+    private function saveModuleConfigVariables(string $moduleId, array $variables): void
     {
         $moduleConfigurationDaoBridge = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class);
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
@@ -114,9 +110,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 if ($moduleSetting->getType() === 'bool') {
                     $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 }
-                if ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_INT)) {
+                if ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_INT) !== false) {
                     $value = (int)$value;
-                } elseif ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_FLOAT)) {
+                } elseif ($moduleSetting->getType() === 'num' && filter_var($value, FILTER_VALIDATE_FLOAT) !== false) {
                     $value = (float)$value;
                 }
 

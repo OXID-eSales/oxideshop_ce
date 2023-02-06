@@ -23,7 +23,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
-use oxStr;
 use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
@@ -69,7 +68,7 @@ abstract class BaseRegistrator
         }
 
         if (empty($url) && $this->config->getConfigParam('iDebug') != 0) {
-            $error = "{" . static::TAG_NAME . "} resource not found: " . oxStr::getStr()->htmlspecialchars($url);
+            $error = "{" . static::TAG_NAME . "} resource not found: " . \OxidEsales\Eshop\Core\Str::getStr()->htmlspecialchars($url);
             trigger_error($error, E_USER_WARNING);
         }
 

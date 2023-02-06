@@ -55,8 +55,11 @@ class ScriptLogicTest extends TestCase
 
     public function testIncludeFileNotExists(): void
     {
-        $this->expectWarning();
+        $this->config->setConfigParam("iDebug", 0);
+
         $this->scriptLogic->include('somescript.js');
+
+        $this->assertNull($this->config->getGlobalParameter('includes'));
     }
 
     public function testIncludeFileExists(): void

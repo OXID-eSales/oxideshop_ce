@@ -139,7 +139,7 @@ class ProductCompareCest
         $comparePage->seeProductAttributeValue('attr value 2 [EN] šÄßüл', 3, 1);
         $comparePage->seeProductAttributeValue('attr value 12 [EN] šÄßüл', 3, 2);
 
-        //TODO: Missing functionality
+        //TODO: Missing functionality OXDEV-6704
         /*$comparePage->moveItemToRight($productData1['id']);
         $comparePage->seeProductData($productData1, 2);
         $comparePage->seeProductData($productData2, 1);

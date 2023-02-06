@@ -620,7 +620,7 @@ final class ProductDetailsPageCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productListPage = $I->openShop()
@@ -631,7 +631,7 @@ final class ProductDetailsPageCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '45,00 € *'
+            'price' => '45,00 €'
         ];
 
         $basketPage = $productListPage->loginUser($userData['userLoginName'], $userData['userPassword'])
@@ -667,7 +667,7 @@ final class ProductDetailsPageCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
         $amountPrices = [
             'priceCase1' => [

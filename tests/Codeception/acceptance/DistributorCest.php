@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Command\Shared\ConfigTrait;
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Lists\DistributorList;
 
 final class DistributorCest
 {
+    use ConfigTrait;
+
     /**
      * @group manufacturer
      */
@@ -26,14 +30,14 @@ final class DistributorCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $distributorListPage = new DistributorList($I);

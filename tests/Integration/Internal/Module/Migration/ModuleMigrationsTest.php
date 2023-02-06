@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -23,8 +23,10 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 /**
  * Class ModuleMigrationsTest
  */
-class ModuleMigrationsTest extends IntegrationTestCase
+class ModuleMigrationsTest extends TestCase
 {
+    use ContainerTrait;
+
     private $moduleIdWithMigrations= 'myTestModuleWithMigrations';
     private $moduleIdWithoutMigrations = 'myTestModuleWithoutMigrations';
 

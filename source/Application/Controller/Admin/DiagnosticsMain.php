@@ -55,6 +55,13 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     protected $_sShopDir = '';
 
     /**
+     * Current class template name.
+     *
+     * @var string
+     */
+    protected $_sThisTemplate = "diagnostics_main";
+
+    /**
      * Error status getter
      *
      * @return string
@@ -107,7 +114,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $this->_oOutput->storeResult(
             $this->getRenderedReport(
-                $this->_runBasicDiagnostics()
+                $this->runBasicDiagnostics()
             )
         );
 
@@ -256,6 +263,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             ->get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
 
-        return $renderer->renderTemplate("diagnostics_main.tpl", $diagnosticsResult);
+        return $renderer->renderTemplate($this->_sThisTemplate, $diagnosticsResult);
     }
 }

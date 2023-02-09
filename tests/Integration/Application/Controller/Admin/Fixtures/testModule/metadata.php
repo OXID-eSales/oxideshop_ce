@@ -37,7 +37,7 @@ $aModule = array(
             'group' => 'someGroup',
             'name' => 'testFloat',
             'type' => 'num',
-            'value' => 0
+            'value' => 0.0
         ]
     ],
     'events'      => [

@@ -9,24 +9,17 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class FormatDateLogicTest
- *
- * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
- */
-class FormatDateLogicTest extends IntegrationTestCase
+class FormatDateLogicTest extends TestCase
 {
-
     /** @var FormatDateLogic */
     private $formDateLogic;
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->formDateLogic = new FormatDateLogic();
+        parent::setUp();
     }
 
     public function testFormdateWithEmptyValue(): void

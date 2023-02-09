@@ -12,11 +12,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class ScriptLogicTest
- *
- * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic
- */
 class ScriptLogicTest extends TestCase
 {
 

@@ -200,7 +200,10 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sid = null;
 
         $forceSidParam = null;
-        if (!in_array(Registry::getRequest()->getRequestEscapedParameter('cl'), $this->orderControllers)) {
+        if (
+            !$this->isForceSidBlocked() &&
+            !in_array(Registry::getRequest()->getRequestEscapedParameter('cl'), $this->orderControllers)
+        ) {
             $forceSidParam = Registry::getRequest()->getRequestEscapedParameter($this->getForcedName());
         }
         $sidParam = Registry::getRequest()->getRequestEscapedParameter($this->getName());
@@ -349,7 +352,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $sessionId = $this->getNewSessionId(false);
+        $sessionId = $this->getNewSessionId();
         $this->setId($sessionId);
         $this->setSessionCookie($sessionId);
 
@@ -480,7 +483,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function sid($blForceSid = false)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $blUseCookies = $this->getSessionUseCookies();
         $sRet = '';
 
         $blDisableSid = Registry::getUtils()->isSearchEngine()
@@ -488,7 +490,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                         && !$this->isAdmin();
 
         //no cookie?
-        if (!$blDisableSid && $this->getId() && ($blForceSid || !$blUseCookies || !$this->getCookieSid())) {
+        if (!$blDisableSid && $this->getId() && $this->canSendSidWithRequest($blForceSid)) {
             $sRet = ($blForceSid ? $this->getForcedName() : $this->getName()) . "=" . $this->getId();
         }
 
@@ -834,7 +836,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 // - no cookie set and user executes no session connected action
                 if (
                     !Registry::getUtilsServer()->getOxCookie($this->getName()) &&
-                    !(Registry::getRequest()->getRequestEscapedParameter($this->getName()) || Registry::getRequest()->getRequestEscapedParameter($this->getForcedName())) &&
+                    !$this->canTakeSidFromRequest() &&
                     !$this->isSessionRequiredAction()
                 ) {
                     $blAllowSessionStart = false;
@@ -1141,5 +1143,25 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 Registry::getUtilsServer()->setOxCookie($this->getName(), $sessionId);
             }
         }
+    }
+
+    private function isForceSidBlocked(): bool
+    {
+        return (bool)Registry::getConfig()->getConfigParam('disallowForceSessionIdInRequest');
+    }
+
+    private function canSendSidWithRequest(bool $useForceSid): bool
+    {
+        return ($useForceSid || !$this->getSessionUseCookies() || !$this->getCookieSid())
+            && !($useForceSid && $this->isForceSidBlocked());
+    }
+
+    private function canTakeSidFromRequest(): bool
+    {
+        return Registry::getConfig()->getRequestEscapedParameter($this->getName())
+            || (
+                Registry::getConfig()->getRequestEscapedParameter($this->getForcedName())
+                && !$this->isForceSidBlocked()
+            );
     }
 }

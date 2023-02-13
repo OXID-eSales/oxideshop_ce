@@ -624,6 +624,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+
+## [6.14.0] - Unreleased
+
+### Added
+- Configuration `disallowForceSessionIdInRequest` to disable processing of `force_sid` URL parameter
+
 ## [6.13.0] - 2022-12-01
 
 ### Deprecated

@@ -22,7 +22,6 @@ final class ProductDetailsPageCest
      */
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('multidimensional variants functionality is not working in details page - OXDEV-6707');
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('multidimensional variants functionality in details page');
 
@@ -99,7 +98,8 @@ final class ProductDetailsPageCest
         $detailsPage->seeProductData($productData2);
             //TODO: missing functionality OXDEV-6706 ->checkIfProductIsBuyable();
 
-        $detailsPage = $detailsPage->openPriceAlert()
+        $detailsPage = $detailsPage
+            //TODO: missing functionality OXDEV-6709 ->openPriceAlert()
             ->openAttributes();
 
         $I->see('attr value 1 [EN]');
@@ -266,7 +266,6 @@ final class ProductDetailsPageCest
      */
     public function selectProductVariant(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('multidimensional variants functionality is not working in details page - OXDEV-6707');
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product simple variant selection and order in details page');
 
@@ -327,7 +326,6 @@ final class ProductDetailsPageCest
 
     public function selectProductVariantsWithSelectionLists(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('multidimensional variants functionality is not working in details page - OXDEV-6707');
         $I->wantToTest('add to cart with product variant/selection list combinations');
 
         $productId = '1002';

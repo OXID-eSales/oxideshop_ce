@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [6.14.0] - Unreleased
+## [6.14.0] - 2023-02-14
 
 ### Added
 - Configuration `disallowForceSessionIdInRequest` to disable processing of `force_sid` URL parameter
@@ -1295,6 +1295,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
+[6.14.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v6.14.0
 [6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v6.13.0
 [6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v6.12.0
 [6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0

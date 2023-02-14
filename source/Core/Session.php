@@ -1158,9 +1158,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
     private function canTakeSidFromRequest(): bool
     {
-        return Registry::getConfig()->getRequestEscapedParameter($this->getName())
+        return Registry::getRequest()->getRequestEscapedParameter($this->getName())
             || (
-                Registry::getConfig()->getRequestEscapedParameter($this->getForcedName())
+                Registry::getRequest()->getRequestEscapedParameter($this->getForcedName())
                 && !$this->isForceSidBlocked()
             );
     }

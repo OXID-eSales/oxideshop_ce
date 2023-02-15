@@ -19,6 +19,8 @@ interface ModuleCacheServiceInterface
      */
     public function invalidate(string $moduleId, int $shopId): void;
 
+    public function invalidateAll(): void;
+
     /**
      * @param string $key
      * @param int    $shopId

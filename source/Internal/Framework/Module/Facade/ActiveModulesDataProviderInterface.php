@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 interface ActiveModulesDataProviderInterface
@@ -27,4 +28,9 @@ interface ActiveModulesDataProviderInterface
      * @return Controller[]
      */
     public function getControllers(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getClassExtensions(): array;
 }

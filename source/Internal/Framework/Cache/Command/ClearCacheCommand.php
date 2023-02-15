@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Cache\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -18,6 +19,7 @@ class ClearCacheCommand extends Command
         private ShopAdapterInterface $shopAdapter,
         private TemplateCacheServiceInterface $templateCacheService,
         private ContainerCacheInterface $containerCache,
+        private ModuleCacheServiceInterface $moduleCacheService,
         private ContextInterface $context
     ) {
         parent::__construct();
@@ -36,6 +38,8 @@ class ClearCacheCommand extends Command
         foreach ($this->context->getAllShopIds() as $shopId) {
             $this->containerCache->invalidate($shopId);
         }
+
+        $this->moduleCacheService->invalidateAll();
 
         $output->writeln("<info>Cleared cache files</info>");
 

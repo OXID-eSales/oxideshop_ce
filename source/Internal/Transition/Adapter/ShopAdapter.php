@@ -18,22 +18,15 @@ use OxidEsales\EshopCommunity\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
 {
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
     public function translateString($string): string
     {
-        $lang = Registry::getLang();
-
-        return $lang->translateString($string);
+        return Registry::getLang()->translateString($string);
     }
 
     /**
-     * @param string $moduleId
+     * @deprecated since v7.0.0 (2023-03-14). Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface instead.
      */
-    public function invalidateModuleCache(string $moduleId)
+    public function invalidateModuleCache(string $moduleId): void
     {
         /**
          * @TODO we have to implement it in ModuleCacheServiceInterface or use ModuleCache::resetCache() method.
@@ -42,6 +35,9 @@ class ShopAdapter implements ShopAdapterInterface
         $this->invalidateModulesCache();
     }
 
+    /**
+     * @deprecated since v7.0.0 (2023-03-14). Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface instead.
+     */
     public function invalidateModulesCache(): void
     {
         $utils = Registry::getUtils();
@@ -56,54 +52,31 @@ class ShopAdapter implements ShopAdapterInterface
         }
     }
 
-    /**
-     * @return string
-     */
     public function generateUniqueId(): string
     {
         return Registry::getUtilsObject()->generateUId();
     }
 
-    /**
-     * @return array
-     */
     public function getShopControllerClassMap(): array
     {
-        $shopControllerMapProvider = oxNew(ShopControllerMapProvider::class);
-
-        return $shopControllerMapProvider->getControllerMap();
+        return oxNew(ShopControllerMapProvider::class)->getControllerMap();
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::isNamespacedClass($namespace);
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isShopUnifiedNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($namespace);
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isShopEditionNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
     }
 
-    /**
-     * @return bool
-     */
     public function validateShopId(int $shopId): bool
     {
         $shopModel = oxNew(Shop::class);
@@ -137,7 +110,7 @@ class ShopAdapter implements ShopAdapterInterface
 
     public function getCustomTheme(): string
     {
-        return (string) Registry::getConfig()->getConfigParam('sCustomTheme');
+        return (string)Registry::getConfig()->getConfigParam('sCustomTheme');
     }
 
     public function getActiveThemeId(): string

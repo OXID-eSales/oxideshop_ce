@@ -8,15 +8,16 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\FileCache;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 
 /**
  * Selects module variables from database or cache.
  *
  * @deprecated We don't store module variables in the database. Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface instead.
  *
- * @internal Do not make a module extension for this class.
+ * @internal   Do not make a module extension for this class.
  */
 class ModuleVariablesLocator
 {
@@ -26,12 +27,12 @@ class ModuleVariablesLocator
     /** @var FileCache */
     private $fileCache;
 
-    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
+    /** @var ShopIdCalculator */
     private $shopIdCalculator;
 
     /**
      * @param FileCache        $fileCache
-     * @param \OxidEsales\Eshop\Core\ShopIdCalculator $shopIdCalculator
+     * @param ShopIdCalculator $shopIdCalculator
      */
     public function __construct($fileCache, $shopIdCalculator)
     {
@@ -52,6 +53,13 @@ class ModuleVariablesLocator
         if (isset(self::$moduleVariables[$name])) {
             return self::$moduleVariables[$name];
         }
+
+        if ($name === 'aModules') {
+            self::$moduleVariables[$name] = $this->getClassExtensionsChain();
+
+            return $this->getClassExtensionsChain();
+        }
+
         $cache = $this->getFileCache();
 
         //first try to get it from cache
@@ -62,7 +70,7 @@ class ModuleVariablesLocator
              * @todo we still use this class to get class extensions chain for BC and support of oxTestModules::addFunction().
              *       The whole class should be removed in the future.
              */
-            $value = $name === 'aModules' ? $this->getClassExtensionsChain() : $this->getModuleVarFromDB($name);
+            $value = $this->getModuleVarFromDB($name);
             $cache->setToCache($name, $value);
         }
 
@@ -77,7 +85,7 @@ class ModuleVariablesLocator
      * @param string $name  Configuration array name
      * @param array  $value Module name values
      */
-    public function setModuleVariable($name, $value)
+    public function setModuleVariable($name, $value): void
     {
         if (is_null($value)) {
             self::$moduleVariables = null;
@@ -85,7 +93,9 @@ class ModuleVariablesLocator
             self::$moduleVariables[$name] = $value;
         }
 
-        $this->getFileCache()->setToCache($name, $value);
+        if ($name !== 'aModules') {
+            $this->getFileCache()->setToCache($name, $value);
+        }
     }
 
     /**
@@ -93,10 +103,9 @@ class ModuleVariablesLocator
      *
      * @static
      */
-    public static function resetModuleVariables()
+    public static function resetModuleVariables(): void
     {
         self::$moduleVariables = [];
-        FileCache::clearCache();
     }
 
     /**
@@ -116,7 +125,7 @@ class ModuleVariablesLocator
         $query = "SELECT oxvarvalue FROM oxconfig WHERE oxvarname = :oxvarname AND oxshopid = :oxshopid";
         $value = $masterDb->getOne($query, [
             ':oxvarname' => $name,
-            ':oxshopid'  => $shopId
+            ':oxshopid'  => $shopId,
         ]);
 
         return unserialize($value);
@@ -125,15 +134,15 @@ class ModuleVariablesLocator
     /**
      * @return FileCache
      */
-    protected function getFileCache()
+    protected function getFileCache(): FileCache
     {
         return $this->fileCache;
     }
 
     /**
-     * @return \OxidEsales\Eshop\Core\ShopIdCalculator
+     * @return ShopIdCalculator
      */
-    protected function getShopIdCalculator()
+    protected function getShopIdCalculator(): ShopIdCalculator
     {
         return $this->shopIdCalculator;
     }
@@ -142,7 +151,7 @@ class ModuleVariablesLocator
     {
         return ContainerFactory::getInstance()
             ->getContainer()
-            ->get(ActiveClassExtensionChainResolverInterface::class)
-            ->getActiveExtensionChain($this->getShopIdCalculator()->getShopId())->getChain();
+            ->get(ActiveModulesDataProviderBridgeInterface::class)
+            ->getClassExtensions();
     }
 }

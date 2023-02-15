@@ -214,6 +214,14 @@ class BasicContext implements BasicContextInterface
         return (new ConfigFile())->getVar('sCompileDir');
     }
 
+    public function getModuleCacheDirectory(): string
+    {
+        return Path::join(
+            $this->getCacheDirectory(),
+            'modules'
+        );
+    }
+
     /**
      * @return Facts
      */

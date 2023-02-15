@@ -9,10 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
+use FilesystemIterator;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use RecursiveIteratorIterator;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 use Webmozart\PathUtil\Path;
 
 use function json_decode;
@@ -36,7 +39,23 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
     {
         $this->templateCacheService->invalidateTemplateCache();
         $this->shopAdapter->invalidateModuleCache($moduleId);
-        $this->fileSystem->remove($this->getModulePathCacheDirectory($shopId));
+        $this->fileSystem->remove($this->getShopModulePathCacheDirectory($shopId));
+    }
+
+    public function invalidateAll(): void
+    {
+        $this->templateCacheService->invalidateTemplateCache();
+        $this->shopAdapter->invalidateModulesCache();
+
+        $templateCacheDirectory = $this->basicContext->getModuleCacheDirectory();
+        if ($this->fileSystem->exists($templateCacheDirectory)) {
+            $recursiveIterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($templateCacheDirectory, FilesystemIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::SELF_FIRST,
+                RecursiveIteratorIterator::CATCH_GET_CHILD
+            );
+            $this->fileSystem->remove($recursiveIterator);
+        }
     }
 
     /**
@@ -54,7 +73,8 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     /**
      * @param string $key
-     * @param int $shopId
+     * @param int    $shopId
+     *
      * @return array
      * @throws CacheNotFoundException
      */
@@ -88,22 +108,22 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
     private function getModulePathCacheFilePath(string $key, int $shopId): string
     {
         return Path::join(
-            $this->getModulePathCacheDirectory($shopId),
+            $this->getShopModulePathCacheDirectory($shopId),
             $key . '.txt'
         );
     }
 
-    private function getModulePathCacheDirectory(int $shopId): string
+    private function getShopModulePathCacheDirectory(int $shopId): string
     {
         return Path::join(
-            $this->basicContext->getCacheDirectory(),
-            'modules',
-            (string) $shopId
+            $this->basicContext->getModuleCacheDirectory(),
+            (string)$shopId
         );
     }
 
     /**
      * @param array $data
+     *
      * @return string
      * @throws \JsonException
      */
@@ -114,10 +134,11 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     /**
      * @param string $data
+     *
      * @return mixed
      * @throws \JsonException
      */
-    private function decode(string $data)
+    private function decode(string $data): mixed
     {
         return json_decode(
             $data,

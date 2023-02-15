@@ -134,5 +134,7 @@ interface BasicContextInterface
      */
     public function getCacheDirectory(): string;
 
+    public function getModuleCacheDirectory(): string;
+
     public function getTemplateCacheDirectory(): string;
 }

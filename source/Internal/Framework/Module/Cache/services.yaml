@@ -6,6 +6,11 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\FilesystemModuleCache
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\FilesystemModuleCacheBridge
+    public: true
+
   oxid_esales.module.cache.invalidate_module_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\InvalidateModuleCacheEventSubscriber
     tags:

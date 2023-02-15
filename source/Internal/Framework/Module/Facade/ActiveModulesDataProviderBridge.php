@@ -40,4 +40,9 @@ class ActiveModulesDataProviderBridge implements ActiveModulesDataProviderBridge
     {
         return $this->activeModulesDataProvider->getControllers();
     }
+
+    public function getClassExtensions(): array
+    {
+        return $this->activeModulesDataProvider->getClassExtensions();
+    }
 }

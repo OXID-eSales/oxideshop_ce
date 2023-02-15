@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheService
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
@@ -21,7 +22,8 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private ModulePathResolverInterface $modulePathResolver,
         private ContextInterface $context,
-        private ModuleCacheServiceInterface $moduleCacheService
+        private ModuleCacheServiceInterface $moduleCacheService,
+        private ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
     ) {
     }
 
@@ -66,6 +68,23 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         return $this->createControllersFromData(
             $this->moduleCacheService->get($cacheKey, $shopId)
         );
+    }
+
+    /** @inheritDoc */
+    public function getClassExtensions(): array
+    {
+        $shopId = $this->context->getCurrentShopId();
+        $cacheKey = 'module_class_extensions';
+
+        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
+            $this->moduleCacheService->put(
+                $cacheKey,
+                $shopId,
+                $this->activeClassExtensionChainResolver->getActiveExtensionChain($shopId)->getChain()
+            );
+        }
+
+        return $this->moduleCacheService->get($cacheKey, $shopId);
     }
 
     /** @return array */

@@ -51,6 +51,22 @@ final class FilesystemModuleCacheTest extends TestCase
         );
     }
 
+    public function testInvalidateAll(): void
+    {
+        $cache = $this->getModuleCacheService();
+        $cache->put('test', 1, ['something']);
+        $cache->put('test2', 2, ['something']);
+
+        $cache->invalidateAll();
+
+        $this->assertFalse(
+            $cache->exists('test', 1)
+        );
+        $this->assertFalse(
+            $cache->exists('test2', 2)
+        );
+    }
+
     public function testGetNotExistentCache(): void
     {
         $cache = $this->getModuleCacheService();

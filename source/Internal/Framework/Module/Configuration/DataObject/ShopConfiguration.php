@@ -56,6 +56,7 @@ class ShopConfiguration
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
+     *
      * @return $this
      */
     public function addModuleConfiguration(ModuleConfiguration $moduleConfiguration)
@@ -88,12 +89,11 @@ class ShopConfiguration
         return array_keys($this->moduleConfigurations);
     }
 
-    /**
-     * @param ClassExtensionsChain $chain
-     */
-    public function setClassExtensionsChain(ClassExtensionsChain $chain)
+    public function setClassExtensionsChain(ClassExtensionsChain $chain): self
     {
         $this->classExtensionsChain = $chain;
+
+        return $this;
     }
 
     /**
@@ -116,6 +116,7 @@ class ShopConfiguration
 
     /**
      * @param string $moduleId
+     *
      * @return bool
      */
     public function hasModuleConfiguration(string $moduleId): bool

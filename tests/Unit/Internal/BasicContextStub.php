@@ -36,6 +36,7 @@ class BasicContextStub implements BasicContextInterface
     private string $vendorPath;
     private string $composerVendorName;
     private string $cacheDirectory;
+    private string $moduleCacheDirectory;
     private string $templateCacheDirectory;
     private int $currentShopId;
     private string $activeModuleServicesFilePath;
@@ -61,6 +62,7 @@ class BasicContextStub implements BasicContextInterface
         $this->vendorPath = $basicContext->getVendorPath();
         $this->composerVendorName = $basicContext->getComposerVendorName();
         $this->cacheDirectory = $basicContext->getCacheDirectory();
+        $this->moduleCacheDirectory = $basicContext->getModuleCacheDirectory();
         $this->templateCacheDirectory = $basicContext->getTemplateCacheDirectory();
         $this->currentShopId = $basicContext->getCurrentShopId();
         $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getCurrentShopId());
@@ -298,9 +300,14 @@ class BasicContextStub implements BasicContextInterface
         return $this->cacheDirectory;
     }
 
+    public function getModuleCacheDirectory(): string
+    {
+        return $this->moduleCacheDirectory;
+    }
+
     public function getShopConfigurationDirectory(int $shopId): string
     {
-        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string) $shopId);
+        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string)$shopId);
     }
 
     public function getTemplateCacheDirectory(): string

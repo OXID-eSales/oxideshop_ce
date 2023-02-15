@@ -7,10 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
-
 /**
  * Generates class chains for extended classes by modules.
  * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
@@ -234,7 +230,7 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Conveniance method for tests
+     * Convenience method for tests
      *
      * @return bool
      */

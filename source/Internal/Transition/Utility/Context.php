@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\FileCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
@@ -50,7 +50,7 @@ class Context extends BasicContext implements ContextInterface
     {
         $contactFormRequiredFields = $this->getConfigParameter('contactFormRequiredFields');
 
-        return $contactFormRequiredFields === null ? [] : $contactFormRequiredFields;
+        return $contactFormRequiredFields ?? [];
     }
 
     /**
@@ -58,10 +58,9 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getCurrentShopId(): int
     {
-        $shopIdCalculator = new ShopIdCalculator(
-            new FileCache()
-        );
-        return (int) $shopIdCalculator->getShopId();
+        $shopIdCalculator = new ShopIdCalculator(new FileCache());
+
+        return (int)$shopIdCalculator->getShopId();
     }
 
     /**
@@ -72,7 +71,7 @@ class Context extends BasicContext implements ContextInterface
         $integerShopIds = [];
 
         foreach (Registry::getConfig()->getShopIds() as $shopId) {
-            $integerShopIds[] = (int) $shopId;
+            $integerShopIds[] = (int)$shopId;
         }
 
         return $integerShopIds;
@@ -91,7 +90,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function isEnabledAdminQueryLog(): bool
     {
-        return (bool) $this->getFactsConfigFile()->getVar('blLogChangesInAdmin');
+        return (bool)$this->getFactsConfigFile()->getVar('blLogChangesInAdmin');
     }
 
     /**
@@ -116,7 +115,7 @@ class Context extends BasicContext implements ContextInterface
             $skipLogTags = Registry::getConfig()->getConfigParam('aLogSkipTags');
         }
 
-        return (array) $skipLogTags;
+        return (array)$skipLogTags;
     }
 
     /**
@@ -124,7 +123,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getAdminUserId(): string
     {
-        $adminUserId = (string) Registry::getSession()->getVariable('auth');
+        $adminUserId = (string)Registry::getSession()->getVariable('auth');
         if (empty($adminUserId)) {
             throw new AdminUserNotFoundException();
         }
@@ -137,7 +136,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function isShopInProductiveMode(): bool
     {
-        return (bool) Registry::getConfig()->isProductiveMode();
+        return (bool)Registry::getConfig()->isProductiveMode();
     }
 
     /**
@@ -145,19 +144,17 @@ class Context extends BasicContext implements ContextInterface
      */
     public function isShopInDemoMode(): bool
     {
-        return (bool) Registry::getConfig()->isDemoShop();
+        return (bool)Registry::getConfig()->isDemoShop();
     }
 
     /**
-     * @param string $name
-     * @param null   $default
-     *
      * @return mixed
      */
     private function getConfigParameter($name, $default = null)
     {
         $value = Registry::getConfig()->getConfigParam($name, $default);
         DatabaseProvider::getDb()->setFetchMode(PDO::FETCH_ASSOC);
+
         return $value;
     }
 

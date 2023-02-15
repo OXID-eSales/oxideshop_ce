@@ -1,21 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Console\CommandsProvider;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Cache\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearCacheCommandTest extends TestCase
 {
-    public function testClearCacheTriggersRegularAndTemplatesCleaners()
+    public function testClearCacheTriggersRegularAndTemplatesCleaners(): void
     {
         $shopAdapterMock = $this->createMock(ShopAdapterInterface::class);
         $shopAdapterMock->expects($this->once())->method('invalidateModulesCache');
@@ -26,6 +32,9 @@ class ClearCacheCommandTest extends TestCase
         $containerCacheMock = $this->createMock(ContainerCacheInterface::class);
         $containerCacheMock->expects($this->once())->method('invalidate');
 
+        $moduleCacheServiceMock = $this->createMock(ModuleCacheServiceInterface::class);
+        $moduleCacheServiceMock->expects($this->once())->method('invalidateAll');
+
         $contextMock = $this->createMock(ContextInterface::class);
         $contextMock->expects($this->once())->method('getAllShopIds')->willReturn([1]);
 
@@ -33,12 +42,13 @@ class ClearCacheCommandTest extends TestCase
             $shopAdapterMock,
             $templateCacheServiceMock,
             $containerCacheMock,
+            $moduleCacheServiceMock,
             $contextMock
         );
 
         $command->run(
-            $this->createMock(\Symfony\Component\Console\Input\InputInterface::class),
-            $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class),
+            $this->createMock(InputInterface::class),
+            $this->createMock(OutputInterface::class),
         );
     }
 }

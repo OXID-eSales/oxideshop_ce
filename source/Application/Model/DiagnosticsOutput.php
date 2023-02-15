@@ -121,16 +121,18 @@ class DiagnosticsOutput
         $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
         $this->_oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-        $iFileSize = filesize($this->_oUtils->getCacheFilePath($sCurrentKey));
+        $content = $this->_oUtils->fromFileCache($sCurrentKey);
+        $contentLength = strlen($content);
 
         $this->_oUtils->setHeader("Pragma: public");
         $this->_oUtils->setHeader("Expires: 0");
         $this->_oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
         $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName);
         $this->_oUtils->setHeader("Content-Type:text/html;charset=utf-8");
-        if ($iFileSize) {
-            $this->_oUtils->setHeader("Content-Length: " . $iFileSize);
+        if ($contentLength) {
+            $this->_oUtils->setHeader("Content-Length: " . $contentLength);
         }
-        echo $this->_oUtils->fromFileCache($sCurrentKey);
+
+        echo $content;
     }
 }

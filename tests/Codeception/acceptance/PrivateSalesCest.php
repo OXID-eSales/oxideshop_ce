@@ -21,10 +21,8 @@ final class PrivateSalesCest
      *
      * @after disablePrivateSales
      * @fails disablePrivateSales
-     *
-     * @param AcceptanceTester $I
      */
-    public function sendInvitationEmail(AcceptanceTester $I)
+    public function sendInvitationEmail(AcceptanceTester $I): void
     {
         $I->wantToTest('invitations functionality of the private sales.');
 
@@ -52,8 +50,7 @@ final class PrivateSalesCest
 
         $invitationPage = $invitationPage->logoutUser();
         $I->dontSee(Translator::translate('INVITE_YOUR_FRIENDS'), $invitationPage->headerTitle);
-        $breadCrumb = Translator::translate('INVITE_YOUR_FRIENDS');
-        $invitationPage->seeOnBreadCrumb($breadCrumb);
+
         $I->deleteFromDatabase('oxacceptedterms', ['oxuserid' => 'testuser']);
     }
 
@@ -62,10 +59,8 @@ final class PrivateSalesCest
      *
      * @after disablePrivateSales
      * @fails disablePrivateSales
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerAndLogin(AcceptanceTester $I)
+    public function registerAndLogin(AcceptanceTester $I): void
     {
         $I->wantToTest('registration and login functionality of the private sales.');
 
@@ -90,12 +85,10 @@ final class PrivateSalesCest
         $I->dontSee(Translator::translate('HOME'));
 
         //login to shop
-        $breadCrumb = Translator::translate('MY_ACCOUNT');
         $accountPage = $privateSalesLoginPage
             ->login($userData['userLoginName'], $userData['userPassword'])
-            ->confirmAGB()
-            ->seeOnBreadCrumb($breadCrumb);
-        $I->see(Translator::translate('HOME'));
+            ->confirmAGB();
+        $I->waitForElementVisible($accountPage->accountMenu);
         $accountPage->logoutUser();
 
         //register new user
@@ -129,7 +122,7 @@ final class PrivateSalesCest
         return Fixtures::get('existingUser');
     }
 
-    protected function disablePrivateSales(AcceptanceTester $I)
+    protected function disablePrivateSales(AcceptanceTester $I): void
     {
         $I->updateConfigInDatabase('blInvitationsEnabled', false, 'bool');
         $I->updateConfigInDatabase('dPointsForInvitation', '0', 'str');
@@ -138,7 +131,7 @@ final class PrivateSalesCest
         $I->updateConfigInDatabase('blConfirmAGB', false, 'bool');
     }
 
-    private function getUserLoginData()
+    private function getUserLoginData(): array
     {
         return [
             'userLoginNameField' => 'example01@oxid-esales.dev',
@@ -146,7 +139,7 @@ final class PrivateSalesCest
         ];
     }
 
-    private function getUserAddressData()
+    private function getUserAddressData(): array
     {
         return [
             'userSalutation' => 'Mrs',

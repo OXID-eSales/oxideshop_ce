@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
-use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\MyReviews;
 use OxidEsales\Codeception\Step\ProductNavigation;
 
@@ -19,8 +18,6 @@ final class ReviewAndRatingCest
     /**
      * @group myAccount
      * @group reviewAndRatings
-     *
-     * @param AcceptanceTester $I
      */
     public function addUserReviewAndRatingForProduct(AcceptanceTester $I): void
     {
@@ -33,7 +30,6 @@ final class ReviewAndRatingCest
         $userRating = 3;
 
         $detailsPage = $productNavigation->openProductDetailsPage('1000');
-        $I->see(Translator::translate('MESSAGE_LOGIN_TO_WRITE_REVIEW'));
         $detailsPage->loginUserForReview($userData['userLoginName'], $userData['userPassword'])
             ->addReviewAndRating($userReviewText, $userRating)
             ->seeUserProductReviewAndRating(1, $userData['userName'], $userReviewText, $userRating);
@@ -44,8 +40,6 @@ final class ReviewAndRatingCest
     /**
      * @group myAccount
      * @group reviewAndRatings
-     *
-     * @param AcceptanceTester $I
      */
     public function addUserReviewAndRatingForProductWithVariants(AcceptanceTester $I): void
     {
@@ -69,7 +63,6 @@ final class ReviewAndRatingCest
         $this->prepareReviewDataForProduct($I, '1002-1', 'testUser', $variantReview);
 
         $detailsPage = $productNavigation->openProductDetailsPage('1002');
-        $I->see(Translator::translate('MESSAGE_LOGIN_TO_WRITE_REVIEW'));
         $detailsPage->seeUserProductReviewAndRating(
             1,
             $userData['userName'],
@@ -92,19 +85,6 @@ final class ReviewAndRatingCest
         );
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
         $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
-    }
-
-    public function _failed(AcceptanceTester $I)
-    {
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
-        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
-        $I->clearShopCache();
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
-        $I->clearShopCache();
     }
 
     public function manageUserReviewsInAccountMenu(AcceptanceTester $I): void
@@ -132,7 +112,7 @@ final class ReviewAndRatingCest
         $I->reloadPage();
 
         /** test badge with count in navigation */
-        $accountPage->seeNumberOnMyReviewsBadge($numberOfReviewsTotal);
+        $accountPage->seeItemNumberOnReviewPanel($numberOfReviewsTotal);
 
         /** test number of reviews on page */
         $reviewsPage = $accountPage->openMyReviewsPage();
@@ -150,13 +130,14 @@ final class ReviewAndRatingCest
         $reviewsPage->dontSeeBottomPaginationElements();
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $productId
-     * @param string           $userId
-     * @param array            $review
-     */
-    private function prepareReviewDataForProduct(AcceptanceTester $I, $productId, $userId, $review): void
+    public function _failed(AcceptanceTester $I)
+    {
+        $userData = $this->getExistingUserData();
+        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
+        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
+    }
+
+    private function prepareReviewDataForProduct(AcceptanceTester $I, string $productId, string $userId, array $review): void
     {
         $reviewData = [
             'OXID' => uniqid('test', true),

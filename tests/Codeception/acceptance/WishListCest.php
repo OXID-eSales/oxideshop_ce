@@ -42,13 +42,9 @@ final class WishListCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
-        $detailsPage->openAccountMenu()
-            ->checkWishListItemCount(0)
-            ->closeAccountMenu()
+        $detailsPage->checkWishListItemCount(0)
             ->addToWishList()
-            ->openAccountMenu()
-            ->checkWishListItemCount(1)
-            ->closeAccountMenu();
+            ->checkWishListItemCount(1);
 
         $userAccountPage = $detailsPage->openAccountPage();
         $I->see(Translator::translate('MY_WISH_LIST'));
@@ -71,9 +67,7 @@ final class WishListCest
         $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
         $I->see(Translator::translate('WISH_LIST_EMPTY'));
 
-        $wishListPage->openAccountMenu()
-            ->checkWishListItemCount(0)
-            ->closeAccountMenu();
+        $wishListPage->checkWishListItemCount(0);
     }
 
     /**
@@ -110,9 +104,7 @@ final class WishListCest
             ->selectVariant(2, 'black')
             ->selectVariant(3, 'lether')
             ->addToWishList()
-            ->openAccountMenu()
             ->checkWishListItemCount(2)
-            ->closeAccountMenu()
             ->openUserWishListPage()
             ->seeProductData($productData);
 

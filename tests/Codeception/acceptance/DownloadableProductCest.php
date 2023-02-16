@@ -16,12 +16,8 @@ use OxidEsales\Codeception\Step\Basket;
 
 final class DownloadableProductCest
 {
-    /**
-     * @var string
-     */
-    private $orderId;
+    private string $orderId;
 
-    /** @param AcceptanceTester $I */
     public function _before(AcceptanceTester $I)
     {
         $I->updateConfigInDatabase('blEnableDownloads', true, 'bool');
@@ -32,7 +28,6 @@ final class DownloadableProductCest
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
     }
 
-    /** @param AcceptanceTester $I */
     public function _after(AcceptanceTester $I)
     {
         $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
@@ -43,7 +38,6 @@ final class DownloadableProductCest
         $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);
     }
 
-    /** @param AcceptanceTester $I */
     public function downloadableFiles(AcceptanceTester $I): void
     {
         $I->wantToTest('Product downloadable files');
@@ -90,24 +84,16 @@ final class DownloadableProductCest
         $this->checkFileInMyDownloads($I, $startPage);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
     private function makePurchaseComplete(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
-        $userCheckoutPage = $basket->addProductToBasketAndOpenUserCheckout('1002-1', 1);
-        $userCheckoutPage->goToNextStep();
-        $I->click(['name' => 'userform']);
-        $I->checkOption('oxdownloadableproductsagreement');
-        $I->click("//form[@id='orderConfirmAgbBottom']//button");
-        $userCheckoutPage->seeOnBreadCrumb(Translator::translate('ORDER_COMPLETED'));
+        $basket->addProductToBasketAndOpenUserCheckout('1002-1', 1)
+            ->goToNextStep()
+            ->goToNextStep()
+            ->confirmDownloadableProductsAgreement()
+            ->submitOrderSuccessfully();
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param Home             $startPage
-     */
     private function checkMyDownloads(AcceptanceTester $I, Home $startPage): void
     {
         $accountPage = $startPage->openAccountPage();
@@ -115,19 +101,12 @@ final class DownloadableProductCest
         $I->see(Translator::translate('DOWNLOADS_PAYMENT_PENDING'));
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
     private function makeOrderComplete(AcceptanceTester $I): void
     {
         $currentTime = date('Y-m-d H:i:s');
         $I->updateInDatabase('oxorder', ['oxpaid' => $currentTime], ['OXID' => $this->orderId]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param Home             $startPage
-     */
     private function checkFileInMyDownloads(AcceptanceTester $I, Home $startPage): void
     {
         $accountPage = $startPage->openAccountPage();

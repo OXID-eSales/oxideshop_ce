@@ -42,7 +42,7 @@ modules:
             depends: Db
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
-            paths: 'Application/views/twig'
+            paths: 'Application/views/%THEME_ID%'
         - \OxidEsales\Codeception\Module\SelectTheme:
               depends:
                   - \OxidEsales\Codeception\Module\Database

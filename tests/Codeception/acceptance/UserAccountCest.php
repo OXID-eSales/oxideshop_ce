@@ -15,53 +15,31 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 
 final class UserAccountCest
 {
-    public function _after(AcceptanceTester $I)
-    {
-        $this->cleanUpUserData($I);
-    }
-
-    protected function cleanUpUserData(AcceptanceTester $I)
-    {
-        /** Change Germany and Belgium data to original. */
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
-    }
-
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function loginUserInFrontend(AcceptanceTester $I)
+    public function loginUserInFrontend(AcceptanceTester $I): void
     {
         $I->wantToTest('user login (popup in top of the page)');
 
         $startPage = $I->openShop();
 
         //login when username/pass are incorrect. error msg should be in place etc.
-        $startPage->loginUser('non-existing-user@oxid-esales.dev', '');
-        $I->see(Translator::translate('LOGIN'));
+        $startPage->loginUser('non-existing-user@oxid-esales.dev', '')->seeUserLoggedOut();
         $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $startPage->badLoginError);
 
         //login with correct user name/pass
         $userData = $this->getExistingUserData();
-        $startPage->loginUser($userData['userLoginName'], $userData['userPassword']);
-        $I->dontSee(Translator::translate('LOGIN'));
+        $startPage->loginUser($userData['userLoginName'], $userData['userPassword'])
+            ->seeUserLoggedIn();
 
-        $accountPage = $startPage->openAccountPage();
-        $breadCrumb = Translator::translate('MY_ACCOUNT') . ' - ' . $userData['userLoginName'];
-        $accountPage->seeOnBreadCrumb($breadCrumb);
-        $I->see(Translator::translate('LOGOUT'));
+        $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
     }
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function changeUserAccountPassword(AcceptanceTester $I)
+    public function changeUserAccountPassword(AcceptanceTester $I): void
     {
         $I->wantTo('change user password in my account navigation');
 
@@ -73,9 +51,7 @@ final class UserAccountCest
             ->loginUser($userName, $userPassword);
         $I->dontSee(Translator::translate('LOGIN'));
 
-        $accountPage = $startPage->openAccountPage();
-        $breadCrumb = Translator::translate('MY_ACCOUNT') . ' - ' . $userName;
-        $accountPage->seeOnBreadCrumb($breadCrumb);
+        $accountPage = $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
 
         $changePasswordPage = $accountPage->openChangePasswordPage();
 
@@ -91,15 +67,14 @@ final class UserAccountCest
         $changePasswordPage->changePassword($userPassword, 'user1user', 'user1user');
         $I->see(Translator::translate('MESSAGE_PASSWORD_CHANGED'));
 
-        $changePasswordPage->logoutUser();
+        $loginPage = $changePasswordPage->openAccountPage()->logoutUserInAccountPage();
 
         // try to login with old password
-        $changePasswordPage->loginUser($userName, $userPassword);
-        $I->see(Translator::translate('LOGIN'));
-        $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $changePasswordPage->badLoginError);
+        $loginPage = $loginPage->loginWithError($userName, $userPassword);
+        $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'));
 
         // try to login with new password
-        $changePasswordPage->loginUser($userName, 'user1user');
+        $changePasswordPage = $loginPage->login($userName, 'user1user')->openChangePasswordPage();
         $I->dontSee(Translator::translate('LOGIN'));
 
         //reset new pass to old one
@@ -109,10 +84,8 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function sendUserPasswordReminder(AcceptanceTester $I)
+    public function sendUserPasswordReminder(AcceptanceTester $I): void
     {
         $I->wantToTest('user password reminder in my account navigation');
 
@@ -133,17 +106,14 @@ final class UserAccountCest
         $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $userData['userLoginName']);
 
         //open password reminder page in main user account page
-        $passwordReminderPage->openAccountPage()
-            ->openUserPasswordReminderPage();
+        $passwordReminderPage->openUserPasswordReminderPage();
         $I->see(Translator::translate('HAVE_YOU_FORGOTTEN_PASSWORD'));
     }
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function changeUserEmailInBillingAddress(AcceptanceTester $I)
+    public function changeUserEmailInBillingAddress(AcceptanceTester $I): void
     {
         $I->wantTo('change user email in my account');
 
@@ -179,10 +149,8 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function subscribeNewsletterInUserAccount(AcceptanceTester $I)
+    public function subscribeNewsletterInUserAccount(AcceptanceTester $I): void
     {
         $start = new Start($I);
         $I->wantToTest('newsletter subscription in my account navigation');
@@ -208,10 +176,8 @@ final class UserAccountCest
      * @group myAccount
      *
      * @after cleanUpUserData
-     *
-     * @param AcceptanceTester $I
      */
-    public function changeUserBillingAddress(AcceptanceTester $I)
+    public function changeUserBillingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
@@ -255,10 +221,8 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function modifyUserShippingAddress(AcceptanceTester $I)
+    public function modifyUserShippingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);
         $I->wantToTest('user shipping address in my account');
@@ -291,10 +255,8 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function createAndDeleteUserShippingAddress(AcceptanceTester $I)
+    public function createAndDeleteUserShippingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);
         $I->wantToTest('user shipping address create and delete');
@@ -323,13 +285,26 @@ final class UserAccountCest
             ->seeNumberOfShippingAddresses(0);
     }
 
+    public function _after(AcceptanceTester $I)
+    {
+        $this->cleanUpUserData($I);
+    }
+
+    private function cleanUpUserData(AcceptanceTester $I): void
+    {
+        /** Change Germany and Belgium data to original. */
+        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
+        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
+        $userData = $this->getExistingUserData();
+        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
+    }
 
     private function getExistingUserData()
     {
         return Fixtures::get('existingUser');
     }
 
-    private function getUserData($userId)
+    private function getUserData(string $userId): array
     {
         return [
             'userUstIDField' => '',
@@ -341,7 +316,7 @@ final class UserAccountCest
         ];
     }
 
-    private function getUserAddressData($userId, $userCountry = 'Germany')
+    private function getUserAddressData(string $userId, $userCountry = 'Germany'): array
     {
         $addressData = [
             'userSalutation' => 'Mrs',

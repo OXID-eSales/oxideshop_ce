@@ -14,12 +14,12 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 final class ManufacturerCest
 {
     /**
-     * Manufacturer list.
      * @group manufacturer
      */
     public function checkManufacturerList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer list');
+        $I->updateThemeSettingInDatabase('bl_showManufacturer', true);
 
         $homePage = $I->openShop();
         $homePage->openManufacturerListPage()
@@ -27,7 +27,9 @@ final class ManufacturerCest
                 [
                     'title' => 'Manufacturer [EN] šÄßüл',
                     'count' => '3'
-                ], 1)
+                ],
+                1
+            )
             ->openManufacturerPage(1)
             ->seePageInformation([
                 'title' => 'Manufacturer [EN] šÄßüл',
@@ -36,15 +38,16 @@ final class ManufacturerCest
     }
 
     /**
-     * Manufacturer and the product list.
      * @group manufacturer
      * @group product_list
      */
     public function checkAndNavigateThroughManufacturerProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer functionality and product list navigation');
+        $I->updateConfigInDatabase('bl_showManufacturer', true);
         $I->updateConfigInDatabase('aNrofCatArticles', serialize([10, 50, 100, 2, 1]), 'arr');
-        
+        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([10, 50, 100, 2, 1]), 'arr');
+
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -60,7 +63,7 @@ final class ManufacturerCest
         ];
 
         $homePage = $I->openShop();
-        $productList = $homePage->openManufacturerPage('Manufacturer [EN] šÄßüл')
+        $productList = $homePage->openManufacturerFromStarPage('Manufacturer [EN] šÄßüл')
         ->seePageInformation([
             'title' => 'Manufacturer [EN] šÄßüл',
             'description' => 'Manufacturer description [EN] šÄßüл'
@@ -79,7 +82,8 @@ final class ManufacturerCest
 
         //Dont show manufacturers at all
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', false);
+        $I->updateConfigInDatabase('bl_showManufacturer', false);
         $homePage = $I->openShop();
-        $I->dontSee(Translator::translate('OUR_BRANDS'), $homePage->manufacturerLink);
+        $I->dontSee(Translator::translate('OUR_BRANDS'));
     }
 }

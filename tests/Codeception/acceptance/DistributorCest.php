@@ -9,20 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
-use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Lists\DistributorList;
 
 final class DistributorCest
 {
     /**
-     * Distributor list.
      * @group manufacturer
      */
     public function checkDistributorList(AcceptanceTester $I): void
     {
         $I->wantToTest('distributor functionality and product list navigation');
         $I->updateConfigInDatabase('aNrofCatArticles', serialize([10, 50, 100, 2, 1]), 'arr');
-        
+        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([10, 50, 100, 2, 1]), 'arr');
+
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -40,10 +39,12 @@ final class DistributorCest
         $distributorListPage = new DistributorList($I);
         $I->amOnPage($distributorListPage->route([]));
         $distributorListPage->seeDistributorData(
-                [
-                    'title' => 'Distributor [EN] šÄßüл',
-                    'count' => '3'
-                ], 1)
+            [
+                'title' => 'Distributor [EN] šÄßüл',
+                'count' => '3'
+            ],
+            1
+        )
             ->openDistributorPage(1)
             ->seePageInformation([
                 'title' => 'Distributor [EN] šÄßüл',

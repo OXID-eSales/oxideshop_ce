@@ -14,15 +14,13 @@ use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
-class GiftRegistryCest
+final class GiftRegistryCest
 {
     /**
      * @group myAccount
      * @group giftRegistry
-     *
-     * @param AcceptanceTester $I
      */
-    public function addProductToUserGiftRegistry(AcceptanceTester $I)
+    public function addProductToUserGiftRegistry(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('if product gift registry functionality is enabled');
@@ -53,15 +51,12 @@ class GiftRegistryCest
             ->checkGiftRegistryItemCount(1)
             ->closeAccountMenu();
 
-        $userAccountPage = $detailsPage->openAccountPage();
-        $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);
-        $I->see(Translator::translate('PRODUCT') . ' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
+        $userAccountPage = $detailsPage->openAccountPage()->seeItemNumberOnGiftRegistryPanel('1');
 
         /** @var UserAccount $userAccountPage */
         $userAccountPage = $userAccountPage->logoutUserInAccountPage()
-            ->login($userData['userLoginName'], $userData['userPassword']);
-        $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);
-        $I->see(Translator::translate('PRODUCT') . ' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
+            ->login($userData['userLoginName'], $userData['userPassword'])
+            ->seeItemNumberOnGiftRegistryPanel('1');
 
         $giftRegistryPage = $userAccountPage->openGiftRegistryPage()
             ->seeProductData($productData);
@@ -87,10 +82,8 @@ class GiftRegistryCest
     /**
      * @group myAccount
      * @group giftRegistry
-     *
-     * @param AcceptanceTester $I
      */
-    public function makeUserGiftRegistryPublic(AcceptanceTester $I)
+    public function makeUserGiftRegistryPublic(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('user gift registry functionality setting it as searchable and public');
@@ -159,10 +152,8 @@ class GiftRegistryCest
     /**
      * @group myAccount
      * @group giftRegistry
-     *
-     * @param AcceptanceTester $I
      */
-    public function disableUserGiftRegistry(AcceptanceTester $I)
+    public function disableUserGiftRegistry(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $start = new Start($I);
@@ -196,12 +187,6 @@ class GiftRegistryCest
 
         //(Use gift registry) is enabled again
         $I->updateConfigInDatabase('bl_showWishlist', true, "bool");
-    }
-
-    public function _failed(AcceptanceTester $I)
-    {
-        $I->cleanUp();
-        $I->clearShopCache();
     }
 
     private function getExistingUserData()

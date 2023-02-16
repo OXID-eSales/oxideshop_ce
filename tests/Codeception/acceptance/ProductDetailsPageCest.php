@@ -19,8 +19,6 @@ final class ProductDetailsPageCest
      * @group main
      * @group product
      * @group productVariants
-     *
-     * @param AcceptanceTester $I
      */
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
@@ -123,8 +121,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group search
-     *
-     * @param AcceptanceTester $I
      */
     public function navigateInDetailsPage(AcceptanceTester $I): void
     {
@@ -162,8 +158,6 @@ final class ProductDetailsPageCest
 
     /**
      * @group product
-     *
-     * @param AcceptanceTester $I
      */
     public function detailsPageInformation(AcceptanceTester $I): void
     {
@@ -209,8 +203,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group priceAlarm
-     *
-     * @param AcceptanceTester $I
      */
     public function sendProductPriceAlert(AcceptanceTester $I): void
     {
@@ -242,8 +234,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group priceAlarm
-     *
-     * @param AcceptanceTester $I
      */
     public function disableProductPriceAlert(AcceptanceTester $I): void
     {
@@ -269,8 +259,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group productVariants
-     *
-     * @param AcceptanceTester $I
      */
     public function selectProductVariant(AcceptanceTester $I): void
     {
@@ -308,7 +296,8 @@ final class ProductDetailsPageCest
         ];
 
         $detailsPage = $detailsPage->addProductToBasket(3)
-            ->seeMiniBasketContains([$basketItemToCheck1], '165,00 €', '3');
+            ->seeMiniBasketContains([$basketItemToCheck1], '165,00 €', '3')
+            ->closeMiniBasket();
 
         // select second variant
         $variantData2 = [
@@ -362,20 +351,15 @@ final class ProductDetailsPageCest
         $detailsPage->selectSelectionListItem($selectionList3Value);
         $detailsPage->addProductToBasket(2);
 
-        $detailsPage->openBasket();
+        $basketPage = $detailsPage->openBasket();
 
-        $I->see("$productName, $variant1Name");
-        $I->see("$selectionListsTitle: $selectionList2Value");
-
-        $I->see("$productName, $variant2Name");
-        $I->see("$selectionListsTitle: $selectionList3Value");
+        $basketPage->seeBasketContainsSelectionList($selectionListsTitle, $selectionList2Value, 1)
+        ->seeBasketContainsSelectionList($selectionListsTitle, $selectionList3Value, 2);
     }
 
     /**
      * @group product
      * @group accessories
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductAccessories(AcceptanceTester $I): void
     {
@@ -411,8 +395,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group similarProducts
-     *
-     * @param AcceptanceTester $I
      */
     public function checkSimilarProducts(AcceptanceTester $I): void
     {
@@ -450,8 +432,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group crossSelling
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductCrossSelling(AcceptanceTester $I): void
     {
@@ -488,8 +468,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductPriceA(AcceptanceTester $I): void
     {
@@ -565,8 +543,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductPriceC(AcceptanceTester $I): void
     {
@@ -610,9 +586,6 @@ final class ProductDetailsPageCest
             ->addProductToBasket(5)
             ->openBasket();
 
-        $breadCrumbName = Translator::translate('CART');
-        $basketPage->seeOnBreadCrumb($breadCrumbName);
-
         //amount price discount added to the C price
         $productData = [
             'id' => '1000',
@@ -628,8 +601,6 @@ final class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductPriceB(AcceptanceTester $I): void
     {
@@ -680,8 +651,6 @@ final class ProductDetailsPageCest
      * @group product
      * @group productPrice
      * @group productAmountPrice
-     *
-     * @param AcceptanceTester $I
      */
     public function checkProductAmountPrice(AcceptanceTester $I): void
     {
@@ -715,23 +684,12 @@ final class ProductDetailsPageCest
             ->seeAmountPrices($amountPrices);
     }
 
-    public function _failed(AcceptanceTester $I)
-    {
-        $I->cleanUp();
-        $I->clearShopCache();
-    }
-
     private function getExistingUserData()
     {
         return Fixtures::get('existingUser');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $productId
-     * @param string           $accessoryProductId
-     */
-    private function prepareAccessoriesDataForProduct(AcceptanceTester $I, $productId, $accessoryProductId): void
+    private function prepareAccessoriesDataForProduct(AcceptanceTester $I, string $productId, string $accessoryProductId): void
     {
         $data = [
             'OXID' => 'testaccessories1',
@@ -741,12 +699,7 @@ final class ProductDetailsPageCest
         $I->haveInDatabase('oxaccessoire2article', $data);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $productId
-     * @param string           $crossSellingProductId
-     */
-    private function prepareCrossSellingDataForProduct(AcceptanceTester $I, $productId, $crossSellingProductId): void
+    private function prepareCrossSellingDataForProduct(AcceptanceTester $I, string $productId, string $crossSellingProductId): void
     {
         $data = [
             'OXID' => 'testcrossselling1',
@@ -756,12 +709,7 @@ final class ProductDetailsPageCest
         $I->haveInDatabase('oxobject2article', $data);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $userId
-     * @param string           $priceGroupId
-     */
-    private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId): void
+    private function preparePriceGroupDataForUser(AcceptanceTester $I, string $userId, string $priceGroupId): void
     {
         $data = [
             'OXID' => 'obj2group' . $priceGroupId,
@@ -771,12 +719,7 @@ final class ProductDetailsPageCest
         $I->haveInDatabase('oxobject2group', $data);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $productId
-     * @param array            $amountPrice
-     */
-    private function prepareAmountPriceDataForProduct(AcceptanceTester $I, $productId, $amountPrice): void
+    private function prepareAmountPriceDataForProduct(AcceptanceTester $I, string $productId, array $amountPrice): void
     {
         $data = [
             'OXID' => 'price2article' . $amountPrice['discount'],

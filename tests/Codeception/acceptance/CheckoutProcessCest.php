@@ -19,10 +19,8 @@ final class CheckoutProcessCest
 {
     /**
      * @group basketfrontend
-     *
-     * @param AcceptanceTester $I
      */
-    public function checkBasketFlyout(AcceptanceTester $I)
+    public function checkBasketFlyout(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $I->wantToTest('basket flyout');
@@ -73,10 +71,8 @@ final class CheckoutProcessCest
 
     /**
      * @group basketfrontend
-     *
-     * @param AcceptanceTester $I
      */
-    public function createOrder(AcceptanceTester $I)
+    public function createOrder(AcceptanceTester $I): void
     {
         $I->wantToTest('simple order steps (without any special cases)');
 
@@ -135,7 +131,7 @@ final class CheckoutProcessCest
 
         $orderPage->validateShippingMethod('Standard');
         $orderPage->validatePaymentMethod('Cash in advance');
-        $paymentPage = $orderPage->editPaymentMethod();
+        $paymentPage = $orderPage->editShippingMethod();
         $orderPage = $paymentPage->selectPayment('oxidcashondel')->goToNextStep();
 
         $orderPage->validateShippingMethod('Standard');
@@ -143,13 +139,15 @@ final class CheckoutProcessCest
         $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
         $orderPage->validateCoupon('123123', '-83,50 €');
         $orderPage->validateVat(['4,55 €', '5,35 €']);
-        $I->see('73,60 €', $orderPage->basketSummaryNet);
-        $I->see('167,00 €', $orderPage->basketSummaryGross);
-        $I->see('0,00 €', $orderPage->basketShippingGross);
-        $I->see('7,50 €', $orderPage->basketPaymentGross);
-        $I->see('0,90 €', $orderPage->basketWrappingGross);
-        $I->see('0,20 €', $orderPage->basketGiftCardGross);
-        $I->see('92,10 €', $orderPage->basketTotalPrice);
+        $orderPage->validateTotalPrice([
+            'net' => '73,60 €',
+            'gross' => '167,00 €',
+            'shipping' => '0,00 €',
+            'payment' => '7,50 €',
+            'total' => '92,10 €',
+        ]);
+        $orderPage->validateWrappingPrice('0,90 €');
+        $orderPage->validateGiftCardPrice('0,20 €');
 
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
@@ -157,10 +155,8 @@ final class CheckoutProcessCest
     /**
      * @group todo_add_clean_cache_after_database_update
      * @group basketfrontend
-     *
-     * @param AcceptanceTester $I
      */
-    public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I)
+    public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same 
@@ -231,10 +227,7 @@ final class CheckoutProcessCest
         //in second step, product availability is not checked.
         $I->see(Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE'));
 
-        $orderPage->submitOrder();
-
-        $breadCrumb = Translator::translate('ORDER_COMPLETED');
-        $orderPage->seeOnBreadCrumb($breadCrumb);
+        $orderPage->submitOrderSuccessfully();
 
         //cleanUp data
         $I->updateInDatabase('oxarticles', ['oxstock' => '15', 'oxstockflag' => '1'], ['oxid' => '1000']);
@@ -242,10 +235,8 @@ final class CheckoutProcessCest
 
     /**
      * @group basketfrontend
-     *
-     * @param AcceptanceTester $I
      */
-    public function checkMinimalOrderPrice(AcceptanceTester $I)
+    public function checkMinimalOrderPrice(AcceptanceTester $I): void
     {
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
@@ -272,19 +263,19 @@ final class CheckoutProcessCest
             ->openBasketDisplay()
             ->seeBasketContains([$productData], '50,00 €');
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
-        $I->see(Translator::translate('CONTINUE_TO_NEXT_STEP'));
+        $basketPage->seeNextStep();
 
         $basketPage = $basketPage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
-        $I->dontSee(Translator::translate('CONTINUE_TO_NEXT_STEP'));
+        $basketPage->dontSeeNextStep();
 
         $basketPage = $basketPage->updateProductAmount(2);
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
-        $I->see(Translator::translate('CONTINUE_TO_NEXT_STEP'));
+        $basketPage->seeNextStep();
 
         $basketPage = $basketPage->addCouponToBasket('123123');
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
-        $I->dontSee(Translator::translate('CONTINUE_TO_NEXT_STEP'));
+        $basketPage->dontSeeNextStep();
 
         $basketPage = $basketPage->removeCouponFromBasket();
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
@@ -297,10 +288,8 @@ final class CheckoutProcessCest
 
     /**
      * @group basketfrontend
-     *
-     * @param AcceptanceTester $I
      */
-    public function buyProductWithBundledItem(AcceptanceTester $I)
+    public function buyProductWithBundledItem(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $I->wantToTest('bundled product');
@@ -349,7 +338,7 @@ final class CheckoutProcessCest
             $this->getUserFormData(),
             $this->getUserAddressFormData()
         );
-        $paymentPage->logoutUser();
+        $I->clearShopCache();
 
         /** Start guest2 checkout with email2 */
         $basket->addProductToBasketAndOpenUserCheckout('1000', 100);
@@ -404,7 +393,7 @@ final class CheckoutProcessCest
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basket->addProductToBasket($existingProductId, 1);
         $paymentPage = $homePage->openMiniBasket()
-            ->openBasket()
+            ->openBasketDisplay()
             ->goToNextStep();
 
         $paymentPage->openShippingAddressForm();
@@ -462,10 +451,7 @@ final class CheckoutProcessCest
             ->goToNextStep();
 
 
-        $orderPage->submitOrder();
-
-        $breadCrumb = Translator::translate('ORDER_COMPLETED');
-        $orderPage->seeOnBreadCrumb($breadCrumb);
+        $orderPage->submitOrderSuccessfully();
     }
 
     public function checkAttributesInBasket(AcceptanceTester $I): void
@@ -497,9 +483,7 @@ final class CheckoutProcessCest
 
         $basket->addProductToBasket($basketItem1['id'], 1);
 
-        $homePage->openMiniBasket()->openBasketDisplay();
-
-        $I->see('attr value 11 [EN] šÄßüл', "#table_cartItem_1");
+        $homePage->openMiniBasket()->openBasketDisplay()->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
     }
 
     /**
@@ -510,21 +494,12 @@ final class CheckoutProcessCest
         return Fixtures::get('existingUser');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string $productId
-     * @param string $bundledProductId
-     */
-    private function prepareTestDataForBundledProduct(AcceptanceTester $I, $productId, $bundledProductId)
+    private function prepareTestDataForBundledProduct(AcceptanceTester $I, string $productId, string $bundledProductId): void
     {
         $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => $bundledProductId], ['OXID' => $productId]);
     }
 
-    /**
-     * @param AcceptanceTester $I
-     * @param string           $productId
-     */
-    private function removeBundleFromProduct(AcceptanceTester $I, $productId)
+    private function removeBundleFromProduct(AcceptanceTester $I, string $productId): void
     {
         $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => ''], ['OXID' => $productId]);
     }

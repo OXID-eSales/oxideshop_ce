@@ -1,27 +1,27 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use OxidEsales\Codeception\Module\Translation\Translator;
 
-class SearchCest
+final class SearchCest
 {
     /**
-     * @group myAccount
-     * @group wishList
-     *
-     * @param AcceptanceTester $I
+     * @group search
      */
-    public function searchAndNavigateInProductList(AcceptanceTester $I)
+    public function searchAndNavigateInProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('if sorting, paging and navigation is working correctly in search list');
 
         $I->updateConfigInDatabase('aNrofCatArticles', serialize(["1", "2", "10", "20", "50", "100"]), "arr");
-        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize(["12", "16", "24", "32"]), "arr");
+        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize(["1", "2", "10", "20", "50", "100"]), "arr");
 
         $productData = [
             'id' => '1000',
@@ -54,7 +54,7 @@ class SearchCest
             ->seeProductData($productData3, 1)
             ->selectProductsPerPage('2');
 
-        $I->see(Translator::translate('PRODUCTS_PER_PAGE').' 2');
+        $I->see(Translator::translate('PRODUCTS_PER_PAGE') . ' 2');
 
         $searchListPage = $searchListPage->seeProductData($productData3, 1)
             ->seeProductData($productData, 2)
@@ -66,9 +66,11 @@ class SearchCest
             ->seeProductData($productData2, 1)
             ->openListPageNumber(2)
             ->seeProductData($productData, 1)
-            ->seeProductData($productData3, 2)
-            ->selectListDisplayType(Translator::translate('grid'));
-        $I->see(Translator::translate('PRODUCTS_PER_PAGE').' 12');
-        $I->dontSeeElement($searchListPage->nextListPage);
+            ->seeProductData($productData3, 2);
+        $searchListPage->searchFor('[EN] šÄßüл')
+            ->seeSearchCount(4)
+            ->selectListDisplayType(Translator::translate('line'))
+            ->selectSorting('oxtitle', 'asc')
+            ->seeProductDataInDisplayTypeList($productData3, 1);
     }
 }

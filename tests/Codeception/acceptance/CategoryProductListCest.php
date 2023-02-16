@@ -14,13 +14,12 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 final class CategoryProductListCest
 {
     /**
-     * Product list for category.
      * @group category_product_list
      */
     public function filterAndNavigateThroughCategoryList(AcceptanceTester $I): void
     {
         $I->wantToTest('category product list filter functionality');
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([20, 1, 2, 10, 100]), 'arr');
+        $this->setNumberOfProductsInCategoryList($I);
 
         $productData = [
             'id' => '1000',
@@ -65,7 +64,8 @@ final class CategoryProductListCest
     public function sortAndNavigateThroughCategoryList(AcceptanceTester $I): void
     {
         $I->wantToTest('category product list sorting');
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([20, 1, 2, 10, 100]), 'arr');
+        $this->setNumberOfProductsInCategoryList($I);
+
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -106,8 +106,8 @@ final class CategoryProductListCest
         $I->wantToTest('price category functionality');
 
         $I->updateInDatabase('oxcategories', ['OXACTIVE' => 1, 'OXACTIVE_1' => 1], ['OXID' => 'testpricecat']);
+        $this->setNumberOfProductsInCategoryList($I);
 
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([20, 1, 2, 10, 100]), 'arr');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -138,8 +138,6 @@ final class CategoryProductListCest
     /**
      * @group category_product_list
      * @group product_variants
-     *
-     * @param AcceptanceTester $I
      */
     public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
     {
@@ -163,5 +161,11 @@ final class CategoryProductListCest
 
         $detailsPage = $searchListPage->selectVariant(1, 'M');
         $detailsPage->seeProductData($productData);
+    }
+
+    private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void
+    {
+        $I->updateConfigInDatabase('aNrofCatArticles', serialize([20, 1, 2, 10, 100]), 'arr');
+        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([20, 1, 2, 10, 100]), "arr");
     }
 }

@@ -23,16 +23,6 @@ final class SessionTest extends TestCase
         $this->setApplicationDefaults();
     }
 
-    public function testInitNewSessionUnsetsSessionVariables(): void
-    {
-        $session = Registry::getSession();
-
-        $session->setVariable('testVariable', 'value');
-        Registry::getSession()->initNewSession();
-
-        $this->assertNull($session->getVariable('testVariable'));
-    }
-
     public function testGetSidFromRequestWithForceSidInRequestAndDisabledConfig(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);

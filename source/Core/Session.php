@@ -709,7 +709,13 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         if ($sUrl && !$oConfig->isCurrentUrl($sUrl)) {
             return true;
-        } elseif ($this->_blSidNeeded === null) {
+        }
+
+        if ($sUrl && $oConfig->isCurrentUrl($sUrl)) {
+            return false;
+        }
+
+        if ($this->_blSidNeeded === null) {
             // setting initial state
             $this->_blSidNeeded = false;
 

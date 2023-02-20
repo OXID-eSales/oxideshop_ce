@@ -118,6 +118,34 @@ final class SessionTest extends TestCase
         $session->regenerateSessionId();
     }
 
+    public function testSidNeededForDifferentUrls(): void
+    {
+        $session = oxNew(Session::class);
+
+        $utilsSever = $this->createMock(UtilsServer::class);
+        Registry::set(UtilsServer::class, $utilsSever);
+        $utilsSever
+            ->method('isCurrentUrl')
+            ->willReturn(false);
+
+        $this->assertTrue($session->isSidNeeded('https://myshop.abc'));
+    }
+
+    public function testSidNotNeededForTheSameUrl(): void
+    {
+        $session = oxNew(Session::class);
+
+        $utilsSever = $this->createMock(UtilsServer::class);
+        Registry::set(UtilsServer::class, $utilsSever);
+        $utilsSever
+            ->method('isCurrentUrl')
+            ->willReturn(true);
+
+        $url = Registry::getConfig()->getCurrentShopUrl();
+
+        $this->assertFalse($session->isSidNeeded($url));
+    }
+
     private function setApplicationDefaults(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', false);

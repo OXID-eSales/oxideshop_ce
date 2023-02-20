@@ -19,7 +19,7 @@ final class ManufacturerCest
     public function checkManufacturerList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer list');
-        $I->updateThemeSettingInDatabase('bl_showManufacturer', true);
+        $I->updateConfigInDatabase('bl_showManufacturer', true);
 
         $homePage = $I->openShop();
         $homePage->openManufacturerListPage()

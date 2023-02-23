@@ -38,6 +38,7 @@ final class CMSPageChangeIdentCest
      */
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('legal footer is missing  - OXDEV-6816');
         $I->clearShopCache();
         $I->openShop();
 

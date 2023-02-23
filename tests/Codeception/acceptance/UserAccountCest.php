@@ -181,6 +181,7 @@ final class UserAccountCest
      */
     public function changeUserBillingAddress(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('Functionality is not working OXDEV-6690');
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
 

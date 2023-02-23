@@ -18,7 +18,6 @@ final class CategoryProductListCest
      */
     public function filterAndNavigateThroughCategoryList(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Missing func OXDEV-6791');
         $I->wantToTest('category product list filter functionality');
         $this->setNumberOfProductsInCategoryList($I);
 
@@ -39,23 +38,22 @@ final class CategoryProductListCest
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
         $productList->selectFilter('Test attribute 1 [EN] šÄßüл', 'attr value 1 [EN] šÄßüл')
-            ->dontSeeProductData($productData2, 1);
-             //TODO:->openFilter('Test attribute 2 [EN] šÄßüл');
-        //TODO: missing OXDEV-6791 $I->dontSee('attr value 12 [EN] šÄßüл', $productList->listFilter);
+            ->dontSeeProductData($productData2, 1)->openFilter('Test attribute 2 [EN] šÄßüл');
+        $I->dontSee('attr value 12 [EN] šÄßüл', $productList->listFilter);
         $productList = $productList
-            //TODO: missing OXDEV-6791->resetFilter()
+            ->resetFilter()
             ->selectFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл')
             ->dontSeeProductData($productData, 1)
-            //TODO: missing OXDEV-6791->resetFilter()
+            ->resetFilter()
             ->selectProductsPerPage('1')
             ->selectFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
             ->seeProductData($productData, 1)
             ->openNextListPage()
-            ->seeProductData($productData2, 1);
-        $I->see('attr value 3 [EN] šÄßüл', $productList->listFilter);
-        $productList = $productList->openPreviousListPage();
-        $I->see('attr value 3 [EN] šÄßüл', $productList->listFilter);
-        $productList->resetFilter();
+            ->seeProductData($productData2, 1)
+            ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
+            ->openPreviousListPage()
+            ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
+            ->resetFilter();
 
         $I->dontSeeElement($productList->resetListFilter);
     }
@@ -159,10 +157,8 @@ final class CategoryProductListCest
         $searchListPage = $I->openShop()
             ->searchFor($productData['id']);
 
-        $searchListPage->seeProductData($productData, 1);
-
-        $detailsPage = $searchListPage->selectVariant(1, 'M');
-        $detailsPage->seeProductData($productData);
+        $searchListPage->seeProductData($productData, 1)->openProductDetailsPage(1)
+            ->seeProductData($productData);
     }
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void

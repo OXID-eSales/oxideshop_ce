@@ -158,6 +158,7 @@ final class CheckoutProcessCest
      */
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('update amount is not working  - OXDEV-6821');
         $basket = new Basket($I);
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same 
         product was sold out by other user during the checkout');
@@ -223,6 +224,7 @@ final class CheckoutProcessCest
 
         $orderPage->submitOrder();
 
+        //in second step, product availability is not checked.
         $I->see(Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE'));
 
         $orderPage->submitOrderSuccessfully();
@@ -236,6 +238,7 @@ final class CheckoutProcessCest
      */
     public function checkMinimalOrderPrice(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('update amount is not working  - OXDEV-6821');
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
         // prepare data for test

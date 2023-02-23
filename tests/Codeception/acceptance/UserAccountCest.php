@@ -27,7 +27,7 @@ final class UserAccountCest
         //login when username/pass are incorrect. error msg should be in place etc.
         $startPage->loginUser('non-existing-user@oxid-esales.dev', '')
             ->seeUserLoggedOut();
-        //TODO: missing func OXDEV-6780 $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $startPage->badLoginError);
+        $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $startPage->badLoginError);
 
         //login with correct user name/pass
         $userData = $this->getExistingUserData();

@@ -795,8 +795,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $sToken = $this->getVariable('_rtoken');
         if (!$sToken && $blGenerateNew) {
-            $sToken = md5(rand() . $this->getId());
-            $sToken = substr($sToken, 0, 8);
+            $sToken = Registry::getRandomNumberGenerator()->getRandomHexString(8);
             $this->setVariable('_rtoken', $sToken);
         }
 

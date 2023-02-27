@@ -54,7 +54,7 @@ class ProductCompareCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
-      //TODO: does not work  $detailsPage->removeFromCompareList()
+        $detailsPage->removeFromCompareList();
          //   ->checkCompareListItemCount(0);
     }
 
@@ -194,12 +194,6 @@ class ProductCompareCest
         $I->cleanUp();
         //(Use product compare) is enabled
         $I->updateConfigInDatabase('bl_showCompareList', true, "bool");
-    }
-
-    public function _failed(AcceptanceTester $I)
-    {
-        $I->cleanUp();
-        $I->clearShopCache();
     }
 
     private function getExistingUserData()

@@ -78,13 +78,12 @@ final class ReviewAndRatingCest
             $parentReview['text'],
             $parentReview['rating']
         );
-        /* TODO: a bug OXDEV-6707
-         $detailsPage->seeUserProductReviewAndRating(
+        $detailsPage->seeUserProductReviewAndRating(
              2,
              $userData['userName'],
              $variantReview['text'],
              $variantReview['rating']
-         );*/
+         );
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
         $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }

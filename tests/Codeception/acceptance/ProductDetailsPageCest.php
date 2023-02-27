@@ -57,12 +57,11 @@ final class ProductDetailsPageCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
 
         //assert product
-        $detailsPage->seeProductData($productData);
-        //TODO: missing functionality OXDEV-6706 ->checkIfProductIsNotBuyable();
+        $detailsPage->seeProductData($productData)->checkIfProductIsNotBuyable();
 
         //select a variant of the product
         $detailsPage = $detailsPage->selectVariant(1, 'S')
-            //TODO: missing functionality OXDEV-6706 ->checkIfProductIsNotBuyable()
+            ->checkIfProductIsNotBuyable()
             ->selectVariant(2, 'white');
 
         //assert product
@@ -72,8 +71,7 @@ final class ProductDetailsPageCest
             'description' => '',
             'price' => '15,00 €'
         ];
-        $detailsPage->seeProductData($productData3);
-            //TODO: missing functionality OXDEV-6706 ->checkIfProductIsBuyable();
+        $detailsPage->seeProductData($productData3)->checkIfProductIsBuyable();
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
@@ -83,9 +81,9 @@ final class ProductDetailsPageCest
 
         //select a variant of the product
         $detailsPage->selectVariant(1, 'S')
-            //TODO: missing functionality OXDEV-6706 ->checkIfProductIsNotBuyable()
+            ->checkIfProductIsNotBuyable()
             ->selectVariant(2, 'black')
-            //TODO: missing functionality OXDEV-6706 ->checkIfProductIsNotBuyable()
+            ->checkIfProductIsNotBuyable()
             ->selectVariant(3, 'lether');
 
         //assert product
@@ -95,12 +93,9 @@ final class ProductDetailsPageCest
             'description' => '',
             'price' => '25,00 €'
         ];
-        $detailsPage->seeProductData($productData2);
-            //TODO: missing functionality OXDEV-6706 ->checkIfProductIsBuyable();
+        $detailsPage->seeProductData($productData2)->checkIfProductIsBuyable();
 
-        $detailsPage = $detailsPage
-            //TODO: missing functionality OXDEV-6709 ->openPriceAlert()
-            ->openAttributes();
+        $detailsPage = $detailsPage->openAttributes();
 
         $I->see('attr value 1 [EN]');
 

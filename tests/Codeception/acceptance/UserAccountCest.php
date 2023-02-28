@@ -117,7 +117,7 @@ final class UserAccountCest
      */
     public function changeUserEmailInBillingAddress(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Functionality is not working OXDEV-6790');
+        $I->markTestSkipped('Functionality is not working OXDEV-6690');
         $I->wantTo('change user email in my account');
 
         $userData = $this->getExistingUserData();

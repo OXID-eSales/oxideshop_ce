@@ -43,12 +43,12 @@ final class GiftRegistryCest
         $detailsPage = $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $detailsPage = $detailsPage->openAccountMenu()
-           //TODO: missing functionality ->checkGiftRegistryItemCount(0)
+            ->checkGiftRegistryItemCount(0)
             ->closeAccountMenu();
 
         $detailsPage = $detailsPage->addProductToGiftRegistryList()
             ->openAccountMenu()
-            //TODO: missing functionality->checkGiftRegistryItemCount(1)
+            ->checkGiftRegistryItemCount(1)
             ->closeAccountMenu();
 
         $userAccountPage = $detailsPage->openAccountPage()->seeItemNumberOnGiftRegistryPanel('1');
@@ -72,7 +72,7 @@ final class GiftRegistryCest
         $giftRegistryPage->removeFromGiftRegistry(1);
         $I->see(Translator::translate('GIFT_REGISTRY_EMPTY'));
         $giftRegistryPage->openAccountMenu()
-            //TODO: missing ->checkGiftRegistryItemCount(0)
+            ->checkGiftRegistryItemCount(0)
             ->closeAccountMenu();
 
         $I->deleteFromDatabase('oxuserbaskets', ['oxuserid' => 'testuser']);

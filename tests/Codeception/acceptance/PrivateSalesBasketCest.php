@@ -48,16 +48,14 @@ final class PrivateSalesBasketCest
         ];
 
         $basketPage->seeBasketContains([$productData], '50,00 €');
-/*TODO: Missing functionality OXDEV-6699
+
         $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
-        $I->dontSeeElement('#scRootCatChanged');
+        $I->dontSee(Translator::translate('ROOT_CATEGORY_CHANGED'));
 
-        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
-        $I->waitForElementVisible('#scRootCatChanged', 5);
-
-        $I->click(Translator::translate('CONTINUE_SHOPPING'));
-        $I->dontSee('scRootCatChanged');
-        $homePage->openMiniBasket()->checkBasketEmpty();*/
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл')
+            ->confirmMainCategoryChanged()
+            ->openMiniBasket()
+            ->checkBasketEmpty();
     }
 
     public function checkIfblBasketExcludeEnabledAlsoClearsByEmptyBasket(AcceptanceTester $I): void
@@ -85,15 +83,12 @@ final class PrivateSalesBasketCest
             ->openProductDetailsPage(1)
             ->addProductToBasket(1)
             ->openBasket();
-        /*TODO: Missing functionality OXDEV-6699
-                $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
-                $I->waitForElementVisible('#scRootCatChanged', 5);
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл')
+            ->openBasketIfMainCategoryChanged()
+            ->updateProductAmount(0);
 
-                $basket = $homePage->openBasket();
-                $basket->updateProductAmount(0);
-
-                $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
-                $I->dontSeeElement('#scRootCatChanged');*/
+        $homePage->openCategoryPage('Test category 2 [EN] šÄßüл');
+        $I->dontSee(Translator::translate('ROOT_CATEGORY_CHANGED'));
     }
 
     /** @group private_shopping_basket_expiration */

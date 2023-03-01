@@ -158,7 +158,6 @@ final class CheckoutProcessCest
      */
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('update amount is not working  - OXDEV-6821');
         $basket = new Basket($I);
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same 
         product was sold out by other user during the checkout');
@@ -238,7 +237,6 @@ final class CheckoutProcessCest
      */
     public function checkMinimalOrderPrice(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('update amount is not working  - OXDEV-6821');
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
         // prepare data for test
@@ -270,7 +268,10 @@ final class CheckoutProcessCest
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
 
-        $basketPage = $basketPage->updateProductAmount(2);
+        $productData['amount'] = 2;
+        $productData['totalPrice'] = '90,00 €';
+        $basketPage = $basketPage->updateProductAmount(2)
+            ->seeBasketContains([$productData], '90,00 €');
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->seeNextStep();
 
@@ -278,12 +279,11 @@ final class CheckoutProcessCest
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
 
-        //TODO missing functionality
-        /*$basketPage = $basketPage->removeCouponFromBasket();
+        $basketPage = $basketPage->removeCouponFromBasket();
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $userCheckoutPage = $basketPage->goToNextStep();
         $breadCrumbName = Translator::translate('ADDRESS');
-        $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);*/
+        $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);
         $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testcatdiscount']);
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }

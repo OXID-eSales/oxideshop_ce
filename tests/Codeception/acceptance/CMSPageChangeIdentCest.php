@@ -34,11 +34,9 @@ final class CMSPageChangeIdentCest
     /**
      * @group todo_add_clean_cache_after_database_update
      * @param AcceptanceTester $I
-     * TODO: not working
      */
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('legal footer is missing  - OXDEV-6816');
         $I->clearShopCache();
         $I->openShop();
 

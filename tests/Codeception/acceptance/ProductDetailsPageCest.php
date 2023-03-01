@@ -120,17 +120,17 @@ final class ProductDetailsPageCest
      */
     public function navigateInDetailsPage(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('product navigation is missing in details page - OXDEV-6708');
         $I->wantToTest('product navigation in details page');
 
         $productData = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $I->updateConfigInDatabase('aSortCols', 'a:2:{i:0;s:7:"oxtitle";i:1;s:13:"oxvarminprice";}', 'arr');
+        $I->updateConfigInDatabase('sProductListNavigation', true);
 
         $searchListPage = $I->openShop()
             ->searchFor('100')
@@ -203,10 +203,11 @@ final class ProductDetailsPageCest
      */
     public function sendProductPriceAlert(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('product price alert functionality is missing in details page - OXDEV-6709');
+        $I->markTestSkipped('Will not be implemented in APEX theme - OXDEV-6835');
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
 
+        $I->updateConfigInDatabase('sProductListNavigation', true);
         $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
 
         $I->updateConfigInDatabase('blAllowSuggestArticle', true, 'bool');
@@ -235,9 +236,11 @@ final class ProductDetailsPageCest
      */
     public function disableProductPriceAlert(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('product price alert functionality is missing in details page - OXDEV-6709');
+        $I->markTestSkipped('Will not be implemented in APEX theme - OXDEV-6835');
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality is disabled');
+
+        $I->updateConfigInDatabase('sProductListNavigation', true);
 
         $productData = [
             'id' => '1000',

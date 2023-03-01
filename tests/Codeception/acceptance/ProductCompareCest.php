@@ -37,9 +37,9 @@ class ProductCompareCest
         $I->see($productData['title']);
 
         $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword'])
-            // TODO: does not exist ->checkCompareListItemCount(0)
-            ->addToCompareList();
-            // TODO: does not exist ->checkCompareListItemCount(1);
+            ->checkCompareListItemCount(0)
+            ->addToCompareList()
+            ->checkCompareListItemCount(1);
 
         $userAccountPage = $detailsPage->openAccountPage();
         $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
@@ -54,8 +54,7 @@ class ProductCompareCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
-        $detailsPage->removeFromCompareList();
-         //   ->checkCompareListItemCount(0);
+        $detailsPage->removeFromCompareList()->checkCompareListItemCount(0);
     }
 
     /**
@@ -98,22 +97,19 @@ class ProductCompareCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData1['id']);
         $I->see($productData1['title']);
         //add to compare list
-        $detailsPage->addToCompareList();
-           //TODO: does not exists ->checkCompareListItemCount(1);
+        $detailsPage->addToCompareList()->checkCompareListItemCount(1);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData2['id']);
         $I->see($productData2['title']);
         //add to compare list
-        $detailsPage->addToCompareList();
-        //TODO: does not exists ->checkCompareListItemCount(2);
+        $detailsPage->addToCompareList()->checkCompareListItemCount(2);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData3['id']);
         $I->see($productData3['title']);
         //add to compare list
-        $detailsPage->addToCompareList();
-        //TODO: does not exists ->checkCompareListItemCount(3);
+        $detailsPage->addToCompareList()->checkCompareListItemCount(3);
 
         //open compare list page
         $comparePage = $detailsPage->openProductComparePage();
@@ -139,14 +135,13 @@ class ProductCompareCest
         $comparePage->seeProductAttributeValue('attr value 2 [EN] šÄßüл', 3, 1);
         $comparePage->seeProductAttributeValue('attr value 12 [EN] šÄßüл', 3, 2);
 
-        //TODO: Missing functionality OXDEV-6704
-        /*$comparePage->moveItemToRight($productData1['id']);
+        $comparePage->moveItemToRight($productData1['id']);
         $comparePage->seeProductData($productData1, 2);
         $comparePage->seeProductData($productData2, 1);
 
         $comparePage->moveItemToLeft($productData1['id']);
         $comparePage->seeProductData($productData1, 1);
-        $comparePage->seeProductData($productData2, 2);*/
+        $comparePage->seeProductData($productData2, 2);
 
         $comparePage->removeProductFromList($productData1['id']);
         $comparePage->removeProductFromList($productData2['id']);

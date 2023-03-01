@@ -25,14 +25,14 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $homePage = $I->openShop();
@@ -70,14 +70,14 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $homePage = $I->openShop();
@@ -112,7 +112,7 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [

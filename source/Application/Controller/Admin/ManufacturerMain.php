@@ -110,11 +110,9 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             return;
         }
 
-        //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted
@@ -148,11 +146,9 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             return;
         }
 
-        //$aParams = $oManufacturer->ConvertNameArray2Idx( $aParams);
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted

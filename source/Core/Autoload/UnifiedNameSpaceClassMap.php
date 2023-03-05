@@ -909,6 +909,12 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
+    'OxidEsales\Eshop\Application\Controller\Admin\ManufacturerPicture'             => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerPicture::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
     'OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax'         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerMainAjax::class,
         'isAbstract'       => false,

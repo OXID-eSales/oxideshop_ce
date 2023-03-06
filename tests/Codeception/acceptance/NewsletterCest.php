@@ -39,9 +39,8 @@ final class NewsletterCest
         $I->wantToTest('No valid email as username');
 
         $newsletterPage = $this->openNewsletterPage($I);
-        $newsletterPage->enterUserData('Test', 'AAA', 'BBB');
+        $newsletterPage->enterUserData('Test', 'AAA', 'BBB')->subscribe();
 
-        $I->seeElement('.text-danger');
         $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }
 

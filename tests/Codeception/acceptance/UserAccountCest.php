@@ -25,7 +25,8 @@ final class UserAccountCest
         $startPage = $I->openShop();
 
         //login when username/pass are incorrect. error msg should be in place etc.
-        $startPage->loginUser('non-existing-user@oxid-esales.dev', '')->seeUserLoggedOut();
+        $startPage->loginUser('non-existing-user@oxid-esales.dev', '')
+            ->seeUserLoggedOut();
         $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $startPage->badLoginError);
 
         //login with correct user name/pass

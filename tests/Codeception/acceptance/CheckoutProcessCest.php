@@ -269,7 +269,10 @@ final class CheckoutProcessCest
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
 
-        $basketPage = $basketPage->updateProductAmount(2);
+        $productData['amount'] = 2;
+        $productData['totalPrice'] = '90,00 €';
+        $basketPage = $basketPage->updateProductAmount(2)
+            ->seeBasketContains([$productData], '90,00 €');
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->seeNextStep();
 

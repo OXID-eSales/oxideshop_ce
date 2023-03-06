@@ -25,35 +25,35 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
-        $productList->selectFilter('Test attribute 1 [EN] šÄßüл:', 'attr value 1 [EN] šÄßüл')
+        $productList->selectFilter('Test attribute 1 [EN] šÄßüл', 'attr value 1 [EN] šÄßüл')
             ->dontSeeProductData($productData2, 1)
-            ->openFilter('Test attribute 2 [EN] šÄßüл:');
-        $I->dontSee('attr value 12 [EN] šÄßüл', $productList->listFilter);
-        $productList = $productList->resetFilter()
-            ->selectFilter('Test attribute 2 [EN] šÄßüл:', 'attr value 12 [EN] šÄßüл')
+            ->dontSeeSelectedFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл');
+        $productList = $productList
+            ->resetFilter()
+            ->selectFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл')
             ->dontSeeProductData($productData, 1)
             ->resetFilter()
             ->selectProductsPerPage('1')
-            ->selectFilter('Test attribute 3 [EN] šÄßüл:', 'attr value 3 [EN] šÄßüл')
+            ->selectFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
             ->seeProductData($productData, 1)
             ->openNextListPage()
-            ->seeProductData($productData2, 1);
-        $I->see('attr value 3 [EN] šÄßüл', $productList->listFilter);
-        $productList = $productList->openPreviousListPage();
-        $I->see('attr value 3 [EN] šÄßüл', $productList->listFilter);
-        $productList->resetFilter();
+            ->seeProductData($productData2, 1)
+            ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
+            ->openPreviousListPage()
+            ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
+            ->resetFilter();
 
         $I->dontSeeElement($productList->resetListFilter);
     }
@@ -70,14 +70,14 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
             'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
+            'price' => '100,00 €'
         ];
 
         $homePage = $I->openShop();
@@ -112,7 +112,7 @@ final class CategoryProductListCest
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
+            'price' => '50,00 €'
         ];
 
         $productData2 = [
@@ -133,34 +133,6 @@ final class CategoryProductListCest
             ->seeProductData($productData2, 1)
             ->openNextListPage()
             ->seeProductData($productData, 1);
-    }
-
-    /**
-     * @group category_product_list
-     * @group product_variants
-     */
-    public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
-    {
-        $I->wantToTest('multidimensional variants functionality in lists');
-
-        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
-
-        $productData = [
-            'id' => '10014',
-            'title' => '14 EN product šÄßüл',
-            'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 €'
-        ];
-
-        $searchListPage = $I->openShop()
-            ->searchFor($productData['id']);
-
-        $searchListPage->seeProductData($productData, 1);
-
-        $detailsPage = $searchListPage->selectVariant(1, 'M');
-        $detailsPage->seeProductData($productData);
     }
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void

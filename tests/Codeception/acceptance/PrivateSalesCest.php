@@ -109,6 +109,8 @@ final class PrivateSalesCest
         $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
         $registrationPage->enterUserLoginData($userLoginDataToFill)
+            // TODO: check if needed after validation fix
+            ->confirmAGB()
             ->registerUser();
         $I->see(Translator::translate('MESSAGE_CONFIRMING_REGISTRATION'));
         $I->deleteFromDatabase('oxacceptedterms', ['oxuserid' => 'testuser']);

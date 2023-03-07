@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -23,4 +24,6 @@ interface ModuleSettingServiceInterface
     public function saveString(string $name, string $value, string $moduleId): void;
     public function saveBoolean(string $name, bool $value, string $moduleId): void;
     public function saveCollection(string $name, array $value, string $moduleId): void;
+
+    public function exists(string $name, string $moduleId): bool;
 }

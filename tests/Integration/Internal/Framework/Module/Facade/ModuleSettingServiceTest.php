@@ -94,6 +94,12 @@ final class ModuleSettingServiceTest extends TestCase
         $this->assertEquals('newValue', $this->settingFacade->getString('stringSetting', $this->testModuleId));
     }
 
+    public function testExists(): void
+    {
+        $this->assertFalse($this->settingFacade->exists('nonExistent', $this->testModuleId));
+        $this->assertTrue($this->settingFacade->exists('stringSetting', $this->testModuleId));
+    }
+
     private function prepareTestShopConfiguration(): void
     {
         $integerSetting = new Setting();

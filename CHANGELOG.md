@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Event:
   - `Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent`
+- Methods:
+  - `Internal\Framework\Module\Facade\ModuleSettingServiceInterface::exists()`
 - Sorting field for Manufacturer
 
 ### Fixed

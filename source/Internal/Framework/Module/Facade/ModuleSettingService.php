@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -74,6 +75,17 @@ class ModuleSettingService implements ModuleSettingServiceInterface
     public function saveCollection(string $name, array $value, string $moduleId): void
     {
         $this->saveSettingToModuleConfiguration($moduleId, $name, $value);
+    }
+
+    public function exists(string $name, string $moduleId): bool
+    {
+        try {
+            $this->getValue($moduleId, $name);
+        } catch (ModuleSettingNotFountException) {
+            return false;
+        }
+
+        return true;
     }
 
     private function saveSettingToModuleConfiguration(string $moduleId, string $name, mixed $value): void

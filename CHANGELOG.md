@@ -26,8 +26,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Sorting field for Manufacturer
 
 ### Fixed
+- Import of `oxartextends` with columns [#0007152](https://bugs.oxid-esales.com/view.php?id=7152)
 - Invalidate module cache on module settings/configuration change
-- Fix deprecation warnings
+- Deprecation warnings
 
 ### Removed
 - Backwards compatibility name support for 'attribute' controller. Please use the full namespace. [PR-907](https://github.com/OXID-eSales/oxideshop_ce/pull/907)

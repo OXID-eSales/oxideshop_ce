@@ -26,8 +26,9 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
      */
     public function generate(): void
     {
+        $allShopIds = $this->context->getAllShopIds();
         $this->shopConfigurationDao->deleteAll();
-        foreach ($this->context->getAllShopIds() as $shopId) {
+        foreach ($allShopIds as $shopId) {
             $this->shopConfigurationDao->save(new ShopConfiguration(), $shopId);
         }
     }

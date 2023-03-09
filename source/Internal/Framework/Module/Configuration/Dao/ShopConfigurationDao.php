@@ -19,10 +19,10 @@ use Symfony\Component\Filesystem\Filesystem;
 class ShopConfigurationDao implements ShopConfigurationDaoInterface
 {
     public function __construct(
-        private BasicContextInterface              $context,
-        private Filesystem                         $fileSystem,
-        private ModuleConfigurationDaoInterface    $moduleConfigurationDao,
-        private ClassExtensionsChainDaoInterface   $classExtensionsChainDao,
+        private BasicContextInterface $context,
+        private Filesystem $fileSystem,
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private ClassExtensionsChainDaoInterface $classExtensionsChainDao,
         private TemplateExtensionChainDaoInterface $templateExtensionChainDao
     ) {
     }
@@ -37,7 +37,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         if (!$this->isShopIdExists($shopId)) {
             throw new ShopConfigurationNotFoundException(
-                'ShopId ' . $shopId . ' does not exist'
+                'Configuration for ShopID ' . $shopId . ' not found'
             );
         }
 

@@ -39,7 +39,7 @@ final class NewsletterCest
         $I->wantToTest('No valid email as username');
 
         $newsletterPage = $this->openNewsletterPage($I);
-        $newsletterPage->enterUserData('Test', 'AAA', 'BBB');
+        $newsletterPage->enterUserData('Test', 'AAA', 'BBB')->subscribe();
 
      //TODO: missing validation OXDEV-6690  $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }

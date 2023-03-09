@@ -388,7 +388,7 @@ final class CheckoutProcessCest
             'fonNr' => '111-111-1',
             'faxNr' => '111-111-111-1',
             'countryId' => 'Germany',
-          //TODO: not working OXDEV-6789  'stateId' => 'Berlin',
+            'stateId' => 'Berlin',
         ];
 
         $homePage = $I->openShop();

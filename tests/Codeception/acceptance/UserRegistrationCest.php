@@ -482,7 +482,7 @@ final class UserRegistrationCest
             'countryId' => $userCountry,
         ];
         if ($userCountry === 'Germany') {
-            //TODO: not working OXDEV-6789    $addressData['stateId'] = 'Berlin';
+            $addressData['stateId'] = 'Berlin';
         }
         return $addressData;
     }

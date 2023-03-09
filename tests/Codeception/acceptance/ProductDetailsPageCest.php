@@ -71,7 +71,8 @@ final class ProductDetailsPageCest
             'description' => '',
             'price' => '15,00 €'
         ];
-        $detailsPage->seeProductData($productData3)->checkIfProductIsBuyable();
+        $detailsPage->seeProductData($productData3)
+            ->checkIfProductIsBuyable();
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
@@ -93,7 +94,8 @@ final class ProductDetailsPageCest
             'description' => '',
             'price' => '25,00 €'
         ];
-        $detailsPage->seeProductData($productData2)->checkIfProductIsBuyable();
+        $detailsPage->seeProductData($productData2)
+            ->checkIfProductIsBuyable();
 
         $detailsPage = $detailsPage->openAttributes();
 
@@ -195,67 +197,6 @@ final class ProductDetailsPageCest
             ->seeAttributeValue('attr value 3 [EN] šÄßüл', 2)
             ->seeAttributeName('Test attribute 2 [EN] šÄßüл', 3)
             ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
-    }
-
-    /**
-     * @group product
-     * @group priceAlarm
-     */
-    public function sendProductPriceAlert(AcceptanceTester $I): void
-    {
-        $I->markTestSkipped('Will not be implemented in APEX theme - OXDEV-6835');
-        $productNavigation = new ProductNavigation($I);
-        $I->wantToTest('product price alert functionality');
-
-        $I->updateConfigInDatabase('sProductListNavigation', true);
-        $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
-
-        $I->updateConfigInDatabase('blAllowSuggestArticle', true, 'bool');
-        $productData = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 €'
-        ];
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
-        $I->see(Translator::translate('PRICE_ALERT'));
-
-        $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', 99.99);
-        $thankYouMessage = Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3')
-            . ' 99,99 € ' . Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4');
-        $I->see($thankYouMessage);
-        $I->see($productData['title']);
-    }
-
-    /**
-     * @group product
-     * @group priceAlarm
-     */
-    public function disableProductPriceAlert(AcceptanceTester $I): void
-    {
-        $I->markTestSkipped('Will not be implemented in APEX theme - OXDEV-6835');
-        $productNavigation = new ProductNavigation($I);
-        $I->wantToTest('product price alert functionality is disabled');
-
-        $I->updateConfigInDatabase('sProductListNavigation', true);
-
-        $productData = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 €'
-        ];
-
-        //disabling price alert for product(1000)
-        $I->updateInDatabase('oxarticles', ['oxblfixedprice' => 1], ['OXID' => '1000']);
-
-        //open details page
-        $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
-        $I->dontSee(Translator::translate('PRICE_ALERT'));
     }
 
     /**

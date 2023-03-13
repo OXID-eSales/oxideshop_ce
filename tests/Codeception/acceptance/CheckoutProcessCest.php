@@ -216,6 +216,7 @@ final class CheckoutProcessCest
 
         $orderPage->submitOrder();
 
+        //in second step, product availability is not checked.
         $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         // someone bought all items while client filled steps

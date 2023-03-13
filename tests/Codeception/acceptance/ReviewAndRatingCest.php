@@ -30,7 +30,6 @@ final class ReviewAndRatingCest
         $userRating = 3;
 
         $detailsPage = $productNavigation->openProductDetailsPage('1000');
-      //  $I->see(Translator::translate('MESSAGE_LOGIN_TO_WRITE_REVIEW'));
         $detailsPage->loginUserForReview($userData['userLoginName'], $userData['userPassword'])
             ->addReviewAndRating($userReviewText, $userRating)
             ->seeUserProductReviewAndRating(1, $userData['userName'], $userReviewText, $userRating);

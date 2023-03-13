@@ -54,7 +54,6 @@ final class PrivateSalesBasketCest
 
         $homePage->openCategoryPage('Test category 2 [EN] šÄßüл')
             ->confirmMainCategoryChanged()
-            ->openMiniBasket()
             ->checkBasketEmpty();
     }
 
@@ -107,7 +106,7 @@ final class PrivateSalesBasketCest
             ->openProductDetailsPage(1)
             ->addProductToBasket(2);
 
-        $homePage->openMiniBasket()->seeCountdownWithinBasket();
+        $homePage->seeCountdownWithinBasket();
 
         $I->openShop()->searchFor('1000');
         $I->see(Translator::translate('NO_ITEMS_FOUND'));
@@ -117,7 +116,7 @@ final class PrivateSalesBasketCest
         $I->dontSee("expired products are still visible in basket popup...", "modalbasketFlyout");
 
         $homePage = $I->openShop();
-        $homePage->openMiniBasket()->checkBasketEmpty()->closeMiniBasket();
+        $homePage->checkBasketEmpty();
         $homePage->searchFor('1000');
         $I->dontSee(Translator::translate('NO_ITEMS_FOUND'));
     }

@@ -28,6 +28,16 @@ final class DownloadableProductCest
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
     }
 
+    public function _after(AcceptanceTester $I)
+    {
+        $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
+        $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
+        $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', false, 'bool');
+        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 0], ['oxartnum' => '1002-1']);
+        $I->deleteFromDatabase('oxorder', ['OXID' => $this->orderId]);
+        $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);
+    }
+
     public function downloadableFiles(AcceptanceTester $I): void
     {
         $I->wantToTest('Product downloadable files');

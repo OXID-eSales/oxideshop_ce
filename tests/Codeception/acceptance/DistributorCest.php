@@ -9,14 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
-use Codeception\Command\Shared\ConfigTrait;
-use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Lists\DistributorList;
 
 final class DistributorCest
 {
-    use ConfigTrait;
-
     /**
      * @group manufacturer
      */

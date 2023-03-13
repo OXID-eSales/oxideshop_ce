@@ -31,7 +31,7 @@ final class NewsletterCest
         $newsletterPage = $this->openNewsletterPage($I);
         $newsletterPage->enterUserData()->subscribe();
 
-     //TODO: different validation OXDEV-6690  $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+        $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
     }
 
     public function subscribeWithIncorrectUsername(AcceptanceTester $I)
@@ -41,7 +41,7 @@ final class NewsletterCest
         $newsletterPage = $this->openNewsletterPage($I);
         $newsletterPage->enterUserData('Test', 'AAA', 'BBB')->subscribe();
 
-     //TODO: missing validation OXDEV-6690  $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
+        $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }
 
     public function subscribeForNewsletter(AcceptanceTester $I)

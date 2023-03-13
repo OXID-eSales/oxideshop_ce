@@ -116,7 +116,6 @@ final class UserAccountCest
      */
     public function changeUserEmailInBillingAddress(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Functionality is not working OXDEV-6690');
         $I->wantTo('change user email in my account');
 
         $userData = $this->getExistingUserData();
@@ -181,7 +180,6 @@ final class UserAccountCest
      */
     public function changeUserBillingAddress(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Functionality is not working OXDEV-6690');
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
 
@@ -227,7 +225,6 @@ final class UserAccountCest
      */
     public function modifyUserShippingAddress(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Functionality is not working OXDEV-6790');
         $start = new Start($I);
         $I->wantToTest('user shipping address in my account');
 
@@ -262,7 +259,6 @@ final class UserAccountCest
      */
     public function createAndDeleteUserShippingAddress(AcceptanceTester $I): void
     {
-        $I->markTestSkipped('Functionality is not working OXDEV-6790');
         $start = new Start($I);
         $I->wantToTest('user shipping address create and delete');
 

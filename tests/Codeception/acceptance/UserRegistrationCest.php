@@ -353,7 +353,7 @@ final class UserRegistrationCest
         $I->wantTo('create not registered user account in the checkout and subscribe newsletter with the same email');
 
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
-       // $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
+        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
         $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         // prepare user data
         $userId = '8';

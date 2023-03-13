@@ -54,7 +54,8 @@ class ProductCompareCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
-        $detailsPage->removeFromCompareList()->checkCompareListItemCount(0);
+        $detailsPage->removeFromCompareList()
+            ->checkCompareListItemCount(0);
     }
 
     /**
@@ -97,19 +98,22 @@ class ProductCompareCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData1['id']);
         $I->see($productData1['title']);
         //add to compare list
-        $detailsPage->addToCompareList()->checkCompareListItemCount(1);
+        $detailsPage->addToCompareList()
+            ->checkCompareListItemCount(1);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData2['id']);
         $I->see($productData2['title']);
         //add to compare list
-        $detailsPage->addToCompareList()->checkCompareListItemCount(2);
+        $detailsPage->addToCompareList()
+            ->checkCompareListItemCount(2);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData3['id']);
         $I->see($productData3['title']);
         //add to compare list
-        $detailsPage->addToCompareList()->checkCompareListItemCount(3);
+        $detailsPage->addToCompareList()
+            ->checkCompareListItemCount(3);
 
         //open compare list page
         $comparePage = $detailsPage->openProductComparePage();
@@ -189,6 +193,12 @@ class ProductCompareCest
         $I->cleanUp();
         //(Use product compare) is enabled
         $I->updateConfigInDatabase('bl_showCompareList', true, "bool");
+    }
+
+    public function _failed(AcceptanceTester $I)
+    {
+        $I->cleanUp();
+        $I->clearShopCache();
     }
 
     private function getExistingUserData()

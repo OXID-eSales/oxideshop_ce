@@ -38,8 +38,8 @@ final class CategoryProductListCest
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
         $productList->selectFilter('Test attribute 1 [EN] šÄßüл', 'attr value 1 [EN] šÄßüл')
-            ->dontSeeProductData($productData2, 1)->openFilter('Test attribute 2 [EN] šÄßüл');
-        $I->dontSee('attr value 12 [EN] šÄßüл', $productList->listFilter);
+            ->dontSeeProductData($productData2, 1)
+            ->dontSeeSelectedFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл');
         $productList = $productList
             ->resetFilter()
             ->selectFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл')
@@ -133,32 +133,6 @@ final class CategoryProductListCest
             ->seeProductData($productData2, 1)
             ->openNextListPage()
             ->seeProductData($productData, 1);
-    }
-
-    /**
-     * @group category_product_list
-     * @group product_variants
-     */
-    public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
-    {
-        $I->wantToTest('multidimensional variants functionality in lists');
-
-        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', true, 'bool');
-        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
-
-        $productData = [
-            'id' => '10014',
-            'title' => '14 EN product šÄßüл',
-            'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 €'
-        ];
-
-        $searchListPage = $I->openShop()
-            ->searchFor($productData['id']);
-
-        $searchListPage->seeProductData($productData, 1)->openProductDetailsPage(1)
-            ->seeProductData($productData);
     }
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void

@@ -106,7 +106,7 @@ final class PrivateSalesCest
         $registrationPage = $registrationPage->confirmAGB()
             ->confirmNewsletterSubscription()
             ->registerUser();
-        //TODO: missing validation OXDEV-6690 $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+        $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
         $registrationPage->enterUserLoginData($userLoginDataToFill)
             // TODO: check if needed after validation fix

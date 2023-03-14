@@ -155,6 +155,34 @@ final class ModuleConfigurationTest extends TestCase
         );
     }
 
+    public function testSaveConfVarsDoesNotSaveStringForTypeNum(): void
+    {
+        $this->activateTestModule();
+
+        $this->saveConfVars(['testInt' => 'wrong value']);
+
+        ContainerFactory::resetContainer();
+
+        $this->assertNotEquals(
+            'wrong value',
+            $this->getModuleConfiguration()->getModuleSetting('testInt')->getValue()
+        );
+    }
+
+    public function testSaveConfVarsSavesStringForStringTypeIfNumberIsGiven(): void
+    {
+        $this->activateTestModule();
+
+        $this->saveConfVars(['stringSetting' => 123]);
+
+        ContainerFactory::resetContainer();
+
+        $this->assertSame(
+            '123',
+            $this->getModuleConfiguration()->getModuleSetting('stringSetting')->getValue()
+        );
+    }
+
     private function installTestModule(): void
     {
         $this->getContainer()->get(ModuleInstallerInterface::class)->install($this->getOxidEshopPackage());

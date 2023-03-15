@@ -87,7 +87,7 @@ class ProductCompareCest
             'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 € *'
+            'price' => 'from 15,00 €'
         ];
 
         $userData = $this->getExistingUserData();

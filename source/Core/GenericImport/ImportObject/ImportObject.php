@@ -9,11 +9,10 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
+use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
-/**
- * Main import object - includes basic implementations of methods.
- */
 abstract class ImportObject
 {
     /** @var string Database table name. */
@@ -52,7 +51,7 @@ abstract class ImportObject
      * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not
      * exist.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Loaded shop object.
+     * @param BaseModel $shopObject Loaded shop object.
      * @param array                                  $data       Fields to be written, null for default.
      *
      * @throws Exception on now access
@@ -113,24 +112,19 @@ abstract class ImportObject
      */
     public function getFieldList()
     {
-        $objectName = $this->getShopObjectName();
-
-        if ($objectName) {
-            $shopObject = oxNew($objectName);
-        } else {
-            $shopObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-            $shopObject->init($this->getTableName());
-        }
-
-        if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
-            $shopObject->setLanguage(0);
-            $shopObject->setEnableMultilang(false);
-        }
-
+        $shopObject = $this->createShopObject();
         $viewName = $shopObject->getViewName();
-        $fields = str_ireplace('`' . $viewName . "`.", "", strtoupper($shopObject->getSelectFields()));
-        $fields = str_ireplace([" ", "`"], ["", ""], $fields);
-        $this->fieldList = explode(",", $fields);
+        $fields = str_ireplace(
+            "`$viewName`.",
+            '',
+            strtoupper($shopObject->getSelectFields())
+        );
+        $fields = str_ireplace(
+            [' ', '`'],
+            ['', ''],
+            $fields
+        );
+        $this->fieldList = explode(',', $fields);
 
         return $this->fieldList;
     }
@@ -171,7 +165,7 @@ abstract class ImportObject
     /**
      * Issued before saving an object. can modify aData for saving.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        shop object
+     * @param BaseModel $shopObject        shop object
      * @param array                                  $data              data to prepare
      * @param bool                                   $allowCustomShopId if allow custom shop id
      *
@@ -202,7 +196,7 @@ abstract class ImportObject
      * Prepares object for saving in shop.
      * Returns true if save can proceed further.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
+     * @param BaseModel $shopObject Shop object.
      * @param array                                  $data       Data for importing.
      *
      * @return boolean
@@ -269,7 +263,7 @@ abstract class ImportObject
     /**
      * Post saving hook. can finish transactions if needed or adjust related data.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
+     * @param BaseModel $shopObject Shop object.
      * @param array                                  $data       Data to save.
      *
      * @return mixed data to return
@@ -350,21 +344,19 @@ abstract class ImportObject
     }
 
     /**
-     * Creates shop object.
-     *
-     * @return \OxidEsales\Eshop\Core\Model\BaseModel
+     * @return BaseModel
      */
     protected function createShopObject()
     {
         $objectName = $this->getShopObjectName();
         if ($objectName) {
-            $shopObject = oxNew($objectName, 'core');
-            if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
+            $shopObject = oxNew($objectName);
+            if ($shopObject instanceof MultiLanguageModel) {
                 $shopObject->setLanguage(0);
                 $shopObject->setEnableMultilang(false);
             }
         } else {
-            $shopObject = oxNew('oxBase', 'core');
+            $shopObject = oxNew(BaseModel::class);
             $shopObject->init($this->getBaseTableName());
         }
 

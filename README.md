@@ -1,10 +1,6 @@
 OXID eShop
 ==========
 
-[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg?branch=master)](https://travis-ci.org/OXID-eSales/oxideshop_ce) 
-[![Crowdin](https://badges.crowdin.net/oxid-core/localized.svg)](https://crowdin.com/project/oxid-core)
-
-
 
 This repository contains the sources of OXID eShop Community Edition Core Component.
 

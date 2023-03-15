@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Application\Model\BasketContentMarkGenerator;
+use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -7,7 +7,7 @@ define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . 
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
-use \Webmozart\PathUtil\Path;
+use \Symfony\Component\Filesystem\Path;
 
 # Yes, adding a directory separator is stupid, but that's how the code expects it
 define('OX_BASE_PATH', Path::join(INSTALLATION_ROOT_PATH, 'source') . DIRECTORY_SEPARATOR);

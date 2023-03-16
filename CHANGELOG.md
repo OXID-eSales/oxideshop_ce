@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - Backwards compatibility name support for 'attribute' controller. Please use the full namespace. [PR-907](https://github.com/OXID-eSales/oxideshop_ce/pull/907)
+- Dependency to webmozart/path-util
 
 ## [7.0.0-rc.4] - 2022-11-23
 

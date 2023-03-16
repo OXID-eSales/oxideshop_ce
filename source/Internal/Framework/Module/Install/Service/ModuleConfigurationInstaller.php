@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
     ModuleConfigurationMergingServiceInterface
 };

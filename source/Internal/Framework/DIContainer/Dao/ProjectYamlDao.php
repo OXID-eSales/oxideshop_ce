@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {

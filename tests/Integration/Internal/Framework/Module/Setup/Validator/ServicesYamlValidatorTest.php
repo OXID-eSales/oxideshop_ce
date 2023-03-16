@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ServicesYamlValidatorTest extends TestCase
 {

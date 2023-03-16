@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfi
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 {

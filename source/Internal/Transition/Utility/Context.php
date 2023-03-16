@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNot
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
 use Psr\Log\LogLevel;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class Context extends BasicContext implements ContextInterface
 {

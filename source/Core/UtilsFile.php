@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {

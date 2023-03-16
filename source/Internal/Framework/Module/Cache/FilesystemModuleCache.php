@@ -15,8 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use RecursiveIteratorIterator;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
-use Webmozart\PathUtil\Path;
 
 use function json_decode;
 use function json_encode;

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Template\Locator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\NavigationFileLocatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class ModulesMenuFileLocator implements NavigationFileLocatorInterface
 {

@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @inheritdoc

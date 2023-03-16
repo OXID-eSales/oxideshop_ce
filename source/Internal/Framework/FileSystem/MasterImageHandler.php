@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class MasterImageHandler implements ImageHandlerInterface
 {

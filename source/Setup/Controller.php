@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 use OxidEsales\Facts\Facts;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class Controller extends Core
 {

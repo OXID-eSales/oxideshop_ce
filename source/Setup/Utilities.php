@@ -13,7 +13,7 @@ use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class Utilities extends Core
 {

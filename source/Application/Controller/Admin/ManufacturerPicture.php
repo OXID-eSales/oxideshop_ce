@@ -10,11 +10,12 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
- * Admin manufacturer main screen.
- * Performs collection and updating (on user submit) main item information.
+ * Admin manufacturer picture screen.
+ * Handle manufacturer picture actions.
  */
 class ManufacturerPicture extends AdminDetailsController
 {
@@ -35,9 +36,7 @@ class ManufacturerPicture extends AdminDetailsController
     public function save(): void
     {
         if (Registry::getConfig()->isDemoShop()) {
-            $oEx = oxNew(ExceptionToDisplay::class);
-            $oEx->setMessage('MANUFACTURER_PICTURES_UPLOAD_IS_DISABLED');
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false);
+            $this->showError('MANUFACTURER_PICTURES_UPLOAD_IS_DISABLED');
 
             return;
         }
@@ -56,13 +55,47 @@ class ManufacturerPicture extends AdminDetailsController
         }
     }
 
+    public function deletePicture(): void
+    {
+        if (Registry::getConfig()->isDemoShop()) {
+            $this->showError('MANUFACTURER_PICTURES_UPLOAD_IS_DISABLED');
+
+            return;
+        }
+
+        $pictureFieldName = Registry::getRequest()->getRequestEscapedParameter('masterPictureField');
+        if (empty($pictureFieldName)) {
+            return;
+        }
+
+        $manufacturer = oxNew(Manufacturer::class);
+        $manufacturer->load($this->getEditObjectId());
+
+        $pictureKey = 'oxmanufacturers__' . $pictureFieldName;
+        $pictureType = match ($pictureFieldName) {
+            'oxicon' => 'MICO',
+            default => false,
+        };
+
+        if ($pictureType !== false) {
+            $manufacturer->deletePicture($manufacturer->$pictureKey->value, $pictureType, $pictureFieldName);
+
+            $manufacturer->$pictureKey = new Field();
+            $manufacturer->save();
+        }
+    }
+
     private function checkNewImagesCount(): void
     {
-        // Show that no new image added
         if (Registry::getUtilsFile()->getNewFilesCounter() == 0) {
-            $oEx = oxNew(ExceptionToDisplay::class);
-            $oEx->setMessage('NO_PICTURES_CHANGES');
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false);
+            $this->showError('NO_PICTURES_CHANGES');
         }
+    }
+
+    private function showError(string $message, bool $isBlFull = false): void
+    {
+        $oEx = oxNew(ExceptionToDisplay::class);
+        $oEx->setMessage($message);
+        Registry::getUtilsView()->addErrorToDisplay($oEx, $isBlFull);
     }
 }

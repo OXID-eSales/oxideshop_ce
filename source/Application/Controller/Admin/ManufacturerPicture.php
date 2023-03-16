@@ -74,6 +74,10 @@ class ManufacturerPicture extends AdminDetailsController
         $pictureKey = 'oxmanufacturers__' . $pictureFieldName;
         $pictureType = match ($pictureFieldName) {
             'oxicon' => 'MICO',
+            'oxicon_alt' => 'MICO',
+            'oxpicture' => 'MPIC',
+            'oxthumbnail' => 'MTHU',
+            'oxpromotion_icon' => 'MPICO',
             default => false,
         };
 

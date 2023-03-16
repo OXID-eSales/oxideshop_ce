@@ -123,6 +123,9 @@ namespace OxidEsales\EshopCommunity\Core {
 
             // ** manufacturer/vendor
             "sManufacturerIconsize" => '/.*\/generated\/(manufacturer|vendor)\/icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand logo size
+            "sManufacturerPicturesize" => '/.*\/generated\/(manufacturer|vendor)\/picture\/\d+\_\d+\_\d+$/', // Manufacturer's|brand picture size
+            "sManufacturerThumbnailsize" => '/.*\/generated\/(manufacturer|vendor)\/thumb\/\d+\_\d+\_\d+$/', // Manufacturer's|brand thumbnail size
+            "sManufacturerPromotionsize" => '/.*\/generated\/(manufacturer|vendor)\/promo_icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand promotion picture size
 
             // ** category
             "sCatThumbnailsize"     => '/.*\/generated\/category\/thumb\/\d+\_\d+\_\d+$/', // Category picture size

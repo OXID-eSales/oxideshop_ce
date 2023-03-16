@@ -7,17 +7,17 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Contract\IUrl;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\Eshop\Core\UtilsPic;
-use oxRegistry;
-use oxField;
 
 /**
  * Manufacturer manager
  */
-class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
+class Manufacturer extends MultiLanguageModel implements IUrl
 {
     protected static $_aRootManufacturer = [];
 
@@ -162,9 +162,17 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     protected function setRootObjectData()
     {
         $this->setId('root');
-        $this->oxmanufacturers__oxicon = new Field('', Field::T_RAW);
-        $this->oxmanufacturers__oxtitle = new Field(Registry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false), Field::T_RAW);
+        $this->oxmanufacturers__oxtitle = new Field(
+            Registry::getLang()->translateString('BY_MANUFACTURER', $this->getLanguage(), false),
+            Field::T_RAW
+        );
         $this->oxmanufacturers__oxshortdesc = new Field('', Field::T_RAW);
+
+        $this->oxmanufacturers__oxicon = new Field('', Field::T_RAW);
+        $this->oxmanufacturers__oxicon_alt = new Field('', Field::T_RAW);
+        $this->oxmanufacturers__oxpicture = new Field('', Field::T_RAW);
+        $this->oxmanufacturers__oxthumbnail = new Field('', Field::T_RAW);
+        $this->oxmanufacturers__oxpromotion_icon = new Field('', Field::T_RAW);
 
         return true;
     }
@@ -340,6 +348,10 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
                 ->onDeleteManufacturer($this);
 
             $this->deletePicture($this->oxmanufacturers__oxicon->value, 'MICO', 'oxicon');
+            $this->deletePicture($this->oxmanufacturers__oxicon_alt->value, 'MICO', 'oxicon_alt');
+            $this->deletePicture($this->oxmanufacturers__oxpicture->value, 'MPIC', 'oxpicture');
+            $this->deletePicture($this->oxmanufacturers__oxthumbnail->value, 'MTHU', 'oxthumbnail');
+            $this->deletePicture($this->oxmanufacturers__oxpromotion_icon->value, 'MPICO', 'oxpromotion_icon');
 
             return true;
         }
@@ -354,21 +366,43 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      */
     public function getIconUrl()
     {
-        if (($sIcon = $this->oxmanufacturers__oxicon->value)) {
-            $oConfig = Registry::getConfig();
-            $sSize = $oConfig->getConfigParam('sManufacturerIconsize');
-            if (!$sSize) {
-                $sSize = $oConfig->getConfigParam('sIconsize');
-            }
+        $imageName = $this->oxmanufacturers__oxicon->value;
 
-            return Registry::getPictureHandler()->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
-        }
+        return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
+    }
+
+    public function getIconAltUrl(): bool|string
+    {
+        $imageName = $this->oxmanufacturers__oxicon_alt->value;
+
+        return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
+    }
+
+    public function getPictureUrl(): bool|string
+    {
+        $imageName = $this->oxmanufacturers__oxpicture->value;
+
+        return $this->getImageUrl($imageName, 'sManufacturerPicturesize', 'picture') ?? '';
+    }
+
+    public function getThumbnailUrl(): bool|string
+    {
+        $imageName = $this->oxmanufacturers__oxthumbnail->value;
+
+        return $this->getImageUrl($imageName, 'sManufacturerThumbnailsize', 'thumb') ?? '';
+    }
+
+    public function getPromotionIconUrl(): bool|string
+    {
+        $imageName = $this->oxmanufacturers__oxpromotion_icon->value;
+
+        return $this->getImageUrl($imageName, 'sManufacturerPromotionsize', 'promo_icon') ?? '';
     }
 
     /**
      * Returns false, because manufacturer has not thumbnail
-     *
      * @return false
+     * @deprecated since v7.0.0 (2023-03-16). Please use Manufacturer::getThumbnailUrl() instead.
      */
     public function getThumbUrl()
     {
@@ -409,5 +443,14 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             'oxmanufacturers',
             $pictureFieldName
         );
+    }
+
+    private function getImageUrl(mixed $imageName, string $paramName, string $directoryName): string|bool|null
+    {
+        $config = Registry::getConfig();
+        $size = $config->getConfigParam($paramName) ?? $config->getConfigParam('sIconsize');
+        $path = 'manufacturer/' . $directoryName . '/';
+
+        return Registry::getPictureHandler()->getPicUrl($path, $imageName, $size);
     }
 }

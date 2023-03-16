@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Backwards compatibility name support for 'attribute' controller. Please use the full namespace. [PR-907](https://github.com/OXID-eSales/oxideshop_ce/pull/907)
 - Dependency to webmozart/path-util
 
+### Deprecated
+- Methods:
+  - `OxidEsales\EshopCommunity\Application\Model\Manufacturer::getThumbnailUrl()`
+
 ## [7.0.0-rc.4] - 2022-11-23
 
 ### Added

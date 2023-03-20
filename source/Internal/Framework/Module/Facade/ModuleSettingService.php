@@ -39,7 +39,7 @@ class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getString(string $name, string $moduleId): UnicodeString
     {
-        return new UnicodeString($this->getValue($moduleId, $name));
+        return new UnicodeString((string)$this->getValue($moduleId, $name));
     }
 
     public function getBoolean(string $name, string $moduleId): bool

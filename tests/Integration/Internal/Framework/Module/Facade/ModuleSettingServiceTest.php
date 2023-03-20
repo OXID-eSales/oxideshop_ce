@@ -61,6 +61,11 @@ final class ModuleSettingServiceTest extends TestCase
         $this->assertEquals(u('test'), $this->settingFacade->getString('stringSetting', $this->testModuleId));
     }
 
+    public function testStringWithNumber(): void
+    {
+        $this->assertEquals(u('123'), $this->settingFacade->getString('stringSettingWithNumber', $this->testModuleId));
+    }
+
     public function testCollection(): void
     {
         $this->settingFacade->saveCollection('arraySetting', [1, 2, 3], $this->testModuleId);
@@ -127,6 +132,11 @@ final class ModuleSettingServiceTest extends TestCase
             ->setName('arraySetting')
             ->setValue([]);
 
+        $stringSettingWithNumber = new Setting();
+        $stringSettingWithNumber
+            ->setName('stringSettingWithNumber')
+            ->setValue(123);
+
 
         $testModule = new ModuleConfiguration();
         $testModule
@@ -136,6 +146,7 @@ final class ModuleSettingServiceTest extends TestCase
             ->addModuleSetting($floatSetting)
             ->addModuleSetting($booleanSetting)
             ->addModuleSetting($stringSetting)
+            ->addModuleSetting($stringSettingWithNumber)
             ->addModuleSetting($collectionSetting);
 
 

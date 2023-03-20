@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.14.1] - unreleased
+
+### Fixed
+- Fix Generic Import [#0007152] https://bugs.oxid-esales.com/view.php?id=7152
 
 ## [6.14.0] - 2023-02-14
 

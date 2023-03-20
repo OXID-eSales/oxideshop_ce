@@ -118,8 +118,9 @@ abstract class ImportObject
             $shopObject = oxNew($objectName);
         } else {
             $shopObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-            $shopObject->init($this->getTableName());
         }
+
+        $shopObject->init($this->getTableName());
 
         if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
             $shopObject->setLanguage(0);

@@ -167,12 +167,7 @@ class Manufacturer extends MultiLanguageModel implements IUrl
             Field::T_RAW
         );
         $this->oxmanufacturers__oxshortdesc = new Field('', Field::T_RAW);
-
         $this->oxmanufacturers__oxicon = new Field('', Field::T_RAW);
-        $this->oxmanufacturers__oxicon_alt = new Field('', Field::T_RAW);
-        $this->oxmanufacturers__oxpicture = new Field('', Field::T_RAW);
-        $this->oxmanufacturers__oxthumbnail = new Field('', Field::T_RAW);
-        $this->oxmanufacturers__oxpromotion_icon = new Field('', Field::T_RAW);
 
         return true;
     }
@@ -337,11 +332,11 @@ class Manufacturer extends MultiLanguageModel implements IUrl
      */
     public function delete($oxid = null)
     {
-        if ($oxid) {
-            $this->load($oxid);
-        } else {
+        if (!$oxid) {
             $oxid = $this->getId();
         }
+
+        $this->load($oxid);
 
         if (parent::delete($oxid)) {
             Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class)
@@ -359,40 +354,46 @@ class Manufacturer extends MultiLanguageModel implements IUrl
         return false;
     }
 
-    /**
-     * Returns manufacture icon
-     *
-     * @return string
-     */
-    public function getIconUrl()
+    public function getImageType(string $fieldName): ?string
+    {
+        return match ($fieldName) {
+            'oxicon', 'oxicon_alt' => 'MICO',
+            'oxpicture' => 'MPIC',
+            'oxthumbnail' => 'MTHU',
+            'oxpromotion_icon' => 'MPICO',
+            default => null,
+        };
+    }
+
+    public function getIconUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxicon->value;
 
         return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
     }
 
-    public function getIconAltUrl(): bool|string
+    public function getIconAltUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxicon_alt->value;
 
         return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
     }
 
-    public function getPictureUrl(): bool|string
+    public function getPictureUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxpicture->value;
 
         return $this->getImageUrl($imageName, 'sManufacturerPicturesize', 'picture') ?? '';
     }
 
-    public function getThumbnailUrl(): bool|string
+    public function getThumbnailUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxthumbnail->value;
 
         return $this->getImageUrl($imageName, 'sManufacturerThumbnailsize', 'thumb') ?? '';
     }
 
-    public function getPromotionIconUrl(): bool|string
+    public function getPromotionIconUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxpromotion_icon->value;
 
@@ -445,12 +446,18 @@ class Manufacturer extends MultiLanguageModel implements IUrl
         );
     }
 
-    private function getImageUrl(mixed $imageName, string $paramName, string $directoryName): string|bool|null
+    private function getImageUrl(mixed $imageName, string $paramName, string $directoryName): string
     {
         $config = Registry::getConfig();
-        $size = $config->getConfigParam($paramName) ?? $config->getConfigParam('sIconsize');
-        $path = 'manufacturer/' . $directoryName . '/';
+        if (empty($size = $config->getConfigParam($paramName))) {
+            $size = $config->getConfigParam('sIconsize');
+        }
+        $path = 'manufacturer' . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 
-        return Registry::getPictureHandler()->getPicUrl($path, $imageName, $size);
+        if ($url = Registry::getPictureHandler()->getPicUrl($path, $imageName, $size)) {
+            return $url;
+        }
+
+        return '';
     }
 }

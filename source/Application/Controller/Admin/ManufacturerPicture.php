@@ -23,11 +23,11 @@ class ManufacturerPicture extends AdminDetailsController
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oManufacturer = oxNew(Manufacturer::class);
+        $this->_aViewData['edit'] = $manufacturer = oxNew(Manufacturer::class);
 
-        $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != '-1') {
-            $oManufacturer->load($soxId);
+        $oxid = $this->getEditObjectId();
+        if (isset($oxid) && $oxid != '-1') {
+            $manufacturer->load($oxid);
         }
 
         return "manufacturer_picture";
@@ -43,15 +43,16 @@ class ManufacturerPicture extends AdminDetailsController
 
         parent::save();
 
-        $oManufacturer = oxNew(Manufacturer::class);
-        if ($oManufacturer->load($this->getEditObjectId())) {
-            $oManufacturer->assign(Registry::getRequest()->getRequestEscapedParameter("editval"));
-            $oManufacturer = Registry::getUtilsFile()->processFiles($oManufacturer);
+        $manufacturer = oxNew(Manufacturer::class);
+        if ($manufacturer->load($this->getEditObjectId())) {
+            $this->fetchChanges($manufacturer);
+            $manufacturer->assign(Registry::getRequest()->getRequestEscapedParameter("editval"));
+            $manufacturer = Registry::getUtilsFile()->processFiles($manufacturer);
 
             $this->checkNewImagesCount();
 
-            $oManufacturer->save();
-            $this->setEditObjectId($oManufacturer->getId());
+            $manufacturer->save();
+            $this->setEditObjectId($manufacturer->getId());
         }
     }
 
@@ -72,14 +73,7 @@ class ManufacturerPicture extends AdminDetailsController
         $manufacturer->load($this->getEditObjectId());
 
         $pictureKey = 'oxmanufacturers__' . $pictureFieldName;
-        $pictureType = match ($pictureFieldName) {
-            'oxicon' => 'MICO',
-            'oxicon_alt' => 'MICO',
-            'oxpicture' => 'MPIC',
-            'oxthumbnail' => 'MTHU',
-            'oxpromotion_icon' => 'MPICO',
-            default => false,
-        };
+        $pictureType = $manufacturer->getImageType($pictureFieldName);
 
         if ($pictureType !== false) {
             $manufacturer->deletePicture($manufacturer->$pictureKey->value, $pictureType, $pictureFieldName);
@@ -87,6 +81,19 @@ class ManufacturerPicture extends AdminDetailsController
             $manufacturer->$pictureKey = new Field();
             $manufacturer->save();
         }
+    }
+
+    private function fetchChanges(Manufacturer $manufacturer): array
+    {
+        $changes = [];
+
+        foreach (Registry::getRequest()->getRequestEscapedParameter("editval") as $fieldName => $value) {
+            if ($manufacturer->$fieldName->value !== $value) {
+                $changes[] = $manufacturer->$fieldName->value;
+            }
+        }
+
+        return $changes;
     }
 
     private function checkNewImagesCount(): void
@@ -98,8 +105,8 @@ class ManufacturerPicture extends AdminDetailsController
 
     private function showError(string $message, bool $isBlFull = false): void
     {
-        $oEx = oxNew(ExceptionToDisplay::class);
-        $oEx->setMessage($message);
-        Registry::getUtilsView()->addErrorToDisplay($oEx, $isBlFull);
+        $exception = oxNew(ExceptionToDisplay::class);
+        $exception->setMessage($message);
+        Registry::getUtilsView()->addErrorToDisplay($exception, $isBlFull);
     }
 }

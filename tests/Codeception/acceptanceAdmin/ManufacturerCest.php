@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 use OxidEsales\Codeception\Admin\DataObject\Manufacturer;
+use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ManufacturerCest
 {
@@ -28,6 +28,22 @@ final class ManufacturerCest
         $mainManufacturerPage = $manufacturersPage->findByManufacturerTitle($manufacturerData->getTitle());
 
         $mainManufacturerPage->seeManufacturer($manufacturerData);
+    }
+
+    /**
+     * @group manufacturer
+     */
+    public function openPictureTab(AcceptanceAdminTester $I): void
+    {
+        $I->wantToTest('load demo manufacturer and read picture data');
+
+        $adminPanel = $I->loginAdmin();
+        $manufacturersPage = $adminPanel->openManufacturers();
+        $pictureManufacturerPage = $manufacturersPage->openPictureTab('Manufacturer [DE] šÄßüл');
+        $manufacturer = new Manufacturer();
+        $manufacturer->setIcon('test.png');
+
+        $pictureManufacturerPage->seeManufacturerIcon($manufacturer);
     }
 
     private function getManufacturerData(): Manufacturer

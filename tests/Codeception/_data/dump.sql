@@ -29,8 +29,8 @@ REPLACE INTO `oxartextends` (`OXID`,   `OXLONGDESC`,                            
                            ('1002',   '<p>Test product 2 long description [DE]</p>', '<p>Test product 2 long description [EN] šÄßüл</p>'),
                            ('1002-1', '',                                            ''),
                            ('1002-2', '',                                            ''),
-                            (  '1000', '<p>Test product 0 long description [DE]</p>', '<p>Test product 0 long description [EN] šÄßüл</p>'),
-                            ( '10014',                                            '',                                                  '');
+                           ('1000', '<p>Test product 0 long description [DE]</p>', '<p>Test product 0 long description [EN] šÄßüл</p>'),
+                           ('10014',                                            '',                                                  '');
 
 
 REPLACE INTO `oxcategories` (         `OXID`,    `OXPARENTID`, `OXLEFT`, `OXRIGHT`,      `OXROOTID`, `OXSORT`, `OXACTIVE`, `OXSHOPID`,                    `OXTITLE`,                    `OXDESC`,                `OXLONGDESC`, `OXDEFSORT`, `OXDEFSORTMODE`, `OXPRICEFROM`, `OXPRICETO`, `OXACTIVE_1`,                  `OXTITLE_1`,                        `OXDESC_1`,                    `OXLONGDESC_1`, `OXVAT`, `OXSHOWSUFFIX`) VALUES
@@ -162,8 +162,8 @@ REPLACE INTO `oxselectlist` (`OXID`,          `OXSHOPID`,   `OXTITLE`,          
 REPLACE INTO `oxobject2selectlist` (`OXID`,                       `OXOBJECTID`, `OXSELNID`,   `OXSORT`) VALUES
                                   ('testsellist.1001', '1001',       'testsellist', 0);
 #Manufacturer demodata
-REPLACE INTO `oxmanufacturers` (`OXID`,             `OXSHOPID`, `OXACTIVE`,                 `OXTITLE`,                   `OXSHORTDESC`,               `OXTITLE_1`,                       `OXSHORTDESC_1`, `OXSHOWSUFFIX`) VALUES
-                               ('testmanufacturer',          1,          1, 'Manufacturer [DE] šÄßüл', 'Manufacturer description [DE]', 'Manufacturer [EN] šÄßüл', 'Manufacturer description [EN] šÄßüл',              1);
+REPLACE INTO `oxmanufacturers` (`OXID`,             `OXSHOPID`, `OXACTIVE`,                 `OXTITLE`,                   `OXSHORTDESC`,               `OXTITLE_1`,                       `OXSHORTDESC_1`, `OXSHOWSUFFIX`,   `OXICON`) VALUES
+                               ('testmanufacturer',          1,          1, 'Manufacturer [DE] šÄßüл', 'Manufacturer description [DE]', 'Manufacturer [EN] šÄßüл', 'Manufacturer description [EN] šÄßüл',              1, 'test.png');
 
 #Vendor demodata
 REPLACE INTO `oxvendor` (          `OXID`, `OXSHOPID`, `OXACTIVE`,                `OXTITLE`,                  `OXSHORTDESC`,              `OXTITLE_1`,                      `OXSHORTDESC_1`, `OXSHOWSUFFIX`) VALUES

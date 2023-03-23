@@ -20,6 +20,7 @@ final class ManufacturerCest
     {
         $I->wantToTest('manufacturer list');
         $I->updateConfigInDatabase('bl_showManufacturer', true);
+        $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
 
         $homePage = $I->openShop();
         $homePage->openManufacturerListPage()
@@ -45,6 +46,7 @@ final class ManufacturerCest
     {
         $I->wantToTest('manufacturer functionality and product list navigation');
         $I->updateConfigInDatabase('bl_showManufacturer', true);
+        $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
         $I->updateConfigInDatabase('aNrofCatArticles', serialize([10, 50, 100, 2, 1]), 'arr');
         $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([10, 50, 100, 2, 1]), 'arr');
 
@@ -83,6 +85,7 @@ final class ManufacturerCest
         //Dont show manufacturers at all
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', false);
         $I->updateConfigInDatabase('bl_showManufacturer', false);
+        $I->clearShopCache();
         $homePage = $I->openShop();
         $I->dontSee(Translator::translate('OUR_BRANDS'));
     }

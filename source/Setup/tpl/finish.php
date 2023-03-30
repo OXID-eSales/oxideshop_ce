@@ -17,22 +17,40 @@ $this->getText('STEP_6_DESC');
 $aPath = $this->getViewParam("aPath");
 $aSetupConfig = $this->getViewParam("aSetupConfig");
 $aDB = $this->getViewParam("aDB");
-$blWritableConfig  = $this->getViewParam("blWritableConfig");
+$blWritableConfig = $this->getViewParam("blWritableConfig");
 // This must be done here as it deletes setup and nothing can't be displayed after that.
 $blRemoved = $this->isDeletedSetup($aSetupConfig, $aDB);
 ?>
-<br><br>
-<table cellspacing="5" cellpadding="5">
-  <tr>
-    <td><?php $this->getText('STEP_6_LINK_TO_SHOP'); ?>: </td>
-    <td><a href="<?php echo($aPath['sShopURL']); ?>/" target="_blank" id="linkToShop" style="text-decoration: underline"><strong><?php $this->getText('STEP_6_TO_SHOP'); ?></strong></a></td>
-  </tr>
-  <tr>
-    <td><?php $this->getText('STEP_6_LINK_TO_SHOP_ADMIN_AREA'); ?>: </td>
-    <td><a href="<?php echo($aPath['sShopURL']); ?>/admin/" target="_blank" id="linkToAdmin" style="text-decoration: underline"><strong><?php $this->getText('STEP_6_TO_SHOP_ADMIN'); ?></strong></a></td>
-  </tr>
-</table>
-<br>
+    <div class="warning border-warning">
+        <div class="warning-body">
+            <ol>
+                <li>
+                    <?php $this->getText('STEP_6_LOGIN_TO_THE_ADMIN'); ?>
+                </li>
+                <li><?php $this->getText('STEP_6_ACTIVATE_A_SHOP_THEME'); ?></li>
+            </ol>
+        </div>
+    </div>
+
+    <table cellspacing="5" cellpadding="5">
+        <tr>
+            <td><?php $this->getText('STEP_6_LINK_TO_SHOP_ADMIN_AREA'); ?>:</td>
+            <td>
+                <a href="<?php echo($aPath['sShopURL']); ?>/admin/" target="_blank" id="linkToAdmin" style="text-decoration: underline">
+                    <strong><?php $this->getText('STEP_6_TO_SHOP_ADMIN'); ?></strong>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td><?php $this->getText('STEP_6_LINK_TO_SHOP'); ?>:</td>
+            <td>
+                <a href="<?php echo($aPath['sShopURL']); ?>/" target="_blank" id="linkToShop" style="text-decoration: underline">
+                    <strong><?php $this->getText('STEP_6_TO_SHOP'); ?></strong>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <br>
 <?php
 //finalizing installation
 if (!$blRemoved || $blWritableConfig) {

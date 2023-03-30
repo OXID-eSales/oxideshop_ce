@@ -201,6 +201,37 @@ ul.req li.clear {
     padding-bottom: 0.25em;
 }
 
+.warning {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: rgba(255,193,7);
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 0 solid rgba(255,193,7);
+    max-width: 50%;
+    border-top: 1px solid rgba(255,193,7);
+    border-bottom: 1px solid rgba(255,193,7);
+    margin: 1.2rem 0;
+}
+.warning a{
+    color: rgba(255,193,7) !important;
+    text-decoration: underline;
+}
+.warning-body {
+    flex: 1 1 auto;
+    padding: .5rem 1rem .5rem 0;
+}
+.warning-body ol {
+    margin: 0;
+    padding-left: 15px;
+    line-height: 1.3rem;
+}
+.warning-body li {
+    font-size: .8rem;
+}
+
 .attention-title {
     font-size: 14px;
     color: #f00;

@@ -166,6 +166,8 @@ $aLang = [
 
 'STEP_6_TITLE'                                  => 'OXID eShop successfully installed',
 'STEP_6_DESC'                                   => 'Your OXID eShop has been installed successfully.',
+'STEP_6_LOGIN_TO_THE_ADMIN'                     => 'Login to the admin panel.',
+'STEP_6_ACTIVATE_A_SHOP_THEME'                  => 'Under `Extensions --> Themes`, activate a shop theme.',
 'STEP_6_LINK_TO_SHOP'                           => 'Continue to your OXID eShop',
 'STEP_6_LINK_TO_SHOP_ADMIN_AREA'                => 'Continue to your OXID eShop admin interface',
 'STEP_6_TO_SHOP'                                => 'To Shop',

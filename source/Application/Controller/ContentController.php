@@ -512,13 +512,11 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getParsedContent()
     {
-        $activeView = oxNew(FrontendController::class);
-        $activeView->addGlobalParams();
         $activeLanguageId = Registry::getLang()->getTplLanguage();
         return $this->getRenderer()->renderFragment(
             $this->getContent()->oxcontents__oxcontent->value,
             "ox:{$this->getContent()->getId()}{$activeLanguageId}",
-            $activeView->getViewData()
+            $this->getViewData()
         );
     }
 

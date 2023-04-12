@@ -1,0 +1,30 @@
+actor: AcceptanceSetupTester
+modules:
+  enabled:
+    - Asserts
+    - WebDriver:
+        url: '%SHOP_URL%'
+        browser: '%BROWSER%'
+        port: '%SELENIUM_SERVER_PORT%'
+        host: '%SELENIUM_SERVER_HOST%'
+        window_size: maximize
+        clear_cookies: true
+        restart: true
+    - Db:
+        dsn: 'mysql:host=%DB_HOST%;charset=utf8'
+        user: '%DB_USERNAME%'
+        password: '%DB_PASSWORD%'
+        port: '%DB_PORT%'
+    - \OxidEsales\Codeception\Module\Database:
+        depends: Db
+    - \OxidEsales\Codeception\Module\Setup\Configurator:
+        db_name: '%DB_NAME%'
+        depends:
+          - \OxidEsales\Codeception\Module\Database
+    - \OxidEsales\Codeception\Module\Setup\UserInput:
+        theme_id: '%THEME_ID%'
+        db_host: '%DB_HOST%'
+        db_port: '%DB_PORT%'
+        db_name: '%DB_NAME%'
+        db_user_name: '%DB_USERNAME%'
+        db_user_password: '%DB_PASSWORD%'

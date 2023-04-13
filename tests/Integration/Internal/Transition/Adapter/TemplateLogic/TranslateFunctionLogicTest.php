@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -18,6 +19,12 @@ final class TranslateFunctionLogicTest extends TestCase
     use ContainerTrait;
 
     private TranslateFunctionLogic $translateFunction;
+
+    public function setUp(): void
+    {
+        $this->get(Language::class)->setTplLanguage(0);
+        parent::setUp();
+    }
 
     public function dataProvider(): array
     {

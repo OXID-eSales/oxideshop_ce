@@ -13,10 +13,13 @@ use OxidEsales\Eshop\Core\DynamicImageGenerator;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Event\AdminModeChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Mailing manager.
@@ -899,10 +902,10 @@ class Email extends PHPMailer
         $lang->setBaseLanguage($orderLang);
 
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
+        $this->switchToShopMode();
         $this->setBody($renderer->renderTemplate($this->_sSenedNowTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sSenedNowTemplatePlain, $this->getViewData()));
-        $myConfig->setAdminMode(true);
+        $this->switchToAdminMode();
         $lang->setTplLanguage($oldTplLang);
         $lang->setBaseLanguage($oldBaseLang);
 
@@ -957,10 +960,10 @@ class Email extends PHPMailer
         $lang->setBaseLanguage($orderLang);
 
         // force non admin to get correct paths (tpl, img)
-        $myConfig->setAdminMode(false);
+        $this->switchToShopMode();
         $this->setBody($renderer->renderTemplate($this->_sSendDownloadsTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sSendDownloadsTemplatePlain, $this->getViewData()));
-        $myConfig->setAdminMode(true);
+        $this->switchToAdminMode();
         $lang->setTplLanguage($oldTplLang);
         $lang->setBaseLanguage($oldBaseLang);
 
@@ -1992,5 +1995,25 @@ class Email extends PHPMailer
         }
 
         return $idn;
+    }
+
+    private function switchToShopMode(): void
+    {
+        Registry::getConfig()->setAdminMode(false);
+        $this->dispatchAdminModeChangedEvent();
+    }
+
+    private function switchToAdminMode(): void
+    {
+        Registry::getConfig()->setAdminMode(true);
+        $this->dispatchAdminModeChangedEvent();
+    }
+
+    private function dispatchAdminModeChangedEvent(): void
+    {
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(EventDispatcherInterface::class)
+            ->dispatch(new AdminModeChangedEvent());
     }
 }

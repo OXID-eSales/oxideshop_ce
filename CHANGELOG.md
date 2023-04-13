@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Event:
+  - `Internal\Domain\Admin\Event\AdminModeChangedEvent`
   - `Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent`
 - Method return value:
   - `Internal\Framework\Module\Configuration\DataObject\ShopConfiguration::setClassExtensionsChain(ClassExtensionsChain $chain): self` 

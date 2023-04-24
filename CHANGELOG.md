@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Import of `oxartextends` with columns [#0007152](https://bugs.oxid-esales.com/view.php?id=7152)
 - Invalidate module cache on module settings/configuration change
+- Setup validation of module services with multiple shops
 - Deprecation warnings
 
 ### Removed

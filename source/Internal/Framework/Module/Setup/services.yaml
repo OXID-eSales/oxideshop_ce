@@ -31,6 +31,8 @@ services:
 
   oxid_esales.module.setup.validator.services_yaml_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
 
   oxid_esales.module.setup.service.eventsubscriber.dispatch_legacy_events_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber

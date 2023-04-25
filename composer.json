@@ -8,7 +8,7 @@
         "modules",
         "eShop"
     ],
-    "homepage": "https://www.oxid-esales.com/en/home.html",
+    "homepage": "https://www.oxid-esales.com/en",
     "require": {
         "php": "^8.0",
         "ext-dom": "*",

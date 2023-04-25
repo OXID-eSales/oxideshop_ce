@@ -203,8 +203,8 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     public function getSupportContactForm()
     {
         $aLinks = [
-            "de" => "https://www.oxid-esales.com/oxid-welt/support/supportanfrage/",
-            "en" => "https://www.oxid-esales.com/en/oxid-world/support/support-offer/"
+            "de" => "https://www.oxid-esales.com/ressourcen/anwenderbereich/supportangebot/",
+            "en" => "https://www.oxid-esales.com/en/resources/user-center/support-offer/"
         ];
 
         $oLang = Registry::getLang();

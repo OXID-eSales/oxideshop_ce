@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 
 $autoloadFileExist = false;
@@ -60,4 +60,3 @@ $application->addCommands(
     $idCommands
 );
 $application->run();
-

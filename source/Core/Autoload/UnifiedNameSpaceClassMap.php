@@ -2721,23 +2721,11 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleCache'                                   => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleCache::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleChainsGenerator'                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleInstaller'                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleList'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,
@@ -2885,12 +2873,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver'                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\ControllerClassNameResolver::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider'                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

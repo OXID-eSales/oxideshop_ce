@@ -23,7 +23,5 @@ final class Version20201103010101 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $table = $schema->getTable('oxdeliveryset');
-        $table->dropColumn('OXTRACKINGURL');
     }
 }

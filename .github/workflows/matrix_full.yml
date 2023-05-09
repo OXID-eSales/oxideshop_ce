@@ -51,7 +51,7 @@ jobs:
         run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
 
       - name: Clone the shop (${{ github.ref_name }})
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
 
       - name: Clone the shop (PR ${{ github.event.number }})
@@ -72,7 +72,7 @@ jobs:
         run: |
           make setup
           make addbasicservices
-          make file=services/selenium-firefox.yml addservice
+          make file=services/selenium-chrome.yml addservice
           perl -pi\
               -e "s#PHP_VERSION=.*#PHP_VERSION='${{ matrix.php }}'#g;"\
               -e "s#MYSQL_VERSION=.*#MYSQL_VERSION='${{ matrix.mysql }}'#g;"\
@@ -86,23 +86,6 @@ jobs:
               -e 's#/var/www/#/var/www/source/#g;'\
               containers/httpd/project.conf
 
-      - name: Prepare shop configuration
-        run: |
-          cp source/source/config.inc.php.dist source/source/config.inc.php
-          perl -pi\
-            -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
-            source/source/.htaccess
-          perl -pi\
-            -e 's#<dbHost>#mysql#g;'\
-            -e 's#<dbUser>#root#g;'\
-            -e 's#<dbName>#example#g;'\
-            -e 's#<dbPwd>#root#g;'\
-            -e 's#<dbPort>#3306#g;'\
-            -e 's#<sShopURL>#http://localhost.local/#g;'\
-            -e 's#<sShopDir>#/var/www/source/#g;'\
-            -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
-            source/source/config.inc.php
-
       - name: Start containers
         run: |
           make up
@@ -110,6 +93,19 @@ jobs:
 
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction
+
+      - name: Run Install Shop
+        run: |
+          docker-compose exec -T php cp source/config.inc.php.dist source/config.inc.php
+          docker-compose exec -T php bin/oe-console oe:setup:shop \
+            --db-host mysql \
+            --db-port 3306 \
+            --db-name example \
+            --db-user root \
+            --db-password root \
+            --shop-url http://localhost.local \
+            --shop-directory /var/www/source \
+            --compile-directory /var/www/source/tmp
 
       - name: Stop containers
         run: |
@@ -142,8 +138,9 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose run -T \
-            php php vendor/bin/phpunit -c phpunit.xml tests/Unit | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          docker-compose run -T php vendor/bin/phpunit \
+            -c phpunit.xml tests/Unit \
+            | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Ensure that tests have been run
@@ -182,13 +179,12 @@ jobs:
           make up
           sleep 2
 
-      - name: Reset shop
-        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
-
       - name: Run tests
         run: |
-          docker-compose run -T \
-            php php vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php tests/Integration | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          docker-compose run -T php vendor/bin/phpunit \
+            -c phpunit.xml \
+            --bootstrap tests/bootstrap.php tests/Integration \
+            | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Ensure that tests have been run
@@ -228,20 +224,24 @@ jobs:
           sleep 2
 
       - name: Install admin theme and template engine
-        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
+        run: |
+          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
 
-      - name: Install twig theme
-        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.0.x --with-all-dependencies
-
-      - name: Reset shop
-        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+      - name: Install APEX theme
+        run: |
+          docker-compose exec -T php composer require oxid-esales/apex-theme --with-all-dependencies
 
       - name: Run tests
         run: |
           docker-compose exec -T \
-            -e SELENIUM_SERVER_HOST=seleniumfirefox \
-            -e BROWSER_NAME=firefox \
-            php php vendor/bin/codecept run acceptance,acceptanceAdmin -c tests/codeception.yml --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            -e SELENIUM_SERVER_HOST=selenium \
+            -e BROWSER_NAME=chrome \
+            -e THEME_ID=apex \
+            php vendor/bin/codecept run acceptance,acceptanceAdmin \
+              -c tests/codeception.yml \
+              --ext DotReporter \
+              --skip-group flow_theme \
+              | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log

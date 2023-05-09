@@ -1,7 +1,6 @@
 OXID eShop
 ==========
 
-
 This repository contains the sources of OXID eShop Community Edition Core Component.
 
 ### About OXID eShop:
@@ -11,8 +10,6 @@ Thanks to its modular, modern and state-of-the-art architecture, it can be modif
 and customized to individual requirements with the greatest of ease. 
 
 OXID eShop is just e-commerce software for agencies with deadlines :-)
-
-![Image alt](frontend-flow.png)
 
 ### Installation
 
@@ -32,6 +29,4 @@ You can easily enable code completion in your IDE by installing [this script](ht
 
 * Vendor home page - https://www.oxid-esales.com
 * Bug tracker - https://bugs.oxid-esales.com
-* VM and SDK:
-    - https://github.com/OXID-eSales/oxvm_eshop
-    - https://github.com/OXID-eSales/docker-eshop-sdk
+* SDK - https://github.com/OXID-eSales/docker-eshop-sdk

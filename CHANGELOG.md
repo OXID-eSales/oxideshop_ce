@@ -4,27 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [7.0.0] - Unreleased
+## [7.0.0] - 2023-05-09
 
 ### Added
+- Sorting field for Manufacturer
 - Event:
   - `Internal\Domain\Admin\Event\AdminModeChangedEvent`
   - `Internal\Framework\Module\Configuration\Event\ModuleConfigurationChangedEvent`
-- Method return value:
-  - `Internal\Framework\Module\Configuration\DataObject\ShopConfiguration::setClassExtensionsChain(ClassExtensionsChain $chain): self` 
 - Methods:
+  - `Internal\Framework\Module\Cache\FilesystemModuleCache::invalidateAll()`
+  - `Internal\Framework\Module\Configuration\DataObject\ShopConfiguration::setClassExtensionsChain()`
+  - `Internal\Framework\Module\Facade\ActiveModulesDataProvider::getClassExtensions()`
   - `Internal\Framework\Module\Facade\ModuleSettingServiceInterface::exists()`
-  - `ShopConfiguration::setClassExtensionsChain(ClassExtensionsChain $chain): self`
-  - `Internal\Framework\Module\FacadeActiveModulesDataProvider::getClassExtensions(): array`
-  - `Internal\Transition\Utility\BasicContext::getModuleCacheDirectory(): string`
-  - `Internal\Framework\Module\Cache\FilesystemModuleCache::invalidateAll(): void`
+  - `Internal\Transition\Utility\BasicContext::getModuleCacheDirectory()`
 - Interfaces:
   - `Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface`
   - `Internal\Framework\Module\Cache\FilesystemModuleCacheBridgeInterface`
 - Classes:
   - `Internal\Framework\Module\Facade\ActiveModulesDataProviderBridge`
   - `Internal\Framework\Module\Cache\FilesystemModuleCacheBridge`
-- Sorting field for Manufacturer
 
 ### Fixed
 - Import of `oxartextends` with columns [#0007152](https://bugs.oxid-esales.com/view.php?id=7152)
@@ -386,7 +384,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - LDAP login
 
 - Functionality:
-  - Newsletter email management [see list](#690---unreleased)
+  - Newsletter email management
   - Betanote [see list](#654---2020-04-21)
   - Console commands for module configuration management:
     - `oe:module:install-configuration`
@@ -1943,6 +1941,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
+[7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.4...v7.0.0
 [7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4
 [7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
 [7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2

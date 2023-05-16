@@ -14,6 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridge
  * Article suggestion page.
  * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
+ *
+ * @deprecated will be removed in v8.0.
  */
 class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {

@@ -41,6 +41,25 @@ final class ClassPropertyModuleConfigurationCacheTest extends TestCase
         $this->assertTrue($cache->exists('test',1));
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNotExistentEvict(): void
+    {
+        $cache = new ClassPropertyModuleConfigurationCache();
+
+        $cache->evict('nonExistingModule', 3);
+    }
+
+    public function testEmptyCacheEvict(): void
+    {
+        $cache = new ClassPropertyModuleConfigurationCache();
+
+        $cache->evict('test', 3);
+
+        $this->addToAssertionCount(1);
+    }
+
     public function testEvict(): void
     {
         $cache = new ClassPropertyModuleConfigurationCache();

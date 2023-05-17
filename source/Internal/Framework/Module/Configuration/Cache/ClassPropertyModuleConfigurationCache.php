@@ -16,7 +16,7 @@ class ClassPropertyModuleConfigurationCache implements ModuleConfigurationCacheI
     /**
      * @var ModuleConfiguration[][]
      */
-    private array $cache;
+    private array $cache = [];
 
     public function put(int $shopId, ModuleConfiguration $configuration): void
     {
@@ -35,6 +35,8 @@ class ClassPropertyModuleConfigurationCache implements ModuleConfigurationCacheI
 
     public function evict(string $moduleId, int $shopId): void
     {
-        unset($this->cache[$shopId][$moduleId]);
+        if ($this->exists($moduleId, $shopId)) {
+            unset($this->cache[$shopId][$moduleId]);
+        }
     }
 }

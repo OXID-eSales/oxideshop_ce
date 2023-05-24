@@ -6,7 +6,7 @@ jobs:
   install_shop:
     strategy:
       matrix:
-        php: [ '8.0' ]
+        php: [ '8.2' ]
         mysql: [ '5.7' ]
       fail-fast: false
     runs-on: ubuntu-latest
@@ -79,7 +79,7 @@ jobs:
   all_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
+        php: [ '8.2' ]
         mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
@@ -135,7 +135,7 @@ jobs:
   deprecated_all_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
+        php: [ '8.2' ]
         mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
@@ -203,7 +203,7 @@ jobs:
   codeception_tests:
     strategy:
       matrix:
-        php: [ '8.0' ]
+        php: [ '8.2' ]
         mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]

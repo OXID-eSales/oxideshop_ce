@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - b-7.0.x
-      - b-6.5.x
-      - b-6.4.x
   pull_request:
   workflow_dispatch:
 
@@ -42,8 +40,8 @@ jobs:
   install_shop:
     strategy:
       matrix:
-        php: [ '8.0', '8.1' ]
-        mysql: [ '5.7', '8.0' ]
+        php: [ '8.2' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -115,8 +113,8 @@ jobs:
   unit_tests:
     strategy:
       matrix:
-        php: [ '8.0', '8.1' ]
-        mysql: [ '5.7', '8.0' ]
+        php: [ '8.2' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -158,8 +156,8 @@ jobs:
   integration_tests:
     strategy:
       matrix:
-        php: [ '8.0', '8.1' ]
-        mysql: [ '5.7', '8.0' ]
+        php: [ '8.2' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest
@@ -202,8 +200,8 @@ jobs:
   codeception_tests:
     strategy:
       matrix:
-        php: [ '8.0', '8.1' ]
-        mysql: [ '5.7', '8.0' ]
+        php: [ '8.2' ]
+        mysql: [ '5.7' ]
       fail-fast: false
     needs: [ install_shop ]
     runs-on: ubuntu-latest

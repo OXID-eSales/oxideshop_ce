@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment master
-        run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
+        run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch b-7.0.x-php82-6859 --single-branch .
 
       - name: Clone the shop (${{ github.ref_name }})
         if: github.event_name != 'pull_request'

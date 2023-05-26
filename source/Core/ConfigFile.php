@@ -7,9 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use AllowDynamicProperties;
+
 /**
  * Wraps and provides getters for configuration constants stored in configuration file (usually config.inc.php).
  */
+#[AllowDynamicProperties]
 class ConfigFile
 {
     /**

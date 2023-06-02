@@ -26,11 +26,11 @@ return [
     'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
-    'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: '127.0.0.1',
+    'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: 'selenium',
     'PHP_BIN' => (getenv('PHPBIN')) ?: 'php',
     'SCREEN_SHOT_URL' => getenv('CC_SCREEN_SHOTS_URL') ?: '',
-    'BROWSER' => getenv('BROWSER_NAME') ?: 'firefox',
-    'THEME_ID' => getenv('THEME_ID') ?: 'twig',
+    'BROWSER' => getenv('BROWSER_NAME') ?: 'chrome',
+    'THEME_ID' => getenv('THEME_ID') ?: 'apex',
 ];
 
 function getTestDataDumpFilePath(): string

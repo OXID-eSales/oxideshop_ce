@@ -1045,6 +1045,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (
             !$this->oxarticles__oxactive->value &&
             (
+                !Registry::getConfig()->getConfigParam('blUseTimeCheck') ||
                 $this->oxarticles__oxactivefrom->value > $sNow ||
                 $this->oxarticles__oxactiveto->value < $sNow
             )

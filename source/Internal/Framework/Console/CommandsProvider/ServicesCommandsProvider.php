@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @deprecated since v7.1.0
+ **/
 class ServicesCommandsProvider implements CommandsProviderInterface
 {
     /**

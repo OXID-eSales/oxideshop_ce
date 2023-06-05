@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider;
 
+/**
+ * @deprecated since v7.1.0
+ **/
 interface CommandsProviderInterface
 {
     /**

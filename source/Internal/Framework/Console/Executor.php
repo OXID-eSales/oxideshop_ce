@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @inheritdoc
+ * @deprecated since v7.1.0
  */
 class Executor implements ExecutorInterface
 {

@@ -4,17 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [7.0.2] - Unreleased
+## [v7.1.0] - unreleased
+
+### Deprecated
+  - Classes:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Console\Executor`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProvider`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProviderInterface`
+
+## [v7.0.2] - Unreleased
 
 ### Fixed
 - Database connection object fixation in ConnectionProvider service
 
-## [7.0.1] - 2023-05-22
+## [v7.0.1] - 2023-05-22
 
 ### Fixed
 - Fix "undefined variable" in ClassPropertyModuleConfigurationCache::evict()
 
-## [7.0.0] - 2023-05-09
+## [v7.0.0] - 2023-05-09
 
 ### Added
 - Sorting field for Manufacturer
@@ -173,7 +182,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Framework\Templating\TemplateRendererBridgeInterface::setEngine()`
   - `Internal\Framework\Templating\TemplateRendererBridgeInterface::getEngine()`
 
-## [7.0.0-rc.2] - 2022-08-15
+## [v7.0.0-rc.2] - 2022-08-15
 
 ### Added
 - Twig templates multi inheritance for modules
@@ -322,7 +331,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridge`
 
-## [7.0.0-rc.1] - 2021-07-07
+## [v7.0.0-rc.1] - 2021-07-07
 
 ### Added
 
@@ -661,12 +670,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
 
-## [6.14.0] - Unreleased
+## [v6.14.0] - Unreleased
 
 ### Added
 - Configuration `disallowForceSessionIdInRequest` to disable processing of `force_sid` URL parameter
 
-## [6.13.0] - 2022-12-01
+## [v6.13.0] - 2022-12-01
 
 ### Deprecated
 - RSS functionality
@@ -761,7 +770,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Avoid using Google Fonts API in offline page
 
-## [6.12.0] - 2022-08-15
+## [v6.12.0] - 2022-08-15
 
 ### Changed
 - Change OXID eShop Community Edition license
@@ -779,7 +788,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - PHP 8.1 added to php version validation as supported [PR-899](https://github.com/OXID-eSales/oxideshop_ce/pull/899)
 
-## [6.11.0] - 2022-07-20
+## [v6.11.0] - 2022-07-20
 
 ### Added
 - PHP 8.1 support
@@ -825,12 +834,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Rare fatal appearing in modified but not recalculated baskets [PR-891](https://github.com/OXID-eSales/oxideshop_ce/pull/891)
 
-## [6.10.3] - 2022-07-18
+## [v6.10.3] - 2022-07-18
 
 ### Fixed
 - Deadlock in oxseo table when deleting categories in backend [#0006762](https://bugs.oxid-esales.com/view.php?id=6762)
 
-## [6.10.2] - 2022-05-17
+## [v6.10.2] - 2022-05-17
 
 ### Fixed
 - Error in coupon series during misconfiguration of value [PR-887](https://github.com/OXID-eSales/oxideshop_ce/pull/887)
@@ -841,14 +850,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Error in module chain generation on installing legacy module after module with namespaces
 - Allow OXID-eSales plugins by default.
 
-## [6.10.1] - 2022-02-02
+## [v6.10.1] - 2022-02-02
 
 ### Fixed
 - Updated doc links to the latest release [PR-877](https://github.com/OXID-eSales/oxideshop_ce/pull/877)
 - Selection window to add an item to a discount is empty [#0007204](https://bugs.oxid-esales.com/view.php?id=7204)
 - Improved reset password token generation algorithm [#0006394](https://bugs.oxid-esales.com/view.php?id=6394)
 
-## [6.10.0] - 2021-12-02
+## [v6.10.0] - 2021-12-02
 
 ### Added
 - Configuration option `deactivateSmartyForCmsContent` to prevent Smarty from processing content added via CMS
@@ -878,7 +887,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `assignRecord()`
   - `getRecordByQuery()`
 
-## [6.9.1] - 2022-05-17
+## [v6.9.1] - 2022-05-17
 
 ### Fixed
 - Text message on `Payment Methods > RDFa` tab
@@ -886,7 +895,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-876](https://github.com/OXID-eSales/oxideshop_ce/pull/876)
 - Allow OXID-eSales plugins by default.
 
-## [6.9.0] - 2021-07-27
+## [v6.9.0] - 2021-07-27
 
 ### Added
 - Added Northern Ireland due to Brexit regulations [PR-872](https://github.com/OXID-eSales/oxideshop_ce/pull/872)
@@ -934,7 +943,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `Core\UtilsFile::_copyFile()`
     - `Core\UtilsFile::_moveImage()`
 
-## [6.8.0] - 2021-04-13
+## [v6.8.0] - 2021-04-13
 
 ### Added
 - Support PHP 8.0
@@ -942,7 +951,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support PHP 7.1 and 7.2
 
-## [6.7.2] - 2021-07-21
+## [v6.7.2] - 2021-07-21
 
 ### Changed
 - Update PHPMailer to v6.5.0
@@ -951,12 +960,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Usage of `tpl` request parameter in `Application\Component\UserComponent`
 - Input parsing in `assign_adv` Smarty plugin
 
-## [6.7.1] - 2021-04-13
+## [v6.7.1] - 2021-04-13
 
 ### Fixed
 - Fix order remark create date reset during review saving in admin with German time format [#0007217](https://bugs.oxid-esales.com/view.php?id=7217) [PR-857](https://github.com/OXID-eSales/oxideshop_ce/pull/857)
 
-## [6.7.0] - 2021-03-25
+## [v6.7.0] - 2021-03-25
 
 ### Deprecated
 - Support for Module source-directory and target-directory in composer.json
@@ -982,7 +991,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Module template cache is not cleared on deactivation
 - Wrong voucher calculation - discount sharing between user's baskets [#0006854](https://bugs.oxid-esales.com/view.php?id=6854)
 
-## [6.6.0] - 2020-11-10
+## [v6.6.0] - 2020-11-10
 
 ### Added
 - Add remove module configuration command
@@ -1058,7 +1067,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Collect unique article ids for seo links update [#0007167](https://bugs.oxid-esales.com/view.php?id=7167)
 - Fix OXID in _set tables has wrong collation [#0007084](https://bugs.oxid-esales.com/view.php?id=7084)
 
-## [6.5.6] - 2020-07-16
+## [v6.5.6] - 2020-07-16
 
 ### Added
 - Add module migrations
@@ -1133,12 +1142,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - [Bug 7134](https://bugs.oxid-esales.com/view.php?id=7134)
 
-## [6.5.5] - 2020-05-05
+## [v6.5.5] - 2020-05-05
 
 ### Deprecated
 - Methods starting with underscore have been deprecated, these methods will be renamed
 
-## [6.5.4] - 2020-04-21
+## [v6.5.4] - 2020-04-21
 
 ### Deprecated
 - Betanote:
@@ -1167,7 +1176,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use cache directory from config file for the container cache: [#0007111](https://bugs.oxid-esales.com/view.php?id=7111)
 - Get the correct path to admin menu file: [#0007126](https://bugs.oxid-esales.com/view.php?id=7126)
 
-## [6.5.3] - 2020-03-25
+## [v6.5.3] - 2020-03-25
 
 ### Fixed
 - Issue with module controllers validator
@@ -1175,7 +1184,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Option `blSessionUseCookies` is no longer used in the Session class
 
-## [6.5.2] - 2020-03-16
+## [v6.5.2] - 2020-03-16
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
@@ -1187,7 +1196,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationModuleSettingHandler`
 
-## [6.5.1] - 2020-02-25
+## [v6.5.1] - 2020-02-25
 
 ### Deprecated
 - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
@@ -1256,7 +1265,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent`
 
-## [6.5.0] - 2019-11-07
+## [v6.5.0] - 2019-11-07
 
 ### Added
 - oe-console command: oe:module:apply-configuration
@@ -1302,7 +1311,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   to `source/log/oxadmin.log`.
 - Removed hardcoded "http://" in oxexturl field edit [#0006993](https://bugs.oxid-esales.com/view.php?id=6993) [PR-726](https://github.com/OXID-eSales/oxideshop_ce/pull/726)
 
-## [6.4.0] - 2019-08-02
+## [v6.4.0] - 2019-08-02
 
 ### Fixed
 - Fixed return type in Basket::getDiscounts [PR-659](https://github.com/OXID-eSales/oxideshop_ce/pull/659)
@@ -1457,12 +1466,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
 - `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
 
-## [6.3.8] - Unreleased
+## [v6.3.8] - Unreleased
 
 ### Fixed
 - Port missing resetFilter action [#0007051](https://bugs.oxid-esales.com/view.php?id=7051) [PR-739](https://github.com/OXID-eSales/oxideshop_ce/pull/739)
 
-## [6.3.7] - 2020-03-16
+## [v6.3.7] - 2020-03-16
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
@@ -1472,19 +1481,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix more complex multiline query command detection [PR-734](https://github.com/OXID-eSales/oxideshop_ce/pull/734)
 - Issue with session ID regeneration on user registration
 
-## [6.3.6] - 2019-10-29
+## [v6.3.6] - 2019-10-29
 
 ### Fixed
 - Recover and use lost _preparePrice result in Article::_prepareModifiedPrice [PR-720](https://github.com/OXID-eSales/oxideshop_ce/pull/720)
 - Load amount price list same way on frontend and backend [#0006671](https://bugs.oxid-esales.com/view.php?id=6671) [PR-712](https://github.com/OXID-eSales/oxideshop_ce/pull/712)
 - Show product active check in admin panel when activation date has been set [#0006966](https://bugs.oxid-esales.com/view.php?id=6966)
 
-## [6.3.5] - 2019-07-30
+## [v6.3.5] - 2019-07-30
 
 ### Security
 - [Bug 7002](https://bugs.oxid-esales.com/view.php?id=7002)
 
-## [6.3.4] - 2019-05-24
+## [v6.3.4] - 2019-05-24
 
 ### Changed
 - Rename cust_lang.php files to cust_lang.php.dist
@@ -1501,7 +1510,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Core\Contract\IModuleValidator `
     - `OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`
 
-## [6.3.3] - 2019-04-16
+## [v6.3.3] - 2019-04-16
 
 ### Fixed
 - Ensure temp file in tmp directory [PR-683](https://github.com/OXID-eSales/oxideshop_ce/pull/683)
@@ -1510,7 +1519,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use correct value for backing up the base language in email [PR-692](https://github.com/OXID-eSales/oxideshop_ce/pull/692)
 - Read config parameter by getConfigParam, not by getRequestParam [#0006968](https://bugs.oxid-esales.com/view.php?id=6968) [PR-698](https://github.com/OXID-eSales/oxideshop_ce/pull/698)
 
-## [6.3.2] - 2019-01-22
+## [v6.3.2] - 2019-01-22
 
 ### Added
 - Add method SystemEventHandler::onShopEnd() to be called for finishing actions e.g. from ShopControl::pageClose().
@@ -1534,7 +1543,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix unusable shop after activation of a module with migrated metadata (v2) [PR-663](https://github.com/OXID-eSales/oxideshop_ce/pull/663)
 - Fix issue with shop roles readonly. [Bug 6851](https://bugs.oxid-esales.com/view.php?id=6851)
 
-## [6.3.1] - 2018-10-16
+## [v6.3.1] - 2018-10-16
 
 ### Added
 - New settings:
@@ -1554,7 +1563,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix wrong variant article price calculation in rss [PR-498](https://github.com/OXID-eSales/oxideshop_ce/pull/498)
 - Fix Syntax error in admin css [PR-669](https://github.com/OXID-eSales/oxideshop_ce/pull/669)
 
-## [6.3.0] - 2018-07-31
+## [v6.3.0] - 2018-07-31
 
 ### Added
 - New blocks in `admin/tpl/voucherserie_groups.tpl`
@@ -1640,7 +1649,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
 - Fix indents in config.inc.php.dist [PR-527](https://github.com/OXID-eSales/oxideshop_ce/pull/527)
 
-## [6.2.4] - 2019-10-29
+## [v6.2.4] - 2019-10-29
 
 ### Fixed
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
@@ -1649,17 +1658,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - [Bug 7023](https://bugs.oxid-esales.com/view.php?id=7023)
 
-## [6.2.3] - 2019-07-30
+## [v6.2.3] - 2019-07-30
 
 ### Security
 - [Bug 7002](https://bugs.oxid-esales.com/view.php?id=7002)
 
-## [6.2.2] 2019-02-21
+## [v6.2.2] 2019-02-21
 
 ### Fixed
 - Fix issue with shop roles readonly. [Bug 6851](https://bugs.oxid-esales.com/view.php?id=6851)
 
-## [6.2.1] - 2018-07-31
+## [v6.2.1] - 2018-07-31
 
 ### Added
 
@@ -1678,7 +1687,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - [Bug 6818](https://bugs.oxid-esales.com/view.php?id=6818)
 
-## [6.2.0] - 2018-03-27
+## [v6.2.0] - 2018-03-27
 
 ### Added
 - Possibility to delete shipping address via new method:
@@ -1747,7 +1756,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use correct performance checkbox for index page manufacturers [PR-625](https://github.com/OXID-eSales/oxideshop_ce/pull/625)
 - VAT message for b2b users with valid company id [PR-495](https://github.com/OXID-eSales/oxideshop_ce/pull/495)
 
-## [6.1.0] - 2018-01-23
+## [v6.1.0] - 2018-01-23
 
 ### Added
 - Added classes:
@@ -1814,14 +1823,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Expire SEO links for correct shop id [PR-594](https://github.com/OXID-eSales/oxideshop_ce/pull/594)
 - [Module with namespaces not working on Windows](https://bugs.oxid-esales.com/view.php?id=6737)
 
-## [6.0.0] - 2017-11-17
+## [v6.0.0] - 2017-11-17
 
 ### Fixed
 - [in source/admin/oxajax.php ControllerClassNameResolver is not used for resolving container. Can't create custom drag&drop in mod](https://bugs.oxid-esales.com/view.php?id=6668)
 - [admin/oxajax.php needs to handle module namespaced ajax container classes](https://bugs.oxid-esales.com/view.php?id=6711)
 - [Disabled controls are not clearly visible as not writable](https://bugs.oxid-esales.com/view.php?id=6702)
 
-## [6.0.0-rc.3] - 2017-11-02
+## [v6.0.0-rc.3] - 2017-11-02
 
 ### Changed
 - `\OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting()`
@@ -1866,7 +1875,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - https://bugs.oxid-esales.com/view.php?id=6678
 
 
-## [6.0.0-rc.2] - 2017-08-15
+## [v6.0.0-rc.2] - 2017-08-15
 
 ### Added
 - Integrate new Admin UI from digidesk backend UI Kit
@@ -1908,7 +1917,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Deactivating a module which extends basket causes shop maintenance mode, [#0006659](https://bugs.oxid-esales.com/view.php?id=6659)
 - Pass along shopid to call to _loadFromDb(), [Pull Request 571](https://github.com/OXID-eSales/oxideshop_ce/pull/571)
 
-## [6.0.0-rc.1] - 2017-04-07
+## [v6.0.0-rc.1] - 2017-04-07
 
 ### Added
 - [Pull Request 425: Compatibility with Apache 2.4](https://github.com/OXID-eSales/oxideshop_ce/pull/425)
@@ -1945,60 +1954,61 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Module deactivation/deletion/cleanup issues fixed which occured because of namespaces in modules.
 
 
-## [6.0-beta.3] - 2017-03-14
+## [v6.0-beta.3] - 2017-03-14
 
-## [6.0-beta.2] - 2017-12-13
+## [v6.0-beta.2] - 2017-12-13
 
-## [6.0-beta.1] - 2016-11-30
+## [v6.0-beta.1] - 2016-11-30
 
-[7.0.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.0.2
-[7.0.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0...v7.0.1
-[7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.4...v7.0.0
-[7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4
-[7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
-[7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
-[7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v7.0.0-rc.1
-[6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v6.13.0
-[6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v6.12.0
-[6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0
-[6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3
-[6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
-[6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
-[6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.1...v6.10.0
-[6.9.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.9.1
-[6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
-[6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
-[6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2
-[6.7.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.7.1
-[6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
-[6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
-[6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6
-[6.5.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.4...v6.5.5
-[6.5.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.3...v6.5.4
-[6.5.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.2...v6.5.3
-[6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
-[6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
-[6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
-[6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
-[6.3.8]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.7...b-6.1.x
-[6.3.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.6...v6.3.7
-[6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6
-[6.3.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.4...v6.3.5
-[6.3.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.3...v6.3.4
-[6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...v6.3.3
-[6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
-[6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1
-[6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0
-[6.2.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.3...v6.2.4
-[6.2.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.2...v6.2.3
-[6.2.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.2.2
-[6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1
-[6.2.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.1.0...v6.2.0
-[6.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...v6.1.0
-[6.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...v6.0.0
-[6.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...v6.0.0-rc.3
-[6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2
-[6.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.3...v6.0.0-rc.1
-[6.0-beta.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.2...v6.0-beta.3
-[6.0-beta.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.1...v6.0-beta.2
-[6.0-beta.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.1...v6.0-beta.2
+[v7.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.1.0
+[v7.0.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.0.2
+[v7.0.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0...v7.0.1
+[v7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.4...v7.0.0
+[v7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4
+[v7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
+[v7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
+[v7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v7.0.0-rc.1
+[v6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v6.13.0
+[v6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v6.12.0
+[v6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0
+[v6.10.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.2...v6.10.3
+[v6.10.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.1...v6.10.2
+[v6.10.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.0...v6.10.1
+[v6.10.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.1...v6.10.0
+[v6.9.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.9.0...v6.9.1
+[v6.9.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...v6.9.0
+[v6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
+[v6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2
+[v6.7.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.7.1
+[v6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
+[v6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
+[v6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6
+[v6.5.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.4...v6.5.5
+[v6.5.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.3...v6.5.4
+[v6.5.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.2...v6.5.3
+[v6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
+[v6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
+[v6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
+[v6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
+[v6.3.8]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.7...b-6.1.x
+[v6.3.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.6...v6.3.7
+[v6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6
+[v6.3.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.4...v6.3.5
+[v6.3.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.3...v6.3.4
+[v6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...v6.3.3
+[v6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
+[v6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1
+[v6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0
+[v6.2.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.3...v6.2.4
+[v6.2.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.2...v6.2.3
+[v6.2.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.2.2
+[v6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1
+[v6.2.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.1.0...v6.2.0
+[v6.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...v6.1.0
+[v6.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...v6.0.0
+[v6.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...v6.0.0-rc.3
+[v6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2
+[v6.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.3...v6.0.0-rc.1
+[v6.0-beta.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.2...v6.0-beta.3
+[v6.0-beta.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.1...v6.0-beta.2
+[v6.0-beta.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.1...v6.0-beta.2

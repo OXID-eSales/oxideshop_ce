@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Responsible for executing commands.
+ * @deprecated since v7.1.0
  */
 interface ExecutorInterface
 {

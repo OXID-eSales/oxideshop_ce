@@ -9,31 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
+use DateTime;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Core\UtilsDate;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewAndRatingObjectTypeException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRating;
-use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ReviewTest extends TestCase
+class ReviewTest extends IntegrationTestCase
 {
-    use DatabaseTrait;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->beginTransaction();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->rollBackTransaction();
-        parent::tearDown();
-    }
-
     public function testReviewAndRatingListByUserId(): void
     {
         $review = oxNew(Review::class);
@@ -96,7 +82,7 @@ class ReviewTest extends TestCase
     {
         $reviewType = 'oxrecommlist';
         $objectId = uniqid('id-', true);
-        $createdDate = new \DateTime();
+        $createdDate = new DateTime();
         $formattedDate = (oxNew(UtilsDate::class)->formatDBDate($createdDate->format('Y/m/d H:i:s')));
         for ($i = 0; $i < 2; $i++) {
             $review = oxNew(Review::class);
@@ -110,7 +96,11 @@ class ReviewTest extends TestCase
         $list = (oxNew(Review::class))->loadList($reviewType, $objectId, true, 0);
 
         foreach ($list as $review) {
-            $this->assertEqualsWithDelta($formattedDate, $review->getFieldData('oxcreate'), 1);
+            $this->assertEqualsWithDelta(
+                DateTime::createFromFormat('d.m.Y H:i:s', $formattedDate),
+                DateTime::createFromFormat('d.m.Y H:i:s', $review->getFieldData('oxcreate')),
+                1
+            );
         }
     }
 }

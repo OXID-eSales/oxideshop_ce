@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [7.0.2] - Unreleased
+
+### Fixed
+- Database connection object fixation in ConnectionProvider service
+
 ## [7.0.1] - 2023-05-22
 
 ### Fixed
@@ -1946,6 +1951,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
+[7.0.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.0.2
 [7.0.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0...v7.0.1
 [7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.4...v7.0.0
 [7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4

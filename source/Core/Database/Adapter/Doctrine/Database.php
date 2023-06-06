@@ -819,6 +819,15 @@ class Database implements DatabaseInterface
     }
 
     /**
+     * @deprecated
+     * @internal
+     */
+    public function getPublicConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
      * Sanitize the given parameter to be an array.
      * In v5.3.0 in many places in the code false is passed instead of an empty array.
      *

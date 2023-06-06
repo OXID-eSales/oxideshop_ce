@@ -1,5 +1,3 @@
-SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
     RewriteEngine On

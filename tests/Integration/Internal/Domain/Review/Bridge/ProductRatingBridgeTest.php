@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Bri
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
@@ -26,7 +25,7 @@ class ProductRatingBridgeTest extends IntegrationTestCase
         $this->createTestProduct();
         $this->createTestRatings();
 
-        $productRatingBridge = $this->getProductRatingBridge();
+        $productRatingBridge = $this->get(ProductRatingBridgeInterface::class);
         $productRatingBridge->updateProductRating('testProduct');
 
         $productRatingDao = $this->getProductRatingDao();
@@ -71,11 +70,6 @@ class ProductRatingBridgeTest extends IntegrationTestCase
         $rating->save();
     }
 
-    private function getProductRatingBridge()
-    {
-        return ContainerFactory::getInstance()->getContainer()->get(ProductRatingBridgeInterface::class);
-    }
-
     /**
      * Accessing the dao is difficult, because it is a private service.
      * In newer versions of the Symfony Container (since 4.1) this may be
@@ -85,7 +79,7 @@ class ProductRatingBridgeTest extends IntegrationTestCase
      */
     private function getProductRatingDao()
     {
-        $bridge = $this->getProductRatingBridge();
+        $bridge = $this->get(ProductRatingBridgeInterface::class);
         $serviceProperty = new \ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
         $serviceProperty->setAccessible(true);
         $service = $serviceProperty->getValue($bridge);

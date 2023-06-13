@@ -1214,7 +1214,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         // Check for custom template
         $customTheme = $this->getConfigParam('sCustomTheme');
         if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
-            $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute);
+            $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust);
         }
 
         //test lang level ..

@@ -34,7 +34,7 @@ if (!$autoloadFileExist) {
 }
 
 $shopId = (int) (new ArgvInput())->getParameterOption(
-    '--' . Executor::SHOP_ID_PARAMETER_OPTION_NAME,
+    '--shop-id',
     0
 );
 if ($shopId !== 0) {

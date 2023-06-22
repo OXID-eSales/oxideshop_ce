@@ -27,6 +27,9 @@ final class CookiesNoticeCest
         $I->openShop()
             ->seeCookieNotice()
             ->closeCookieNotice();
+
+        $I->openShop()
+            ->dontSeeCookieNotice();
     }
 
     /**

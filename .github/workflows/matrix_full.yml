@@ -23,6 +23,7 @@ jobs:
 
   test_module-template:
     runs-on: ubuntu-latest
+    if: github.ref_name == 'b-7.1.x'
     steps:
       - name: Trigger module-template workflow and wait for results
         uses: convictional/trigger-workflow-and-wait@v1.6.3
@@ -226,7 +227,7 @@ jobs:
 
       - name: Install APEX theme
         run: |
-          docker-compose exec -T php composer require oxid-esales/apex-theme --with-all-dependencies
+          docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Run tests
         run: |

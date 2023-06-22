@@ -3,6 +3,7 @@ name: Full Matrix
 on:
   push:
     branches:
+      - b-7.1.x
       - b-7.0.x
       - b-6.5.x
       - b-6.4.x
@@ -25,7 +26,7 @@ jobs:
 
   test_module-template:
     runs-on: ubuntu-latest
-    if: github.ref_name == 'b-7.0.x'
+    if: github.ref_name == 'b-7.1.x'
     steps:
       - name: Trigger module-template workflow and wait for results
         uses: convictional/trigger-workflow-and-wait@v1.6.3
@@ -225,7 +226,7 @@ jobs:
 
       - name: Install admin theme and template engine
         run: |
-          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
+          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.1.x --with-all-dependencies
 
       - name: Install APEX theme
         run: |

@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 use Monolog\Logger;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -26,6 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ContainerTest extends IntegrationTestCase
 {
+    use ContainerTrait;
     private ContainerInterface $container;
     private string $testServicesYml = '../../tests/Integration/Internal/Container/Fixtures/Project/services.yaml';
 
@@ -35,7 +37,7 @@ final class ContainerTest extends IntegrationTestCase
 
         ContainerFactory::resetContainer();
 
-        $this->container = ContainerFactory::getInstance()->getContainer();
+        $this->container = $this->getContainer();
     }
 
     public function tearDown(): void
@@ -76,7 +78,7 @@ final class ContainerTest extends IntegrationTestCase
     {
         $this->expectException(NotFoundExceptionInterface::class);
 
-        $this->container->get(Logger::class);
+        $this->get(Logger::class);
     }
 
     public function testCacheIsUsed(): void
@@ -89,13 +91,13 @@ final class ContainerTest extends IntegrationTestCase
         $projectYamlDao->saveProjectConfigFile($projectConfigurationFile);
 
         $this->expectException(ServiceNotFoundException::class);
-        $this->container->get('test_service');
+        $this->get('test_service');
     }
 
     public function testResetCacheWorks(): void
     {
         $this->expectException(ServiceNotFoundException::class);
-        ContainerFactory::getInstance()->getContainer()->get('test_service');
+        $this->get('test_service');
 
         $projectYamlDao = $this->getProjectYmlDao();
 
@@ -107,7 +109,7 @@ final class ContainerTest extends IntegrationTestCase
         ContainerFactory::resetContainer();
 
         $this->assertIsObject(
-            ContainerFactory::getInstance()->getContainer()->get('test_service')
+            $this->get('test_service')
         );
     }
 
@@ -123,7 +125,7 @@ final class ContainerTest extends IntegrationTestCase
     {
         $this->assertInstanceOf(
             EventDispatcher::class,
-            $this->container->get(EventDispatcherInterface::class)
+            $this->get(EventDispatcherInterface::class)
         );
     }
 
@@ -147,8 +149,8 @@ final class ContainerTest extends IntegrationTestCase
     private function getProjectYmlDao(): ProjectYamlDaoInterface
     {
         return new ProjectYamlDao(
-            $this->container->get(ContextInterface::class),
-            $this->container->get('oxid_esales.symfony.file_system')
+            $this->get(ContextInterface::class),
+            $this->get('oxid_esales.symfony.file_system')
         );
     }
 

@@ -230,7 +230,7 @@ jobs:
 
       - name: Install APEX theme
         run: |
-          docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --with-all-dependencies
+          docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.1.x --with-all-dependencies
 
       - name: Run tests
         run: |

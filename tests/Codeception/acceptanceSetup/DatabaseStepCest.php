@@ -10,197 +10,139 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceSetup;
 
 use Codeception\Attribute\Group;
-use OxidEsales\Codeception\ShopSetup\LicenseConditionsStep;
-use OxidEsales\Codeception\ShopSetup\SystemRequirementsStep;
+use OxidEsales\Codeception\ShopSetup\DataObject\UserInput;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceSetupTester;
-use OxidEsales\Facts\Facts;
 
 #[Group('setup')]
 final class DatabaseStepCest
 {
-    public function testMissingFieldsIndicateAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    private UserInput $userInput;
+
+    public function _before(AcceptanceSetupTester $I)
     {
-        $I->wantToTest('the setup redirects back if the fields are not filled in');
-
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
-
-        $I->amGoingTo('submit an empty database form');
-        $databaseStep->submitForm();
-
-        $I->expectTo('see fill all fields error message.');
-        $databaseStep->seeFillAllFieldsErrorMessage();
-
-        $I->expect('a redirection back to the database step');
-        $databaseStep->waitForStep();
+        $this->userInput = $I->getDataForUserInput();
     }
 
-    public function testDbUseHasNoAccessIndicateAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    public function testWithEmptyFields(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup redirects back when the DB user has no access');
+        $I->wantToTest('setup redirects if the fields are not filled in');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
+        $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->returnToDatabaseStepIfRequiredFieldsNotSet();
+    }
+
+    public function testWithWrongDbUsername(AcceptanceSetupTester $I): void
+    {
+        $I->wantToTest('setup redirects when the DB user has no access');
+
+        $databaseStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep();
 
         $I->amGoingTo('submit the database form with a not existing DB usr.');
+        $this->userInput->setDbUserName('this-user-does-not-exist');
         $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                'test',
-                $I->getDbUserPassword(),
-            )
-            ->submitForm();
-
-        $I->expectTo('see the given user has no access to create DB error message.');
-        $databaseStep->seeAccessDeniedErrorMessage();
-
-        $I->expect('a redirection back to the database step');
-        $databaseStep->waitForStep();
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->returnToDatabaseStepIfAccessDenied();
     }
 
-    public function testUserIsNotifiedIfTheDatabaseExists(AcceptanceSetupTester $I): void
+    public function testWithAlreadyExistingDatabase(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup notify the user if the given database already exists.');
+        $I->wantToTest('setup notifies the user if the given database already exists.');
 
-        $databaseName = preg_replace(
-            "/\W/",
+        $I->amGoingTo('create a DB with the same name before starting the shop setup');
+        $preExistingDatabaseName = preg_replace(
+            '/\W/',
             '',
             uniqid('some_db_', true)
         );
-        $I->createDatabaseStub($databaseName);
+        $I->createDatabaseStub($preExistingDatabaseName);
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
+        $databaseStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep();
 
         $I->amGoingTo('submit the form with an already existing database name.');
+        $this->userInput->setDbName($preExistingDatabaseName);
         $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $databaseName,
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->submitForm();
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->proceedToDirectoryAndLoginStepIfDbExists();
 
-        $I->expectTo('see the continue with overwrite button.');
-        $databaseStep->seeContinueButton();
-
-        $I->dropDatabaseStub($databaseName);
+        $I->dropDatabaseStub($preExistingDatabaseName);
     }
 
-    public function testMissingSqlFileIndicatesErrorAndRedirect(AcceptanceSetupTester $I): void
+    public function testWithMissingSqlFile(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the missing sql file indicates an error and a redirect.');
+        $I->wantToTest('missing SQL file indicates an error and redirects.');
 
         $I->amGoingTo('remove the DB schema file temporarily.');
         $I->backupDatabaseSchemaFile();
         $I->removeDatabaseSchemaFile();
 
-        $I->amGoingTo('proceed with setup from the first step with valid data.');
-        $welcomeStep = (new SystemRequirementsStep($I))
-            ->openTab()
-            ->goToWelcomeStep();
-
-        $licenseConditionStep = $welcomeStep->goToLicenseConditionStep();
-
-        $databaseStep = $licenseConditionStep->goToDBStep();
-
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
-
-        $directoryAndLoginStep
-            ->waitForStep()
+        $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep()
             ->fillAdminCredentials(
                 'test-user@login.email',
                 'test123',
                 'test123'
             )
-            ->submitForm();
+            ->returnToDatabaseStepIfSqlSchemaIsMissing();
 
-        $I->expectTo('see the "can not open the sql file" error message.');
-        $databaseStep->seeCantOpenSqlErrorMessage();
-
-        $I->expect('a redirection back to the database step.');
-        $databaseStep->waitForStep();
-
-        $I->amGoingTo('restore the DB schema file.');
         $I->restoreDatabaseSchemaFile();
     }
 
-    public function testSqlFileWithSyntaxErrorIndicatesErrorAndRedirect(AcceptanceSetupTester $I): void
+    public function testWithCorruptDatabaseSchemaFile(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('when the sql file contains syntax error then indicates an error.');
+        $I->wantToTest('error with invalid SQL schema file.');
 
         $I->amGoingTo('corrupt the DB schema file temporarily.');
         $I->backupDatabaseSchemaFile();
         $I->corruptDatabaseSchemaFile();
 
-        $I->amGoingTo('proceed with setup from the first step with valid data.');
-        $welcomeStep = (new SystemRequirementsStep($I))
-            ->openTab()
-            ->goToWelcomeStep();
-
-        $licenseConditionStep = $welcomeStep->goToLicenseConditionStep();
-
-        $databaseStep = $licenseConditionStep->goToDBStep();
-
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
-
-        $directoryAndLoginStep
-            ->waitForStep()
+        $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep()
             ->fillAdminCredentials(
                 'test-user@login.email',
                 'test123',
                 'test123'
             )
-            ->submitForm();
+            ->returnToDirectoryAndLoginStepIfSqlSchemaIsCorrupt();
 
-        $I->expectTo('see an sql syntax error message.');
-        $databaseStep->seeSqlSyntaxErrorMessage();
-
-        $I->amGoingTo('restore the DB schema file.');
         $I->restoreDatabaseSchemaFile();
     }
 
-    public function testInstallDemoDataInstallIsDisabled(AcceptanceSetupTester $I): void
+    public function testWithNoDemodataPackage(AcceptanceSetupTester $I): void
     {
         if ($I->hasActiveDemodataPackage()) {
-            $I->markTestSkipped('This test is for no demo data.');
+            $I->markTestSkipped('This test is skipped if demo data is installed.');
         }
-
         $I->wantToTest('demo data checkbox is disabled when there is no installed package.');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
-
-        $databaseStep->cannotSelectDemoDataInstallation();
+        $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->seeDemodataIsNotAvailable();
     }
 }

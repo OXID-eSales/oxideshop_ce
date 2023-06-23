@@ -331,15 +331,34 @@ jobs:
         run: |
           docker-compose exec -T php composer require oxid-esales/apex-theme --with-all-dependencies
 
-      - name: Run tests
+      - name: Install admin theme
+        run: |
+          docker-compose exec -T php composer require oxid-esales/twig-admin-theme
+
+      - name: Build Codeception
+        run: |
+          docker-compose exec -T php \
+          php vendor/bin/codecept build \
+          -c tests/codeception.yml
+
+      - name: Run Codeception tests
         run: |
           docker-compose exec -T \
-            -e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome -e DB_NAME=setup_test -e DB_USERNAME=root -e DB_PASSWORD=root -e DB_HOST=mysql -e DB_PORT=3306 -e SHOP_URL=http://localhost.local/ -e SHOP_SOURCE_PATH=/var/www/source/ \
-            php vendor/bin/codecept run acceptanceSetup \
-              -c tests/codeception.yml \
-              --ext DotReporter \
-              | tee shop_setup_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
-          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' shop_setup_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+          -e SELENIUM_SERVER_HOST=selenium \
+          -e BROWSER_NAME=chrome \
+          -e DB_NAME=setup_test \
+          -e DB_USERNAME=root \
+          -e DB_PASSWORD=root \
+          -e DB_HOST=mysql \
+          -e DB_PORT=3306 \
+          -e SHOP_URL=http://localhost.local/ \
+          -e SHOP_SOURCE_PATH=/var/www/source/ \
+          php vendor/bin/codecept run acceptanceSetup \
+          -c tests/codeception.yml \
+          --ext DotReporter \
+          | tee shop_setup_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+          if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' \
+          shop_setup_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
 
       - name: Upload PHPUnit Log
         if: always()

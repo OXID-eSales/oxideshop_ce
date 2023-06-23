@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Actor;
+use OxidEsales\Codeception\ShopSetup\SystemRequirementsStep;
 
 /**
  * Inherited Methods
@@ -25,8 +26,16 @@ use Codeception\Actor;
  * @method void pause($vars = [])
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceSetupTester extends Actor
 {
     use _generated\AcceptanceSetupTesterActions;
+
+    public function openShopSetup(): SystemRequirementsStep
+    {
+        $I = $this;
+        $I->amOnPage(SystemRequirementsStep::$setupStartingUrl);
+
+        return new SystemRequirementsStep($I);
+    }
 }

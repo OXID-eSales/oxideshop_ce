@@ -10,189 +10,128 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceSetup;
 
 use Codeception\Attribute\Group;
-use OxidEsales\Codeception\ShopSetup\LicenseConditionsStep;
+use OxidEsales\Codeception\ShopSetup\DataObject\UserInput;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceSetupTester;
 
 #[Group('setup')]
 class DirectoryAndLoginStepCest
 {
-    public function testMissingFieldsIndicateAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    private UserInput $userInput;
+
+    public function _before(AcceptanceSetupTester $I)
     {
-        $I->wantToTest('the setup shows an error message and redirects back if the fields are not filled in');
-
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
-
-        $I->amGoingTo('fill and submit DB connection data.');
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
-
-        $I->amGoingTo('submit the form without filling fields.');
-        $directoryAndLoginStep->submitForm();
-
-        $I->expectTo('see "fill all fields" error message.');
-        $directoryAndLoginStep->seeFillAllFieldsErrorMessage();
-
-        $I->expect('a redirect back to the directory and login step.');
-        $directoryAndLoginStep->waitForStep();
+        $this->userInput = $I->getDataForUserInput();
     }
 
-    public function testShortPasswordIndicatesAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    public function testWithEmptyFields(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup shows an error message and redirects back if password is too short');
+        $I->wantToTest('error message and redirect if the fields are not filled.');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
+        $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep()
+            ->returnToDirectoryAndLoginStepIfFieldsAreEmpty();
+    }
 
-        $I->amGoingTo('fill and submit DB connection data.');
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
+    public function testWithTooShortPassword(AcceptanceSetupTester $I): void
+    {
+        $I->wantToTest('error message and redirect if password is too short');
+
+        $shortPassword = 'pass';
+
+        $directoryAndLoginStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep();
 
         $I->amGoingTo('submit the form with a too short password.');
         $directoryAndLoginStep
             ->fillAdminCredentials(
                 'test-user@login.email',
-                'test',
-                'test'
+                $shortPassword,
+                $shortPassword
             )
-            ->submitForm();
-
-        $I->expectTo('see "fill all fields" error message.');
-        $directoryAndLoginStep->seeTooShortPasswordErrorMessage();
-
-        $I->expect('a redirect back to the directory and login step.');
-        $directoryAndLoginStep->waitForStep();
+            ->returnToDirectoryAndLoginStepIfPasswordIsTooShort();
     }
 
-    public function testPasswordMismatchIndicatesAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    public function testWithPasswordMismatch(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup shows an error message and redirects back if passwords are mismatched');
+        $I->wantToTest('error message and redirect if passwords mismatch.');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
-
-        $I->amGoingTo('fill and submit DB connection data.');
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
+        $directoryAndLoginStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep();
 
         $I->amGoingTo('submit the form with mismatched passwords.');
         $directoryAndLoginStep
             ->fillAdminCredentials(
                 'test-user@login.email',
-                'test123',
-                'test'
+                'some-password',
+                'another-password'
             )
-            ->submitForm();
-
-        $I->expectTo('see "passwords not match" error message.');
-        $directoryAndLoginStep->seePasswordsNotMatchedErrorMessage();
-
-        $I->expect('a redirect back to the directory and login step.');
-        $directoryAndLoginStep->waitForStep();
+            ->returnToDirectoryAndLoginStepIfPasswordsMismatch();
     }
 
-    public function testNotValidEmailIndicatesAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    public function testWithInvalidEmail(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup shows an error message and redirects back if the provided email is not valid.');
+        $I->wantToTest('error message and redirect if email is not valid.');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
-
-        $I->amGoingTo('fill and submit DB connection data.');
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
+        $directoryAndLoginStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep();
 
         $I->amGoingTo('submit the form with an invalid email.');
         $directoryAndLoginStep
             ->fillAdminCredentials(
-                'not a valid email address',
+                'this-is-not-a-valid-email-address',
                 'test123',
                 'test123'
             )
-            ->submitForm();
-
-        $I->expectTo('see "passwords not match" error message.');
-        $directoryAndLoginStep->seeNotValidEmailErrorMessage();
-
-        $I->expect('a redirect back to the directory and login step.');
-        $directoryAndLoginStep->waitForStep();
+            ->returnToDirectoryAndLoginStepIfInvalidEmail();
     }
 
-    public function testMissingConfigFileIndicatesAnErrorAndARedirect(AcceptanceSetupTester $I): void
+    public function testWithInvalidShopDirectory(AcceptanceSetupTester $I): void
     {
-        $I->wantToTest('the setup shows an error message and redirects back if the config file is missing.');
+        $I->wantToTest('error message and redirect if the config file not found.');
 
-        $I->amGoingTo('open and accept the license conditions.');
-        $databaseStep = (new LicenseConditionsStep($I))
-            ->openTab()
-            ->goToDBStep();
+        $wrongShopDirectory = 'wrong-dir';
 
-        $I->amGoingTo('fill and submit DB connection data.');
-        $directoryAndLoginStep = $databaseStep
-            ->fillDatabaseConnectionFields(
-                $I->getDbHost(),
-                $I->getDbPort(),
-                $I->getDbName(),
-                $I->getDbUserName(),
-                $I->getDbUserPassword(),
-            )
-            ->dontInstallDemoData()
-            ->goToDirectoryAndLoginStep();
+        $directoryAndLoginStep = $I
+            ->openShopSetup()
+            ->proceedToWelcomeStep()
+            ->proceedToLicenseAndConditionsStep()
+            ->proceedToDatabaseStep()
+            ->fillDatabaseConnectionFields($this->userInput)
+            ->selectSetupWithoutDemodata()
+            ->proceedToDirectoryAndLoginStep();
 
-        $I->amGoingTo('submit the form with a wrong source.');
+        $I->amGoingTo('submit the form with a wrong shop source directory.');
         $directoryAndLoginStep
             ->fillAdminCredentials(
                 'test-user@login.email',
                 'test123',
                 'test123'
             )
-            ->fillSourceField('test')
-            ->submitForm();
-
-        $I->expectTo('see "passwords not match" error message.');
-        $directoryAndLoginStep->seeMissingConfigErrorMessage('test/config.inc.php');
-
-        $I->expect('a redirect back to the directory and login step.');
-        $directoryAndLoginStep->waitForStep();
+            ->setShopDirectory($wrongShopDirectory)
+            ->returnToDirectoryAndLoginStepIfInvalidShopDirectory($wrongShopDirectory);
     }
 }

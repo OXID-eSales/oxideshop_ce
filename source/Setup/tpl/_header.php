@@ -124,16 +124,17 @@ $facts = new \OxidEsales\Facts\Facts();
     </div>
 
     <div id="body">
-    <?php
-    $aMessages = $this->getMessages();
-    foreach ($this->getMessages() as $sMessage) {
-        ?><br><b><?php echo $sMessage; ?></b><?php
-    }
-    if (count($aMessages)) {
-        ?><br><br><?php
-    }
+    <?php $messages = $this->getMessages(); ?>
 
-    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+    <?php if (count($messages)) { ?>
+    <div id="message">
+        <?php foreach ($messages as $message) { ?>
+        <p style="margin-bottom: .5rem;"><b><?= $message; ?></b></p>
+        <?php } ?>
+    </div>
+    <?php } ?>
+
+    <?php if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
         ?><br><br><?php $this->getText('HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'); ?>
         <a href="index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>" id="continue"><b><?php $this->getText('HERE'); ?></b></a>.<br><br><?php
     }

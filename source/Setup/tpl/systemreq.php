@@ -82,15 +82,19 @@ require "_header.php"; ?>
     <?php $this->getText('STEP_0_TEXT'); ?>
     <br><br>
 
-<?php if ($this->getViewParam("blContinue") === true) { ?>
-<form action="index.php" method="post">
-<input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
-<input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_WELCOME'); ?>">
-<input type="submit" id="step0Submit" class="edittext" value="<?php $this->getText('BUTTON_PROCEED_INSTALL'); ?>">
-</form>
-    <?php
-} else {
-    ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
-    <a target="_blank" href="<?php $this->getText('STEP_0_ERROR_URL'); ?>"><?php $this->getText('STEP_0_ERROR_URL'); ?></a><?php
-}
-require "_footer.php";
+    <?php if ($this->getViewParam("blContinue") === true) { ?>
+    <form action="index.php" method="post">
+        <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
+        <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_WELCOME'); ?>">
+        <input type="submit" id="step0Submit" class="edittext" value="<?php $this->getText('BUTTON_PROCEED_INSTALL'); ?>">
+    </form>
+    <?php } else { ?>
+    <div class="error-message">
+        <b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
+        <a target="_blank" href="<?php $this->getText('STEP_0_ERROR_URL'); ?>">
+            <?php $this->getText('STEP_0_ERROR_URL'); ?>
+        </a>
+    </div>
+    <?php } ?>
+
+<?php require "_footer.php";

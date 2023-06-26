@@ -1171,30 +1171,15 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleUrl($sModule, $sFile = '')
     {
-        $c = Registry::getConfig();
-        $shopUrl = null;
-        if ($this->isAdmin()) {
-            if ($c->isSsl()) {
-                $shopUrl = $c->getConfigParam('sSSLShopURL');
-            }
-            // From admin and with no config usefull directive, we use the sShopURL directive
-            if (!$shopUrl) {
-                $shopUrl = $c->getConfigParam('sShopURL');
-            }
-        }
-        // We are either in front, or in admin with no $sShopURL defined
-        if (!$shopUrl) {
-            $shopUrl = $c->getCurrentShopUrl();
-        }
-        $shopUrl = rtrim($shopUrl, '/');
+        $config = Registry::getConfig();
 
-        $sUrl = str_replace(
-            rtrim($c->getConfigParam('sShopDir'), '/'),
-            $shopUrl,
+        $moduleUrl = str_replace(
+            rtrim($config->getConfigParam('sShopDir'), '/'),
+            rtrim($config->getCurrentShopUrl(false), '/'),
             $this->getModulePath($sModule, $sFile)
         );
 
-        return $sUrl;
+        return $moduleUrl;
     }
 
     /**

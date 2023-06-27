@@ -22,12 +22,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProvider`
     - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProviderInterface`
 
+## [v7.0.2] - Unreleased
+
+### Fixed
+- Database connection object fixation in ConnectionProvider service
+
 ## [v7.0.1] - 2023-05-22
 
 ### Fixed
 - Fix "undefined variable" in ClassPropertyModuleConfigurationCache::evict()
 
-##[v7.0.0] - 2023-05-09
+## [v7.0.0] - 2023-05-09
 
 ### Added
 - Sorting field for Manufacturer
@@ -61,7 +66,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Methods:
   - `OxidEsales\EshopCommunity\Application\Model\Manufacturer::getThumbnailUrl()`
 
-##[v7.0.0-rc.4] - 2022-11-23
+## [v7.0.0-rc.4] - 2022-11-23
 
 ### Added
 - Event:
@@ -79,7 +84,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter::invalidateModuleCache(string $moduleId)
   - OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter::invalidateModulesCache()
 
-##[v7.0.0-rc.3] - 2022-11-04
+## [v7.0.0-rc.3] - 2022-11-04
 
 ### Added
 - Configuration parameter `oxid_esales.templating.engine_autoescapes_html` that delegates HTML-escaping to templating engine
@@ -1965,6 +1970,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v6.0-beta.1] - 2016-11-30
 
 [v7.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.1.0
+[v7.0.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.1...v7.0.2
 [v7.0.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0...v7.0.1
 [v7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.4...v7.0.0
 [v7.0.0-rc.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.3...v7.0.0-rc.4

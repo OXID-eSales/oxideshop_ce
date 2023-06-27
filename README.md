@@ -19,7 +19,7 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 
 #### Compilation installation
 
-For full installation instructions, please check the [OXID eShop compilation installation manual](https://docs.oxid-esales.com/developer/en/6.4/getting_started/installation/eshop_installation.html).
+For full installation instructions, please check the [OXID eShop compilation installation manual](https://docs.oxid-esales.com/developer/en/6.5/getting_started/installation/eshop_installation.html).
 
 #### Installation for Contributors
 

@@ -12,6 +12,9 @@ modules:
             window_size: maximize
             clear_cookies: true
             restart: true
+            capabilities:
+                chromeOptions:
+                    excludeSwitches: ['enable-automation']
         - \OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'

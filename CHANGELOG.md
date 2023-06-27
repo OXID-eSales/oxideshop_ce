@@ -678,8 +678,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
   - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
 
+## [v6.14.1] - 2023-06-27
 
-## [v6.14.0] - Unreleased
+### Fixed
+- Fix Generic Import [#0007152] https://bugs.oxid-esales.com/view.php?id=7152
+
+## [v6.14.0] - 2023-02-14
 
 ### Added
 - Configuration `disallowForceSessionIdInRequest` to disable processing of `force_sid` URL parameter
@@ -1977,6 +1981,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [v7.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.2...v7.0.0-rc.3
 [v7.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v7.0.0-rc.1...v7.0.0-rc.2
 [v7.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v7.0.0-rc.1
+[v6.14.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.14.0...v6.14.1
+[v6.14.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v6.14.0
 [v6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v6.13.0
 [v6.12.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.11.0...v6.12.0
 [v6.11.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.10.3...v6.11.0

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v8.0.0] - unreleased
 
+### Changed
+- Admin directory is not removed from the url in `OxidEsales\EshopCommunity\Core\ViewConfig::getModuleUrl` anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)
+
 ### Removed
 - Classes:
   - `OxidEsales\EshopCommunity\Internal\Framework\Console\Executor`

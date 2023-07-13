@@ -960,13 +960,17 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $product = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
-        $sSelect = "SELECT $sFields, $sArticleTable.oxtimestamp FROM $sO2CView as oc left join $sArticleTable
-                    ON $sArticleTable.oxid = oc.oxobjectid
-                    WHERE " . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''
-                    and oc.oxcatnid = " . $oDb->quote($sCatId) . " $sFilterSql ORDER BY $sSorting oc.oxpos, oc.oxobjectid ";
-
-        return $sSelect;
+        return "SELECT $sFields, $sArticleTable.oxtimestamp 
+                    FROM $sO2CView as oc
+                        left join $sArticleTable ON $sArticleTable.oxid = oc.oxobjectid
+                        {$product->getFieldToShopJoin($sArticleTable)}
+                    WHERE {$product->getSqlActiveSnippet()} 
+                        
+                    and $sArticleTable.oxparentid = ''
+                    and oc.oxcatnid = {$oDb->quote($sCatId)} $sFilterSql 
+                    ORDER BY $sSorting oc.oxpos, oc.oxobjectid ";
     }
 
     /**

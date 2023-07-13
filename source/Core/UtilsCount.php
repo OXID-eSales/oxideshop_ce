@@ -139,6 +139,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $sQ = "SELECT COUNT( DISTINCT $sTable.`oxid` )
                FROM $sO2CView
                    INNER JOIN $sTable ON $sO2CView.`oxobjectid` = $sTable.`oxid` AND $sTable.`oxparentid` = ''
+                    {$oArticle->getFieldToShopJoin($sTable)}
                WHERE $sO2CView.`oxcatnid` = :oxcatnid AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ, [

@@ -690,6 +690,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $this->actionType;
     }
 
+    public function getFieldToShopJoin(string $mainTable): string
+    {
+        return '';
+    }
+
     /**
      * Returns SQL select string with checks if items are available
      *

@@ -8,3 +8,4 @@
 ### Removed
 - Remove console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`
 - Cleanup deprecated Private Sales Invite functionality
+- `getContainer()` and `dispatchEvent()` methods from Core classes

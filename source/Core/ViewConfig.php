@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Facts\Facts;
@@ -1149,9 +1150,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $filePath = '/' . $filePath;
         }
 
-        $filePath = $this
-            ->getContainer()
-            ->get(ModuleAssetsPathResolverBridgeInterface::class)
+        $filePath = ContainerFacade::get(ModuleAssetsPathResolverBridgeInterface::class)
             ->getAssetsPath($moduleId) . $filePath;
 
         $this->validateModuleFile($filePath, $moduleId);
@@ -1315,13 +1314,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     private function isModuleEnabled($moduleId): bool
     {
-        $moduleActivationBridge = $this
-            ->getContainer()
-            ->get(ModuleActivationBridgeInterface::class);
-        return $moduleActivationBridge->isActive(
-            $moduleId,
-            Registry::getConfig()->getShopId()
-        );
+        return ContainerFacade::get(ModuleActivationBridgeInterface::class)
+            ->isActive(
+                $moduleId,
+                Registry::getConfig()->getShopId()
+            );
     }
 
     /**

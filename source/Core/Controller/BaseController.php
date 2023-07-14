@@ -8,10 +8,10 @@
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
 use OxidEsales\Facts\Facts;
-use Psr\Container\ContainerInterface;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -510,7 +510,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             if (method_exists($this, $sFunction)) {
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
-                $this->dispatchEvent(new AfterRequestProcessedEvent());
+                ContainerFacade::dispatch(new AfterRequestProcessedEvent());
 
                 if (isset($sNewAction)) {
                     $this->executeNewAction($sNewAction);
@@ -578,7 +578,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
 
             $this->onExecuteNewAction();
 
-            $this->dispatchEvent(new AfterRequestProcessedEvent());
+            ContainerFacade::dispatch(new AfterRequestProcessedEvent());
 
             //#M341 do not add redirect parameter
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) Registry::getRequest()->getRequestEscapedParameter('redirected'), 302);
@@ -858,14 +858,5 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function showPersParam($persParamKey)
     {
         return true;
-    }
-
-    /**
-     * @return ContainerInterface
-     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
-     */
-    protected function getContainer()
-    {
-        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
 }

@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -568,7 +569,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
     private function getRenderer(): TemplateRendererInterface
     {
-        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     private function collectProductMetaDescription(): string

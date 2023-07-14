@@ -17,6 +17,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
 
@@ -1417,7 +1418,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         /** New authentication mechanism */
         $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginAttemptToAdminBackend);
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+        $passwordServiceBridge = ContainerFacade::get(PasswordServiceBridgeInterface::class);
         if ($password && !$this->isLoaded()) {
             $userIsAuthenticated = $passwordServiceBridge->verifyPassword($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
@@ -1612,7 +1613,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sShopID = $oConfig->getShopId();
         if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
-            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+            $passwordServiceBridge = ContainerFacade::get(PasswordServiceBridgeInterface::class);
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
@@ -2023,9 +2024,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function hashPassword(string $password): string
     {
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-
-        return $passwordServiceBridge->hash($password);
+        return ContainerFacade::get(PasswordServiceBridgeInterface::class)
+            ->hash($password);
     }
 
     /**
@@ -2718,9 +2718,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     private function getRandomToken(): string
     {
-        return $this
-            ->getContainer()
-            ->get(RandomTokenGeneratorBridgeInterface::class)
+        return ContainerFacade::get(RandomTokenGeneratorBridgeInterface::class)
             ->getAlphanumericToken(32);
     }
 }

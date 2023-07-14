@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -62,7 +63,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        $emailValidator = ContainerFacade::get(EmailValidatorServiceBridgeInterface::class);
 
         $aParams = Registry::getRequest()->getRequestEscapedParameter('pa');
         if (!isset($aParams['email']) || !$emailValidator->isEmailValid($aParams['email'])) {

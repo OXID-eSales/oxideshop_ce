@@ -8,6 +8,7 @@
 namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 
 /**
@@ -44,8 +45,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
             return $this->_sThisTemplate;
         }
         $template = "widget/$widgetType/categorylist";
-        $templateExists = $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        $templateExists = ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer()
             ->exists($template);
         if ($templateExists) {

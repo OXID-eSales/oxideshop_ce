@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityChecker;
 
 /**
@@ -1038,14 +1037,5 @@ class SystemRequirements
     protected function getRecommendMemoryLimit()
     {
         return '60M';
-    }
-
-    /**
-     * @return \Psr\Container\ContainerInterface
-     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
-     */
-    protected function getContainer()
-    {
-        return ContainerFactory::getInstance()->getContainer();
     }
 }

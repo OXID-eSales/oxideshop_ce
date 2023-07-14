@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -102,8 +103,7 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
      */
     private function getRenderer()
     {
-        return $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
 

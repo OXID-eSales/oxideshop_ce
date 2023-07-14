@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -138,8 +139,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     private function getRenderer()
     {
-        return $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
 }

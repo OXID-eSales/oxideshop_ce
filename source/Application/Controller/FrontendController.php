@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
@@ -413,10 +414,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $user = $this->getUser();
         $count = 0;
         if ($user) {
-            $count = $this
-                ->getContainer()
-                ->get(UserReviewAndRatingBridgeInterface::class)
-                ->getReviewAndRatingListCount($user->getId());
+            $count = ContainerFacade::get(UserReviewAndRatingBridgeInterface::class)
+                ->getReviewAndRatingListCount(
+                    $user->getId()
+                );
         }
 
         return $count;

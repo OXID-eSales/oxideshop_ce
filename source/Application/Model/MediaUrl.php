@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     protected $_sClassName = 'oxmediaurls';
@@ -127,6 +129,6 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     private function isFieldValueHtmlEcaped(): bool
     {
-        return !$this->getContainer()->getParameter('oxid_esales.templating.engine_autoescapes_html');
+        return !ContainerFacade::getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 }

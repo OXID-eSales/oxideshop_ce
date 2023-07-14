@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
@@ -338,8 +339,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $langArray = $this->getLanguageArray();
             $this->_aAdminTplLanguageArray = [];
 
-            $adminThemeName = $this->getContainer()
-                ->get(AdminThemeBridgeInterface::class)
+            $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
                 ->getActiveTheme();
             $sourceDirectory =
                 $config->getAppDir() .
@@ -747,7 +747,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
         // admin lang files
-        $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+        $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
+            ->getActiveTheme();
         $adminPath = $appDirectory .
             'views' . DIRECTORY_SEPARATOR .
             $adminThemeName . DIRECTORY_SEPARATOR .
@@ -812,7 +813,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function appendCustomLangFiles($languageFiles, $language, $forAdmin = false)
     {
         if ($forAdmin) {
-            $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+            $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
+                ->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
             $config = Registry::getConfig();
@@ -851,8 +853,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function appendModuleLangFilesForAdminArea(array $langFiles, string $lang): array
     {
-        $moduleLangFiles = $this->getContainer()
-            ->get(AdminAreaModuleTranslationFileLocatorBridgeInterface::class)
+        $moduleLangFiles = ContainerFacade::get(AdminAreaModuleTranslationFileLocatorBridgeInterface::class)
             ->locate($lang);
 
         return array_merge($langFiles, $moduleLangFiles);
@@ -866,8 +867,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function appendModuleLangFilesForFrontend(array $langFiles, string $lang): array
     {
-        $moduleLangFiles = $this->getContainer()
-            ->get(FrontendModuleTranslationFileLocatorBridgeInterface::class)
+        $moduleLangFiles = ContainerFacade::get(FrontendModuleTranslationFileLocatorBridgeInterface::class)
             ->locate($lang);
 
         return array_merge($langFiles, $moduleLangFiles);
@@ -1020,8 +1020,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getRealThemeName($themeName, $isAdmin = null)
     {
-        $adminTheme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
-        return ($isAdmin ? $adminTheme : $themeName);
+        return $isAdmin
+            ? ContainerFacade::get(AdminThemeBridgeInterface::class)
+                ->getActiveTheme()
+            : $themeName;
     }
 
     /**

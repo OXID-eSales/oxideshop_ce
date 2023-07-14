@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 
 /**
@@ -297,7 +298,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $blSsl = false;
         }
 
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+        $passwordServiceBridge = ContainerFacade::get(PasswordServiceBridgeInterface::class);
 
         $this->_aUserCookie[$shopId] = $userName . '@@@' .  $passwordServiceBridge->hash($passwordHash . $salt);
         $this->setOxCookie('oxid_' . $shopId, $this->_aUserCookie[$shopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, $blSsl);

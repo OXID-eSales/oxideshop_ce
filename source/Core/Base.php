@@ -9,10 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -114,29 +110,7 @@ class Base
         self::$_blIsAdmin = $isAdmin;
     }
 
-    /**
-     * @param Event $event Event to dispatch
-     * @return Event
-     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
-     */
-    public function dispatchEvent(Event $event)
-    {
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(EventDispatcherInterface::class)
-            ->dispatch($event);
-    }
-
-    /**
-     * @return ContainerInterface
-     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
-     */
-    protected function getContainer()
-    {
-        return ContainerFactory::getInstance()->getContainer();
-    }
-
-    /**
+        /**
      * @template T
      * @param class-string<T> $id
      * @return T

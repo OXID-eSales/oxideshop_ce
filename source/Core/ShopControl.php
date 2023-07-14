@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -239,7 +240,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         $output = $this->formOutput($view);
 
-        $this->dispatchEvent(new ViewRenderedEvent($this));
+        ContainerFacade::dispatch(new ViewRenderedEvent($this));
 
         $outputManager = $this->getOutputManager();
         $outputManager->setCharset($view->getCharSet());
@@ -249,7 +250,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $outputManager->output('errors', $this->getFormattedErrors($view->getClassKey()));
         }
 
-        $this->dispatchEvent(new BeforeHeadersSendEvent($this, $view));
+        ContainerFacade::dispatch(new BeforeHeadersSendEvent($this, $view));
 
         $outputManager->sendHeaders();
 
@@ -453,8 +454,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     private function getRenderer()
     {
-        return $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
 

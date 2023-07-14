@@ -12,6 +12,7 @@ use DOMElement;
 use DOMXPath;
 use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use stdClass;
 
 class NavigationTree extends Base
@@ -376,8 +377,7 @@ class NavigationTree extends Base
      */
     protected function getMenuFiles()
     {
-        return $this->getContainer()
-            ->get('oxid_esales.templating.admin.navigation.file.locator')
+        return ContainerFacade::get('oxid_esales.templating.admin.navigation.file.locator')
             ->locate();
     }
 

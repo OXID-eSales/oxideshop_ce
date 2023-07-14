@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridgeInterface;
@@ -145,8 +146,8 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
         $reviewId = $this->getReviewIdFromRequest();
 
         if ($reviewId) {
-            $userReviewBridge = $this->getContainer()->get(UserReviewBridgeInterface::class);
-            $userReviewBridge->deleteReview($userId, $reviewId);
+            ContainerFacade::get(UserReviewBridgeInterface::class)
+                ->deleteReview($userId, $reviewId);
         }
     }
 
@@ -159,8 +160,8 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
         $ratingId = $this->getRatingIdFromRequest();
 
         if ($ratingId) {
-            $userRatingBridge = $this->getContainer()->get(UserRatingBridgeInterface::class);
-            $userRatingBridge->deleteRating($userId, $ratingId);
+            ContainerFacade::get(UserRatingBridgeInterface::class)
+                ->deleteRating($userId, $ratingId);
         }
     }
 

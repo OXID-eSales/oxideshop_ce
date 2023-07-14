@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 
 /**
@@ -205,9 +206,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function updateProductRating()
     {
-        $this
-            ->getContainer()
-            ->get(ProductRatingBridgeInterface::class)
-            ->updateProductRating($this->getObjectId());
+        ContainerFacade::get(ProductRatingBridgeInterface::class)
+            ->updateProductRating(
+                $this->getObjectId()
+            );
     }
 }

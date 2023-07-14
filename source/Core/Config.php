@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\Facts\Facts;
 use stdClass;
@@ -1174,7 +1175,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($admin) {
-            $theme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+            $theme = ContainerFacade::get(AdminThemeBridgeInterface::class)
+                ->getActiveTheme();
         }
 
         if ($dir != $this->_sTemplateDir) {
@@ -2119,9 +2121,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')
     {
         if (empty($extension)) {
-            $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
-        } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
-            $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
+            ContainerFacade::dispatch(new ShopConfigurationChangedEvent($varName, (int) $shopId));
+        } elseif (str_contains($extension, self::OXMODULE_THEME_PREFIX)) {
+            ContainerFacade::dispatch(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
         }
     }
 }

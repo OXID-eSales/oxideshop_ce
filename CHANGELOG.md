@@ -19,11 +19,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v7.1.0] - unreleased
 
 ### Deprecated
-  - Classes:
-    - `OxidEsales\EshopCommunity\Internal\Framework\Console\Executor`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProvider`
-    - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProviderInterface`
+- Classes:
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\Executor`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProvider`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\CommandsProviderInterface`
+- Private Sales Invite:
+  - `OxidEsales\EshopCommunity\Application\Controller\InviteController`
+  - Language constants:
+    - `MESSAGE_INVITE_YOUR_FRIENDS`
+    - `MESSAGE_INVITE_YOUR_FRIENDS_EMAIL`
+    - `MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT`
 
 ## [v7.0.2] - Unreleased
 

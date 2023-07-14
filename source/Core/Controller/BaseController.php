@@ -861,9 +861,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @internal
-     *
      * @return ContainerInterface
+     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
      */
     protected function getContainer()
     {

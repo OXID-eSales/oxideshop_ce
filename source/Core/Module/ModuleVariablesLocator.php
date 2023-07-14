@@ -10,9 +10,10 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
+
 /**
  * Selects module variables from database or cache.
  *
@@ -151,9 +152,7 @@ class ModuleVariablesLocator
     private function getClassExtensionsChain(): array
     {
         try {
-            $chain = ContainerFactory::getInstance()
-                ->getContainer()
-                ->get(ActiveClassExtensionChainResolverInterface::class)
+            $chain = ContainerFacade::get(ActiveClassExtensionChainResolverInterface::class)
                 ->getActiveExtensionChain($this->getShopIdCalculator()->getShopId())->getChain();
         } catch (ShopConfigurationNotFoundException $exception) {
             $chain = [];

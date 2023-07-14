@@ -9,15 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
-/**
- *
- */
 class PasswordServiceBridgeTest extends TestCase
 {
     use ContainerTrait;
@@ -56,8 +52,7 @@ class PasswordServiceBridgeTest extends TestCase
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
 
-        $container = $this->getContainer();
-        $cost = $container->getParameter('oxid_esales.utility.hash.service.password_hash.bcrypt.cost');
+        $cost = ContainerFacade::getParameter('oxid_esales.utility.hash.service.password_hash.bcrypt.cost');
 
         $passwordHashWithCostFromConfiguration = password_hash('secret', PASSWORD_BCRYPT, ['cost' => $cost]);
         $passwordHashWithCostChangedCost = password_hash('secret', PASSWORD_BCRYPT, ['cost' => $cost + 1]);
@@ -68,15 +63,5 @@ class PasswordServiceBridgeTest extends TestCase
         $this->assertTrue(
             $passwordServiceBridge->passwordNeedsRehash($passwordHashWithCostChangedCost)
         );
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    private function getContainer(): ContainerInterface
-    {
-        $factory = ContainerFactory::getInstance();
-
-        return $factory->getContainer();
     }
 }

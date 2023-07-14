@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration as ModuleConfigurationController;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServ
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use Psr\Container\ContainerInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -85,7 +85,7 @@ final class ModuleConfigurationTest extends TestCase
     {
         $this->activateTestModule();
 
-        $oldValueToBeCached = $this->getContainer()->get(ModuleSettingServiceInterface::class)
+        $oldValueToBeCached = ContainerFacade::get(ModuleSettingServiceInterface::class)
             ->getString('stringSetting', $this->testModuleId);
         $this->assertEquals('row', $oldValueToBeCached);
 
@@ -94,8 +94,9 @@ final class ModuleConfigurationTest extends TestCase
 
         $this->assertSame(
             'newValue',
-            $this->getContainer()->get(ModuleSettingServiceInterface::class)
-                ->getString('stringSetting', $this->testModuleId)->toString()
+            ContainerFacade::get(ModuleSettingServiceInterface::class)
+                ->getString('stringSetting', $this->testModuleId)
+                ->toString()
         );
     }
 
@@ -157,32 +158,31 @@ final class ModuleConfigurationTest extends TestCase
 
     private function installTestModule(): void
     {
-        $this->getContainer()->get(ModuleInstallerInterface::class)->install($this->getOxidEshopPackage());
+        ContainerFacade::get(ModuleInstallerInterface::class)
+            ->install($this->getOxidEshopPackage());
     }
 
     private function activateTestModule(): void
     {
-        $this->getContainer()->get(ModuleActivationBridgeInterface::class)->activate($this->testModuleId, 1);
+        ContainerFacade::get(ModuleActivationBridgeInterface::class)
+            ->activate($this->testModuleId, 1);
     }
 
     private function getModuleConfiguration(): ModuleConfiguration
     {
-        return $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class)->get($this->testModuleId);
+        return ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class)
+            ->get($this->testModuleId);
     }
 
     private function uninstallTestModule(): void
     {
-        $this->getContainer()->get(ModuleInstallerInterface::class)->uninstall($this->getOxidEshopPackage());
+        ContainerFacade::get(ModuleInstallerInterface::class)
+            ->uninstall($this->getOxidEshopPackage());
     }
 
     private function getOxidEshopPackage(): OxidEshopPackage
     {
         return new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->testModuleDir);
-    }
-
-    private function getContainer(): ContainerInterface
-    {
-        return ContainerFactory::getInstance()->getContainer();
     }
 
     private function saveConfVars(array $confstrs = []): void

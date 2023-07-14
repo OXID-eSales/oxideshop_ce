@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 
 /**
@@ -44,8 +44,8 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
      */
     private function getInstalledModules(): array
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+        $shopConfiguration = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
+            ->get();
 
         $modules = [];
 

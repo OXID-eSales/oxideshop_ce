@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Migration;
 
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
@@ -73,7 +73,8 @@ class ModuleMigrationsTest extends TestCase
     private function installModule(string $moduleId): void
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);
-        $this->getModuleInstaller()->install($package);
+        ContainerFacade::get(ModuleInstallerInterface::class)
+            ->install($package);
     }
 
     /**
@@ -82,7 +83,8 @@ class ModuleMigrationsTest extends TestCase
     private function removeTestModule(string $moduleId): void
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);
-        $this->getModuleInstaller()->uninstall($package);
+        ContainerFacade::get(ModuleInstallerInterface::class)
+            ->uninstall($package);
     }
 
     private function assertIfMigrationExistsInDatabase(): void
@@ -104,11 +106,5 @@ class ModuleMigrationsTest extends TestCase
         $migrations->setOutput($output);
 
         return $migrations;
-    }
-
-    private function getModuleInstaller(): ModuleInstallerInterface
-    {
-        $container = ContainerFactory::getInstance()->getContainer();
-        return $container->get(ModuleInstallerInterface::class);
     }
 }

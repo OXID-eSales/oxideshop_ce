@@ -8,14 +8,14 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * Module class.
@@ -90,9 +90,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         try {
             $this->_aModule['id'] = $moduleId;
-
-            $container = ContainerFactory::getInstance()->getContainer();
-            $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($moduleId);
+            $moduleConfiguration = ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class)
+                ->get($moduleId);
 
             $this->_aModule = $this->convertModuleConfigurationToArray($moduleConfiguration);
             $this->_blRegistered = true;

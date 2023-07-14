@@ -7,14 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use Exception;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
-use Exception;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 
 /**
@@ -494,9 +493,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $preparedConfigValue = $this->serializeConfVar($existingConfigType, $configName, $configValue);
         if (strpos($module, 'module:') !== false) {
             $moduleId = explode(':', $module)[1];
-            $moduleConfigurationBridge = ContainerFactory::getInstance()
-                ->getContainer()
-                ->get(ModuleConfigurationDaoBridgeInterface::class);
+            $moduleConfigurationBridge = ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class);
             $moduleConfiguration = $moduleConfigurationBridge->get($moduleId);
 
             if ($moduleConfiguration->hasModuleSetting($configName)) {

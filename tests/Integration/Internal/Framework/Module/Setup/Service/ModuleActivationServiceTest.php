@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
@@ -56,7 +57,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
     {
         parent::tearDown();
 
-        $this->getContainer()->get(ModuleInstallerInterface::class)->uninstall(
+        ContainerFacade::get(ModuleInstallerInterface::class)->uninstall(
             new OxidEshopPackage($this->testModulePath)
         );
     }
@@ -104,24 +105,25 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function testDeActivationOfModuleServices(): void
     {
-        $this->getContainer()->get(ModuleInstallerInterface::class)->install(
-            new OxidEshopPackage($this->testModulePath)
-        );
+        ContainerFacade::get(ModuleInstallerInterface::class)
+            ->install(
+                new OxidEshopPackage($this->testModulePath)
+            );
 
-        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-        $moduleActivationService->activate('test-module', $this->shopId);
+        ContainerFacade::get(ModuleActivationBridgeInterface::class)
+            ->activate('test-module', $this->shopId);
 
         ContainerFactory::resetContainer();
 
-        $this->getContainer()->get(SomeModuleService::class);
+        ContainerFacade::get(SomeModuleService::class);
 
-        $moduleActivationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-        $moduleActivationService->deactivate('test-module', $this->shopId);
+        ContainerFacade::get(ModuleActivationBridgeInterface::class)
+            ->deactivate('test-module', $this->shopId);
 
         ContainerFactory::resetContainer();
 
         $this->expectException(ServiceNotFoundException::class);
-        $this->getContainer()->get(SomeModuleService::class);
+        ContainerFacade::get(SomeModuleService::class);
     }
 
     public function testActivationWillCallValidatorsAggregate(): void
@@ -263,10 +265,5 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $container->compile();
 
         return $container;
-    }
-
-    private function getContainer(): ContainerInterface
-    {
-        return ContainerFactory::getInstance()->getContainer();
     }
 }

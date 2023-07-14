@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface;
@@ -41,19 +41,19 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     private function getNewsLetterRecipientsList(): array
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $shopId = $container->get(ContextInterface::class)->getCurrentShopId();
-        $recipientsList = $container->get(NewsletterRecipientsDaoBridgeInterface::class);
-        return $recipientsList->getNewsletterRecipients($shopId);
+        return ContainerFacade::get(NewsletterRecipientsDaoBridgeInterface::class)
+            ->getNewsletterRecipients(
+                ContainerFacade::get(ContextInterface::class)
+                    ->getCurrentShopId()
+            );
     }
 
     private function setCSVHeader(): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $csvHeader = $container->get(HeaderGeneratorBridgeInterface::class);
-
-        $filename = "Export_recipients_" . date("Y-m-d") . ".csv";
-        $csvHeader->generate($filename);
+        ContainerFacade::get(HeaderGeneratorBridgeInterface::class)
+            ->generate(
+                'Export_recipients_' . date('Y-m-d') . '.csv'
+            );
     }
 
     /**
@@ -61,11 +61,11 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     private function generateCSV(array $data): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $csvGenerator = $container->get(FileGeneratorBridgeInterface::class);
-        $csvGenerator->generate(
-            "php://output",
-            $container->get(NewsletterRecipientsDataMapperInterface::class)->mapRecipientListDataToArray($data)
-        );
+        ContainerFacade::get(FileGeneratorBridgeInterface::class)
+            ->generate(
+                'php://output',
+                ContainerFacade::get(NewsletterRecipientsDataMapperInterface::class)
+                    ->mapRecipientListDataToArray($data)
+            );
     }
 }

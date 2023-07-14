@@ -7,12 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use stdClass;
-use oxOnlineModulesNotifierRequest;
 
 /**
  * Performs Online Module Version Notifier check.
@@ -30,11 +28,6 @@ class OnlineModuleVersionNotifier
     /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller */
     private $_oCaller;
 
-    /**
-     * Class constructor, initiates class parameters.
-     *
-     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller Online module version notifier caller object
-     */
     public function __construct(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller)
     {
         $this->_oCaller = $oCaller;
@@ -64,9 +57,9 @@ class OnlineModuleVersionNotifier
     {
         $preparedModules = [];
 
-        $container = ContainerFactory::getInstance()->getContainer();
-        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
-        $moduleActivationBridge = $container->get(ModuleActivationBridgeInterface::class);
+        $shopConfiguration = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
+            ->get();
+        $moduleActivationBridge = ContainerFacade::get(ModuleActivationBridgeInterface::class);
 
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */

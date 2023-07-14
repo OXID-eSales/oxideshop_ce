@@ -1041,9 +1041,8 @@ class SystemRequirements
     }
 
     /**
-     * @internal
-     *
      * @return \Psr\Container\ContainerInterface
+     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
      */
     protected function getContainer()
     {

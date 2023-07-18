@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Database connection object fixation in ConnectionProvider service
+- Broken child-theme in child sub-shops [#0007477](https://bugs.oxid-esales.com/view.php?id=7477)
 
 ## [v7.0.1] - 2023-05-22
 

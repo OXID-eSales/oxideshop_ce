@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin\Fixtures\testModule;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin\Fixtures\testModule\RendererInterface;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 class ModuleSetup
 {
@@ -19,7 +18,7 @@ class ModuleSetup
      */
     public static function onActivate(): void
     {
-        ContainerFactory::getInstance()->getContainer()->get(RendererInterface::class);
+        ContainerFacade::get(RendererInterface::class);
     }
 
     /**

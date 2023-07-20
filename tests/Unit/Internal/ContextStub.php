@@ -9,15 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContextStub extends BasicContextStub implements ContextInterface
 {
     private $logLevel;
     private $logFilePath;
-    private $currentShopId;
     private $shopIds;
     private $requiredContactFormFields = [];
     private $adminLogFilePath;
@@ -28,13 +26,10 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private bool $productiveMode;
     private $demoMode;
 
-    /**
-     * ContextStub constructor.
-     */
     public function __construct()
     {
         parent::__construct();
-        $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
+        $context = ContainerFacade::get(ContextInterface::class);
         $this->logLevel = $context->getLogLevel();
         $this->shopIds = $context->getAllShopIds();
         $this->logFilePath = $context->getLogFilePath();
@@ -165,8 +160,8 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function getAdminUserId(): string
     {
         if (!isset($this->adminUserId)) {
-            $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
-            $this->adminUserId = $context->getAdminUserId();
+            $this->adminUserId = ContainerFacade::get(ContextInterface::class)
+                ->getAdminUserId();
         }
 
         return $this->adminUserId;

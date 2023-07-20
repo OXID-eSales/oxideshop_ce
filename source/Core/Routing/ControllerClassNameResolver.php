@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
 
 use OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface;
 use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 
 /**
@@ -150,7 +150,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function getShopControllerMapProvider()
     {
-        if (is_null($this->shopControllerMapProvider)) {
+        if ($this->shopControllerMapProvider === null) {
             $this->shopControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class);
         }
 
@@ -159,8 +159,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
 
     private function getActiveModulesDataProvider(): ActiveModulesDataProviderBridgeInterface
     {
-        if (is_null($this->activeModulesDataProvider)) {
-            $this->activeModulesDataProvider = ContainerFactory::getInstance()->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class);
+        if ($this->activeModulesDataProvider === null) {
+            $this->activeModulesDataProvider = ContainerFacade::get(ActiveModulesDataProviderBridgeInterface::class);
         }
 
         return $this->activeModulesDataProvider;

@@ -7,13 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -161,8 +161,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
 
-        $container = ContainerFactory::getInstance()->getContainer();
-        $emailValidator = $container->get(EmailValidatorServiceBridgeInterface::class);
+        $emailValidator = ContainerFacade::get(EmailValidatorServiceBridgeInterface::class);
         if (!$emailValidator->isEmailValid($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));

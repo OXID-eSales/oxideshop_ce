@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -57,9 +57,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         $deletedModuleIds = array_keys($deletedModules);
 
-        $moduleActivationBridge = ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationBridge = ContainerFacade::get(ModuleActivationBridgeInterface::class);
 
         foreach ($deletedModuleIds as $moduleId) {
             if ($moduleActivationBridge->isActive($moduleId, Registry::getConfig()->getShopId())) {
@@ -185,16 +183,13 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     private function getDisabledModuleConfigurations(): array
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-
-        $moduleConfigurations = $container
-            ->get(ShopConfigurationDaoBridgeInterface::class)
+        $moduleConfigurations = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
             ->get()
             ->getModuleConfigurations();
 
         $disabledModuleConfigurations = [];
 
-        $moduleStateService = $container->get(ModuleStateServiceInterface::class);
+        $moduleStateService = ContainerFacade::get(ModuleStateServiceInterface::class);
 
         foreach ($moduleConfigurations as $moduleConfiguration) {
             if (!$moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
@@ -212,16 +207,13 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     private function getActiveModuleConfigurations(): array
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-
-        $moduleConfigurations = $container
-            ->get(ShopConfigurationDaoBridgeInterface::class)
+        $moduleConfigurations = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
             ->get()
             ->getModuleConfigurations();
 
         $activeModules = [];
 
-        $moduleStateService = $container->get(ModuleStateServiceInterface::class);
+        $moduleStateService = ContainerFacade::get(ModuleStateServiceInterface::class);
 
         foreach ($moduleConfigurations as $moduleConfiguration) {
             if ($moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {

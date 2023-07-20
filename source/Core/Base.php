@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -114,11 +115,9 @@ class Base
     }
 
     /**
-     * Dispatch given event.
-     *
      * @param Event $event Event to dispatch
-     *
      * @return Event
+     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
      */
     public function dispatchEvent(Event $event)
     {
@@ -129,12 +128,21 @@ class Base
     }
 
     /**
-     * @internal
-     *
      * @return ContainerInterface
+     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
      */
     protected function getContainer()
     {
         return ContainerFactory::getInstance()->getContainer();
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $id
+     * @return T
+     */
+    protected function getService(string $id): object
+    {
+        return ContainerFacade::get($id);
     }
 }

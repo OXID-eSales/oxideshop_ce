@@ -8,8 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use function is_string;
 
 class Field
@@ -105,8 +104,6 @@ class Field
     private function valueNeedsEscaping(): bool
     {
         return is_string($this->rawValue)
-            && !ContainerFactory::getInstance()
-                ->getContainer()
-                ->getParameter('oxid_esales.templating.engine_autoescapes_html');
+            && !ContainerFacade::getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 }

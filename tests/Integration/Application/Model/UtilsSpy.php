@@ -18,7 +18,6 @@ class UtilsSpy extends Utils
     public function setHeader($header)
     {
         $this->headers[$header] = null;
-        parent::setHeader($header);
     }
 
     public function getHeaders(): array

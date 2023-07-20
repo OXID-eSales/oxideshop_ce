@@ -41,6 +41,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         parent::tearDown();
     }
 
+    /**  @runInSeparateProcess   */
     public function testRender(): void
     {
         $view = oxNew(ManufacturerPicture::class);
@@ -48,6 +49,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertEquals('manufacturer_picture', $view->render());
     }
 
+    /**  @runInSeparateProcess   */
     public function testSaveShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -65,6 +67,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertInstanceOf(ExceptionToDisplay::class, $exception);
     }
 
+    /**  @runInSeparateProcess   */
     public function testItShouldSaveImages(): void
     {
         $manufacturer = oxNew(Manufacturer::class);
@@ -86,6 +89,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertSame('test-promotion-icon.jpg', $loadManufacturer->oxmanufacturers__oxpromotion_icon->getRawValue());
     }
 
+    /**  @runInSeparateProcess   */
     public function testDeleteShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -104,6 +108,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
     }
 
     /**
+     * @runInSeparateProcess
      * @dataProvider provideImageData
      */
     public function testDeleteShouldRemoveOnlyOneImageValueFromDb(string $expected, string $imageFieldName): void

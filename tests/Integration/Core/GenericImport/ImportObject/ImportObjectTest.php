@@ -37,6 +37,7 @@ final class ImportObjectTest extends TestCase
         Registry::getConfig()->setAdminMode(false);
     }
 
+    /**  @runInSeparateProcess   */
     public function testGetFields(): void
     {
         $model = oxNew(Product::class);
@@ -52,6 +53,7 @@ final class ImportObjectTest extends TestCase
         );
     }
 
+    /**  @runInSeparateProcess   */
     public function testGetFieldsWithImportObjectAndI18nAsShopObjectName(): void
     {
         $model = oxNew(MultiLanguageModel::class);
@@ -68,6 +70,7 @@ final class ImportObjectTest extends TestCase
         );
     }
 
+    /**  @runInSeparateProcess   */
     public function testGetFieldsWithImportObjectAndEmptyShopObjectName(): void
     {
         $model = oxNew(BaseModel::class);

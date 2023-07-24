@@ -13,8 +13,10 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
 /**
  * Admin shop config manager.
@@ -433,7 +435,15 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 if ($multiline) {
                     $multiline .= "\n";
                 }
-                $multiline .= $key . " => " . $value;
+
+                if (is_string($value)) {
+                    $multiline .= $key . " => " . $value;
+                } else {
+                    Registry::getLogger()->warning(
+                        "The value in ShopConfiguration::aarrayToMultiline() is not a string. The nested values are not supported.",
+                        [$value]
+                    );
+                }
             }
 
             return $multiline;
@@ -488,7 +498,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     private function saveSetting(string $configName, string $existingConfigType, $configValue): void
     {
-        $shopId = $this->getEditObjectId();
+        $shopId = (int)$this->getEditObjectId();
         $module = $this->getModuleForConfigVars();
         $preparedConfigValue = $this->serializeConfVar($existingConfigType, $configName, $configValue);
         if (strpos($module, 'module:') !== false) {

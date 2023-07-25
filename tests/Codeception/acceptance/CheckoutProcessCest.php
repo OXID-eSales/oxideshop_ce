@@ -128,6 +128,14 @@ final class CheckoutProcessCest
         $orderPage = $userCheckoutPage->enterOrderRemark('my message')->goToNextStep()->goToNextStep();
         $orderPage->validateRemarkText('my message');
 
+        $paymentPage = $orderPage->editPaymentMethod();
+        $orderPage = $paymentPage->selectPayment('oxidpayadvance')->goToNextStep();
+
+        $orderPage->validateShippingMethod('Standard');
+        $orderPage->validatePaymentMethod('Cash in advance');
+        $paymentPage = $orderPage->editShippingMethod();
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')->goToNextStep();
+
         $orderPage->validateShippingMethod('Standard');
         $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
         $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
@@ -555,7 +563,100 @@ final class CheckoutProcessCest
         $orderCheckoutPage->submitOrderSuccessfully();
     }
 
-    private function getExistingUserData(): array
+    public function checkVATOptions(AcceptanceTester $I): void
+    {
+        $basket = new Basket($I);
+        $I->wantToTest('the VAT Options');
+
+        $homePage = $I->openShop();
+
+        // Display shipping costs as net price and VAT (instead of gross) in shopping cart and invoice
+        $I->updateConfigInDatabase('blShowVATForDelivery', 'true', 'bool');
+        // Display VAT contained in Payment Method Charges in Shopping Cart and Invoice
+        $I->updateConfigInDatabase('blShowVATForPayCharge', 'true', 'bool');
+        // Display VAT contained in Gift Wrappings and Greeting Cards in Shopping Cart and Invoice
+        $I->updateConfigInDatabase('blShowVATForWrapping', 'true', 'bool');
+
+        $basket->addProductToBasket("1000", 3);
+
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
+        $orderCheckoutPage = $basketPage->goToNextStep()->goToNextStep()->goToNextStep();
+
+        $priceInformation = array(
+            'net' => '142,86 €',
+            'vat' => '7,14 €',
+            'gross' => '150,00 €',
+            'shipping' => '0,00 €',
+            'payment_method' => '7,14 €',
+            'payment_method_tax' => '0,36 €',
+            'total' => '157,50 €',
+        );
+
+        $orderCheckoutPage->validateTotalPriceWithVAT($priceInformation);
+    }
+
+    public function checkPaymentStep(AcceptanceTester $I): void
+    {
+        $basket = new Basket($I);
+        $I->wantToTest('the payment step');
+
+        $homePage = $I->openShop();
+
+        $basket->addProductToBasket("1001", 1);
+        $basket->addProductToBasket("1002-2", 1);
+
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
+
+        $basketPage->addCouponToBasket("123123");
+        $paymentMethodPage = $basketPage->goToNextStep()->goToNextStep();
+        $I->see(Translator::translate('PAYMENT_METHOD'));
+
+        $orderCheckoutPage = $paymentMethodPage->goToNextStep();
+
+        $orderCheckoutPage->validatePaymentMethod('COD (Cash on delivery)');
+
+        $basketItem1 = [
+            'id' => '1001',
+            'title' => 'Test product 1 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '100,00 €'
+        ];
+
+        $basketItem2 = [
+            'id' => '1002-2',
+            'title' => 'Test product 2 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '67,00 €'
+        ];
+
+        $orderCheckoutPage->validateOrderItems([$basketItem1, $basketItem2]);
+
+        $orderCheckoutPage->validateShippingPrice('0,00 €');
+        $newShippingMethod = 'Alternative';
+        $paymentPage = $orderCheckoutPage->editShippingMethod();
+        $paymentPage->selectShipping($newShippingMethod);
+        $orderCheckoutPage = $paymentPage->goToNextStep();
+        $orderCheckoutPage->validateShippingMethod($newShippingMethod);
+        $orderCheckoutPage->validateShippingPrice('0,00 €');
+
+        $orderCheckoutPage->validatePaymentSurchargePrice('7,50 €');
+        $paymentPage = $orderCheckoutPage->editPaymentMethod();
+        $paymentPage->selectPayment('oxidpayadvance');
+        $paymentPage->goToNextStep();
+        $orderCheckoutPage->validatePaymentMethod('Cash in advance');
+        $orderCheckoutPage->validatePaymentSurchargePrice('');
+
+        $orderCheckoutPage->submitOrderSuccessfully();
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getExistingUserData()
     {
         return Fixtures::get('existingUser');
     }

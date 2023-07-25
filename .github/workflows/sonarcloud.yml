@@ -424,7 +424,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=oxid-esales_oxideshop_ce
+            -Dsonar.projectKey=OXID-eSales_oxideshop_ce
             -Dsonar.organization=oxid-esales
             -Dsonar.projectName=oxideshop_ce
             -Dsonar.language=php
@@ -442,7 +442,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=oxid-esales_oxideshop_ce_internal
+            -Dsonar.projectKey=OXID-eSales_oxideshop_ce
             -Dsonar.organization=oxid-esales
             -Dsonar.projectName=oxideshop_ce_internal
             -Dsonar.language=php

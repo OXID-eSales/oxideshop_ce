@@ -81,7 +81,7 @@ jobs:
           perl -pi\
               -e 's#display_errors =.*#display_errors = false#g;'\
               -e 'print "xdebug.max_nesting_level=1000\n\n";'\
-              -e 'print "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING\n"'\
+              -e 'print "error_reporting = E_ALL & ~E_DEPRECATED\n"'\
               containers/php/custom.ini
           perl -pi\
               -e 's#/var/www/#/var/www/source/#g;'\

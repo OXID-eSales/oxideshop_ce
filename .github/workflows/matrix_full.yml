@@ -52,7 +52,7 @@ jobs:
 
       - name: Clone the shop (${{ github.ref_name }})
         if: github.event_name != 'pull_request'
-        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
+        run: git clone --depth 2 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
 
       - name: Clone the shop (PR ${{ github.event.number }})
         if: github.event_name == 'pull_request'
@@ -149,6 +149,49 @@ jobs:
           path: |
             ./*
           key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}-${{ github.run_number }}-${{ github.run_attempt }}
+
+  php_cs_check:
+    strategy:
+      matrix:
+        php: [ '8.1' ]
+        mysql: [ '8.0' ]
+      fail-fast: false
+    needs: [ install_shop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load current installation from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}-${{ github.run_number }}-${{ github.run_attempt }}
+          restore-keys: |
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}-${{ github.run_number }}-${{ github.run_attempt }}
+            shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
+      - name: Start containers
+        run: |
+          make up
+          sleep 2
+
+      - name: Doing PHP_CS check
+        id: phpcs_run
+        run: |
+           docker-compose run -T php vendor/bin/phpcs -q --standard=PSR12 source/Internal \
+              | tee phpcs_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_codesniff_log.txt  || true
+           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' phpcs_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_codesniff_log.txt; then
+             echo "**** PHP_CS has found some issues ****"
+             exit 1
+           fi
+
+      - name: Upload PHP_CS Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-logs
+          path: phpcs_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_codesniff_log.txt
+          if-no-files-found: error
+          retention-days: 7
 
   unit_tests:
     strategy:

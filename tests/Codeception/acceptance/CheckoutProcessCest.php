@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Page\Account\UserAccount;
+use OxidEsales\Codeception\Page\Checkout\OrderCheckout;
+use OxidEsales\Codeception\Page\Details\ProductDetails;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\Facts\Facts;
@@ -582,19 +585,31 @@ final class CheckoutProcessCest
         $userData = $this->getExistingUserData();
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
+        /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $basketPage->goToNextStep()->goToNextStep()->goToNextStep();
 
         $priceInformation = array(
             'net' => '142,86 €',
             'vat' => '7,14 €',
+            'percentVat' => '5',
             'gross' => '150,00 €',
             'shipping' => '0,00 €',
             'payment_method' => '7,14 €',
+            'percent_surcharge_tax' => '5',
             'payment_method_tax' => '0,36 €',
             'total' => '157,50 €',
         );
 
-        $orderCheckoutPage->validateTotalPriceWithVAT($priceInformation);
+        $orderCheckoutPage->seeTotalNet($priceInformation['net']);
+        $orderCheckoutPage->seeTotalVat($priceInformation['vat'], $priceInformation['percentVat']);
+        $orderCheckoutPage->seeTotalGross($priceInformation['gross']);
+        $orderCheckoutPage->seeShippingNet($priceInformation['shipping']);
+        $orderCheckoutPage->seePaymentMethodNet($priceInformation['payment_method']);
+        $orderCheckoutPage->seePaymentMethodVat(
+            $priceInformation['payment_method_tax'],
+            $priceInformation['percent_surcharge_tax']
+        );
+        $orderCheckoutPage->seeGrandTotal($priceInformation['total']);
     }
 
     public function checkPaymentStep(AcceptanceTester $I): void
@@ -615,6 +630,7 @@ final class CheckoutProcessCest
         $paymentMethodPage = $basketPage->goToNextStep()->goToNextStep();
         $I->see(Translator::translate('PAYMENT_METHOD'));
 
+        /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $paymentMethodPage->goToNextStep();
 
         $orderCheckoutPage->validatePaymentMethod('COD (Cash on delivery)');
@@ -635,28 +651,218 @@ final class CheckoutProcessCest
 
         $orderCheckoutPage->validateOrderItems([$basketItem1, $basketItem2]);
 
-        $orderCheckoutPage->validateShippingPrice('0,00 €');
+        $orderCheckoutPage->seeShippingGross('0,00 €');
         $newShippingMethod = 'Alternative';
         $paymentPage = $orderCheckoutPage->editShippingMethod();
         $paymentPage->selectShipping($newShippingMethod);
         $orderCheckoutPage = $paymentPage->goToNextStep();
         $orderCheckoutPage->validateShippingMethod($newShippingMethod);
-        $orderCheckoutPage->validateShippingPrice('0,00 €');
+        $orderCheckoutPage->seeShippingGross('0,00 €');
 
-        $orderCheckoutPage->validatePaymentSurchargePrice('7,50 €');
+        $I->waitForElement('//div[contains(text(),"Surcharge Payment method")]/span');
+        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
         $paymentPage = $orderCheckoutPage->editPaymentMethod();
         $paymentPage->selectPayment('oxidpayadvance');
         $paymentPage->goToNextStep();
         $orderCheckoutPage->validatePaymentMethod('Cash in advance');
-        $orderCheckoutPage->validatePaymentSurchargePrice('');
+        $orderCheckoutPage->dontSeePaymentSurchargePrice();
 
         $orderCheckoutPage->submitOrderSuccessfully();
     }
 
-    /**
-     * @return mixed
-     */
-    private function getExistingUserData()
+    public function checkOrderToOtherCountries(AcceptanceTester $I): void
+    {
+        $I->wantToTest('ordering to another country');
+
+        $homePage = $I->openShop();
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+
+        $basket = new Basket($I);
+        $basket->addProductToBasket("1000", 3);
+
+        $paymentCheckout = $homePage->openMiniBasket()->openCheckout();
+        $paymentCheckout->selectShippingIsAvailable();
+
+        $userShippingAddress = [
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'Some first name',
+            'userLastName' => 'Some last name',
+            'companyName' => 'Some company',
+            'street' => 'Some street',
+            'streetNr' => '1-1',
+            'ZIP' => '1234',
+            'city' => 'Some city',
+            'fonNr' => '111-111-1',
+            'faxNr' => '111-111-111-1',
+            'countryId' => 'United States',
+            'stateId' => 'CO',
+        ];
+
+        $userCheckout = $paymentCheckout->goToPreviousStep();
+        $userCheckout->openUserBillingAddressForm();
+        $userCheckout->enterAddressData($userShippingAddress);
+
+        $paymentCheckout = $userCheckout->goToNextStep();
+        $paymentCheckout->selectShippingIsNotAvailable();
+
+        $checkoutPage = $paymentCheckout->goToNextStep();
+
+        $checkoutPage->validateShippingMethod('');
+        $checkoutPage->validatePaymentMethod('Empty');
+        $checkoutPage->submitOrderSuccessfully();
+    }
+
+    public function checkFrontendPerfOptionsAlsoBought(AcceptanceTester $I): void
+    {
+        $basket = new Basket($I);
+        $I->wantToTest('the frontend performance option enabling/disabling "also bought"');
+
+        $homePage = $I->openShop();
+
+        $basket->addProductToBasket("1000", 1);
+        $basket->addProductToBasket("1001", 1);
+
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+
+        $basket->openMiniBasket();
+        $thankYouPage = $basket->openCheckout()->goToNextStep()->submitOrderSuccessfully();
+        $thankYouPage->backToShop();
+
+        $searchList = $homePage->searchFor('1000');
+        $productPage = $searchList->openProduct();
+        $productPage->openAlsoBoughtProduct();
+        $productPage->seeProductTitle('Test product 1 [EN]');
+
+        $basket->addProductToBasket("1000", 1);
+        $basket->openMiniBasket();
+        $thankYouPage = $basket->openCheckout()->goToNextStep()->submitOrderSuccessfully();
+        $thankYouPage->openAlsoBoughtProduct();
+        $productPage->seeProductTitle('Test product 1 [EN]');
+
+        // Performance options turn "who bought also bought" off
+        $I->updateConfigInDatabase('bl_perfLoadCustomerWhoBoughtThis', false);
+
+        $searchList = $homePage->searchFor('1000');
+        $productPage = $searchList->openProduct();
+        $productPage->dontSeeAlsoBought();
+
+        $basket->addProductToBasket("1000", 1);
+        $basket->openMiniBasket();
+        $thankYouPage = $basket->openCheckout()->goToNextStep()->submitOrderSuccessfully();
+        $thankYouPage->dontSeeAlsoBought();
+    }
+
+    public function checkMyAccountOrderHistory(AcceptanceTester $I)
+    {
+        $I->wantToTest('my accounts order history');
+
+        $homePage = $I->openShop();
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+
+        $basket = new Basket($I);
+        $basket->addProductToBasket("1001", 2);
+        $basket->openMiniBasket();
+        $thankYouPage = $basket->openCheckout()->goToNextStep()->submitOrderSuccessfully();
+        $orderHistory = $thankYouPage->goToOrderHistory();
+        $orderHistory->seePageHeader();
+
+        // check a different way to get to the orderHistory
+        $user_account = new UserAccount($I);
+        $orderHistory = $user_account->openAccountPage()->openOrderHistory();
+
+        $orderHistory->seePageHeader();
+
+        $orderInformation = [
+            'orderNumber' => '1',
+            'status' => Translator::translate('SHIPPED'),
+            'name' => 'UserNamešÄßüл UserSurnamešÄßüл',
+            'itemNumber' => '1',
+            'amount' => '1',
+            'product' => 'Test product 1 [EN] šÄßüл'
+            ];
+
+        $orderHistory->seeOrder($orderInformation);
+        $productDetailsPage = $orderHistory->openProduct($orderInformation);
+        $productDetailsPage->seeProductTitle('Test product 1 [EN] šÄßüл');
+    }
+
+
+    public function checkOrderStepChangedAddress(AcceptanceTester $I): void
+    {
+        $basket = new Basket($I);
+        $I->wantToTest('whether changing the shipping/billing address in the payment/shipping step ' .
+            'works and is displayed on the final checkout page');
+
+        $homePage = $I->openShop();
+
+        $basket->addProductToBasket("1001", 1);
+
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+
+        /** @var OrderCheckout $orderCheckout */
+        $orderCheckout = $basket->openMiniBasket()->openCheckout()->goToNextStep();
+
+        $userData = [
+            'shippingFirstName' => 'UserNamešÄßüл',
+            'shippingLastName' => 'UserSurnamešÄßüл',
+            'shippingCompany' => 'UserCompany šÄßüл',
+            'shippingAdditionalInfo' => 'User additional info šÄßüл',
+            'shippingStreet' => 'Musterstr.šÄßüл',
+            'shippingStreetNr' => '1',
+            'shippingZip' => '79098',
+            'shippingCity' => 'Musterstadt šÄßüл',
+            'shippingPhone' => '0800 111111',
+            'shippingFax' => '0800 111112',
+            'shippingCellPhone' => '0800 111114',
+            'shippingPersonalPhone' => '0800 11111',
+            'shippingCountry' => 'Germany',
+            'shippingEmail' => 'example_test@oxid-esales.dev',
+            'shippingTitle' => 'Mr'
+        ];
+
+        foreach ($userData as $addressPart) {
+            $I->see($addressPart, $orderCheckout->deliveryAddress);
+        }
+
+        $userCheckout = $orderCheckout->editUserAddress();
+        $userCheckout->openShippingAddressForm();
+
+        $addressData = [
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'John',
+            'userLastName' => 'Doe',
+            'companyName' => 'XYZ Corp.',
+            'street' => 'Main St',
+            'streetNr' => '10',
+            'ZIP' => '90210',
+            'city' => 'Los Angeles',
+            'additionalInfo' => 'Floor 5, Office 2',
+            'fonNr' => '123-456-7890',
+            'faxNr' => '098-765-4321',
+            'countryId' => 'Austria',
+        ];
+        $userCheckout->enterShippingAddressData($addressData);
+
+        $paymentCheckout = $userCheckout->goToNextStep();
+        $paymentCheckout->selectShippingIsNotAvailable();
+
+        $orderCheckout = $paymentCheckout->goToNextStep();
+        $userCheckout = $orderCheckout->editUserAddress();
+
+        $country = 'Germany';
+        $userCheckout->selectCountry($country);
+
+        $paymentCheckout = $userCheckout->goToNextStep();
+        $paymentCheckout->selectShippingIsAvailable();
+        $orderCheckout = $paymentCheckout->goToNextStep();
+        $orderCheckout->submitOrderSuccessfully();
+    }
+
+    private function getExistingUserData(): array
     {
         return Fixtures::get('existingUser');
     }

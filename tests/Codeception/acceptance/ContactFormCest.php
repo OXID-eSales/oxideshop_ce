@@ -43,6 +43,9 @@ final class ContactFormCest
         $I->see(Translator::translate('THANK_YOU'));
     }
 
+    /**
+     * @group ContactForm
+     */
     public function contactFormConfigured(AcceptanceTester $I): void
     {
         $I->wantToTest('contact form with custom required fields');

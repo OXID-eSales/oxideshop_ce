@@ -158,10 +158,10 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     public function isExpiredLink()
     {
         if (($sKey = $this->getUpdateId())) {
-            $blExpired = oxNew(\OxidEsales\Eshop\Application\Model\User::class)->isExpiredUpdateId($sKey);
+            return oxNew(\OxidEsales\Eshop\Application\Model\User::class)->isExpiredUpdateId($sKey);
         }
 
-        return $blExpired;
+        return false;
     }
 
     /**

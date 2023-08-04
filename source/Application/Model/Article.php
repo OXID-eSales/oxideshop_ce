@@ -3432,8 +3432,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sFieldName) {
             $sFieldName = "oxarticles__" . $sFieldName . $iIndex;
 
-            return $this->$sFieldName->value;
+            if ($this->$sFieldName && $this->$sFieldName->value)
+            {
+                return $this->$sFieldName->value;
+            }
         }
+
+        return '';
     }
 
     /**

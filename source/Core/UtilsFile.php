@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
@@ -531,7 +532,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $fileCounter = 0;
         $temporaryName = $filename;
         $stringHandler = Str::getStr();
-        $masterImageHandler = $this->getContainer()->get(MasterImageHandlerBridgeInterface::class);
+        $masterImageHandler = ContainerFacade::get(MasterImageHandlerBridgeInterface::class);
         while (
             $masterImageHandler->exists(
                 $this->makePathRelativeToShopSource(Path::join($directory, "$filename$suffix.$extension"))
@@ -623,7 +624,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $copied = false;
         try {
-            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)
+            ContainerFacade::get(MasterImageHandlerBridgeInterface::class)
                 ->copy(
                     $source,
                     $this->makePathRelativeToShopSource($destination)
@@ -644,7 +645,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $uploaded = false;
         try {
-            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)
+            ContainerFacade::get(MasterImageHandlerBridgeInterface::class)
                 ->upload(
                     $source,
                     $this->makePathRelativeToShopSource($destination)

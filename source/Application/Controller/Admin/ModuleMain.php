@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
@@ -53,11 +54,11 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         }
 
         try {
-            $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-            $moduleActivationBridge->activate(
-                $this->getEditObjectId(),
-                Registry::getConfig()->getShopId()
-            );
+            ContainerFacade::get(ModuleActivationBridgeInterface::class)
+                ->activate(
+                    $this->getEditObjectId(),
+                    Registry::getConfig()->getShopId()
+                );
 
             $this->_aViewData['updatenav'] = '1';
         } catch (\Exception $exception) {
@@ -79,11 +80,11 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         }
 
         try {
-            $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-            $moduleActivationBridge->deactivate(
-                $this->getEditObjectId(),
-                Registry::getConfig()->getShopId()
-            );
+            ContainerFacade::get(ModuleActivationBridgeInterface::class)
+                ->deactivate(
+                    $this->getEditObjectId(),
+                    Registry::getConfig()->getShopId()
+                );
 
             $this->_aViewData['updatenav'] = '1';
         } catch (\Exception $exception) {

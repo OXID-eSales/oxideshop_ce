@@ -105,9 +105,8 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         // checking if cUrl is enabled
         $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
 
-        /** @var ContactFormBridgeInterface $contactFormBridge */
-        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
-        $contactFormConfiguration = $contactFormBridge->getContactFormConfiguration();
+        $contactFormConfiguration = ContainerFacade::get(ContactFormBridgeInterface::class)
+            ->getContactFormConfiguration();
 
         /** @var FieldConfigurationInterface $fieldConfiguration */
         foreach ($contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
@@ -512,7 +511,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
                 $moduleConfigurationBridge->save($moduleConfiguration);
 
-                $this->dispatchEvent(new SettingChangedEvent($configName, $shopId, $moduleId));
+                ContainerFacade::dispatch(new SettingChangedEvent($configName, $shopId, $moduleId));
             } else {
                 Registry::getLogger()->warning(
                     "Module \"$moduleId\" setting \"$configName\" is missing in metadata.php or configuration file."

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 
 /**
@@ -242,7 +243,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         //notify services
         $relation = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
         $relation->setCategoryId($sCategoryID);
-        $this->dispatchEvent(new AfterModelUpdateEvent($relation));
+        ContainerFacade::dispatch(new AfterModelUpdateEvent($relation));
     }
 
     /**

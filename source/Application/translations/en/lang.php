@@ -256,11 +256,6 @@ $aLang = [
 'MESSAGE_FROM'                                                => 'Message from',
 'MESSAGE_GET_BONUS_POINTS'                                    => 'Get bonus points for your purchase now!',
 'MESSAGE_INVALID_EMAIL'                                       => 'Invalid e-mail address!',
-// @deprecated will be removed in v8.0.
-'MESSAGE_INVITE_YOUR_FRIENDS'                                 => 'Invite your friends and get bonus points for each new registration!',
-'MESSAGE_INVITE_YOUR_FRIENDS_EMAIL'                           => 'Please enter your friend\'s e-mail address to send them an invitation.',
-'MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT'                 => 'An invitation was sent. Thank you!',
-// END deprecated
 'MESSAGE_LOGIN_TO_RATE'                                       => 'Please log in for rating!',
 'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'You have to be logged in to write a review.',
 'MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'                          => 'Everyone shall be able to search and display my gift registry',
@@ -446,9 +441,7 @@ $aLang = [
 'SENDER_EMAIL'                                                => 'Sender\'s e-mail',
 'SENDER_NAME'                                                 => 'Sender\'s name',
 'SEND_GIFT_REGISTRY'                                          => 'Send gift registry',
-// @deprecated since v7.0.0 (2023-05-16).
 'SEND_INVITE_TO'                                              => 'Send invitation to',
-// END deprecated
 'SHIPMENT_TO'                                                 => 'Shipment to',
 'SHIPPED'                                                     => 'Shipped',
 'SHIPPING'                                                    => 'Shipping',

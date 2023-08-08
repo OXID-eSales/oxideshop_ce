@@ -73,8 +73,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDeletedExtensions()
     {
-        $aModulesIds = $this->getContainer()
-            ->get(ShopConfigurationDaoBridgeInterface::class)
+        $aModulesIds = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
             ->get()
             ->getModuleIdsOfModuleConfigurations();
 

@@ -13,7 +13,8 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 use oxList;
 
 // defining supported link types
@@ -2468,7 +2469,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->onChangeStockResetCount($articleId);
         }
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent($this));
+        ContainerFacade::dispatch(new AfterModelUpdateEvent($this));
     }
 
     /**

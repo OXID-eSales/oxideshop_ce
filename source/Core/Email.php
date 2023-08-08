@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\DynamicImageGenerator;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Event\AdminModeChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
@@ -297,16 +297,8 @@ class Email extends PHPMailer
      */
     protected function getRenderer()
     {
-        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
-    }
-
-    /**
-     * @return \Psr\Container\ContainerInterface
-     * @deprecated will be removed in v8.0. Use \OxidEsales\EshopCommunity\Core\Di\ContainerFacade
-     */
-    protected function getContainer()
-    {
-        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**
@@ -816,7 +808,8 @@ class Email extends PHPMailer
 
         // create messages
         /** @var TemplateRendererInterface $renderer */
-        $renderer = $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+        $renderer = ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
         $this->setUser($user);
 
         $homeUrl = $this->getViewConfig()->getHomeLink();
@@ -1384,7 +1377,7 @@ class Email extends PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        $emailValidator = ContainerFacade::get(EmailValidatorServiceBridgeInterface::class);
         if (!$emailValidator->isEmailValid($email)) {
             $email = $this->getShop()->oxshops__oxorderemail->value;
         }
@@ -2010,9 +2003,9 @@ class Email extends PHPMailer
 
     private function dispatchAdminModeChangedEvent(): void
     {
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(EventDispatcherInterface::class)
-            ->dispatch(new AdminModeChangedEvent());
+        ContainerFacade::get(EventDispatcherInterface::class)
+            ->dispatch(
+                new AdminModeChangedEvent()
+            );
     }
 }

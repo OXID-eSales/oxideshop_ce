@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
@@ -72,8 +73,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $sanitizedClassExtensionsChain = $this->sanitizeClassExtensionsChain($classExtensionsChainFromRequest);
 
-        $container = $this->getContainer();
-        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
+        $shopConfigurationDao = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class);
         $shopConfiguration = $shopConfigurationDao->get();
 
         $chain = $shopConfiguration->getClassExtensionsChain();
@@ -123,6 +123,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     private function getShopConfiguration(): ShopConfiguration
     {
-        return $this->getContainer()->get(ShopConfigurationDaoBridgeInterface::class)->get();
+        return ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
+            ->get();
     }
 }

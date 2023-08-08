@@ -256,11 +256,6 @@ $aLang = [
 'MESSAGE_FROM'                                                => 'Nachricht von',
 'MESSAGE_GET_BONUS_POINTS'                                    => 'Holen Sie sich jetzt für Ihren Einkauf Bonuspunkte!',
 'MESSAGE_INVALID_EMAIL'                                       => 'Keine gültige E-Mail-Adresse!',
-// @deprecated will be removed in v8.0.
-'MESSAGE_INVITE_YOUR_FRIENDS'                                 => 'Laden Sie Ihre Freunde ein und erhalten Sie Bonuspunkte für jede neue Registrierung!',
-'MESSAGE_INVITE_YOUR_FRIENDS_EMAIL'                           => 'Tragen Sie die E-Mail-Adressen Ihrer Freunde unten ein, um ihnen eine Einladung zu schicken.',
-'MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT'                 => 'Die Einladungen wurden versendet. Danke!',
-// END deprecated
 'MESSAGE_LOGIN_TO_RATE'                                       => 'Für Bewertung bitte anmelden!',
 'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'Sie müssen angemeldet sein, um eine Bewertung schreiben zu können.',
 'MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'                          => 'Mein Wunschzettel soll von allen gesucht und angesehen werden können',
@@ -446,9 +441,7 @@ $aLang = [
 'SENDER_EMAIL'                                                => 'E-Mail des Absenders',
 'SENDER_NAME'                                                 => 'Name des Absenders',
 'SEND_GIFT_REGISTRY'                                          => 'Wunschzettel versenden',
-// @deprecated since v7.0.0 (2023-05-16).
 'SEND_INVITE_TO'                                              => 'Einladung schicken an',
-// END deprecated
 'SHIPMENT_TO'                                                 => 'Lieferung an',
 'SHIPPED'                                                     => 'Versendet!',
 'SHIPPING'                                                    => 'Versand',

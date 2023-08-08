@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use function basename;
@@ -522,7 +523,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     private function getRenderer(): TemplateRendererInterface
     {
-        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**

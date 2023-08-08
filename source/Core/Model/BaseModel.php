@@ -18,6 +18,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
 use OxidEsales\Eshop\Core\Field;
@@ -824,7 +825,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        $this->dispatchEvent(new BeforeModelDeleteEvent($this));
+        ContainerFacade::dispatch(new BeforeModelDeleteEvent($this));
 
         $this->removeElement2ShopRelations($oxid);
 
@@ -892,7 +893,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         } else {
             $response = $this->insert();
             $action = ACTION_INSERT;
-            $this->dispatchEvent(new AfterModelInsertEvent($this));
+            ContainerFacade::dispatch(new AfterModelInsertEvent($this));
         }
 
         $this->onChange($action);
@@ -982,7 +983,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function beforeUpdate($oxid = null)
     {
-        $this->dispatchEvent(new BeforeModelUpdateEvent($this));
+        ContainerFacade::dispatch(new BeforeModelUpdateEvent($this));
     }
 
     /**
@@ -996,9 +997,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function onChange($action = null, $oxid = null)
     {
         if (ACTION_DELETE == $action) {
-            $this->dispatchEvent(new AfterModelDeleteEvent($this));
+            ContainerFacade::dispatch(new AfterModelDeleteEvent($this));
         } else {
-            $this->dispatchEvent(new AfterModelUpdateEvent($this));
+            ContainerFacade::dispatch(new AfterModelUpdateEvent($this));
         }
     }
 

@@ -95,15 +95,10 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
         return '';
     }
 
-    /**
-     * @internal
-     *
-     * @return TemplateRendererInterface
-     */
-    private function getRenderer()
+    private function getRenderer(): TemplateRendererInterface
     {
-        return $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        return $this
+            ->getService(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
 

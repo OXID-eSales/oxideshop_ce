@@ -201,13 +201,13 @@ jobs:
           swap-size-gb: 10
 
       - name: Install admin theme and template engine
-        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.1.x --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-8.0.x --with-all-dependencies
 
       - name: Install flow theme
-        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.1.x --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-8.0.x --with-all-dependencies
 
       - name: Install dependencies
-        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.1.x --with-all-dependencies
+        run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-8.0.x --with-all-dependencies
 
       - name: Copy config file
         run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
@@ -265,7 +265,7 @@ jobs:
 
       - name: Install admin theme and template engine
         run: |
-          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.1.x --with-all-dependencies
+          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-8.0.x --with-all-dependencies
 
       - name: Install APEX theme
         run: |
@@ -414,13 +414,7 @@ jobs:
 
       - name: Set target branch
         run: |
-          if [[ "${{ github.ref_name }}" == "b-7.0.x" ]]; then TARGET_BRANCH=b-7.1.x; fi
-          if [[ "${{ github.ref_name }}" == "b-6.5.x" ]]; then TARGET_BRANCH=b-7.0.x; fi
-          if [[ "${{ github.ref_name }}" == "b-6.4.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
-          if [[ "${{ github.ref_name }}" == *"b-7.1.x"* && "${{ github.ref_name }}" != "b-7.1.x" ]]; then TARGET_BRANCH=b-7.1.x; fi
-          if [[ "${{ github.ref_name }}" == *"b-7.0.x"* && "${{ github.ref_name }}" != "b-7.0.x" ]]; then TARGET_BRANCH=b-7.0.x; fi
-          if [[ "${{ github.ref_name }}" == *"b-6.5.x"* && "${{ github.ref_name }}" != "b-6.5.x" ]]; then TARGET_BRANCH=b-6.5.x; fi
-          if [[ "${{ github.ref_name }}" == *"b-6.4.x"* && "${{ github.ref_name }}" != "b-6.4.x" ]]; then TARGET_BRANCH=b-6.4.x; fi
+          TARGET_BRANCH=b-8.0.x
           echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
 
       - name: SonarCloud Scan (oxideshop_ce)

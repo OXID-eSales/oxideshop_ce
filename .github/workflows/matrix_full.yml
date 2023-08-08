@@ -3,10 +3,7 @@ name: Full Matrix
 on:
   push:
     branches:
-      - b-7.1.x
-      - b-7.0.x
-      - b-6.5.x
-      - b-6.4.x
+      - b-8.0.x
   pull_request:
   workflow_dispatch:
 
@@ -264,7 +261,7 @@ jobs:
 
       - name: Install admin theme and template engine
         run: |
-          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.1.x --with-all-dependencies
+          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-8.0.x --with-all-dependencies
 
       - name: Install APEX theme
         run: |

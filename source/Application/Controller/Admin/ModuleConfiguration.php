@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
@@ -32,9 +33,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $moduleId = $this->_sModuleId;
 
         try {
-            $moduleConfiguration = $this
-                ->getContainer()
-                ->get(ModuleConfigurationDaoBridgeInterface::class)
+            $moduleConfiguration = ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class)
                 ->get($moduleId);
             if (!empty($moduleConfiguration->getModuleSettings())) {
                 $formatModuleSettings = $this
@@ -94,7 +93,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
     private function saveModuleConfigVariables(string $moduleId, array $variables): void
     {
-        $moduleConfigurationDaoBridge = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class);
+        $moduleConfigurationDaoBridge = ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class);
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
 
         foreach ($variables as $name => $value) {
@@ -118,7 +117,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
                 $moduleSetting->setValue($value);
 
-                $this->dispatchEvent(new SettingChangedEvent(
+                ContainerFacade::dispatch(new SettingChangedEvent(
                     $name,
                     (int)Registry::getConfig()->getShopId(),
                     $moduleId

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -78,8 +79,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     private function getRenderer()
     {
-        return $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
 

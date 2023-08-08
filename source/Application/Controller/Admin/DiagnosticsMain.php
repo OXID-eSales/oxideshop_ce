@@ -259,10 +259,11 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     private function getRenderedReport(array $diagnosticsResult): string
     {
-        $renderer = $this->getContainer()
-            ->get(TemplateRendererBridgeInterface::class)
-            ->getTemplateRenderer();
-
-        return $renderer->renderTemplate($this->_sThisTemplate, $diagnosticsResult);
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer()
+            ->renderTemplate(
+                $this->_sThisTemplate,
+                $diagnosticsResult
+            );
     }
 }

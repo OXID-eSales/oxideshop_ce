@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
 use OxidEsales\Eshop\Core\Registry;
@@ -266,8 +267,8 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $removed = false;
         try {
             $filepath = $this->makePathRelativeToShopSource($filepath);
-            if ($this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->exists($filepath)) {
-                $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->remove($filepath);
+            if (ContainerFacade::get(MasterImageHandlerBridgeInterface::class)->exists($filepath)) {
+                ContainerFacade::get(MasterImageHandlerBridgeInterface::class)->remove($filepath);
                 $removed = true;
             }
         } catch (\Throwable $exception) {

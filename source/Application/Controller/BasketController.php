@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -218,7 +219,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
-            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            ContainerFacade::get(LoggerInterface::class)
+                ->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
             return;
         }
@@ -245,7 +247,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
-            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            ContainerFacade::get(LoggerInterface::class)
+                ->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
             return;
         }
@@ -359,7 +362,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
-            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            ContainerFacade::get(LoggerInterface::class)
+                ->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
             return;
         }

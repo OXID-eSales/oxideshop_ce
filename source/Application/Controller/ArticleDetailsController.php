@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
@@ -341,7 +342,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
     private function getRenderer(): TemplateRendererInterface
     {
-        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**
@@ -895,7 +897,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $parameters = Registry::getRequest()->getRequestEscapedParameter('pa');
-        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        $emailValidator = ContainerFacade::get(EmailValidatorServiceBridgeInterface::class);
         if (!isset($parameters['email']) || !$emailValidator->isEmailValid($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;

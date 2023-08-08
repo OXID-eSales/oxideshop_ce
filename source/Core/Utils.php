@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -1003,7 +1005,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $session->freeze();
         $this->commitFileCache();
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent());
+        ContainerFacade::dispatch(new ApplicationExitEvent());
 
         if ($this->isSearchEngine()) {
             $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);

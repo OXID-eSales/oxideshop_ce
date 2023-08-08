@@ -147,10 +147,10 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getExtensions()
     {
-        $moduleConfiguration = $this
-            ->getContainer()
-            ->get(ModuleConfigurationDaoBridgeInterface::class)
-            ->get($this->getId());
+        $moduleConfiguration = ContainerFacade::get(ModuleConfigurationDaoBridgeInterface::class)
+            ->get(
+                $this->getId()
+            );
 
         $extensions = [];
 
@@ -277,14 +277,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        $moduleActivationBridge = $this
-            ->getContainer()
-            ->get(ModuleActivationBridgeInterface::class);
-
-        return $moduleActivationBridge->isActive(
-            $this->getId(),
-            Registry::getConfig()->getShopId()
-        );
+        return ContainerFacade::get(ModuleActivationBridgeInterface::class)
+            ->isActive(
+                $this->getId(),
+                Registry::getConfig()->getShopId()
+            );
     }
 
     /**
@@ -368,8 +365,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     private function getShopConfiguration(): ShopConfiguration
     {
-        $container = $this->getContainer();
-        return $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+        return ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
+            ->get();
     }
 
     /**

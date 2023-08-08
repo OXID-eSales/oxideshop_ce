@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -22,7 +23,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     private function getRenderer()
     {
-        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**

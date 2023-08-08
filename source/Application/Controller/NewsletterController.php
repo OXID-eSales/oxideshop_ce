@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -93,7 +94,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function send()
     {
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
-        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        $emailValidator = ContainerFacade::get(EmailValidatorServiceBridgeInterface::class);
 
         // loads submited values
         $this->_aRegParams = $aParams;

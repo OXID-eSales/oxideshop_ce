@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 
@@ -68,9 +69,8 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function render()
     {
-        /** @var ContactFormBridgeInterface $contactFormBridge */
-        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
-        $form = $contactFormBridge->getContactForm();
+        $form = ContainerFacade::get(ContactFormBridgeInterface::class)
+            ->getContactForm();
 
         /** @var FormField $formField */
         foreach ($form->getFields() as $key => $formField) {
@@ -92,7 +92,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function send()
     {
-        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+        $contactFormBridge = ContainerFacade::get(ContactFormBridgeInterface::class);
 
         $form = $contactFormBridge->getContactForm();
         $form->handleRequest($this->getMappedContactFormRequest());

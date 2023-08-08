@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 
 class Review extends BaseModel
@@ -182,15 +183,13 @@ class Review extends BaseModel
      */
     public function getReviewAndRatingListByUserId($userId)
     {
-        return $this
-            ->getContainer()
-            ->get(UserReviewAndRatingBridgeInterface::class)
+        return ContainerFacade::get(UserReviewAndRatingBridgeInterface::class)
             ->getReviewAndRatingList($userId);
     }
 
     private function isFieldValueHtmlEcaped(): bool
     {
-        return !$this->getContainer()->getParameter('oxid_esales.templating.engine_autoescapes_html');
+        return !ContainerFacade::getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 
     private function insertHtmlLineBreaks(string $text): string

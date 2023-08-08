@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\NoArticleException;
 use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent;
 use Psr\Log\LoggerInterface;
 use stdClass;
 
@@ -137,7 +139,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             Registry::getSession()->isActualSidInCookie() &&
             !Registry::getSession()->checkSessionChallenge()
         ) {
-            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            ContainerFacade::get(LoggerInterface::class)
+                ->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
             return;
         }
@@ -182,7 +185,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             // redirect to basket
             $redirectUrl = $this->getRedirectUrl();
-            $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent($this));
+            ContainerFacade::dispatch(new BasketChangedEvent($this));
 
             return $redirectUrl;
         }
@@ -518,7 +521,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function executeUserChoice()
     {
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent($this));
+        ContainerFacade::dispatch(new BasketChangedEvent($this));
 
         // redirect to basket
         if (Registry::getRequest()->getRequestEscapedParameter("tobasket")) {

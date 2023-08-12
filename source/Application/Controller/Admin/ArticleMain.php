@@ -288,6 +288,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             // mantis#0001590: OXRATING and OXRATINGCNT not set to 0 when copying article
             $oArticle->oxarticles__oxrating = new \OxidEsales\Eshop\Core\Field(0);
             $oArticle->oxarticles__oxratingcnt = new \OxidEsales\Eshop\Core\Field(0);
+            $oArticle->oxarticles__oxsoldamount = new \OxidEsales\Eshop\Core\Field(0);
 
             $oArticle->setId($sNewId);
             $oArticle->save();

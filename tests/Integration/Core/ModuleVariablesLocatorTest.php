@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
+use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ModuleVariablesLocatorTest extends IntegrationTestCase
@@ -17,6 +19,7 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+        ModuleVariablesLocator::resetModuleVariables();
     }
 
     public function tearDown(): void
@@ -35,8 +38,8 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
 
     private function getVariableByShopId(int $shopId): array|string
     {
-        $fileCacheMock = $this->createMock(\OxidEsales\Eshop\Core\FileCache::class);
-        $shopIdCalculatorMock = $this->createMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class);
+        $fileCacheMock = $this->createMock(FileCache::class);
+        $shopIdCalculatorMock = $this->createMock(ShopIdCalculator::class);
         $shopIdCalculatorMock->method('getShopId')->willReturn($shopId);
         $moduleVariablesLocatorClass = new ModuleVariablesLocator($fileCacheMock, $shopIdCalculatorMock);
         return $moduleVariablesLocatorClass->getModuleVariable('aModules');

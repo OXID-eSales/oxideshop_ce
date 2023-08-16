@@ -73,14 +73,21 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private function addModuleServices(string $moduleId, int $shopId): void
     {
         try {
-            $this->modulesYamlImportService->addImport($this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId), $shopId);
+            $this->modulesYamlImportService->addImport(
+                $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId),
+                $shopId
+            );
             $this->eventDispatcher->dispatch(new ProjectYamlChangedEvent());
-        } catch (NoServiceYamlException) {}
+        } catch (NoServiceYamlException) {
+        }
     }
 
     private function removeModuleServices(string $moduleId, int $shopId): void
     {
-        $this->modulesYamlImportService->removeImport($this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId), $shopId);
+        $this->modulesYamlImportService->removeImport(
+            $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId),
+            $shopId
+        );
         $this->eventDispatcher->dispatch(new ProjectYamlChangedEvent());
     }
 }

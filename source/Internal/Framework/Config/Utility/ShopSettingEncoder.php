@@ -40,11 +40,13 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
      */
     public function decode(string $encodingType, $value)
     {
+        // phpcs:disable
         return match ($encodingType) {
             ShopSettingType::ARRAY, ShopSettingType::ASSOCIATIVE_ARRAY => unserialize($value, ['allowed_classes' => false]),
             ShopSettingType::BOOLEAN => $value === 'true' || $value === '1',
             default => $value,
         };
+        // phpcs:enable
     }
 
     /**

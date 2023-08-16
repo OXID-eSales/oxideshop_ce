@@ -76,7 +76,9 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
         ModuleConfiguration $mergedModuleConfiguration
     ): void {
         if ($shopConfiguration->hasModuleConfiguration($mergedModuleConfiguration->getId())) {
-            $isConfigured = $shopConfiguration->getModuleConfiguration($mergedModuleConfiguration->getId())->isActivated();
+            $isConfigured = $shopConfiguration
+                ->getModuleConfiguration($mergedModuleConfiguration->getId())
+                ->isActivated();
             $mergedModuleConfiguration->setActivated($isConfigured);
         }
     }

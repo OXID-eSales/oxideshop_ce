@@ -34,8 +34,7 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         private NodeInterface $node,
         private Filesystem $filesystem,
         private EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
     }
 
     /**
@@ -52,7 +51,8 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
                 throw new ModuleConfigurationNotFoundException('There is no module configuration with id ' . $moduleId);
             }
 
-            $moduleConfiguration = $this->moduleConfigurationDataMapper->fromData(new ModuleConfiguration(), $this->getNormalizedData($shopId, $moduleId));
+            $moduleConfiguration = $this->moduleConfigurationDataMapper
+                ->fromData(new ModuleConfiguration(), $this->getNormalizedData($shopId, $moduleId));
             $moduleConfiguration = $this->moduleConfigurationExtender->extend($moduleConfiguration, $shopId);
 
             $this->cache->put($shopId, $moduleConfiguration);
@@ -121,7 +121,7 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 
             foreach ($dir as $fileInfo) {
                 if ($fileInfo->isFile()) {
-                    $moduleIds[] = $fileInfo->getBasename('.' .$fileInfo->getExtension());
+                    $moduleIds[] = $fileInfo->getBasename('.' . $fileInfo->getExtension());
                 }
             }
         }
@@ -142,7 +142,10 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
             $data = $this->node->normalize($this->getStorage($shopId, $moduleId)->get());
         } catch (InvalidConfigurationException $exception) {
             throw new InvalidConfigurationException(
-                'File ' . $this->getModuleConfigurationFilePath($shopId, $moduleId) . ' is broken: ' . $exception->getMessage(),
+                'File '
+                        . $this->getModuleConfigurationFilePath($shopId, $moduleId)
+                        . ' is broken: '
+                        . $exception->getMessage(),
                 $exception->getCode(),
                 $exception
             );

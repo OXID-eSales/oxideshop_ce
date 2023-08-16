@@ -17,7 +17,7 @@ class ModuleEnvironmentConfigurationExtender implements ModuleConfigurationExten
 {
     public function __construct(
         private ModuleEnvironmentConfigurationDaoInterface $moduleEnvironmentConfigurationDao,
-        private EventDispatcherInterface                   $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -33,7 +33,6 @@ class ModuleEnvironmentConfigurationExtender implements ModuleConfigurationExten
                 }
                 $this->mergeEnvironmentSetting($moduleConfiguration->getModuleSetting($settingId), $environmentSetting);
             }
-
         }
 
         return $moduleConfiguration;

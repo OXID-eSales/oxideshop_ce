@@ -13,5 +13,4 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ModuleClassExtensionChainChangedEvent extends Event
 {
-
 }

@@ -30,7 +30,7 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
 
     public function testShopIdCalculatorWithWrongId(): void
     {
-        $shopIdTest = 9999;
+        $shopIdTest = 99999;
         $expectedResult = [];
         $result = $this->getVariableByShopId($shopIdTest);
         $this->assertEquals($expectedResult, $result);

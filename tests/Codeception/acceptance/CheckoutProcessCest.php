@@ -566,52 +566,6 @@ final class CheckoutProcessCest
         $orderCheckoutPage->submitOrderSuccessfully();
     }
 
-    public function checkVATOptions(AcceptanceTester $I): void
-    {
-        $basket = new Basket($I);
-        $I->wantToTest('the VAT Options');
-
-        $homePage = $I->openShop();
-
-        // Display shipping costs as net price and VAT (instead of gross) in shopping cart and invoice
-        $I->updateConfigInDatabase('blShowVATForDelivery', 'true', 'bool');
-        // Display VAT contained in Payment Method Charges in Shopping Cart and Invoice
-        $I->updateConfigInDatabase('blShowVATForPayCharge', 'true', 'bool');
-        // Display VAT contained in Gift Wrappings and Greeting Cards in Shopping Cart and Invoice
-        $I->updateConfigInDatabase('blShowVATForWrapping', 'true', 'bool');
-
-        $basket->addProductToBasket("1000", 3);
-
-        $userData = $this->getExistingUserData();
-        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
-        $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
-        /** @var OrderCheckout $orderCheckoutPage */
-        $orderCheckoutPage = $basketPage->goToNextStep()->goToNextStep()->goToNextStep();
-
-        $priceInformation = array(
-            'net' => '142,86 €',
-            'vat' => '7,14 €',
-            'percentVat' => '5',
-            'gross' => '150,00 €',
-            'shipping' => '0,00 €',
-            'payment_method' => '7,14 €',
-            'percent_surcharge_tax' => '5',
-            'payment_method_tax' => '0,36 €',
-            'total' => '157,50 €',
-        );
-
-        $orderCheckoutPage->seeTotalNet($priceInformation['net']);
-        $orderCheckoutPage->seeTotalVat($priceInformation['vat'], $priceInformation['percentVat']);
-        $orderCheckoutPage->seeTotalGross($priceInformation['gross']);
-        $orderCheckoutPage->seeShippingNet($priceInformation['shipping']);
-        $orderCheckoutPage->seePaymentMethodNet($priceInformation['payment_method']);
-        $orderCheckoutPage->seePaymentMethodVat(
-            $priceInformation['payment_method_tax'],
-            $priceInformation['percent_surcharge_tax']
-        );
-        $orderCheckoutPage->seeGrandTotal($priceInformation['total']);
-    }
-
     public function checkPaymentStep(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -789,7 +743,6 @@ final class CheckoutProcessCest
         $productDetailsPage->seeProductTitle('Test product 1 [EN] šÄßüл');
     }
 
-
     public function checkOrderStepChangedAddress(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -862,6 +815,72 @@ final class CheckoutProcessCest
         $orderCheckout->submitOrderSuccessfully();
     }
 
+    public function checkFrontendDiscounts(AcceptanceTester $I): void
+    {
+        $I->wantToTest('ordering discounted articles');
+
+        $this->addDiscountedProductsToDatabase($I);
+
+        $homePage = $I->openShop();
+        $userData = $this->getExistingUserData();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+
+        $basket = new Basket($I);
+        $basket->addProductToBasket("1000", 2);
+        $basket->addProductToBasket("1002-1", 1);
+
+        $basket = $homePage->openMiniBasket()->openBasketDisplay();
+
+        $basketItem1 = [
+            'id' => '1000',
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'amount' => 2,
+            'totalPrice' => '90,00 €'
+        ];
+
+        $basketItem2 = [
+            'id' => '1002-1',
+            'title' => 'Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '49,50 €'
+        ];
+
+        $unitPriceItem1 = '45,00 €';
+        $unitPriceItem2 = '49,50 €';
+        $totalPrice = '139,50 €';
+
+        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
+        $basket->seeItemUnitPrice($unitPriceItem1, '1');
+        $basket->seeItemUnitPrice($unitPriceItem2, '2');
+
+        $priceInformation = ['net' => '127,31 €', 'gross' => '139,50 €', 'shipping' => '0,00 €', 'total' => '139,50 €'];
+        $this->validateSummaryPrice($I, $priceInformation);
+
+        $basket->updateProductAmount(3, 2);
+        $basketItem2['totalPrice'] = '148,50 €';
+        $basketItem2['amount'] = 3;
+        $totalPrice = '238,50 €';
+        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
+
+        // disable discounts
+        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testcatdiscount']);
+        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testpercentdiscount']);
+        $basketItem1['totalPrice'] = '100,00 €';
+        $basketItem2['totalPrice'] = '55,00 €';
+        $basketItem2['amount'] = 1;
+        $basket->updateProductAmount($basketItem2['amount'], 2);
+
+        $unitPriceItem1 = '50,00 €';
+        $unitPriceItem2 = '55,00 €';
+        $totalPrice = '155,00 €';
+        $basket->seeItemUnitPrice($unitPriceItem1, '1');
+        $basket->seeItemUnitPrice($unitPriceItem2, '2');
+        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
+
+        $priceInformation = ['net' => '141,46 €', 'gross' => '155,00 €', 'shipping' => '0,00 €', 'total' => '155,00 €'];
+        $this->validateSummaryPrice($I, $priceInformation);
+    }
+
     private function getExistingUserData(): array
     {
         return Fixtures::get('existingUser');
@@ -905,5 +924,64 @@ final class CheckoutProcessCest
             'fonNr' => '',
             'faxNr' => '',
         ];
+    }
+
+    private function validateSummaryPrice(AcceptanceTester $I, array $priceInformation)
+    {
+        $orderCheckout = new OrderCheckout($I);
+
+        $I->see(
+            $priceInformation['net'],
+            sprintf($orderCheckout->basketSummaryNet, Translator::translate('TOTAL_NET'))
+        );
+        $I->see(
+            $priceInformation['gross'],
+            sprintf($orderCheckout->basketSummaryGross, Translator::translate('TOTAL_GROSS'))
+        );
+        $I->see(
+            $priceInformation['shipping'],
+            sprintf($orderCheckout->basketShippingGross, Translator::translate('SHIPPING_COST'))
+        );
+        $I->see(
+            $priceInformation['total'],
+            sprintf($orderCheckout->basketTotalPrice, Translator::translate('GRAND_TOTAL'))
+        );
+    }
+
+    private function addDiscountedProductsToDatabase(AcceptanceTester $I)
+    {
+        $oxdiscountid = 'testcatdiscount';
+        $oxactive = 1;
+
+        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => $oxactive], ['OXID' => $oxdiscountid]);
+        $I->haveInDatabase(
+            'oxobject2discount',
+            [
+                'OXID' => '1000todiscount',
+                'OXDISCOUNTID' => 'testcatdiscount',
+                'OXOBJECTID' => '1000',
+                'OXTYPE' => 'oxarticles'
+            ]
+        );
+
+        $I->haveInDatabase(
+            'oxdiscount',
+            [
+                'OXID' => 'testpercentdiscount',
+                'OXSHOPID' => '1',
+                'OXACTIVE' => 1,
+                'OXADDSUMTYPE' => '%',
+                'OXADDSUM' => '10'
+            ]
+        );
+        $I->haveInDatabase(
+            'oxobject2discount',
+            [
+                'OXID' => '1002-1todiscount',
+                'OXDISCOUNTID' => 'testpercentdiscount',
+                'OXOBJECTID' => '1002-1',
+                'OXTYPE' => 'oxarticles'
+            ]
+        );
     }
 }

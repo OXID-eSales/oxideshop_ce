@@ -42,6 +42,8 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
         $shopIdCalculatorMock = $this->createMock(ShopIdCalculator::class);
         $shopIdCalculatorMock->method('getShopId')->willReturn($shopId);
         $moduleVariablesLocatorClass = new ModuleVariablesLocator($fileCacheMock, $shopIdCalculatorMock);
+
+        ModuleVariablesLocator::resetModuleVariables();
         return $moduleVariablesLocatorClass->getModuleVariable('aModules');
     }
 }

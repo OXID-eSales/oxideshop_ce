@@ -1,4 +1,4 @@
-name: dispatch_matrix
+name: dispatch_dev_matrix
 # Matrix workflow using re-usable github actions
 
 on:

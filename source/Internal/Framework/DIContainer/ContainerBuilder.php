@@ -127,10 +127,12 @@ class ContainerBuilder
         } catch (LoaderLoadException $exception) {
             $loggerServiceFactory = new LoggerServiceFactory(new Context());
             $logger = $loggerServiceFactory->getLogger();
+            // phpcs:disable
             $logger->error(
                 "Can't load module services file path $moduleServicesFilePath. Please check if file exists and all imports in the file are correct.",
                 [$exception]
             );
+            // phpcs:enable
         }
     }
 }

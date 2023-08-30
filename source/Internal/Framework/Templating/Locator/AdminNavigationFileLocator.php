@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\NavigationFileLocatorInterface;
+
 /**
  * Class AdminNavigationFileLocator
  * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
@@ -16,7 +18,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 class AdminNavigationFileLocator implements NavigationFileLocatorInterface
 {
     /**
-     * @param \OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\NavigationFileLocatorInterface[] $menuFileLocators
+     * @param NavigationFileLocatorInterface[] $menuFileLocators
      */
     public function __construct(private iterable $menuFileLocators = [])
     {

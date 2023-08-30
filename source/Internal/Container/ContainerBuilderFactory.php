@@ -24,7 +24,9 @@ class ContainerBuilderFactory
         $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
         $shopStateService = $bootstrapContainer->get(ShopStateServiceInterface::class);
 
-        $context = $shopStateService->isLaunched() ? new Context() : $bootstrapContainer->get(BasicContextInterface::class);
+        $context = $shopStateService->isLaunched()
+            ? new Context()
+            : $bootstrapContainer->get(BasicContextInterface::class);
 
         return new ContainerBuilder($context);
     }

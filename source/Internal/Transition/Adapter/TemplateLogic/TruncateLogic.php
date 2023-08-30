@@ -35,7 +35,11 @@ class TruncateLogic
             $sString = str_replace(['&#039;', '&quot;'], ["'", '"'], $sString);
 
             if (!$blBreakWords) {
-                $sString = Str::getStr()->preg_replace('/\s+?(\S+)?$/', '', Str::getStr()->substr($sString, 0, $iLength + 1));
+                $sString = Str::getStr()->preg_replace(
+                    '/\s+?(\S+)?$/',
+                    '',
+                    Str::getStr()->substr($sString, 0, $iLength + 1)
+                );
             }
 
             $sString = Str::getStr()->substr($sString, 0, $iLength) . $sSufix;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,5 +15,4 @@ interface TranslatorInterface
      * @return string
      */
     public function translate(string $string): string;
-
 }

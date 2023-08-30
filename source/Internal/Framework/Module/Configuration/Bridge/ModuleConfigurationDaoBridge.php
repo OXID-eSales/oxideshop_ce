@@ -38,6 +38,9 @@ class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterf
     public function save(ModuleConfiguration $moduleConfiguration)
     {
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
-        $this->moduleEnvironmentConfigurationDao->remove($moduleConfiguration->getId(), $this->context->getCurrentShopId());
+        $this->moduleEnvironmentConfigurationDao->remove(
+            $moduleConfiguration->getId(),
+            $this->context->getCurrentShopId()
+        );
     }
 }

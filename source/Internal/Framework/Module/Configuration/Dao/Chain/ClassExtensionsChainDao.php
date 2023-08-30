@@ -23,8 +23,7 @@ class ClassExtensionsChainDao implements ClassExtensionsChainDaoInterface
         private BasicContextInterface $context,
         private FileStorageFactoryInterface $fileStorageFactory,
         private EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
     }
 
     public function getChain(int $shopId): ClassExtensionsChain

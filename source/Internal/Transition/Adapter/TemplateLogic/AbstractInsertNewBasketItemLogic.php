@@ -27,8 +27,11 @@ abstract class AbstractInsertNewBasketItemLogic
         $newBasketItemMessage = $config->getConfigParam('iNewBasketItemMessage');
 
         // If correct type of message is expected
-        if ($newBasketItemMessage && $params['type']
-            && (!isset($types[$newBasketItemMessage]) || $params['type'] != $types[$newBasketItemMessage])) {
+        if (
+            $newBasketItemMessage && $params['type']
+            && (!isset($types[$newBasketItemMessage])
+                || $params['type'] != $types[$newBasketItemMessage])
+        ) {
             $correctMessageType = false;
         } else {
             $correctMessageType = true;

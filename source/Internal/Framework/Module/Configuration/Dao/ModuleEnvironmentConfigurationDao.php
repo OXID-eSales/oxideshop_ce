@@ -71,6 +71,7 @@ class ModuleEnvironmentConfigurationDao implements ModuleEnvironmentConfiguratio
      */
     private function getEnvironmentConfigurationFilePath(string $moduleId, int $shopId): string
     {
-        return $this->context->getProjectConfigurationDirectory() . 'environment/shops/' . $shopId . '/modules/' . $moduleId . '.yaml';
+        return $this->context->getProjectConfigurationDirectory()
+            . 'environment/shops/' . $shopId . '/modules/' . $moduleId . '.yaml';
     }
 }

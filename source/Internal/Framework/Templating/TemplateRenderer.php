@@ -17,8 +17,7 @@ class TemplateRenderer implements TemplateRendererInterface
     public function __construct(
         private TemplateEngineInterface $templateEngine,
         private ContextInterface $context
-    )
-    {
+    ) {
     }
 
     /**

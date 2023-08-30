@@ -20,8 +20,7 @@ class TemplateExtensionChainDao implements TemplateExtensionChainDaoInterface
     public function __construct(
         private BasicContextInterface $context,
         private FileStorageFactoryInterface $fileStorageFactory,
-    )
-    {
+    ) {
     }
 
     public function getChain(int $shopId): ModuleTemplateExtensionChain
@@ -45,5 +44,4 @@ class TemplateExtensionChainDao implements TemplateExtensionChainDaoInterface
     {
         return Path::join($this->context->getShopConfigurationDirectory($shopId), 'template_extension_chain.yaml');
     }
-
 }

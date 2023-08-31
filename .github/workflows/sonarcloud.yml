@@ -415,7 +415,11 @@ jobs:
       - name: Set target branch
         run: |
           TARGET_BRANCH=b-8.0.x
-          echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
+          TARGET_BRANCH_PARAM="-Dsonar.branch.target=$TARGET_BRANCH"
+          if [ "${{ github.ref_name}}" == "${{ github.event.repository.default_branch }}" ]; then
+            TARGET_BRANCH_PARAM=""
+          fi
+          echo "TARGET_BRANCH_PARAM=$TARGET_PRANCH_PARAM" >> $GITHUB_ENV
 
       - name: SonarCloud Scan (oxideshop_ce)
         uses: sonarsource/sonarcloud-github-action@master
@@ -430,10 +434,10 @@ jobs:
             -Dsonar.language=php
             -Dsonar.scm.provider=git
             -Dsonar.branch.name=${{ github.ref_name }}
-            -Dsonar.branch.target=${{ env.TARGET_BRANCH }}
             -Dsonar.sources=source
             -Dsonar.tests=tests
             -Dsonar.php.coverage.reportPaths=coverage-reports/tests_coverage.xml,coverage-reports/deprecated_tests_coverage.xml,coverage-reports/codeception_coverage.xml
+            ${{ env.TARGET_BRANCH_PARAM }}
 
       - name: SonarCloud Scan (oxideshop_ce_internal)
         uses: sonarsource/sonarcloud-github-action@master

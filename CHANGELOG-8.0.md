@@ -4,6 +4,7 @@
 
 ### Changed
 - Admin directory is not removed from the url in `ViewConfig::getModuleUrl` anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)
+- Reset created product "sold" counter during Copying of the product [PR-913](https://github.com/OXID-eSales/oxideshop_ce/pull/913)
 
 ### Removed
 - Remove console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`

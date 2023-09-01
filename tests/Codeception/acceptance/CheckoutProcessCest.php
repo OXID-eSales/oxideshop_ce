@@ -15,11 +15,18 @@ use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\Facts\Facts;
 
+/**
+ * @group basketfrontend
+ */
 final class CheckoutProcessCest
 {
-    /**
-     * @group basketfrontend
-     */
+    public function _before(AcceptanceTester $I)
+    {
+        $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
+        $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
+        $I->updateConfigInDatabase('blShowVATForWrapping', false, 'bool');
+    }
+
     public function checkBasketFlyout(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -69,15 +76,10 @@ final class CheckoutProcessCest
         $paymentCheckoutPage->seeOnBreadCrumb($breadCrumbName);
     }
 
-    /**
-     * @group basketfrontend
-     */
     public function createOrder(AcceptanceTester $I): void
     {
         $I->wantToTest('simple order steps (without any special cases)');
 
-        $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
-        $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
         $basket = new Basket($I);
 
         $userData = $this->getExistingUserData();
@@ -126,14 +128,6 @@ final class CheckoutProcessCest
         $orderPage = $userCheckoutPage->enterOrderRemark('my message')->goToNextStep()->goToNextStep();
         $orderPage->validateRemarkText('my message');
 
-        $paymentPage = $orderPage->editPaymentMethod();
-        $orderPage = $paymentPage->selectPayment('oxidpayadvance')->goToNextStep();
-
-        $orderPage->validateShippingMethod('Standard');
-        $orderPage->validatePaymentMethod('Cash in advance');
-        $paymentPage = $orderPage->editShippingMethod();
-        $orderPage = $paymentPage->selectPayment('oxidcashondel')->goToNextStep();
-
         $orderPage->validateShippingMethod('Standard');
         $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
         $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
@@ -154,12 +148,11 @@ final class CheckoutProcessCest
 
     /**
      * @group todo_add_clean_cache_after_database_update
-     * @group basketfrontend
      */
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
-        $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same 
+        $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same
         product was sold out by other user during the checkout');
 
         $userData = $this->getExistingUserData();
@@ -233,9 +226,6 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxarticles', ['oxstock' => '15', 'oxstockflag' => '1'], ['oxid' => '1000']);
     }
 
-    /**
-     * @group basketfrontend
-     */
     public function checkMinimalOrderPrice(AcceptanceTester $I): void
     {
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
@@ -289,9 +279,6 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
-    /**
-     * @group basketfrontend
-     */
     public function buyProductWithBundledItem(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -336,7 +323,7 @@ final class CheckoutProcessCest
 
         /** Start guest1 checkout with email1, then logout */
         $basket->addProductToBasketAndOpenUserCheckout('1000', 10);
-        $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
+        $userRegistration->createNotRegisteredUserInCheckout(
             $email1,
             $this->getUserFormData(),
             $this->getUserAddressFormData()
@@ -473,33 +460,109 @@ final class CheckoutProcessCest
             ]
         );
 
-        $basket = new Basket($I);
+        (new Basket($I))->addProductToBasket('1001', 1);
 
-        $basketItem1 = [
-            'id' => '1001',
-            'title' => 'Test product 1 [EN] šÄßüл',
-            'amount' => 1,
-            'totalPrice' => '100,00 €'
-        ];
-
-        $homePage = $I->openShop();
-
-        $basket->addProductToBasket($basketItem1['id'], 1);
-
-        $homePage->openMiniBasket()->openBasketDisplay()->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
+        $I->openShop()->openMiniBasket()->openBasketDisplay()
+          ->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
     }
 
-    /**
-     * @return mixed
-     */
-    private function getExistingUserData()
+    public function vatsInCheckoutSummary(AcceptanceTester $I): void
+    {
+        $I->wantToTest('enabling configuration for displaying VAT values works on checkout summary');
+
+        $I->amGoingTo('enable displaying the VATs via config');
+        $I->updateConfigInDatabase('blShowVATForDelivery', 'true', 'bool');
+        $I->updateConfigInDatabase('blShowVATForPayCharge', 'true', 'bool');
+        $I->updateConfigInDatabase('blShowVATForWrapping', 'true', 'bool');
+        $I->amGoingTo('add some product to the basket to prepare for the checkout');
+        (new Basket($I))->addProductToBasket('1000', 3);
+
+        $I->amGoingTo('select additional product wrapping and click-through to the summary');
+        $loginData = $this->getExistingUserData();
+        $orderCheckout = $I
+            ->openShop()
+            ->loginUser(
+                $loginData['userLoginName'],
+                $loginData['userPassword']
+            )
+            ->openMiniBasket()
+            ->openBasketDisplay()
+            ->openGiftSelection(1)
+            ->selectWrapping(1, 'testwrapping')
+            ->submitChanges()
+            ->goToNextStep()
+            ->goToNextStep()
+            ->goToNextStep();
+
+        $I->amGoingTo('validate checkout summary values');
+        $orderCheckout->seeVat('5');
+        $orderCheckout->seeTotalNet('142,86 €');
+        $orderCheckout->seeTotalGross('150,00 €');
+        $orderCheckout->seeShippingNet('0,00 €');
+        $orderCheckout->seePaymentMethodNet('7,14 €');
+        $orderCheckout->seePaymentMethodVat('0,36 €', '5');
+        $orderCheckout->seeWrappingNet('2,57 €');
+        $orderCheckout->seeWrappingVat('0,13 €');
+        $orderCheckout->seeGrandTotal('160,20 €');
+    }
+
+    public function modifyShippingAndPaymentMethods(AcceptanceTester $I): void
+    {
+        $I->wantToTest('switching between payment and shipping methods');
+
+        $I->amGoingTo('make non-zero delivery cost to see it at checkout');
+        $I->updateInDatabase(
+            'oxdelivery',
+            ['OXADDSUM' => 123],
+            ['OXID' => 'testdelivery']
+        );
+
+        $I->amGoingTo('add some product to the basket to prepare for the checkout');
+        $basket = new Basket($I);
+        $basket->addProductToBasket('1001', 1);
+        $basket->addProductToBasket('1002-2', 1);
+
+        $I->amGoingTo('click-through the checkout to the summary');
+        $userData = $this->getExistingUserData();
+        $orderCheckoutPage = $I
+            ->openShop()
+            ->loginUser(
+                $userData['userLoginName'],
+                $userData['userPassword']
+            )
+            ->openMiniBasket()
+            ->openBasketDisplay()
+            ->goToNextStep()
+            ->goToNextStep()
+            ->goToNextStep();
+
+        $I->amGoingTo('go back to modify the default shipping method and see the change at checkout');
+        $paymentPage = $orderCheckoutPage->editShippingMethod();
+        $paymentPage->selectShipping('Alternative');
+        $orderCheckoutPage = $paymentPage->goToNextStep();
+        $orderCheckoutPage->validateShippingMethod('Alternative');
+        $orderCheckoutPage->seeShippingGross('123,00 €');
+        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
+
+        $I->amGoingTo('go back to modify the default payment method and see the change at checkout');
+        $paymentPage = $orderCheckoutPage->editPaymentMethod();
+        $paymentPage->selectPayment('oxidpayadvance');
+        $paymentPage->goToNextStep();
+        $orderCheckoutPage->validatePaymentMethod('Cash in advance');
+        $orderCheckoutPage->dontSeePaymentSurchargePrice();
+
+        $I->amGoingTo('check if ordering works');
+        $orderCheckoutPage->submitOrderSuccessfully();
+    }
+
+    private function getExistingUserData(): array
     {
         return Fixtures::get('existingUser');
     }
 
-    private function prepareTestDataForBundledProduct(AcceptanceTester $I, string $productId, string $bundledProductId): void
+    private function prepareTestDataForBundledProduct(AcceptanceTester $I, string $productId, string $bundleId): void
     {
-        $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => $bundledProductId], ['OXID' => $productId]);
+        $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => $bundleId], ['OXID' => $productId]);
     }
 
     private function removeBundleFromProduct(AcceptanceTester $I, string $productId): void

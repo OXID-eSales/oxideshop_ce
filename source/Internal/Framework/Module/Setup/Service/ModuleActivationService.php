@@ -22,19 +22,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ModuleActivationService implements ModuleActivationServiceInterface
 {
     public function __construct(
-        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private EventDispatcherInterface $eventDispatcher,
-        private ModuleConfigurationValidatorInterface $moduleConfigurationValidator,
-        private ModuleServicesImporterInterface $modulesYamlImportService,
-        private ModulePathResolverInterface $modulePathResolver,
+        private readonly ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ModuleConfigurationValidatorInterface $moduleConfigurationValidator,
+        private readonly ModuleServicesImporterInterface $modulesYamlImportService,
+        private readonly ModulePathResolverInterface $modulePathResolver,
+        private readonly ModuleConfigurationValidatorInterface $deactivationDependencyValidator
     ) {
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function activate(string $moduleId, int $shopId)
+    public function activate(string $moduleId, int $shopId): void
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
@@ -50,13 +47,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         );
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function deactivate(string $moduleId, int $shopId)
+    public function deactivate(string $moduleId, int $shopId): void
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+
+        $this->deactivationDependencyValidator->validate($moduleConfiguration, $shopId);
 
         $this->eventDispatcher->dispatch(new BeforeModuleDeactivationEvent($shopId, $moduleId));
 

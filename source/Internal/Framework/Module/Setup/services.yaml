@@ -6,8 +6,13 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridge
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDependencyResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDependencyResolver
+
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationService
+    arguments:
+      $deactivationDependencyValidator: '@oxid_esales.module.setup.validator.deactivation_dependency_validator'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporter
@@ -19,6 +24,7 @@ services:
       - '@oxid_esales.module.setup.validator.class_extensions_module_setting_validator'
       - '@oxid_esales.module.setup.validator.events_module_setting_validator'
       - '@oxid_esales.module.setup.validator.services_yaml_validator'
+      - '@oxid_esales.module.setup.validator.activation_dependency_validator'
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator
@@ -28,6 +34,12 @@ services:
 
   oxid_esales.module.setup.validator.events_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsValidator
+
+  oxid_esales.module.setup.validator.activation_dependency_validator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ActivationDependencyValidator
+
+  oxid_esales.module.setup.validator.deactivation_dependency_validator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\DeactivationDependencyValidator
 
   oxid_esales.module.setup.validator.services_yaml_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator

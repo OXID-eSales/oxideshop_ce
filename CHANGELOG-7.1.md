@@ -7,6 +7,7 @@
 - Command `bin/oe-console oe:theme:activate <theme>` to activate a theme from CLI
 - PHP v8.2 support
 - Shops can have separate service configurations
+- Dependencies between modules feature is introduced.
 
 ### Deprecated
 - Deprecate console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`

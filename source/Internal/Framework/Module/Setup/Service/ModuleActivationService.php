@@ -27,13 +27,10 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         private ModuleConfigurationValidatorInterface $moduleConfigurationValidator,
         private ModuleServicesImporterInterface $modulesYamlImportService,
         private ModulePathResolverInterface $modulePathResolver,
+        private ?ModuleConfigurationValidatorInterface $deactivationDependencyValidator
     ) {
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
     public function activate(string $moduleId, int $shopId)
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
@@ -50,13 +47,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         );
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
     public function deactivate(string $moduleId, int $shopId)
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+
+        $this->deactivationDependencyValidator?->validate($moduleConfiguration, $shopId);
 
         $this->eventDispatcher->dispatch(new BeforeModuleDeactivationEvent($shopId, $moduleId));
 

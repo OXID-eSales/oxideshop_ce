@@ -11,5 +11,8 @@
 - Private Sales Invite functionality is outdated.
 - `getContainer()` and `dispatchEvent()` methods in Core classes
 
+### Fixed
+- Inactive articles are shown in the detail page under some conditions [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)
+
 ### Removed
 - PHP v8.0 support

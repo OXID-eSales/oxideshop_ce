@@ -419,7 +419,7 @@ jobs:
           if [ "${{ github.ref_name}}" == "${{ github.event.repository.default_branch }}" ]; then
             TARGET_BRANCH_PARAM=""
           fi
-          echo "TARGET_BRANCH_PARAM=$TARGET_PRANCH_PARAM" >> $GITHUB_ENV
+          echo "TARGET_BRANCH_PARAM=$TARGET_BRANCH_PARAM" >> $GITHUB_ENV
 
       - name: SonarCloud Scan (oxideshop_ce)
         uses: sonarsource/sonarcloud-github-action@master

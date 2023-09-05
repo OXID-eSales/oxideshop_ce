@@ -8,7 +8,6 @@
 use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
 
 if (!defined('OX_IS_ADMIN')) {
     define('OX_IS_ADMIN', true);
@@ -46,7 +45,7 @@ if ($blAjaxCall) {
     }
 
     if ($sContainer = Registry::getRequest()->getRequestParameter('container')) {
-        $sContainer = trim(strtolower(basename($sContainer)));
+        $sContainer = strtolower(trim(basename($sContainer)));
 
         try {
             // Controller name for ajax class is automatically done from the request.
@@ -54,11 +53,6 @@ if ($blAjaxCall) {
             $ajaxContainerClassName = $sContainer . '_ajax';
             // Ensures that the right name is returned when a module introduce an ajax class.
             $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
-
-            // Fallback in case controller could not be resolved (modules using metadata version 1).
-            if (!class_exists($containerClass)) {
-                $containerClass = $ajaxContainerClassName;
-            }
             $oAjaxComponent = oxNew($containerClass);
         } catch (SystemComponentException $oCe) {
             $oEx = new FileException();

@@ -172,6 +172,15 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      - name: Upload PHP Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: php-container-logs
+          path: data/php/logs/error_log.txt
+          if-no-files-found: error
+          retention-days: 7
+
   deprecated_all_tests:
     strategy:
       matrix:

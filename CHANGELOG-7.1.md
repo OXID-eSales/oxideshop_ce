@@ -4,6 +4,7 @@
 
 ### Added
 - Class `ContainerFacade` and method `Base::getService()` for quick access to the DI Container from the non-DI areas,
+- Command `bin/oe-console oe:theme:activate <theme>` to activate a theme from CLI
 - PHP v8.2 support
 
 ### Deprecated

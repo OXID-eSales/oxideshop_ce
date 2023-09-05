@@ -122,7 +122,7 @@ class ShopAdapter implements ShopAdapterInterface
             return $customTheme;
         }
 
-        return Registry::getConfig()->getConfigParam('sTheme');
+        return (string)Registry::getConfig()->getConfigParam('sTheme');
     }
 
     public function themeExists(string $themeId): bool

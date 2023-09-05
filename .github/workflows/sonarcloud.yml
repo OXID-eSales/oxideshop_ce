@@ -203,8 +203,8 @@ jobs:
       - name: Install admin theme and template engine
         run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --with-all-dependencies
 
-      - name: Install flow theme
-        run: docker-compose exec -T php composer require oxid-esales/twig-theme:dev-b-7.0.x --with-all-dependencies
+      - name: Install frontend theme
+        run: docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --with-all-dependencies
 
       - name: Install dependencies
         run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce:dev-b-7.0.x --with-all-dependencies
@@ -213,7 +213,9 @@ jobs:
         run: cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
 
       - name: Reset shop
-        run: docker-compose exec -T php php vendor/bin/reset-shop
+        run: |
+          docker-compose exec -T \
+            php php vendor/bin/reset-shop
 
       - name: Run tests
         run: |

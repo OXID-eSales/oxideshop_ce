@@ -11,6 +11,13 @@ on:
       - 'b-8.0.x*'
 
 jobs:
+  debug:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Output debug message
+        run: |
+          echo "I am running"
+
   call_matrix:
     uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v1
     with:

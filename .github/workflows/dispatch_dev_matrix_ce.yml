@@ -1,4 +1,4 @@
-name: dispatch_matrix
+name: dispatch_dev_matrix_ce
 # Matrix workflow using re-usable github actions
 
 on:
@@ -8,16 +8,16 @@ on:
         type: string
         required: true
         description: 'URL/PATH of the testplan to run'
-        default: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/main/testplans/full_matrix_ce.yml'
+        default: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v1/testplans/full_matrix_ce.yml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
         required: true
-        default: '["self-hosted", "x64"]'
+        default: 'ubuntu-latest'
 
 jobs:
   call_matrix:
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v1
+    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v0
     with:
       testplan: ${{ inputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
@@ -28,3 +28,5 @@ jobs:
       CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
       CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
       enterprise_github_token: ${{ secrets.enterprise_github_token }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

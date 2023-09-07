@@ -4,7 +4,7 @@ name: push_matrix_full_ce
 on:
   push:
     branches:
-      - b-8.0.x
+      - 'b-8.0.x'
 
 jobs:
   call_matrix:

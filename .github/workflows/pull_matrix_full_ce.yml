@@ -1,14 +1,22 @@
 name: pull_matrix_full_ce
 # Matrix workflow using re-usable github actions
 
-on: pull_request
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - 'b-8.0.x*'
 
 jobs:
   call_matrix:
+    if: always()
     uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v1
     with:
       testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v1/testplans/full_matrix_ce.yml'
-      runs_on: 'ubuntu-latest'
+      runs_on: '"ubuntu-latest"'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

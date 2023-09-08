@@ -21,6 +21,8 @@ modules:
             capabilities:
                 chromeOptions:
                     excludeSwitches: ['enable-automation']
+                    prefs:
+                        'credentials_enable_service': false
         - \OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'

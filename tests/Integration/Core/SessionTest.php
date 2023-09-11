@@ -19,8 +19,8 @@ final class SessionTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
         $this->setApplicationDefaults();
+        unset($_POST);
     }
 
     /**  @runInSeparateProcess   */
@@ -154,6 +154,33 @@ final class SessionTest extends TestCase
         $url = Registry::getConfig()->getCurrentShopUrl();
 
         $this->assertFalse($session->isSidNeeded($url));
+    }
+
+    public function testSessionChallengeTrue(): void
+    {
+        $session = oxNew(Session::class);
+        $session->start();
+        $token = $session->getSessionChallengeToken();
+        $_POST['stoken'] = $token;
+        $challenge = $session->checkSessionChallenge();
+        $this->assertTrue($challenge);
+    }
+
+    public function testSessionChallengeEmptyToken(): void
+    {
+        $session = oxNew(Session::class);
+        $session->start();
+        $challenge = $session->checkSessionChallenge();
+        $this->assertFalse($challenge);
+    }
+
+    public function testSessionChallengeWrongToken(): void
+    {
+        $session = oxNew(Session::class);
+        $session->start();
+        $_POST['stoken'] = 'dummy-string-value';
+        $challenge = $session->checkSessionChallenge();
+        $this->assertFalse($challenge);
     }
 
     private function setApplicationDefaults(): void

@@ -11,6 +11,7 @@
 - Deprecate console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`
 - Private Sales Invite functionality is outdated.
 - `getContainer()` and `dispatchEvent()` methods in Core classes
+- Global function \makeReadable()
 
 ### Removed
 - PHP v8.0 support

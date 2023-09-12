@@ -71,6 +71,9 @@ if (!function_exists("calcImageSize")) {
     }
 }
 
+/**
+ * @deprecated Since v7.1.0
+ */
 // sets 0755 permissions for given file
 if (!function_exists("makeReadable")) {
     /**

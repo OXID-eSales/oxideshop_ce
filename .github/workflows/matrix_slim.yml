@@ -1,4 +1,4 @@
-.gi name: Slim Matrix
+name: Slim Matrix
 
 on:
   push:

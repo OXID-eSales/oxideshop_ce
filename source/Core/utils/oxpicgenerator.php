@@ -71,32 +71,6 @@ if (!function_exists("calcImageSize")) {
     }
 }
 
-/**
- * @deprecated Since v7.1.0
- */
-// sets 0755 permissions for given file
-if (!function_exists("makeReadable")) {
-    /**
-     * Sets 0755 permissions for given file and returns name of affected file
-     *
-     * @param string $sTarget name of file
-     *
-     * @return string
-     */
-    function makeReadable($sTarget)
-    {
-        $blChmodState = false;
-        if (file_exists($sTarget) && is_readable($sTarget)) {
-            $blChmodState = @chmod($sTarget, 0755);
-            if (defined('OXID_PHP_UNIT')) {
-                @chmod($sTarget, 0777);
-            }
-        }
-
-        return $blChmodState ? $sTarget : false;
-    }
-}
-
 if (!function_exists("checkSizeAndCopy")) {
     /**
      * Checks if preferred image dimensions size matches defined in config;
@@ -159,7 +133,7 @@ if (!function_exists("resizeGif")) {
             imagedestroy($hSourceImage);
         }
 
-        return makeReadable($sTarget);
+        return $sTarget;
     }
 }
 
@@ -206,7 +180,7 @@ if (!function_exists("resizePng")) {
             }
         }
 
-        return makeReadable($sTarget);
+        return $sTarget;
     }
 }
 
@@ -243,7 +217,7 @@ if (!function_exists("resizeJpeg")) {
             }
         }
 
-        return makeReadable($sTarget);
+        return $sTarget;
     }
 }
 
@@ -268,6 +242,6 @@ if (!function_exists("resizeWebp")) {
             }
         }
 
-        return makeReadable($target);
+        return $target;
     }
 }

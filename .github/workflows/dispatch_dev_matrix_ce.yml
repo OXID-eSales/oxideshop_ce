@@ -8,7 +8,7 @@ on:
         type: string
         required: true
         description: 'URL/PATH of the testplan to run'
-        default: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v1/testplans/full_matrix_ce.yml'
+        default: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v0/testplans/full_matrix_ce.yml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'

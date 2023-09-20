@@ -337,9 +337,11 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      */
     public function getTitleSuffix()
     {
-        if ($this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value) {
+        if (is_object($this->getActManufacturer()->oxmanufacturers__oxshowsuffix) && $this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value) {
             return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
+
+        return '';
     }
 
     /**

@@ -108,7 +108,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $parameters = $this->updateParameters($parameters);
         }
 
-        if ($parameters['oxshops__oxsmtp']) {
+        if (isset($parameters['oxshops__oxsmtp']) && $parameters['oxshops__oxsmtp']) {
             $parameters['oxshops__oxsmtp'] = trim($parameters['oxshops__oxsmtp']);
         }
 

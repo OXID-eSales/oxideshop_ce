@@ -105,6 +105,11 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
+     * @var bool|array
+     */
+    protected $_aWishProductList;
+
+    /**
      * If user is logged in loads his wishlist articles (articles may be accessed by
      * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for
      * the last article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns

@@ -17,16 +17,17 @@ DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
-use oxObjectException;
-use OxidEsales\Eshop\Core\Field;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
+use oxObjectException;
 
 /**
  * Class BaseModel
@@ -268,13 +269,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         switch ($variableName) {
             case 'blIsDerived':
                 return $this->isDerived();
-                break;
             case 'sOXID':
                 return $this->getId();
-                break;
             case 'blReadOnly':
                 return $this->isReadOnly();
-                break;
         }
 
         // implementing lazy loading fields
@@ -293,7 +291,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
                 try {
                     if ($this->_aInnerLazyCache === null) {
-                        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+                        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = :oxid';
                         $queryResult = $database->select($query, [
                             ':oxid' => $id
@@ -752,7 +750,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function getRecordByQuery($query)
     {
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+        return DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
     }
 
     /**
@@ -829,7 +827,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $this->removeElement2ShopRelations($oxid);
 
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = :oxid";
         $affectedRows = $database->execute($deleteQuery, [
@@ -865,7 +863,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         // #739A - should be executed here because of date/time formatting feature
-        if ($this->isAdmin() && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipFormatConversion')) {
+        if (
+            $this->isAdmin()
+            && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipFormatConversion')
+        ) {
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
@@ -942,7 +943,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $viewName = $this->getCoreTableName();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = :oxid";
 
         return (bool) $database->getOne($query, [
@@ -1041,7 +1042,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Make sure it is not called after first page is loaded and cache data is fully built (until tmp dir is cleaned).
      *
      * @param string $table             Table name
-     * @param bool   $returnSimpleArray Set $returnSimple to true when you need simple array (meta data array is returned otherwise)
+     * @param bool $returnSimpleArray Set $returnSimple to true when you need simple array
+     *                                (meta data array is returned otherwise)
      *
      * @return array
      */
@@ -1082,11 +1084,12 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * This method is slow and normally is called before field cache is built.
      * Make sure it is not called after first page is loaded and cache data is fully built (until tmp dir is cleaned).
      *
-     * @param bool $returnSimple Set $blReturnSimple to true when you need simple array (meta data array is returned otherwise)
-     *
-     * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
+     * @param bool $returnSimple Set $blReturnSimple to true when you need simple array
+     *                           (meta data array is returned otherwise)
      *
      * @return array
+     * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
+     *
      */
     protected function getAllFields($returnSimple = false)
     {
@@ -1157,7 +1160,12 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                     $oneField->max_length = 20;
                 }
 
-                $this->addField($oneField->name, $this->getFieldStatus($oneField->name), $oneField->type, $oneField->max_length);
+                $this->addField(
+                    $oneField->name,
+                    $this->getFieldStatus($oneField->name),
+                    $oneField->type,
+                    $oneField->max_length
+                );
             }
             stopProfile('!__CACHABLE__!');
 
@@ -1179,7 +1187,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns _aFieldName[] value. 0 means - non multi language, 1 - multi language field. But this is defined only in derived oxi18n class.
+     * Returns _aFieldName[] value. 0 means - non multi language, 1 - multi language field.
+     * But this is defined only in derived oxi18n class.
      * In oxBase it is always 0, as oxBase treats all fields as non multi language.
      *
      * @param string $fieldName Field name
@@ -1267,11 +1276,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $longFieldName = $this->getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
-        // doing this because in lazy loaded lists on first load it is harmful to have initialised fields but not yet set
+        // doing this because in lazy loaded lists on first load it would be harmful
+        // to have the fields initialised without setting values
         // situation: only first article is loaded fully for "select oxid from oxarticles"
         //if ($this->_blUseLazyLoading && !isset($this->$sLongFieldName))
         //    return;
-
 
         //in non lazy loading case we just add a field and do not care about it more
         if (
@@ -1393,7 +1402,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                 continue;
             }
 
-            if (!$useSkipSaveFields || ($useSkipSaveFields && !in_array(strtolower($oneFieldName), $this->_aSkipSaveFields))) {
+            if (
+                !$useSkipSaveFields
+                || ($useSkipSaveFields && !in_array(strtolower($oneFieldName), $this->_aSkipSaveFields))
+            ) {
                 $query .= $separator . $oneFieldName . ' = ' . $this->getUpdateFieldValue($oneFieldName, $field);
                 $separator = ',';
             }
@@ -1543,7 +1555,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function isOx()
     {
         $oxid = $this->getId();
-        if ($oxid[0] == 'o' && $oxid[1] == 'x') {
+        if (is_string($oxid) && $oxid[0] == 'o' && $oxid[1] == 'x') {
             return true;
         }
 
@@ -1635,7 +1647,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
         $query = $query ? " $query or " : '';
 
-        return " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) ";
+        return " ( $query ( $tableName.oxactivefrom < '$databaseFormattedDate' and $tableName.oxactiveto > '$databaseFormattedDate' ) ) "; // phpcs:ignore
     }
 
     /**

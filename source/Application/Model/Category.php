@@ -131,6 +131,11 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     protected $_oParent = null;
 
     /**
+     * @var string|array|bool|int
+     */
+    public $oxcategories__oxdefsort;
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
     public function __construct()
@@ -142,11 +147,16 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Gets default sorting value
      *
-     * @return string
+     * @return string|null
      */
     public function getDefaultSorting()
     {
-        return $this->oxcategories__oxdefsort->value;
+        if (is_object($this->oxcategories__oxdefsort) && $this->oxcategories__oxdefsort->value)
+        {
+            return $this->oxcategories__oxdefsort->value;
+        }
+
+        return null;
     }
 
     /**

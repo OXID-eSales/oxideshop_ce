@@ -29,7 +29,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ContainerBuilder
 {
-    public function __construct(private BasicContextInterface $context)
+    public function __construct(private readonly BasicContextInterface $context)
     {
     }
 
@@ -66,6 +66,11 @@ class ContainerBuilder
         }
         try {
             $loader->load($this->context->getConfigurableServicesFilePath());
+        } catch (FileLocatorFileNotFoundException) {
+            // In case manually created services file not found, do nothing.
+        }
+        try {
+            $loader->load($this->context->getShopConfigurableServicesFilePath($this->context->getCurrentShopId()));
         } catch (FileLocatorFileNotFoundException) {
             // In case manually created services file not found, do nothing.
         }

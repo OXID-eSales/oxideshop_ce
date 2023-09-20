@@ -25,6 +25,7 @@ class BasicContextStub implements BasicContextInterface
     private string $enterpriseEditionRootPath;
     private string $generatedServicesFilePath;
     private string $configurableServicesFilePath;
+    private string $shopConfigurableServicesFilePath;
     private string $professionalEditionRootPath;
     private string $sourcePath;
     private string $shopRootPath;
@@ -66,235 +67,161 @@ class BasicContextStub implements BasicContextInterface
         $this->templateCacheDirectory = $basicContext->getTemplateCacheDirectory();
         $this->currentShopId = $basicContext->getCurrentShopId();
         $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getCurrentShopId());
+        $this->shopConfigurableServicesFilePath = $basicContext->getShopConfigurableServicesFilePath(
+            $this->getCurrentShopId()
+        );
     }
 
-    /**
-     * @return string
-     */
     public function getCommunityEditionSourcePath(): string
     {
         return $this->communityEditionSourcePath;
     }
 
-    /**
-     * @param string $communityEditionSourcePath
-     */
     public function setCommunityEditionSourcePath(string $communityEditionSourcePath): void
     {
         $this->communityEditionSourcePath = $communityEditionSourcePath;
     }
 
-    /**
-     * @return string
-     */
     public function getContainerCacheFilePath(int $shopId): string
     {
         return $this->containerCacheFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getEdition(): string
     {
         return $this->edition;
     }
 
-    /**
-     * @param string $edition
-     */
     public function setEdition(string $edition): void
     {
         $this->edition = $edition;
     }
 
-    /**
-     * @return string
-     */
     public function getEnterpriseEditionRootPath(): string
     {
         return $this->enterpriseEditionRootPath;
     }
 
-    /**
-     * @param string $enterpriseEditionRootPath
-     */
     public function setEnterpriseEditionRootPath(string $enterpriseEditionRootPath): void
     {
         $this->enterpriseEditionRootPath = $enterpriseEditionRootPath;
     }
 
-    /**
-     * @return string
-     */
     public function getGeneratedServicesFilePath(): string
     {
         return $this->generatedServicesFilePath;
     }
 
-    /**
-     * @param string $generatedServicesFilePath
-     */
     public function setGeneratedServicesFilePath(string $generatedServicesFilePath): void
     {
         $this->generatedServicesFilePath = $generatedServicesFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getConfigurableServicesFilePath(): string
     {
         return $this->configurableServicesFilePath;
     }
 
-    /**
-     * @param string $configurableServicesFilePath
-     */
     public function setConfigurableServicesFilePath(string $configurableServicesFilePath): void
     {
         $this->configurableServicesFilePath = $configurableServicesFilePath;
     }
 
-    /**
-     * @return string
-     */
+    public function getShopConfigurableServicesFilePath(int $shopId): string
+    {
+        return $this->shopConfigurableServicesFilePath;
+    }
+
+    public function setShopConfigurableServicesFilePath(string $shopConfigurableServicesFilePath): void
+    {
+        $this->shopConfigurableServicesFilePath = $shopConfigurableServicesFilePath;
+    }
+
     public function getProfessionalEditionRootPath(): string
     {
         return $this->professionalEditionRootPath;
     }
 
-    /**
-     * @param string $professionalEditionRootPath
-     */
     public function setProfessionalEditionRootPath(string $professionalEditionRootPath): void
     {
         $this->professionalEditionRootPath = $professionalEditionRootPath;
     }
 
-    /**
-     * @return string
-     */
     public function getSourcePath(): string
     {
         return $this->sourcePath;
     }
 
-    /**
-     * @param string $sourcePath
-     */
     public function setSourcePath(string $sourcePath): void
     {
         $this->sourcePath = $sourcePath;
     }
 
-    /**
-     * @return int
-     */
     public function getDefaultShopId(): int
     {
         return 1;
     }
 
-    /**
-     * @return array
-     */
     public function getAllShopIds(): array
     {
         return [$this->getDefaultShopId()];
     }
 
-    /**
-     * @return Facts
-     */
     public function getFacts(): Facts
     {
         return $this->facts;
     }
 
-    /**
-     * @return array
-     */
     public function getBackwardsCompatibilityClassMap(): array
     {
         return $this->backwardsCompatibilityClassMap;
     }
 
-    /**
-     * @return string
-     */
     public function getProjectConfigurationDirectory(): string
     {
         return $this->projectConfigurationDirectory;
     }
 
-    /**
-     * @param string $projectConfigurationDirectory
-     */
     public function setProjectConfigurationDirectory(string $projectConfigurationDirectory): void
     {
         $this->projectConfigurationDirectory = $projectConfigurationDirectory;
     }
 
-    /**
-     * @return string
-     */
     public function getConfigFilePath(): string
     {
         return $this->configFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getConfigTableName(): string
     {
         return 'oxconfig';
     }
 
-    /**
-     * @return string
-     */
     public function getConfigurationDirectoryPath(): string
     {
         return $this->getSourcePath() . '/tmp/';
     }
 
-    /**
-     * @return string
-     */
     public function getShopRootPath(): string
     {
         return $this->shopRootPath;
     }
 
-    /**
-     * @return string
-     */
     public function getOutPath(): string
     {
         return $this->outPath;
     }
 
-    /**
-     * @return string
-     */
     public function getVendorPath(): string
     {
         return $this->vendorPath;
     }
 
-    /**
-     * @return string
-     */
     public function getComposerVendorName(): string
     {
         return $this->composerVendorName;
     }
 
-    /**
-     * @return string
-     */
     public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;

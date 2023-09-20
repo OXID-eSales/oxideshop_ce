@@ -6,6 +6,7 @@
 - Class `ContainerFacade` and method `Base::getService()` for quick access to the DI Container from the non-DI areas,
 - Command `bin/oe-console oe:theme:activate <theme>` to activate a theme from CLI
 - PHP v8.2 support
+- Shops can have separate service configurations
 
 ### Deprecated
 - Deprecate console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`

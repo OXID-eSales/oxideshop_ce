@@ -28,6 +28,8 @@ interface BasicContextInterface
      */
     public function getConfigurableServicesFilePath(): string;
 
+    public function getShopConfigurableServicesFilePath(int $shopId): string;
+
     /**
      * @return string
      */

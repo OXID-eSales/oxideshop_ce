@@ -275,11 +275,11 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             // add type to name
             $aFilename = explode(".", $sValue);
 
-            $sFileType = trim($aFilename[count($aFilename) - 1]);
+            $sFileType = strtolower(trim($aFilename[count($aFilename) - 1]));
 
             if (isset($sFileType)) {
                 // unallowed files ?
-                if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
+                if (in_array($sFileType, $this->_aBadFiles) || is_executable($sImagePath . DIRECTORY_SEPARATOR . $sValue) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
                     Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 

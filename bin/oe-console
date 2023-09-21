@@ -7,7 +7,6 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Filesystem\Path;
@@ -34,7 +33,7 @@ if (!$autoloadFileExist) {
 }
 
 $_POST['shp'] =  (int) (new ArgvInput())->getParameterOption(
-    '--' . Executor::SHOP_ID_PARAMETER_OPTION_NAME,
+    '--shop-id',
     1
 );
 

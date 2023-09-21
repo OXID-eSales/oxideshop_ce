@@ -5,20 +5,15 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Model;
 
-/**
- * Class TestModuleNinePrice
- *
- * @package OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Model
- */
-class TestModuleNinePrice extends TestModuleNinePrice_parent
+final class TestModuleNinePrice extends TestModuleNinePrice_parent
 {
-    protected $originalPrice = null;
+    protected $originalPrice;
 
     /**
-     * Double the original price
-     *
      * @return double
      */
     public function getPrice()

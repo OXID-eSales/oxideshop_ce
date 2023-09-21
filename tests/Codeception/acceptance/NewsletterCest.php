@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
-use OxidEsales\Codeception\Page\Info\NewsletterSubscription;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Page\Info\NewsletterSubscription;
 
 final class NewsletterCest
 {
-    public function checkEmailvalueAfterOpeningNewsletterPage(AcceptanceTester $I)
+    public function checkEmailvalueAfterOpeningNewsletterPage(AcceptanceTester $I): void
     {
         $I->wantToTest('if the email value in the newsletter page is correct after opening');
 
@@ -24,7 +24,7 @@ final class NewsletterCest
         $I->seeInField($newsletterPage->userEmail, $email);
     }
     /** @group subscribe_without_user_name */
-    public function subscribeWithoutUsername(AcceptanceTester $I)
+    public function subscribeWithoutUsername(AcceptanceTester $I): void
     {
         $I->wantToTest('Skipping newsletter username');
 
@@ -34,7 +34,7 @@ final class NewsletterCest
         $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
     }
 
-    public function subscribeWithIncorrectUsername(AcceptanceTester $I)
+    public function subscribeWithIncorrectUsername(AcceptanceTester $I): void
     {
         $I->wantToTest('No valid email as username');
 
@@ -44,7 +44,7 @@ final class NewsletterCest
         $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }
 
-    public function subscribeForNewsletter(AcceptanceTester $I)
+    public function subscribeForNewsletter(AcceptanceTester $I): void
     {
         $I->wantToTest('Subscribe for newsletter');
 
@@ -56,7 +56,7 @@ final class NewsletterCest
         $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email]);
     }
 
-    public function unsubscribeFromNewsletterWithWrongEmail(AcceptanceTester $I)
+    public function unsubscribeFromNewsletterWithWrongEmail(AcceptanceTester $I): void
     {
         $I->wantToTest('Unsubscribe from newsletter but was not subscribed');
 
@@ -67,7 +67,7 @@ final class NewsletterCest
         $I->see(Translator::translate('NEWSLETTER_EMAIL_NOT_EXIST'));
     }
 
-    public function unsubscribeFromNewsletter(AcceptanceTester $I)
+    public function unsubscribeFromNewsletter(AcceptanceTester $I): void
     {
         $I->wantToTest('Unsubscribe from newsletter');
 
@@ -83,7 +83,7 @@ final class NewsletterCest
     }
 
 
-    public function subscribeForNewsletterDoubleOptInOff(AcceptanceTester $I)
+    public function subscribeForNewsletterDoubleOptInOff(AcceptanceTester $I): void
     {
         $I->wantToTest('Subscribe for newsletter');
 

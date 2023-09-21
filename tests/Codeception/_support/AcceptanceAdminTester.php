@@ -29,7 +29,7 @@ use OxidEsales\Codeception\Module\Translation\Translator;
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceAdminTester extends AcceptanceActor
+final class AcceptanceAdminTester extends AcceptanceActor
 {
     use _generated\AcceptanceAdminTesterActions;
 

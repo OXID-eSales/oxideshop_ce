@@ -86,7 +86,7 @@ final class ManufacturerCest
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', false);
         $I->updateConfigInDatabase('bl_showManufacturer', false);
         $I->clearShopCache();
-        $homePage = $I->openShop();
+        $I->openShop();
         $I->dontSee(Translator::translate('OUR_BRANDS'));
     }
 }

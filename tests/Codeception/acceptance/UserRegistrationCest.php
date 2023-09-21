@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Step\UserRegistration;
-use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 
 final class UserRegistrationCest
@@ -20,10 +20,8 @@ final class UserRegistrationCest
     /**
      * @group main
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerStandardUserInFrontend(AcceptanceTester $I)
+    public function registerStandardUserInFrontend(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
         $I->wantToTest('simple user account opening');
@@ -45,10 +43,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerUserForNewsletterAndShop(AcceptanceTester $I)
+    public function registerUserForNewsletterAndShop(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
         $start = new Start($I);
@@ -80,10 +76,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function createBasketUserAccountWithoutRegistration(AcceptanceTester $I)
+    public function createBasketUserAccountWithoutRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $start = new Start($I);
@@ -130,10 +124,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerBasketUserAccount(AcceptanceTester $I)
+    public function registerBasketUserAccount(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $I->wantTo('register user account in the checkout process');
@@ -173,10 +165,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function createBasketUserAccountWithoutRegistrationTwice(AcceptanceTester $I)
+    public function createBasketUserAccountWithoutRegistrationTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $checkout = new UserRegistrationInCheckout($I);
@@ -231,10 +221,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function createBasketUserAccountWithoutAndWithRegistration(AcceptanceTester $I)
+    public function createBasketUserAccountWithoutAndWithRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $checkout = new UserRegistrationInCheckout($I);
@@ -291,10 +279,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerBasketUserAccountTwiceWithWrongPassword(AcceptanceTester $I)
+    public function registerBasketUserAccountTwiceWithWrongPassword(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $checkout = new UserRegistrationInCheckout($I);
@@ -342,10 +328,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerBasketUserAccountAndNewsletter(AcceptanceTester $I)
+    public function registerBasketUserAccountAndNewsletter(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $start = new Start($I);
@@ -388,10 +372,8 @@ final class UserRegistrationCest
 
     /**
      * @group registration
-     *
-     * @param AcceptanceTester $I
      */
-    public function registerBasketUserAccountTwice(AcceptanceTester $I)
+    public function registerBasketUserAccountTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
         $checkout = new UserRegistrationInCheckout($I);
@@ -445,7 +427,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    private function getUserLoginData($userId, $userPassword = 'user1user1')
+    private function getUserLoginData(string|int $userId, string $userPassword = 'user1user1'): array
     {
         return [
             'userLoginNameField' => 'example' . $userId . '@oxid-esales.dev',
@@ -453,7 +435,7 @@ final class UserRegistrationCest
         ];
     }
 
-    private function getUserData($userId)
+    private function getUserData(string $userId): array
     {
         return [
             'userUstIDField' => '',
@@ -465,7 +447,7 @@ final class UserRegistrationCest
         ];
     }
 
-    private function getUserAddressData($userId, $userCountry = 'Germany')
+    private function getUserAddressData(string $userId, string $userCountry = 'Germany'): array
     {
         $addressData = [
             'userSalutation' => 'Mrs',
@@ -487,7 +469,7 @@ final class UserRegistrationCest
         return $addressData;
     }
 
-    private function checkUserBillingData($I, $userLoginData, $userData, $addressData)
+    private function checkUserBillingData(AcceptanceTester $I, array $userLoginData, array $userData, array $addressData): void
     {
         $I->seeInDatabase(
             'oxuser',
@@ -512,7 +494,7 @@ final class UserRegistrationCest
         );
     }
 
-    private function checkUserDeliveryData($I, $deliveryAddressData)
+    private function checkUserDeliveryData(AcceptanceTester $I, array $deliveryAddressData): void
     {
         $I->seeInDatabase(
             'oxaddress',

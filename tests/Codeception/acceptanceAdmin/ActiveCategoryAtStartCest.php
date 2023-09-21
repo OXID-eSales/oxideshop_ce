@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ActiveCategoryAtStartCest
 {
-    /** @param AcceptanceAdminTester $I */
     public function setActiveCategoryAtStart(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Activate and deactivate category at start');
@@ -25,7 +24,7 @@ final class ActiveCategoryAtStartCest
         $settingsTab = $coreSettings->openSettingsTab();
 
         $settingsTab =  $settingsTab->openShopFrontendDropdown();
-       
+
         $I->seeElement("//input[@value='---']");
         $categoryPopup = $settingsTab->openStartCategoryPopup();
 
@@ -36,10 +35,10 @@ final class ActiveCategoryAtStartCest
 
         $I->closeTab();
         $I->switchToPreviousTab();
-        
+
         $I->clearShopCache();
         $adminPanel = $I->loginAdmin();
-        
+
         $coreSettings = $adminPanel->openCoreSettings();
         $settingsTab = $coreSettings->openSettingsTab();
 

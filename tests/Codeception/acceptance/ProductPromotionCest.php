@@ -192,8 +192,7 @@ final class ProductPromotionCest
         array $productsToCheck,
         string $price,
         string $amount
-    ): void
-    {
+    ): void {
         $I->wantToTest('if the basket contains correct products and price');
         $homepage->seeMiniBasketContains($productsToCheck, $price, $amount);
         $homepage->closeMiniBasket();

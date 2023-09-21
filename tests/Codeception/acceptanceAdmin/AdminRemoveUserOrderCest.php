@@ -14,16 +14,14 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminRemoveUserOrderCest
 {
-    private $orderId = 'justSomeOxorderId';
-    private $orderArticleId = 'justSomeOxorderArticleID';
+    private string $orderId = 'justSomeOxorderId';
+    private string $orderArticleId = 'justSomeOxorderArticleID';
 
-    /** @param AcceptanceAdminTester $I */
-    public function _before(AcceptanceAdminTester $I)
+    public function _before(AcceptanceAdminTester $I): void
     {
         $this->insertAnOrderInDatabase($I);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function adminDeleteUserOrder(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Admin is able to delete a user order');
@@ -52,7 +50,6 @@ final class AdminRemoveUserOrderCest
         );
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function adminCancelUserOrder(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Admin is able to cancel a user order');
@@ -82,7 +79,6 @@ final class AdminRemoveUserOrderCest
     }
 
 
-    /** @param AcceptanceAdminTester $I */
     private function insertAnOrderInDatabase(AcceptanceAdminTester $I): void
     {
         $I->haveInDatabase(

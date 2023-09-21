@@ -8,11 +8,12 @@
 declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
+
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
+
 final class AdminServiceDiagnosticToolCest
 {
     /**
-     * @param AcceptanceAdminTester $I
      * @group diagnostic-tool
      */
     public function functionalityDiagnosticTools(AcceptanceAdminTester $I): void

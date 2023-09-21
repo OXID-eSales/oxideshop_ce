@@ -27,7 +27,7 @@ use OxidEsales\Codeception\ShopSetup\SystemRequirementsStep;
  *
  * @SuppressWarnings(PHPMD)
  */
-class AcceptanceSetupTester extends Actor
+final class AcceptanceSetupTester extends Actor
 {
     use _generated\AcceptanceSetupTesterActions;
 

@@ -51,7 +51,7 @@ function getTestSetupSqlFilePath(): string
 function getShopSuitePath(Facts $facts): string
 {
     $testSuitePath = (string) getenv('TEST_SUITE');
-    if (!$testSuitePath) {
+    if ($testSuitePath === '' || $testSuitePath === '0') {
         $testSuitePath = $facts->getShopRootPath() . '/tests';
     }
     return $testSuitePath;
@@ -60,13 +60,9 @@ function getShopSuitePath(Facts $facts): string
 function getShopTestPath(): string
 {
     $facts = new Facts();
-
-    if ($facts->isEnterprise()) {
-        $shopTestPath = $facts->getEnterpriseEditionRootPath() . '/Tests';
-    } else {
-        $shopTestPath = getShopSuitePath($facts);
-    }
-    return $shopTestPath;
+    return $facts->isEnterprise()
+        ? $facts->getEnterpriseEditionRootPath() . '/Tests'
+        : getShopSuitePath($facts);
 }
 
 function getMysqlConfigPath(): string

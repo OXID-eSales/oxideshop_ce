@@ -15,19 +15,15 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminDownloadableProductCest
 {
-    /**
-     * @var string
-     */
-    private $orderId;
-    private $productData = [
+    private string $orderId;
+    private array $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
     ];
 
-    /** @param AcceptanceAdminTester $I */
-    public function _before(AcceptanceAdminTester $I)
+    public function _before(AcceptanceAdminTester $I): void
     {
 
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => $this->productData['id']]);
@@ -36,7 +32,7 @@ final class AdminDownloadableProductCest
        // $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
         $articleId = $this->productData['id'];
 
-        $this->orderId = "testorder";
+        $this->orderId = 'testorder';
         $I->haveInDatabase(
             'oxorder',
             [
@@ -90,8 +86,7 @@ final class AdminDownloadableProductCest
         );
     }
 
-    /** @param AcceptanceAdminTester $I */
-    public function _after(AcceptanceAdminTester $I)
+    public function _after(AcceptanceAdminTester $I): void
     {
         $I->updateConfigInDatabase('blEnableDownloads', "false", 'bool');
         $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
@@ -101,7 +96,6 @@ final class AdminDownloadableProductCest
         $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function downloadableFiles(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Product downloadable files');
@@ -113,10 +107,6 @@ final class AdminDownloadableProductCest
         $this->makeOrderComplete($I, $adminPanel);
     }
 
-    /**
-     * @param AcceptanceAdminTester $I
-     * @param AdminPanel            $adminPanel
-     */
     private function enableDownloadableFiles(AcceptanceAdminTester $I, AdminPanel $adminPanel): void
     {
         $coreSettings = $adminPanel->openCoreSettings();
@@ -130,10 +120,6 @@ final class AdminDownloadableProductCest
         $I->click(['name' => 'save']);
     }
 
-    /**
-     * @param AcceptanceAdminTester $I
-     * @param AdminPanel            $adminPanel
-     */
     private function setDownloadableFileForAProduct(AcceptanceAdminTester $I, AdminPanel $adminPanel): void
     {
         $products = $adminPanel->openProducts();
@@ -143,10 +129,6 @@ final class AdminDownloadableProductCest
         $I->click(['name' => 'save']);
     }
 
-    /**
-     * @param AcceptanceAdminTester $I
-     * @param AdminPanel            $adminPanel
-     */
     private function makeOrderComplete(AcceptanceAdminTester $I, AdminPanel $adminPanel): void
     {
         $orders = $adminPanel->openOrders();

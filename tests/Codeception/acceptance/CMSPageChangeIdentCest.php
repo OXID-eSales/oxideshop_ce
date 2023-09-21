@@ -11,18 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 final class CMSPageChangeIdentCest
 {
-    /**
-     * @var string
-     */
-    private $testCmsPageIdent = '_test_oxstdfooter';
+    private string $testCmsPageIdent = '_test_oxstdfooter';
 
-    /**
-     * @var string
-     */
-    private $cmsPageDemoIdent = 'oxstdfooter';
+    private string $cmsPageDemoIdent = 'oxstdfooter';
 
-    /** @param AcceptanceTester $I */
-    public function _after(AcceptanceTester $I)
+    public function _after(AcceptanceTester $I): void
     {
         $I->updateInDatabase(
             'oxcontents',
@@ -33,7 +26,6 @@ final class CMSPageChangeIdentCest
 
     /**
      * @group todo_add_clean_cache_after_database_update
-     * @param AcceptanceTester $I
      */
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {

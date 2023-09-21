@@ -17,21 +17,18 @@ final class ModuleSettingsCest
     private string $testModule1Id = 'codeception/testModule';
     private string $testModule1Path = __DIR__ . '/../_data/modules/testModule';
 
-    /** @param AcceptanceAdminTester $I */
-    public function _before(AcceptanceAdminTester $I)
+    public function _before(AcceptanceAdminTester $I): void
     {
         $I->installModule($this->testModule1Path);
         $I->activateModule($this->testModule1Id);
     }
 
-    /** @param AcceptanceAdminTester $I */
-    public function _after(AcceptanceAdminTester $I)
+    public function _after(AcceptanceAdminTester $I): void
     {
         $I->deactivateModule($this->testModule1Id);
         $I->uninstallModule($this->testModule1Id);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function moduleEmptySettingsForm(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module empty settings are loaded from metadata and form save works');
@@ -52,7 +49,6 @@ final class ModuleSettingsCest
         $this->checkModifiedSettingsNotEmpty($I);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function moduleSettingsForm(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module settings are loaded from metadata');
@@ -65,7 +61,6 @@ final class ModuleSettingsCest
         $this->checkFilledInitialSettingsLoaded($I);
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function checkEmptyInitialSettingsLoaded(AcceptanceAdminTester $I): void
     {
         $I->dontSeeCheckboxIsChecked('confbools[testEmptyBoolConfig]');
@@ -76,7 +71,6 @@ final class ModuleSettingsCest
         $I->seeInField('confpassword[testEmptyPasswordConfig]', '');
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function checkFilledInitialSettingsLoaded(AcceptanceAdminTester $I): void
     {
         $I->seeCheckboxIsChecked('confbools[testFilledBoolConfig]');
@@ -88,7 +82,6 @@ final class ModuleSettingsCest
         $I->seeInField('confpassword[testFilledPasswordConfig]', '');
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function modifyEmptyInitialSettings(AcceptanceAdminTester $I): void
     {
         $I->checkOption('confbools[testEmptyBoolConfig]');
@@ -100,7 +93,6 @@ final class ModuleSettingsCest
         $I->fillField('confpassword[testEmptyPasswordConfig]', 'test-password');
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function checkModifiedSettingsNotEmpty(AcceptanceAdminTester $I): void
     {
         $I->seeCheckboxIsChecked('confbools[testEmptyBoolConfig]');

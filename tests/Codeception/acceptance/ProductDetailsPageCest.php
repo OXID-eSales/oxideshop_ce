@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
-use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Step\ProductNavigation;
 
 final class ProductDetailsPageCest
 {
@@ -268,7 +268,6 @@ final class ProductDetailsPageCest
         $I->wantToTest('add to cart with product variant/selection list combinations');
 
         $productId = '1002';
-        $productName = 'Test product 2 [EN] šÄßüл';
         $variant1Name = 'var1 [EN] šÄßüл';
         $variant2Name = 'var2 [EN] šÄßüл';
         $selectionListsTitle = 'test selection list [EN] šÄßüл';
@@ -504,7 +503,7 @@ final class ProductDetailsPageCest
         $amountPrices = [
             'priceCase1' => [
                 'amountFrom' => 4,
-                'amountTo' => 9999999,
+                'amountTo' => 9_999_999,
                 'discount' => 20,
             ]
         ];
@@ -614,7 +613,7 @@ final class ProductDetailsPageCest
             ],
             'priceCase2' => [
                 'amountFrom' => 4,
-                'amountTo' => 9999999,
+                'amountTo' => 9_999_999,
                 'discount' => 20,
             ]
         ];

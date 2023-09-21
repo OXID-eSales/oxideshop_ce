@@ -14,11 +14,11 @@ use OxidEsales\Codeception\ShopSetup\DataObject\UserInput;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceSetupTester;
 
 #[Group('setup')]
-class DirectoryAndLoginStepCest
+final class DirectoryAndLoginStepCest
 {
     private UserInput $userInput;
 
-    public function _before(AcceptanceSetupTester $I)
+    public function _before(AcceptanceSetupTester $I): void
     {
         $this->userInput = $I->getDataForUserInput();
     }

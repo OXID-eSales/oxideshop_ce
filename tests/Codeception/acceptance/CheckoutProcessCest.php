@@ -22,7 +22,7 @@ use OxidEsales\Facts\Facts;
  */
 final class CheckoutProcessCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(AcceptanceTester $I): void
     {
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
@@ -707,7 +707,7 @@ final class CheckoutProcessCest
         $thankYouPage->dontSeeAlsoBought();
     }
 
-    public function checkMyAccountOrderHistory(AcceptanceTester $I)
+    public function checkMyAccountOrderHistory(AcceptanceTester $I): void
     {
         $I->wantToTest('my accounts order history');
 

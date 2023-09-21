@@ -18,7 +18,7 @@ final class DatabaseStepCest
 {
     private UserInput $userInput;
 
-    public function _before(AcceptanceSetupTester $I)
+    public function _before(AcceptanceSetupTester $I): void
     {
         $this->userInput = $I->getDataForUserInput();
     }

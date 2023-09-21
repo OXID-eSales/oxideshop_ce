@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
-use OxidEsales\Codeception\Module\Translation\Translator;
 
 final class GiftRegistryCest
 {

@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class LoginCest
 {
-    /** @param AcceptanceAdminTester $I */
     public function setSessionCookie(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('correct session ID name is set in cookies');

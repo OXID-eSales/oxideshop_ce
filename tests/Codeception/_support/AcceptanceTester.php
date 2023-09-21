@@ -27,15 +27,12 @@ use OxidEsales\Codeception\Page\Home;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
-*/
-class AcceptanceTester extends AcceptanceActor
+ */
+
+final class AcceptanceTester extends AcceptanceActor
 {
     use _generated\AcceptanceTesterActions;
 
-    /**
-     * Open shop first page.
-     * @return Home
-     */
     public function openShop(): Home
     {
         Translator::switchTranslationDomain(
@@ -48,10 +45,6 @@ class AcceptanceTester extends AcceptanceActor
         return $homePage;
     }
 
-    /**
-     * Login with existing user and open shop first page.
-     * @return Home
-     */
     public function loginShopWithExistingUser(): Home
     {
         $homePage = $this->openShop();

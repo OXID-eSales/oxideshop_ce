@@ -9,18 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
+use OxidEsales\Codeception\Admin\ModulesList;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ModuleSortListCest
 {
-    private $module;
-    private $testModuleId = 'codeception_testModule';
-    private $testModulePath = __DIR__ . '/../_data/modules/testModule';
-    private $testModuleWithProblemsId = 'codeception_test-module-problems';
-    private $testModuleWithProblemsPath = __DIR__ . '/../_data/modules/test-module-problems';
+    private ModulesList $module;
+    private string $testModuleId = 'codeception_testModule';
+    private string $testModulePath = __DIR__ . '/../_data/modules/testModule';
+    private string $testModuleWithProblemsId = 'codeception_test-module-problems';
+    private string $testModuleWithProblemsPath = __DIR__ . '/../_data/modules/test-module-problems';
 
-    /** @param AcceptanceAdminTester $I */
     public function moduleClassExtensionsArePresentOnInstalledModulePage(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module class extensions are present on installed modules page for active and inactive module');
@@ -42,7 +43,6 @@ final class ModuleSortListCest
         $I->uninstallModule($this->testModuleId);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function moduleWithProblemsSortList(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module sort list functionality with problematic module');
@@ -54,7 +54,7 @@ final class ModuleSortListCest
         /** info about existing problems is displayed */
         $I->see(Translator::translate('MODULE_EXTENSIONISDELETED'));
         $I->see(Translator::translate('MODULE_PROBLEMATIC_FILES'));
-        $I->see('OxidEsales\Eshop\Application\Model\Article');
+        $I->see(Article::class);
         $I->see('NonExistentFile');
 
         /** click remove problematic configs */
@@ -69,10 +69,6 @@ final class ModuleSortListCest
         $I->uninstallModule($this->testModuleWithProblemsId);
     }
 
-    /**
-     * @param AcceptanceAdminTester $I
-     * @param string $moduleId
-     */
     private function selectModule(AcceptanceAdminTester $I, string $moduleId): void
     {
         $loginPage = $I->loginAdmin();
@@ -80,7 +76,6 @@ final class ModuleSortListCest
         $this->module = $moduleList->selectModule($moduleId);
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function activateSelectedModule(AcceptanceAdminTester $I): void
     {
         $this->module->openModuleTab('Overview');

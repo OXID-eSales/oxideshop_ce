@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
-use OxidEsales\Codeception\Step\Step;
 
 final class FlowThemeCest
 {

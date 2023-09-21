@@ -14,13 +14,11 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminNotRegisteredUserOrderCest
 {
-    /** @param AcceptanceAdminTester $I */
-    public function _before(AcceptanceAdminTester $I)
+    public function _before(AcceptanceAdminTester $I): void
     {
         $this->insertAnOrderInDatabase($I);
     }
 
-    /** @param AcceptanceAdminTester $I */
     public function checkEditingNotRegisteredUserOrder(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Check editing not registered user order');
@@ -44,7 +42,6 @@ final class AdminNotRegisteredUserOrderCest
         $I->see("1002-1", $productsTab->secondProductInProductTab);
     }
 
-    /** @param AcceptanceAdminTester $I */
     private function insertAnOrderInDatabase(AcceptanceAdminTester $I): void
     {
         $I->haveInDatabase(

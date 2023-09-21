@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 final class LanguageCest
 {
-    /** @param AcceptanceTester $I */
     public function checkLanguageSwitch(AcceptanceTester $I): void
     {
         $I->wantToTest('Check if Language switch works');

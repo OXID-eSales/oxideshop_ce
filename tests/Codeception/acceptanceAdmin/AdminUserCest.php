@@ -16,9 +16,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminUserCest
 {
-    /**
-     * @param AcceptanceAdminTester $I
-     */
     public function testUserMainInfo(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('User main info');
@@ -179,8 +176,8 @@ final class AdminUserCest
         AcceptanceAdminTester $I,
         AdminUser $user,
         AdminUserAddresses $userAddress,
-        AdminUserExtendedInfo $userExtendedInfo): void
-    {
+        AdminUserExtendedInfo $userExtendedInfo
+    ): void {
         $I->haveInDatabase(
             'oxuser',
             [
@@ -211,7 +208,7 @@ final class AdminUserCest
                 'OXREGISTER'  => '2010-02-05 10:22:48',
                 'OXPRIVFON'   => $userExtendedInfo->getEveningPhone(),
                 'OXMOBFON'    => $userExtendedInfo->getCellularPhone(),
-                'OXBIRTHDATE' => $user->getBirthYear() . '-' . $user->getBirthMonth(). '-' . $user->getBirthday(),
+                'OXBIRTHDATE' => $user->getBirthYear() . '-' . $user->getBirthMonth() . '-' . $user->getBirthday(),
                 'OXURL'       => $userExtendedInfo->getUrl(),
                 'OXUPDATEKEY' => '',
                 'OXUPDATEEXP' => 0,
@@ -219,9 +216,6 @@ final class AdminUserCest
         );
     }
 
-    /**
-     * @return AdminUser
-     */
     private function getAdminUser(): AdminUser
     {
         $adminUser = new AdminUser();
@@ -240,9 +234,6 @@ final class AdminUserCest
         return $adminUser;
     }
 
-    /**
-     * @return AdminUserAddresses
-     */
     private function getAdminUserAddress(): AdminUserAddresses
     {
         $adminUserAddress = new AdminUserAddresses();
@@ -262,9 +253,6 @@ final class AdminUserCest
         return $adminUserAddress;
     }
 
-    /**
-     * @return AdminUserExtendedInfo
-     */
     private function getAdminUserExtendedInfo(): AdminUserExtendedInfo
     {
         $adminUserExtendedInfo = new AdminUserExtendedInfo();

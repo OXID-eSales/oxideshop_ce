@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
-use OxidEsales\Codeception\Page\PrivateSales\Login;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Page\PrivateSales\Login;
 use OxidEsales\Codeception\Step\Start;
 
 final class PrivateSalesCest

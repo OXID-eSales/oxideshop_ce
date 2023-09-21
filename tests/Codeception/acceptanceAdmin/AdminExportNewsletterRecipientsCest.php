@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminExportNewsletterRecipientsCest
 {
-    /** @param AcceptanceAdminTester $I */
     public function checkExportRecipients(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Check Export Newsletter Recipients');

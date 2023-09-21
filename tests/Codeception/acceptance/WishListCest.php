@@ -10,17 +10,15 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
-use OxidEsales\Codeception\Module\Translation\Translator;
 
 final class WishListCest
 {
     /**
      * @group myAccount
      * @group wishList
-     *
-     * @param AcceptanceTester $I
      */
     public function addProductToUserWishList(AcceptanceTester $I): void
     {

@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
-use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Step\Start;
 
 final class UserAccountCest
 {
@@ -286,7 +286,7 @@ final class UserAccountCest
             ->seeNumberOfShippingAddresses(0);
     }
 
-    public function _after(AcceptanceTester $I)
+    public function _after(AcceptanceTester $I): void
     {
         $this->cleanUpUserData($I);
     }
@@ -317,7 +317,7 @@ final class UserAccountCest
         ];
     }
 
-    private function getUserAddressData(string $userId, $userCountry = 'Germany'): array
+    private function getUserAddressData(string $userId, string $userCountry = 'Germany'): array
     {
         $addressData = [
             'userSalutation' => 'Mrs',

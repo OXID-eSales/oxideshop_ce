@@ -5,58 +5,36 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 
-/**
- * Class MyModuleController
- *
- * @package OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller
- */
-class MyModuleController extends \OxidEsales\Eshop\Application\Controller\FrontendController
+final class MyModuleController extends FrontendController
 {
-    /**
-     * Current view template
-     *
-     * @var string
-     */
     protected $_sThisTemplate = 'vendor1_controller_routing.tpl';
 
-    /**
-     * Message from request
-     */
-    protected $message = '';
+    private string $message = '';
 
-    /**
-     * Rendering method.
-     *
-     * @return mixed
-     */
     public function render()
     {
-        $template = parent::render();
-
-        return $template;
+        return parent::render();
     }
 
-    /**
-     * Display message.
-     */
-    public function displayMessage()
+    public function displayMessage(): void
     {
-        $this->_aViewData['the_module_message'] =  $this->getMessage();
+        $this->_aViewData['the_module_message'] = $this->getMessage();
         $this->render();
     }
 
-    /**
-     * Template variable getter. Returns entered message
-     *
-     * @return object
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
-        $this->message = (string) Registry::getRequest()->getRequestEscapedParameter('mymodule_message') . ' ' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $this->message = Registry::getRequest()
+                ->getRequestEscapedParameter('mymodule_message')
+            . ' '
+            . Registry::getConfig()->getShopId();
 
         return $this->message;
     }

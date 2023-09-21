@@ -130,7 +130,7 @@ final class ReviewAndRatingCest
         $reviewsPage->dontSeeBottomPaginationElements();
     }
 
-    public function _failed(AcceptanceTester $I)
+    public function _failed(AcceptanceTester $I): void
     {
         $userData = $this->getExistingUserData();
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);

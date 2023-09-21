@@ -7,18 +7,16 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
-use OxidEsales\Codeception\Module\Translation\Translator;
 
-class ProductCompareCest
+final class ProductCompareCest
 {
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function enableProductCompare(AcceptanceTester $I)
+    public function enableProductCompare(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('if product compare functionality is enabled');
@@ -45,7 +43,7 @@ class ProductCompareCest
         $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
         $I->see(Translator::translate('PRODUCT') . ' 1');
 
-        $userAccountPage = $userAccountPage->logoutUserInAccountPage()
+        $userAccountPage->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
         $I->see(Translator::translate('PRODUCT') . ' 1');
@@ -60,10 +58,8 @@ class ProductCompareCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function addProductToUserCompareList(AcceptanceTester $I)
+    public function addProductToUserCompareList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $start = new Start($I);
@@ -155,10 +151,8 @@ class ProductCompareCest
 
     /**
      * @group myAccount
-     *
-     * @param AcceptanceTester $I
      */
-    public function disableProductCompare(AcceptanceTester $I)
+    public function disableProductCompare(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
         $start = new Start($I);
@@ -195,7 +189,7 @@ class ProductCompareCest
         $I->updateConfigInDatabase('bl_showCompareList', true, "bool");
     }
 
-    public function _failed(AcceptanceTester $I)
+    public function _failed(AcceptanceTester $I): void
     {
         $I->cleanUp();
         $I->clearShopCache();

@@ -13,18 +13,17 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class NewLanguageCreationCest
 {
-    /** @param AcceptanceAdminTester $I */
     public function newLanguageCreation(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('if we can create a new language successfully');
 
         $adminPanel = $I->loginAdmin();
         $languages = $adminPanel->openLanguages();
-        $languages->createNewLanguage("lt", "Lietuviu");
+        $languages->createNewLanguage('lt', 'Lietuviu');
 
         $tools = $adminPanel->openTools();
         $tools->updateDbViews();
 
-        $I->retryGrabFromDatabase('oxv_oxarticles_lt', 'oxid', ['oxartnum' => "3503"]);
+        $I->retryGrabFromDatabase('oxv_oxarticles_lt', 'oxid', ['oxartnum' => '3503']);
     }
 }

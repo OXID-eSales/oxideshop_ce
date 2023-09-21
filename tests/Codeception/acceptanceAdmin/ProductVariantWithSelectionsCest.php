@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ProductVariantWithSelectionsCest
 {
-    /** @param AcceptanceAdminTester $I */
     public function selectionInheritanceByProductVariant(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('product variant inherits selections from its parent');

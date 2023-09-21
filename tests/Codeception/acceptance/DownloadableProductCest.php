@@ -18,7 +18,7 @@ final class DownloadableProductCest
 {
     private string $orderId;
 
-    public function _before(AcceptanceTester $I)
+    public function _before(AcceptanceTester $I): void
     {
         $I->updateConfigInDatabase('blEnableDownloads', true, 'bool');
         $I->updateConfigInDatabase('iMaxDownloadsCount', "2", 'str');

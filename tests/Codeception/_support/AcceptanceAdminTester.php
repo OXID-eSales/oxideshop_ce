@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\AdminLoginPage;
 use OxidEsales\Codeception\Admin\AdminPanel;
+use OxidEsales\Codeception\Module\Translation\Translator;
 
 /**
  * Inherited Methods
@@ -34,6 +35,9 @@ class AcceptanceAdminTester extends AcceptanceActor
 
     public function openAdmin(): AdminLoginPage
     {
+        Translator::switchTranslationDomain(
+            Translator::TRANSLATION_DOMAIN_ADMIN
+        );
         $I = $this;
         $adminLogin = new AdminLoginPage($I);
         $I->amOnPage($adminLogin->URL);

@@ -43,11 +43,19 @@ modules:
             depends:
               - WebDriver
               - Db
+        - \OxidEsales\Codeception\Module\OxideshopAdmin:
+              screen_shot_url: '%SCREEN_SHOT_URL%'
+              depends:
+                  - WebDriver
+                  - \OxidEsales\Codeception\Module\Oxideshop
         - \OxidEsales\Codeception\Module\Database:
             depends: Db
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
-            paths: 'Application/views/%THEME_ID%'
+            paths:
+                - 'Application/views/%THEME_ID%'
+            paths_admin:
+                - 'Application/views/admin_twig'
         - \OxidEsales\Codeception\Module\SelectTheme:
               depends:
                   - \OxidEsales\Codeception\Module\Database

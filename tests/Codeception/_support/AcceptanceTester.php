@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Home;
 
 /**
@@ -37,6 +38,9 @@ class AcceptanceTester extends AcceptanceActor
      */
     public function openShop(): Home
     {
+        Translator::switchTranslationDomain(
+            Translator::TRANSLATION_DOMAIN_SHOP
+        );
         $I = $this;
         $homePage = new Home($I);
         $I->amOnPage($homePage->URL);

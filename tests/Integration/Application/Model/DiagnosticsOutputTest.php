@@ -24,8 +24,7 @@ final class DiagnosticsOutputTest extends TestCase
         $content = 'some-content-123';
         $contentLength = strlen($content);
 
-        $utils = new UtilsSpy();
-        Registry::set(Utils::class, $utils);
+        $utils = $this->getUtils();
         $cacheFilePath = $utils->getCacheFilePath($this->key);
         file_put_contents(
             $cacheFilePath,
@@ -47,8 +46,7 @@ final class DiagnosticsOutputTest extends TestCase
      */
     public function testItShouldSetCorrectHeaderValue(string $headerValue): void
     {
-        $utils = new UtilsSpy();
-        Registry::set(Utils::class, $utils);
+        $utils = $this->getUtils();
 
         $diagnostics = new DiagnosticsOutput();
         ob_start();
@@ -74,12 +72,21 @@ final class DiagnosticsOutputTest extends TestCase
 
     public function testDownloadResultFilePrintsOutput(): void
     {
-        $oUtils = Registry::getUtils();
-        $content = $oUtils->fromFileCache($this->key);
+        $utils = $this->getUtils();
+        $content = 'some-content-123';
+        file_put_contents($utils->getCacheFilePath($this->key), serialize(['content' => $content]));
 
         $this->expectOutputString($content);
 
         $diagnostics = new DiagnosticsOutput();
         $diagnostics->downloadResultFile($this->key);
+    }
+
+    private function getUtils(): UtilsSpy
+    {
+        $utils = new UtilsSpy();
+        Registry::set(Utils::class, $utils);
+
+        return $utils;
     }
 }

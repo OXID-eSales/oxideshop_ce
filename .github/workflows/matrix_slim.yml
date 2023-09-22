@@ -147,7 +147,11 @@ jobs:
       - name: Doing PHP_CS check
         run: |
           cd source
-          git diff --name-only origin/${{ github.ref_name }} HEAD~1 | grep 'Internal/.*\.php$' >changed-files.txt || true 
+          git diff --name-only --diff-filter=AM origin/${{ github.ref_name }} HEAD~1 | grep 'source/Internal/.*\.php$' | while read file; do
+            if [[ -f "$file" ]]; then
+              echo "$file"
+            fi
+          done > changed-files.txt || true 
           cd ..
           if [[ -f "source/changed-files.txt" && -s "source/changed-files.txt" ]]; then
              docker-compose run -T php vendor/bin/phpcs -q --standard=PSR12 --file-list=changed-files.txt 2>&1 \

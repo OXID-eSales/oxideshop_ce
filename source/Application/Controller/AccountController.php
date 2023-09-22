@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
- * Current user "My account" window.
+ *      Current user "My account" window.
  * When user is logged in arranges "My account" window, by creating
  * links to user details, order review, notice list, wish list. There
  * is a link for logging out. Template includes Topoffer , bargain

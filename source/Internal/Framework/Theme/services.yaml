@@ -10,3 +10,7 @@ services:
     arguments:
       - '%oxid_esales.theme.admin.name%'
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
+    tags:
+      - { name: 'console.command', command: 'oe:theme:activate' }

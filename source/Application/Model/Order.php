@@ -1080,8 +1080,14 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $sProdId = $oContent->getProductId();
 
                 // updating users notice list
+                /** @var \OxidEsales\EshopCommunity\Application\Model\BasketItem $oUserBasketItem */
                 $oUserBasketItem = $oUserBasket->getItem($sProdId, $oContent->getSelList(), $oContent->getPersParams());
-                $dNewAmount = $oUserBasketItem->oxuserbasketitems__oxamount->value - $oContent->getAmount();
+                if (is_object($oUserBasketItem->oxuserbasketitems__oxamount) && $oUserBasketItem->oxuserbasketitems__oxamount->value) {
+                    $dNewAmount = $oUserBasketItem->oxuserbasketitems__oxamount->value - $oContent->getAmount();
+                } else {
+                    $dNewAmount = -1 * $oContent->getAmount();
+                }
+
                 if ($dNewAmount < 0) {
                     $dNewAmount = 0;
                 }

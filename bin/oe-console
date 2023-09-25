@@ -7,7 +7,6 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Filesystem\Path;
@@ -33,13 +32,11 @@ if (!$autoloadFileExist) {
     exit("autoload.php file was not found!");
 }
 
-$shopId = (int) (new ArgvInput())->getParameterOption(
+$_POST['shp'] =  (int) (new ArgvInput())->getParameterOption(
     '--shop-id',
-    0
+    1
 );
-if ($shopId !== 0) {
-    $_POST['shp'] = $shopId;
-}
+
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;
 

@@ -97,6 +97,11 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     protected $_aSimilarRecommListIds = null;
 
     /**
+     * @var int
+     */
+    private $_iWrapCnt;
+
+    /**
      * Executes parent::render(), creates list with basket articles
      * Returns name of template file basket::_sThisTemplate (for Search
      * engines return "content" template to avoid fake orders etc).

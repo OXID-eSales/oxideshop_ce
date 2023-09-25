@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -23,8 +22,6 @@ use Symfony\Component\Filesystem\Path;
  */
 class ModuleCommandsTestCase extends TestCase
 {
-    use ConsoleTrait;
-
     protected $modulesPath = __DIR__ . '/Fixtures/modules/';
 
     protected $moduleId = 'testmodule';

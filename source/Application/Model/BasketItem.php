@@ -223,6 +223,8 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     protected $basketItemKey = null;
 
+    public $oxuserbasketitems__oxamount;
+
     /**
      * Getter for basketItemkey.
      *

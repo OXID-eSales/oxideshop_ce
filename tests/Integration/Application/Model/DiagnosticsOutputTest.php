@@ -14,11 +14,17 @@ use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runInSeparateProcess
+ */
 final class DiagnosticsOutputTest extends TestCase
 {
     private string $key = "diagnostic_tool_result";
     private string $sOutputFileName = "diagnostic_tool_result.html";
 
+    /**
+    * @runInSeparateProcess
+    */
     public function testDownloadResultFileWillSetCorrectContentLengthHeader(): void
     {
         $content = 'some-content-123';
@@ -44,6 +50,7 @@ final class DiagnosticsOutputTest extends TestCase
 
     /**
      * @dataProvider headerValuesProvider
+     * @runInSeparateProcess
      */
     public function testItShouldSetCorrectHeaderValue(string $headerValue): void
     {
@@ -72,6 +79,9 @@ final class DiagnosticsOutputTest extends TestCase
         ];
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testDownloadResultFilePrintsOutput(): void
     {
         $oUtils = Registry::getUtils();

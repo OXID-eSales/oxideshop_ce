@@ -73,8 +73,6 @@ final class WishListCest
     /**
      * @group myAccount
      * @group wishList
-     *
-     * @param AcceptanceTester $I
      */
     public function addVariantToUserWishList(AcceptanceTester $I): void
     {
@@ -122,6 +120,66 @@ final class WishListCest
 
         $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
         $I->see(Translator::translate('WISH_LIST_EMPTY'));
+    }
+
+    /**
+     * @group myAccount
+     * @group wishList
+     */
+    public function testWishlistInTheCartForALoggedInUser(AcceptanceTester $I): void
+    {
+        $I->wantToTest('if a logged-in user can move a product from the basket to the wishlist');
+
+        $start = $I->loginShopWithExistingUser();
+        $productNavigation = new ProductNavigation($I);
+        $I->updateConfigInDatabase('bl_showWishlist', true);
+
+        $productData = [
+            'id' => '1000',
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'description' => 'Test product 0 short desc [EN] šÄßüл',
+            'price' => '50,00 € *'
+        ];
+
+        $productNavigation
+            ->openProductDetailsPage($productData['id'])
+            ->addProductToBasket()
+            ->openMiniBasket()
+            ->openBasketDisplay()
+            ->seeAddToTheWishlistStar(1)
+            ->addProductToTheWishList(1);
+
+        $I->retrySee(Translator::translate('BASKET_EMPTY'));
+
+        $start
+            ->openUserWishListPage()
+            ->seeProductData($productData);
+    }
+
+    /**
+     * @group myAccount
+     * @group wishList
+     */
+    public function testWishlistInTheCartForANonLoggedInUser(AcceptanceTester $I): void
+    {
+        $I->wantToTest('if a non-logged-in user redirected to the login page after click on the star');
+        $I->updateConfigInDatabase('bl_showWishlist', true);
+
+        $productData = [
+            'id' => '1000',
+        ];
+
+        $productNavigation = new ProductNavigation($I);
+
+        $productNavigation
+            ->openProductDetailsPage($productData['id'])
+            ->addProductToBasket()
+            ->openMiniBasket()
+            ->openBasketDisplay()
+            ->seeAddToTheWishlistStar(1)
+            ->addProductToTheWishList(1);
+
+        $I->see(Translator::translate('LOGIN'));
     }
 
     private function getExistingUserData()

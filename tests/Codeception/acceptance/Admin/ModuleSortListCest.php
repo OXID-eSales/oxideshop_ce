@@ -7,25 +7,29 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Admin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Admin\ModulesList;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class ModuleSortListCest
 {
     private ModulesList $module;
     private string $testModuleId = 'codeception_testModule';
-    private string $testModulePath = __DIR__ . '/../_data/modules/testModule';
+    private string $testModulePath = 'modules/testModule';
     private string $testModuleWithProblemsId = 'codeception_test-module-problems';
-    private string $testModuleWithProblemsPath = __DIR__ . '/../_data/modules/test-module-problems';
+    private string $testModuleWithProblemsPath = 'modules/test-module-problems';
 
     public function moduleClassExtensionsArePresentOnInstalledModulePage(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module class extensions are present on installed modules page for active and inactive module');
-        $I->installModule($this->testModulePath);
+        $I->installModule(
+            codecept_data_dir($this->testModulePath)
+        );
         $I->deactivateModule($this->testModuleId);
         $this->selectModule($I, 'Codeception test module #1');
         $this->module->openModuleTab('Installed Shop Modules');
@@ -46,7 +50,9 @@ final class ModuleSortListCest
     public function moduleWithProblemsSortList(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module sort list functionality with problematic module');
-        $I->installModule($this->testModuleWithProblemsPath);
+        $I->installModule(
+            codecept_data_dir($this->testModuleWithProblemsPath)
+        );
         $this->selectModule($I, 'Module with problems (Namespaced)');
 
         $this->activateSelectedModule($I);

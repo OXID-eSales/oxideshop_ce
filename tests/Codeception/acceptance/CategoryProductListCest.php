@@ -38,18 +38,18 @@ final class CategoryProductListCest
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
         $productList->selectFilter('Test attribute 1 [EN] šÄßüл', 'attr value 1 [EN] šÄßüл')
-            ->dontSeeProductData($productData2, 1)
+            ->dontSeeProductData($productData2)
             ->dontSeeSelectedFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл');
         $productList = $productList
             ->resetFilter()
             ->selectFilter('Test attribute 2 [EN] šÄßüл', 'attr value 12 [EN] šÄßüл')
-            ->dontSeeProductData($productData, 1)
+            ->dontSeeProductData($productData)
             ->resetFilter()
             ->selectProductsPerPage('1')
             ->selectFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
-            ->seeProductData($productData, 1)
+            ->seeProductData($productData)
             ->openNextListPage()
-            ->seeProductData($productData2, 1)
+            ->seeProductData($productData2)
             ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
             ->openPreviousListPage()
             ->seeSelectedFilter('Test attribute 3 [EN] šÄßüл', 'attr value 3 [EN] šÄßüл')
@@ -84,13 +84,13 @@ final class CategoryProductListCest
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
 
         $productList->selectSorting('oxtitle', 'asc')
-            ->seeProductData($productData, 1)
+            ->seeProductData($productData)
             ->seeProductData($productData2, 2)
             ->selectSorting('oxprice', 'desc')
             ->selectProductsPerPage('1')
-            ->seeProductData($productData2, 1)
+            ->seeProductData($productData2)
             ->openNextListPage()
-            ->seeProductData($productData, 1);
+            ->seeProductData($productData);
 
         $I->amGoingTo('disable sorting at all');
         $I->updateConfigInDatabase('blShowSorting', false);
@@ -125,14 +125,14 @@ final class CategoryProductListCest
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('price [EN] šÄßüл');
 
-        $productList->selectSorting('oxtitle', 'asc')
-            ->seeProductData($productData, 1)
+        $productList->selectSorting('oxtitle')
+            ->seeProductData($productData)
             ->seeProductData($productData2, 2)
             ->selectSorting('oxprice', 'desc')
             ->selectProductsPerPage('1')
-            ->seeProductData($productData2, 1)
+            ->seeProductData($productData2)
             ->openNextListPage()
-            ->seeProductData($productData, 1);
+            ->seeProductData($productData);
     }
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void

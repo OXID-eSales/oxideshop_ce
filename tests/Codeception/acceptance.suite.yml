@@ -1,9 +1,3 @@
-# Codeception Test Suite Configuration
-#
-# Suite for acceptance tests.
-# Perform tests in browser using the WebDriver or PhpBrowser.
-# If you need both WebDriver and PHPBrowser tests - create a separate suite.
-
 actor: AcceptanceTester
 bootstrap: _bootstrap.php
 modules:
@@ -60,5 +54,6 @@ modules:
               depends:
                   - \OxidEsales\Codeception\Module\Database
               theme_id: '%THEME_ID%'
+        - \OxidEsales\Codeception\Module\OxideshopModules:
 step_decorators:
     - \Codeception\Step\Retry

@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class AdminUpdateSQLToolCest
 {
     /**
@@ -23,7 +25,7 @@ final class AdminUpdateSQLToolCest
         $adminPanel = $I->loginAdmin();
         $toolsPanel = $adminPanel->openTools();
 
-        $sqlCommand = "update oxpayments set oxactive=0";
+        $sqlCommand = 'update oxpayments set oxactive=0';
         $toolsPanel->runSqlUpdate($sqlCommand);
         $toolsPanel->seeInSqlOutput($sqlCommand);
     }

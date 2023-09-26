@@ -9,11 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Admin\DataObject\AdminUser;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class AdminUserCest
 {
     public function testUserMainInfo(AcceptanceAdminTester $I): void

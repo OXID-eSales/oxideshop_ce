@@ -7,19 +7,23 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Admin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class ModuleActivationCest
 {
     private string $testModule1Id = 'codeception/testModule';
-    private string $testModule1Path = __DIR__ . '/../_data/modules/testModule';
+    private string $testModule1Path = 'modules/testModule';
 
     public function _before(AcceptanceAdminTester $I): void
     {
-        $I->installModule($this->testModule1Path);
+        $I->installModule(
+            codecept_data_dir($this->testModule1Path)
+        );
     }
 
     public function _after(AcceptanceAdminTester $I): void

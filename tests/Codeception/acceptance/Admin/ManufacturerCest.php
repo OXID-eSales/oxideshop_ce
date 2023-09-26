@@ -7,11 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Admin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Admin\DataObject\Manufacturer;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class ManufacturerCest
 {
     /**

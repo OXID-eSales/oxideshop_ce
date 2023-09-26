@@ -29,7 +29,10 @@ modules:
           - \OxidEsales\Codeception\Module\Oxideshop
     - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
         shop_path: '%SHOP_SOURCE_PATH%'
-        paths: 'Application/views/admin_twig'
+        paths:
+          - 'Application/views/%THEME_ID%'
+        paths_admin:
+          - 'Application/views/admin_twig'
     - \OxidEsales\Codeception\Module\ShopSetup\SetupEnvironment:
         theme_id: '%THEME_ID%'
         db_host: '%DB_HOST%'

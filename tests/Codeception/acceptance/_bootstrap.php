@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Codeception\Module\FixturesHelper;
 use Symfony\Component\Filesystem\Path;
 
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
 
-// This is acceptance bootstrap
-$helper = new \OxidEsales\Codeception\Module\FixturesHelper();
-$helper->loadRuntimeFixtures(__DIR__ . '/../_data/fixtures.php');
-$helper->loadRuntimeFixtures(__DIR__ . '/../_data/voucher.php');
+$helper = new FixturesHelper();
+$helper->loadRuntimeFixtures(codecept_data_dir('fixtures.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('voucher.php'));

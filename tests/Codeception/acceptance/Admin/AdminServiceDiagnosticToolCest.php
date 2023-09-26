@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class AdminServiceDiagnosticToolCest
 {
     /**

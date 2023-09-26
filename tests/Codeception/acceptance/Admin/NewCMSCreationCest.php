@@ -7,10 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Admin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
+#[Group('admin')]
 final class NewCMSCreationCest
 {
     /**

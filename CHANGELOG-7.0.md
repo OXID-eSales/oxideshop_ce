@@ -3,7 +3,8 @@
 ## v7.0.2 - Unreleased
 
 ### Fixed
-- Database connection object fixation in ConnectionProvider service
+- Attribute value of 0 breaks category filtering with attributes in frontend 
+- Database connection object fixation in ConnectionProvider service [#0007474](https://bugs.oxid-esales.com/view.php?id=7474)
 - Inactive articles are shown in the detail page [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)
 - Broken child-theme in child sub-shops [#0007477](https://bugs.oxid-esales.com/view.php?id=7477)
 - Fixed exception after Setup via Browser [#0007478](https://bugs.oxid-esales.com/view.php?id=7478)

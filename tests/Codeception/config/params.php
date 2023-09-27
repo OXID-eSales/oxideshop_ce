@@ -35,17 +35,12 @@ return [
 
 function getTestDataDumpFilePath(): string
 {
-    return getShopTestPath() . '/Codeception/_data/generated/shop-dump.sql';
+    return getShopTestPath() . '/Codeception/Support/_generated/shop-dump.sql';
 }
 
 function getTestFixtureSqlFilePath(): string
 {
-    return getShopTestPath() . '/Codeception/_data/dump.sql';
-}
-
-function getTestSetupSqlFilePath(): string
-{
-    return getShopTestPath() . '/Codeception/_data/setup_dump.sql';
+    return getShopTestPath() . '/Codeception/Support/Data/dump.sql';
 }
 
 function getShopSuitePath(Facts $facts): string

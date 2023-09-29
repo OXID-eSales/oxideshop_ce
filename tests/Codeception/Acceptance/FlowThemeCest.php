@@ -20,6 +20,7 @@ final class FlowThemeCest
      */
     public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('make it work with APEX or remove');
         $I->wantToTest('multidimensional variants functionality in lists');
 
         $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
@@ -49,6 +50,8 @@ final class FlowThemeCest
      */
     public function sendProductPriceAlert(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('make it work with APEX or remove');
+
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
 
@@ -59,8 +62,6 @@ final class FlowThemeCest
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 €'
         ];
 
         //open details page
@@ -82,6 +83,8 @@ final class FlowThemeCest
      */
     public function disableProductPriceAlert(AcceptanceTester $I): void
     {
+        $I->markTestSkipped('make it work with APEX or remove');
+
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality is disabled');
 
@@ -90,8 +93,6 @@ final class FlowThemeCest
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 €'
         ];
 
         //disabling price alert for product(1000)

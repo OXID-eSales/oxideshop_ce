@@ -6,6 +6,7 @@
 - Database connection object fixation in ConnectionProvider service
 - Inactive articles are shown in the detail page [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)
 - Broken child-theme in child sub-shops [#0007477](https://bugs.oxid-esales.com/view.php?id=7477)
+- Fixed exception after Setup via Browser [#0007478](https://bugs.oxid-esales.com/view.php?id=7478)
 
 ## v7.0.1 - 2023-05-22
 

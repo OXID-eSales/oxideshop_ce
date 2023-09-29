@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Support;
 
+use Codeception\Lib\Friend;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\AdminLoginPage;
 use OxidEsales\Codeception\Admin\AdminPanel;
@@ -26,12 +27,12 @@ use OxidEsales\Codeception\Page\Home;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
+ * @method Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
  */
 
-final class AcceptanceTester extends AcceptanceActor
+class AcceptanceTester extends AcceptanceActor
 {
     use _generated\AcceptanceTesterActions;
 

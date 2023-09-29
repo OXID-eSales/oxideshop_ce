@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Codeception\Support\_data\modules\testModule\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Support\Data\modules\testModule\Controller;
 
 final class ContentController extends \OxidEsales\Eshop\Application\Controller\ContentController
 {

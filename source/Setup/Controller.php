@@ -8,13 +8,14 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+use OxidEsales\DemoDataInstaller\Framework\Module\Demodata\DemodataDaoInterface;
 use OxidEsales\Eshop\Core\SystemRequirements;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class Controller extends Core
@@ -533,11 +534,9 @@ class Controller extends Core
             // If demo data files are provided.
             if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
                 $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
-
-                exec(
-                    (new Facts())->getCommunityEditionRootPath() .
-                    '/bin/oe-console oe:setup:demodata'
-                );
+                $demodataDao = ContainerFactory::getInstance()->getContainer()->get(DemodataDaoInterface::class);
+                $demodataDao->checkPreconditions();
+                $demodataDao->applyDemodata();
             } else {
                 $database->queryFile(
                     $this->getInitialDataSqlFilePath()

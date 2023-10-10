@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 class ContainerBuilderTest extends TestCase
 {
-    public function testWhenCeServicesLoaded()
+    public function testWhenCeServicesLoaded(): void
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::COMMUNITY);
@@ -27,7 +27,7 @@ class ContainerBuilderTest extends TestCase
         $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
     }
 
-    public function testWhenPeOverwritesMainServices()
+    public function testWhenPeOverwritesMainServices(): void
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::PROFESSIONAL);
@@ -39,7 +39,7 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    public function testWhenEeOverwritesMainServices()
+    public function testWhenEeOverwritesMainServices(): void
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::ENTERPRISE);
@@ -51,7 +51,7 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    public function testWhenProjectOverwritesMainServices()
+    public function testWhenProjectOverwritesMainServices(): void
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::COMMUNITY);
@@ -64,7 +64,7 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    public function testWhenProjectOverwritesEditions()
+    public function testWhenProjectOverwritesEditions(): void
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::ENTERPRISE);
@@ -77,10 +77,21 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @param ContextInterface $context
-     * @return Container
-     */
+    public function testWhenShopRelatedConfigOverwritesMainServices(): void
+    {
+        $context = $this->makeContextStub();
+        $context->setEdition(EditionSelector::COMMUNITY);
+        $context->setShopConfigurableServicesFilePath(
+            __DIR__ . '/Fixtures/Project/shop_configurable_services.yaml'
+        );
+        $container = $this->makeContainer($context);
+
+        $this->assertSame(
+            'Service overwriting for Project!',
+            $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
+    }
+
     private function makeContainer(ContextInterface $context): Container
     {
         $containerBuilder = new ContainerBuilder($context);
@@ -89,10 +100,7 @@ class ContainerBuilderTest extends TestCase
         return $container;
     }
 
-    /**
-     * @return ContextStub
-     */
-    private function makeContextStub()
+    private function makeContextStub(): ContextStub
     {
         $context = new ContextStub();
         $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
@@ -100,6 +108,7 @@ class ContainerBuilderTest extends TestCase
         $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');
         $context->setGeneratedServicesFilePath('nonexisting.yaml');
         $context->setConfigurableServicesFilePath('nonexisting.yaml');
+        $context->setShopConfigurableServicesFilePath('nonexisting.yaml');
         $context->setActiveModuleServicesFilePath('nonexisting.yaml');
         return $context;
     }

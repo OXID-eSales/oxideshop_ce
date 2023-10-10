@@ -54,6 +54,15 @@ class BasicContext implements BasicContextInterface
         return Path::join($this->getShopRootPath(), 'var', 'configuration', 'configurable_services.yaml');
     }
 
+    public function getShopConfigurableServicesFilePath(int $shopId): string
+    {
+        return Path::join(
+            $this->getShopConfigurationDirectory($shopId),
+            (string)$shopId,
+            'configurable_services.yaml'
+        );
+    }
+
     public function getActiveModuleServicesFilePath(int $shopId): string
     {
         return Path::join($this->getShopConfigurationDirectory($shopId), 'active_module_services.yaml');

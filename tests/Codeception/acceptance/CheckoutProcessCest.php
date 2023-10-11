@@ -815,6 +815,9 @@ final class CheckoutProcessCest
         $orderCheckout->submitOrderSuccessfully();
     }
 
+    /**
+     * @group exclude_from_EE
+     */
     public function checkFrontendDiscounts(AcceptanceTester $I): void
     {
         $I->wantToTest('ordering discounted articles');

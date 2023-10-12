@@ -873,7 +873,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         foreach ($aFilter as $sAttrId => $sValue) {
-            if ($sValue) {
+            $sValue = (string) $sValue;
+            if ($sValue !== '') {
                 if ($sFilter) {
                     $sFilter .= ' or ';
                 }
@@ -922,7 +923,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sFilterSql = " and $sArticleTable.oxid in ( $sIds ) ";
             }
             // bug fix #0001695: if no articles found return false
-        } elseif (!(current($aFilter) == '' && count(array_unique($aFilter)) == 1)) {
+        } elseif (!(empty(current($aFilter)) && count(array_unique($aFilter)) == 1)) {
             $sFilterSql = " and false ";
         }
 

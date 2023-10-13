@@ -124,11 +124,11 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getUserData()
     {
-        if ($this->_oUserData === null) {
-            $this->_oUserData = Registry::getRequest()->getRequestEscapedParameter('editval');
+        if ($this->_aUserData === null) {
+            $this->_aUserData = Registry::getRequest()->getRequestEscapedParameter('editval');
         }
 
-        return $this->_oUserData;
+        return $this->_aUserData;
     }
 
     /**

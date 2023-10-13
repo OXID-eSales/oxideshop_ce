@@ -14,5 +14,8 @@
 - `getContainer()` and `dispatchEvent()` methods in Core classes
 - Global function \makeReadable()
 
+### Fixed
+- Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)
+
 ### Removed
 - PHP v8.0 support

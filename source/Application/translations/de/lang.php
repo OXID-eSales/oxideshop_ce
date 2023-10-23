@@ -355,6 +355,7 @@ $aLang = [
 'ORDER_HISTORY'                                               => 'Bestellhistorie',
 'ORDER_IS_CANCELED'                                           => 'Bestellung wurde storniert!',
 'ORDER_NUMBER'                                                => 'Bestellnummer',
+'ORDER_REMARK'                                                => 'Bestellbemerkung',
 'BRAND'                                                       => 'Marke',
 'OUR_BRANDS'                                                  => 'Unsere Marken',
 'OUR_REGULAR_PRICE'                                           => '(Unser regulärer Preis)',

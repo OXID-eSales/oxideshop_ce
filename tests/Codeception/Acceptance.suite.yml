@@ -55,5 +55,12 @@ modules:
                   - \OxidEsales\Codeception\Module\Database
               theme_id: '%THEME_ID%'
         - \OxidEsales\Codeception\Module\OxideshopModules:
+        - Mailpit:
+            url: 'mailpit'
+            port: '8025'
+        - \OxidEsales\Codeception\Module\Email:
+              depends:
+                  - Mailpit
+              deleteEmailsAfterTest: false
 step_decorators:
     - \Codeception\Step\Retry

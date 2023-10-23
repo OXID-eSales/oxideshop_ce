@@ -13,5 +13,8 @@ use Symfony\Component\Filesystem\Path;
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
 
 $helper = new FixturesHelper();
-$helper->loadRuntimeFixtures(codecept_data_dir('fixtures.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('user.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('voucher.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('order.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('product.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('shop.php'));

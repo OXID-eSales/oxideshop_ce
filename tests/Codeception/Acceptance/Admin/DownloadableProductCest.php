@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use DateTime;
 use OxidEsales\Codeception\Admin\AdminPanel;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
@@ -17,55 +18,30 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('admin')]
 final class DownloadableProductCest
 {
-    private string $orderId;
-    private array $productData = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
-    ];
+    private string $orderNo;
+    private string $productId;
+    private string $productTitle;
 
     public function _before(AcceptanceTester $I): void
     {
+        $order = Fixtures::get('testorder');
+        $orderId = $order['OXID'];
+        $this->orderNo = $order['OXORDERNR'];
+        $orderProductData = $order['PRODUCTS'][0];
+        $this->productId = $orderProductData['OXARTID'];
+        $this->productTitle = $orderProductData['OXTITLE'];
 
-        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => $this->productData['id']]);
-        $userId = $I->grabFromDatabase('oxuser', 'OXID', ['OXUSERNAME' => 'user@oxid-esales.com']);
-        //$this->orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
-       // $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
-        $articleId = $this->productData['id'];
-
-        $this->orderId = 'testorder';
-        $I->haveInDatabase(
-            'oxorder',
-            [
-                'OXID' => $this->orderId,
-                'OXSHOPID' => 1,
-                'OXUSERID' => $userId,
-                'OXORDERDATE' => '2011-03-30 10:55:13',
-                'OXORDERNR' => 1,
-                'OXFOLDER' => 'ORDERFOLDER_NEW'
-            ]
-        );
-        $I->haveInDatabase(
-            'oxorderarticles',
-            [
-                'OXID' => $articleId,
-                'OXORDERID' => $this->orderId,
-                'OXAMOUNT' => 1,
-                'OXARTNUM' => $articleId,
-                'OXTITLE' => $this->productData['title'],
-            ]
-        );
+        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => $this->productId]);
 
         $I->haveInDatabase(
             'oxorderfiles',
             [
-                'OXID' => "testdownloadProductCest",
-                'OXORDERID' => $this->orderId,
+                'OXID' => 'testdownloadProductCest',
+                'OXORDERID' => $orderId,
                 'OXFILENAME' => 'testFile3',
                 'OXFILEID' => '1000l',
                 'OXSHOPID' => 1,
-                'OXORDERARTICLEID' => $articleId,
+                'OXORDERARTICLEID' => $orderProductData['OXID'],
                 'OXDOWNLOADCOUNT' => '0',
                 'OXMAXDOWNLOADCOUNT' => 2,
                 'OXDOWNLOADEXPIRATIONTIME' => 24,
@@ -80,7 +56,7 @@ final class DownloadableProductCest
             'oxfiles',
             [
                 'OXID' => '1000l',
-                'OXARTID' => $this->productData['id'],
+                'OXARTID' => $this->productId,
                 'OXFILENAME' => 'testFile3',
                 'OXPURCHASEDONLY' => 1,
                 'OXSTOREHASH' => 'e48a1b571bd2d2e60fb2d9b1b76b35d5',
@@ -94,8 +70,6 @@ final class DownloadableProductCest
         $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
         $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
         $I->updateConfigInDatabase('iMaxDownloadsCountUnregistered', "1", 'str');
-        $I->deleteFromDatabase('oxorder', ['OXID' => $this->orderId]);
-        $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);
     }
 
     public function downloadableFiles(AcceptanceTester $I): void
@@ -125,7 +99,7 @@ final class DownloadableProductCest
     private function setDownloadableFileForAProduct(AcceptanceTester $I, AdminPanel $adminPanel): void
     {
         $products = $adminPanel->openProducts();
-        $products->find("where[oxarticles][oxartnum]", $this->productData['id']);
+        $products->find("where[oxarticles][oxartnum]", $this->productId);
         $products->openDownloadsTab();
         $I->checkOption('editval[oxarticles__oxisdownloadable]');
         $I->click(['name' => 'save']);
@@ -134,11 +108,12 @@ final class DownloadableProductCest
     private function makeOrderComplete(AcceptanceTester $I, AdminPanel $adminPanel): void
     {
         $orders = $adminPanel->openOrders();
-        $orders->find("where[oxorder][oxordernr]", "1");
+        $orders->findByOrderNumber($this->orderNo);
         $orders->openDownloadsTab();
         $firstDownloadableProductLocator = "//tr[@id='file.1']";
-        $I->assertEquals($this->productData['id'], $I->grabTextFrom("{$firstDownloadableProductLocator}/td[1]"));
-        $I->assertEquals($this->productData['title'], $I->grabTextFrom("$firstDownloadableProductLocator/td[2]"));
+
+        $I->assertEquals($this->productId, $I->grabTextFrom("{$firstDownloadableProductLocator}/td[1]"));
+        $I->assertEquals($this->productTitle, $I->grabTextFrom("$firstDownloadableProductLocator/td[2]"));
         $I->assertEquals("testFile3", $I->grabTextFrom("$firstDownloadableProductLocator/td[3]"));
         $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[4]"));
         $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[5]"));

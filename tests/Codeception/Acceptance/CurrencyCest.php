@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Codeception;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
+
+use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class CurrencyCest
 {

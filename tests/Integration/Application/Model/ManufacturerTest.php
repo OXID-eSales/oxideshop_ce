@@ -42,7 +42,7 @@ class ManufacturerTest extends IntegrationTestCase
         $this->assertSame($expected, $manufacturer->getImageType($fieldName));
     }
 
-    public function provideImageTypeData(): Generator
+    public static function provideImageTypeData(): Generator
     {
         yield 'MICO' => ['MICO', 'oxicon'];
         yield 'MICO for alt' => ['MICO', 'oxicon_alt'];
@@ -83,7 +83,7 @@ class ManufacturerTest extends IntegrationTestCase
         $this->assertFileDoesNotExist($imagePath);
     }
 
-    public function provideImageFileData(): Generator
+    public static function provideImageFileData(): Generator
     {
         yield 'Icon should be deleted from filesystem' => ['oxicon', 'test-icon.jpg', 'MICO',];
         yield 'Icon Alt should be deleted from filesystem' => ['oxicon_alt', 'test-icon-alt.jpg', 'MICO',];

@@ -105,7 +105,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     /**
      * @return array
      */
-    public function invalidCostOptionDataProvider(): array
+    public static function invalidCostOptionDataProvider(): array
     {
         return [
             [-5],
@@ -139,7 +139,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         return $this
             ->getMockBuilder(PasswordPolicyInterface::class)
-            ->setMethods(['enforcePasswordPolicy'])
+            ->onlyMethods(['enforcePasswordPolicy'])
             ->getMock();
     }
 }

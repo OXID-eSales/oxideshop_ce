@@ -31,9 +31,6 @@ class PasswordPolicyTest extends TestCase
 
     /**
      * @dataProvider unsupportedEncodingDataProvider
-     *
-     * @param string $unsupportedEncoding
-     *
      * @throws PasswordPolicyException
      */
     public function testPasswordPolicyRejectsStringNonUtf8Encoding(string $unsupportedEncoding)
@@ -48,10 +45,7 @@ class PasswordPolicyTest extends TestCase
         $passwordPolicy->enforcePasswordPolicy($passwordIso);
     }
 
-    /**
-     * @return array
-     */
-    public function unsupportedEncodingDataProvider(): array
+    public static function unsupportedEncodingDataProvider(): array
     {
         return
             [

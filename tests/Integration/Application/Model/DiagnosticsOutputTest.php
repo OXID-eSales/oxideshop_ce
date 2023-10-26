@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 final class DiagnosticsOutputTest extends TestCase
 {
     private string $key = "diagnostic_tool_result";
-    private string $sOutputFileName = "diagnostic_tool_result.html";
+    private static string $sOutputFileName = "diagnostic_tool_result.html";
 
     /**
     * @runInSeparateProcess
@@ -66,14 +66,14 @@ final class DiagnosticsOutputTest extends TestCase
         );
     }
 
-    public function headerValuesProvider(): array
+    public static function headerValuesProvider(): array
     {
         return [
             ['Pragma: public'],
             ['Expires: 0'],
             ['Cache-Control: must-revalidate, post-check=0, pre-check=0, private'],
             ['Content-Type:text/html;charset=utf-8'],
-            ['Content-Disposition: attachment;filename=' . $this->sOutputFileName],
+            ['Content-Disposition: attachment;filename=' . self::$sOutputFileName],
         ];
     }
 

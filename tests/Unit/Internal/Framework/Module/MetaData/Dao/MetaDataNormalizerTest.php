@@ -100,7 +100,7 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    public function multiLanguageFieldDataProvider(): array
+    public static function multiLanguageFieldDataProvider(): array
     {
         return [
             ['title', 'some value'],

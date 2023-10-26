@@ -35,7 +35,7 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
         $productRatingDao->getProductRatingById($invalidProductId);
     }
 
-    public function invalidProductIdsProvider()
+    public static function invalidProductIdsProvider(): array
     {
         return [
             [null],

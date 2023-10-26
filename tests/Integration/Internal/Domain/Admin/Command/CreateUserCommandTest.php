@@ -48,7 +48,7 @@ final class CreateUserCommandTest extends TestCase
         $commandTester->execute($options);
     }
 
-    public function missingOptionsDataProvider(): array
+    public static function missingOptionsDataProvider(): array
     {
         return [
             'Missing admin-email'    => ['--admin-password'],

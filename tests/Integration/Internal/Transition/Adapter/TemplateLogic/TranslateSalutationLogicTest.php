@@ -18,12 +18,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
  */
 class TranslateSalutationLogicTest extends IntegrationTestCase
 {
-    /**
-     * Provides data for testTranslateSalutation
-     *
-     * @return array
-     */
-    public function translateSalutationProvider(): array
+    public static function translateSalutationProvider(): array
     {
         return [
             ['MR', 0, 'Herr'],

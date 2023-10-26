@@ -15,9 +15,8 @@ use PHPUnit\Framework\TestCase;
 
 class ModuleSettingsBooleanConverterTest extends TestCase
 {
-    public function convertToTrueDataProvider()
+    public static function convertToTrueDataProvider(): array
     {
-
         return [
             ['true'],
             ['True'],
@@ -28,7 +27,6 @@ class ModuleSettingsBooleanConverterTest extends TestCase
     }
 
     /**
-     * @param $value
      * @dataProvider convertToTrueDataProvider
      */
     public function testConvertToTrue($value): void
@@ -47,9 +45,8 @@ class ModuleSettingsBooleanConverterTest extends TestCase
         $this->assertTrue($convertedSettings[MetaDataProvider::METADATA_SETTINGS][0]['value']);
     }
 
-    public function convertToFalseDataProvider()
+    public static function convertToFalseDataProvider(): array
     {
-
         return [
             ['false'],
             ['False'],
@@ -60,7 +57,6 @@ class ModuleSettingsBooleanConverterTest extends TestCase
     }
 
     /**
-     * @param $value
      * @dataProvider convertToFalseDataProvider
      */
     public function testConvertToFalse($value): void
@@ -79,7 +75,7 @@ class ModuleSettingsBooleanConverterTest extends TestCase
         $this->assertFalse($convertedSettings[MetaDataProvider::METADATA_SETTINGS][0]['value']);
     }
 
-    public function whenNothingToConvertDataProvider()
+    public static function whenNothingToConvertDataProvider(): array
     {
         return [
             [[]],
@@ -96,7 +92,6 @@ class ModuleSettingsBooleanConverterTest extends TestCase
     }
 
     /**
-     * @param array $metaData
      * @dataProvider whenNothingToConvertDataProvider
      */
     public function testWhenNothingToConvert(array $metaData): void

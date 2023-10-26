@@ -8,6 +8,7 @@
 - PHP v8.2 support
 - Shops can have their own service configuration
 - Dependencies between modules feature is introduced.
+- PHPUnit v10 support
 
 ### Deprecated
 - Deprecate console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`
@@ -23,3 +24,4 @@
 
 ### Removed
 - PHP v8.0 support
+- PHPUnit v9 support

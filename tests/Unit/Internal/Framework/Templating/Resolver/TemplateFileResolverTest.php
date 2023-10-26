@@ -38,7 +38,7 @@ final class TemplateFileResolverTest extends TestCase
         $this->assertEquals($expectedFilename, $filename);
     }
 
-    public function smartyTemplateNameFileDataProvider(): array
+    public static function smartyTemplateNameFileDataProvider(): array
     {
         return [
             [
@@ -68,7 +68,7 @@ final class TemplateFileResolverTest extends TestCase
         ];
     }
 
-    public function twigTemplateNameFileDataProvider(): array
+    public static function twigTemplateNameFileDataProvider(): array
     {
         return [
             [

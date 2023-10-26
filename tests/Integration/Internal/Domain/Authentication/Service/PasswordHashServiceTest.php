@@ -97,7 +97,7 @@ class PasswordHashServiceTest extends TestCase
     {
         $passwordPolicyMock = $this
             ->getMockBuilder(PasswordPolicyInterface::class)
-            ->setMethods(['enforcePasswordPolicy'])
+            ->onlyMethods(['enforcePasswordPolicy'])
             ->getMock();
 
         return $passwordPolicyMock;

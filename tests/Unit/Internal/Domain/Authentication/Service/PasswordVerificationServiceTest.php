@@ -55,7 +55,7 @@ class PasswordVerificationServiceTest extends TestCase
     {
         $passwordPolicyMock = $this
             ->getMockBuilder(PasswordPolicyInterface::class)
-            ->setMethods(['enforcePasswordPolicy'])
+            ->onlyMethods(['enforcePasswordPolicy'])
             ->getMock();
         $passwordVerificationService = new PasswordVerificationService($passwordPolicyMock);
 

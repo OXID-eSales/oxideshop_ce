@@ -14,20 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 class ScriptLogicTest extends TestCase
 {
+    private Config $config;
+    private int $oldIDebug;
+    private ScriptLogic $scriptLogic;
 
-    /** @var Config */
-    private $config;
-
-    /** @var int */
-    private $oldIDebug;
-
-    /** @var ScriptLogic */
-    private $scriptLogic;
-
-    /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     */
     public function setup(): void
     {
         parent::setUp();
@@ -38,10 +28,6 @@ class ScriptLogicTest extends TestCase
         $this->scriptLogic = new ScriptLogic();
     }
 
-    /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     */
     public function tearDown(): void
     {
         $this->config->setConfigParam("iDebug", $this->oldIDebug);
@@ -89,9 +75,6 @@ class ScriptLogicTest extends TestCase
     }
 
     /**
-     * @param string $script
-     * @param string $output
-     *
      * @dataProvider addWidgetProvider
      */
     public function testRenderAddWidget(string $script, string $output): void
@@ -106,10 +89,7 @@ class ScriptLogicTest extends TestCase
         $this->config->setGlobalParameter('scripts', $scripts);
     }
 
-    /**
-     * @return array
-     */
-    public function addWidgetProvider(): array
+    public static function addWidgetProvider(): array
     {
         return [
             ['oxidadd', 'oxidadd'],

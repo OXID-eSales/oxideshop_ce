@@ -29,7 +29,7 @@ class WordwrapLogicTest extends TestCase
      *
      * @return array
      */
-    public function nonAsciiProvider(): array
+    public static function nonAsciiProvider(): array
     {
         return [
             ["HÖ\nHÖ", "HÖ HÖ", 2],
@@ -40,26 +40,20 @@ class WordwrapLogicTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $string
-     * @param int    $length
-     * @param string $wrapper
-     * @param bool   $cut
-     *
      * @dataProvider nonAsciiProvider
      */
-    public function testWordWrapWithNonAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false
+    public function testWordWrapWithNonAscii(
+        string $expected,
+        string $string,
+        int $length = 80,
+        string $wrapper = "\n",
+        bool $cut = false
     ): void
     {
         self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 
-    /**
-     * Provides data for testWordWrapAscii
-     *
-     * @return array
-     */
-    public function asciiProvider(): array
+    public static function asciiProvider(): array
     {
         return [
             ["aaa\naaa", 'aaa aaa', 2],
@@ -81,12 +75,6 @@ class WordwrapLogicTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $string
-     * @param int    $length
-     * @param string $wrapper
-     * @param bool   $cut
-     *
      * @dataProvider asciiProvider
      */
     public function testWordWrapAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false): void

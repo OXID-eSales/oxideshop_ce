@@ -17,9 +17,9 @@ class QueryFilterTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerTestFiltering()
+    public static function providerTestFiltering(): array
     {
-        $data = [
+        return [
             [
                 "select * from oxarticles",
                 [],
@@ -77,8 +77,6 @@ class QueryFilterTest extends \PHPUnit\Framework\TestCase
                 false
             ],
         ];
-
-        return $data;
     }
 
     /**

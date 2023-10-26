@@ -23,7 +23,7 @@ class TranslateLogicTest extends IntegrationTestCase
      *
      * @return array
      */
-    public function provider(): array
+    public static function provider(): array
     {
         return [
             ['FIRST_NAME', 0, 'Vorname'],
@@ -53,7 +53,7 @@ class TranslateLogicTest extends IntegrationTestCase
      *
      * @return array
      */
-    public function withArgumentsProvider(): array
+    public static function withArgumentsProvider(): array
     {
         return [
             ['MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel'],
@@ -64,28 +64,16 @@ class TranslateLogicTest extends IntegrationTestCase
     }
 
     /**
-     * Tests value assignments when translating strings containing %s
-     *
-     * @param string $ident
-     * @param int    $languageId
-     * @param mixed  $arguments
-     * @param string $result
-     *
      * @dataProvider withArgumentsProvider
      */
-    public function testAssignmentsWithArguments($ident, $languageId, $arguments, $result)
+    public function testAssignmentsWithArguments(string $ident, int $languageId, $arguments, string $result): void
     {
         $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
 
         $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident, $arguments));
     }
 
-    /**
-     * testTranslateFrontend_isMissingTranslation data provider
-     *
-     * @return array
-     */
-    public function missingTranslationProviderFrontend(): array
+    public static function missingTranslationProviderFrontend(): array
     {
         return [
             [
@@ -102,13 +90,13 @@ class TranslateLogicTest extends IntegrationTestCase
     }
 
     /**
-     * @param bool   $isProductiveMode
-     * @param string $ident
-     * @param string $translation
-     *
      * @dataProvider missingTranslationProviderFrontend
      */
-    public function testTranslateFrontend_isMissingTranslation($isProductiveMode, $ident, $translation)
+    public function testTranslateFrontend_isMissingTranslation(
+        bool $isProductiveMode,
+        string $ident,
+        string $translation
+    ): void
     {
         $context = $this->prophesize(ContextInterface::class);
         $context->isShopInProductiveMode()->willReturn($isProductiveMode);
@@ -117,10 +105,7 @@ class TranslateLogicTest extends IntegrationTestCase
         $this->assertEquals($translation, $multiLangFilterLogic->multiLang($ident));
     }
 
-    /**
-     * @return ContextInterface
-     */
-    private function getContextMock()
+    private function getContextMock(): ContextInterface
     {
         return $this->getMockBuilder(ContextInterface::class)->getMock();
     }

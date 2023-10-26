@@ -51,7 +51,7 @@ class ExecutorTest extends TestCase
         $context = $this
             ->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getGeneratedServicesFilePath'])
+            ->onlyMethods(['getGeneratedServicesFilePath'])
             ->getMock();
         $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/Fixtures/generated_project.yaml');
 

@@ -38,7 +38,8 @@
         "symfony/finder": "^6.0",
         "symfony/lock": "^6.0",
         "symfony/string": "^6.0",
-        "symfony/yaml": "^6.0"
+        "symfony/yaml": "^6.0",
+        "symfony/mime": "^6.0"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

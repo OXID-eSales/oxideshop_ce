@@ -41,6 +41,11 @@ class ManufacturerPicture extends AdminDetailsController
             return;
         }
 
+        if (!$this->validateRequestImages()) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+            return;
+        }
+
         parent::save();
 
         $manufacturer = oxNew(Manufacturer::class);

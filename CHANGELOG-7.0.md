@@ -3,6 +3,7 @@
 ## v7.0.2 - 2023-11-28
 
 ### Fixed
+- Upload everything as picture [#0005897](https://bugs.oxid-esales.com/view.php?id=5897)
 - Attribute value of 0 breaks category filtering with attributes in frontend [#0007474](https://bugs.oxid-esales.com/view.php?id=7474)
 - Database connection object fixation in ConnectionProvider service
 - Inactive articles are shown in the detail page [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)

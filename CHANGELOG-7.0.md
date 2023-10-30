@@ -7,7 +7,8 @@
 - Database connection object fixation in ConnectionProvider service
 - Inactive articles are shown in the detail page [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)
 - Broken child-theme in child sub-shops [#0007477](https://bugs.oxid-esales.com/view.php?id=7477)
-- Fixed exception after Setup via Browser [#0007478](https://bugs.oxid-esales.com/view.php?id=7478)
+- Fix exception after Setup via Browser [#0007478](https://bugs.oxid-esales.com/view.php?id=7478)
+- Print a meaningful message when config file is missing in CLI
 
 ## v7.0.1 - 2023-05-22
 
@@ -75,7 +76,7 @@
   no need to implement `ShopAwareInterface` or extend `ShopAwareEventDispatcher`, `AbstractShopAwareCommand`.
 
 ### Deprecated
-- Deprecate `setEngine()` and `getEngine()` functionalities in `TemplateRendererBridgeInterface`  
+- Deprecate `setEngine()` and `getEngine()` functionalities in `TemplateRendererBridgeInterface`
 
 ## v7.0.0-rc.2 - 2022-08-15
 
@@ -89,7 +90,7 @@
 - Show 404 error but not redirect to index on accessing not existing product [PR-871](https://github.com/OXID-eSales/oxideshop_ce/pull/871)
 - Switched to default PDO result set types when using PHP8.1
 - System requirements:
-- PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php). 
+- PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php).
 - Respond with 404 error code on controller or method miss [PR-715](https://github.com/OXID-eSales/oxideshop_ce/pull/715)
 - Change type of default value for iIndex parameter in ``OxidProfessionalServices\Bergspezl\Model\Article::getZoomPictureUrl`` [PR-893](https://github.com/OXID-eSales/oxideshop_ce/pull/893)
 - Switched to templating-engine agnostic names in Controller templates (e.g. `Controller::$_sThisTemplate = 'page/content'` instead of `'page/content.tpl'`)

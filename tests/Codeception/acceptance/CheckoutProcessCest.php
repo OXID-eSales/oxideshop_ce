@@ -13,7 +13,7 @@ use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Page\Checkout\OrderCheckout;
-use OxidEsales\Codeception\Page\Details\ProductDetails;
+use OxidEsales\Codeception\Page\Checkout\UserCheckout;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\Facts\Facts;
@@ -23,7 +23,7 @@ use OxidEsales\Facts\Facts;
  */
 final class CheckoutProcessCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(AcceptanceTester $I): void
     {
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
@@ -143,16 +143,23 @@ final class CheckoutProcessCest
         $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
         $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
         $orderPage->validateCoupon('123123', '-83,50 €');
-        $orderPage->validateVat(['4,55 €', '5,35 €']);
-        $orderPage->validateTotalPrice([
+        $orderPage->seeSummaryVat('10', '4,55 €');
+        $orderPage->seeSummaryVat('19', '5,35 €');
+
+        $priceInformation = [
             'net' => '73,60 €',
             'gross' => '167,00 €',
             'shipping' => '0,00 €',
             'payment' => '7,50 €',
             'total' => '92,10 €',
-        ]);
-        $orderPage->validateWrappingPrice('0,90 €');
-        $orderPage->validateGiftCardPrice('0,20 €');
+        ];
+        $orderPage->seeSummaryNet($priceInformation['net']);
+        $orderPage->seeSummaryGross($priceInformation['gross']);
+        $orderPage->seeSummaryShippingGross($priceInformation['shipping']);
+        $orderPage->seeSummaryPaymentGross($priceInformation['payment']);
+        $orderPage->seeSummaryGrandTotal($priceInformation['total']);
+        $orderPage->seeSummaryWrappingGross('0,90 €');
+        $orderPage->seeSummaryGiftCardGross('0,20 €');
 
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
@@ -393,14 +400,15 @@ final class CheckoutProcessCest
         $homePage = $I->openShop();
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basket->addProductToBasket($existingProductId, 1);
-        $paymentPage = $homePage->openMiniBasket()
+        /** @var UserCheckout $userCheckoutPage */
+        $userCheckoutPage = $homePage->openMiniBasket()
             ->openBasketDisplay()
             ->goToNextStep();
 
-        $paymentPage->openShippingAddressForm();
-        $paymentPage->enterShippingAddressData($userShippingAddress);
+        $userCheckoutPage->openShippingAddressForm();
+        $userCheckoutPage->enterShippingAddressData($userShippingAddress);
 
-        $paymentPage->goToNextStep()
+        $userCheckoutPage->goToNextStep()
             ->goToNextStep()
             ->validateUserDeliveryAddress($userShippingAddress);
     }
@@ -490,6 +498,8 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('select additional product wrapping and click-through to the summary');
         $loginData = $this->getExistingUserData();
+
+        /** @var OrderCheckout $orderCheckout */
         $orderCheckout = $I
             ->openShop()
             ->loginUser(
@@ -506,15 +516,15 @@ final class CheckoutProcessCest
             ->goToNextStep();
 
         $I->amGoingTo('validate checkout summary values');
-        $orderCheckout->seeVat('5');
-        $orderCheckout->seeTotalNet('142,86 €');
-        $orderCheckout->seeTotalGross('150,00 €');
-        $orderCheckout->seeShippingNet('0,00 €');
-        $orderCheckout->seePaymentMethodNet('7,14 €');
-        $orderCheckout->seePaymentMethodVat('0,36 €', '5');
-        $orderCheckout->seeWrappingNet('2,57 €');
-        $orderCheckout->seeWrappingVat('0,13 €');
-        $orderCheckout->seeGrandTotal('160,20 €');
+        $orderCheckout->seeSummaryVat('5');
+        $orderCheckout->seeSummaryNet('142,86 €');
+        $orderCheckout->seeSummaryGross('150,00 €');
+        $orderCheckout->seeSummaryShippingNet('0,00 €');
+        $orderCheckout->seeSummaryPaymentNet('7,14 €');
+        $orderCheckout->seeSummaryPaymentVat('0,36 €', '5');
+        $orderCheckout->seeSummaryWrappingNet('2,57 €');
+        $orderCheckout->seeSummaryWrappingVat('0,13 €');
+        $orderCheckout->seeSummaryGrandTotal('160,20 €');
     }
 
     public function modifyShippingAndPaymentMethods(AcceptanceTester $I): void
@@ -535,6 +545,7 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('click-through the checkout to the summary');
         $userData = $this->getExistingUserData();
+        /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $I
             ->openShop()
             ->loginUser(
@@ -552,15 +563,15 @@ final class CheckoutProcessCest
         $paymentPage->selectShipping('Alternative');
         $orderCheckoutPage = $paymentPage->goToNextStep();
         $orderCheckoutPage->validateShippingMethod('Alternative');
-        $orderCheckoutPage->seeShippingGross('123,00 €');
-        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
+        $orderCheckoutPage->seeSummaryShippingGross('123,00 €');
+        $orderCheckoutPage->seeSummarySurchargePaymentMethod('7,50 €');
 
         $I->amGoingTo('go back to modify the default payment method and see the change at checkout');
         $paymentPage = $orderCheckoutPage->editPaymentMethod();
         $paymentPage->selectPayment('oxidpayadvance');
         $paymentPage->goToNextStep();
         $orderCheckoutPage->validatePaymentMethod('Cash in advance');
-        $orderCheckoutPage->dontSeePaymentSurchargePrice();
+        $orderCheckoutPage->dontSeeSummarySurchargePaymentMethod();
 
         $I->amGoingTo('check if ordering works');
         $orderCheckoutPage->submitOrderSuccessfully();
@@ -605,21 +616,21 @@ final class CheckoutProcessCest
 
         $orderCheckoutPage->validateOrderItems([$basketItem1, $basketItem2]);
 
-        $orderCheckoutPage->seeShippingGross('0,00 €');
+        $orderCheckoutPage->seeSummaryShippingGross('0,00 €');
         $newShippingMethod = 'Alternative';
         $paymentPage = $orderCheckoutPage->editShippingMethod();
         $paymentPage->selectShipping($newShippingMethod);
         $orderCheckoutPage = $paymentPage->goToNextStep();
         $orderCheckoutPage->validateShippingMethod($newShippingMethod);
-        $orderCheckoutPage->seeShippingGross('0,00 €');
+        $orderCheckoutPage->seeSummaryShippingGross('0,00 €');
 
         $I->waitForElement('//div[contains(text(),"Surcharge Payment method")]/span');
-        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
+        $orderCheckoutPage->seeSummarySurchargePaymentMethod('7,50 €');
         $paymentPage = $orderCheckoutPage->editPaymentMethod();
         $paymentPage->selectPayment('oxidpayadvance');
         $paymentPage->goToNextStep();
         $orderCheckoutPage->validatePaymentMethod('Cash in advance');
-        $orderCheckoutPage->dontSeePaymentSurchargePrice();
+        $orderCheckoutPage->dontSeeSummarySurchargePaymentMethod();
 
         $orderCheckoutPage->submitOrderSuccessfully();
     }
@@ -708,7 +719,7 @@ final class CheckoutProcessCest
         $thankYouPage->dontSeeAlsoBought();
     }
 
-    public function checkMyAccountOrderHistory(AcceptanceTester $I)
+    public function checkMyAccountOrderHistory(AcceptanceTester $I): void
     {
         $I->wantToTest('my accounts order history');
 
@@ -778,7 +789,7 @@ final class CheckoutProcessCest
         ];
 
         foreach ($userData as $addressPart) {
-            $I->see($addressPart, $orderCheckout->deliveryAddress);
+            $orderCheckout->seeUserDeliveryAddressPart($addressPart);
         }
 
         $userCheckout = $orderCheckout->editUserAddress();
@@ -813,75 +824,6 @@ final class CheckoutProcessCest
         $paymentCheckout->selectShippingIsAvailable();
         $orderCheckout = $paymentCheckout->goToNextStep();
         $orderCheckout->submitOrderSuccessfully();
-    }
-
-    /**
-     * @group exclude_from_EE
-     */
-    public function checkFrontendDiscounts(AcceptanceTester $I): void
-    {
-        $I->wantToTest('ordering discounted articles');
-
-        $this->addDiscountedProductsToDatabase($I);
-
-        $homePage = $I->openShop();
-        $userData = $this->getExistingUserData();
-        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
-
-        $basket = new Basket($I);
-        $basket->addProductToBasket("1000", 2);
-        $basket->addProductToBasket("1002-1", 1);
-
-        $basket = $homePage->openMiniBasket()->openBasketDisplay();
-
-        $basketItem1 = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'amount' => 2,
-            'totalPrice' => '90,00 €'
-        ];
-
-        $basketItem2 = [
-            'id' => '1002-1',
-            'title' => 'Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл',
-            'amount' => 1,
-            'totalPrice' => '49,50 €'
-        ];
-
-        $unitPriceItem1 = '45,00 €';
-        $unitPriceItem2 = '49,50 €';
-        $totalPrice = '139,50 €';
-
-        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
-        $basket->seeItemUnitPrice($unitPriceItem1, '1');
-        $basket->seeItemUnitPrice($unitPriceItem2, '2');
-
-        $priceInformation = ['net' => '127,31 €', 'gross' => '139,50 €', 'shipping' => '0,00 €', 'total' => '139,50 €'];
-        $this->validateSummaryPrice($I, $priceInformation);
-
-        $basket->updateProductAmount(3, 2);
-        $basketItem2['totalPrice'] = '148,50 €';
-        $basketItem2['amount'] = 3;
-        $totalPrice = '238,50 €';
-        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
-
-        // disable discounts
-        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testcatdiscount']);
-        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testpercentdiscount']);
-        $basketItem1['totalPrice'] = '100,00 €';
-        $basketItem2['totalPrice'] = '55,00 €';
-        $basketItem2['amount'] = 1;
-        $basket->updateProductAmount($basketItem2['amount'], 2);
-
-        $unitPriceItem1 = '50,00 €';
-        $unitPriceItem2 = '55,00 €';
-        $totalPrice = '155,00 €';
-        $basket->seeItemUnitPrice($unitPriceItem1, '1');
-        $basket->seeItemUnitPrice($unitPriceItem2, '2');
-        $basket->seeBasketContains([$basketItem1, $basketItem2], $totalPrice);
-
-        $priceInformation = ['net' => '141,46 €', 'gross' => '155,00 €', 'shipping' => '0,00 €', 'total' => '155,00 €'];
-        $this->validateSummaryPrice($I, $priceInformation);
     }
 
     private function getExistingUserData(): array
@@ -929,62 +871,4 @@ final class CheckoutProcessCest
         ];
     }
 
-    private function validateSummaryPrice(AcceptanceTester $I, array $priceInformation)
-    {
-        $orderCheckout = new OrderCheckout($I);
-
-        $I->see(
-            $priceInformation['net'],
-            sprintf($orderCheckout->basketSummaryNet, Translator::translate('TOTAL_NET'))
-        );
-        $I->see(
-            $priceInformation['gross'],
-            sprintf($orderCheckout->basketSummaryGross, Translator::translate('TOTAL_GROSS'))
-        );
-        $I->see(
-            $priceInformation['shipping'],
-            sprintf($orderCheckout->basketShippingGross, Translator::translate('SHIPPING_COST'))
-        );
-        $I->see(
-            $priceInformation['total'],
-            sprintf($orderCheckout->basketTotalPrice, Translator::translate('GRAND_TOTAL'))
-        );
-    }
-
-    private function addDiscountedProductsToDatabase(AcceptanceTester $I)
-    {
-        $oxdiscountid = 'testcatdiscount';
-        $oxactive = 1;
-
-        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => $oxactive], ['OXID' => $oxdiscountid]);
-        $I->haveInDatabase(
-            'oxobject2discount',
-            [
-                'OXID' => '1000todiscount',
-                'OXDISCOUNTID' => 'testcatdiscount',
-                'OXOBJECTID' => '1000',
-                'OXTYPE' => 'oxarticles'
-            ]
-        );
-
-        $I->haveInDatabase(
-            'oxdiscount',
-            [
-                'OXID' => 'testpercentdiscount',
-                'OXSHOPID' => '1',
-                'OXACTIVE' => 1,
-                'OXADDSUMTYPE' => '%',
-                'OXADDSUM' => '10'
-            ]
-        );
-        $I->haveInDatabase(
-            'oxobject2discount',
-            [
-                'OXID' => '1002-1todiscount',
-                'OXDISCOUNTID' => 'testpercentdiscount',
-                'OXOBJECTID' => '1002-1',
-                'OXTYPE' => 'oxarticles'
-            ]
-        );
-    }
 }

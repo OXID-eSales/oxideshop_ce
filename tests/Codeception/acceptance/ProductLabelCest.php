@@ -33,9 +33,6 @@ final class ProductLabelCest
         );
 
         $I->amGoingTo('add these 2 and any other product to the cart');
-        $I
-            ->openShop()
-            ->switchLanguage('English');
         $shop = $I->loginShopWithExistingUser();
 
         $I->amGoingTo('add label for product 1 on its details page');

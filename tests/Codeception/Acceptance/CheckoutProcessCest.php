@@ -13,6 +13,7 @@ use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Page\Checkout\OrderCheckout;
+use OxidEsales\Codeception\Page\Checkout\UserCheckout;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
@@ -143,16 +144,23 @@ final class CheckoutProcessCest
         $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
         $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
         $orderPage->validateCoupon('123123', '-83,50 €');
-        $orderPage->validateVat(['4,55 €', '5,35 €']);
-        $orderPage->validateTotalPrice([
+        $orderPage->seeSummaryVat('10', '4,55 €');
+        $orderPage->seeSummaryVat('19', '5,35 €');
+
+        $priceInformation = [
             'net' => '73,60 €',
             'gross' => '167,00 €',
             'shipping' => '0,00 €',
             'payment' => '7,50 €',
             'total' => '92,10 €',
-        ]);
-        $orderPage->validateWrappingPrice('0,90 €');
-        $orderPage->validateGiftCardPrice('0,20 €');
+        ];
+        $orderPage->seeSummaryNet($priceInformation['net']);
+        $orderPage->seeSummaryGross($priceInformation['gross']);
+        $orderPage->seeSummaryShippingGross($priceInformation['shipping']);
+        $orderPage->seeSummaryPaymentGross($priceInformation['payment']);
+        $orderPage->seeSummaryGrandTotal($priceInformation['total']);
+        $orderPage->seeSummaryWrappingGross('0,90 €');
+        $orderPage->seeSummaryGiftCardGross('0,20 €');
 
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
@@ -393,14 +401,15 @@ final class CheckoutProcessCest
         $homePage = $I->openShop();
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basket->addProductToBasket($existingProductId, 1);
-        $paymentPage = $homePage->openMiniBasket()
+        /** @var UserCheckout $userCheckoutPage */
+        $userCheckoutPage = $homePage->openMiniBasket()
             ->openBasketDisplay()
             ->goToNextStep();
 
-        $paymentPage->openShippingAddressForm();
-        $paymentPage->enterShippingAddressData($userShippingAddress);
+        $userCheckoutPage->openShippingAddressForm();
+        $userCheckoutPage->enterShippingAddressData($userShippingAddress);
 
-        $paymentPage->goToNextStep()
+        $userCheckoutPage->goToNextStep()
             ->goToNextStep()
             ->validateUserDeliveryAddress($userShippingAddress);
     }
@@ -490,6 +499,8 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('select additional product wrapping and click-through to the summary');
         $loginData = $this->getExistingUserData();
+
+        /** @var OrderCheckout $orderCheckout */
         $orderCheckout = $I
             ->openShop()
             ->loginUser(
@@ -506,15 +517,15 @@ final class CheckoutProcessCest
             ->goToNextStep();
 
         $I->amGoingTo('validate checkout summary values');
-        $orderCheckout->seeVat('5');
-        $orderCheckout->seeTotalNet('142,86 €');
-        $orderCheckout->seeTotalGross('150,00 €');
-        $orderCheckout->seeShippingNet('0,00 €');
-        $orderCheckout->seePaymentMethodNet('7,14 €');
-        $orderCheckout->seePaymentMethodVat('0,36 €', '5');
-        $orderCheckout->seeWrappingNet('2,57 €');
-        $orderCheckout->seeWrappingVat('0,13 €');
-        $orderCheckout->seeGrandTotal('160,20 €');
+        $orderCheckout->seeSummaryVat('5');
+        $orderCheckout->seeSummaryNet('142,86 €');
+        $orderCheckout->seeSummaryGross('150,00 €');
+        $orderCheckout->seeSummaryShippingNet('0,00 €');
+        $orderCheckout->seeSummaryPaymentNet('7,14 €');
+        $orderCheckout->seeSummaryPaymentVat('0,36 €', '5');
+        $orderCheckout->seeSummaryWrappingNet('2,57 €');
+        $orderCheckout->seeSummaryWrappingVat('0,13 €');
+        $orderCheckout->seeSummaryGrandTotal('160,20 €');
     }
 
     public function modifyShippingAndPaymentMethods(AcceptanceTester $I): void
@@ -535,6 +546,7 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('click-through the checkout to the summary');
         $userData = $this->getExistingUserData();
+        /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $I
             ->openShop()
             ->loginUser(
@@ -552,15 +564,15 @@ final class CheckoutProcessCest
         $paymentPage->selectShipping('Alternative');
         $orderCheckoutPage = $paymentPage->goToNextStep();
         $orderCheckoutPage->validateShippingMethod('Alternative');
-        $orderCheckoutPage->seeShippingGross('123,00 €');
-        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
+        $orderCheckoutPage->seeSummaryShippingGross('123,00 €');
+        $orderCheckoutPage->seeSummarySurchargePaymentMethod('7,50 €');
 
         $I->amGoingTo('go back to modify the default payment method and see the change at checkout');
         $paymentPage = $orderCheckoutPage->editPaymentMethod();
         $paymentPage->selectPayment('oxidpayadvance');
         $paymentPage->goToNextStep();
         $orderCheckoutPage->validatePaymentMethod('Cash in advance');
-        $orderCheckoutPage->dontSeePaymentSurchargePrice();
+        $orderCheckoutPage->dontSeeSummarySurchargePaymentMethod();
 
         $I->amGoingTo('check if ordering works');
         $orderCheckoutPage->submitOrderSuccessfully();
@@ -605,21 +617,21 @@ final class CheckoutProcessCest
 
         $orderCheckoutPage->validateOrderItems([$basketItem1, $basketItem2]);
 
-        $orderCheckoutPage->seeShippingGross('0,00 €');
+        $orderCheckoutPage->seeSummaryShippingGross('0,00 €');
         $newShippingMethod = 'Alternative';
         $paymentPage = $orderCheckoutPage->editShippingMethod();
         $paymentPage->selectShipping($newShippingMethod);
         $orderCheckoutPage = $paymentPage->goToNextStep();
         $orderCheckoutPage->validateShippingMethod($newShippingMethod);
-        $orderCheckoutPage->seeShippingGross('0,00 €');
+        $orderCheckoutPage->seeSummaryShippingGross('0,00 €');
 
         $I->waitForElement('//div[contains(text(),"Surcharge Payment method")]/span');
-        $orderCheckoutPage->seePaymentSurchargePrice('7,50 €');
+        $orderCheckoutPage->seeSummarySurchargePaymentMethod('7,50 €');
         $paymentPage = $orderCheckoutPage->editPaymentMethod();
         $paymentPage->selectPayment('oxidpayadvance');
         $paymentPage->goToNextStep();
         $orderCheckoutPage->validatePaymentMethod('Cash in advance');
-        $orderCheckoutPage->dontSeePaymentSurchargePrice();
+        $orderCheckoutPage->dontSeeSummarySurchargePaymentMethod();
 
         $orderCheckoutPage->submitOrderSuccessfully();
     }
@@ -778,7 +790,7 @@ final class CheckoutProcessCest
         ];
 
         foreach ($userData as $addressPart) {
-            $I->see($addressPart, $orderCheckout->deliveryAddress);
+            $orderCheckout->seeUserDeliveryAddressPart($addressPart);
         }
 
         $userCheckout = $orderCheckout->editUserAddress();

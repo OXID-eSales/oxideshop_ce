@@ -42,3 +42,5 @@ modules:
         db_user_password: '%DB_PASSWORD%'
         depends:
           - \OxidEsales\Codeception\Module\Database
+step_decorators:
+  - \Codeception\Step\Retry

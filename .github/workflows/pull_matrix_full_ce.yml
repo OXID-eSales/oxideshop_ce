@@ -11,9 +11,9 @@ on:
 jobs:
   call_matrix:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v1
+    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
     with:
-      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v1/testplans/full_matrix_ce.yml'
+      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/full_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}

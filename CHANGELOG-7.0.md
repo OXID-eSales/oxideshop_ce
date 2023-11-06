@@ -8,7 +8,7 @@
 - Inactive articles are shown in the detail page [PR-911](https://github.com/OXID-eSales/oxideshop_ce/pull/911) [#0007476](https://bugs.oxid-esales.com/view.php?id=7476)
 - Broken child-theme in child sub-shops [#0007477](https://bugs.oxid-esales.com/view.php?id=7477)
 - Fix exception after Setup via Browser [#0007478](https://bugs.oxid-esales.com/view.php?id=7478)
-- Print a meaningful message when config file is missing in CLI
+- Print a meaningful message when config file is missing in CLI [#0007487](https://bugs.oxid-esales.com/view.php?id=7487)
 
 ## v7.0.1 - 2023-05-22
 

@@ -20,9 +20,5 @@ $aModule = array(
     'author'       => 'OXID eSales AG',
     'extend'       => [
         'shopClass' => 'testModuleClassExtendsShopClass',
-    ],
-    'smartyPluginDirectories'  => [
-        'SmartyPlugins/directory1',
-        'SmartyPlugins/directory2',
     ]
 );

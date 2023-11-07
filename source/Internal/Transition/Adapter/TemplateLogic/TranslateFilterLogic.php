@@ -53,7 +53,7 @@ class TranslateFilterLogic
         } catch (TranslationNotFoundException $exception) {
             $translationFound = false;
         } catch (StandardException) {
-            // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
+            // is thrown in debug mode and has to be caught here!
         }
 
         if ($translationFound) {

@@ -377,6 +377,9 @@ final class CheckoutProcessCest
             ->selectPayment('oxidcashondel');
     }
 
+    /**
+     * @group checkout_process_address
+     */
     public function checkCreateShippingAddress(AcceptanceTester $I): void
     {
         $I->wantToTest('creating shipping address during authenticated user`s checkout');
@@ -755,6 +758,9 @@ final class CheckoutProcessCest
         $productDetailsPage->seeProductTitle('Test product 1 [EN] šÄßüл');
     }
 
+    /**
+     * @group checkout_process_address
+     */
     public function checkOrderStepChangedAddress(AcceptanceTester $I): void
     {
         $basket = new Basket($I);

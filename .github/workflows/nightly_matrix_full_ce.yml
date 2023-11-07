@@ -3,13 +3,28 @@ name: nightly_matrix_full_ce
 
 on:
   schedule:
-    - cron: '17 4 * * 1-5'
+    - cron: '17 1 * * 1-5'
 
 jobs:
-  call_matrix:
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v1
+  call_full_matrix:
+    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
     with:
-      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v1/testplans/full_matrix_ce.yml'
+      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/full_matrix_ce.yml'
+      runs_on: '"ubuntu-latest"'
+    secrets:
+      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
+      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
+      enterprise_github_token: ${{ secrets.enterprise_github_token }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  call_compilation:
+    needs: call_full_matrix
+    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
+    with:
+      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/compilation_ce.yml'
       runs_on: '"ubuntu-latest"'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}

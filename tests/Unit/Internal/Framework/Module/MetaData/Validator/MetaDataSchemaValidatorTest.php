@@ -40,7 +40,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $this->expectException(UnsupportedMetaDataKeyException::class);
 
         $metaDataToValidate = [
-            'smartyPluginDirectories' => [],
+            'somePluginDirectories' => [],
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);

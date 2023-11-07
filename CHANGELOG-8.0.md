@@ -14,3 +14,4 @@
 - `getContainer()` and `dispatchEvent()` methods from Core classes
 - Remove deprecated global function \makeReadable()
 - Redundant `TemplateFileResolverInterface` functionality
+- Smarty templates support

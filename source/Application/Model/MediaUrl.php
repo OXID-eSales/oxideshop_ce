@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     protected $_sClassName = 'oxmediaurls';
@@ -113,8 +111,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         if (strpos($url, 'youtube.com')) {
             $youTubeUrl = str_replace('www.youtube.com/watch?v=', 'www.youtube.com/embed/', $url);
-            $ampersand = $this->isFieldValueHtmlEcaped() ? '&amp;' : '&';
-            $youTubeUrl = preg_replace("/$ampersand/", '?', $youTubeUrl, 1);
+            $youTubeUrl = preg_replace("/&/", '?', $youTubeUrl, 1);
         }
         if (strpos($url, 'youtu.be')) {
             $youTubeUrl = str_replace('youtu.be/', 'www.youtube.com/embed/', $url);
@@ -125,10 +122,5 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $this->oxmediaurls__oxdesc->value,
             $youTubeUrl
         );
-    }
-
-    private function isFieldValueHtmlEcaped(): bool
-    {
-        return !ContainerFacade::getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 }

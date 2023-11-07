@@ -38,7 +38,6 @@ class TranslateSalutationLogic
         try {
             $translation = $this->translator->translate($ident);
         } catch (TranslationNotFoundException) {
-            // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 
         return $translation;

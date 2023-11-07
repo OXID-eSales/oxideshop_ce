@@ -47,16 +47,8 @@ class Field
             return null;
         }
         if ($name === 'value') {
-            if ($this->valueNeedsEscaping()) {
-                $escapedValue = Str::getStr()->htmlspecialchars($this->rawValue);
-                $this->value = $escapedValue;
-                if ($escapedValue === (string)$this->rawValue) {
-                    unset($this->rawValue);
-                }
-            } else {
-                $this->value = $this->rawValue;
-                unset($this->rawValue);
-            }
+            $this->value = $this->rawValue;
+            unset($this->rawValue);
         }
         return $this->value;
     }
@@ -97,14 +89,5 @@ class Field
         } else {
             $this->value = $value;
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function valueNeedsEscaping(): bool
-    {
-        return is_string($this->rawValue)
-            && !ContainerFacade::getParameter('oxid_esales.templating.engine_autoescapes_html');
     }
 }

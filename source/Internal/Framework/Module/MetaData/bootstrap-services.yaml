@@ -32,7 +32,6 @@ parameters:
       blocks: [theme, template, block, file, position]
       settings: [group, name, type, value, constraints, position]
       12: events
-      13: smartyPluginDirectories
   deprecated:
     package: 'oxid-esales/oxideshop-ce'
     version: '6.5.0'

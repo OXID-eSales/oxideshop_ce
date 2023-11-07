@@ -37,15 +37,15 @@ $aModule = [
     'blocks'                  => [
         [
             'theme'    => 'theme_id',
-            'template' => 'template_1.tpl',
+            'template' => 'template_1.html.twig',
             'block'    => 'block_1',
-            'file'     => '/blocks/template_1.tpl',
+            'file'     => '/blocks/template_1.html.twig',
             'position' => '1'
         ],
         [
-            'template' => 'template_2.tpl',
+            'template' => 'template_2.html.twig',
             'block'    => 'block_2',
-            'file'     => '/blocks/template_2.tpl',
+            'file'     => '/blocks/template_2.html.twig',
             'position' => '2'
         ],
     ],
@@ -63,8 +63,5 @@ $aModule = [
     'events'                  => [
         'onActivate'   => 'TestModuleMetaData21\Events::onActivate',
         'onDeactivate' => 'TestModuleMetaData21\Events::onDeactivate'
-    ],
-    'smartyPluginDirectories' => [
-        'Smarty/PluginDirectory'
     ],
 ];

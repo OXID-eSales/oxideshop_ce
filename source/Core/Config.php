@@ -104,10 +104,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Debug mode (default is set depending on if it is productive mode or not):
      *  -1 = Logger Messages internal use only
      *   0 = off
-     *   1 = smarty
      *   2 = SQL
-     *   3 = SQL + smarty
-     *   4 = SQL + smarty + shop template data
      *   5 = Delivery Cost calculation info
      *   6 = SMTP Debug Messages
      *   7 = Slow SQL query indication

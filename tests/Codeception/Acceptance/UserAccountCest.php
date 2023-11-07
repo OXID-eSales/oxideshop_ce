@@ -223,6 +223,7 @@ final class UserAccountCest
 
     /**
      * @group myAccount
+     * @group user_account_address
      */
     public function modifyUserShippingAddress(AcceptanceTester $I): void
     {
@@ -257,6 +258,7 @@ final class UserAccountCest
 
     /**
      * @group myAccount
+     * @group user_account_address
      */
     public function createAndDeleteUserShippingAddress(AcceptanceTester $I): void
     {

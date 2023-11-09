@@ -20,11 +20,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorAggregate
     arguments:
+      - '@oxid_esales.module.setup.validator.activation_dependency_validator'
       - '@oxid_esales.module.setup.validator.controllers_module_setting_validator'
       - '@oxid_esales.module.setup.validator.class_extensions_module_setting_validator'
       - '@oxid_esales.module.setup.validator.events_module_setting_validator'
       - '@oxid_esales.module.setup.validator.services_yaml_validator'
-      - '@oxid_esales.module.setup.validator.activation_dependency_validator'
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator

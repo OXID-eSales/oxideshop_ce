@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
  */
 final class ModuleDependencyResolverTest extends IntegrationTestCase
 {
-    public function testIndependentModuleCanBeDeactivated(): void
+    public function testIndependentModuleDoesNotHaveUnresolvedModuleDependenciesDuringActivationProcess(): void
     {
         $moduleDependencyDao = $this->createStub(ModuleDependencyDaoInterface::class);
         $moduleDependencyDao
@@ -32,8 +32,9 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
             $moduleDependencyDao,
             $moduleConfigurationDao
         );
+        $unresolvedDependencies = $resolver->getUnresolvedActivationDependencies('module-id-1', 1);
 
-        $this->assertTrue($resolver->canDeactivateModule('module-id-1', 1));
+        $this->assertFalse($unresolvedDependencies->hasModuleDependencies());
     }
 
     public function testIndependentModuleNotTriggerGetModuleDependenciesMethod(): void
@@ -43,21 +44,25 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
             ->expects($this->never())
             ->method('get');
         $moduleConfigurationDao = $this->createStub(ModuleConfigurationDaoInterface::class);
-        $resolver = new ModuleDependencyResolver(
+        $moduleConfigurationDao
+            ->method('getAll')
+            ->willReturn([
+                $this->getActiveModuleConfig('module-id-1'),
+            ]);
+        $moduleDependencyResolver = new ModuleDependencyResolver(
             $moduleDependencyDao,
             $moduleConfigurationDao
         );
 
-        $resolver->canDeactivateModule('module-id-1', 1);
+        $moduleDependencyResolver->getUnresolvedDeactivationDependencies('module-id-1', 1);
     }
 
-    public function testDependentModuleCanNotDeactivate(): void
+    public function testDependentModuleHasUnresolvedModuleDependenciesDuringDeactivationProcess(): void
     {
-        $moduleDependencyDao = $this->createMock(ModuleDependencyDaoInterface::class);
+        $moduleDependencyDao = $this->createStub(ModuleDependencyDaoInterface::class);
         $moduleDependencyDao
-            ->expects($this->once())
             ->method('get')
-            ->willReturn(new ModuleDependencies(['modules' => ['module-id-2', 'module-id-3']]));
+            ->willReturnCallback([$this, 'getModuleDependenciesCallback']);
         $moduleConfigurationDao = $this->createStub(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
             ->method('getAll')
@@ -72,7 +77,23 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
             $moduleConfigurationDao
         );
 
-        $this->assertFalse($resolver->canDeactivateModule('module-id-2', 1));
+        $unresolvedDependencies = $resolver->getUnresolvedDeactivationDependencies('module-id-2', 1);
+
+        $this->assertTrue($unresolvedDependencies->hasModuleDependencies());
+        $this->assertEquals(['module-id-1', 'module-id-4'], $unresolvedDependencies->getModuleIds());
+    }
+
+    public function getModuleDependenciesCallback($moduleId): ModuleDependencies
+    {
+        if ($moduleId === 'module-id-1') {
+            return new ModuleDependencies(['modules' => ['module-id-2', 'module-id-3']]);
+        }
+
+        if ($moduleId === 'module-id-4') {
+            return new ModuleDependencies(['modules' => ['module-id-2']]);
+        }
+
+        return new ModuleDependencies();
     }
 
     private function getActiveModuleConfig(string $moduleId): ModuleConfiguration

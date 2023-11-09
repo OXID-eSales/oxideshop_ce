@@ -1,0 +1,5 @@
+services:
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service\Fixtures\TestMissingDependencyModule\TestModuleService:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service\Fixtures\TestMissingDependencyModule\TestModuleService
+    public: true

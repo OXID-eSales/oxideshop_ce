@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Configuration\Bridge\AppConfigurationDaoBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Configuration\Bridge\AppConfigurationDaoBridge
+    public: true

@@ -1,0 +1,20 @@
+# Can't use type prefixes (string:) to avoid casting null values (to '')
+# https://github.com/symfony/symfony/pull/50837
+parameters:
+    "null": ~
+    app_env:
+        database:
+            driver: '%env(default:null:APP_DATABASE_DRIVER)%'
+            charset: '%env(default:null:APP_DATABASE_CHARSET)%'
+            host: '%env(default:null:APP_DATABASE_HOST)%'
+            port: '%env(int:default:null:APP_DATABASE_PORT)%'
+            name: '%env(default:null:APP_DATABASE_NAME)%'
+            user: '%env(default:null:APP_DATABASE_USER)%'
+            password: '%env(default:null:APP_DATABASE_PASSWORD)%'
+            driver_options: '%env(default:null:APP_DATABASE_DRIVER_OPTIONS)%'
+            unix_socket: '%env(default:null:APP_DATABASE_UNIX_SOCKET)%'
+services:
+    _defaults:
+        autowire: true
+    OxidEsales\EshopCommunity\Internal\Framework\Env\EnvLoaderInterface:
+        class: OxidEsales\EshopCommunity\Internal\Framework\Env\DotEnvLoader

@@ -63,39 +63,39 @@ class ShopIdCalculator
 
         $aMap = [];
 
-        $sSelect = "
-            SELECT oxshopid, oxvarname, oxvarvalue
-            FROM oxconfig
-            WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
-
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $oRs = $masterDb->select($sSelect);
-
-        if ($oRs && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $iShp = (int) $oRs->fields[0];
-                $sVar = $oRs->fields[1];
-                $sURL = $oRs->fields[2];
-
-                if ($sVar == 'aLanguageURLs') {
-                    $aUrls = unserialize($sURL);
-                    if (is_array($aUrls) && count($aUrls)) {
-                        $aUrls = array_filter($aUrls);
-                        $aUrls = array_fill_keys($aUrls, $iShp);
-                        $aMap = array_merge($aMap, $aUrls);
-                    }
-                } elseif ($sURL) {
-                    $aMap[$sURL] = $iShp;
-                }
-
-                $oRs->fetchRow();
-            }
-        }
-
-        //save to cache
-        $this->getVariablesCache()->setToCache("urlMap", $aMap);
-        self::$urlMap = $aMap;
+//        $sSelect = "
+//            SELECT oxshopid, oxvarname, oxvarvalue
+//            FROM oxconfig
+//            WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
+//
+//        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+//        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+//        $oRs = $masterDb->select($sSelect);
+//
+//        if ($oRs && $oRs->count() > 0) {
+//            while (!$oRs->EOF) {
+//                $iShp = (int) $oRs->fields[0];
+//                $sVar = $oRs->fields[1];
+//                $sURL = $oRs->fields[2];
+//
+//                if ($sVar == 'aLanguageURLs') {
+//                    $aUrls = unserialize($sURL);
+//                    if (is_array($aUrls) && count($aUrls)) {
+//                        $aUrls = array_filter($aUrls);
+//                        $aUrls = array_fill_keys($aUrls, $iShp);
+//                        $aMap = array_merge($aMap, $aUrls);
+//                    }
+//                } elseif ($sURL) {
+//                    $aMap[$sURL] = $iShp;
+//                }
+//
+//                $oRs->fetchRow();
+//            }
+//        }
+//
+//        //save to cache
+//        $this->getVariablesCache()->setToCache("urlMap", $aMap);
+//        self::$urlMap = $aMap;
 
         return $aMap;
     }

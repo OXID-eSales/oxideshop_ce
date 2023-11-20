@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\Bridge\AppConfigurationDaoBridgeInterface;
 
 /**
  * Database connection class
@@ -260,71 +262,75 @@ class DatabaseProvider
      */
     protected function getConnectionParameters()
     {
-        /** Collect the parameters, that are necessary to initialize the database connection: */
-
-        /**
-         * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
-         */
-        $databaseDriver = $this->getConfigParam('dbType');
-        /**
-         * @var string $databaseHost The database host to connect to.
-         * Be aware, that the connection between the MySQL client and the server is unencrypted.
-         */
-        $databaseHost = $this->getConfigParam('dbHost');
-        /**
-         * @var integer $databasePort TCP port to connect to.
-         */
-        $databasePort = (int) $this->getConfigParam('dbPort');
-        if (!$databasePort) {
-            $databasePort = 3306;
-        }
-        /**
-         * @var string $databaseName The name of the database or scheme to connect to.
-         */
-        $databaseName = $this->getConfigParam('dbName');
-        /**
-         * @var string $databaseUser The user id of the database user.
-         */
-        $databaseUser = $this->getConfigParam('dbUser');
-        /**
-         * @var string $databasePassword The password of the database user.
-         */
-        $databasePassword = $this->getConfigParam('dbPwd');
-        /**
-         * @var string $databaseDriverOptions The options to pass to the database driver.
-         */
-        $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
-        if (!is_array($databaseDriverOptions)) {
-            $databaseDriverOptions = array();
-        }
-        /**
-         * @var string $databaseUnixSocket The unix_socket path.
-         */
-        $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
+        $dbConfig = ContainerFacade::get(AppConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getDatabaseConfiguration();
+//        /** Collect the parameters, that are necessary to initialize the database connection: */
+//
+//        /**
+//         * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
+//         */
+//        $databaseDriver = $this->getConfigParam('dbType');
+//        /**
+//         * @var string $databaseHost The database host to connect to.
+//         * Be aware, that the connection between the MySQL client and the server is unencrypted.
+//         */
+//        $databaseHost = $this->getConfigParam('dbHost');
+//        /**
+//         * @var integer $databasePort TCP port to connect to.
+//         */
+//        $databasePort = (int) $this->getConfigParam('dbPort');
+//        if (!$databasePort) {
+//            $databasePort = 3306;
+//        }
+//        /**
+//         * @var string $databaseName The name of the database or scheme to connect to.
+//         */
+//        $databaseName = $this->getConfigParam('dbName');
+//        /**
+//         * @var string $databaseUser The user id of the database user.
+//         */
+//        $databaseUser = $this->getConfigParam('dbUser');
+//        /**
+//         * @var string $databasePassword The password of the database user.
+//         */
+//        $databasePassword = $this->getConfigParam('dbPwd');
+//        /**
+//         * @var string $databaseDriverOptions The options to pass to the database driver.
+//         */
+//        $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
+//        if (!is_array($databaseDriverOptions)) {
+//            $databaseDriverOptions = array();
+//        }
+//        /**
+//         * @var string $databaseUnixSocket The unix_socket path.
+//         */
+//        $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
 
         $connectionParameters = [
             'default' => [
-                'databaseDriver'        => $databaseDriver,
-                'databaseHost'          => $databaseHost,
-                'databasePort'          => $databasePort,
-                'databaseName'          => $databaseName,
-                'databaseUser'          => $databaseUser,
-                'databasePassword'      => $databasePassword,
-                'databaseDriverOptions' => $databaseDriverOptions,
-                'databaseUnixSocket'    => $databaseUnixSocket,
+                'databaseDriver' => $dbConfig->getDriver(),
+                'connectionCharset' => $dbConfig->getCharset(),
+                'databaseHost' => $dbConfig->getHost(),
+                'databasePort' => $dbConfig->getPort(),
+                'databaseName' => $dbConfig->getName(),
+                'databaseUser' => $dbConfig->getUser(),
+                'databasePassword' => $dbConfig->getPassword(),
+                'databaseDriverOptions' => $dbConfig->getDriverOptions(),
+                'databaseUnixSocket' => $dbConfig->isUnixSocketConnection() ? $dbConfig->getUnixSocket() : null,
             ],
         ];
 
-        /**
-         * The charset has to be set during the connection to the database.
-         */
-        $charset = (string) $this->getConfigParam('dbCharset');
-        //backwards compatibility with old config files.
-        if (null == $charset) {
-            $charset = 'utf8';
-        }
-
-        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
+//        /**
+//         * The charset has to be set during the connection to the database.
+//         */
+//        $charset = (string) $this->getConfigParam('dbCharset');
+//        //backwards compatibility with old config files.
+//        if (null == $charset) {
+//            $charset = 'utf8';
+//        }
+//
+//        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;
     }

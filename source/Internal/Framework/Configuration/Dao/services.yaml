@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\AppConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\AppConfigurationDao
+    arguments:
+      - '%app_env%'
+    public: true

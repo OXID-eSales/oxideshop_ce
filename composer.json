@@ -32,12 +32,15 @@
         "symfony/config": "^6.3",
         "symfony/console": "^6.3",
         "symfony/dependency-injection": "^6.3",
+        "symfony/dotenv": "^6.3",
         "symfony/event-dispatcher": "^6.3",
         "symfony/expression-language": "^6.3",
         "symfony/filesystem": "^6.3",
         "symfony/finder": "^6.3",
         "symfony/lock": "^6.3",
+        "symfony/property-access": "^6.3",
         "symfony/string": "^6.3",
+        "symfony/serializer": "^6.3",
         "symfony/yaml": "^6.3"
     },
     "require-dev": {

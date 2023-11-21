@@ -22,11 +22,6 @@ class TemplateEngine implements TemplateEngineInterface
         $this->globals[$name] = $value;
     }
 
-    /**
-     * Returns assigned globals.
-     *
-     * @return array
-     */
     public function getGlobals(): array
     {
         return $this->globals;

@@ -15,9 +15,12 @@
 - Private Sales Invite functionality is outdated.
 - `getContainer()` and `dispatchEvent()` methods in Core classes
 - Global function \makeReadable()
+- `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,
+template extension resolving is already performed in `TemplateRenderer`
 
 ### Fixed
 - Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)
+- Can't use dot character for template file names
 
 ### Changed
 -  Executing `oe-console` command with an invalid `shop-id` value will be interrupted

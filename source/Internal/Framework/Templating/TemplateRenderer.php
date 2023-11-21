@@ -9,37 +9,25 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class TemplateRenderer implements TemplateRendererInterface
 {
     public function __construct(
         private TemplateEngineInterface $templateEngine,
-        private ContextInterface $context
+        private ContextInterface $context,
+        private readonly ?string $filenameExtension = null
     ) {
     }
 
-    /**
-     * @param string $template The template name
-     * @param array  $context  An array of parameters to pass to the template
-     *
-     * @return string
-     */
     public function renderTemplate(string $template, array $context = []): string
     {
+        if ($this->filenameExtension) {
+            $template = $this->appendDefaultFilenameExtension($template);
+        }
         return $this->getTemplateEngine()->render($template, $context);
     }
 
-    /**
-     * Renders a fragment of the template.
-     *
-     * @param string $fragment The template fragment to render
-     * @param string $fragmentId The id of the fragment
-     * @param array  $context    An array of parameters to pass to the template
-     *
-     * @return string
-     */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
         if ($this->doNotRenderForDemoShop()) {
@@ -48,30 +36,28 @@ class TemplateRenderer implements TemplateRendererInterface
         return $this->getTemplateEngine()->renderFragment($fragment, $fragmentId, $context);
     }
 
-    /**
-     * Return fallback engine.
-     *
-     * @return TemplateEngineInterface
-     */
     public function getTemplateEngine(): TemplateEngineInterface
     {
         return $this->templateEngine;
     }
 
-    /**
-     * Returns true if the template exists.
-     *
-     * @param string $name A template name
-     *
-     * @return bool true if the template exists, false otherwise
-     */
     public function exists(string $name): bool
     {
+        if ($this->filenameExtension) {
+            $name = $this->appendDefaultFilenameExtension($name);
+        }
         return $this->getTemplateEngine()->exists($name);
     }
 
     private function doNotRenderForDemoShop(): bool
     {
         return $this->context->isShopInDemoMode();
+    }
+
+    private function appendDefaultFilenameExtension(string $templateName): string
+    {
+        return str_ends_with($templateName, $this->filenameExtension) ?
+            $templateName :
+            "$templateName.$this->filenameExtension";
     }
 }

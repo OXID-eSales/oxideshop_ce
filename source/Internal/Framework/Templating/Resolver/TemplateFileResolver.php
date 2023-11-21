@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
 use Symfony\Component\Filesystem\Path;
 
+/**
+ * @deprecated will be removed in next major
+ */
 final class TemplateFileResolver implements TemplateFileResolverInterface
 {
     private string $filenameExtension;

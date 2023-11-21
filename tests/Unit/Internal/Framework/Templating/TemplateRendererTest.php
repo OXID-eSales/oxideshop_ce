@@ -9,23 +9,52 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
-class TemplateRendererTest extends TestCase
+final class TemplateRendererTest extends TestCase
 {
-    public function testRenderTemplate()
+    public function testRenderTemplateWithoutOptionalFileExtension(): void
+    {
+        $response = 'some template content';
+        $templateName = 'some-template';
+        $engine = $this->getEngineMock();
+        $engine
+            ->method('render')
+            ->with($templateName)
+            ->willReturn($response);
+
+        $renderer = new TemplateRenderer($engine, $this->getContextMock());
+
+        $this->assertSame($response, $renderer->renderTemplate($templateName, []));
+    }
+
+    /** @dataProvider twigTemplateNameFileDataProvider */
+    public function testRenderTemplateFilenameExtension($filename, $expectedFilename): void
+    {
+        $engine = $this->getEngineMock();
+        $engine->method('render')
+            ->willReturnCallback(function ($templateName) {
+                return $templateName;
+            });
+
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
+
+        $this->assertSame($expectedFilename, $renderer->renderTemplate($filename, []));
+    }
+
+    public function testRenderTemplateCallsRender(): void
     {
         $response = 'rendered template';
         $engine = $this->getEngineMock();
         $engine->expects($this->once())
             ->method('render')
-            ->with('template')
-            ->will($this->returnValue($response));
+            ->with('template.html.twig')
+            ->willReturn($response);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock());
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
 
         $this->assertSame($response, $renderer->renderTemplate('template', []));
     }
@@ -37,9 +66,9 @@ class TemplateRendererTest extends TestCase
         $engine->expects($this->once())
             ->method('renderFragment')
             ->with('template')
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock());
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
 
         $this->assertSame($response, $renderer->renderFragment('template', 'testId', []));
     }
@@ -54,48 +83,85 @@ class TemplateRendererTest extends TestCase
         $context = $this->getContextMock();
         $context->expects($this->once())
             ->method('isShopInDemoMode')
-            ->will($this->returnValue(true));
-        $renderer = new TemplateRenderer($engine, $context);
+            ->willReturn(true);
+        $renderer = new TemplateRenderer($engine, $context, 'html.twig');
 
         $this->assertSame('template', $renderer->renderFragment('template', 'testId', []));
     }
 
-    public function testGetExistingEngine()
+    public function testGetExistingEngine(): void
     {
         $engine = $this->getEngineMock();
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock());
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
 
         $this->assertSame($engine, $renderer->getTemplateEngine());
     }
 
-    public function testExists()
+    public function testExistsWithoutOptionalFileExtension(): void
     {
+        $templateName = 'some-template';
+        $engine = $this->getEngineMock();
+        $engine
+            ->method('exists')
+            ->with($templateName)
+            ->willReturn(true);
+
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), null);
+
+        $this->assertTrue($renderer->exists($templateName));
+    }
+
+    public function testExists(): void
+    {
+        $templateName = 'template';
+        $fileNameExtension = 'html.twig';
         $engine = $this->getEngineMock();
         $engine->expects($this->once())
             ->method('exists')
-            ->with('template')
-            ->will($this->returnValue(true));
+            ->with("$templateName.$fileNameExtension")
+            ->willReturn(true);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock());
+        $renderer = new TemplateRenderer($engine, $this->getContextMock(), $fileNameExtension);
 
-        $this->assertTrue($renderer->exists('template'));
-    }
-
-    /**
-     * @return \OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface
-     */
-    private function getEngineMock()
-    {
-        $engine = $this
-            ->getMockBuilder('OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface')
-            ->getMock();
-
-        return $engine;
+        $this->assertTrue($renderer->exists($templateName));
     }
 
     private function getContextMock(): ContextInterface
     {
         return $this->getMockBuilder(ContextInterface::class)->getMock();
+    }
+
+    private function getEngineMock(): TemplateEngineInterface
+    {
+        return $this
+            ->getMockBuilder(TemplateEngineInterface::class)
+            ->getMock();
+    }
+
+    private static function twigTemplateNameFileDataProvider(): array
+    {
+        return [
+            [
+                'template',
+                'template.html.twig',
+            ],
+            [
+                'template.html.twig',
+                'template.html.twig'
+            ],
+            [
+                'some/path/template_name.html.twig',
+                'some/path/template_name.html.twig'
+            ],
+            [
+                'some/path/template.name.html.twig',
+                'some/path/template.name.html.twig'
+            ],
+            [
+                'some/path/template.name',
+                'some/path/template.name.html.twig'
+            ],
+        ];
     }
 }

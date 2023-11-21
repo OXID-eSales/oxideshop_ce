@@ -36,7 +36,7 @@ class ContainerFactory
     private $cache;
 
     /**
-     * The constructor's private to make clas a singleton
+     * The constructor's private to make class a singleton
      */
     private function __construct()
     {

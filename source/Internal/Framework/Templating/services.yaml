@@ -11,6 +11,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
+    arguments:
+      $filenameExtension: '%oxid_esales.templating.engine_template_extension%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
@@ -24,6 +26,10 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
       - '%oxid_esales.templating.engine_template_extension%'
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '7.1.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
     arguments:
@@ -61,3 +67,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
     public: true
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '7.1.0'
+      message: 'The "%service_id%" service is deprecated.'

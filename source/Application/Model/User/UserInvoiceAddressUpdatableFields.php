@@ -7,31 +7,17 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model\User;
 
-use OxidEsales\Eshop\Application\Model\Address;
-use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
-
 /**
  * @inheritdoc
  */
-class UserShippingAddressUpdatableFields extends AbstractUpdatableFields
+class UserInvoiceAddressUpdatableFields extends UserUpdatableFields
 {
-    /**
-     * UserShippingAddressUpdatableFields constructor.
-     */
-    public function __construct()
-    {
-        $address = oxNew(Address::class);
-        $this->tableName = $address->getCoreTableName();
-    }
-
-    /**
-     * Return list of fields which could be updated by shop customer.
-     *
-     * @return array
-     */
     public function getUpdatableFields()
     {
         return [
+            'OXUSERNAME',
+            'OXCUSTNR',
+            'OXUSTID',
             'OXCOMPANY',
             'OXFNAME',
             'OXLNAME',
@@ -39,13 +25,20 @@ class UserShippingAddressUpdatableFields extends AbstractUpdatableFields
             'OXSTREETNR',
             'OXADDINFO',
             'OXCITY',
-            'OXCOUNTRY',
             'OXCOUNTRYID',
             'OXSTATEID',
             'OXZIP',
             'OXFON',
             'OXFAX',
             'OXSAL',
+            'OXCREATE',
+            'OXREGISTER',
+            'OXPRIVFON',
+            'OXMOBFON',
+            'OXBIRTHDATE',
+            'OXURL',
+            'OXUPDATEKEY',
+            'OXUPDATEEXP',
             'OXTIMESTAMP'
         ];
     }

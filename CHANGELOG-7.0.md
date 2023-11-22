@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fix skipped backend startup checks [PR-927](https://github.com/OXID-eSales/oxideshop_ce/pull/927)
+- Private Sales user registration [#0006412](https://bugs.oxid-esales.com/view.php?id=6412)
 
 ## v7.0.2 - 2023-11-28
 

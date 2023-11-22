@@ -2073,8 +2073,14 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields' => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\User\UserShippingAddressUpdatableFields::class,
+    'OxidEsales\Eshop\Application\Model\Address\ShippingAddressUpdatableFields' => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Address\ShippingAddressUpdatableFields::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
+    'OxidEsales\Eshop\Application\Model\User\UserInvoiceAddressUpdatableFields' => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\User\UserInvoiceAddressUpdatableFields::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

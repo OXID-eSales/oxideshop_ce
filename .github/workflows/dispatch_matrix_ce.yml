@@ -8,7 +8,7 @@ on:
         type: string
         required: true
         description: 'URL/PATH of the testplan to run'
-        default: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/full_matrix_ce.yml'
+        default: 'tests/github_actions/full_matrix_ce.yml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -16,11 +16,12 @@ on:
         default: '"ubuntu-latest"'
 
 jobs:
-  call_matrix:
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
+  oxideshop_ce_dispatch:
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
       testplan: ${{ inputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
+      defaults: 'v3'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

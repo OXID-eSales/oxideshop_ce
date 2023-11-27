@@ -3,13 +3,45 @@ name: nightly_matrix_full_ce
 
 on:
   schedule:
-    - cron: '17 4 * * 1-5'
+    - cron: '17 23 * * 1-5'
 
 jobs:
-  oxideshop_ce_nightly:
+  oxideshop_ce_80x_nightly:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
       testplan: 'tests/github_actions/full_matrix_ce.yml'
+      runs_on: '"ubuntu-latest"'
+      defaults: 'v3'
+    secrets:
+      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
+      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
+      enterprise_github_token: ${{ secrets.enterprise_github_token }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  oxideshop_ce_71x_nightly:
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
+    with:
+      testplan: 'tests/github_actions/defaults/7.1.x.yml,tests/github_actions/full_matrix_ce.yml'
+      runs_on: '"ubuntu-latest"'
+      defaults: 'v3'
+    secrets:
+      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
+      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
+      enterprise_github_token: ${{ secrets.enterprise_github_token }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  oxideshop_ce_70x_nightly:
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
+    with:
+      testplan: 'tests/github_actions/defaults/7.0.x.yml,tests/github_actions/full_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

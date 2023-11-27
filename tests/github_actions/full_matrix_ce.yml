@@ -11,4 +11,4 @@ phpcs_tests:
   filter: '^\./source/Internal/.*\.php$'
 
 finish:
-  slack_title: 'Full matrix CE on {{ .Github.Repository }} by {{ .Github.Actor }}'
+  slack_title: 'Full matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

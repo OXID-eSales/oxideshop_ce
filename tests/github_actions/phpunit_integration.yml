@@ -1,0 +1,17 @@
+phpunit:
+  title: 'integration_tests'
+  container:
+    options: '-e XDEBUG_MODE=coverage'
+  test: 'tests/Integration'
+  additional_options: '--bootstrap tests/bootstrap.php tests --coverage-clover=/var/www/integration_coverage.xml'
+logfile:
+  prefix: 'phpunit_integration'
+output:
+  prefix: 'integration_artifacts'
+  files: |
+    source/integration_coverage.xml
+    generated_testplan.yaml
+    source/source/log/oxideshop.log
+    data/php/logs/error_log.txt
+coverage:
+  path: 'source/integration_coverage.xml'

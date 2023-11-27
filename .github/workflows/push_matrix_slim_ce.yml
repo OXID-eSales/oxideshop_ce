@@ -7,12 +7,12 @@ on:
       - b-8.0.x
 
 jobs:
-  call_matrix:
-    if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
+  oxideshop_ce_push_non_b80x:
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/slim_matrix_ce.yml'
+      testplan: 'tests/github_actions/slim_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
+      defaults: 'v3'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

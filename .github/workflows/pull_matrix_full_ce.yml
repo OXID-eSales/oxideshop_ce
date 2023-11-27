@@ -9,12 +9,12 @@ on:
       - synchronize
 
 jobs:
-  call_matrix:
-    if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-test_matrix.yml@v2
+  oxideshop_ce_pull:
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'https://raw.githubusercontent.com/OXID-eSales/github-actions/v2/testplans/full_matrix_ce.yml'
+      testplan: 'tests/github_actions/full_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
+      defaults: 'v3'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

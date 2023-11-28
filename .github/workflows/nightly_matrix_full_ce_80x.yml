@@ -3,7 +3,7 @@ name: nightly_matrix_full_ce_80x
 
 on:
   schedule:
-    - cron: '17 03 * * 1-5'
+    - cron: '17 3 * * 1-5'
 
 jobs:
   oxideshop_ce_80x_nightly:

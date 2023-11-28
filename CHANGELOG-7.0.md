@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.0.2 - Unreleased
+## v7.0.2 - 2023-11-28
 
 ### Fixed
 - Attribute value of 0 breaks category filtering with attributes in frontend [#0007474](https://bugs.oxid-esales.com/view.php?id=7474)

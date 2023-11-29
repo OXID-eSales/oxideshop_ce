@@ -13,16 +13,20 @@ install_module:
   matrix: *matrix
 
 phpunit:
-  matrix_testplan: &skip 'skip'
+  matrix:
+    testplan: &skip 'skip'
 
 codeception:
-  matrix_testplan: *skip
+  matrix:
+    testplan: *skip
 
 runtest:
-  matrix_testplan: *skip
+  matrix:
+    testplan: *skip
 
 sonarcloud:
-  matrix_testplan: *skip
+  matrix:
+    testplan: *skip
 
 phpcs_tests:
   # Check all files in the full check

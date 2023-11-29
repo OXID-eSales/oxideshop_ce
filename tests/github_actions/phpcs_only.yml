@@ -18,7 +18,7 @@ phpunit:
 codeception:
   matrix_testplan: *skip
 
-runtests:
+runtest:
   matrix_testplan: *skip
 
 sonarcloud:

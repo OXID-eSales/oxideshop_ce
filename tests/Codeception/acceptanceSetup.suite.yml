@@ -1,3 +1,5 @@
+codeception:
+  suite: 'AcceptanceSetup'
 actor: AcceptanceSetupTester
 modules:
   enabled:

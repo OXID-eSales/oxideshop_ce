@@ -3,8 +3,6 @@
 # Suite for acceptance tests.
 # Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
-codeception:
-    suite: 'Acceptance'
 actor: AcceptanceTester
 bootstrap: _bootstrap.php
 modules:

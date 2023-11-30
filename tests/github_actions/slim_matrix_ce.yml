@@ -26,10 +26,12 @@ codeception:
     path: ''
 
 runtest:
-  matrix_testplan: ''
+  matrix:
+    testplan: 'skip'
 
 sonarcloud:
-  skip: true
+  matrix:
+    testplan: 'skip'
 
 phpcs_tests:
   # Skip this part of the test run

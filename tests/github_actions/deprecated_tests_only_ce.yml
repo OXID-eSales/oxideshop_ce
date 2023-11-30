@@ -16,13 +16,16 @@ prepare_shop:
       update_options: '--no-interaction'
 
 phpunit:
-  matrix_testplan: &skip ''
+  matrix:
+    testplan: &skip 'skip'
 
 codeception:
-  matrix_testplan: *skip
+  matrix:
+    testplan: *skip
 
 sonarcloud:
-  skip: true
+  matrix:
+    testplan: *skip
 
 phpcs_tests:
   skip: true

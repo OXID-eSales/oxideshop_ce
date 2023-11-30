@@ -7,7 +7,7 @@ prepare_shop:
 
 codeception:
   matrix:
-    testplan: '["tests/github_actions/defaults/codeception_acceptance_7x.yml","tests/github_actions/defaults/codeception_acceptanceSetup_7x.yml"]'
+    testplan: '["tests/github_actions/codeception_acceptance_7x.yml","tests/github_actions/codeception_acceptanceSetup_7x.yml"]'
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
 

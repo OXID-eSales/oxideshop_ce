@@ -1,0 +1,33 @@
+# This config depends on the defaults.yml testplan
+# Only diverging settings are defined here
+
+prepare_shop:
+  matrix: &matrix
+    php: '["8.2"]'
+    mysql: '["8.0"]'
+
+install_shop:
+  matrix: *matrix
+
+install_module:
+  matrix: *matrix
+
+phpunit:
+  matrix_testplan: &skip ''
+
+codeception:
+  matrix_testplan: *skip
+
+runtests:
+  matrix_testplan: *skip
+
+sonarcloud:
+  skip: true
+
+phpcs_tests:
+  # Check all files in the full check
+  diff_only: false
+  filter: '^\./source/Internal/.*\.php$'
+
+finish:
+  slack_title: 'Only phpcs (all files) check on {{ .Github.Repository }} by {{ .Github.Actor }}'

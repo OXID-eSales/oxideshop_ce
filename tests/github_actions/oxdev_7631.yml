@@ -6,6 +6,8 @@ global:
       install: 'twig-component twig-admin-theme apex-theme:dev-b-7.0.x-fix-page-objects-OXDEV-7631'
 
 codeception:
+  matrix:
+    testplan: '["tests/github_actions/codeception_acceptance_7x.yml","tests/github_actions/codeception_acceptanceSetup_7x.yml"]'
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
 

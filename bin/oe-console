@@ -1,16 +1,19 @@
 #!/usr/bin/env php
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OxidEsales\Facts\Facts;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\Facts\Facts;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Path;
 
 $autoloadFileExist = false;
 $autoloadFiles = [
@@ -29,13 +32,23 @@ foreach ($autoloadFiles as $autoloadFile) {
 }
 
 if (!$autoloadFileExist) {
-    exit("autoload.php file was not found!");
+    exit('autoload.php file was not found!');
 }
 
-$_POST['shp'] =  (int) (new ArgvInput())->getParameterOption(
+$shopId =  (int) (new ArgvInput())->getParameterOption(
     '--shop-id',
     1
 );
+
+$shopConfigurations = BootstrapContainerFactory::getBootstrapContainer()
+    ->get(ShopConfigurationDaoInterface::class)
+    ->getAll();
+if (!isset($shopConfigurations[$shopId])) {
+    echo "Error: Invalid --shop-id value. Configuration for shop '$shopId' can not be found!\n";
+    exit(1);
+}
+
+$_POST['shp'] = $shopId;
 
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;

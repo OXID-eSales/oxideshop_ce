@@ -22,6 +22,7 @@ global:
 prepare_shop:
   matrix: *matrix
   git: *git
+  composer:
     configure:
       ref: *dev_ref
     require:

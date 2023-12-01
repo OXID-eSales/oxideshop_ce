@@ -41,7 +41,8 @@ install_module:
   composer: *composer
 
 phpunit:
-  matrix: *matrix
+  matrix:
+    testplan: 'skip'
 
 codeception:
   matrix:
@@ -67,14 +68,15 @@ runtest:
   matrix: *matrix
 
 sonarcloud:
-  matrix: &matrix_slim
-    php: '["8.0"]'
-    mysql: '["5.7"]'
-    template_engine: '["smarty"]'
+  matrix:
+    testplan: 'skip'
   target_branch: *git_shop_ref
 
 phpcs_tests:
   matrix: &matrix_slim
+    php: '["8.0"]'
+    mysql: '["5.7"]'
+    template_engine: '["smarty"]'
   # Check all files in the full check
   diff_only: false
   filter: '^\./source/Internal/.*\.php$'

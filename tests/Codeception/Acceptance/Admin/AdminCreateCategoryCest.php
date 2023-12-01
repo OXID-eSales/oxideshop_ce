@@ -7,16 +7,18 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
-use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
+use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('admin')]
 final class AdminCreateCategoryCest
 {
     private string $categoryName = 'test category';
 
-    public function createCategory(AcceptanceAdminTester $I): void
+    public function createCategory(AcceptanceTester $I): void
     {
         $I->wantToTest('create a category with image');
 
@@ -27,19 +29,19 @@ final class AdminCreateCategoryCest
 
         $I->seeInDatabase('oxcategories', ['oxtitle' => $this->categoryName]);
     }
-    public function createCategoryWrongImageExtension(AcceptanceAdminTester $I): void
+    public function createCategoryWrongImageExtension(AcceptanceTester $I): void
     {
         $I->wantToTest('create a category with wrong image extension');
 
         $adminPanel = $I->loginAdmin();
         $categoriesPage = $adminPanel->openCategories();
         $categoriesPage->createNewCategory($this->categoryName);
-        $categoriesPage->uploadThumbnail('product_description.php');
+        $categoriesPage->uploadThumbnail('product_image.php');
 
         $I->waitForText(Translator::translate('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE'));
     }
 
-    public function createCategoryWrongImageType(AcceptanceAdminTester $I): void
+    public function createCategoryWrongImageType(AcceptanceTester $I): void
     {
         $I->wantToTest('create a category with wrong image type');
 

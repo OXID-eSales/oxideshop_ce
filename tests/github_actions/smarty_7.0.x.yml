@@ -58,7 +58,7 @@ codeception:
       MODULE_OPTIONS="-e MODULE_IDS=${install_module_ids}"
     fi
     echo "CODECEPTION_CONTAINER_OPTIONS=-e THEME_ID=flow ${MODULE_OPTIONS}" | tee -a "${GITHUB_ENV}"
-    echo "codeception_container_options=-e THEME_ID=flow ${MODULE_OPTIONS}" | tee -a "${GITHUB_OUTPUT}"
+    echo "container_options=-e THEME_ID=flow ${MODULE_OPTIONS}" | tee -a "${GITHUB_OUTPUT}"
     perl -pi \
       -e 's#admin_twig#admin_smarty#g;' \
       -e 's#views/apex#views/flow/translations#g;' \

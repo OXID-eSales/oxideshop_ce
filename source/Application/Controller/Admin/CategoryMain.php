@@ -148,6 +148,11 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             Registry::getRequest()->getRequestEscapedParameter("editval")
         );
 
+        if (!$this->validateRequestImages()) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+            return;
+        }
+
         /** @var \OxidEsales\Eshop\Application\Model\Category $oCategory */
         $oCategory = $this->createCategory();
 

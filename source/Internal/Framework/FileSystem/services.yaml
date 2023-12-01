@@ -18,3 +18,12 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\CsvFileGeneratorBridge
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidator
+    arguments:
+      - "@oxid_esales.symfony.mime_types"
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridge
+    public: true

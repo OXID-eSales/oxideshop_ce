@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface;
 
 /**
  * Main Controller class for admin area.
@@ -582,5 +583,22 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             $className = get_parent_class($className);
         }
         return $className;
+    }
+
+    //The current method would be better suited in a form validator.
+    protected function validateRequestImages(): bool
+    {
+        if (empty($_FILES['myfile'])) {
+            return true;
+        }
+
+        $fileValidator = $this->getContainer()->get(FileValidatorBridgeInterface::class);
+        foreach ($_FILES['myfile']['tmp_name'] as $file) {
+            if (!$fileValidator->validateImage($file)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

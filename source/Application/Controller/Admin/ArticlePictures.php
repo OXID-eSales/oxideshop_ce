@@ -77,6 +77,11 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             return;
         }
 
+        if (!$this->validateRequestImages()) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+            return;
+        }
+
         parent::save();
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

@@ -79,6 +79,11 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $soxId = $this->getEditObjectId();
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
+        if (!$this->validateRequestImages()) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+            return;
+        }
+
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
             $aParams['oxwrapping__oxactive'] = 0;

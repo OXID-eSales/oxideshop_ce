@@ -20,6 +20,9 @@ services:
   Symfony\Component\Filesystem\Filesystem:
     alias: oxid_esales.symfony.file_system
 
+  oxid_esales.symfony.mime_types:
+    class: Symfony\Component\Mime\MimeTypes
+
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactory
 

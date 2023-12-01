@@ -25,6 +25,8 @@ final class ModuleDependencyActivationTest extends IntegrationTestCase
     private string $testDependentModuleId = 'test-dependent-module';
     private string $testModuleWithDependencyPath = __DIR__ . '/Fixtures/TestModuleWithDependency';
     private string $testModuleWithDependencyId = 'test-module-with-dependency';
+    private string $testMissingDependencyModuleId = 'test-missing-dependency-module';
+    private string $testMissingDependencyModulePath = __DIR__ . '/Fixtures/TestMissingDependencyModule';
 
     public function setup(): void
     {
@@ -61,6 +63,8 @@ final class ModuleDependencyActivationTest extends IntegrationTestCase
     public function testActivationExceptionThrownIfDependentModuleIsInactive(): void
     {
         $this->expectException(DependencyValidationException::class);
+        $this->expectExceptionMessage(sprintf('to be activated: "%s"', $this->testDependentModuleId));
+
         $this->get(ModuleActivationBridgeInterface::class)->activate(
             $this->testModuleWithDependencyId,
             $this->shopId
@@ -82,14 +86,29 @@ final class ModuleDependencyActivationTest extends IntegrationTestCase
 
     public function testDeactivationExceptionThrownIfItIsADependencyOfAnotherModule(): void
     {
+        $this->expectException(DependencyValidationException::class);
+        $this->expectExceptionMessage(sprintf('to be deactivated: "%s"', $this->testModuleWithDependencyId));
+
         $moduleActivation = $this->get(ModuleActivationBridgeInterface::class);
         $moduleActivation->activate($this->testDependentModuleId, $this->shopId);
         $moduleActivation->activate($this->testModuleWithDependencyId, $this->shopId);
 
-        $this->expectException(DependencyValidationException::class);
         $this->get(ModuleActivationBridgeInterface::class)->deactivate(
             $this->testDependentModuleId,
             $this->shopId
         );
+    }
+
+    public function testDependencyValidatorShouldFireEarlier(): void
+    {
+        $this->expectException(DependencyValidationException::class);
+
+        $moduleInstaller = $this->get(ModuleInstallerInterface::class);
+        $moduleInstaller->install(new OxidEshopPackage($this->testMissingDependencyModulePath));
+
+        $moduleActivation = $this->get(ModuleActivationBridgeInterface::class);
+        $moduleActivation->activate($this->testMissingDependencyModuleId, $this->shopId);
+
+        $moduleInstaller->uninstall(new OxidEshopPackage($this->testMissingDependencyModulePath));
     }
 }

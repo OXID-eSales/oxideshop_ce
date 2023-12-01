@@ -24,16 +24,21 @@ class DeactivationDependencyValidator implements ModuleConfigurationValidatorInt
      */
     public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
-        if ($this->moduleDependencyResolver->canDeactivateModule($configuration->getId(), $shopId)) {
+        $unresolvedDependencies =
+            $this->moduleDependencyResolver->getUnresolvedDeactivationDependencies($configuration->getId(), $shopId);
+
+        if (!$unresolvedDependencies->hasModuleDependencies()) {
             return;
         }
 
         throw new DependencyValidationException(
             sprintf(
-                'Module "%s" in shop "%d" has unfulfilled dependencies and can not be deactivated.
-                Make sure all its dependencies are deactivated and try again.',
+                'Module "%s" has unfulfilled dependencies in shop "%d" and can not be deactivated. 
+                "%1$s" requires the following modules to be deactivated: "%s"
+                Make sure all dependencies are resolved and try again.',
                 $configuration->getId(),
-                $shopId
+                $shopId,
+                implode(', ', $unresolvedDependencies->getModuleIds())
             )
         );
     }

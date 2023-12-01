@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleDependencyDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\UnresolvedModuleDependencies;
 
 use function in_array;
 
@@ -22,31 +23,33 @@ class ModuleDependencyResolver implements ModuleDependencyResolverInterface
     ) {
     }
 
-    public function canActivateModule(string $moduleId, int $shopId): bool
+    public function getUnresolvedActivationDependencies(string $moduleId, int $shopId): UnresolvedModuleDependencies
     {
+        $unresolvedDependencies = new UnresolvedModuleDependencies();
         $requiredModules = $this->moduleDependencyDao->get($moduleId)->getRequiredModuleIds();
         $activeModules = $this->getActiveModuleIds($shopId);
 
         foreach ($requiredModules as $requiredModule) {
             if (!in_array($requiredModule, $activeModules, true)) {
-                return false;
+                $unresolvedDependencies->addModuleId($requiredModule);
             }
         }
 
-        return true;
+        return $unresolvedDependencies;
     }
 
-    public function canDeactivateModule(string $moduleId, int $shopId): bool
+    public function getUnresolvedDeactivationDependencies(string $moduleId, int $shopId): UnresolvedModuleDependencies
     {
-        $activeModules = $this->getActiveModuleIds($shopId);
+        $unresolvedDependencies = new UnresolvedModuleDependencies();
+        $activeModuleIds = $this->getActiveModuleIds($shopId);
 
-        foreach ($activeModules as $activeModule) {
-            if ($this->isDeactivatable($moduleId, $activeModule)) {
-                return false;
+        foreach ($activeModuleIds as $activeModuleId) {
+            if ($this->isRequiredByActiveModule($moduleId, $activeModuleId)) {
+                $unresolvedDependencies->addModuleId($activeModuleId);
             }
         }
 
-        return true;
+        return $unresolvedDependencies;
     }
 
     private function getActiveModuleIds(int $shopId): array
@@ -62,7 +65,7 @@ class ModuleDependencyResolver implements ModuleDependencyResolverInterface
         return $activeModuleIds;
     }
 
-    private function isDeactivatable(string $moduleId, string $activeModule): bool
+    private function isRequiredByActiveModule(string $moduleId, string $activeModule): bool
     {
         return
             $moduleId !== $activeModule &&

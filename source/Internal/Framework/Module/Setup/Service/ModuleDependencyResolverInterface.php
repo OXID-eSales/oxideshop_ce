@@ -7,9 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\UnresolvedModuleDependencies;
+
 interface ModuleDependencyResolverInterface
 {
-    public function canActivateModule(string $moduleId, int $shopId): bool;
+    public function getUnresolvedActivationDependencies(string $moduleId, int $shopId): UnresolvedModuleDependencies;
 
-    public function canDeactivateModule(string $moduleId, int $shopId): bool;
+    public function getUnresolvedDeactivationDependencies(string $moduleId, int $shopId): UnresolvedModuleDependencies;
 }

@@ -1,20 +1,16 @@
-name: pull_matrix_full_ce
+name: push_matrix_slim_ce_71x
 # Matrix workflow using re-usable github actions
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
+  push:
     branches:
-      - b-8.0.x
+      - b-7.1.x
 
 jobs:
-  oxideshop_ce_pull:
+  oxideshop_ce_push_b71x:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'tests/github_actions/full_matrix_ce.yml'
+      testplan: 'tests/github_actions/slim_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

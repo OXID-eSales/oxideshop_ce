@@ -1,0 +1,91 @@
+# This config depends on the defaults.yml testplan
+# Only diverging settings are defined here
+workflow:
+  matrix: &matrix
+    # We only test the latest recommended versions here but both template engines
+    php: &matrix_php '["8.0","8.1"]'
+    mysql: &matrix_mysql '["5.7","8.0"]'
+    template_engine: &matrix_template_engine '["smarty"]'
+    # currently, only twig works for oe_moduletemplate template_engine: &template_engine '["smarty","twig"]'
+
+global:
+  git: &git
+    shop_ref: &git_shop_ref b-7.0.x
+    enterprise_ref: &git_enterprise_ref 'b-7.0.x'
+
+  composer: &composer
+    configure:
+      ref: &dev_ref dev-b-7.0.x
+    require:
+      ref: *dev_ref
+
+prepare_shop:
+  matrix: *matrix
+  git: *git
+  composer:
+    configure:
+      ref: *dev_ref
+    require:
+      ref: *dev_ref
+      install: 'smarty-component smarty-admin-theme flow-theme codeception-page-objects codeception-modules'
+
+install_shop:
+  matrix: *matrix
+  git: *git
+
+install_module:
+  matrix: *matrix
+  git:
+    module:
+      ref: 'b-7.0.x'
+  composer: *composer
+
+phpunit:
+  matrix:
+    testplan: 'skip'
+
+codeception:
+  matrix:
+    php: *matrix_php
+    mysql: *matrix_mysql
+    template_engine: *matrix_template_engine
+    testplan: 'skip'
+    #'["tests/github_actions/codeception_acceptance_70x.yml","tests/github_actions/codeception_acceptanceSetup_70x.yml"]'
+  # Running on public runners, this should pose no problem
+  max_parallel: &codeception_max_parallel 4
+  pre_script: |
+    MODULE_OPTIONS=""
+    if [ "${install_module_ids}" != "" ]; then
+      MODULE_OPTIONS="-e MODULE_IDS=${install_module_ids}"
+    fi
+    echo "CODECEPTION_CONTAINER_OPTIONS=-e THEME_ID=flow ${MODULE_OPTIONS}" | tee -a "${GITHUB_ENV}"
+    echo "container_options=-e THEME_ID=flow ${MODULE_OPTIONS}" | tee -a "${GITHUB_OUTPUT}"
+    perl -pi \
+      -e 's#admin_twig#admin_smarty#g;' \
+      -e 's#views/apex#views/flow/translations#g;' \
+      'source/test-module/tests/Codeception/acceptance.suite.yml'
+  composer: *composer
+  additional_options: '--coverage-xml=/var/www/codeception_coverage.xml'
+
+runtest:
+  matrix: *matrix
+  container:
+    method: exec
+    options: '-e XDEBUG_MODE=coverage -e THEME_ID=flow -e ACTIVE_THEME=flow'
+
+sonarcloud:
+  matrix:
+    testplan: 'skip'
+  target_branch: *git_shop_ref
+
+phpcs_tests:
+  matrix: &matrix_slim
+    php: '["8.0"]'
+    mysql: '["5.7"]'
+    template_engine: '["smarty"]'
+  # Check all files in the full check
+  diff_only: false
+  filter: '^\./source/Internal/.*\.php$'
+
+finish:
+  slack_title: 'CE 7.0.x with Smarty on {{ .Github.Repository }} by {{ .Github.Actor }}'

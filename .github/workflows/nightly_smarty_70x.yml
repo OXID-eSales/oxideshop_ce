@@ -1,20 +1,15 @@
-name: pull_matrix_full_ce
+name: nightly_smarty_70x
 # Matrix workflow using re-usable github actions
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-    branches:
-      - b-8.0.x
+  schedule:
+    - cron: '37 0 * * 1-5'
 
 jobs:
-  oxideshop_ce_pull:
+  oxideshop_ce_smarty_70x_nightly:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'tests/github_actions/full_matrix_ce.yml'
+      testplan: 'tests/github_actions/defaults/7.0.x.yml,tests/github_actions/smarty_7.0.x.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

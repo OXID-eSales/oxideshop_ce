@@ -3,7 +3,7 @@
 
 codeception:
   matrix:
-    testplan: '["tests/github_actions/codeception_acceptance_7x.yml","tests/github_actions/codeception_acceptanceSetup_7x.yml"]'
+    testplan: '["tests/github_actions/codeception_acceptance_70x.yml","tests/github_actions/codeception_acceptanceSetup_70x.yml"]'
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
 
@@ -13,4 +13,4 @@ phpcs_tests:
   filter: '^\./source/Internal/.*\.php$'
 
 finish:
-  slack_title: 'Full matrix CE on {{ .Github.Repository }} by {{ .Github.Actor }}'
+  slack_title: 'Full matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

@@ -20,7 +20,10 @@ class FileValidator implements FileValidatorInterface
     public function validateImage(string $filePath): bool
     {
         try {
-            if (!empty($filePath) && !str_starts_with(strtoupper($this->mimeTypesService->guessMimeType($filePath)), 'IMAGE/')) {
+            if (
+                !empty($filePath)
+                && !str_starts_with(strtoupper($this->mimeTypesService->guessMimeType($filePath)), 'IMAGE/')
+            ) {
                 return false;
             }
         } catch (\Exception $e) {

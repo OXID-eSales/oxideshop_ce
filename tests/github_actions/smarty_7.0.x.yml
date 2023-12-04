@@ -69,6 +69,7 @@ codeception:
 runtest:
   matrix: *matrix
   container:
+    method: exec
     options: '-e THEME_ID=flow'
 
 sonarcloud:

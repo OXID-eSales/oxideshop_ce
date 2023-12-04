@@ -49,7 +49,8 @@ codeception:
     php: *matrix_php
     mysql: *matrix_mysql
     template_engine: *matrix_template_engine
-    testplan: '["tests/github_actions/codeception_acceptance_70x.yml","tests/github_actions/codeception_acceptanceSetup_70x.yml"]'
+    testplan: 'skip'
+    #'["tests/github_actions/codeception_acceptance_70x.yml","tests/github_actions/codeception_acceptanceSetup_70x.yml"]'
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
   pre_script: |

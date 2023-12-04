@@ -70,7 +70,7 @@ runtest:
   matrix: *matrix
   container:
     method: exec
-    options: '-e THEME_ID=flow -e ACTIVE_THEME=flow'
+    options: '-e XDEBUG_MODE=coverage -e THEME_ID=flow -e ACTIVE_THEME=flow'
 
 sonarcloud:
   matrix:

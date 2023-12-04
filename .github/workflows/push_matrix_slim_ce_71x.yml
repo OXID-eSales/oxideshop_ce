@@ -1,13 +1,13 @@
-name: push_matrix_slim_ce
+name: push_matrix_slim_ce_71x
 # Matrix workflow using re-usable github actions
 
 on:
   push:
-    branches-ignore:
-      - b-8.0.x
+    branches:
+      - b-7.1.x
 
 jobs:
-  oxideshop_ce_push_non_b80x:
+  oxideshop_ce_push_b71x:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
       testplan: 'tests/github_actions/slim_matrix_ce.yml'

@@ -24,16 +24,21 @@ class ActivationDependencyValidator implements ModuleConfigurationValidatorInter
      */
     public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
-        if ($this->moduleDependencyResolver->canActivateModule($configuration->getId(), $shopId)) {
+        $unresolvedDependencies =
+            $this->moduleDependencyResolver->getUnresolvedActivationDependencies($configuration->getId(), $shopId);
+
+        if (!$unresolvedDependencies->hasModuleDependencies()) {
             return;
         }
 
         throw new DependencyValidationException(
             sprintf(
-                'Module "%s" in shop "%d" has unfulfilled dependencies and can not be activated.
-                Make sure all its dependencies are activated and try again.',
+                'Module "%s" has unfulfilled dependencies in shop "%d" and can not be activated. 
+                "%1$s" requires the following modules to be activated: "%s"
+                Make sure all dependencies are resolved and try again.',
                 $configuration->getId(),
-                $shopId
+                $shopId,
+                implode(', ', $unresolvedDependencies->getModuleIds())
             )
         );
     }

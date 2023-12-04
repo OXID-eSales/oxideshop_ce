@@ -64,6 +64,7 @@ codeception:
       -e 's#views/apex#views/flow/translations#g;' \
       'source/test-module/tests/Codeception/acceptance.suite.yml'
   composer: *composer
+  additional_options: '--coverage-xml=/var/www/codeception_coverage.xml'
 
 runtest:
   matrix: *matrix

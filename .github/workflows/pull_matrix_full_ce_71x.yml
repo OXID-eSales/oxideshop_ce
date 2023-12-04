@@ -8,7 +8,7 @@ on:
       - reopened
       - synchronize
     branches:
-      - b-8.0.x
+      - b-7.1.x
 
 jobs:
   oxideshop_ce_pull_71x:

@@ -350,6 +350,7 @@ $aLang = [
 'ORDER_HISTORY'                                               => 'Order history',
 'ORDER_IS_CANCELED'                                           => 'Order is cancelled.',
 'ORDER_NUMBER'                                                => 'Order No.',
+'ORDER_REMARK'                                                => 'Order remark',
 'BRAND'                                                       => 'Brand',
 'OUR_BRANDS'                                                  => 'Our brands',
 'OUR_REGULAR_PRICE'                                           => '(Our regular price)',

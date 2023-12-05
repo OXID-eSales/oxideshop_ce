@@ -173,3 +173,11 @@ REPLACE INTO `oxmanufacturers` (`OXID`,             `OXSHOPID`, `OXACTIVE`,     
 #Vendor demodata
 REPLACE INTO `oxvendor` (          `OXID`, `OXSHOPID`, `OXACTIVE`,                `OXTITLE`,                  `OXSHORTDESC`,              `OXTITLE_1`,                      `OXSHORTDESC_1`, `OXSHOWSUFFIX`) VALUES
                        ('testdistributor',          1,          1, 'Distributor [DE] šÄßüл', 'Distributor description [DE]', 'Distributor [EN] šÄßüл', 'Distributor description [EN] šÄßüл',              1);
+#Order demodata
+REPLACE INTO `oxorder` (`OXID`,     `OXSHOPID`, `OXUSERID`,`OXORDERDATE`,       `OXORDERNR`, `OXBILLCOMPANY`,          `OXBILLEMAIL`,       `OXBILLFNAME`,    `OXBILLLNAME`,    `OXBILLSTREET`,       `OXBILLSTREETNR`,`OXBILLADDINFO`,    `OXBILLCITY`,       `OXBILLCOUNTRYID`,`OXBILLZIP`,`OXREMARK`,                `OXFOLDER`,       `OXBILLSTATEID`,`OXCARDTEXT`) VALUES
+                       ('testorder',1,          'testuser','2023-03-30 11:00:04',123,        'test bill company_name', 'test@billemail.com','test bill fname','test bill lname','test address street','streetNBR',     'test address info','test address city','testcountry_de', '55555',    'custom user order remark','ORDERFOLDER_NEW','BB',           '');
+
+#OrderArticles demodata
+REPLACE INTO `oxorderarticles` (`OXID`,                            `OXORDERID`,`OXAMOUNT`,`OXARTID`,`OXARTNUM`,`OXTITLE`) VALUES
+                               ('919edbc539f414bdefc7f6975bbdf2a1','testorder', 100,        '1000', '1000',    '[DE 4] Test product 0 šÄßüл'),
+                               ('919edbc539f414bdefc7f6975bbdf2b6','testorder', 150,        '1001', '1001',    '[DE 1] Test product 1 šÄßüл');

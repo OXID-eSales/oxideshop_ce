@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface;
 
 /**
@@ -592,7 +593,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             return true;
         }
 
-        $fileValidator = $this->getContainer()->get(FileValidatorBridgeInterface::class);
+        $fileValidator = ContainerFacade::get(FileValidatorBridgeInterface::class);
         foreach ($_FILES['myfile']['tmp_name'] as $file) {
             if (!$fileValidator->validateImage($file)) {
                 return false;

@@ -37,6 +37,8 @@ class CodeceptionParametersProvider
             'SCREEN_SHOT_URL' => getenv('CC_SCREEN_SHOTS_URL') ?: '',
             'BROWSER' => getenv('BROWSER_NAME') ?: 'chrome',
             'THEME_ID' => getenv('THEME_ID') ?: 'apex',
+            'MAIL_HOST' => getenv('MAIL_HOST') ?: 'mailpit',
+            'MAIL_WEB_PORT' => getenv('MAIL_WEB_PORT') ?: '8025',
         ];
     }
 

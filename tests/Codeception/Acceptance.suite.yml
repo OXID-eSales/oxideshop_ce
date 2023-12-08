@@ -56,8 +56,8 @@ modules:
               theme_id: '%THEME_ID%'
         - \OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:
-            url: 'mailpit'
-            port: '8025'
+            url: 'MAIL_HOST'
+            port: 'MAIL_WEB_PORT'
         - \OxidEsales\Codeception\Module\Email:
               depends:
                   - Mailpit

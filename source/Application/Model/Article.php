@@ -557,19 +557,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getActiveCheckQuery($blForceCoreTable = null)
     {
-        $sTable = $this->getViewName($blForceCoreTable);
+        $viewName = $this->getViewName($blForceCoreTable);
 
-        // check if article is still active
-        $sQ = " $sTable.oxactive = 1 ";
+        $query = " $viewName.oxactive = 1 ";
 
-        $sQ .= " and $sTable.oxhidden = 0 ";
+        $query .= " and $viewName.oxhidden = 0 ";
 
-        // enabled time range check ?
         if (Registry::getConfig()->getConfigParam('blUseTimeCheck')) {
-            $sQ = $this->addSqlActiveRangeSnippet($sQ, $sTable);
+            $query = $this->addSqlActiveRangeSnippet($query, $viewName);
         }
 
-        return $sQ;
+        return $query;
     }
 
     /**
@@ -1029,6 +1027,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $this->_blIsRangePrice = $blIsRangePrice;
     }
 
+    public function hasActiveTimeRange(): bool
+    {
+        $activeFrom = $this->oxarticles__oxactivefrom->value;
+        $activeTo = $this->oxarticles__oxactiveto->value;
+        $now = Registry::getUtilsDate()->getTime();
+
+        if (!$this->hasProductValidTimeRange()) {
+            return false;
+        }
+
+        return (Registry::getUtilsDate()->isEmptyDate($activeTo) || strtotime($activeTo) >= $now)
+            && (Registry::getUtilsDate()->isEmptyDate($activeFrom) || strtotime($activeFrom) <= $now);
+    }
+
+
     /**
      * Checks if article has visible status. Returns TRUE if its visible
      *
@@ -1038,19 +1051,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         // admin preview mode
         if (($blCanPreview = Registry::getUtils()->canPreview()) !== null) {
+
             return $blCanPreview;
         }
 
-        // active ?
-        $sNow = date('Y-m-d H:i:s');
+        $blUseTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
         if (
-            !$this->oxarticles__oxactive->value &&
-            (
-                !Registry::getConfig()->getConfigParam('blUseTimeCheck') ||
-                $this->oxarticles__oxactivefrom->value > $sNow ||
-                $this->oxarticles__oxactiveto->value < $sNow
-            )
+            !$this->oxarticles__oxactive->value
+            && (($blUseTimeCheck && !$this->hasActiveTimeRange()) || !$blUseTimeCheck)
         ) {
+
             return false;
         }
 
@@ -1062,6 +1072,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $iOnStock += $session->getBasketReservations()->getReservedAmount($this->getId());
             }
             if ($iOnStock <= 0) {
+
                 return false;
             }
         }
@@ -4042,13 +4053,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return !empty($this->oxarticles__oxactive->value);
     }
 
-    public function isProductActive(string $date): bool
-    {
-        return $this->hasProductValidTimeRange()
-            && $this->oxarticles__oxactivefrom->value <= $date
-            && $this->oxarticles__oxactiveto->value >= $date;
-    }
-
     /**
      * Applies VAT to article
      *
@@ -5269,5 +5273,22 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function updateManufacturerBeforeLoading($oManufacturer)
     {
         $oManufacturer->setReadOnly(true);
+    }
+
+    protected function addSqlActiveRangeSnippet($query, $tableName): string
+    {
+        $dateUtils = Registry::getUtilsDate();
+        $secondsToRoundForQueryCache = $this->getSecondsToRoundForQueryCache();
+        $dateNow = $dateUtils->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
+        $defaultDBDate = $dateUtils->formatDBDate('-');
+
+        $activeToCondition = "$tableName.oxactivefrom <= '$dateNow' AND " .
+            "$tableName.oxactivefrom != '$defaultDBDate' AND " .
+            "$tableName.oxactiveto = '$defaultDBDate'";
+        $activeFromToCondition = "$tableName.oxactivefrom <= '$dateNow' AND $tableName.oxactiveto >= '$dateNow'";
+
+        $query = $query ? " $query or " : '';
+
+        return " ( $query (($activeToCondition) OR ($activeFromToCondition)) )";
     }
 }

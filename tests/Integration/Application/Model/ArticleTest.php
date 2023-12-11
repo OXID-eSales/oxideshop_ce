@@ -106,8 +106,9 @@ final class ArticleTest extends IntegrationTestCase
 
         return [
             [self::$defaultTimestamp, self::$defaultTimestamp],
-            [$now->format(self::$timeFormat), self::$defaultTimestamp],
-            [$future->format(self::$timeFormat), $past->format(self::$timeFormat)]
+            [$future->format(self::$timeFormat), self::$defaultTimestamp],
+            [$future->format(self::$timeFormat), $past->format(self::$timeFormat)],
+            [self::$defaultTimestamp, $past->format(self::$timeFormat)]
         ];
     }
 
@@ -151,14 +152,13 @@ final class ArticleTest extends IntegrationTestCase
     }
 
     #[DataProvider('visibilityTimeRangesDataProvider')]
-    public function testIsProductActiveNow(string $activeFrom, string $activeTo, bool $result): void
+    public function testIsProductActive(string $activeFrom, string $activeTo, bool $result): void
     {
-        $now = new DateTimeImmutable();
         $product = oxNew(Article::class);
         $product->oxarticles__oxactivefrom = new Field($activeFrom);
         $product->oxarticles__oxactiveto = new Field($activeTo);
 
-        $this->assertEquals($result, $product->isProductActive($now->format(self::$timeFormat)));
+        $this->assertEquals($result, $product->hasActiveTimeRange());
     }
 
     public static function visibilityTimeRangesDataProvider(): array
@@ -170,7 +170,7 @@ final class ArticleTest extends IntegrationTestCase
             'Empty active From/To' => [self::$defaultTimestamp, self::$defaultTimestamp, false],
             'Empty activeFrom valid activeTo' => [self::$defaultTimestamp, $future, true],
             'Empty activeFrom invalid activeTo' => [self::$defaultTimestamp, $past, false],
-            'Empty activeTo valid activeFrom' => [$past, self::$defaultTimestamp, false],
+            'Empty activeTo valid activeFrom' => [$past, self::$defaultTimestamp, true],
             'Empty activeTo invalid activeFrom' => [$future, self::$defaultTimestamp, false],
             'With valid From/to' => [$past, $future, true],
             'With invalid From/to' => [$future, $past, false],

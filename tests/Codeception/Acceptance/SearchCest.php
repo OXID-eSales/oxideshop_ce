@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class SearchCest
 {
-    /**
-     * @group search
-     */
+    #[Group('search')]
     public function searchAndNavigateInProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('if sorting, paging and navigation is working correctly in search list');
@@ -73,5 +72,9 @@ final class SearchCest
             ->selectListDisplayType(Translator::translate('line'))
             ->selectSorting('oxtitle', 'asc')
             ->seeProductDataInDisplayTypeList($productData3, 1);
+
+        $I->updateConfigInDatabase('blUseTimeCheck', true, 'bool');
+        $searchListPage->searchFor('100')
+            ->seeSearchCount(4);
     }
 }

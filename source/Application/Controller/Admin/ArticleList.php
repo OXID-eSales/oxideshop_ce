@@ -85,6 +85,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
         return "article_list";
     }
+
     /**
      * Returns array of fields which may be used for product data search
      *
@@ -299,23 +300,15 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     private function setIsActiveFieldForProductsInList(ListModel $productList): void
     {
         $useTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
-        $now = $this->getCurrentTimeAsDatabaseTimestamp();
         foreach ($productList as $key => $product) {
             $product->showActiveCheckInAdminPanel = $product->isProductAlwaysActive();
 
             if ($useTimeCheck) {
                 $product->hasActiveTimeRange = $product->hasProductValidTimeRange();
-                $product->isActiveNow = $product->isProductActive($now);
+                $product->isActiveNow = $product->hasActiveTimeRange();
             }
             $productList[$key] = $product;
         }
-    }
-
-    private function getCurrentTimeAsDatabaseTimestamp(): string
-    {
-        return Registry::getUtilsDate()->formatDBTimestamp(
-            Registry::getUtilsDate()->getTime()
-        );
     }
 
     private function convertValueToDatabaseTimestamp(Field $field): void

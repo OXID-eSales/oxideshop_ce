@@ -25,6 +25,21 @@ trait ConsoleRunnerTrait
         return $process;
     }
 
+    public function runInConsoleAndAssertSuccess(string $command): Process
+    {
+        $process = $this->runInConsole($command);
+        if (!$process->isSuccessful()) {
+            $this->fail(
+                sprintf(
+                    'Execution of `oe-console` failed unexpectedly! The error output was: %s %s.',
+                    $process->getOutput(),
+                    $process->getErrorOutput()
+                )
+            );
+        }
+        return $process;
+    }
+
     private function getPathToConsoleScript(): string
     {
         $scriptPath = 'bin/oe-console';

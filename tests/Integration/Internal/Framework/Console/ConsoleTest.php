@@ -18,9 +18,8 @@ final class ConsoleTest extends TestCase
 
     public function testConsoleWithEmptyInput(): void
     {
-        $process = $this->runInConsole('');
+        $process = $this->runInConsoleAndAssertSuccess('');
 
-        $this->assertTrue($process->isSuccessful());
         $this->assertNotEmpty($process->getOutput());
     }
 }

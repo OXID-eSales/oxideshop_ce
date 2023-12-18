@@ -39,7 +39,8 @@
         "symfony/lock": "^6.3",
         "symfony/string": "^6.3",
         "symfony/yaml": "^6.3",
-        "symfony/mime": "^6.0"
+        "symfony/mime": "^6.0",
+        "symfony/dotenv": "^6.3"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

@@ -1,0 +1,5 @@
+parameters:
+    app:
+       basket:
+           reservation:
+               clean_per_request: '%env(ing:default:10:OXID_APP_BASKET_RESERVATION_CLEAN_PER_REQUEST)%'

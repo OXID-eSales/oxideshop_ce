@@ -22,15 +22,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngine
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
-    arguments:
-      - '%oxid_esales.templating.engine_template_extension%'
-    deprecated:
-      package: 'oxid-esales/oxideshop-ce'
-      version: '7.1.0'
-      message: 'The "%service_id%" service is deprecated.'
-
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
@@ -63,11 +54,3 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
       - '@oxid_esales.symfony.file_system'
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
-    public: true
-    deprecated:
-      package: 'oxid-esales/oxideshop-ce'
-      version: '7.1.0'
-      message: 'The "%service_id%" service is deprecated.'

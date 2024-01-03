@@ -16,21 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 final class TemplateRendererTest extends TestCase
 {
-    public function testRenderTemplateWithoutOptionalFileExtension(): void
-    {
-        $response = 'some template content';
-        $templateName = 'some-template';
-        $engine = $this->getEngineMock();
-        $engine
-            ->method('render')
-            ->with($templateName)
-            ->willReturn($response);
-
-        $renderer = new TemplateRenderer($engine, $this->getContextMock());
-
-        $this->assertSame($response, $renderer->renderTemplate($templateName, []));
-    }
-
     /** @dataProvider twigTemplateNameFileDataProvider */
     public function testRenderTemplateFilenameExtension($filename, $expectedFilename): void
     {
@@ -96,20 +81,6 @@ final class TemplateRendererTest extends TestCase
         $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
 
         $this->assertSame($engine, $renderer->getTemplateEngine());
-    }
-
-    public function testExistsWithoutOptionalFileExtension(): void
-    {
-        $templateName = 'some-template';
-        $engine = $this->getEngineMock();
-        $engine
-            ->method('exists')
-            ->with($templateName)
-            ->willReturn(true);
-
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), null);
-
-        $this->assertTrue($renderer->exists($templateName));
     }
 
     public function testExists(): void

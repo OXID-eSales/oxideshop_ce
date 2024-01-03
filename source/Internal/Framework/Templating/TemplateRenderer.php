@@ -14,18 +14,20 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class TemplateRenderer implements TemplateRendererInterface
 {
     public function __construct(
-        private TemplateEngineInterface $templateEngine,
-        private ContextInterface $context,
-        private readonly ?string $filenameExtension = null
+        private readonly TemplateEngineInterface $templateEngine,
+        private readonly ContextInterface $context,
+        private readonly string $filenameExtension
     ) {
     }
 
     public function renderTemplate(string $template, array $context = []): string
     {
-        if ($this->filenameExtension) {
-            $template = $this->appendDefaultFilenameExtension($template);
-        }
-        return $this->getTemplateEngine()->render($template, $context);
+        return $this
+            ->getTemplateEngine()
+            ->render(
+                $this->appendDefaultFilenameExtension($template),
+                $context
+            );
     }
 
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
@@ -43,10 +45,11 @@ class TemplateRenderer implements TemplateRendererInterface
 
     public function exists(string $name): bool
     {
-        if ($this->filenameExtension) {
-            $name = $this->appendDefaultFilenameExtension($name);
-        }
-        return $this->getTemplateEngine()->exists($name);
+        return $this
+            ->getTemplateEngine()
+            ->exists(
+                $this->appendDefaultFilenameExtension($name)
+            );
     }
 
     private function doNotRenderForDemoShop(): bool

@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.2.0 - unreleased
+
+### Added
+- Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
+
 ## v7.1.0 - 2024-03-18
 
 ### Added

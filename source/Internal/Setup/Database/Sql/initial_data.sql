@@ -28,6 +28,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('2a944b2cc31311e8957700163e4021bf',	1,	'',	'includeProductReviewLinksInEmail',	'bool',	''),
 ('2ca4277aa49a5bd27.44511187',	1,	'',	'blStockOnDefaultMessage',	'bool',	'1'),
 ('2ca4277aa49a634f8.76432326',	1,	'',	'blStockOffDefaultMessage',	'bool',	'1'),
+('0282a93ba014458d7a9249e5aef1a8eb',	1,	'',	'blStockLowDefaultMessage',	'bool',	'1'),
 ('2e4452b5763e03c74.88240349',	1,	'',	'blDisableDublArtOnCopy',	'bool',	'1'),
 ('32ddeaf2694e06b47b6ff74eafc69b65',	1,	'',	'sParcelService',	'str',	'http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=##ID##'),
 ('33341949f476b65e8.17282442',	1,	'',	'iAttributesPercent',	'str',	'70'),

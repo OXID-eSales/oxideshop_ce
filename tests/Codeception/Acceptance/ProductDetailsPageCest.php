@@ -9,18 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('product')]
 final class ProductDetailsPageCest
 {
-    /**
-     * @group main
-     * @group product
-     * @group productVariants
-     */
+    private string $productId = '1000';
+    private string $productVariantId = '1001432';
+
+    #[Group('main', 'productVariants')]
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -117,10 +118,7 @@ final class ProductDetailsPageCest
         $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', '2');
     }
 
-    /**
-     * @group product
-     * @group search
-     */
+    #[Group('search')]
     public function navigateInDetailsPage(AcceptanceTester $I): void
     {
         $I->wantToTest('product navigation in details page');
@@ -156,9 +154,6 @@ final class ProductDetailsPageCest
         $detailsPage->seeOnBreadCrumb($breadCrumb);
     }
 
-    /**
-     * @group product
-     */
     public function detailsPageInformation(AcceptanceTester $I): void
     {
         $I->wantToTest('product information in details page');
@@ -200,10 +195,7 @@ final class ProductDetailsPageCest
             ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
     }
 
-    /**
-     * @group product
-     * @group productVariants
-     */
+    #[Group('productVariants')]
     public function selectProductVariant(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -300,10 +292,7 @@ final class ProductDetailsPageCest
         ->seeBasketContainsSelectionList($selectionListsTitle, $selectionList3Value, 2);
     }
 
-    /**
-     * @group product
-     * @group accessories
-     */
+    #[Group('accessories')]
     public function checkProductAccessories(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -335,10 +324,7 @@ final class ProductDetailsPageCest
             ->seeProductData($accessoryData);
     }
 
-    /**
-     * @group product
-     * @group similarProducts
-     */
+    #[Group('similarProducts')]
     public function checkSimilarProducts(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -372,10 +358,7 @@ final class ProductDetailsPageCest
             ->seeSimilarProductData($productData, 1);
     }
 
-    /**
-     * @group product
-     * @group crossSelling
-     */
+    #[Group('crossSelling')]
     public function checkProductCrossSelling(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -408,10 +391,7 @@ final class ProductDetailsPageCest
             ->seeProductData($crossSellingProductData);
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[Group('productPrice')]
     public function checkProductPriceA(AcceptanceTester $I): void
     {
         $I->wantToTest('product price A');
@@ -483,10 +463,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[Group('productPrice')]
     public function checkProductPriceC(AcceptanceTester $I): void
     {
         $I->wantToTest('product price C and amount price discount added to this price');
@@ -541,10 +518,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[Group('productPrice')]
     public function checkProductPriceB(AcceptanceTester $I): void
     {
         $I->wantToTest('product price B');
@@ -590,11 +564,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     * @group productAmountPrice
-     */
+    #[Group('productPrice', 'productAmountPrice')]
     public function checkProductAmountPrice(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -625,6 +595,118 @@ final class ProductDetailsPageCest
         $productNavigation->openProductDetailsPage($productData['id'])
             ->seeProductData($productData)
             ->seeAmountPrices($amountPrices);
+    }
+
+    #[Group('stock')]
+    public function lowStockProductTests(AcceptanceTester $I): void
+    {
+        $I->wantToTest('product low stock label');
+
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXSTOCK' => 1
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+
+        $productListPage = $I->openShop()->searchFor($this->productId);
+        $productListPage->openProductDetailsPage(1);
+
+        $I->see(Translator::translate('LOW_STOCK'));
+
+
+        $I->amGoingTo('Test product low stock label with deactivated default option');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '0', 'bool');
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXLOWSTOCKACTIVE' => 0
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+        $I->reloadPage();
+        $product = $this->getProductData($this->productId);
+
+        $I->dontSee($product['OXSTOCKTEXT_1']);
+
+
+        $I->amGoingTo('Test product low stock label with product flag enabled');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '1', 'bool');
+        $lowStockMessage = 'product has low stock';
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXREMINDAMOUNT' => 20,
+                'OXLOWSTOCKTEXT_1' => $lowStockMessage,
+                'OXLOWSTOCKACTIVE' => 1
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+        $I->reloadPage();
+
+        $I->see($lowStockMessage);
+    }
+
+    #[Group('stock', 'productVariants')]
+    public function lowStockProductVariantTests(AcceptanceTester $I): void
+    {
+        $I->wantToTest('product variant low stock label');
+
+        $productVariant = $this->getProductData($this->productVariantId);
+
+        $productListPage = $I->openShop()->searchFor($productVariant['OXPARENTID']);
+        $detailsPage = $productListPage->openProductDetailsPage(1);
+
+        $I->dontSee(Translator::translate('LOW_STOCK'));
+
+        $I->amGoingTo('Test product low stock label with deactivated default option');
+
+        $detailsPage->selectVariant(1, $productVariant['OXVARSELECT_1']);
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXLOWSTOCKACTIVE' => 0
+            ],
+            [
+                'OXID' => $this->productVariantId
+            ]
+        );
+        $I->see(Translator::translate('LOW_STOCK'));
+
+
+        $I->amGoingTo('Test product low stock label with product flag enabled');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '1', 'bool');
+        $lowStockMessage = 'product has low stock';
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXREMINDAMOUNT' => 20,
+                'OXLOWSTOCKTEXT_1' => $lowStockMessage,
+                'OXLOWSTOCKACTIVE' => 1
+            ],
+            [
+                'OXID' => $this->productVariantId
+            ]
+        );
+        $I->reloadPage();
+        $detailsPage->selectVariant(1, $productVariant['OXVARSELECT_1']);
+
+        $I->see($lowStockMessage);
+    }
+
+    private function getProductData(string $productID): array
+    {
+        return Fixtures::get('product-' . $productID);
     }
 
     private function getExistingUserData()

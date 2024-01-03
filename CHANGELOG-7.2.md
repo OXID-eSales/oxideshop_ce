@@ -3,7 +3,7 @@
 ## v7.2.0 - unreleased
 
 ### Added
-- 
+- Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
 
 ### Deprecated
 - 

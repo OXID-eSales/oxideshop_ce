@@ -18,7 +18,7 @@ use function codecept_data_dir;
 #[Group('admin', 'moduleInstall')]
 final class ModuleSettingsCest
 {
-    private string $testModule1Id = 'codeception/testModule';
+    private string $testModule1Id = 'codeception_testModule';
     private string $testModule1Path = 'modules/testModule';
 
     public function _before(AcceptanceTester $I): void

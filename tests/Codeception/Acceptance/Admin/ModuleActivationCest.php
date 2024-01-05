@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('admin')]
 final class ModuleActivationCest
 {
-    private string $testModule1Id = 'codeception/testModule';
+    private string $testModule1Id = 'codeception_testModule';
     private string $testModule1Path = 'modules/testModule';
 
     public function _before(AcceptanceTester $I): void

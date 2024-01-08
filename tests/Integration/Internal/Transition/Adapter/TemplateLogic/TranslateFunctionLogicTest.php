@@ -26,7 +26,7 @@ final class TranslateFunctionLogicTest extends TestCase
         parent::setUp();
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [[], 'ERROR: Translation for IDENT MISSING not found!'],

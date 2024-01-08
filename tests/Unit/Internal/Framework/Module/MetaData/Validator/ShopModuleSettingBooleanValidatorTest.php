@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ShopModuleSettingBooleanValidatorTest extends TestCase
 {
-    public function validationPassWithDataProvider(): array
+    public static function validationPassWithDataProvider(): array
     {
         return [
             ['true'],
@@ -46,7 +46,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $this->executeValidationForBoolSetting($value);
     }
 
-    public function validationPassDataProvider(): array
+    public static function validationPassDataProvider(): array
     {
         return [
             [false],
@@ -64,7 +64,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $this->executeValidationForBoolSetting($value);
     }
 
-    public function validationFailsDataProvider()
+    public static function validationFailsDataProvider(): array
     {
         return [
             ['any random value'],

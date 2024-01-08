@@ -52,7 +52,7 @@ class ShopSettingEncoderTest extends TestCase
         $shopSettingEncoder->encode('object', new \stdClass());
     }
 
-    public function settingDataProvider(): array
+    public static function settingDataProvider(): array
     {
         return [
             [

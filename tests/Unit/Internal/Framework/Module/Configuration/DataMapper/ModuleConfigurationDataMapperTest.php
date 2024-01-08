@@ -43,7 +43,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
         );
     }
 
-    public function moduleConfigurationDataProvider()
+    public static function moduleConfigurationDataProvider(): array
     {
         return [
             [

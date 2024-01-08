@@ -31,7 +31,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
         $validator->validate($configurationMock);
     }
 
-    public function dataProviderValidLogLevels()
+    public static function dataProviderValidLogLevels(): array
     {
         return [
             [LogLevel::DEBUG],
@@ -63,7 +63,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
         $validator->validate($configurationMock);
     }
 
-    public function dataProviderInvalidLogLevels()
+    public static function dataProviderInvalidLogLevels(): array
     {
         return [
             [null],

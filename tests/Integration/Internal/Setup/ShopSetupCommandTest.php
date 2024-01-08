@@ -91,7 +91,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute($options);
     }
 
-    public function missingOptionsDataProvider(): array
+    public static function missingOptionsDataProvider(): array
     {
         return [
             'Missing db-host'           => ['--db-host'],

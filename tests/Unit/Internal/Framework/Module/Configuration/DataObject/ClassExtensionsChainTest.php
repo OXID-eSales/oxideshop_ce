@@ -161,7 +161,7 @@ class ClassExtensionsChainTest extends TestCase
         $chain->removeExtension($extension);
     }
 
-    public function invalidExtensionProvider()
+    public static function invalidExtensionProvider(): array
     {
         return [
             [

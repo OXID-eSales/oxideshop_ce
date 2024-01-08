@@ -5,19 +5,16 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class TruncateLogicTest
- */
 class TruncateLogicTest extends TestCase
 {
-
-    /** @var TruncateLogic */
-    private $truncateLogic;
+    private TruncateLogic $truncateLogic;
 
     public function setup(): void
     {
@@ -25,10 +22,6 @@ class TruncateLogicTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expected
-     * @param array  $parameters
-     *
      * @dataProvider truncateProvider
      */
     public function testTruncate(string $string, string $expected, array $parameters = []): void
@@ -43,7 +36,7 @@ class TruncateLogicTest extends TestCase
     /**
      * @return array
      */
-    public function truncateProvider(): array
+    public static function truncateProvider(): array
     {
         return [
             [
@@ -62,10 +55,6 @@ class TruncateLogicTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expected
-     * @param array  $parameters
-     *
      * @dataProvider truncateProviderWithLength
      */
     public function testTruncateWithLength(string $string, string $expected, array $parameters = []): void
@@ -77,10 +66,7 @@ class TruncateLogicTest extends TestCase
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
 
-    /**
-     * @return array
-     */
-    public function truncateProviderWithLength(): array
+    public static function truncateProviderWithLength(): array
     {
         return [
             [
@@ -102,10 +88,6 @@ class TruncateLogicTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expected
-     * @param array  $parameters
-     *
      * @dataProvider truncateProviderWithSuffix
      */
     public function testTruncateWithSuffix(string $string, string $expected, array $parameters = []): void
@@ -117,10 +99,7 @@ class TruncateLogicTest extends TestCase
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
 
-    /**
-     * @return array
-     */
-    public function truncateProviderWithSuffix(): array
+    public static function truncateProviderWithSuffix(): array
     {
         return [
             [
@@ -132,10 +111,6 @@ class TruncateLogicTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expected
-     * @param array  $parameters
-     *
      * @dataProvider truncateProviderWithBreakWords
      */
     public function testTruncateWithBreakWords(string $string, string $expected, array $parameters = []): void
@@ -147,10 +122,7 @@ class TruncateLogicTest extends TestCase
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
 
-    /**
-     * @return array
-     */
-    public function truncateProviderWithBreakWords(): array
+    public static function truncateProviderWithBreakWords(): array
     {
         return [
             [

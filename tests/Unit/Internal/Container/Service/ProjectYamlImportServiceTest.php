@@ -38,7 +38,7 @@ class ProjectYamlImportServiceTest extends TestCase
     public function setup(): void
     {
         $this->dao = $this->getMockBuilder(ProjectYamlDaoInterface::class)
-            ->setMethods(['loadProjectConfigFile', 'saveProjectConfigFile', 'loadDIConfigFile'])->getMock();
+            ->onlyMethods(['loadProjectConfigFile', 'saveProjectConfigFile', 'loadDIConfigFile'])->getMock();
         $this->savedArray = [];
         $this->dao->method('saveProjectConfigFile')->willReturnCallback([$this, 'getConfigWrapper']);
 

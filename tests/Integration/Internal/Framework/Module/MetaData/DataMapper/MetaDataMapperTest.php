@@ -20,8 +20,6 @@ final class MetaDataMapperTest extends TestCase
 
     /**
      * @dataProvider missingMetaDataKeysDataProvider
-     *
-     * @param array $invalidData
      */
     public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData): void
     {
@@ -29,7 +27,7 @@ final class MetaDataMapperTest extends TestCase
         $this->get(MetaDataToModuleConfigurationDataMapperInterface::class)->fromData($invalidData);
     }
 
-    public function missingMetaDataKeysDataProvider(): array
+    public static function missingMetaDataKeysDataProvider(): array
     {
         return [
             'all mandatory keys are missing'    => [[]],

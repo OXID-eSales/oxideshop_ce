@@ -40,7 +40,7 @@ class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function fieldsProvider()
+    public static function fieldsProvider(): array
     {
         return [
             [

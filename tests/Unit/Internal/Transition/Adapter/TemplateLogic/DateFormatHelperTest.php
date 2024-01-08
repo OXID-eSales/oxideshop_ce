@@ -16,7 +16,7 @@ class DateFormatHelperTest extends TestCase
     /**
      * @return array
      */
-    public function provider()
+    public static function provider(): array
     {
         return [
             ['%D %h %n %r %R %t %T', 1543850519, "%m/%d/%y %b 

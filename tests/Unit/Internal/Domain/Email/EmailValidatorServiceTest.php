@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 class EmailValidatorServiceTest extends TestCase
 {
-    public function providerEmailsToValidate()
+    public static function providerEmailsToValidate(): array
     {
         return [
             ['mathias.krieck@oxid-esales.com', true],

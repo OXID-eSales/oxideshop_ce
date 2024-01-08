@@ -33,7 +33,7 @@ class ModuleIdValidatorTest extends TestCase
         $validator->validate($metaData);
     }
 
-    public function validateInvalidIdProvidedDataProvider(): array
+    public static function validateInvalidIdProvidedDataProvider(): array
     {
         return [
             [''],

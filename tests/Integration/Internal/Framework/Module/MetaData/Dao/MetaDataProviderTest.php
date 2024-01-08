@@ -60,7 +60,6 @@ class MetaDataProviderTest extends TestCase
 
     /**
      * @dataProvider missingMetaDataVariablesDataProvider
-     * @param string $metaDataContent
      */
     public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
     {
@@ -85,10 +84,7 @@ class MetaDataProviderTest extends TestCase
         return stream_get_meta_data($temporaryFileHandle)['uri'];
     }
 
-    /**
-     * @return array
-     */
-    public function missingMetaDataVariablesDataProvider(): array
+    public static function missingMetaDataVariablesDataProvider(): array
     {
         return [
             ['<?php '],
@@ -182,17 +178,13 @@ class MetaDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @return MetaDataProvider
-     */
     private function createMetaDataProvider(): MetaDataProvider
     {
-        $metaDataProvider = new MetaDataProvider(
+        return new MetaDataProvider(
             $this->metaDataNormalizerStub,
             $this->contextStub,
             $this->validatorStub,
             $this->get(MetaDataConverterInterface::class)
         );
-        return $metaDataProvider;
     }
 }

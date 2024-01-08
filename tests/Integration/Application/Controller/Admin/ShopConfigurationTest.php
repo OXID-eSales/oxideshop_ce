@@ -32,7 +32,7 @@ final class ShopConfigurationTest extends TestCase
         $_POST['confstrs'] = ['stringSetting' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
-            ->setMethods(['getModuleForConfigVars'])
+            ->onlyMethods(['getModuleForConfigVars'])
             ->disableOriginalConstructor()
             ->getMock();
         $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testShopModuleId');

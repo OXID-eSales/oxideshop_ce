@@ -26,7 +26,7 @@ final class UrlParserTest extends TestCase
         $this->assertSame($exp, $act);
     }
 
-    public function getPathWithoutTrailingSlashDataProvider(): array
+    public static function getPathWithoutTrailingSlashDataProvider(): array
     {
         return [
             ['https://abc.def.com', ''],

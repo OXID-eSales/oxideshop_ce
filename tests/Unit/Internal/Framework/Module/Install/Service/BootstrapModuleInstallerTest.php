@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class BootstrapModuleInstallerTest extends TestCase
 {
-
     public function testInstallTriggersAllInstallers()
     {
         $path = 'packagePath';
@@ -42,10 +41,6 @@ class BootstrapModuleInstallerTest extends TestCase
 
     /**
      * @dataProvider moduleInstallMatrixDataProvider
-     *
-     * @param bool $filesInstalled
-     * @param bool $projectConfigurationInstalled
-     * @param bool $moduleInstalled
      */
     public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled)
     {
@@ -63,7 +58,7 @@ class BootstrapModuleInstallerTest extends TestCase
         );
     }
 
-    public function moduleInstallMatrixDataProvider(): array
+    public static function moduleInstallMatrixDataProvider(): array
     {
         return [
             [

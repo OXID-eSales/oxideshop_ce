@@ -17,8 +17,8 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ArticleTest extends IntegrationTestCase
 {
-    private string $timeFormat = 'Y-m-d H:i:s';
-    private string $defaultTimestamp = '0000-00-00 00:00:00';
+    private static string $timeFormat = 'Y-m-d H:i:s';
+    private static string $defaultTimestamp = '0000-00-00 00:00:00';
 
     public function setUp(): void
     {
@@ -52,8 +52,8 @@ final class ArticleTest extends IntegrationTestCase
         $future = $now->modify('+1 day');
         $product = oxNew(Article::class);
         $product->oxarticles__oxactive = new Field(false);
-        $product->oxarticles__oxactivefrom = new Field($past->format($this->timeFormat));
-        $product->oxarticles__oxactiveto = new Field($future->format($this->timeFormat));
+        $product->oxarticles__oxactivefrom = new Field($past->format(self::$timeFormat));
+        $product->oxarticles__oxactiveto = new Field($future->format(self::$timeFormat));
 
         $this->assertFalse($product->isVisible());
     }
@@ -73,16 +73,16 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertTrue($product->isVisible());
     }
 
-    public function validTimeRestrictionsDataProvider(): array
+    public static function validTimeRestrictionsDataProvider(): array
     {
         $now = new DateTimeImmutable();
         $past = $now->modify('-1 day');
         $future = $now->modify('+1 day');
 
         return [
-            [$past->format($this->timeFormat), $future->format($this->timeFormat)],
-            [$this->defaultTimestamp, $future->format($this->timeFormat)],
-            [$now->format($this->timeFormat), $future->format($this->timeFormat)]
+            [$past->format(self::$timeFormat), $future->format(self::$timeFormat)],
+            [self::$defaultTimestamp, $future->format(self::$timeFormat)],
+            [$now->format(self::$timeFormat), $future->format(self::$timeFormat)]
         ];
     }
 
@@ -101,16 +101,16 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertFalse($product->isVisible());
     }
 
-    public function invalidTimeRestrictionsDataProvider(): array
+    public static function invalidTimeRestrictionsDataProvider(): array
     {
         $now = new DateTimeImmutable();
         $past = $now->modify('-1 day');
         $future = $now->modify('+1 day');
 
         return [
-            [$this->defaultTimestamp, $this->defaultTimestamp],
-            [$now->format($this->timeFormat), $this->defaultTimestamp],
-            [$future->format($this->timeFormat), $past->format($this->timeFormat)]
+            [self::$defaultTimestamp, self::$defaultTimestamp],
+            [$now->format(self::$timeFormat), self::$defaultTimestamp],
+            [$future->format(self::$timeFormat), $past->format(self::$timeFormat)]
         ];
     }
 }

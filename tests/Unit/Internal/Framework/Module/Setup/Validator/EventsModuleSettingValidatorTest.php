@@ -65,7 +65,7 @@ class EventsModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function invalidEventsProvider(): array
+    public static function invalidEventsProvider(): array
     {
         return [
             [new Event('invalidEvent', 'noCallableMethod')],
@@ -78,6 +78,6 @@ class EventsModuleSettingValidatorTest extends TestCase
      */
     private function createValidator(): EventsValidator
     {
-        return new EventsValidator(new ShopAdapter());
+        return new EventsValidator();
     }
 }

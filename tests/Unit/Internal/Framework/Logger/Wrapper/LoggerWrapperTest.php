@@ -44,7 +44,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function dataProviderPsrInterfaceMethods()
+    public static function dataProviderPsrInterfaceMethods(): array
     {
         return [
             ['emergency'],
@@ -85,7 +85,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         $loggerMock = $this
             ->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'emergency',
                     'alert',

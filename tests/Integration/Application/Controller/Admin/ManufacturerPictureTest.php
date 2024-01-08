@@ -128,7 +128,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         }
     }
 
-    public function provideImageData(): Generator
+    public static function provideImageData(): Generator
     {
         yield 'Icon should be removed from database' => ['', 'oxicon',];
         yield 'Icon Alt should be removed from database' => ['', 'oxicon_alt',];

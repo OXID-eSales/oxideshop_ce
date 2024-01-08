@@ -5,14 +5,13 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * Class FormatCurrencyLogicTest
- */
 class FormatCurrencyLogicTest extends IntegrationTestCase
 {
 
@@ -40,7 +39,7 @@ class FormatCurrencyLogicTest extends IntegrationTestCase
     /**
      * @return array
      */
-    public function numberFormatProvider(): array
+    public static function numberFormatProvider(): array
     {
         return [
             ["EUR@ 1.00@ ,@ .@ EUR@ 2", 25000, '25.000,00'],

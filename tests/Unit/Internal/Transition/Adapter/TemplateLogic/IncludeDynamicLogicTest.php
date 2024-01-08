@@ -51,7 +51,7 @@ class IncludeDynamicLogicTest extends TestCase
     /**
      * @return array
      */
-    public function getIncludeDynamicPrefixTests(): array
+    public static function getIncludeDynamicPrefixTests(): array
     {
         return [
             [[], []],
@@ -66,7 +66,7 @@ class IncludeDynamicLogicTest extends TestCase
     /**
      * @return array
      */
-    public function getRenderForCacheTests(): array
+    public static function getRenderForCacheTests(): array
     {
         return [
             [[], '<oxid_dynamic></oxid_dynamic>'],

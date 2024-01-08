@@ -17,9 +17,9 @@ use Psr\Log\LoggerInterface;
 
 class QueryLoggerTest extends TestCase
 {
-    public function providerTestLogging()
+    public static function providerTestLogging(): array
     {
-        $data = [
+        return [
              [
                  'query_pass' => true,
                  'expected'   => 'once'
@@ -29,14 +29,9 @@ class QueryLoggerTest extends TestCase
                  'expected'   => 'never'
              ]
         ];
-
-        return $data;
     }
 
     /**
-     * @param bool   $queryPass
-     * @param string $expected
-     *
      * @dataProvider providerTestLogging
      */
     public function testLogging(bool $queryPass, string $expected)
@@ -57,16 +52,12 @@ class QueryLoggerTest extends TestCase
     }
 
     /**
-     * Test helper.
-     *
-     * @param bool $pass
-     *
      * @return \PHPUnit\Framework\MockObject\MockObject|QueryFilter
      */
     private function getQueryFilterMock($pass = true)
     {
         $queryFilter = $this->getMockBuilder(QueryFilter::class)
-            ->setMethods(['shouldLogQuery'])
+            ->onlyMethods(['shouldLogQuery'])
             ->getMock();
 
         $queryFilter->expects($this->any())
@@ -85,7 +76,7 @@ class QueryLoggerTest extends TestCase
     {
         $psrLogger = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(
+            ->onlyMethods(
                 [
                     'emergency',
                     'alert',

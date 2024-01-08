@@ -40,7 +40,7 @@ final class EditionMenuFileLocatorTest extends TestCase
         $this->assertSame([$expectedPath], $locator->locate());
     }
 
-    public function dataProviderTestLocate(): array
+    public static function dataProviderTestLocate(): array
     {
         return [
             ['CE'],

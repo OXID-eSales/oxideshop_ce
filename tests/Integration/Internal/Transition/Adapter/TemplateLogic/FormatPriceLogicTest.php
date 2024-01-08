@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
@@ -36,7 +38,7 @@ class FormatPriceLogicTest extends TestCase
         $this->assertEquals($expected, $price);
     }
 
-    public function getFormatPriceProvider(): array
+    public static function getFormatPriceProvider(): array
     {
         return [
             [
@@ -63,10 +65,7 @@ class FormatPriceLogicTest extends TestCase
         $this->assertEquals($expected, $calculatedOxPrice);
     }
 
-    /**
-     * @return array
-     */
-    public function getCalculatePriceProvider(): array
+    public static function getCalculatePriceProvider(): array
     {
         $incorrectPriceObj = new \OxidEsales\Eshop\Core\Price();
         $incorrectPriceObj->setPrice(false);
@@ -93,10 +92,6 @@ class FormatPriceLogicTest extends TestCase
     }
 
     /**
-     * @param mixed  $currency
-     * @param int    $price
-     * @param string $expected
-     *
      * @dataProvider getFormattedPriceProvider
      */
     public function testGetFormattedPrice($currency, int $price, string $expected): void
@@ -107,10 +102,7 @@ class FormatPriceLogicTest extends TestCase
         $this->assertEquals($expected, $formattedPrice);
     }
 
-    /**
-     * @return array
-     */
-    public function getFormattedPriceProvider(): array
+    public static function getFormattedPriceProvider(): array
     {
         $price = 10000;
 
@@ -122,32 +114,27 @@ class FormatPriceLogicTest extends TestCase
                 '', -100, ''
             ],
             [
-                $this->getCurrencyWithSeparator(['dec' => '-']), $price, '10.000-00'
+                self::getCurrencyWithSeparator(['dec' => '-']), $price, '10.000-00'
             ],
             [
-                $this->getCurrencyWithSeparator(['thousand' => '-']), $price, '10-000,00'
+                self::getCurrencyWithSeparator(['thousand' => '-']), $price, '10-000,00'
             ],
             [
-                $this->getCurrencyWithSeparator(['sign' => '$']), $price, '10.000,00 $'
+                self::getCurrencyWithSeparator(['sign' => '$']), $price, '10.000,00 $'
             ],
             [
-                $this->getCurrencyWithSeparator(['decimal' => 4]), $price, '10.000,0000'
+                self::getCurrencyWithSeparator(['decimal' => 4]), $price, '10.000,0000'
             ],
             [
-                $this->getCurrencyWithSeparator(['sign' => '$', 'side' => 'Front']), $price, '$10.000,00'
+                self::getCurrencyWithSeparator(['sign' => '$', 'side' => 'Front']), $price, '$10.000,00'
             ],
             [
-                $this->getCurrencyWithSeparator(['sign' => '$', 'side' => 'incorrect']), $price, '10.000,00 $'
+                self::getCurrencyWithSeparator(['sign' => '$', 'side' => 'incorrect']), $price, '10.000,00 $'
             ]
         ];
     }
 
-    /**
-     * @param array $currency_array
-     *
-     * @return \stdClass
-     */
-    private function getCurrencyWithSeparator(array $currency_array): \stdClass
+    private static function getCurrencyWithSeparator(array $currency_array): \stdClass
     {
         $currency = new \stdClass();
         foreach ($currency_array as $key => $value) {

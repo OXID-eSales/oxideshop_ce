@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.0.3 - Unreleased
+
+### Fixed
+- Fix skipped backend startup checks [PR-927](https://github.com/OXID-eSales/oxideshop_ce/pull/927)
+
 ## v7.0.2 - 2023-11-28
 
 ### Fixed

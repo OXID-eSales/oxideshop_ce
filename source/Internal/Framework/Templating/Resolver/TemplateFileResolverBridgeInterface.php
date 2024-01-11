@@ -5,15 +5,12 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
+/**
+ * @deprecated will be removed in next major
+ */
 interface TemplateFileResolverBridgeInterface
 {
-    /**
-     * @param string $templateName
-     * @return string
-     */
     public function getFilename(string $templateName): string;
 }

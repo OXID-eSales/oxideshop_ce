@@ -12,10 +12,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\C
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class ThemeActivateCommandTest extends TestCase
+final class ThemeActivateCommandTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
@@ -93,7 +93,7 @@ final class ThemeActivateCommandTest extends TestCase
     private function setShopFixtures(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sShopDir', "{$this->fixtureDirectory}/shop/source/");
+        Registry::getConfig()->setConfigParam('sShopDir', "$this->fixtureDirectory/shop/source/");
         Registry::getConfig()->setConfigParam('sTheme', 'absolute-dummy-value');
     }
 

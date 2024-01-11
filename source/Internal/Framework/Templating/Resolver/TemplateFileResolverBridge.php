@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
 
+/**
+ * @deprecated will be removed in next major
+ */
 class TemplateFileResolverBridge implements TemplateFileResolverBridgeInterface
 {
     private TemplateFileResolverInterface $resolver;

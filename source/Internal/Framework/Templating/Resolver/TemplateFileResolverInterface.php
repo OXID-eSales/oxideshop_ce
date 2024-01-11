@@ -5,17 +5,16 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
 
+/**
+ * @deprecated will be removed in next major
+ */
 interface TemplateFileResolverInterface
 {
     /**
-     * @param string $templateName
-     * @return string
      * @throws InvalidTemplateNameException
      */
     public function getFilename(string $templateName): string;

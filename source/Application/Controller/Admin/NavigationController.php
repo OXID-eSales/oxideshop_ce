@@ -49,7 +49,9 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             //checking requirements if this is not nav frame reload
             if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
-                if (in_array($sItem, ['home.tpl', 'home.html.twig'])) {
+                $templateExtension = $this->getContainer()
+                    ->getParameter('oxid_esales.templating.engine_template_extension');
+                if ($sItem === "home.$templateExtension") {
                     $this->_aViewData['aMessage'] = $this->doStartUpChecks();
                 }
             } else {

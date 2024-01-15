@@ -110,7 +110,7 @@ final class TemplateRendererTest extends TestCase
             ->getMock();
     }
 
-    private static function twigTemplateNameFileDataProvider(): array
+    public static function twigTemplateNameFileDataProvider(): array
     {
         return [
             [

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\Facts\Facts;
 
 /**
@@ -49,8 +50,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             //checking requirements if this is not nav frame reload
             if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
-                $templateExtension = $this->getContainer()
-                    ->getParameter('oxid_esales.templating.engine_template_extension');
+                $templateExtension = ContainerFacade::getParameter('oxid_esales.templating.engine_template_extension');
                 if ($sItem === "home.$templateExtension") {
                     $this->_aViewData['aMessage'] = $this->doStartUpChecks();
                 }

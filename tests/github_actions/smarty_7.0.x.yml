@@ -23,11 +23,18 @@ prepare_shop:
   matrix: *matrix
   git: *git
   composer:
-    configure:
-      ref: *dev_ref
-    require:
-      ref: *dev_ref
-      install: 'smarty-component smarty-admin-theme flow-theme codeception-page-objects codeception-modules'
+    transform: |
+      {
+          "require": {
+              "oxid-esales/smarty-component": "dev-b-7.0.x",
+              "oxid-esales/smarty-admin-theme": "dev-b-7.0.x",
+              "oxid-esales/flow-theme": "dev-b-7.0.x"
+          },
+          "require-dev": {
+              "oxid-esales/codeception-page-objects": "dev-b-7.0.x",
+              "oxid-esales/codeception-modules": "dev-b-7.0.x"
+          }
+      }
 
 install_shop:
   matrix: *matrix

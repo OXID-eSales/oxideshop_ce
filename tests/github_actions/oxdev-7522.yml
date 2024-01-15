@@ -11,6 +11,16 @@ prepare_shop:
           }
       }
 
+install_shop:
+  output:
+    files: |
+      docker-compose.yml
+      source/composer.json*
+      source/composer.lock
+      source/source/config.inc.php
+      files.txt
+      data/php/logs/error_log.txt
+
 codeception:
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4

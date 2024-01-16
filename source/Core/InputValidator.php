@@ -341,7 +341,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                     return $this->addValidationError("oxuser__oxustid", $exception);
                 }
             }
-        } elseif ($invAddress['oxuser__oxustid'] && !$invAddress['oxuser__oxcompany']) {
+        } elseif (isset($invAddress['oxuser__oxustid']) && $invAddress['oxuser__oxustid'] && !$invAddress['oxuser__oxcompany']) {
             /** @var \OxidEsales\Eshop\Core\Exception\InputException $exception */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));
@@ -548,7 +548,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     protected function hasRequiredParametersForVatInCheck($invAddress)
     {
-        return $invAddress['oxuser__oxustid'] && $invAddress['oxuser__oxcountryid'] && $invAddress['oxuser__oxcompany'];
+        return isset($invAddress['oxuser__oxustid']) && $invAddress['oxuser__oxustid']
+            && isset($invAddress['oxuser__oxcountryid']) && $invAddress['oxuser__oxcountryid']
+            && isset($invAddress['oxuser__oxcompany']) && $invAddress['oxuser__oxcompany'];
     }
 
     /**

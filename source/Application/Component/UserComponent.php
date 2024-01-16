@@ -679,8 +679,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
         $aInvAdress = $this->trimAddress($aInvAdress);
 
-        $sUserName = $oUser->oxuser__oxusername->value;
-        $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
+        $sUserName = $oUser->getFieldData('oxusername');
+        $sPassword = $sPassword2 = $oUser->getFieldData('oxpassword');
 
         try {
             $newName = $aInvAdress['oxuser__oxusername'] ?? '';

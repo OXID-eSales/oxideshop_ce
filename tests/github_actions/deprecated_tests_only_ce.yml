@@ -1,0 +1,34 @@
+# This config depends on the defaults.yml testplan
+# Only diverging settings are defined here
+
+prepare_shop:
+  composer:
+    rm:
+      # yamllint disable-line rule:line-length
+      parameters: 'codeception/codeception codeception/module-asserts codeception/module-db codeception/module-filesystem codeception/module-webdriver oxid-esales/codeception-modules oxid-esales/codeception-page-objects'
+      options: '--no-update --dev'
+    configure:
+      install: 'testing_library'
+      update_options: '--no-interaction'
+    require:
+      install: ''
+      options: '--no-update'
+      update_options: '--no-interaction'
+
+phpunit:
+  matrix:
+    testplan: &skip 'skip'
+
+codeception:
+  matrix:
+    testplan: *skip
+
+sonarcloud:
+  matrix:
+    testplan: *skip
+
+phpcs_tests:
+  skip: true
+
+finish:
+  slack_title: 'Deprecated Tests CE on {{ .Github.Repository }} by {{ .Github.Actor }}'

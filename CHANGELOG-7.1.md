@@ -18,6 +18,7 @@
 - Global function \makeReadable()
 - `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,
 template extension resolving is already performed in `TemplateRenderer`
+- Smarty template engine support
 
 ### Fixed
 - Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)

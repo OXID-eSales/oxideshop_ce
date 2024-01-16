@@ -10,6 +10,8 @@ modules:
         window_size: maximize
         clear_cookies: true
         restart: true
+        connection_timeout: 30
+        request_timeout: 30
     - Db:
         dsn: 'mysql:host=%DB_HOST%;charset=utf8'
         user: '%DB_USERNAME%'

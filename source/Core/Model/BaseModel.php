@@ -709,7 +709,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         if ($whereCondition) {
             reset($whereCondition);
             foreach ($whereCondition as $name => $value) {
-                $query .= ' and ' . $name . ' = ' . $database->quote($value);
+                $query .= ' and ' . $name . ' = ' . $database->quote($value ?? '');
             }
         }
 
@@ -1377,7 +1377,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return $database->quote($fieldValue);
+        return $database->quote($fieldValue ?? '');
     }
 
     /**

@@ -1,4 +1,4 @@
-name: push_matrix_slim_ce_71x
+name: push_matrix_slim_ce_70x
 # Matrix workflow using re-usable github actions
 
 on:

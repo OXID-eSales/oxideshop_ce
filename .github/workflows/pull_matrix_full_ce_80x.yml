@@ -1,4 +1,4 @@
-name: pull_matrix_full_ce
+name: pull_matrix_full_ce_80x
 # Matrix workflow using re-usable github actions
 
 on:

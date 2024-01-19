@@ -137,8 +137,9 @@ class Base
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param class-string<T> $id
+     *
      * @return T
      */
     protected function getService(string $id): object

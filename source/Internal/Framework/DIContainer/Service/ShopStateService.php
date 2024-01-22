@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 /**
  * @internal
  */
+#[\AllowDynamicProperties]
 class ShopStateService implements ShopStateServiceInterface
 {
     private $dbHost;

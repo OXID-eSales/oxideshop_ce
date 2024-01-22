@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use function is_string;
 
+#[\AllowDynamicProperties]
 class Field
 {
     /**

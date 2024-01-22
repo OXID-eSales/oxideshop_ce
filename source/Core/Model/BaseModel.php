@@ -32,6 +32,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEve
  * Class BaseModel
  * @package OxidEsales\EshopCommunity\Core\Model
  */
+#[\AllowDynamicProperties]
 class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
     /**

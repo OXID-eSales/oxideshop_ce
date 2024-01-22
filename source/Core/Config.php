@@ -23,6 +23,7 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
 /**
  * Main shop configuration class.
  */
+#[\AllowDynamicProperties]
 class Config extends \OxidEsales\Eshop\Core\Base
 {
     // this column of params are defined in config.inc.php file,

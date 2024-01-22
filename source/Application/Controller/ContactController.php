@@ -209,10 +209,10 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $personData = $request->getRequestEscapedParameter('editval');
 
         return [
-            'email'         => $personData['oxuser__oxusername'],
-            'firstName'     => $personData['oxuser__oxfname'],
-            'lastName'      => $personData['oxuser__oxlname'],
-            'salutation'    => $personData['oxuser__oxsal'],
+            'email'         => $personData['oxuser__oxusername'] ?? '',
+            'firstName'     => $personData['oxuser__oxfname'] ?? '',
+            'lastName'      => $personData['oxuser__oxlname'] ?? '',
+            'salutation'    => $personData['oxuser__oxsal'] ?? '',
             'subject'       => $request->getRequestEscapedParameter('c_subject'),
             'message'       => $request->getRequestEscapedParameter('c_message'),
         ];

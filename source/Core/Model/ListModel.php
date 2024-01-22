@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
+use ReturnTypeWillChange;
+
 /**
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
@@ -60,6 +62,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return boolean
      */
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_aArray[$offset]);
@@ -72,6 +75,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return BaseModel
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -87,6 +91,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param mixed     $offset SPL array offset
      * @param BaseModel $oBase  Array element
      */
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $oBase)
     {
         if (isset($offset)) {
@@ -107,6 +112,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @param mixed $offset SPL array offset
      */
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if (strcmp($offset, $this->key()) === 0) {
@@ -130,6 +136,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * rewind for SPL
      */
+    #[ReturnTypeWillChange]
     public function rewind()
     {
         $this->_blRemovedActive = false;
@@ -141,6 +148,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return null
      */
+    #[ReturnTypeWillChange]
     public function current()
     {
         return current($this->_aArray);
@@ -151,6 +159,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return mixed
      */
+    #[ReturnTypeWillChange]
     public function key()
     {
         return key($this->_aArray);
@@ -176,6 +185,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * next for SPL
      */
+    #[ReturnTypeWillChange]
     public function next()
     {
         if ($this->_blRemovedActive === true && current($this->_aArray)) {
@@ -192,6 +202,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return boolean
      */
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return $this->_blValid;
@@ -202,6 +213,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return integer
      */
+    #[ReturnTypeWillChange]
     public function count()
     {
         return count($this->_aArray);

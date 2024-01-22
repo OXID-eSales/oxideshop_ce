@@ -232,9 +232,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // updating some other fields
-        $this->oxnewssubscribed__oxsal = new \OxidEsales\Eshop\Core\Field($oUser->oxuser__oxsal->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxnewssubscribed__oxfname = new \OxidEsales\Eshop\Core\Field($oUser->oxuser__oxfname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxnewssubscribed__oxlname = new \OxidEsales\Eshop\Core\Field($oUser->oxuser__oxlname->value, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxnewssubscribed__oxsal = new \OxidEsales\Eshop\Core\Field($oUser->getFieldData('oxsal'), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxnewssubscribed__oxfname = new \OxidEsales\Eshop\Core\Field($oUser->getFieldData('oxfname'), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxnewssubscribed__oxlname = new \OxidEsales\Eshop\Core\Field($oUser->getFieldData('oxlname'), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return (bool) $this->save();
     }

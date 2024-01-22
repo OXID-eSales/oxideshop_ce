@@ -110,9 +110,10 @@ class Base
         self::$_blIsAdmin = $isAdmin;
     }
 
-        /**
+    /**
      * @template T
      * @param class-string<T> $id
+     *
      * @return T
      */
     protected function getService(string $id): object

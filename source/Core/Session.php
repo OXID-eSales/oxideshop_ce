@@ -272,7 +272,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getRequestChallengeToken()
     {
-        return preg_replace('/[^a-z0-9]/i', '', Registry::getRequest()->getRequestEscapedParameter('stoken'));
+        return preg_replace('/[^a-z0-9]/i', '', Registry::getRequest()->getRequestEscapedParameter('stoken') ?? '');
     }
 
     /**
@@ -282,7 +282,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getSessionChallengeToken()
     {
-        $sRet = preg_replace('/[^a-z0-9]/i', '', $this->getVariable('sess_stoken'));
+        $sRet = preg_replace('/[^a-z0-9]/i', '', $this->getVariable('sess_stoken') ?? '');
         if (!$sRet) {
             $this->initNewSessionChallenge();
             $sRet = $this->getVariable('sess_stoken');

@@ -49,7 +49,7 @@ class StrMb
      */
     public function strlen($sStr)
     {
-        return mb_strlen($sStr, $this->_sEncoding);
+        return mb_strlen($sStr ?? '', $this->_sEncoding);
     }
 
     /**

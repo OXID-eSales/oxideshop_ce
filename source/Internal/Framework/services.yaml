@@ -12,4 +12,3 @@ imports:
   - { resource: Migration/services.yaml }
   - { resource: FileSystem/services.yaml }
   - { resource: SystemRequirements/services.yaml }
-  - { resource: Env/parameters.yaml }

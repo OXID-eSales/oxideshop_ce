@@ -39,7 +39,7 @@
 .DS_Store
 
 # Shop config & DI for modules and packages
-/var/
+#/var/
 
 # Template files
 source/Application/views/wave

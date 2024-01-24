@@ -1,0 +1,3 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider

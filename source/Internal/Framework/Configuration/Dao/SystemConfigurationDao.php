@@ -29,17 +29,17 @@ class SystemConfigurationDao
     private function getDatabaseConfiguration(): DatabaseConfiguration
     {
         $configuration = new DatabaseConfiguration();
-        $configuration->setDriver(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_DRIVER'));
-        $configuration->setCharset(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_CHARSET'));
-        $configuration->setHost(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_HOST'));
-        $configuration->setPort(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_PORT'));
-        $configuration->setName(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_NAME'));
-        $configuration->setUser(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_USER'));
-        $configuration->setPassword(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_PASSWORD'));
+        $configuration->setDriver(getenv('OXID_DB_DRIVER'));
+        $configuration->setCharset(getenv('OXID_DB_CHARSET'));
+        $configuration->setHost(getenv('OXID_DB_HOST'));
+        $configuration->setPort(getenv('OXID_DB_PORT'));
+        $configuration->setName(getenv('OXID_DB_NAME'));
+        $configuration->setUser(getenv('OXID_DB_USER'));
+        $configuration->setPassword(getenv('OXID_DB_PASSWORD'));
         $configuration->setDriverOptions(
-            explode(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_DRIVER_OPTIONS'), ',')
+            explode(getenv('OXID_DB_DRIVER_OPTIONS'), ',')
         );
-        $configuration->setUnixSocket(getenv('OXID_SYSTEM_CONFIGURATION_DATABASE_UNIX_SOCKET'));
+        $configuration->setUnixSocket(getenv('OXID_DB_UNIX_SOCKET'));
 
         return $configuration;
     }
@@ -47,8 +47,8 @@ class SystemConfigurationDao
     private function getFilesystemConfiguration(): FilesystemConfiguration
     {
         $configuration = new FilesystemConfiguration();
-        $configuration->setInstallationDirectory(getenv('OXID_SYSTEM_CONFIGURATION_INSTALLATION_DIRECTORY'));
-        $configuration->setTmpDirectory(getenv('OXID_SYSTEM_CONFIGURATION_TMP_DIRECTORY'));
+        $configuration->setInstallationDirectory(getenv('OXID_INSTALLATION_DIRECTORY'));
+        $configuration->setTmpDirectory(getenv('OXID_TMP_DIRECTORY'));
 
         return $configuration;
     }

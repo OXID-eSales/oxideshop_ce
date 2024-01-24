@@ -1,0 +1,15 @@
+id: testShopModuleId
+moduleSource: testShopModuleId
+version: ''
+activated: false
+title: {  }
+description: {  }
+lang: ''
+thumbnail: ''
+author: ''
+url: ''
+email: ''
+moduleSettings:
+  stringSetting:
+    type: str
+    value: row

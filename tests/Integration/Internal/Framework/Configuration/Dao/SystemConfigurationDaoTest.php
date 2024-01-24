@@ -23,5 +23,8 @@ final class SystemConfigurationDaoTest extends TestCase
         $this->assertNotEmpty(
             $systemConfiguration->getDatabaseConfiguration()->getName()
         );
+        var_dump(
+            $systemConfiguration->getDatabaseConfiguration()->getName()
+        );
     }
 }

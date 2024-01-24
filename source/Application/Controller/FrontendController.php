@@ -513,7 +513,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                     $this->_oaComponents[$componentName]->init();
 
                     // executing only is view does not have action method
-                    if (!method_exists($this, $this->getFncName())) {
+                    if (!method_exists($this, (string)$this->getFncName())) {
                         $this->_oaComponents[$componentName]->executeFunction($this->getFncName());
                     }
                 }

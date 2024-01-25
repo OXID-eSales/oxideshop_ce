@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\ShopSetup\DataObject\UserInput;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceSetupTester;
 
-#[Group('setup')]
+#[Group('setup', 'exclude_from_compilation')]
 final class DirectoryAndLoginStepCest
 {
     private UserInput $userInput;

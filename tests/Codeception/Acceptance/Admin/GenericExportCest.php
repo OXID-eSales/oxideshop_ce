@@ -15,9 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('admin')]
 final class GenericExportCest
 {
-    /**
-     * @group genericExport
-     */
+    #[Group('genericExport', 'exclude_from_compilation')]
     public function testGenericExport(AcceptanceTester $I): void
     {
         $I->wantToTest('Generic Export outputs product with rendered long description');

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceSetup;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceSetupTester;
 
-#[Group('setup')]
+#[Group('setup', 'exclude_from_compilation')]
 final class LicenseConditionsStepCest
 {
     public function testWithDeclinedConditions(AcceptanceSetupTester $I): void

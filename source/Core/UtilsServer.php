@@ -428,7 +428,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
         $sUrlHost = isset($matches[3]) ? $matches[3] : null;
 
-        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
+        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", (string)$sServerHost, $matches);
         $sRealHost =  isset($matches[3]) ? $matches[3] : null;
 
 

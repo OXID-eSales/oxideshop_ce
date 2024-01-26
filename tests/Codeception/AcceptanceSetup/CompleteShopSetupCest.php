@@ -14,7 +14,7 @@ use OxidEsales\Codeception\ShopSetup\DataObject\UserInput;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceSetupTester;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('setup')]
+#[Group('setup', 'exclude_from_compilation')]
 final class CompleteShopSetupCest
 {
     private UserInput $userInput;

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Start;
@@ -221,10 +222,7 @@ final class UserAccountCest
         $I->see('Germany', $userAddressPage->billingAddress);
     }
 
-    /**
-     * @group myAccount
-     * @group user_account_address
-     */
+    #[Group('myAccount', 'user_account_address', 'exclude_from_compilation')]
     public function modifyUserShippingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);
@@ -256,10 +254,7 @@ final class UserAccountCest
             ->validateUserDeliveryAddress($deliveryAddressData);
     }
 
-    /**
-     * @group myAccount
-     * @group user_account_address
-     */
+    #[Group('myAccount', 'user_account_address', 'exclude_from_compilation')]
     public function createAndDeleteUserShippingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
@@ -377,9 +378,7 @@ final class CheckoutProcessCest
             ->selectPayment('oxidcashondel');
     }
 
-    /**
-     * @group checkout_process_address
-     */
+    #[Group('checkout_process_address', 'exclude_from_compilation')]
     public function checkCreateShippingAddress(AcceptanceTester $I): void
     {
         $I->wantToTest('creating shipping address during authenticated user`s checkout');
@@ -758,9 +757,7 @@ final class CheckoutProcessCest
         $productDetailsPage->seeProductTitle('Test product 1 [EN] šÄßüл');
     }
 
-    /**
-     * @group checkout_process_address
-     */
+    #[Group('checkout_process_address', 'exclude_from_compilation')]
     public function checkOrderStepChangedAddress(AcceptanceTester $I): void
     {
         $basket = new Basket($I);

@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ArticleTest extends IntegrationTestCase
 {
@@ -58,9 +59,7 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertFalse($product->isVisible());
     }
 
-    /**
-     * @dataProvider validTimeRestrictionsDataProvider
-     */
+    #[DataProvider('validTimeRestrictionsDataProvider')]
     public function testIsVisibleWithValidTimeRestrictions(string $activeFrom, string $activeTo): void
     {
         Registry::getConfig()->setConfigParam('blUseTimeCheck', true);
@@ -86,9 +85,7 @@ final class ArticleTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidTimeRestrictionsDataProvider
-     */
+    #[DataProvider('invalidTimeRestrictionsDataProvider')]
     public function testIsVisibleWithInvalidTimeRestrictions(string $activeFrom, string $activeTo): void
     {
         Registry::getConfig()->setConfigParam('blUseTimeCheck', true);
@@ -111,6 +108,72 @@ final class ArticleTest extends IntegrationTestCase
             [self::$defaultTimestamp, self::$defaultTimestamp],
             [$now->format(self::$timeFormat), self::$defaultTimestamp],
             [$future->format(self::$timeFormat), $past->format(self::$timeFormat)]
+        ];
+    }
+
+    #[DataProvider('ProductActiveFieldStatesDataProvider')]
+    public function testIsProductAlwaysActive(?bool $active, bool $result): void
+    {
+        $product = oxNew(Article::class);
+        $product->oxarticles__oxactive = new Field($active);
+
+        $this->assertEquals($result, $product->isProductAlwaysActive());
+    }
+
+    public static function ProductActiveFieldStatesDataProvider(): array
+    {
+        return [
+            'NULL value' => [null, false],
+            'false value' => [false, false],
+            'true value' => [true, true],
+        ];
+    }
+
+    #[DataProvider('validityTimeRangesDataProvider')]
+    public function testHasProductValidTimeRange(string $activeFrom, string $activeTo, bool $result): void
+    {
+        $product = oxNew(Article::class);
+        $product->oxarticles__oxactivefrom = new Field($activeFrom);
+        $product->oxarticles__oxactiveto = new Field($activeTo);
+
+        $this->assertEquals($result, $product->hasProductValidTimeRange());
+    }
+
+    public static function validityTimeRangesDataProvider(): array
+    {
+        $now = new DateTimeImmutable();
+        return [
+            'Empty active From/To' => [self::$defaultTimestamp, self::$defaultTimestamp, false],
+            'Empty active From' => [self::$defaultTimestamp, $now->format(self::$timeFormat), true],
+            'Empty active To' => [$now->format(self::$timeFormat), self::$defaultTimestamp, true],
+            'With active From/to' => [$now->format(self::$timeFormat), $now->format(self::$timeFormat), true],
+        ];
+    }
+
+    #[DataProvider('visibilityTimeRangesDataProvider')]
+    public function testIsProductActiveNow(string $activeFrom, string $activeTo, bool $result): void
+    {
+        $now = new DateTimeImmutable();
+        $product = oxNew(Article::class);
+        $product->oxarticles__oxactivefrom = new Field($activeFrom);
+        $product->oxarticles__oxactiveto = new Field($activeTo);
+
+        $this->assertEquals($result, $product->isProductActive($now->format(self::$timeFormat)));
+    }
+
+    public static function visibilityTimeRangesDataProvider(): array
+    {
+        $now = new DateTimeImmutable();
+        $past = $now->modify('-1 day')->format(self::$timeFormat);
+        $future = $now->modify('+1 day')->format(self::$timeFormat);
+        return [
+            'Empty active From/To' => [self::$defaultTimestamp, self::$defaultTimestamp, false],
+            'Empty activeFrom valid activeTo' => [self::$defaultTimestamp, $future, true],
+            'Empty activeFrom invalid activeTo' => [self::$defaultTimestamp, $past, false],
+            'Empty activeTo valid activeFrom' => [$past, self::$defaultTimestamp, false],
+            'Empty activeTo invalid activeFrom' => [$future, self::$defaultTimestamp, false],
+            'With valid From/to' => [$past, $future, true],
+            'With invalid From/to' => [$future, $past, false],
         ];
     }
 }

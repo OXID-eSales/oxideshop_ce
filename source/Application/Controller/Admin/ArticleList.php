@@ -301,11 +301,11 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         $useTimeCheck = Registry::getConfig()->getConfigParam('blUseTimeCheck');
         $now = $this->getCurrentTimeAsDatabaseTimestamp();
         foreach ($productList as $key => $product) {
-            $product->showActiveCheckInAdminPanel = $this->isProductAlwaysActive($product);
+            $product->showActiveCheckInAdminPanel = $product->isProductAlwaysActive();
 
             if ($useTimeCheck) {
-                $product->hasActiveTimeRange = $this->hasProductActiveTimeRange($product);
-                $product->isActiveNow = $this->isProductActiveNow($product, $now);
+                $product->hasActiveTimeRange = $product->hasProductValidTimeRange();
+                $product->isActiveNow = $product->isProductActive($now);
             }
             $productList[$key] = $product;
         }
@@ -327,23 +327,5 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         } elseif ($field->fldtype === 'date') {
             Registry::getUtilsDate()->convertDBDate($field);
         }
-    }
-
-    private function isProductAlwaysActive(Article $product): bool
-    {
-        return !empty($product->oxarticles__oxactive->value);
-    }
-
-    private function isProductActiveNow(Article $product, string $now): bool
-    {
-        return $this->hasProductActiveTimeRange($product)
-            && $product->oxarticles__oxactivefrom->value <= $now
-            && $product->oxarticles__oxactiveto->value >= $now;
-    }
-
-    private function hasProductActiveTimeRange(Article $product): bool
-    {
-        return !Registry::getUtilsDate()->isEmptyDate($product->oxarticles__oxactivefrom->value)
-            && !Registry::getUtilsDate()->isEmptyDate($product->oxarticles__oxactiveto->value);
     }
 }

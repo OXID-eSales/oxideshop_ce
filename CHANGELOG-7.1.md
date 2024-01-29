@@ -3,16 +3,17 @@
 ## v7.1.0 - unreleased
 
 ### Added
-- Class `ContainerFacade` and method `Base::getService()` for quick access to the DI Container from the non-DI areas,
+- Class `ContainerFacade` and method `Base::getService()` for quick access to the DI Container from the non-DI areas
 - Command `bin/oe-console oe:theme:activate <theme>` to activate a theme from CLI
 - PHP v8.2 support
 - Shops can have their own service configuration
-- Dependencies between modules feature is introduced.
+- Dependencies between modules feature is introduced
 - PHPUnit v10 support
+- Time activated products have different status icons in the product list
 
 ### Deprecated
 - Deprecate console classes from the Internal namespace: `Executor`, `ExecutorInterface`, `CommandsProvider`, `CommandsProviderInterface`
-- Private Sales Invite functionality is outdated.
+- Private Sales Invite functionality is outdated
 - `getContainer()` and `dispatchEvent()` methods in Core classes
 - Global function \makeReadable()
 - `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,

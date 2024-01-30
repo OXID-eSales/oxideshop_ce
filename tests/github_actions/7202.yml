@@ -1,0 +1,34 @@
+# This config depends on the defaults.yml testplan
+# Only diverging settings are defined here
+prepare_shop:
+  git:
+    shop_ref: 'b-7.0.x-private-sales-user-active-OXDEV-7202'
+
+codeception:
+  # Running on public runners, this should pose no problem
+  max_parallel: &codeception_max_parallel 4
+
+runtest:
+  composer:
+    transform: |
+      {
+          "require-dev": {
+              "oxid-esales/testing-library": "dev-b-7.0.x",
+              "oxid-esales/tests-deprecated-ce": "dev-b-7.0.x-private-sales-user-active-OXDEV-7202",
+              "codeception/module-webdriver": "^3.1",
+              "phpunit/phpunit": "^9.1.1"
+          }
+      }
+
+phpcs_tests:
+  # Check all files in the full check
+  diff_only: false
+  filter: '^\./source/Internal/.*\.php$'
+
+sonarcloud:
+  matrix:
+    testplan: '["-","tests/github_actions/sonarcloud_oxideshop_ce_internal.yml"]'
+  target_branch: b-7.0.x-private-sales-user-active-OXDEV-7202
+
+finish:
+  slack_title: 'OXDEV 7202 CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

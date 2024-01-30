@@ -726,7 +726,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDiscount = $this->getSerieDiscount();
         $aBasketItems = $this->getBasketItems($oDiscount);
 
-        // Basket Item Count and isAdmin check (unble to access property $oOrder->getOrderBasket()->_blSkipVouchersAvailabilityChecking)
+        // Basket Item Count and isAdmin check (unable to access property $oOrder->getOrderBasket()->_blSkipVouchersAvailabilityChecking)
         if (!count($aBasketItems) && !$this->isAdmin()) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
@@ -736,8 +736,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $oSeries = $this->getSerie();
 
-        $oVoucherPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
-        $oDiscountPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $oProductPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
         $oProductTotal = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
@@ -750,16 +748,13 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
                 break;
             }
 
-            $oDiscountPrice->setPrice($aBasketItem['discount']);
             $oProductPrice->setPrice($aBasketItem['price']);
 
             // Individual voucher is not multiplied by article amount
             if (!$oSeries->oxvoucherseries__oxcalculateonce->value) {
-                $oDiscountPrice->multiply($aBasketItem['amount']);
                 $oProductPrice->multiply($aBasketItem['amount']);
             }
 
-            $oVoucherPrice->add($oDiscountPrice->getBruttoPrice());
             $oProductTotal->add($oProductPrice->getBruttoPrice());
 
             if (!empty($aBasketItem['discount'])) {
@@ -767,14 +762,10 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
 
-        $dVoucher = $oVoucherPrice->getBruttoPrice();
         $dProduct = $oProductTotal->getBruttoPrice();
+        $dVoucher = $oDiscount->getAbsValue($dProduct);
 
-        if ($dVoucher > $dProduct) {
-            return $dProduct;
-        }
-
-        return $dVoucher;
+        return ($dVoucher > $dProduct) ? $dProduct : $dVoucher;
     }
 
     /**

@@ -164,6 +164,69 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
+    public function checkArticleCouponValueCalculation(AcceptanceTester $I): void
+    {
+        $I->wantToTest('Article coupon value calculation');
+
+        $basket = new Basket($I);
+
+        $userData = $this->getExistingUserData();
+
+        $basketItem1 = [
+            'id' => '10015',
+            'title' => 'Test product 10015 [EN] šÄßüл',
+            'amount' => 10,
+            'totalPrice' => '1,62 €'
+        ];
+
+        $homePage = $I->openShop();
+
+        //add Product to basket
+        $basket->addProductToBasket($basketItem1['id'], 10);
+
+        $homePage = $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
+        $basketPage = $basketPage->addCouponToBasket('123456');
+        $userCheckoutPage = $basketPage->goToNextStep();
+        $paymentPage = $userCheckoutPage->enterOrderRemark('remark text')->goToNextStep();
+
+        $I->see(Translator::translate('PAYMENT_METHOD'));
+
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')
+            ->goToNextStep()
+            ->validateRemarkText('remark text');
+
+        $I->dontSee(Translator::translate('HERE_YOU_CAN_ENETER_MESSAGE'));
+
+        $paymentPage = $orderPage->editPaymentMethod();
+        $orderPage = $paymentPage->selectPayment('oxidpayadvance')->goToNextStep();
+
+        $orderPage->validateShippingMethod('Standard');
+        $orderPage->validatePaymentMethod('Cash in advance');
+        $paymentPage = $orderPage->editShippingMethod();
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')->goToNextStep();
+
+        $orderPage->validateShippingMethod('Standard');
+        $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
+        $orderPage->validateOrderItems([$basketItem1]);
+        $orderPage->validateCoupon('123456', '-1,62 €');
+
+        $priceInformation = [
+            'net' => '12,27 €',
+            'gross' => '16,20 €',
+            'shipping' => '0,00 €',
+            'payment' => '0,00 €',
+            'total' => '14,58 €',
+        ];
+        $orderPage->seeSummaryNet($priceInformation['net']);
+        $orderPage->seeSummaryGross($priceInformation['gross']);
+        $orderPage->seeSummaryShippingGross($priceInformation['shipping']);
+        $orderPage->seeSummaryPaymentGross($priceInformation['payment']);
+        $orderPage->seeSummaryGrandTotal($priceInformation['total']);
+
+        $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123456']);
+    }
+
     /**
      * @group todo_add_clean_cache_after_database_update
      */

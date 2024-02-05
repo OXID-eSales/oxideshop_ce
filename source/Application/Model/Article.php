@@ -4031,6 +4031,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $this->_dArticleVat;
     }
 
+    public function hasProductValidTimeRange(): bool
+    {
+        return !Registry::getUtilsDate()->isEmptyDate($this->oxarticles__oxactivefrom->value)
+            || !Registry::getUtilsDate()->isEmptyDate($this->oxarticles__oxactiveto->value);
+    }
+
+    public function isProductAlwaysActive(): bool
+    {
+        return !empty($this->oxarticles__oxactive->value);
+    }
+
+    public function isProductActive(string $date): bool
+    {
+        return $this->hasProductValidTimeRange()
+            && $this->oxarticles__oxactivefrom->value <= $date
+            && $this->oxarticles__oxactiveto->value >= $date;
+    }
+
     /**
      * Applies VAT to article
      *

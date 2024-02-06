@@ -3,7 +3,7 @@ phpunit:
   container:
     options: '-e XDEBUG_MODE=coverage'
   test: 'tests/Unit'
-  additional_options: '--bootstrap tests/bootstrap.php tests --coverage-clover=/var/www/unit_coverage.xml'
+  additional_options: '--bootstrap tests/bootstrap.php tests --coverage-clover=/var/www/coverage_phpunit_unit.xml'
 logfile:
   prefix: 'phpunit_unit'
 output:
@@ -14,4 +14,5 @@ output:
     source/source/log/oxideshop.log
     data/php/logs/error_log.txt
 coverage:
-  path: 'source/unit_coverage.xml'
+  path: 'source/coverage_phpunit_unit.xml'
+  prefix: coverage-reports-phpunit_unit

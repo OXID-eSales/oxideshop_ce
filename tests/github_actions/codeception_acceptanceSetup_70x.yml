@@ -1,5 +1,5 @@
 codeception:
-  title: shop_setup
+  title: codeception_shop_setup
   load_shop: '{{ .Data.prepare_shop.cache.prefix }}'
   container:
     # yamllint disable-line rule:line-length

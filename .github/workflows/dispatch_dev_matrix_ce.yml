@@ -17,7 +17,7 @@ on:
 
 jobs:
   oxideshop_ce_dispatch_dev:
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4alpha
     with:
       testplan: ${{ inputs.testplan }}
       runs_on: ${{ inputs.runs_on }}

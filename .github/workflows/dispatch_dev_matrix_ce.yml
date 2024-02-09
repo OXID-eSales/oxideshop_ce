@@ -8,7 +8,7 @@ on:
         type: string
         required: true
         description: 'URL/PATH of the testplan to run'
-        default: 'tests/github_actions/full_matrix_ce.yml'
+        default: '~/defaults/7.0.x.yml,~/full_matrix_ce.yml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -21,7 +21,8 @@ jobs:
     with:
       testplan: ${{ inputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
-      defaults: 'v0'
+      defaults: 'v4alpha'
+      plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

@@ -1,4 +1,4 @@
-name: nightly_matrix_full_ce_80x
+name: Scheduled nightly full matrix run 8.0.x
 # Matrix workflow using re-usable github actions
 
 on:
@@ -9,7 +9,7 @@ jobs:
   oxideshop_ce_80x_nightly:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'tests/github_actions/full_matrix_ce.yml'
+      testplan: '~/shop_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

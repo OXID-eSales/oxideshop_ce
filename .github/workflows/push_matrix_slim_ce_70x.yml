@@ -1,4 +1,4 @@
-name: push_matrix_slim_ce_70x
+name: Auto trigger on Push to 7.0.x*
 # Matrix workflow using re-usable github actions
 
 on:
@@ -10,7 +10,7 @@ jobs:
   oxideshop_ce_push_b70x:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: 'tests/github_actions/slim_matrix_ce.yml'
+      testplan: '~/defaults/7.0.x.yml,~/defaults/php8.1_mysql_57.only.yml,~/slim_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

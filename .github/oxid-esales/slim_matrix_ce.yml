@@ -1,27 +1,13 @@
 # This config depends on the defaults.yml testplan
 # Only diverging settings are defined here
-workflow:
-  matrix: &matrix
-    # Only testing one combination in this workflow
-    php: &matrix_php '["8.2"]'
-    mysql: &matrix_mysql '["8.0"]'
-    template_engine: &template_engine '["twig"]'
-
-prepare_shop:
-  matrix: *matrix
-
-install_shop:
-  # Using the global settings here
-  matrix: *matrix
-
 phpunit:
-  matrix: *matrix
   additional_options: ''
   coverage:
     path: ''
 
 codeception:
-  matrix: *matrix
+  # Running on public runners, this should pose no problem
+  max_parallel: &codeception_max_parallel 4
   coverage:
     path: ''
 
@@ -34,9 +20,7 @@ sonarcloud:
     testplan: 'skip'
 
 phpcs_tests:
-  # Skip this part of the test run
   skip: true
 
 finish:
-  matrix: *matrix
-  slack_title: 'Slim matrix CE on {{ .Github.Repository }} by {{ .Github.Actor }}'
+  slack_title: 'Slim matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

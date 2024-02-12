@@ -47,15 +47,14 @@ jobs:
         run: |
           # Build testplan
           if [ '${{inputs.limit}}' == 'yes' ]; then
-            LIMIT="tests/github_actions/defaults/php8.1_mysql5.7_only.yml,"
+            LIMIT='~/defaults/php8.1_mysql5.7_only.yml,'
           else
-            LIMIT=""
+            LIMIT=''
           fi
-          SCENARIO="${{inputs.scenario}}"
           case '${{ inputs.scenario}}' in
             7.0.x) TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
             7.1.x) TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
-            8.0.x) ${LIMIT}~/shop_ce.yml" ;;
+            8.0.x) TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
             "branch from 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
             "branch from 7.1.x") TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
             "branch from 8.0.x") TESTPLAN="${LIMIT}~/shop_ce.yml" ;;

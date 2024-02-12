@@ -2,7 +2,6 @@
 # Only diverging settings are defined here
 
 prepare_shop:
-  git: *git
   composer:
     transform: |
       {

@@ -47,15 +47,21 @@ jobs:
         run: |
           # Build testplan
           if [ '${{inputs.limit}}' == 'yes' ]; then
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             LIMIT='~/defaults/php8.1_mysql5.7_only.yml,'
           else
             LIMIT=''
           fi
           case '${{ inputs.scenario}}' in
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             7.0.x) TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             7.1.x) TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             8.0.x) TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml" ;;
+            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
             "custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
               echo "Illegal choice, fix the workflow"

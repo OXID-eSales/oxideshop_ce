@@ -53,16 +53,26 @@ jobs:
             LIMIT=''
           fi
           case '${{ inputs.scenario}}' in
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            7.0.x) TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            7.1.x) TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            8.0.x) TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml" ;;
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            "custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
+            "7.0.x")
+              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
+              TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml"
+              ;;
+            "7.1.x")
+              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
+              TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml"
+              ;;
+            "8.0.x")
+              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
+              TESTPLAN="${LIMIT}~/shop_ce.yml"
+              ;;
+            "smarty 7.0.x")
+              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
+              TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml"
+              ;;
+            "custom testplan")
+              # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
+              TESTPLAN="${{ inputs.custom_testplan }}"
+              ;;
             *)
               echo "Illegal choice, fix the workflow"
               exit 1

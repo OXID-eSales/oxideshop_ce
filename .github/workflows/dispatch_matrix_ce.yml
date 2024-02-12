@@ -15,7 +15,7 @@ on:
           - branch from 8.0.x
           - smarty 7.0.x
           - use custom testplan
-        default: 'branch from 8.0.x'
+        default: '8.0.x'
         description: 'Choose test scenario'
       limit:
         type: choice
@@ -55,9 +55,6 @@ jobs:
             7.0.x) TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
             7.1.x) TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
             8.0.x) TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
-            "branch from 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
-            "branch from 7.1.x") TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
-            "branch from 8.0.x") TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
             "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml" ;;
             "custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
@@ -86,7 +83,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   dispatch_v0:
-    if: ${{ inputs.use_dev_version == 'no' }}
+    if: ${{ inputs.use_dev_version == 'v0' }}
     needs: build_testplan
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v0
     with:
@@ -104,7 +101,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   dispatch_v4alpha:
-    if: ${{ inputs.use_dev_version == 'no' }}
+    if: ${{ inputs.use_dev_version == 'v4alpha' }}
     needs: build_testplan
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4alpha
     with:

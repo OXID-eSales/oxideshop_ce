@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace Acceptance\Admin;
 
 use Codeception\Attribute\Group;
+use DateTime;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 #[Group('admin', 'product')]
 final class ProductListStatusTestCest
 {
-    private string $temporaryActiveProductID = '1003';
-    private string $temporaryInactiveProductID = '1004';
+    private string $productID = '1000';
 
     public function _before(AcceptanceTester $I): void
     {
@@ -32,7 +32,19 @@ final class ProductListStatusTestCest
 
         $I->expect('the given product is active in the list');
 
-        $productList->filterByProductNumber($this->temporaryActiveProductID);
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXACTIVE' => false,
+                'OXACTIVEFROM' => (new DateTime())->modify('-1 day')->format('Y-m-d 00:00:00'),
+                'OXACTIVETO' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00')
+            ],
+            [
+                'OXID' => $this->productID
+            ]
+        );
+
+        $productList->filterByProductNumber($this->productID);
 
         $I->assertStringContainsString(
             'temp-active',
@@ -41,7 +53,19 @@ final class ProductListStatusTestCest
 
         $I->expect('the given product is not active in the list');
 
-        $productList->filterByProductNumber($this->temporaryInactiveProductID);
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXACTIVE' => false,
+                'OXACTIVEFROM' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00'),
+                'OXACTIVETO' => (new DateTime())->modify('+2 day')->format('Y-m-d 00:00:00')
+            ],
+            [
+                'OXID' => $this->productID
+            ]
+        );
+
+        $productList->filterByProductNumber($this->productID);
 
         $I->assertStringContainsString(
             'temp-inactive',

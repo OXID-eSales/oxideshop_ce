@@ -35,6 +35,10 @@ on:
         options: ['no', 'v0', 'v4alpha']
         description: 'Use the dev version of github actions'
         default: 'no'
+      debug:
+        type: boolean
+        description: 'Create debugging script'
+        default: false
 
 jobs:
   build_testplan:
@@ -127,6 +131,7 @@ jobs:
       runs_on: ${{ inputs.runs_on }}
       defaults: 'v4alpha'
       plan_folder: '.github/oxid-esales'
+      debug: ${{ inputs.debug }}
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

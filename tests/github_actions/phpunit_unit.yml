@@ -3,7 +3,7 @@ phpunit:
   container:
     options: '-e XDEBUG_MODE=coverage'
   test: 'tests/Unit'
-  additional_options: '--bootstrap tests/bootstrap.php tests --coverage-clover=/var/www/unit_coverage.xml'
+  additional_options: '--bootstrap tests/bootstrap.php --coverage-clover=/var/www/unit_coverage.xml'
 logfile:
   prefix: 'phpunit_unit'
 output:

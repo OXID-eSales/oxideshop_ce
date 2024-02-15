@@ -10,9 +10,6 @@ on:
           - 7.0.x
           - 7.1.x
           - 8.0.x
-          - branch from 7.0.x
-          - branch from 7.1.x
-          - branch from 8.0.x
           - smarty 7.0.x
           - use custom testplan
         default: '8.0.x'
@@ -73,7 +70,7 @@ jobs:
               # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
               TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml"
               ;;
-            "custom testplan")
+            "use custom testplan")
               # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
               TESTPLAN="${{ inputs.custom_testplan }}"
               ;;

@@ -12,6 +12,7 @@
 !/source/cache/.htaccess
 !/source/cache/dir.txt
 /.phpunit.result.cache
+/.phpunit.cache
 
 # Export
 !/source/export/

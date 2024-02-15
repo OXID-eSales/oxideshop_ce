@@ -1,2 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+
+  Psr\Cache\CacheItemPoolInterface:
+    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+
+  Symfony\Contracts\Cache\CacheInterface:
+    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+
 imports:
   - { resource: Command/services.yaml }

@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
-class FilesystemModuleCacheBridge implements ModuleCacheServiceBridgeInterface
+class ModuleCacheBridge implements ModuleCacheServiceBridgeInterface
 {
     public function __construct(
-        private ModuleCacheServiceInterface $moduleCacheService
+        private readonly ModuleCacheServiceInterface $moduleCacheService
     ) {
     }
 

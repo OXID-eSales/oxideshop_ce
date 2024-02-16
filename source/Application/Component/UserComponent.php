@@ -23,6 +23,7 @@ use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
+use function array_key_exists;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -436,6 +437,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
         $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
+        $billingAddress = $this->removeNonAddressFields($billingAddress);
         $billingAddress = $this->trimAddress($billingAddress);
 
         $shippingAddress = $this->getDelAddressData();
@@ -903,5 +905,24 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($existingUser && $this->isGuestUser($existingUser)) {
             $existingUser->delete();
         }
+    }
+
+    private function removeNonAddressFields(array $billingAddress): array
+    {
+        $nonAddressFields = [
+            'oxuser__oxactive',
+            'oxuser__oxshopid',
+            'oxuser__oxpassword',
+            'oxuser__oxpasssalt',
+            'oxuser__oxupdatekey',
+            'oxuser__oxupdateexp',
+        ];
+        foreach ($nonAddressFields as $field) {
+            if ($billingAddress && array_key_exists($field, $billingAddress)) {
+                unset($billingAddress[$field]);
+            }
+        }
+
+        return $billingAddress;
     }
 }

@@ -7,22 +7,22 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use Exception;
 use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
+use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
+use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\ConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
-use Exception;
-use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
-use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
-use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
-use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\Eshop\Core\Registry;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -183,7 +183,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Collects posted user information from posted variables ("lgn_usr",
-     * "lgn_pwd", "lgn_cook"), executes \OxidEsales\Eshop\Application\Model\User::login() and checks if
+     * "lgn_pwd", "lgn_cook"), executes User::login() and checks if
      * such user exists.
      *
      * Session variables:
@@ -204,8 +204,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // trying to login user
         try {
-            /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            /** @var User $oUser */
+            $oUser = oxNew(User::class);
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
         } catch (UserException $oEx) {
@@ -226,7 +226,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Special functionality which is performed after user logs in (or user is created without pass).
      * Performes additional checking if user is not BLOCKED
-     * (\OxidEsales\Eshop\Application\Model\User::InGroup("oxidblocked")) - if yes - redirects to blocked user
+     * (User::InGroup("oxidblocked")) - if yes - redirects to blocked user
      * page ("cl=content&tpl=user_blocked").
      * Stores cookie info if user confirmed in login screen.
      * Then loads delivery info and forces basket to recalculate
@@ -235,7 +235,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * user - sets error code according problem, and returns "user" to redirect
      * to user info screen.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
+     * @param User $oUser user object
      *
      * @return string
      */
@@ -331,7 +331,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function logout()
     {
         $myConfig = Registry::getConfig();
-        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        $oUser = oxNew(User::class);
 
         if ($oUser->logout()) {
             $this->setLoginStatus(USER_LOGOUT);
@@ -393,9 +393,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * First test if all required fields were filled, then performed
      * additional checking oxcmp_user::CheckValues(). If no errors
-     * occured - trying to create new user (\OxidEsales\Eshop\Application\Model\User::CreateUser()),
-     * logging him to shop (\OxidEsales\Eshop\Application\Model\User::Login() if user has entered password).
-     * If \OxidEsales\Eshop\Application\Model\User::CreateUser() returns false - this means user is
+     * occured - trying to create new user (User::CreateUser()),
+     * logging him to shop (User::Login() if user has entered password).
+     * If User::CreateUser() returns false - this means user is
      * already created - we only logging him to shop (oxcmp_user::Login()).
      * If there is any error with missing data - function will return
      * false and set error code (oxcmp_user::iError). If user was
@@ -443,7 +443,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $shippingAddress = $this->trimAddress($shippingAddress);
 
         try {
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            $user = oxNew(User::class);
             $user->checkValues($username, $password, $passwordConfirmation, $billingAddress, $shippingAddress);
 
             $user->oxuser__oxusername = new Field($username, Field::T_RAW);
@@ -541,9 +541,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * If any additional configurations required right before user creation
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $user
+     * @param User $user
      *
-     * @return \OxidEsales\Eshop\Application\Model\User The user we gave in.
+     * @return User The user we gave in.
      */
     protected function configureUserBeforeCreation($user)
     {

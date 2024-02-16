@@ -642,7 +642,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Session variables:
      * <b>ordrem</b>
      *
-     * @return  bool true on success, false otherwise
+     * @return  bool|void true on success, false otherwise
      */
     protected function changeUserWithoutRedirect()
     {
@@ -652,59 +652,49 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
-        // no user ?
-        $oUser = $this->getUser();
-        if (!$oUser) {
+        $user = $this->getUser();
+        if (!$user) {
             return;
         }
 
-        // collecting values to check
-        $aDelAdress = $this->getDelAddressData();
-        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
-        $aDelAdress = $this->trimAddress($aDelAdress);
+        $shippingAddress = $this->getDelAddressData();
+        $shippingAddress = $this->cleanAddress($shippingAddress, oxNew(UserShippingAddressUpdatableFields::class));
+        $shippingAddress = $this->trimAddress($shippingAddress);
 
-        // if user company name, user name and additional info has special chars
-        $aInvAdress = Registry::getRequest()->getRequestParameter('invadr');
-        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
-        $aInvAdress = $this->trimAddress($aInvAdress);
+        $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
+        $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
+        $billingAddress = $this->trimAddress($billingAddress);
 
-        $sUserName = $oUser->getFieldData('oxusername');
-        $sPassword = $sPassword2 = $oUser->getFieldData('oxpassword');
+        $username = $user->getFieldData('oxusername');
+        $password = $user->getFieldData('oxpassword');
 
         try {
-            $newName = $aInvAdress['oxuser__oxusername'] ?? '';
+            $newName = $billingAddress['oxuser__oxusername'] ?? '';
             if (
-                $this->isGuestUser($oUser)
-                && $this->isUserNameUpdated($oUser->oxuser__oxusername->value ?? '', $newName)
+                $this->isGuestUser($user)
+                && $this->isUserNameUpdated($user->oxuser__oxusername->value ?? '', $newName)
             ) {
                 $this->deleteExistingGuestUser($newName);
             }
-            $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
-            // assigning to newsletter
-            if (($blOptin = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed')) === null) {
-                $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
-            }
+            $user->changeUserData($username, $password, $password, $billingAddress, $shippingAddress);
+
+            $isSubscriptionRequested = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
+            $userSubscriptionStatus = $isSubscriptionRequested
+                ?? $user->getNewsSubscription()->getOptInStatus();
             // check if email address changed, if so, force check newsletter subscription settings.
-            $sBillingUsername = $aInvAdress['oxuser__oxusername'] ?? null;
-            $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
-            $blEmailParam = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
-            $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
-        } catch (UserException $oEx) { // errors in input
-            // marking error code
-            //TODO
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
+            $billingUsername = $billingAddress['oxuser__oxusername'] ?? null;
+            $forceSubscriptionCheck = ($billingUsername !== null && $billingUsername !== $username);
+            $isSubscriptionEmailRequested = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
+            $this->_blNewsSubscriptionStatus = $user->setNewsSubscription(
+                $userSubscriptionStatus,
+                $isSubscriptionEmailRequested,
+                $forceSubscriptionCheck
+            );
+        } catch (UserException | ConnectionException | InputException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
 
             return;
-        } catch (InputException $oEx) {
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
-
-            return;
-        } catch (ConnectionException $oEx) {
-            //connection to external resource broken, change message and pass to the view
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
-
-            return;
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_USER_UPDATE_FAILED', false, true);
             return false;
         }
@@ -712,17 +702,17 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->resetPermissions();
 
         // order remark
-        $sOrderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
+        $orderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
 
-        if ($sOrderRemark) {
-            $session->setVariable('ordrem', $sOrderRemark);
+        if ($orderRemark) {
+            $session->setVariable('ordrem', $orderRemark);
         } else {
             $session->deleteVariable('ordrem');
         }
 
-        if ($oBasket = $session->getBasket()) {
-            $oBasket->setBasketUser(null);
-            $oBasket->onUpdate();
+        if ($basket = $session->getBasket()) {
+            $basket->setBasketUser(null);
+            $basket->onUpdate();
         }
 
         return true;

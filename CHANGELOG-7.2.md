@@ -9,7 +9,7 @@
 - 
 
 ### Fixed
-- 
+- User registration in the Private Sales mode
 
 ### Changed
 -  

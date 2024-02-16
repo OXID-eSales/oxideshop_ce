@@ -24,14 +24,13 @@ final class UserComponentTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->mockSessionChallenge();
+        $this->mockSession();
         Registry::getConfig()->reinitialize();
     }
 
     public function testCreateUserWillActivateUserAutomatically(): void
     {
-        $requestData = $this->getUserFormData();
-        $_POST = array_merge($_POST, $requestData);
+        $_POST = $this->getUserFormData();
 
         $this->getUserComponent()->createUser();
 
@@ -41,27 +40,37 @@ final class UserComponentTest extends IntegrationTestCase
     public function testCreateUserWithPrivateSalesWillNotActivateUserAutomatically(): void
     {
         Registry::getConfig()->setConfigParam('blPsLoginEnabled', true);
-        $requestData = $this->getUserFormData();
-        $_POST = array_merge($_POST, $requestData);
+        $_POST = $this->getUserFormData();
 
         $this->getUserComponent()->createUser();
 
         $this->assertEmpty($this->fetchUserData()['OXACTIVE']);
     }
 
-    public function testCreateUserWithPrivateSalesAndExtraDataInAddressForm(): void
+    public function testCreateUserWithMissingBillingAddressData(): void
+    {
+        $requestData = $this->getUserFormData();
+        unset($requestData['invadr']);
+        $_POST = $requestData;
+
+        $return = $this->getUserComponent()->createUser();
+
+        $this->assertFalse($return);
+    }
+
+    public function testCreateUserWithPrivateSalesAndExtraFormDataWillNotUpdateUserStatus(): void
     {
         Registry::getConfig()->setConfigParam('blPsLoginEnabled', true);
         $requestData = $this->getUserFormData();
         $requestData['invadr']['oxuser__oxactive'] = 1;
-        $_POST = array_merge($_POST, $requestData);
+        $_POST = $requestData;
 
         $this->getUserComponent()->createUser();
 
         $this->assertEmpty($this->fetchUserData()['OXACTIVE']);
     }
 
-    public function testCreateUserExtraDataInAddressFormWillNotUpdateNonAddressUserFields(): void
+    public function testCreateUserWithExtraFormDataWillNotUpdateNonAddressUserFields(): void
     {
         $wrongShopId = 123;
         $wrongUserRights = 'admin';
@@ -80,7 +89,7 @@ final class UserComponentTest extends IntegrationTestCase
         $requestData['invadr']['oxuser__oxregister'] = $wrongTimestamp;
         $requestData['invadr']['oxuser__oxupdatekey'] = $wrongTimestamp;
         $requestData['invadr']['oxuser__oxupdateexp'] = $wrongUpdateExpiration;
-        $_POST = array_merge($_POST, $requestData);
+        $_POST = $requestData;
 
         $this->getUserComponent()->createUser();
 
@@ -96,20 +105,71 @@ final class UserComponentTest extends IntegrationTestCase
         $this->assertNotEquals($wrongUpdateExpiration, $userData['OXUPDATEEXP']);
     }
 
-    private function mockSessionChallenge(): void
+    public function testChangeUserWithMissingBillingAddressData(): void
     {
-        Registry::set(
-            Session::class,
-            $this->createConfiguredMock(
-                Session::class,
-                ['checkSessionChallenge' => true]
-            )
-        );
+        $_POST = $this->getUserFormData();
+        $this->getUserComponent()->createUser();
+
+        $requestData = $this->getUserFormData();
+        unset($requestData['invadr']);
+        $_POST = $requestData;
+
+        $return = $this->getUserComponent()->changeUser();
+
+        $this->assertFalse($return);
+    }
+
+    public function testChangeUserWithExtraFormDataWillNotUpdateNonAddressUserFields(): void
+    {
+        $_POST = $this->getUserFormData();
+        $this->getUserComponent()->createUser();
+
+        $wrongShopId = 123;
+        $wrongUserRights = 'admin';
+        $wrongCustomerNumber = 12345;
+        $wrongPassword = uniqid('some-pass-', true);
+        $wrongPasswordSalt = uniqid('some-pass-salt-', true);
+        $wrongTimestamp = '2001-01-01';
+        $wrongUpdateExpiration = 123;
+        $requestData = $this->getUserFormData();
+        $requestData['invadr']['oxuser__oxshopid'] = $wrongShopId;
+        $requestData['invadr']['oxuser__oxrights'] = $wrongUserRights;
+        $requestData['invadr']['oxuser__oxcustnr'] = $wrongCustomerNumber;
+        $requestData['invadr']['oxuser__oxpassword'] = $wrongPassword;
+        $requestData['invadr']['oxuser__oxpasssalt'] = $wrongPasswordSalt;
+        $requestData['invadr']['oxuser__oxcreate'] = $wrongTimestamp;
+        $requestData['invadr']['oxuser__oxregister'] = $wrongTimestamp;
+        $requestData['invadr']['oxuser__oxupdatekey'] = $wrongTimestamp;
+        $requestData['invadr']['oxuser__oxupdateexp'] = $wrongUpdateExpiration;
+        $_POST = $requestData;
+
+        $this->getUserComponent()->changeUser();
+
+        $userData = $this->fetchUserData();
+        $this->assertNotEquals($wrongShopId, $userData['OXSHOPID']);
+        $this->assertNotEquals($wrongUserRights, $userData['OXRIGHTS']);
+        $this->assertNotEquals($wrongUserRights, $userData['OXCUSTNR']);
+        $this->assertNotEquals($wrongPassword, $userData['OXPASSWORD']);
+        $this->assertNotEquals($wrongPasswordSalt, $userData['OXPASSSALT']);
+        $this->assertNotEquals($wrongTimestamp, $userData['OXCREATE']);
+        $this->assertNotEquals($wrongTimestamp, $userData['OXREGISTER']);
+        $this->assertNotEquals($wrongTimestamp, $userData['OXUPDATEKEY']);
+        $this->assertNotEquals($wrongUpdateExpiration, $userData['OXUPDATEEXP']);
+    }
+
+    private function mockSession(): void
+    {
+        $sessionMock = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
+        $sessionMock
+            ->method('checkSessionChallenge')
+            ->willReturn(true);
+        Registry::set(Session::class, $sessionMock);
     }
 
     private function getUserFormData(): array
     {
         $password = uniqid('some-string-', true);
+
         return [
             'oxuser__oxfname' => uniqid('first-name-', true),
             'oxuser__oxlname' => uniqid('last-name-', true),
@@ -125,7 +185,6 @@ final class UserComponentTest extends IntegrationTestCase
                 'oxuser__oxzip' => 123,
                 'oxuser__oxcity' => 'Freiburg',
                 'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984',
-//                'oxuser__oxshopid' => 1,
             ],
         ];
     }

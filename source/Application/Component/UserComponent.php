@@ -24,6 +24,7 @@ use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
 use function array_key_exists;
+use function is_array;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -435,15 +436,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $password = Registry::getRequest()->getRequestParameter('lgn_pwd');
         $passwordConfirmation = Registry::getRequest()->getRequestParameter('lgn_pwd2');
 
-        $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
-        $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
-        $billingAddress = $this->removeNonAddressFields($billingAddress);
-        $billingAddress = $this->trimAddress($billingAddress);
-
-        $shippingAddress = $this->getDelAddressData();
-        $shippingAddress = $this->cleanAddress($shippingAddress, oxNew(UserShippingAddressUpdatableFields::class));
-        $shippingAddress = $this->trimAddress($shippingAddress);
-
+        $billingAddress = $this->getBillingAddress();
+        $shippingAddress = $this->getShippingAddress();
         try {
             $user = oxNew(User::class);
             $user->checkValues($username, $password, $passwordConfirmation, $billingAddress, $shippingAddress);
@@ -656,18 +650,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!$user) {
             return;
         }
-
-        $shippingAddress = $this->getDelAddressData();
-        $shippingAddress = $this->cleanAddress($shippingAddress, oxNew(UserShippingAddressUpdatableFields::class));
-        $shippingAddress = $this->trimAddress($shippingAddress);
-
-        $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
-        $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
-        $billingAddress = $this->trimAddress($billingAddress);
+        $shippingAddress = $this->getShippingAddress();
+        $billingAddress = $this->getBillingAddress();
 
         $username = $user->getFieldData('oxusername');
         $password = $user->getFieldData('oxpassword');
-
         try {
             $newName = $billingAddress['oxuser__oxusername'] ?? '';
             if (
@@ -865,27 +852,17 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         return $address;
     }
 
-    /**
-     * @param $user
-     * @return bool
-     */
     private function isGuestUser(User $user): bool
     {
         return empty($user->oxuser__oxpassword->value);
     }
 
-    /**
-     * @param $currentName
-     * @param $newName
-     * @return bool
-     */
     private function isUserNameUpdated(string $currentName, string $newName): bool
     {
         return $currentName && $newName && $currentName !== $newName;
     }
 
     /**
-     * @param string $newName
      * @throws Exception
      */
     private function deleteExistingGuestUser(string $newName): void
@@ -897,7 +874,24 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
     }
 
-    private function removeNonAddressFields(array $billingAddress): array
+    private function getShippingAddress(): ?array
+    {
+        $shippingAddress = $this->getDelAddressData();
+        $shippingAddress = $this->cleanAddress($shippingAddress, oxNew(UserShippingAddressUpdatableFields::class));
+        return $this->trimAddress($shippingAddress);
+    }
+
+    private function getBillingAddress(): ?array
+    {
+        $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
+        $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
+        if ($billingAddress && is_array($billingAddress)) {
+            $billingAddress = $this->removeNonAddressFields($billingAddress);
+        }
+        return $this->trimAddress($billingAddress);
+    }
+
+    private function removeNonAddressFields(array $addressFormData): array
     {
         $nonAddressFields = [
             'oxuser__oxactive',
@@ -908,11 +902,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             'oxuser__oxupdateexp',
         ];
         foreach ($nonAddressFields as $field) {
-            if ($billingAddress && array_key_exists($field, $billingAddress)) {
-                unset($billingAddress[$field]);
+            if ($addressFormData && array_key_exists($field, $addressFormData)) {
+                unset($addressFormData[$field]);
             }
         }
 
-        return $billingAddress;
+        return $addressFormData;
     }
 }

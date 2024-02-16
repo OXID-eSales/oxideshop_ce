@@ -8,6 +8,11 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\ConnectionException;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\InputException;
+use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Form\FormFields;
@@ -127,7 +132,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function checkPsState()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
         if ($this->getParent()->isEnabledPrivateSales()) {
             // load session user
             $oUser = $this->getUser();
@@ -151,8 +156,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function loadSessionUser()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $myConfig = Registry::getConfig();
+        $session = Registry::getSession();
 
         $oUser = $this->getUser();
 
@@ -203,7 +208,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
-        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
+        } catch (UserException $oEx) {
             // for login component send exception text to a custom component (if defined)
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, '', false);
 
@@ -236,14 +241,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function afterLogin($oUser)
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         if ($session->isSessionStarted()) {
             $session->regenerateSessionId();
         }
 
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
+            $sUrl = Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
             Registry::getUtils()->redirect($sUrl, true, 302);
         }
 
@@ -270,10 +275,10 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         } else {
             $this->login();
 
-            if (!$this->isAdmin() && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPerfNoBasketSaving')) {
+            if (!$this->isAdmin() && !Registry::getConfig()->getConfigParam('blPerfNoBasketSaving')) {
                 //load basket from the database
                 try {
-                    $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                    $session = Registry::getSession();
                     if ($oBasket = $session->getBasket()) {
                         $oBasket->load();
                     }
@@ -292,7 +297,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function afterLogout()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         $session->deleteVariable('paymentid');
         $session->deleteVariable('sShipSet');
@@ -325,7 +330,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function logout()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
         if ($oUser->logout()) {
@@ -413,66 +418,59 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return false;
         }
 
-        $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
+        $isPrivateSales = $this->getParent()->isEnabledPrivateSales();
 
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        if ($blActiveLogin && !Registry::getRequest()->getRequestEscapedParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
+        if (
+            $isPrivateSales
+            && !Registry::getRequest()->getRequestEscapedParameter('ord_agb')
+            && Registry::getConfig()->getConfigParam('blConfirmAGB')
+        ) {
             Registry::getUtilsView()->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
             return false;
         }
 
-        // collecting values to check
-        $sUser = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $username = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $password = Registry::getRequest()->getRequestParameter('lgn_pwd');
+        $passwordConfirmation = Registry::getRequest()->getRequestParameter('lgn_pwd2');
 
-        // first pass
-        $sPassword = Registry::getRequest()->getRequestParameter('lgn_pwd');
+        $billingAddress = Registry::getRequest()->getRequestParameter('invadr');
+        $billingAddress = $this->cleanAddress($billingAddress, oxNew(UserUpdatableFields::class));
+        $billingAddress = $this->trimAddress($billingAddress);
 
-        // second pass
-        $sPassword2 = Registry::getRequest()->getRequestParameter('lgn_pwd2');
-
-        $aInvAdress = Registry::getRequest()->getRequestParameter('invadr');
-
-        $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
-        $aInvAdress = $this->trimAddress($aInvAdress);
-
-        $aDelAdress = $this->getDelAddressData();
-        $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
-        $aDelAdress = $this->trimAddress($aDelAdress);
+        $shippingAddress = $this->getDelAddressData();
+        $shippingAddress = $this->cleanAddress($shippingAddress, oxNew(UserShippingAddressUpdatableFields::class));
+        $shippingAddress = $this->trimAddress($shippingAddress);
 
         try {
-            /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-            $oUser->checkValues($sUser, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            $user->checkValues($username, $password, $passwordConfirmation, $billingAddress, $shippingAddress);
 
-            $iActState = $blActiveLogin ? 0 : 1;
+            $user->oxuser__oxusername = new Field($username, Field::T_RAW);
+            $user->setPassword($password);
+            $user->oxuser__oxactive = new Field(
+                $isPrivateSales ? 0 : 1,
+                Field::T_RAW
+            );
 
-            // setting values
-            $oUser->oxuser__oxusername = new Field($sUser, Field::T_RAW);
-            $oUser->setPassword($sPassword);
-            $oUser->oxuser__oxactive = new Field($iActState, Field::T_RAW);
+            $userSubscriptionStatus = $user->getNewsSubscription()->getOptInStatus();
 
-            // used for checking if user email currently subscribed
-            $iSubscriptionStatus = $oUser->getNewsSubscription()->getOptInStatus();
-
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $database = DatabaseProvider::getDb();
             $database->startTransaction();
             try {
-                $oUser->createUser();
-                $oUser = $this->configureUserBeforeCreation($oUser);
-                $oUser->load($oUser->getId());
-                $oUser->changeUserData(
-                    $oUser->oxuser__oxusername->value,
-                    $sPassword,
-                    $sPassword,
-                    $aInvAdress,
-                    $aDelAdress
+                $user->createUser();
+                $user = $this->configureUserBeforeCreation($user);
+                $user->load($user->getId());
+                $user->changeUserData(
+                    $user->oxuser__oxusername->value,
+                    $password,
+                    $password,
+                    $billingAddress,
+                    $shippingAddress
                 );
 
-                if ($blActiveLogin) {
-                    // accepting terms..
-                    $oUser->acceptTerms();
+                if ($isPrivateSales) {
+                    $user->acceptTerms();
                 }
 
                 $database->commitTransaction();
@@ -482,73 +480,62 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                 throw $exception;
             }
 
-            $sUserId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("su");
-            $sRecEmail = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("re");
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blInvitationsEnabled') && $sUserId && $sRecEmail) {
-                // setting registration credit points..
-                $oUser->setCreditPointsForRegistrant($sUserId, $sRecEmail);
+            $invitationSenderUserId = Registry::getSession()->getVariable("su");
+            $invitationRecipientEmail = Registry::getSession()->getVariable("re");
+            if (
+                $invitationSenderUserId
+                && $invitationRecipientEmail
+                && Registry::getConfig()->getConfigParam('blInvitationsEnabled')
+            ) {
+                $user->setCreditPointsForRegistrant($invitationSenderUserId, $invitationRecipientEmail);
             }
 
-            // assigning to newsletter
-            $blOptin = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
-            if ($blOptin && $iSubscriptionStatus == 1) {
+            $isSubscriptionRequested = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
+            if ($isSubscriptionRequested && $userSubscriptionStatus == 1) {
                 // if user was assigned to newsletter
                 // and is creating account with newsletter checked,
                 // don't require confirm
-                $oUser->getNewsSubscription()->setOptInStatus(1);
-                $oUser->addToGroup('oxidnewsletter');
+                $user->getNewsSubscription()->setOptInStatus(1);
+                $user->addToGroup('oxidnewsletter');
                 $this->_blNewsSubscriptionStatus = 1;
             } else {
-                $blOrderOptInEmailParam = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail');
-                $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blOrderOptInEmailParam);
+                $isSubscriptionEmailRequested = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
+                $this->_blNewsSubscriptionStatus = $user->setNewsSubscription(
+                    $isSubscriptionRequested,
+                    $isSubscriptionEmailRequested
+                );
             }
 
-            $oUser->addToGroup('oxidnotyetordered');
-            $oUser->logout();
-        } catch (\OxidEsales\Eshop\Core\Exception\UserException $exception) {
-            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-
-            return false;
-        } catch (\OxidEsales\Eshop\Core\Exception\InputException $exception) {
-            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-
-            return false;
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
-            Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-
-            return false;
-        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $exception) {
+            $user->addToGroup('oxidnotyetordered');
+            $user->logout();
+        } catch (UserException | ConnectionException | InputException | DatabaseConnectionException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
 
             return false;
         }
 
-        if (!$blActiveLogin) {
-            Registry::getSession()->setVariable('usr', $oUser->getId());
-            $this->afterLogin($oUser);
+        if (!$isPrivateSales) {
+            Registry::getSession()->setVariable('usr', $user->getId());
+            $this->afterLogin($user);
 
             // order remark
             //V #427: order remark for new users
-            $sOrderRemark = Registry::getRequest()->getRequestParameter('order_remark');
-            if ($sOrderRemark) {
-                Registry::getSession()->setVariable('ordrem', $sOrderRemark);
+            $orderRemark = Registry::getRequest()->getRequestParameter('order_remark');
+            if ($orderRemark) {
+                Registry::getSession()->setVariable('ordrem', $orderRemark);
             }
         }
 
-        // send register eMail
-        if ((int) Registry::getRequest()->getRequestEscapedParameter('option') == 3) {
-            $oUser->sendRegistrationEmail($blActiveLogin);
+        if ((int)Registry::getRequest()->getRequestEscapedParameter('option') === 3) {
+            $user->sendRegistrationEmail($isPrivateSales);
         }
 
         // new registered
         $this->_blIsNewUser = true;
 
-        $sAction = 'payment?new_user=1&success=1';
-        if ($this->_blNewsSubscriptionStatus !== null && !$this->_blNewsSubscriptionStatus) {
-            $sAction = 'payment?new_user=1&success=1&newslettererror=4';
-        }
-
-        return $sAction;
+        return $this->_blNewsSubscriptionStatus !== null && !$this->_blNewsSubscriptionStatus
+            ? 'payment?new_user=1&success=1&newslettererror=4'
+            : 'payment?new_user=1&success=1';
     }
 
     /**
@@ -588,7 +575,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function deleteShippingAddress()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         $addressId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
 
@@ -621,7 +608,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function saveInvitor()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blInvitationsEnabled')) {
+        if (Registry::getConfig()->getConfigParam('blInvitationsEnabled')) {
             $this->getInvitor();
             $this->setRecipient();
         }
@@ -657,7 +644,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function changeUserWithoutRedirect()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         if (!$session->checkSessionChallenge()) {
             return;
@@ -698,19 +685,19 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             // check if email address changed, if so, force check newsletter subscription settings.
             $sBillingUsername = $aInvAdress['oxuser__oxusername'] ?? null;
             $blForceCheckOptIn = ($sBillingUsername !== null && $sBillingUsername !== $sUserName);
-            $blEmailParam = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail');
+            $blEmailParam = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
             $this->_blNewsSubscriptionStatus = $oUser->setNewsSubscription($blOptin, $blEmailParam, $blForceCheckOptIn);
-        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) { // errors in input
+        } catch (UserException $oEx) { // errors in input
             // marking error code
             //TODO
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
-        } catch (\OxidEsales\Eshop\Core\Exception\InputException $oEx) {
+        } catch (InputException $oEx) {
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
-        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
+        } catch (ConnectionException $oEx) {
             //connection to external resource broken, change message and pass to the view
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 

@@ -9,7 +9,7 @@ jobs:
   oxideshop_ce_71x_nightly:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
     with:
-      testplan: '~/defaults/7.1.x.yml,~/shop_ce.yml'
+      testplan: '~/defaults/7.1.x.yml,~/defaults/scheduled.yml,~/shop_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v3'
     secrets:

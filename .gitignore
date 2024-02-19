@@ -42,18 +42,4 @@
 /var/
 
 # Template files
-source/Application/views/wave
-source/out/wave
-source/Application/views/flow
-source/out/flow
-source/Application/views/azure
-source/out/azure
-source/Application/views/apex
-source/out/apex
-source/Application/views/twig
-source/out/twig
-source/Application/views/admin_twig
-source/out/admin_twig
-source/Application/views/admin_smarty
-source/out/admin_smarty
-source/out/modules
+/source/Application/views/*

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.9.2] - unreleased
+
+### Changed
+- Updated license to OXID eShop Community Edition license
+
 ## [6.9.1] - 2022-05-17
 
 ### Fixed

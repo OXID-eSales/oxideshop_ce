@@ -4,7 +4,7 @@
     "type": "oxideshop",
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",
-    "license": "GPL-3.0-only",
+    "license": "proprietary",
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-pdo": "*",

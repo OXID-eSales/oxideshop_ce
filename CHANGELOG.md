@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.14.2] - unreleased
+## [6.14.2] - 2024-02-20
+
+### Changed
+- Update shop version for compilation release
 
 ## [6.14.1] - 2023-06-27
 

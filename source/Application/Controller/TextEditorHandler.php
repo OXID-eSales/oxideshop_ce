@@ -65,7 +65,7 @@ class TextEditorHandler
 
         $disabledTextEditor = $this->isTextEditorDisabled() ? 'disabled ' : '';
 
-        return "<textarea ${disabledTextEditor}id='editor_{$fieldName}' name='$fieldName' " .
+        return "<textarea {$disabledTextEditor}id='editor_{$fieldName}' name='$fieldName' " .
                "style='width:{$width}; height:{$height};'>{$objectValue}</textarea>";
     }
 

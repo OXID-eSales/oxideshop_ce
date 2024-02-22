@@ -38,6 +38,8 @@ class ContainerBuilder
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
+        $symfonyContainer->setParameter('oxid_cache_directory', $this->context->getCacheDirectory());
+
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);

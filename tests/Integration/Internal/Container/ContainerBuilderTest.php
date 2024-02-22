@@ -92,6 +92,13 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
+    public function testCacheDirectoryParameterIsAvailable(): void
+    {
+        $container = $this->makeContainer($this->makeContextStub());
+
+        $this->assertTrue($container->hasParameter('oxid_cache_directory'), 'The oxid_cache_directory parameter does not exist.');
+    }
+
     private function makeContainer(ContextInterface $context): Container
     {
         $containerBuilder = new ContainerBuilder($context);

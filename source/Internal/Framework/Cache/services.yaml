@@ -4,9 +4,13 @@ services:
 
   Psr\Cache\CacheItemPoolInterface:
     class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    arguments:
+      $directory: '%oxid_cache_directory%'
 
   Symfony\Contracts\Cache\CacheInterface:
     class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    arguments:
+      $directory: '%oxid_cache_directory%'
 
 imports:
   - { resource: Command/services.yaml }

@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheService
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-final class FilesystemModuleCacheTest extends TestCase
+final class ModuleCacheTest extends TestCase
 {
     use ContainerTrait;
 

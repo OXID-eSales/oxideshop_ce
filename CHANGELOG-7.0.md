@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fix sub shops share same template cache
+- Load module extensions chain from cache
 
 ## Deprecated
 - `TemplateCacheServiceInterface` won't be used any more, switching to a new templating cache service for shop.
@@ -17,7 +18,6 @@
 
 ### Changed
 - Update shop version for compilation release
-
 
 ## v7.0.2 - 2023-11-28
 

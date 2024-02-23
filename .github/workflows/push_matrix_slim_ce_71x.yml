@@ -4,7 +4,7 @@ name: Auto trigger on Push to 7.0.x*
 on:
   push:
     branches:
-      - b-7.1.x
+      - 'b-7.1.x**'
 
 jobs:
   oxideshop_ce_push_b71x:

@@ -1,0 +1,18 @@
+phpunit:
+  title: 'unit_tests'
+  container:
+    options: '-e XDEBUG_MODE=coverage'
+  test: 'tests/Unit'
+  additional_options: '--bootstrap tests/bootstrap.php --coverage-clover=/var/www/coverage_phpunit_unit.xml'
+  logfile:
+    prefix: 'phpunit_unit'
+  output:
+    prefix: 'unit_artifacts'
+    files: |
+      source/unit_coverage.xml
+      generated_testplan.yaml
+      source/source/log/oxideshop.log
+      data/php/logs/error_log.txt
+  coverage:
+    path: 'source/coverage_phpunit_unit.xml'
+    prefix: coverage-reports-phpunit_unit

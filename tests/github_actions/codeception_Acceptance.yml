@@ -1,9 +1,0 @@
-codeception:
-  title: codeception
-  additional_options: '--coverage-xml=/var/www/codeception_coverage.xml'
-  logfile:
-    prefix: 'codeception'
-  output:
-    prefix: 'codeception-artifacts'
-  coverage:
-    path: 'source/codeception_coverage.xml'

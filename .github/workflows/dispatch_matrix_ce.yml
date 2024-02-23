@@ -14,19 +14,19 @@ on:
           - use custom testplan
         default: '8.0.x'
         description: 'Choose test scenario'
-        limit:
-          type: choice
-          options:
-            - 'no'
-            - 'PHP8.0/MySQL5.7'
-            - 'PHP8.0/MySQL8.0'
-            - 'PHP8.1/MySQL5.7'
-            - 'PHP8.1/MySQL8.0'
-            - 'PHP8.2/MySQL5.7'
-            - 'PHP8.2/MySQL8.0'
-            - 'PHP8.3/MySQL5.7'
-            - 'PHP8.3/MySQL8.0'
-          default: 'PHP8.1/MySQL5.7'
+      limit:
+        type: choice
+        options:
+          - 'no'
+          - 'PHP8.0/MySQL5.7'
+          - 'PHP8.0/MySQL8.0'
+          - 'PHP8.1/MySQL5.7'
+          - 'PHP8.1/MySQL8.0'
+          - 'PHP8.2/MySQL5.7'
+          - 'PHP8.2/MySQL8.0'
+          - 'PHP8.3/MySQL5.7'
+          - 'PHP8.3/MySQL8.0'
+        default: 'PHP8.1/MySQL5.7'
       custom_testplan:
         type: string
         description: 'Custom testplan'
@@ -40,10 +40,6 @@ on:
         options: ['no', 'v0']
         description: 'Use the dev version of github actions'
         default: 'no'
-      debug:
-        type: boolean
-        description: 'Create debugging script'
-        default: false
 
 jobs:
   build_testplan:
@@ -107,6 +103,7 @@ jobs:
       runs_on: ${{ inputs.runs_on }}
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      debug: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -126,6 +123,7 @@ jobs:
       runs_on: ${{ inputs.runs_on }}
       defaults: 'v0'
       plan_folder: '.github/oxid-esales'
+      debug: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

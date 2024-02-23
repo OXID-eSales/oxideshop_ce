@@ -14,11 +14,19 @@ on:
           - use custom testplan
         default: '8.0.x'
         description: 'Choose test scenario'
-      limit:
-        type: choice
-        options: ['yes', 'no']
-        default: 'yes'
-        description: 'Limit to one PHP/MySQL combination'
+        limit:
+          type: choice
+          options:
+            - 'no'
+            - 'PHP8.0/MySQL5.7'
+            - 'PHP8.0/MySQL8.0'
+            - 'PHP8.1/MySQL5.7'
+            - 'PHP8.1/MySQL8.0'
+            - 'PHP8.2/MySQL5.7'
+            - 'PHP8.2/MySQL8.0'
+            - 'PHP8.3/MySQL5.7'
+            - 'PHP8.3/MySQL8.0'
+          default: 'PHP8.1/MySQL5.7'
       custom_testplan:
         type: string
         description: 'Custom testplan'
@@ -29,7 +37,7 @@ on:
         default: '"ubuntu-latest"'
       use_dev_version:
         type: choice
-        options: ['no', 'v0', 'v4alpha']
+        options: ['no', 'v0']
         description: 'Use the dev version of github actions'
         default: 'no'
       debug:
@@ -47,12 +55,21 @@ jobs:
         id: build
         run: |
           # Build testplan
-          if [ '${{inputs.limit}}' == 'yes' ]; then
-            # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
-            LIMIT='~/defaults/php8.1_mysql5.7_only.yml,'
-          else
-            LIMIT=''
-          fi
+          # shellcheck disable=SC2088
+          case "${{ inputs.limit }}" in
+            "no") LIMIT='';;
+            "PHP8.0/MySQL5.7") LIMIT='~/defaults/php8.0_mysql5.7_only.yml,' ;;
+            "PHP8.0/MySQL8.0") LIMIT='~/defaults/php8.0_mysql8.0_only.yml,' ;;
+            "PHP8.1/MySQL5.7") LIMIT='~/defaults/php8.1_mysql5.7_only.yml,' ;;
+            "PHP8.1/MySQL8.0") LIMIT='~/defaults/php8.1_mysql8.0_only.yml,' ;;
+            "PHP8.2/MySQL5.7") LIMIT='~/defaults/php8.2_mysql5.7_only.yml,' ;;
+            "PHP8.2/MySQL8.0") LIMIT='~/defaults/php8.2_mysql8.0_only.yml,' ;;
+            "PHP8.3/MySQL5.7") LIMIT='~/defaults/php8.3_mysql5.7_only.yml,' ;;
+            "PHP8.3/MySQL8.0") LIMIT='~/defaults/php8.3_mysql8.0_only.yml,' ;;
+            *) echo "Illegal choice, fix the workflow"
+              exit 1
+              ;;
+          esac
           case '${{ inputs.scenario}}' in
             "7.0.x")
               # shellcheck disable=SC2088 # Tilde expansion happens in the workflow and not by bash
@@ -84,11 +101,11 @@ jobs:
   dispatch_stable:
     if: ${{ inputs.use_dev_version == 'no' }}
     needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
-      defaults: 'v3'
+      defaults: 'v4'
       plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
@@ -109,26 +126,6 @@ jobs:
       runs_on: ${{ inputs.runs_on }}
       defaults: 'v0'
       plan_folder: '.github/oxid-esales'
-    secrets:
-      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
-      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
-      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
-      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
-      enterprise_github_token: ${{ secrets.enterprise_github_token }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-  dispatch_v4alpha:
-    if: ${{ inputs.use_dev_version == 'v4alpha' }}
-    needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4alpha
-    with:
-      testplan: ${{ needs.build_testplan.outputs.testplan }}
-      runs_on: ${{ inputs.runs_on }}
-      defaults: 'v4alpha'
-      plan_folder: '.github/oxid-esales'
-      debug: ${{ inputs.debug }}
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

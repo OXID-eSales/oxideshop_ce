@@ -7,11 +7,11 @@ on:
 
 jobs:
   oxideshop_ce_80x_nightly:
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v3
+    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
       testplan: '~/shop_ce.yml'
       runs_on: '"ubuntu-latest"'
-      defaults: 'v3'
+      defaults: 'v4'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

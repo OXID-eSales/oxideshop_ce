@@ -1,4 +1,5 @@
 sonarcloud:
+  title: 'sonarcloud_internal'
   project_key: 'OXID-eSales_oxideshop_ce_internal'
   project_name: 'oxideshop_ce_internal'
   parameters: |

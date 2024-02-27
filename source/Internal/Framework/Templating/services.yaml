@@ -58,4 +58,3 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
       - '@oxid_esales.symfony.file_system'
-    public: true

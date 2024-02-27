@@ -12,38 +12,74 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ModuleVariablesLocatorTest extends IntegrationTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        ModuleVariablesLocator::resetModuleVariables();
-    }
-
     public function tearDown(): void
     {
         ModuleVariablesLocator::resetModuleVariables();
         parent::tearDown();
     }
 
-    public function testShopIdCalculatorWithWrongId(): void
+    public function testLocatorReturnsEmptyModuleChainIfSubshopDoesNotExist(): void
     {
-        $shopIdTest = 13274269;
-        $expectedResult = [];
-        $result = $this->getVariableByShopId($shopIdTest);
-        $this->assertEquals($expectedResult, $result);
-    }
+        $randomShopId = time();
 
-    private function getVariableByShopId(int $shopId): array|string
-    {
-        $fileCacheMock = $this->createMock(FileCache::class);
-        $shopIdCalculatorMock = $this->createMock(ShopIdCalculator::class);
-        $shopIdCalculatorMock->method('getShopId')->willReturn($shopId);
-        $moduleVariablesLocatorClass = new ModuleVariablesLocator($fileCacheMock, $shopIdCalculatorMock);
+        $this->switchShop($randomShopId);
+
+        $locator = $this->getModuleVariablesLocator();
 
         ModuleVariablesLocator::resetModuleVariables();
-        return $moduleVariablesLocatorClass->getModuleVariable('aModules');
+        $this->assertEquals(
+            [],
+            $locator->getModuleVariable('aModules')
+        );
+    }
+
+    public function testLocatorReturnsChainFromCache(): void
+    {
+        $this->switchShop(1);
+
+        $testChain = ['shopClass' => 'extension'];
+
+        $this->putChainToCache($testChain);
+
+        $this->assertEquals(
+            $testChain,
+            $this->getModuleVariablesLocator()->getModuleVariable('aModules')
+        );
+    }
+
+    private function getModuleVariablesLocator(): ModuleVariablesLocator
+    {
+        $shopIdCalculator = new ShopIdCalculator(
+            new FileCache()
+        );
+        $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
+        return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
+    }
+
+    private function switchShop(int $shopId): void
+    {
+        $_POST['shp'] = $shopId;
+    }
+
+    private function putChainToCache(array $chain): void
+    {
+        $shopId = 1;
+        $cacheKey = 'module_class_extensions';
+
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleCacheServiceInterface::class)
+            ->put(
+                $cacheKey,
+                $shopId,
+                $chain
+            );
     }
 }

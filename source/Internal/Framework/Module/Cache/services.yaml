@@ -4,6 +4,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\FilesystemModuleCache
+    public: true
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 

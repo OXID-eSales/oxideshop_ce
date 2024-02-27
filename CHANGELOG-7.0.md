@@ -1,5 +1,14 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.0.4 - Unreleased
+
+### Fixed
+- Fix sub shops share same template cache
+
+## Deprecated
+- `TemplateCacheServiceInterface` won't be used any more, switching to a new templating cache service for shop.
+- `BasicContextInterface::getTemplateCacheDirectory()` in favor of a new method within the templating cache service tailored for shop template operations.
+
 ## v7.0.3 - 2024-02-20
 
 ### Fixed

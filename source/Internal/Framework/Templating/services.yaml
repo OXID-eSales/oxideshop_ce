@@ -68,7 +68,6 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
       - '@oxid_esales.symfony.file_system'
-    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge

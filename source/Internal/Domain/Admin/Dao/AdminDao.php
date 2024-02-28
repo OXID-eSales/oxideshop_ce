@@ -44,7 +44,7 @@ class AdminDao implements AdminDaoInterface
     }
     
     # check if username for email and shop id exists
-    public function userNameExits(string $email, int $shopId): bool {
+    public function userNameExists(string $email, int $shopId): bool {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select('OXID')

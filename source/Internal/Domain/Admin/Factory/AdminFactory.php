@@ -55,7 +55,7 @@ class AdminFactory implements AdminFactoryInterface
             throw new InvalidShopException($shopId);
         }
         
-        if($this->adminDaoService->userNameExits($email, $shopId)) {
+        if($this->adminDaoService->userNameExists($email, $shopId)) {
             echo 'User already exists: '.$email.PHP_EOL;
             exit;
         }

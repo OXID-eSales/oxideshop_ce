@@ -18,5 +18,5 @@ interface AdminDaoInterface
      */
     public function create(Admin $admin): void;
 
-    public function userNameExits(string $email, int $shopId): bool;
+    public function userNameExists(string $email, int $shopId): bool;
 }

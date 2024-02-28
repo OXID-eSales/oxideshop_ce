@@ -16,8 +16,8 @@ use Symfony\Component\Filesystem\Filesystem;
 class ShopTemplateCacheService implements ShopTemplateCacheServiceInterface
 {
     public function __construct(
-        private ContextInterface $context,
-        private Filesystem $filesystem
+        private readonly ContextInterface $context,
+        private readonly Filesystem $filesystem
     ) {
     }
 

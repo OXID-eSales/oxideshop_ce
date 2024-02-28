@@ -47,12 +47,6 @@ services:
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface'
-
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheService
     arguments:

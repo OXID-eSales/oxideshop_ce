@@ -29,18 +29,36 @@ class ShopTemplateCacheServiceTest extends TestCase
         $this->contextMock = $this->getMockBuilder(ContextInterface::class)->getMock();
         $this->fileSystemMock = $this->getMockBuilder(Filesystem::class)->getMock();
 
-        $this->contextMock->expects($this->any())
-            ->method('getCacheDirectory')
-            ->willReturn($this->cacheDirectory);
-
         $this->shopTemplateCacheService = new ShopTemplateCacheService($this->contextMock, $this->fileSystemMock);
     }
     public function testGetCacheDirectory()
     {
         $shopId = 123;
 
+        $this->contextMock->expects($this->once())
+            ->method('getCacheDirectory')
+            ->willReturn($this->cacheDirectory);
+
         $shopCachePath = $this->shopTemplateCacheService->getCacheDirectory($shopId);
 
         $this->assertEquals($this->cacheDirectory . '/template_cache/shops/' . $shopId, $shopCachePath);
+    }
+    public function testInvalidateAllShopsCache()
+    {
+        $shops = [1,2,3];
+        $this->contextMock->expects($this->once())
+            ->method('getAllShopIds')
+            ->willReturn($shops);
+
+        $this->fileSystemMock
+            ->expects($this->exactly(3))
+            ->method('exists')
+            ->willReturn(true, false, true);
+
+        $this->fileSystemMock
+            ->expects($this->exactly(2))
+            ->method('remove');
+
+        $this->shopTemplateCacheService->invalidateAllShopsCache();
     }
 }

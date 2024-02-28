@@ -15,3 +15,4 @@
 - Remove deprecated global function \makeReadable()
 - Redundant `TemplateFileResolverInterface` functionality
 - Smarty templates support
+- Remove deprecated `TemplateCacheService` implementation

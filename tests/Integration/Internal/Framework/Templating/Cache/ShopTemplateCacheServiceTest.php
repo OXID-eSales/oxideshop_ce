@@ -21,7 +21,6 @@ final class ShopTemplateCacheServiceTest extends TestCase
     use ContainerTrait;
 
     private int $shopId;
-    private array $shopsIds;
     private string $shopTemplateCachePath;
     private Filesystem $filesystem;
     private ShopTemplateCacheServiceInterface $shopTemplateCacheService;
@@ -30,7 +29,6 @@ final class ShopTemplateCacheServiceTest extends TestCase
     {
         $this->filesystem = new Filesystem();
         $this->shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $this->shopsIds = $this->get(ContextInterface::class)->getAllShopIds();
         $this->shopTemplateCachePath = $this->get(ShopTemplateCacheServiceInterface::class)
             ->getCacheDirectory($this->shopId);
 
@@ -49,55 +47,30 @@ final class ShopTemplateCacheServiceTest extends TestCase
         $this->assertEquals(0, $this->countShopCacheFiles($this->shopId));
     }
 
-    public function testInvalidateAllShopsCache(): void
-    {
-        $this->assertNotEquals(0, $this->countCacheFiles());
-
-        $this->get(ShopTemplateCacheServiceInterface::class)->invalidateAllShopsCache();
-
-        $this->assertEquals(0, $this->countCacheFiles());
-    }
-
     private function clearTemplateCache(): void
     {
-        foreach ($this->shopsIds as $shopId) {
-            $this->filesystem->remove(
-                $this->get(ShopTemplateCacheServiceInterface::class)
-                    ->getCacheDirectory($shopId)
-            );
-        }
+        $this->filesystem->remove(
+            $this->get(ShopTemplateCacheServiceInterface::class)->getCacheDirectory($this->shopId)
+        );
     }
 
     private function countShopCacheFiles($shopId): int
     {
-        return count(\glob($this->get(ShopTemplateCacheServiceInterface::class)
-            ->getCacheDirectory($shopId)));
-    }
-
-    private function countCacheFiles(): int
-    {
-        $files = 0;
-        foreach ($this->shopsIds as $shopId) {
-            $files += $this->countShopCacheFiles($shopId);
-        }
-        return $files;
+        return count(\glob($this->get(ShopTemplateCacheServiceInterface::class)->getCacheDirectory($shopId)));
     }
 
     private function populateTemplateCache(): void
     {
         $numberOfTestFiles = 3;
-        foreach ($this->shopsIds as $shopId) {
-            $templateCachePath = $this->get(ShopTemplateCacheServiceInterface::class)
-                ->getCacheDirectory($shopId);
-            $this->filesystem->mkdir($templateCachePath);
-            for ($i = 0; $i < $numberOfTestFiles; $i++) {
-                $this->filesystem->touch(
-                    Path::join(
-                        $templateCachePath,
-                        uniqid('template-file-' . $shopId, true)
-                    )
-                );
-            }
+        $templateCachePath = $this->get(ShopTemplateCacheServiceInterface::class)->getCacheDirectory($this->shopId);
+        $this->filesystem->mkdir($templateCachePath);
+        for ($i = 0; $i < $numberOfTestFiles; $i++) {
+            $this->filesystem->touch(
+                Path::join(
+                    $templateCachePath,
+                    uniqid('template-file-' . $this->shopId, true)
+                )
+            );
         }
     }
 }

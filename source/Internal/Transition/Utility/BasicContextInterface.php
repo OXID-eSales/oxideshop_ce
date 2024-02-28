@@ -137,9 +137,4 @@ interface BasicContextInterface
     public function getCacheDirectory(): string;
 
     public function getModuleCacheDirectory(): string;
-
-    /**
-     * @deprecated Use OxidEsales\Eshop\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface instead
-     */
-    public function getTemplateCacheDirectory(): string;
 }

@@ -10,7 +10,7 @@ jobs:
   oxideshop_ce_push_b71x:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
-      testplan: '~/defaults/7.1.x.yml,~/defaults/php8.2_mysql_57.only.yml,~/slim_matrix_ce.yml'
+      testplan: '~/defaults/7.1.x.yml,~/defaults/php8.2_mysql_5.7.only.yml,~/slim_matrix_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'

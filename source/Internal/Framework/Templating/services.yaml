@@ -54,9 +54,14 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheService
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
       - '@oxid_esales.symfony.file_system'
-    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge

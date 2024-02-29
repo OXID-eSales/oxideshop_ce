@@ -12,7 +12,8 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
+
 /**
  * Selects module variables from database or cache.
  *
@@ -56,9 +57,10 @@ class ModuleVariablesLocator
         }
 
         if ($name === 'aModules') {
-            self::$moduleVariables[$name] = $this->getClassExtensionsChain();
+            $chain = $this->getClassExtensionsChain();
+            self::$moduleVariables[$name] = $chain;
 
-            return $this->getClassExtensionsChain();
+            return $chain;
         }
 
         $cache = $this->getFileCache();
@@ -153,8 +155,8 @@ class ModuleVariablesLocator
         try {
             $chain = ContainerFactory::getInstance()
                 ->getContainer()
-                ->get(ActiveClassExtensionChainResolverInterface::class)
-                ->getActiveExtensionChain($this->getShopIdCalculator()->getShopId())->getChain();
+                ->get(ActiveModulesDataProviderBridgeInterface::class)
+                ->getClassExtensions();
         } catch (ShopConfigurationNotFoundException $exception) {
             $chain = [];
             Registry::getLogger()->error($exception->getMessage(), [$exception]);

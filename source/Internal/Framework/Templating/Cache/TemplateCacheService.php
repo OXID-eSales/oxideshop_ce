@@ -9,31 +9,25 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache;
 
-use FilesystemIterator;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use Symfony\Component\Filesystem\Filesystem;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
+/**
+ * @deprecated Use OxidEsales\Eshop\Internal\Framework\Templating\Cache\ShopTemplateCacheService instead
+ */
 class TemplateCacheService implements TemplateCacheServiceInterface
 {
     public function __construct(
-        private BasicContextInterface $basicContext,
-        private Filesystem $filesystem
+        private ContextInterface $context,
+        private ShopTemplateCacheServiceInterface $shopTemplateCacheService
     ) {
     }
 
     public function invalidateTemplateCache(): void
     {
-        $templateCacheDirectory = $this->basicContext->getTemplateCacheDirectory();
+        $shops = $this->context->getAllShopIds();
 
-        if ($this->filesystem->exists($templateCacheDirectory)) {
-            $recursiveIterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($templateCacheDirectory, FilesystemIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::SELF_FIRST,
-                RecursiveIteratorIterator::CATCH_GET_CHILD
-            );
-            $this->filesystem->remove($recursiveIterator);
+        foreach ($shops as $shop) {
+            $this->shopTemplateCacheService->invalidateCache($shop);
         }
     }
 }

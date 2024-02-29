@@ -10,9 +10,10 @@ jobs:
   oxideshop_ce_push_b70x:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
-      testplan: '~/defaults/7.0.x.yml,~/defaults/php8.1_mysql_57.only.yml,~/slim_matrix_ce.yml'
+      testplan: '~/defaults/7.0.x.yml,~/defaults/php8.1_mysql5.7_only.yml,~/slim_matrix_ce_70x.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
+      plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

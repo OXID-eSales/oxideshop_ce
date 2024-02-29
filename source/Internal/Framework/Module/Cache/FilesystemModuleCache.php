@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
 use FilesystemIterator;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use RecursiveIteratorIterator;
@@ -27,7 +27,7 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         private ShopAdapterInterface $shopAdapter,
         private Filesystem $fileSystem,
         private BasicContextInterface $basicContext,
-        private TemplateCacheServiceInterface $templateCacheService
+        private ShopTemplateCacheServiceInterface $shopTemplateCacheService
     ) {
     }
 
@@ -37,14 +37,14 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
      */
     public function invalidate(string $moduleId, int $shopId): void
     {
-        $this->templateCacheService->invalidateTemplateCache();
+        $this->shopTemplateCacheService->invalidateCache($shopId);
         $this->shopAdapter->invalidateModuleCache($moduleId);
         $this->fileSystem->remove($this->getShopModulePathCacheDirectory($shopId));
     }
 
     public function invalidateAll(): void
     {
-        $this->templateCacheService->invalidateTemplateCache();
+        $this->shopTemplateCacheService->invalidateAllShopsCache();
         $this->shopAdapter->invalidateModulesCache();
 
         $templateCacheDirectory = $this->basicContext->getModuleCacheDirectory();

@@ -3,12 +3,8 @@ name: Auto trigger on PR to 7.0.x*
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
     branches:
-      - b-7.0.x
+      - 'b-7.0.x**'
 
 jobs:
   oxideshop_ce_pull_70x:
@@ -17,6 +13,7 @@ jobs:
       testplan: '~/defaults/7.0.x.yml,~/shop_ce_70x.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
+      plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

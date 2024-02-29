@@ -1,6 +1,6 @@
 codeception:
   title: codeception_acceptance
-  suite: 'acceptance'
+  suite: 'acceptance,acceptanceAdmin'
   additional_options: '--coverage-xml=/var/www/coverage_codeception_acceptance.xml'
   logfile:
     prefix: 'codeception'

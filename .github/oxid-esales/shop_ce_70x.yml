@@ -12,5 +12,9 @@ phpcs_tests:
   diff_only: false
   filter: '^\./source/Internal/.*\.php$'
 
+sonarcloud:
+  matrix:
+    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
+
 finish:
   slack_title: 'Full matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

@@ -3,20 +3,17 @@ name: Auto trigger on PR to 8.0.x*
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
     branches:
-      - b-8.0.x
+      - 'b-8.0.x**'
 
 jobs:
   oxideshop_ce_pull:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
-      testplan: '~/full_matrix_ce.yml'
+      testplan: '~/shop_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
+      plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

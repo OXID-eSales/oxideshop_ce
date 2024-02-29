@@ -10,7 +10,7 @@ jobs:
   oxideshop_ce_pull:
     uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
     with:
-      testplan: '~/full_matrix_ce.yml'
+      testplan: '~/shop_ce.yml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'

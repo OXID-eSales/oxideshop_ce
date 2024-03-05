@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration;
 use OxidEsales\EshopCommunity\Tests\CachingTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use OxidEsales\EshopCommunity\Tests\RequestTrait;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
@@ -19,10 +20,12 @@ class IntegrationTestCase extends TestCase
     use ContainerTrait;
     use CachingTrait;
     use DatabaseTrait;
+    use RequestTrait;
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->backupRequestData();
         $this->cleanupCaching();
         $this->beginTransaction();
     }
@@ -31,6 +34,7 @@ class IntegrationTestCase extends TestCase
     {
         $this->rollBackTransaction();
         $this->cleanupCaching();
+        $this->restoreRequestData();
         parent::tearDown();
     }
 }

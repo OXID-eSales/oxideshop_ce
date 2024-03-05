@@ -13,7 +13,6 @@ use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class UserComponentTest extends IntegrationTestCase
@@ -198,9 +197,9 @@ final class UserComponentTest extends IntegrationTestCase
 
     private function fetchUserData(): array
     {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
-
-        return $queryBuilder
+        return $this
+            ->getDbConnection()
+            ->createQueryBuilder()
             ->select('*')
             ->from('oxuser')
             ->where('oxusername = :oxusername')

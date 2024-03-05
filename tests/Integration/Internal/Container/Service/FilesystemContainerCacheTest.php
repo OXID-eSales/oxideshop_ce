@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Integration\Internal\Container\Service;
 
+use ProjectServiceContainer;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -40,7 +42,7 @@ final class FilesystemContainerCacheTest extends TestCase
         $cache->put($this->getContainer(), 2);
 
         $this->assertInstanceOf(
-            \ProjectServiceContainer::class,
+            ProjectServiceContainer::class,
             $cache->get(2)
         );
     }
@@ -57,7 +59,7 @@ final class FilesystemContainerCacheTest extends TestCase
         );
     }
 
-    private function getContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    private function getContainer(): ContainerBuilder
     {
         $containerBuilder = (new ContainerBuilderFactory())->create();
         $symfonyContainer = $containerBuilder->getContainer();

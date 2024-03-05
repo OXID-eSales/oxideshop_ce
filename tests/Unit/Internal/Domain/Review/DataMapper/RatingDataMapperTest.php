@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Review\DataMapper;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
-class RatingDataMapperTest extends \PHPUnit\Framework\TestCase
+final class RatingDataMapperTest extends TestCase
 {
-    public function testMapping()
+    public function testMapping(): void
     {
         $mapper = new RatingDataMapper();
 
@@ -30,7 +31,7 @@ class RatingDataMapperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testPrimaryKeyGetter()
+    public function testPrimaryKeyGetter(): void
     {
         $mapper = new RatingDataMapper();
         $mappedRating = $this->getMappedRating();
@@ -45,7 +46,7 @@ class RatingDataMapperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function getMappedRating()
+    private function getMappedRating(): Rating
     {
         $rating = new Rating();
         $rating

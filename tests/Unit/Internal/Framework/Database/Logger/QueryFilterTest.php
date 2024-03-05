@@ -11,8 +11,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logge
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-class QueryFilterTest extends \PHPUnit\Framework\TestCase
+final class QueryFilterTest extends TestCase
 {
     public static function providerTestFiltering(): array
     {
@@ -76,8 +77,9 @@ class QueryFilterTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+
     #[DataProvider('providerTestFiltering')]
-    public function testFiltering(string $query, array $skipLogTags, bool $expected)
+    public function testFiltering(string $query, array $skipLogTags, bool $expected): void
     {
         $queryFilter = new QueryFilter();
 

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Env;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Filesystem\Path;
 
-class DotenvLoader
+class DotenvLoader implements DotenvLoaderInterface
 {
     private string $envKey = 'OXID_ENV';
     private string $debugKey = 'OXID_DEBUG';

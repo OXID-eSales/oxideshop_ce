@@ -1,17 +1,14 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
+declare(strict_types=1);
+
 $sMetadataVersion = '2.1';
 
-/**
- * Module information
- */
 $aModule = array(
     'id'          => 'myTestModuleWithoutMigrations',
     'title'       => 'myTestModuleWithoutMigrations',

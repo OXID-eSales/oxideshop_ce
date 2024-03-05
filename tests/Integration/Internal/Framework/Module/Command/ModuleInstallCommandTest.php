@@ -17,12 +17,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Path;
 
-/** @internal */
 final class ModuleInstallCommandTest extends TestCase
 {
     use ContainerTrait;
 
-    private $moduleId = 'testmodule';
+    private string $moduleId = 'testmodule';
     private $workingDirectoryBackup;
     private $workingDirectory;
 

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\DataObject;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use PHPUnit\Framework\TestCase;
 
-class DIConfigWrapperTest extends TestCase
+final class DIConfigWrapperTest extends TestCase
 {
     private $servicePath1;
     private $servicePath2;
@@ -29,14 +29,14 @@ class DIConfigWrapperTest extends TestCase
             'services.yaml';
     }
 
-    public function testCleaningSections()
+    public function testCleaningSections(): void
     {
         $projectYaml = new DIConfigWrapper(['imports' => []]);
         // These empty sections should be cleaned away
         $this->assertCount(0, $projectYaml->getConfigAsArray());
     }
 
-    public function testGetAllImportFileNames()
+    public function testGetAllImportFileNames(): void
     {
         $configArray = ['imports' => [
             ['resource' => $this->servicePath1],
@@ -50,7 +50,7 @@ class DIConfigWrapperTest extends TestCase
         $this->assertEquals($this->servicePath2, $names[1]);
     }
 
-    public function testAddImport()
+    public function testAddImport(): void
     {
         $configArray = ['imports' => [['resource' => $this->servicePath1]]];
 
@@ -60,7 +60,7 @@ class DIConfigWrapperTest extends TestCase
         $this->assertEquals(2, count($wrapper->getConfigAsArray()['imports']));
     }
 
-    public function testAddFirstImport()
+    public function testAddFirstImport(): void
     {
         $configArray = [];
 
@@ -71,7 +71,7 @@ class DIConfigWrapperTest extends TestCase
         $this->assertEquals($expected, $wrapper->getConfigAsArray());
     }
 
-    public function testRemoveImport()
+    public function testRemoveImport(): void
     {
         $configArray = ['imports' => [
             ['resource' => $this->servicePath1],
@@ -84,7 +84,7 @@ class DIConfigWrapperTest extends TestCase
         $this->assertEquals(1, count($wrapper->getConfigAsArray()['imports']));
     }
 
-    public function testRemoveLastImport()
+    public function testRemoveLastImport(): void
     {
         $configArray = ['imports' => [['resource' => $this->servicePath1]]];
 

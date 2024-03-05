@@ -1,0 +1,2 @@
+parameters:
+  serialized_value_key: '%env(json:SERIALIZED_VALUE_KEY)%'

@@ -10,12 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Model;
 
 use OxidEsales\Eshop\Application\Model\Article;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 final class BaseModelTest extends TestCase
 {
-    #[RunInSeparateProcess]
     public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNotLoadedAndIsField(): void
     {
         $model = $this->getModelWithLazyLoading();
@@ -60,7 +58,6 @@ final class BaseModelTest extends TestCase
         $this->assertTrue(isset($model->{$fieldName}));
     }
 
-    #[RunInSeparateProcess]
     public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsNotLoaded(): void
     {
         $model = $this->getModelWithLazyLoading();
@@ -69,7 +66,6 @@ final class BaseModelTest extends TestCase
         $this->assertTrue(isset($model->{$fieldName}->value));
     }
 
-    #[RunInSeparateProcess]
     public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsLoaded(): void
     {
         $model = $this->getModelWithLazyLoading();

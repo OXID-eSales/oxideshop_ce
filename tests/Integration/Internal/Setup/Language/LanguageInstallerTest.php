@@ -12,12 +12,32 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Language;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use PHPUnit\Framework\TestCase;
 
-final class LanguageInstallerTest extends IntegrationTestCase
+final class LanguageInstallerTest extends TestCase
 {
+    use ContainerTrait;
+    use DatabaseTrait;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->beginTransaction($this->get(ConnectionFactoryInterface::class)->create());
+    }
+
+    public function tearDown(): void
+    {
+        $this->rollBackTransaction($this->get(ConnectionFactoryInterface::class)->create());
+
+        parent::tearDown();
+    }
+
     public function testInstallSetsDefaultLanguage(): void
     {
         $english = new DefaultLanguage('en');

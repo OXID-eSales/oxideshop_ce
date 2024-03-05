@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Bridge;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridge;
 
-class AdminThemeBridgeTest extends \PHPUnit\Framework\TestCase
+final class AdminThemeBridgeTest extends TestCase
 {
-    public function testGetActiveTheme()
+    public function testGetActiveTheme(): void
     {
         $this->assertSame('admin', (new AdminThemeBridge('admin'))->getActiveTheme());
     }

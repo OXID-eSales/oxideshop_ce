@@ -11,39 +11,21 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\SystemConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 
-/**
- * @inheritdoc
- */
 class BasicContext implements BasicContextInterface
 {
     public const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
     public const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
     public const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
-    /**
-     * @var Facts
-     */
     private $facts;
 
-    protected SystemConfiguration $systemConfiguration;
-    private string $shopRootPath;
+    private string $projectRoot;
 
-    public function __construct()
-    {
-        $this->systemConfiguration = (new BootstrapConfigurationFactory())->create();
-        $this->shopRootPath = (new BootstrapLocator())->getProjectRoot();
-    }
-
-    /**
-     * @return string
-     */
     public function getContainerCacheFilePath(int $shopId): string
     {
         return Path::join($this->getCacheDirectory(), 'container', 'container_cache_shop_' . $shopId . '.php');
@@ -77,6 +59,9 @@ class BasicContext implements BasicContextInterface
         return Path::join($this->getShopRootPath(), 'source');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getEdition(): string
     {
         return $this->getFacts()->getEdition();
@@ -136,7 +121,10 @@ class BasicContext implements BasicContextInterface
 
     public function getShopRootPath(): string
     {
-        return $this->shopRootPath;
+        if (!isset($this->projectRoot)) {
+            $this->projectRoot = (new ProjectRootLocator())->getProjectRoot();
+        }
+        return $this->projectRoot;
     }
 
     public function getVendorPath(): string
@@ -161,10 +149,7 @@ class BasicContext implements BasicContextInterface
 
     public function getCacheDirectory(): string
     {
-        return Path::join(
-            $this->systemConfiguration->getCacheDirectory(),
-            'cache'
-        );
+        return getenv('OXID_BUILD_DIRECTORY');
     }
 
     public function getModuleCacheDirectory(): string
@@ -175,14 +160,16 @@ class BasicContext implements BasicContextInterface
         );
     }
 
-    /**
-     * @return Facts
-     */
     public function getFacts(): Facts
     {
         if ($this->facts === null) {
             $this->facts = new Facts();
         }
         return $this->facts;
+    }
+
+    public function getDatabaseUrl(): string
+    {
+        return getenv('OXID_DB_URL') ?: '';
     }
 }

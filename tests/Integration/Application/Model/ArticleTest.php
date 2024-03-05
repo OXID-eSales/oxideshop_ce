@@ -112,7 +112,7 @@ final class ArticleTest extends IntegrationTestCase
         ];
     }
 
-    #[DataProvider('ProductActiveFieldStatesDataProvider')]
+    #[DataProvider('productActiveFieldStatesDataProvider')]
     public function testIsProductAlwaysActive(?bool $active, bool $result): void
     {
         $product = oxNew(Article::class);
@@ -121,7 +121,7 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertEquals($result, $product->isProductAlwaysActive());
     }
 
-    public static function ProductActiveFieldStatesDataProvider(): array
+    public static function productActiveFieldStatesDataProvider(): array
     {
         return [
             'NULL value' => [null, false],

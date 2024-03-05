@@ -11,21 +11,18 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\ModuleEvents;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
-/**
- * @internal
- */
-class ModuleEventsTest extends IntegrationTestCase
+final class ModuleEventsTest extends IntegrationTestCase
 {
-    private $shopId = 1;
-    private $testModuleId = 'testModuleId';
+    private int $shopId = 1;
+    private string $testModuleId = 'testModuleId';
 
-    public function testActivationEventWasExecuted()
+    public function testActivationEventWasExecuted(): void
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
@@ -43,7 +40,7 @@ class ModuleEventsTest extends IntegrationTestCase
         $this->assertSame('Method onActivate was called', $eventMessage);
     }
 
-    public function testActivationEventWasExecutedSecondTime()
+    public function testActivationEventWasExecutedSecondTime(): void
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
@@ -68,7 +65,7 @@ class ModuleEventsTest extends IntegrationTestCase
     }
 
 
-    public function testDeactivationEventWasExecuted()
+    public function testDeactivationEventWasExecuted(): void
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $moduleConfiguration->addEvent(new Event('onDeactivate', ModuleEvents::class . '::onDeactivate'));
@@ -98,10 +95,7 @@ class ModuleEventsTest extends IntegrationTestCase
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     */
-    private function persistModuleConfiguration(ModuleConfiguration $moduleConfiguration)
+    private function persistModuleConfiguration(ModuleConfiguration $moduleConfiguration): void
     {
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);

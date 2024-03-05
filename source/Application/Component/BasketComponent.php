@@ -287,8 +287,9 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // special treatment
         // search param
-        $sParam = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
-        $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
+        if ($sParam = Registry::getRequest()->getRequestParameter('searchparam')) {
+            $sPosition .= 'searchparam=' . rawurlencode($sParam) . '&';
+        }
 
         // current page number
         $iPageNr = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');

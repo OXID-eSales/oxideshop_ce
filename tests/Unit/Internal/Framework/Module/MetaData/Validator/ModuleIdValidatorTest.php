@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleIdValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,9 +18,8 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ModuleIdValidator::class)]
-class ModuleIdValidatorTest extends TestCase
+final class ModuleIdValidatorTest extends TestCase
 {
-
     #[DoesNotPerformAssertions]
     public function testValidateWhenValid(): void
     {
@@ -41,7 +40,7 @@ class ModuleIdValidatorTest extends TestCase
     }
 
     #[DataProvider('validateInvalidIdProvidedDataProvider')]
-    public function testValidateWhenInvalidIdProvided($moduleId): void
+    public function testValidateWhenInvalidIdProvided(?string $moduleId): void
     {
         $this->expectException(ModuleIdNotValidException::class);
         $metaData = [

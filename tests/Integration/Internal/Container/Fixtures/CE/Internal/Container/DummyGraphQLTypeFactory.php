@@ -11,18 +11,17 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixture
 
 class DummyGraphQLTypeFactory
 {
-
     /**
      * @var DummyGraphQLType
      */
-    private $type = null;
+    private $type;
 
-    public function addSubType($type)
+    public function addSubType($type): void
     {
         $this->type = $type;
     }
 
-    public function verifySubType()
+    public function verifySubType(): bool
     {
         return $this->type !== null && $this->type->getInfo() == 'Type is installed';
     }

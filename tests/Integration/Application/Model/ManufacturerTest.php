@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Integration\Application\Model;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Generator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
@@ -17,10 +19,8 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-/**
- * @group manufacturer
- */
-class ManufacturerTest extends IntegrationTestCase
+#[Group('manufacturer')]
+final class ManufacturerTest extends IntegrationTestCase
 {
     private string $oxid = 'id1';
     private Manufacturer $manufacturer;
@@ -32,9 +32,7 @@ class ManufacturerTest extends IntegrationTestCase
         $this->filesystem = new Filesystem();
     }
 
-    /**
-     * @dataProvider provideImageTypeData
-     */
+    #[DataProvider('provideImageTypeData')]
     public function testItShouldReturnTheCorrectImageType(?string $expected, string $fieldName): void
     {
         $manufacturer = oxNew(Manufacturer::class);
@@ -51,9 +49,7 @@ class ManufacturerTest extends IntegrationTestCase
         yield 'Null' => [null, 'none_field'];
     }
 
-    /**
-     * @dataProvider provideImageFileData
-     */
+    #[DataProvider('provideImageFileData')]
     public function testDeleteShouldRemoveTheGeneratedImage(string $imageFieldName, string $imageFileName, string $imageType): void
     {
         $imagePath = $this->createImage(
@@ -67,9 +63,7 @@ class ManufacturerTest extends IntegrationTestCase
         $this->assertFileDoesNotExist($imagePath);
     }
 
-    /**
-     * @dataProvider provideImageFileData
-     */
+    #[DataProvider('provideImageFileData')]
     public function testDeleteShouldRemoveTheMasterImage(string $imageFieldName, string $imageFileName, string $imageType): void
     {
         $imagePath = $this->createImage(

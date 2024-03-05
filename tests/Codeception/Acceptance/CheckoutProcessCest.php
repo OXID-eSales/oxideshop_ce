@@ -17,10 +17,7 @@ use OxidEsales\Codeception\Page\Checkout\OrderCheckout;
 use OxidEsales\Codeception\Page\Checkout\UserCheckout;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
-use OxidEsales\Facts\Facts;
 
 /**
  * @group basketfrontend
@@ -446,7 +443,7 @@ final class CheckoutProcessCest
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
 
         file_put_contents(
-            (new BootstrapLocator())->getProjectRoot() . '/cust_config.inc.php',
+            getenv('SHOP_SOURCE_PATH') . '/cust_config.inc.php',
             '<?php $this->blSessionUseCookies = false;'
         );
 
@@ -876,5 +873,4 @@ final class CheckoutProcessCest
             'faxNr' => '',
         ];
     }
-
 }

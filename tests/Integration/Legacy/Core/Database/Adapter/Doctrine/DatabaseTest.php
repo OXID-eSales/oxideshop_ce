@@ -30,24 +30,6 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
     protected $database;
 
     /**
-     * Test that the expected exception is thrown for an invalid function parameter.
-     * See the data provider for arguments considered invalid.
-     *
-     * @param mixed $invalidParameter A parameter, which is considered invalid and will trigger an exception
-     */
-    #[DataProvider('dataProviderTestGetAllThrowsDatabaseExceptionOnInvalidArguments')]
-    public function testGetAllThrowsDatabaseExceptionOnInvalidArguments(mixed $invalidParameter): void
-    {
-        $expectedExceptionClass = '\InvalidArgumentException';
-        $this->expectException($expectedExceptionClass);
-
-        $this->database->getAll(
-            'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
-            $invalidParameter
-        );
-    }
-
-    /**
      * Test, that the method 'selectLimit' returns the expected rows from the database for different
      * values of limit and offset.
      *
@@ -369,21 +351,6 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
             $actualSqlMode,
             'The sql_mode variable on the database is not the expected one.'
         );
-    }
-
-    protected function createDatabase()
-    {
-        return DatabaseProvider::getMaster();
-    }
-
-    protected function closeConnection(): void
-    {
-        $this->database->closeConnection();
-    }
-
-    protected function getDatabaseExceptionClassName(): string
-    {
-        return self::DATABASE_EXCEPTION_CLASS;
     }
 
     protected function getResultSetClassName(): string

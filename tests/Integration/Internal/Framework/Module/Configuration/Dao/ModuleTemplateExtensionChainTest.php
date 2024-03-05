@@ -22,12 +22,11 @@ final class ModuleTemplateExtensionChainTest extends TestCase
     private int $shopId = 1;
     private string $projectConfiguration = __DIR__ . '/Fixtures/project_configuration/';
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->shopConfigurationDao = $this->getContainer()->get(ShopConfigurationDaoInterface::class);
-
     }
 
     public function testGetWithNonExistingTemplate(): void

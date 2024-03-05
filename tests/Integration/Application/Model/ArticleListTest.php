@@ -74,7 +74,7 @@ final class ArticleListTest extends IntegrationTestCase
         $this->createProduct();
         $this->createAttribute();
         $this->linkProductToCategory();
-        $this->LinkAttributeToCategory();
+        $this->linkAttributeToCategory();
         $this->linkProductToAttribute($value);
     }
 
@@ -113,7 +113,7 @@ final class ArticleListTest extends IntegrationTestCase
         $link->save();
     }
 
-    private function LinkAttributeToCategory(): void
+    private function linkAttributeToCategory(): void
     {
         $link = oxNew(BaseModel::class);
         $link->init("oxcategory2attribute");

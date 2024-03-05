@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Bridge;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
@@ -17,9 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionE
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
 
-class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
+final class UserRatingBridgeTest extends TestCase
 {
-    public function testDeleteRating()
+    public function testDeleteRating(): void
     {
         $this->createTestRating();
 
@@ -31,7 +33,7 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDeleteRatingForSubShop()
+    public function testDeleteRatingForSubShop(): void
     {
         $this->createTestRatingForSubShop();
 
@@ -43,7 +45,7 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDeleteRatingWithNonExistentRatingId()
+    public function testDeleteRatingWithNonExistentRatingId(): void
     {
         $this->expectException(EntryDoesNotExistDaoException::class);
 
@@ -51,7 +53,7 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
         $userRatingBridge->deleteRating('testUserId', 'nonExistentId');
     }
 
-    public function testDeleteRatingWithWrongUserId()
+    public function testDeleteRatingWithWrongUserId(): void
     {
         $this->expectException(RatingPermissionException::class);
 
@@ -61,14 +63,14 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
         $userRatingBridge->deleteRating('userWithWrongId', 'testRatingId');
     }
 
-    private function ratingExists($id)
+    private function ratingExists(string $id): bool
     {
         $rating = oxNew(Rating::class);
 
         return $rating->load($id) !== false;
     }
 
-    private function getUserRatingBridge()
+    private function getUserRatingBridge(): UserRatingBridge
     {
         return new UserRatingBridge(
             $this->getUserRatingServiceMock()
@@ -76,17 +78,16 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|UserRatingServiceInterface
+     * @return MockObject|UserRatingServiceInterface
      */
-    private function getUserRatingServiceMock()
+    private function getUserRatingServiceMock(): MockObject
     {
-        $userRatingServiceMock = $this->getMockBuilder(UserRatingService::class)
+        return $this->getMockBuilder(UserRatingService::class)
             ->disableOriginalConstructor()
             ->getMock();
-        return $userRatingServiceMock;
     }
 
-    private function createTestRating()
+    private function createTestRating(): void
     {
         $rating = oxNew(Rating::class);
         $rating->setId('testRatingId');
@@ -94,7 +95,7 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
         $rating->save();
     }
 
-    private function createTestRatingForSubShop()
+    private function createTestRatingForSubShop(): void
     {
         $rating = oxNew(Rating::class);
         $rating->setId('testSubShopRatingId');

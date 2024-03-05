@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapter\Doctrine;
 
 use oxDb;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapter\DatabaseInterfaceImplementationBase;
@@ -19,26 +17,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ResultSetTest extends DatabaseInterfaceImplementationBase
 {
-    /**
-     * @return array The parameters we want to use for the testFieldCount method.
-     */
-    public static function dataProviderTestFieldCount(): array
+    public function testFieldCount(): void
     {
-        return [['SELECT OXID FROM ' . self::TABLE_NAME, 1], ['SELECT * FROM ' . self::TABLE_NAME, 2]];
-    }
-
-    /**
-     * Test, that the method 'fieldCount' works as expected.
-     *
-     * @param string $query         The sql statement we want to test.
-     * @param int    $expectedCount The expected number of fields.
-     */
-    #[DataProvider('dataProviderTestFieldCount')]
-    public function testFieldCount(string $query, int $expectedCount): void
-    {
-        $resultSet = $this->database->select($query);
-
-        $this->assertSame($expectedCount, $resultSet->fieldCount());
+        $this->assertEquals(1, $this->getResultSet()->fieldCount());
+        $this->assertEquals(2, $this->database->select('SELECT * FROM ' . self::TABLE_NAME)->fieldCount());
     }
 
     public function testGetIteratorEmptyResultSet(): void
@@ -308,73 +290,21 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         ], $resultSet->fields);
     }
 
-    protected function getDatabaseExceptionClassName(): string
-    {
-        return DatabaseException::class;
-    }
-
-    protected function getResultSetClassName(): string
-    {
-        return ResultSet::class;
-    }
-
-    protected function closeConnection(): void
-    {
-        if (method_exists($this->database, 'closeConnection')) {
-            $this->database->closeConnection();
-        }
-    }
-
-    /**
-     * Get a resultSet and count the iterations of the iterator.
-     *
-     * @param string $query The query we want to check, how many iterations it will lead to.
-     *
-     * @return int The number of iterations the iterator has done.
-     */
     private function countQueryIterations(string $query): int
     {
         $resultSet = $this->database->select($query);
 
         $count = 0;
-        foreach ($resultSet->getIterator() as $row) {
+        foreach ($resultSet->getIterator() as $ignored) {
             $count++;
         }
 
         return $count;
     }
 
-    /**
-     * Create the database object under test.
-     *
-     * @return Doctrine The database object under test.
-     */
-    protected function createDatabase()
+    private function getResultSet(): ResultSetInterface
     {
-        return oxDb::getMaster();
-    }
-
-    /**
-     * Assert, that the given object is a doctrine result set.
-     *
-     * @param ResultSet $resultSet The object to check.
-     */
-    private function assertDoctrineResultSet($resultSet): void
-    {
-        $resultSetClassName = $this->getResultSetClassName();
-
-        $this->assertSame($resultSetClassName, $resultSet::class);
-    }
-
-    /**
-     * Assert, that the given arrays have the same content. Useful, if the content is not ordered as expected.
-     *
-     * @param array $resultArray   The array we got.
-     * @param array $expectedArray The array we expect.
-     */
-    private function assertArrayContentSame($resultArray, array $expectedArray): void
-    {
-        $this->assertSame(sort($resultArray), sort($expectedArray));
+        return $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
     }
 
     private function getResultSet(): ResultSetInterface

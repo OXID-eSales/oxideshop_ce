@@ -5,13 +5,9 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use Doctrine\DBAL\Connection;
-
-interface ConnectionProviderInterface
+interface ConnectionParameterProviderInterface
 {
-    public function get(): Connection;
+    public function getParameters(): array;
 }

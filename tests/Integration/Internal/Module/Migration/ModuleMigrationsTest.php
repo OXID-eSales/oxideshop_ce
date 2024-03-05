@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Migration;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -23,12 +24,12 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 /**
  * Class ModuleMigrationsTest
  */
-class ModuleMigrationsTest extends TestCase
+final class ModuleMigrationsTest extends TestCase
 {
     use ContainerTrait;
 
-    private $moduleIdWithMigrations= 'myTestModuleWithMigrations';
-    private $moduleIdWithoutMigrations = 'myTestModuleWithoutMigrations';
+    private string $moduleIdWithMigrations = 'myTestModuleWithMigrations';
+    private string $moduleIdWithoutMigrations = 'myTestModuleWithoutMigrations';
 
     public function testMigrationsExecutionWithSpecificModule(): void
     {
@@ -42,9 +43,7 @@ class ModuleMigrationsTest extends TestCase
         $this->removeTestModule($this->moduleIdWithMigrations);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNoErrorWhenModuleHasNoMigrations(): void
     {
         $this->installModule($this->moduleIdWithoutMigrations);
@@ -67,9 +66,6 @@ class ModuleMigrationsTest extends TestCase
         $this->removeTestModule($this->moduleIdWithMigrations);
     }
 
-    /**
-     * @param string $moduleId
-     */
     private function installModule(string $moduleId): void
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);
@@ -77,9 +73,6 @@ class ModuleMigrationsTest extends TestCase
             ->install($package);
     }
 
-    /**
-     * @param string $moduleId
-     */
     private function removeTestModule(string $moduleId): void
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);

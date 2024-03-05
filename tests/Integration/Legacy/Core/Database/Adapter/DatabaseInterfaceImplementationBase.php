@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapter;
 
+use oxDb;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -69,29 +70,23 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
      */
     protected $database;
 
-    /**
-     * Set up before beginning with tests
-     */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
-        self::createDatabaseTable();
+        self::getDatabaseHandler()
+            ->exec(
+                'CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;'
+            );
     }
 
-    /**
-     * Tear down after all tests are done
-     */
     public static function tearDownAfterClass(): void
     {
-        self::removeDatabaseTable();
+        self::getDatabaseHandler()->exec('DROP TABLE ' . self::TABLE_NAME . ';');
 
         parent::tearDownAfterClass();
     }
 
-    /**
-     * Initialize database table before every test
-     */
     public function setUp(): void
     {
         /** Set a user-defined error handler in order to handle errors triggered with trigger_error */
@@ -105,16 +100,12 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
         $this->assureTestTableIsEmpty();
     }
 
-    /**
-     * Empty database table after every test
-     */
     public function tearDown(): void
     {
         $this->truncateTestTable();
-        $this->closeConnection();
+        $this->database->closeConnection();
         gc_collect_cycles();
 
-        /** Restore the previous error handler function */
         restore_error_handler();
         parent::tearDown();
     }
@@ -122,11 +113,11 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
     /**
      * Provides an error handler
      *
-     * @param integer $errorLevel   Error number as defined in http://php.net/manual/en/errorfunc.constants.php
-     * @param string  $errorMessage Error message
-     * @param string  $errorFile    Error file
-     * @param integer $errorLine    Error line
-     * @param array   $errorContext Error context
+     * @param integer $errorLevel Error number as defined in http://php.net/manual/en/errorfunc.constants.php
+     * @param string $errorMessage Error message
+     * @param string $errorFile Error file
+     * @param integer $errorLine Error line
+     * @param array $errorContext Error context
      */
     public function errorHandler($errorLevel, $errorMessage, $errorFile = '', $errorLine = 0, $errorContext = []): void
     {
@@ -134,43 +125,22 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
     }
 
     /**
-     * Return the name of the database exception class
-     */
-    abstract protected function getDatabaseExceptionClassName();
-
-    /**
-     * Return the name of the database exception class
-     */
-    abstract protected function getResultSetClassName();
-
-    /**
-     * Create the database object under test - the static pendant to use in the setUpBeforeClass and tearDownAfterClass.
-     *
-     * @return DatabaseInterface The database object under test.
-     */
-    abstract protected function createDatabase();
-
-    /**
-     * Hook function for closing the database connection.
-     */
-    abstract protected function closeConnection();
-
-    /**
      * Get a PDO instance representing a connection to the database.
      * Use this static method to access the database without using the shop adapters.
-     *
-     * @return PDO PDO instance.
      */
     protected static function getDatabaseHandler(): PDO
     {
-        $configFile = Registry::get('oxConfigFile');
-        $dsn = 'mysql:host=' . $configFile->getVar('dbHost') . ';port=' . $configFile->getVar(
-            'dbPort'
-        ) . ';dbname=' . $configFile->getVar('dbName');
-        $username = $configFile->getVar('dbUser');
-        $password = $configFile->getVar('dbPwd');
-
-        return new PDO($dsn, $username, $password);
+        $databaseConfig = new DatabaseConfiguration(getenv('OXID_DB_URL'));
+        return new PDO(
+            sprintf(
+                'mysql:host=%s;port=%s;dbname=%s',
+                $databaseConfig->getHost(),
+                $databaseConfig->getPort(),
+                $databaseConfig->getName()
+            ),
+            $databaseConfig->getUser(),
+            $databaseConfig->getPass()
+        );
     }
 
     /**
@@ -178,71 +148,32 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
      */
     protected function initializeDatabase()
     {
-        $this->database = $this->createDatabase();
+        $this->database = oxDb::getMaster();
     }
 
-    /**
-     * Create the database table used for the integration tests.
-     *
-     * @return int
-     */
-    protected static function createDatabaseTable(): int|false
-    {
-        $dbh = self::getDatabaseHandler();
-
-        return $dbh->exec(
-            'CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (oxid CHAR(32), oxuserid CHAR(32)) ENGINE innoDb;'
-        );
-    }
-
-    /**
-     * Drop the test database table.
-     *
-     * @return int
-     */
-    protected static function removeDatabaseTable(): int|false
-    {
-        $dbh = self::getDatabaseHandler();
-
-        return $dbh->exec('DROP TABLE ' . self::TABLE_NAME . ';');
-    }
-
-    /**
-     * Load the test fixture to the oxdoctrinetest table.
-     *
-     * @param DatabaseInterface $database An instance of the database handler
-     */
-    protected function loadFixtureToTestTable($database = null)
+    protected function loadFixtureToTestTable(DatabaseInterface $database = null): void
     {
         if ($database === null) {
             $database = $this->database;
         }
         $this->truncateTestTable();
 
-        $values = [
-            self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
-            self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2,
-            self::FIXTURE_OXID_3 => self::FIXTURE_OXUSERID_3,
-        ];
-
         $queryValuesParts = [];
 
-        foreach ($values as $oxId => $oxUserId) {
+        foreach (
+            [
+                self::FIXTURE_OXID_1 => self::FIXTURE_OXUSERID_1,
+                self::FIXTURE_OXID_2 => self::FIXTURE_OXUSERID_2,
+                self::FIXTURE_OXID_3 => self::FIXTURE_OXUSERID_3,
+            ] as $oxId => $oxUserId
+        ) {
             $queryValuesParts[] = "('{$oxId}','{$oxUserId}')";
         }
-
-        $queryValuesPart = implode(',', $queryValuesParts);
-
-        $query = 'INSERT INTO ' . self::TABLE_NAME . "(OXID, OXUSERID) VALUES {$queryValuesPart};";
-
-        $database->execute($query);
+        $database->execute(
+            'INSERT INTO ' . self::TABLE_NAME . '(OXID, OXUSERID) VALUES ' . implode(',', $queryValuesParts) . ';'
+        );
     }
 
-    /**
-     * Remove all rows from the oxdoctrinetest table.
-     *
-     * @return integer affected rows
-     */
     protected function truncateTestTable()
     {
         return $this->database->execute('TRUNCATE ' . self::TABLE_NAME . ';');
@@ -251,9 +182,9 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
     /**
      * Assert, that the given object has the wished attribute with the given value.
      *
-     * @param object $object         The object we want to check for the given attribute.
-     * @param string $attributeName  The name of the attribute we want to exist.
-     * @param mixed  $attributeValue The wished value of the attribute.
+     * @param object $object The object we want to check for the given attribute.
+     * @param string $attributeName The name of the attribute we want to exist.
+     * @param mixed $attributeValue The wished value of the attribute.
      */
     protected function assertObjectHasAttributeWithValue($object, string $attributeName, mixed $attributeValue)
     {

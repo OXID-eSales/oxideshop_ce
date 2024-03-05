@@ -40,5 +40,11 @@
 /.env.local.php
 /.env.*.local
 
+# DotEnv files
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
+
 # Template files
 /source/Application/views/*

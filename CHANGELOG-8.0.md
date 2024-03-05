@@ -6,6 +6,7 @@
 
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
 - Support PSR caching interface, related functionalities and applied them on module cache.
+- Registration of environment variables via Symfony Dotenv Component
 
 ### Changed
 
@@ -31,4 +32,4 @@
 - Remove deprecated `TemplateCacheService` implementation
 - Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
 - Obsolete caching related functionalities
-- Class OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
+- Deprecated class `ModuleVariablesLocator`

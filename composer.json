@@ -32,6 +32,7 @@
         "symfony/config": "^6.3",
         "symfony/console": "^6.3",
         "symfony/dependency-injection": "^6.3",
+        "symfony/dotenv": "^6.3",
         "symfony/event-dispatcher": "^6.3",
         "symfony/expression-language": "^6.3",
         "symfony/filesystem": "^6.3",

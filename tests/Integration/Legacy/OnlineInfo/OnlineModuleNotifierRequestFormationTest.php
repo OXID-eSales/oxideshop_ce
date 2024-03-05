@@ -23,6 +23,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\Facts\Facts;
 use Psr\Container\ContainerInterface;
 use SimpleXMLElement;
+use Throwable;
 
 final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
 {
@@ -126,6 +127,12 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
         $this->container->get(ModuleInstallerInterface::class)->install($package);
     }
 
+    private function uninstallModule(string $moduleId): void
+    {
+        $package = new OxidEshopPackage(__DIR__ . '/../Modules/TestData/modules/' . $moduleId);
+        $this->container->get(ModuleInstallerInterface::class)->uninstall($package);
+    }
+
     private function activateModule(string $moduleId): void
     {
         $this->container->get(ModuleActivationBridgeInterface::class)->activate($moduleId, 1);
@@ -141,6 +148,11 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
         $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
+        }
+        try {
+            $this->uninstallModule($this->moduleId1);
+            $this->uninstallModule($this->moduleId2);
+        } catch (Throwable) {
         }
     }
 }

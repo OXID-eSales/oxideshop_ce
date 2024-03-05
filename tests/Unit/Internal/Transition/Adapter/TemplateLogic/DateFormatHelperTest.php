@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper;
@@ -12,8 +14,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(DateFormatHelper::class, 'fixWindowsTimeFormat')]
-class DateFormatHelperTest extends TestCase
+#[CoversClass(DateFormatHelper::class)]
+final class DateFormatHelperTest extends TestCase
 {
     public static function provider(): array
     {
@@ -29,7 +31,7 @@ class DateFormatHelperTest extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testFixWindowsTimeFormat($format, $timestamp, $expectedFormat)
+    public function testFixWindowsTimeFormat(string $format, int|string $timestamp, string $expectedFormat): void
     {
         $dateFormatHelper = new DateFormatHelper();
         $actualFormat = $dateFormatHelper->fixWindowsTimeFormat($format, $timestamp);

@@ -2,17 +2,17 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger
     arguments:
       $psrLogger: '@database.psr_logger'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory
+    arguments:
+      $queryLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger'
+      $nullLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger'
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter

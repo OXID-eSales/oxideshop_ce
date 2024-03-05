@@ -17,10 +17,11 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 use Symfony\Component\Filesystem\Path;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
@@ -99,7 +100,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         parent::__construct();
 
-        $this->offlineWarningTimestampFile = OX_BASE_PATH . 'log/last-offline-warning-timestamp.log';
+        $this->offlineWarningTimestampFile =
+            Path::join(
+                (new BasicContext())->getSourcePath(),
+                'log',
+                'last-offline-warning-timestamp.log'
+            );
     }
 
     /**
@@ -378,7 +384,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function canExecuteFunction($view, $function)
     {
         $canExecute = true;
-        if (method_exists($view, $function)) {
+        if ($function && method_exists($view, $function)) {
             $reflectionMethod = new ReflectionMethod($view, $function);
             if (!$reflectionMethod->isPublic()) {
                 $canExecute = false;
@@ -427,9 +433,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $view->setViewData($viewData);
 
         $renderer = $this->getRenderer();
-        // passing current view object to template engine
-        // TODO: remove it! Also in varnish module
-        $renderer->oxobject = $view;
 
         $viewData['oxEngineTemplateId'] = $view->getViewId();
         $viewData = $this->passSessionErrorsToViewData($view, $viewData);

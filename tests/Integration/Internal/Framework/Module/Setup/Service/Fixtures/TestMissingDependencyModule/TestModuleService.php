@@ -11,9 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service\Fixtures\TestAnotherDependentModule\TestAnotherModuleService;
 
-/**
- * @internal
- */
 class TestModuleService extends TestAnotherModuleService
 {
     public function doSomething(): bool

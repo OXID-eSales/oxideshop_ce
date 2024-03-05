@@ -5,14 +5,10 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
+declare(strict_types=1);
+
 $sMetadataVersion = '2.1';
 
-/**
- * Module information
- */
 $aModule = array(
     'id'           => 'test-missing-dependency-module',
     'thumbnail'    => 'picture.png',

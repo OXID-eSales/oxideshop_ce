@@ -5,8 +5,9 @@
  * See LICENSE file for license details.
  */
 
-define('OX_IS_ADMIN', true);
-define('OX_ADMIN_DIR', basename(dirname(__FILE__)));
+declare(strict_types=1);
 
-// Includes main index.php file
-require_once dirname(__FILE__) . "/../index.php";
+const OX_IS_ADMIN = true;
+define('OX_ADMIN_DIR', basename(__DIR__));
+
+require_once __DIR__ . '/../index.php';

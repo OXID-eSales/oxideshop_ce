@@ -16,6 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerF
 
 class ConnectionFactory implements ConnectionFactoryInterface
 {
+    private readonly Connection $connection;
+
     public function __construct(
         private readonly ConnectionParameterProviderInterface $connectionParameterProvider,
         private readonly DatabaseLoggerFactoryInterface $databaseLoggerFactory,
@@ -24,13 +26,16 @@ class ConnectionFactory implements ConnectionFactoryInterface
 
     public function create(): Connection
     {
-        $dbalConfiguration = new DbalConfiguration();
-        $dbalConfiguration->setSQLLogger(
-            $this->databaseLoggerFactory->getDatabaseLogger()
-        );
-        return DriverManager::getConnection(
-            $this->connectionParameterProvider->getParameters(),
-            $dbalConfiguration,
-        );
+        if (!isset($this->connection)) {
+            $dbalConfiguration = new DbalConfiguration();
+            $dbalConfiguration->setSQLLogger(
+                $this->databaseLoggerFactory->getDatabaseLogger()
+            );
+            $this->connection = DriverManager::getConnection(
+                $this->connectionParameterProvider->getParameters(),
+                $dbalConfiguration,
+            );
+        }
+        return $this->connection;
     }
 }

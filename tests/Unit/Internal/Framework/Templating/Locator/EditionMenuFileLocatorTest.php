@@ -23,7 +23,7 @@ final class EditionMenuFileLocatorTest extends TestCase
     private vfsStreamDirectory $vfsStreamDirectory;
 
     #[DataProvider('dataProviderTestLocate')]
-    public function testLocate($edition)
+    public function testLocate(string $edition): void
     {
         $this->createModuleStructure($edition);
         $locator = new EditionMenuFileLocator(
@@ -67,7 +67,7 @@ final class EditionMenuFileLocatorTest extends TestCase
         return $context;
     }
 
-    private function createModuleStructure($edition)
+    private function createModuleStructure(string $edition): void
     {
         $shopPath = 'testSourcePath' . $edition;
         $structure = [

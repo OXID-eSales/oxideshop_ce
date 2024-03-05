@@ -15,9 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
-class DatabaseLoggerFactoryTest extends TestCase
+final class DatabaseLoggerFactoryTest extends TestCase
 {
-    public function testCreationForAdminLogEnabled()
+    public function testCreationForAdminLogEnabled(): void
     {
         $context = new ContextStub();
         $context->setIsAdmin(true);
@@ -37,7 +37,7 @@ class DatabaseLoggerFactoryTest extends TestCase
         );
     }
 
-    public function testCreationForAdminLogDisabled()
+    public function testCreationForAdminLogDisabled(): void
     {
         $context = new ContextStub();
         $context->setIsAdmin(true);
@@ -57,7 +57,7 @@ class DatabaseLoggerFactoryTest extends TestCase
         );
     }
 
-    public function testCreationForNormalUser()
+    public function testCreationForNormalUser(): void
     {
         $context = new ContextStub();
         $context->setIsAdmin(false);

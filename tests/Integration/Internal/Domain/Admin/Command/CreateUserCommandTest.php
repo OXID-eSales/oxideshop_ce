@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Admin\Command;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
@@ -31,9 +32,7 @@ final class CreateUserCommandTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @dataProvider missingOptionsDataProvider
-     */
+    #[DataProvider('missingOptionsDataProvider')]
     public function testExecuteWithMissingArgs(string $command): void
     {
         $options = [

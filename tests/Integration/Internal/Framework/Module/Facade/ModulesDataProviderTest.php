@@ -22,17 +22,16 @@ final class ModulesDataProviderTest extends TestCase
 {
     use ContainerTrait;
 
-    private $activeModuleId = 'activeModuleId';
-    private $activeModulePath = 'some-path-active';
-    private $activeModuleSource = 'some-source-active';
-    private $inactiveModuleId = 'inActiveModuleId';
-    private $inactiveModulePath = 'some-path-inactive';
-    private $inactiveModuleSource = 'some-source-inactive';
+    private string $activeModuleId = 'activeModuleId';
+    private string $activeModulePath = 'some-path-active';
+    private string $activeModuleSource = 'some-source-active';
+    private string $inactiveModuleId = 'inActiveModuleId';
+    private string $inactiveModulePath = 'some-path-inactive';
+    private string $inactiveModuleSource = 'some-source-inactive';
 
-    /** @var BasicContext */
-    private $context;
+    private BasicContext $context;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +39,7 @@ final class ModulesDataProviderTest extends TestCase
         $this->prepareTestShopConfiguration();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanUpTestData();
 

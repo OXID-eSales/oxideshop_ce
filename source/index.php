@@ -5,12 +5,10 @@
  * See LICENSE file for license details.
  */
 
-require_once dirname(__FILE__) . "/bootstrap.php";
+declare(strict_types=1);
 
-/**
- * Redirect to Setup, if shop is not configured
- */
+require_once __DIR__ . '/bootstrap.php';
+
 redirectIfShopNotConfigured();
 
-//Starts the shop
 OxidEsales\EshopCommunity\Core\Oxid::run();

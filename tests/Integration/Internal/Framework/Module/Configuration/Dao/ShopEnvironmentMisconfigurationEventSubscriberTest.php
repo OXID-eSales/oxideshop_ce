@@ -18,19 +18,19 @@ use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Path;
 
-class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
+final class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
 {
     use ContainerTrait;
 
-    private $testLog;
+    private ?string $testLog = null;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->prepareLogger();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanupTestLog();
         parent::tearDown();

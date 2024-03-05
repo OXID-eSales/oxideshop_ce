@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\DataMapper;
 
+use MyVendor\MyController\Controller1;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
@@ -18,14 +19,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-class ModuleConfigurationDataMapperTest extends TestCase
+final class ModuleConfigurationDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testMapping()
+    public function testMapping(): void
     {
         $configurationData = [
             'id'          => 'moduleId',
@@ -49,7 +47,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
                 'shopClass' => 'moduleClass',
             ],
             ControllersDataMapper::MAPPING_KEY => [
-                'controller1' => \MyVendor\MyController\Controller1::class,
+                'controller1' => Controller1::class,
             ],
             EventsDataMapper::MAPPING_KEY => [
                 'onActivate'   => 'MyEvents::onActivate'

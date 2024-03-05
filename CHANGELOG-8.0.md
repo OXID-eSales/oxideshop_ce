@@ -10,6 +10,7 @@
 
 ### Changed
 
+- Configuration parameters have been moved from `config.inc.php` to environment and container parameters
 - Admin directory is not removed from the url in `ViewConfig::getModuleUrl`
   anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)
 - Reset created product "sold" counter during Copying of the
@@ -30,9 +31,11 @@
 - `PAYMENT_INFO_OFF`
   translation [#0006426](https://bugs.oxid-esales.com/view.php?id=6426) [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)
 - Remove deprecated `TemplateCacheService` implementation
-- Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
 - Obsolete caching related functionalities
+- Remove deprecated method `BasicContextInterface::getCurrentShopId`
 - Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
-- Obsolete `TransactionServiceInterface`, `FinderFactoryInterface` and `ConnectionProviderInterface`
-- Config parameters sShopDir, sCompileDir and sLogLevel
+- Redundant interfaces `TransactionServiceInterface`, `FinderFactoryInterface`
+- `ConnectionProviderInterface::get()` was superseded by `ConnectionFactory::create()`
+- Deprecated global functions `warningHandler(), dumpVar(), debug()`
+- Config parameters `sShopDir`, `sCompileDir` and `sLogLevel`
 - Deprecated class `ModuleVariablesLocator`

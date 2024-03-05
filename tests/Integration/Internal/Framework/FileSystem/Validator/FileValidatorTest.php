@@ -9,55 +9,42 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\FileSystem\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\ImageValidationException;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class FileValidatorTest extends IntegrationTestCase
+final class FileValidatorTest extends TestCase
 {
-    private string $dataDirPath = 'tests/Integration/_data';
-    private FileValidatorInterface $fileValidator;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $mimeTypes = $this->get('oxid_esales.symfony.mime_types');
-        $this->fileValidator = new FileValidator($mimeTypes);
-    }
+    use ContainerTrait;
 
     public function testImageValid(): void
     {
-        $this->assertTrue(
-            $this->fileValidator->validateImage($this->getFilePath('image.png'))
-        );
+        $this->assertTrue($this->isValidImage('image.png'));
     }
 
     public function testImageWrongExtension(): void
     {
-        $this->assertFalse(
-            $this->fileValidator->validateImage($this->getFilePath('fake_image.php'))
-        );
+        $this->assertFalse($this->isValidImage('fake_image.php'));
     }
 
     public function testImageWrongType(): void
     {
-        $this->assertFalse(
-            $this->fileValidator->validateImage($this->getFilePath('fake_image.png'))
-        );
+        $this->assertFalse($this->isValidImage('fake_image.png'));
     }
 
     public function testImageNotExist(): void
     {
         $this->expectException(ImageValidationException::class);
 
-        $this->fileValidator->validateImage($this->getFilePath('noimagepath'));
+        $this->isValidImage('no_image_path');
     }
 
-    private function getFilePath(string $fileName): string
+    private function isValidImage(string $fileName): bool
     {
-        return Path::join(INSTALLATION_ROOT_PATH, $this->dataDirPath, $fileName);
+        return $this
+            ->get(FileValidatorInterface::class)
+            ->validateImage(Path::join(__DIR__, 'Fixtures', $fileName));
     }
 }

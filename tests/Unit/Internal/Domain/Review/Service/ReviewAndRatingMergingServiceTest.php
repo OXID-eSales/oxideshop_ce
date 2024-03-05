@@ -9,15 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Review\Service;
 
+use PHPUnit\Framework\TestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Review;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ReviewAndRatingMergingService;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRating;
 
-class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
+final class ReviewAndRatingMergingServiceTest extends TestCase
 {
-    public function testMergingReviewWithRatingAndRatingWithReview()
+    public function testMergingReviewWithRatingAndRatingWithReview(): void
     {
         $reviewAndRatingMergingService = new ReviewAndRatingMergingService();
 
@@ -44,7 +45,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testMergingReviewWithoutRatingAndRatingWithoutReview()
+    public function testMergingReviewWithoutRatingAndRatingWithoutReview(): void
     {
         $reviewAndRatingMergingService = new ReviewAndRatingMergingService();
 
@@ -72,7 +73,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function getReviewWithRating()
+    private function getReviewWithRating(): Review
     {
         $review = new Review();
         $review
@@ -85,7 +86,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $review;
     }
 
-    private function getReviewWithoutRating()
+    private function getReviewWithoutRating(): Review
     {
         $review = new Review();
 
@@ -99,7 +100,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $review;
     }
 
-    private function getRatingWithReview()
+    private function getRatingWithReview(): Rating
     {
         $rating = new Rating();
 
@@ -112,7 +113,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $rating;
     }
 
-    private function getRatingWithoutReview()
+    private function getRatingWithoutReview(): Rating
     {
         $rating = new Rating();
 
@@ -125,7 +126,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $rating;
     }
 
-    private function getReviewAndRatingViewObjectWithReviewAndWithRating()
+    private function getReviewAndRatingViewObjectWithReviewAndWithRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating
@@ -138,7 +139,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $reviewAndRating;
     }
 
-    private function getReviewAndRatingViewObjectWithReviewAndWithoutRating()
+    private function getReviewAndRatingViewObjectWithReviewAndWithoutRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating
@@ -151,7 +152,7 @@ class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
         return $reviewAndRating;
     }
 
-    private function getReviewAndRatingViewObjectWithoutReviewAndWithRating()
+    private function getReviewAndRatingViewObjectWithoutReviewAndWithRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating

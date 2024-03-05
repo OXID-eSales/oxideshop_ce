@@ -21,6 +21,26 @@ final class ContextTest extends TestCase
         $this->assertNotEmpty($this->getContext()->getLogLevel());
     }
 
+    public function testGetLogLevelWithEnv(): void
+    {
+        $envLogLevel = uniqid('some-log-level-', true);
+        putenv("OXID_LOG_LEVEL=$envLogLevel");
+
+        $logLevel = $this->getContext()->getLogLevel();
+
+        $this->assertEquals($envLogLevel, $logLevel);
+    }
+
+    public function testGetLogLevelWithEmptyEnvWillReturnDefault(): void
+    {
+        $defaultLogLevel = 'error';
+        putenv('OXID_LOG_LEVEL=');
+
+        $logLevel = $this->getContext()->getLogLevel();
+
+        $this->assertEquals($defaultLogLevel, $logLevel);
+    }
+
     public function testGetLogFilePathWithConfigSetWillReturnStringStartingWithValue(): void
     {
         $configValue = ContainerFacade::getParameter('oxid_shop_source_directory');

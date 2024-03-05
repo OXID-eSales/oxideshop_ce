@@ -26,7 +26,7 @@ final class AdminFactoryTest extends TestCase
 
     private $adminFactory;
 
-    private $password = 'test123';
+    private string $password = 'test123';
 
     private function createAdminFactory(): AdminFactory
     {
@@ -44,7 +44,7 @@ final class AdminFactoryTest extends TestCase
             $passwordHashService->reveal()
         );
     }
-    
+
     public function testCreateAdmin(): void
     {
         $adminFactory = $this->createAdminFactory();

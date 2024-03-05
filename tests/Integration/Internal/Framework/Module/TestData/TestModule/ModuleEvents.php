@@ -9,17 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule;
 
-/**
- * @internal
- */
 class ModuleEvents
 {
-    public static function onActivate()
+    public static function onActivate(): void
     {
         echo 'Method onActivate was called';
     }
 
-    public static function onDeactivate()
+    public static function onDeactivate(): void
     {
         echo 'Method onDeactivate was called';
     }

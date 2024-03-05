@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Filesystem\Path;
 
 class ModuleDependencyDao implements ModuleDependencyDaoInterface
@@ -21,7 +21,7 @@ class ModuleDependencyDao implements ModuleDependencyDaoInterface
     public function __construct(
         private readonly FileStorageFactoryInterface $fileStorageFactory,
         private readonly ModulePathResolverInterface $modulePathResolver,
-        private readonly BasicContextInterface $context
+        private readonly ContextInterface $context
     ) {
     }
 

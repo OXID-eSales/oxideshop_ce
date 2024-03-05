@@ -20,9 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Container\ContainerInterface;
 
-/**
- * @internal
- */
 final class ModuleListTest extends IntegrationTestCase
 {
     public function setUp(): void

@@ -17,13 +17,29 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Sho
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ShopConfigurationTest extends TestCase
+final class ShopConfigurationTest extends IntegrationTestCase
 {
     use ContainerTrait;
+    use FilesystemTrait;
 
     private string $testModuleId = 'testShopModuleId';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->backupVarDirectory();
+    }
+
+    public function tearDown(): void
+    {
+        $this->restoreVarDirectory();
+
+        parent::tearDown();
+    }
 
     public function testSaveConfVars(): void
     {
@@ -63,7 +79,6 @@ final class ShopConfigurationTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
     public function testUnserializeConfVar(): void
     {
         $value = ['a' => 'test'];
@@ -82,7 +97,6 @@ final class ShopConfigurationTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
     public function testUnserializeConfVarNestedArray(): void
     {
         $value = ['a' => ['b' => 'test']];

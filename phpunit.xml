@@ -3,14 +3,17 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
          bootstrap="./tests/bootstrap.php"
          cacheDirectory="./var/.phpunit.cache"
-         beStrictAboutOutputDuringTests="false"
-         requireCoverageMetadata="false"
          beStrictAboutCoverageMetadata="true"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutTodoAnnotatedTests="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerErrors="true"
          displayDetailsOnTestsThatTriggerNotices="true"
-         displayDetailsOnTestsThatTriggerWarnings="true">
-    <coverage/>
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         backupGlobals="true"
+         backupStaticProperties="true"
+         processIsolation="true"
+>
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">tests/Unit</directory>
@@ -19,9 +22,4 @@
             <directory suffix="Test.php">tests/Integration</directory>
         </testsuite>
     </testsuites>
-    <source>
-        <include>
-            <directory suffix=".php">./source/Internal</directory>
-        </include>
-    </source>
 </phpunit>

@@ -4,6 +4,7 @@
 
 ### Added
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
+- Registration of environment variables via Symfony Dotenv Component
 
 ### Changed
 - Admin directory is not removed from the url in `ViewConfig::getModuleUrl` anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)

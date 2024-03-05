@@ -27,9 +27,6 @@
 /vendor/
 /composer.lock
 
-# Testing library
-/test_config.yml
-
 # IDE
 /.idea/
 /.phpstorm.meta.php
@@ -40,6 +37,12 @@
 
 # Shop config & DI for modules and packages
 /var/
+
+# DotEnv files
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
 
 # Template files
 /source/Application/views/*

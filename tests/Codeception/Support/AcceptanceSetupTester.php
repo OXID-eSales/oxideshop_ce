@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Support;
 
+use OxidEsales\EshopCommunity\Tests\Codeception\Support\_generated\AcceptanceSetupTesterActions;
 use Codeception\Actor;
 use OxidEsales\Codeception\ShopSetup\SystemRequirementsStep;
 
@@ -29,7 +30,7 @@ use OxidEsales\Codeception\ShopSetup\SystemRequirementsStep;
  */
 class AcceptanceSetupTester extends Actor
 {
-    use _generated\AcceptanceSetupTesterActions;
+    use AcceptanceSetupTesterActions;
 
     public function openShopSetup(): SystemRequirementsStep
     {

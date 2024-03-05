@@ -5,18 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WordwrapLogicTest
- */
-class WordwrapLogicTest extends TestCase
+final class WordwrapLogicTest extends TestCase
 {
-    /** @var WordwrapLogic */
-    private $wordWrapLogic;
+    private WordwrapLogic $wordWrapLogic;
 
     protected function setUp(): void
     {
@@ -24,11 +23,6 @@ class WordwrapLogicTest extends TestCase
         $this->wordWrapLogic = new WordwrapLogic();
     }
 
-    /**
-     * Provides data for testWordWrapWithNonAscii
-     *
-     * @return array
-     */
     public static function nonAsciiProvider(): array
     {
         return [
@@ -39,17 +33,14 @@ class WordwrapLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider nonAsciiProvider
-     */
+    #[DataProvider('nonAsciiProvider')]
     public function testWordWrapWithNonAscii(
         string $expected,
         string $string,
         int $length = 80,
         string $wrapper = "\n",
         bool $cut = false
-    ): void
-    {
+    ): void {
         self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 
@@ -74,10 +65,8 @@ class WordwrapLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider asciiProvider
-     */
-    public function testWordWrapAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false): void
+    #[DataProvider('asciiProvider')]
+    public function testWordWrapAscii(string $expected, string $string, int $length = 80, string $wrapper = "\n", bool $cut = false): void
     {
         self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }

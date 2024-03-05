@@ -13,14 +13,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class TestEvent extends Event
 {
-    private $handled = false;
+    private bool $handled = false;
 
-    public function handle()
+    public function handle(): void
     {
         $this->handled = true;
     }
 
-    public function isHandled()
+    public function isHandled(): bool
     {
         return $this->handled;
     }

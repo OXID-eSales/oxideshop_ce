@@ -9,44 +9,40 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
+use Monolog\Logger;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Core\FileCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
-use Psr\Log\LogLevel;
 use Symfony\Component\Filesystem\Path;
 
 class Context extends BasicContext implements ContextInterface
 {
+    public function __construct(private readonly int $shopId)
+    {
+    }
+
     /**
      * @var FactsConfigFile
      */
     private $factsConfigFile;
-    private int $shopId;
 
-    /**
-     * @return string
-     */
     public function getLogLevel(): string
     {
-        return $this->systemConfiguration->getLogLevel() ?? LogLevel::ERROR;
+        $envValue = getenv('OXID_LOG_LEVEL');
+
+        return !empty($envValue) ?
+            $envValue :
+            strtolower(Logger::getLevelName(Logger::ERROR));
     }
 
-    /**
-     * @return string
-     */
     public function getLogFilePath(): string
     {
         return Path::join($this->getSourcePath(), 'log', 'oxideshop.log');
     }
 
-    /**
-     * @return array
-     */
     public function getRequiredContactFormFields(): array
     {
         $contactFormRequiredFields = $this->getConfigParameter('contactFormRequiredFields');
@@ -54,20 +50,11 @@ class Context extends BasicContext implements ContextInterface
         return $contactFormRequiredFields ?? [];
     }
 
-    /**
-     * @return int
-     */
     public function getCurrentShopId(): int
     {
-        if (!isset($this->shopId)) {
-            $this->shopId = (int)(new ShopIdCalculator(new FileCache()))->getShopId();
-        }
         return $this->shopId;
     }
 
-    /**
-     * @return array
-     */
     public function getAllShopIds(): array
     {
         $integerShopIds = [];
@@ -79,25 +66,16 @@ class Context extends BasicContext implements ContextInterface
         return $integerShopIds;
     }
 
-    /**
-     * @return bool
-     */
     public function isAdmin(): bool
     {
         return $this->isConfigLoaded() ? Registry::getConfig()->isAdmin() : isAdmin();
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabledAdminQueryLog(): bool
     {
         return (bool)$this->getFactsConfigFile()->getVar('blLogChangesInAdmin');
     }
 
-    /**
-     * @return string
-     */
     public function getAdminLogFilePath(): string
     {
         return Path::join($this->getSourcePath(), 'log', 'oxadmin.log');
@@ -107,8 +85,6 @@ class Context extends BasicContext implements ContextInterface
      * We need to be careful when trying to fetch config parameters in this place as the
      * shop might still be bootstrapping.
      * The config must be already initialized before we can safely call Config::getConfigParam().
-     *
-     * @return array
      */
     public function getSkipLogTags(): array
     {
@@ -120,9 +96,6 @@ class Context extends BasicContext implements ContextInterface
         return (array)$skipLogTags;
     }
 
-    /**
-     * @return string
-     */
     public function getAdminUserId(): string
     {
         $adminUserId = (string)Registry::getSession()->getVariable('auth');
@@ -133,17 +106,11 @@ class Context extends BasicContext implements ContextInterface
         return $adminUserId;
     }
 
-    /**
-     * @return bool
-     */
     public function isShopInProductiveMode(): bool
     {
         return (bool)Registry::getConfig()->isProductiveMode();
     }
 
-    /**
-     * @return bool
-     */
     public function isShopInDemoMode(): bool
     {
         return (bool)Registry::getConfig()->isDemoShop();
@@ -160,9 +127,6 @@ class Context extends BasicContext implements ContextInterface
         return $value;
     }
 
-    /**
-     * @return FactsConfigFile
-     */
     private function getFactsConfigFile(): FactsConfigFile
     {
         if (!is_a($this->factsConfigFile, FactsConfigFile::class)) {
@@ -172,9 +136,6 @@ class Context extends BasicContext implements ContextInterface
         return $this->factsConfigFile;
     }
 
-    /**
-     * @return bool
-     */
     private function isConfigLoaded(): bool
     {
         return Registry::instanceExists(Config::class);

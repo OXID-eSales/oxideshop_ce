@@ -5,6 +5,11 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
+use Codeception\TestModule\Problems\Model\NonExistentFile;
+use OxidEsales\Eshop\Application\Model\Article;
+
 $sMetadataVersion = '2.1';
 
 $aModule = [
@@ -16,6 +21,6 @@ $aModule = [
     'author' => 'OXID',
     'extend' => [
         /** The class file does not exist at all and thus the class cannot be loaded */
-        \OxidEsales\Eshop\Application\Model\Article::class => \Codeception\TestModule\Problems\Model\NonExistentFile::class
+        Article::class => NonExistentFile::class
     ],
 ];

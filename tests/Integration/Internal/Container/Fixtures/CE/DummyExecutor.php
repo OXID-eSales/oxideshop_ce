@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixture
 
 class DummyExecutor
 {
-    public function execute()
+    public function execute(): string
     {
         return 'CE service!';
     }

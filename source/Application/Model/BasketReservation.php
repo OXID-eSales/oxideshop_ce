@@ -299,8 +299,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
             $finished = implode(',', $finished);
 
             $reservation = $database->select(
-                'select oxartid, oxamount from oxuserbasketitems where oxbasketid in (' . $finished . ')',
-                false
+                'select oxartid, oxamount from oxuserbasketitems where oxbasketid in (' . $finished . ')'
             );
 
             while (!$reservation->EOF) {

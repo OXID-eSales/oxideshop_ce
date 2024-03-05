@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
 
-class FromTest extends \PHPUnit\Framework\TestCase
+final class FromTest extends TestCase
 {
-    public function testAddField()
+    public function testAddField(): void
     {
         $form = new Form();
 
@@ -27,7 +28,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($field, $form->testField);
     }
 
-    public function testValidation()
+    public function testValidation(): void
     {
         $validator = $this->getMockBuilder(FormValidatorInterface::class)->getMock();
         $validator
@@ -44,7 +45,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($form->isValid());
     }
 
-    public function testValidationErrors()
+    public function testValidationErrors(): void
     {
         $validator = $this->getMockBuilder(FormValidatorInterface::class)->getMock();
         $validator
@@ -87,7 +88,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFieldsGetter()
+    public function testFieldsGetter(): void
     {
         $form = new Form();
 
@@ -109,7 +110,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testRequestHandling()
+    public function testRequestHandling(): void
     {
         $form = new Form();
 

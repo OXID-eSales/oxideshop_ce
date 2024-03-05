@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Bridge;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
@@ -17,9 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewService;
 
-class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
+final class UserReviewBridgeTest extends TestCase
 {
-    public function testDeleteReview()
+    public function testDeleteReview(): void
     {
         $userReviewBridge = $this->getUserReviewBridge();
         $database = DatabaseProvider::getDb();
@@ -33,7 +35,7 @@ class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($database->getOne($sql));
     }
 
-    public function testDeleteReviewWithNonExistentReviewId()
+    public function testDeleteReviewWithNonExistentReviewId(): void
     {
         $this->expectException(EntryDoesNotExistDaoException::class);
 
@@ -41,7 +43,7 @@ class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
         $userReviewBridge->deleteReview('user1', 'nonExistentId');
     }
 
-    public function testDeleteRatingWithWrongUserId()
+    public function testDeleteRatingWithWrongUserId(): void
     {
         $this->expectException(ReviewPermissionException::class);
 
@@ -56,22 +58,21 @@ class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
         $userReviewBridge->deleteReview('userWithWrongId', 'id1');
     }
 
-    private function getUserReviewBridge()
+    private function getUserReviewBridge(): UserReviewBridge
     {
         return new UserReviewBridge(
             $this->getUserReviewServiceMock()
         );
     }
 
-    private function getUserReviewServiceMock()
+    private function getUserReviewServiceMock(): MockObject
     {
-        $userReviewServiceMock = $this->getMockBuilder(UserReviewService::class)
+        return $this->getMockBuilder(UserReviewService::class)
             ->disableOriginalConstructor()
             ->getMock();
-        return $userReviewServiceMock;
     }
 
-    private function createTestReview()
+    private function createTestReview(): void
     {
         $review = oxNew(Review::class);
         $review->setId('id1');

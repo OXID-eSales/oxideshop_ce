@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Wrapper
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,10 +19,10 @@ use Psr\Log\LoggerInterface;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Wrapper
  */
-class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
+final class LoggerWrapperTest extends TestCase
 {
     #[DataProvider('dataProviderPsrInterfaceMethods')]
-    public function testAllInterfaceMethodsExceptLogAreHandled(string $methodNameToTest)
+    public function testAllInterfaceMethodsExceptLogAreHandled(string $methodNameToTest): void
     {
         $messageToLog = "The message is {myMessage}";
         $contextToLog = ['myMessage' => 'Hello World!'];
@@ -37,9 +38,6 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         $loggerServiceWrapper->$methodNameToTest($messageToLog, $contextToLog);
     }
 
-    /**
-     * @return array
-     */
     public static function dataProviderPsrInterfaceMethods(): array
     {
         return [
@@ -55,7 +53,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testLog()
+    public function testLog(): void
     {
         $messageToLog = "The message is {myMessage}";
         $contextToLog = ['myMessage' => 'Hello World!'];
@@ -75,7 +73,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
 
     private function getLoggerMock(): LoggerInterface
     {
-        $loggerMock = $this
+        return $this
             ->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
             ->onlyMethods(
@@ -92,7 +90,5 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
                 ]
             )
             ->getMock();
-
-        return $loggerMock;
     }
 }

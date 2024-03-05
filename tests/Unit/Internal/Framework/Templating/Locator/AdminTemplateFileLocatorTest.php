@@ -15,22 +15,19 @@ use PHPUnit\Framework\TestCase;
 
 final class AdminTemplateFileLocatorTest extends TestCase
 {
-    public function testLocate()
+    public function testLocate(): void
     {
         $templateName = 'test_template.tpl';
         $locator = new AdminTemplateFileLocator($this->getConfigMock($templateName));
         $this->assertSame('pathToTpl/' . $templateName, $locator->locate($templateName));
     }
 
-    /**
-     * @return Config
-     */
-    private function getConfigMock($templateName)
+    private function getConfigMock(string $templateName): Config
     {
         $config = $this
             ->getMockBuilder(Config::class)
             ->getMock();
-        $config->expects($this->any())
+        $config
             ->method('getTemplatePath')
             ->with($templateName, true)
             ->willReturn('pathToTpl/' . $templateName);

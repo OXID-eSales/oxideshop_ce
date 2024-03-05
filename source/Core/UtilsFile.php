@@ -11,9 +11,7 @@ use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base

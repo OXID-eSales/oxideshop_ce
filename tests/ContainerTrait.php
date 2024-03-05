@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -66,12 +67,18 @@ trait ContainerTrait
         $this->container->autowire($id, $id);
     }
 
+    private function replaceContainerInstance(): void
+    {
+        $this->prepareContainer();
+        $this->attachContainerToContainerFactory();
+    }
+
     /**
      * Run tests in a separate process if you use this function.
      */
     private function attachContainerToContainerFactory(): void
     {
-        $reflectionClass = new \ReflectionClass(ContainerFactory::getInstance());
+        $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
         $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }

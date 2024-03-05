@@ -11,44 +11,38 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
     ModuleConfiguration\ModuleSettingsDataMapper};
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 final class ModuleConfigurationInstallerTest extends TestCase
 {
     use ContainerTrait;
 
-    /** @var string  */
-    private $modulePath;
+    private string $modulePath;
     /**
-     * @var string
      * @see TestData/TestModule/metadata.php
      */
-    private $testModuleId = 'test-module';
+    private string $testModuleId = 'test-module';
     /** @var ProjectConfigurationDaoInterface */
     private $projectConfigurationDao;
 
     public function setUp(): void
     {
-        $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
-
-        $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
-
-        $this->prepareTestProjectConfiguration();
-
         parent::setUp();
+
+        $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
+        $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
+        $this->prepareTestProjectConfiguration();
     }
 
     public function testInstall(): void
@@ -59,7 +53,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
 
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testInstallWithPreExistingEnvironmentFile(): void
     {
         $this->configureModuleInEnvironmentFile();
@@ -181,8 +175,8 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
         $chain = new ClassExtensionsChain();
         $chain->setChain([
-            'shopClass'             => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
-            'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
+            'shopClass' => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
+            'someAnotherShopClass' => ['alreadyInstalledShopClass'],
         ]);
 
         $shopConfigurationWithChain->setClassExtensionsChain($chain);

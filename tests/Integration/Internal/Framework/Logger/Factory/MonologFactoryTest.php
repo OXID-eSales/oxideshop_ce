@@ -16,9 +16,9 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class MonologFactoryTest extends TestCase
+final class MonologFactoryTest extends TestCase
 {
-    public function testCreation()
+    public function testCreation(): void
     {
         $context = new ContextStub();
 

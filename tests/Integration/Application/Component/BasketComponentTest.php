@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
@@ -17,7 +17,7 @@ use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class BasketComponentTest extends IntegrationTestCase
+final class BasketComponentTest extends IntegrationTestCase
 {
     public function testFrontendErrorMsgInToBasket(): void
     {

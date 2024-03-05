@@ -10,28 +10,20 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
-use Psr\Log\LoggerInterface;
+use Exception;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
+use Psr\Log\LoggerInterface;
 
 class QueryLogger implements SQLLogger
 {
     public function __construct(
-        private QueryFilterInterface $queryFilter,
-        private ContextInterface $context,
-        private LoggerInterface $psrLogger
+        private readonly QueryFilterInterface $queryFilter,
+        private readonly ContextInterface $context,
+        private readonly LoggerInterface $psrLogger
     ) {
     }
 
-    /**
-     * Logs an SQL statement somewhere.
-     *
-     * @param string              $query  The query to be executed.
-     * @param mixed[]|null        $params The query parameters.
-     * @param int[]|string[]|null $types  The query parameter types.
-     *
-     * @return void
-     */
     public function startQuery($query, ?array $params = null, ?array $types = null): void
     {
         if ($this->filterPass($query)) {
@@ -40,43 +32,16 @@ class QueryLogger implements SQLLogger
         }
     }
 
-    /**
-     * Marks the last started query as stopped. This can be used for timing of queries.
-     *
-     * @return void
-     */
-    public function stopQuery(): void
+    private function filterPass(string $query): bool
     {
-    }
-
-    /**
-     * Get first entry from backtrace that is not connected to database.
-     * This has to be the origin of the query.
-     *
-     * @return array
-     */
-    private function getQueryTrace(): array
-    {
-        $queryTraceItem = [];
-
-        foreach ((new \Exception())->getTrace() as $item) {
-            if (
-                (false === stripos($item['class'], $this::class)) &&
-                (false === stripos($item['class'], 'Doctrine'))
-            ) {
-                $queryTraceItem = $item;
-                break;
-            }
-        }
-
-        return $queryTraceItem;
+        return $this->queryFilter->shouldLogQuery($query, $this->context->getSkipLogTags());
     }
 
     /**
      * Collect query information.
      *
-     * @param string $query  The query to be executed.
-     * @param array  $params The query parameters.
+     * @param string $query The query to be executed.
+     * @param array|null $params The query parameters.
      *
      * @return array
      */
@@ -86,45 +51,36 @@ class QueryLogger implements SQLLogger
 
         return [
             'adminUserId' => $this->getAdminUserIdIfExists(),
-            'shopId'      => $this->context->getCurrentShopId(),
-            'class'       => $backTraceInfo['class'] ?? '',
-            'function'    => $backTraceInfo['function'] ?? '',
-            'file'        => $backTraceInfo['file'] ?? '',
-            'line'        => $backTraceInfo['line'] ?? '',
-            'query'       => $query,
-            'params'      => serialize($params),
+            'shopId' => $this->context->getCurrentShopId(),
+            'class' => $backTraceInfo['class'] ?? '',
+            'function' => $backTraceInfo['function'] ?? '',
+            'file' => $backTraceInfo['file'] ?? '',
+            'line' => $backTraceInfo['line'] ?? '',
+            'query' => $query,
+            'params' => serialize($params),
         ];
     }
 
     /**
-     * @return bool
+     * Get first entry from backtrace that is not connected to database.
+     * This has to be the origin of the query.
      */
-    private function filterPass(string $query): bool
+    private function getQueryTrace(): array
     {
-        return $this->queryFilter->shouldLogQuery($query, $this->context->getSkipLogTags());
-    }
-
-    /**
-     * Assemble log message
-     *
-     * @param array $queryData
-     *
-     * @return string
-     */
-    private function getLogMessage(array $queryData): string
-    {
-        $message = '';
-
-        foreach ($queryData as $key => $value) {
-            $message .= PHP_EOL . $key . ': ' . $value;
+        $queryTraceItem = [];
+        foreach ((new Exception())->getTrace() as $item) {
+            if (
+                stripos($item['class'], $this::class) === false &&
+                stripos($item['class'], 'Doctrine') === false
+            ) {
+                $queryTraceItem = $item;
+                break;
+            }
         }
 
-        return $message . PHP_EOL;
+        return $queryTraceItem;
     }
 
-    /**
-     * @return string
-     */
     private function getAdminUserIdIfExists(): string
     {
         try {
@@ -134,5 +90,19 @@ class QueryLogger implements SQLLogger
         }
 
         return $adminId;
+    }
+
+    private function getLogMessage(array $queryData): string
+    {
+        $message = '';
+        foreach ($queryData as $key => $value) {
+            $message .= PHP_EOL . $key . ': ' . $value;
+        }
+
+        return $message . PHP_EOL;
+    }
+
+    public function stopQuery(): void
+    {
     }
 }

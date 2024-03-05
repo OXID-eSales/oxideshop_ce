@@ -8,11 +8,9 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
-use OxidEsales\Facts\Facts;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use Symfony\Component\Filesystem\Path;
 
 /**

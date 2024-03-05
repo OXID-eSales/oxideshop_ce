@@ -16,18 +16,18 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ShopStateServiceTest extends TestCase
+final class ShopStateServiceTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testIsLaunchedReturnsTrue()
+    public function testIsLaunchedReturnsTrue(): void
     {
         $this->assertTrue(
             $this->get(ShopStateServiceInterface::class)->isLaunched()
         );
     }
 
-    public function testIsLaunchedReturnsFalseIfUnifiedNamespaceAreNotGenerated()
+    public function testIsLaunchedReturnsFalseIfUnifiedNamespaceAreNotGenerated(): void
     {
         $shopStateService = new ShopStateService(
             $this->get(BasicContextInterface::class),
@@ -39,7 +39,7 @@ class ShopStateServiceTest extends TestCase
         );
     }
 
-    public function testIsLaunchedReturnsTrueIfUnifiedNamespaceAreGenerated()
+    public function testIsLaunchedReturnsTrueIfUnifiedNamespaceAreGenerated(): void
     {
         $shopStateService = new ShopStateService(
             $this->get(BasicContextInterface::class),
@@ -51,53 +51,7 @@ class ShopStateServiceTest extends TestCase
         );
     }
 
-    public function testIsLaunchedReturnsFalseIfConfigFileDoesNotExist()
-    {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
-        $context
-            ->method('getConfigFilePath')
-            ->willReturn('nonExistentFilePath');
-
-        $shopStateService = new ShopStateService(
-            $context,
-            Registry::class
-        );
-
-        $this->assertFalse(
-            $shopStateService->isLaunched()
-        );
-    }
-
-    public function testIsLaunchedReturnsTrueIfConfigFileExists()
-    {
-        $shopStateService = new ShopStateService(
-            $this->get(BasicContextInterface::class),
-            Registry::class
-        );
-
-        $this->assertTrue(
-            $shopStateService->isLaunched()
-        );
-    }
-
-    public function testIsLaunchedReturnsFalseIfConfigIsWrong()
-    {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
-        $context
-            ->method('getConfigFilePath')
-            ->willReturn(__DIR__ . '/Fixtures/wrong_config.inc.php');
-
-        $shopStateService = new ShopStateService(
-            $context,
-            Registry::class
-        );
-
-        $this->assertFalse(
-            $shopStateService->isLaunched()
-        );
-    }
-
-    public function testIsLaunchedReturnsFalseIfConfigTableDoesNotExist()
+    public function testIsLaunchedReturnsFalseIfConfigTableDoesNotExist(): void
     {
         $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $context

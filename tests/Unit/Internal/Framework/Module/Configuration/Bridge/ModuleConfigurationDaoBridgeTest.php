@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
-class ModuleConfigurationDaoBridgeTest extends TestCase
+final class ModuleConfigurationDaoBridgeTest extends TestCase
 {
     public function testGet(): void
     {

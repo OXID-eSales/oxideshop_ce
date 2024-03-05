@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Validator;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
@@ -21,12 +22,12 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class ServicesYamlValidatorTest extends TestCase
+final class ServicesYamlValidatorTest extends TestCase
 {
     private ModuleConfigurationValidatorInterface $validator;
     private ModuleConfiguration $moduleConfiguration;
     private ModulePathResolverInterface|MockObject $modulePathResolver;
-    private $testModuleId = 'testModuleId';
+    private string $testModuleId = 'testModuleId';
 
     public function setUp(): void
     {
@@ -45,9 +46,7 @@ class ServicesYamlValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateNoServicesYaml(): void
     {
         $this->moduleConfiguration->setModuleSource('.');
@@ -58,9 +57,7 @@ class ServicesYamlValidatorTest extends TestCase
         $this->validator->validate($this->moduleConfiguration, 1);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWithCorrectServiceYaml(): void
     {
         $this->moduleConfiguration->setModuleSource('Working');

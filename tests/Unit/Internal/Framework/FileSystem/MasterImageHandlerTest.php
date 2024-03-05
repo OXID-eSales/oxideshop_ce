@@ -18,12 +18,11 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class MasterImageHandlerTest extends TestCase
+final class MasterImageHandlerTest extends TestCase
 {
     /** @var vfsStreamDirectory */
     private $rootDir;
-    /** @var MasterImageHandler */
-    private $imageHandler;
+    private ?MasterImageHandler $imageHandler = null;
 
     protected function setUp(): void
     {

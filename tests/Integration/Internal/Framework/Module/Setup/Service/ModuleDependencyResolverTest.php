@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
+use PHPUnit\Framework\Attributes\Group;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleDependencyDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -16,9 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDependencyResolver;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * @group module-dependency
- */
+#[Group('module-dependency')]
 final class ModuleDependencyResolverTest extends IntegrationTestCase
 {
     public function testIndependentModuleDoesNotHaveUnresolvedModuleDependenciesDuringActivationProcess(): void
@@ -62,7 +61,9 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
         $moduleDependencyDao = $this->createStub(ModuleDependencyDaoInterface::class);
         $moduleDependencyDao
             ->method('get')
-            ->willReturnCallback([$this, 'getModuleDependenciesCallback']);
+            ->willReturnCallback(function ($moduleId): ModuleDependencies {
+                return $this->getModuleDependenciesCallback($moduleId);
+            });
         $moduleConfigurationDao = $this->createStub(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
             ->method('getAll')

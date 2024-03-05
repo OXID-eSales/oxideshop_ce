@@ -14,14 +14,14 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServ
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class PasswordServiceBridgeTest extends TestCase
+final class PasswordServiceBridgeTest extends TestCase
 {
     use ContainerTrait;
 
     /**
      * End-to-end test for the PasswordService bridge
      */
-    public function testHashWithBcrypt()
+    public function testHashWithBcrypt(): void
     {
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
@@ -34,7 +34,7 @@ class PasswordServiceBridgeTest extends TestCase
     /**
      * End-to-end test for the password verification service.
      */
-    public function testVerifyPassword()
+    public function testVerifyPassword(): void
     {
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
@@ -47,7 +47,7 @@ class PasswordServiceBridgeTest extends TestCase
         );
     }
 
-    public function testPasswordNeedsRehash()
+    public function testPasswordNeedsRehash(): void
     {
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);

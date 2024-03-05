@@ -9,15 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
+final class ContactFormConfigurationFactoryTest extends TestCase
 {
-    public function testConfigurationGetter()
+    public function testConfigurationGetter(): void
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
 
@@ -39,7 +40,7 @@ class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFormFieldsConfiguration()
+    public function testFormFieldsConfiguration(): void
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context

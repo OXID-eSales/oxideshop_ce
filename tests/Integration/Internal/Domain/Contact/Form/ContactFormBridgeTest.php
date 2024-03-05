@@ -15,9 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use PHPUnit\Framework\TestCase;
 
-class ContactFormBridgeTest extends TestCase
+final class ContactFormBridgeTest extends TestCase
 {
-    public function testFormGetter()
+    public function testFormGetter(): void
     {
         $this->assertInstanceOf(
             FormInterface::class,
@@ -26,7 +26,7 @@ class ContactFormBridgeTest extends TestCase
         );
     }
 
-    public function testFormConfigurationGetter()
+    public function testFormConfigurationGetter(): void
     {
         $this->assertInstanceOf(
             FormConfigurationInterface::class,
@@ -35,7 +35,7 @@ class ContactFormBridgeTest extends TestCase
         );
     }
 
-    public function testFormMessageGetter()
+    public function testFormMessageGetter(): void
     {
         $bridge = ContainerFacade::get(ContactFormBridgeInterface::class);
 

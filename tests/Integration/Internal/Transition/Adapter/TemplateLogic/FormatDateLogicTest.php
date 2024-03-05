@@ -5,16 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic;
 use PHPUnit\Framework\TestCase;
 
-class FormatDateLogicTest extends TestCase
+final class FormatDateLogicTest extends TestCase
 {
-    /** @var FormatDateLogic */
-    private $formDateLogic;
+    private FormatDateLogic $formDateLogic;
 
     public function setUp(): void
     {

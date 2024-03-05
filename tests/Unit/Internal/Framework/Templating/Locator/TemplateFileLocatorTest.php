@@ -22,15 +22,12 @@ final class TemplateFileLocatorTest extends TestCase
         $this->assertSame('pathToTpl/' . $templateName, $locator->locate($templateName));
     }
 
-    /**
-     * @return Config
-     */
-    private function getConfigMock($templateName)
+    private function getConfigMock(string $templateName): Config
     {
         $config = $this
             ->getMockBuilder(Config::class)
             ->getMock();
-        $config->expects($this->any())
+        $config
             ->method('getTemplatePath')
             ->with($templateName, false)
             ->willReturn('pathToTpl/' . $templateName);

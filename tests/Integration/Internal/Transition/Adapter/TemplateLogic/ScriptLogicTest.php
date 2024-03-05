@@ -5,33 +5,28 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ScriptLogicTest extends TestCase
+final class ScriptLogicTest extends IntegrationTestCase
 {
     private Config $config;
-    private int $oldIDebug;
     private ScriptLogic $scriptLogic;
 
     public function setup(): void
     {
         parent::setUp();
         $this->config = Registry::getConfig();
-        $this->oldIDebug = $this->config->getConfigParam("iDebug");
         $this->config->setConfigParam("iDebug", -1);
 
         $this->scriptLogic = new ScriptLogic();
-    }
-
-    public function tearDown(): void
-    {
-        $this->config->setConfigParam("iDebug", $this->oldIDebug);
-        parent::tearDown();
     }
 
     public function testIncludeFileNotExists(): void
@@ -74,9 +69,7 @@ class ScriptLogicTest extends TestCase
         $this->config->setGlobalParameter('scripts_dynamic', $scripts);
     }
 
-    /**
-     * @dataProvider addWidgetProvider
-     */
+    #[DataProvider('addWidgetProvider')]
     public function testRenderAddWidget(string $script, string $output): void
     {
         $scripts = $this->config->getGlobalParameter('scripts');

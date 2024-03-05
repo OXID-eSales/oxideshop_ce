@@ -14,50 +14,35 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
  */
 class QueryFilter implements QueryFilterInterface
 {
-    /**
-     * @var array
-     */
-    private $logThese = [
+    private array $logThese = [
         'insert into',
         'update ',
         'delete ',
     ];
-
-    /**
-     * @var array
-     */
-    private $skipThese = [
+    private array $skipThese = [
         'oxsession',
         'oxcache',
     ];
 
-    /**
-     * @param string $query       Query string
-     * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return bool
-     */
     public function shouldLogQuery(string $query, array $skipLogTags): bool
     {
-        return (bool) preg_match($this->getSearchPattern($skipLogTags), $query);
+        return (bool)preg_match($this->getSearchPattern($skipLogTags), $query);
     }
 
-    /**
-     * Assemble search pattern
-     *
-     * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return string
-     */
-    private function getSearchPattern(array $skipLogTags): string
+    private function getSearchPattern(array $additionalTagsToSkip): string
     {
-        $pattern = '/(.?)(' . implode('|', $this->logThese) . ')(?!.*' .
-                   implode(')(?!.*', $this->skipThese) . ')';
-
-        if (!empty($skipLogTags)) {
-            $pattern .= '(?!.*' . implode(')(?!.*', $skipLogTags) . ')';
+        $pattern = sprintf(
+            "/(.?)(%s)(?!.*%s)",
+            implode('|', $this->logThese),
+            implode(')(?!.*', $this->skipThese)
+        );
+        if (!empty($additionalTagsToSkip)) {
+            $pattern .= sprintf(
+                "(?!.*%s)",
+                implode(')(?!.*', $additionalTagsToSkip)
+            );
         }
 
-        return $pattern . '/i';
+        return "$pattern/i";
     }
 }

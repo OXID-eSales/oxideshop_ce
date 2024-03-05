@@ -15,10 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @internal
- */
-class ProjectConfigurationGeneratorTest extends TestCase
+final class ProjectConfigurationGeneratorTest extends TestCase
 {
     private array $shops = [1, 2, 3];
 

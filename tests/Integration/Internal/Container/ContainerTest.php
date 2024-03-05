@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Monolog\Logger;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
@@ -54,14 +55,12 @@ final class ContainerTest extends IntegrationTestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAllServicesAreCorrectlyConfigured(): void
     {
         $testContainer = (new TestContainerFactory())->create();
         $this->generateShopConfigurationStubForVfs();
-        $testContainer->compile();
+        $testContainer->compile(true);
         foreach ($testContainer->getDefinitions() as $key => $definition) {
             if ($definition->isPublic()) {
                 $testContainer->get($key);

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\Validator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class SchemaValidatorTest extends TestCase
 {
@@ -113,7 +114,7 @@ final class SchemaValidatorTest extends TestCase
 
     public function testValidateWithNonScalarValueWillThrowException(): void
     {
-        $unsupportedData = new \stdClass();
+        $unsupportedData = new stdClass();
         $metadata = [
             'key-in-schema-1' => $unsupportedData,
         ];

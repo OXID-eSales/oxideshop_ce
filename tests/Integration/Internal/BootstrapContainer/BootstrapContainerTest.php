@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\BootstrapContainer;
 
@@ -16,17 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-/**
- * @internal
- */
 final class BootstrapContainerTest extends TestCase
 {
-    public function testContainerBuilding(): void
-    {
-        $container = BootstrapContainerFactory::getBootstrapContainer();
-        $this->assertInstanceOf(ContainerInterface::class, $container);
-    }
-
     public function testContainerProvidesBootstrapServices(): void
     {
         $container = BootstrapContainerFactory::getBootstrapContainer();

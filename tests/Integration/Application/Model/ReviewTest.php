@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewAndRatingOb
 use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRating;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ReviewTest extends IntegrationTestCase
+final class ReviewTest extends IntegrationTestCase
 {
     public function testReviewAndRatingListByUserId(): void
     {
@@ -64,7 +64,7 @@ class ReviewTest extends IntegrationTestCase
         );
     }
 
-    public function testgetReviewAndRatingListByUserIdWithWrongRatingType(): void
+    public function testGetReviewAndRatingListByUserIdWithWrongRatingType(): void
     {
         /** @var  $wrongTypeValue see `oxreview`.`oxtype` enum('oxarticle', 'oxrecommlist') */
         $wrongTypeValue = 'wrong_type';

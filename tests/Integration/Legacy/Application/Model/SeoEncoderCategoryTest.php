@@ -15,11 +15,13 @@ use OxidEsales\Eshop\Core\SeoEncoder;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class SeoEncoderCategoryTest extends IntegrationTestCase
 {
     use ContainerTrait;
+    use DatabaseTrait;
 
     private int $subcategoryPerCategory = 2;
 
@@ -30,27 +32,30 @@ final class SeoEncoderCategoryTest extends IntegrationTestCase
         'en' => 1,
     ];
 
+    public function setUp(): void
+    {
+        $this->replaceContainerInstance();
+        $this->resetDatabaseProvider();
+
+        parent::setUp();
+    }
+
     public function testOnDeleteCategoryWillSetDependantRecordsToExpired(): void
     {
         $seoEncoderCategory = oxNew(SeoEncoderCategory::class);
         $category = $this->createTestCategoryWithSeoLinks();
+        $expectedRowCount =
+            ($this->productPerCategory + $this->subcategoryPerCategory) * count($this->categoryLanguages);
 
         $seoEncoderCategory->onDeleteCategory($category);
 
-        $this->assertSeoUrlsAreExpired();
-    }
-
-    private function assertSeoUrlsAreExpired(): void
-    {
-        $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
-        $expiredRowsCount = (int) $connection->fetchOne(
-            'SELECT COUNT(*) FROM `oxseo` WHERE `OXSEOURL` like "%www-some-shop/category-%" AND `OXEXPIRED` = "1";'
-        );
-
-        $this->assertEquals(
-            ($this->productPerCategory + $this->subcategoryPerCategory) * count($this->categoryLanguages),
-            $expiredRowsCount
-        );
+        $expiredRowCount = $this->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->getConnection()
+            ->fetchOne(
+                'SELECT COUNT(*) FROM `oxseo` WHERE `OXSEOURL` like "%www-some-shop/category-%" AND `OXEXPIRED` = "1";'
+            );
+        $this->assertSame($expectedRowCount, $expiredRowCount);
     }
 
     private function createTestCategoryWithSeoLinks(): Category

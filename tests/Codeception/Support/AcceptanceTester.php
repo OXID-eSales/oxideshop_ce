@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Support;
 
+use OxidEsales\EshopCommunity\Tests\Codeception\Support\_generated\AcceptanceTesterActions;
 use Codeception\Lib\Friend;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\AdminLoginPage;
@@ -34,7 +35,7 @@ use OxidEsales\Codeception\Page\Home;
 
 class AcceptanceTester extends AcceptanceActor
 {
-    use _generated\AcceptanceTesterActions;
+    use AcceptanceTesterActions;
 
     public function openShop(): Home
     {

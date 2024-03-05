@@ -19,7 +19,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ModuleEnvironmentConfigurationExtenderTest extends TestCase
+final class ModuleEnvironmentConfigurationExtenderTest extends TestCase
 {
     use ProphecyTrait;
 

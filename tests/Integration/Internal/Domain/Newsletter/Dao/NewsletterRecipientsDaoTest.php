@@ -9,27 +9,39 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter\Dao;
 
+use DateInterval;
+use DateTime;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use PHPUnit\Framework\TestCase;
 
-class NewsletterRecipientsDaoTest extends IntegrationTestCase
+final class NewsletterRecipientsDaoTest extends TestCase
 {
-    /**
-     * @var object|QueryBuilderFactoryInterface|null
-     */
-    private $queryBuilderFactory;
+    use ContainerTrait;
+    use DatabaseTrait;
+
+    private QueryBuilderFactoryInterface $queryBuilderFactory;
 
     public function setup(): void
     {
         parent::setUp();
 
+        $this->beginTransaction($this->get(ConnectionFactoryInterface::class)->create());
         $this->queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
         $this->prepareTestData();
+    }
 
+    public function tearDown(): void
+    {
+        $this->rollBackTransaction($this->get(ConnectionFactoryInterface::class)->create());
+
+        parent::tearDown();
     }
 
     public function testGetNewsletterRecipients(): void
@@ -104,7 +116,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
                 'username' => "test_user@test.com",
                 'userRights' => "malladmin",
                 'countryId' => "a7c40f631fc920687.20179984",
-                'create' => (new \DateTime())->format('Y-m-d H:i:s')
+                'create' => (new DateTime())->format('Y-m-d H:i:s')
             ]);
 
         $queryBuilder->execute();
@@ -216,7 +228,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
                 'username' => "test_user2@test.com",
                 'userRights' => "malladmin",
                 'countryId' => "a7c40f631fc920687.20179984",
-                'create' => (new \DateTime())->add(new \DateInterval('P1D'))->format('Y-m-d H:i:s')
+                'create' => (new DateTime())->add(new DateInterval('P1D'))->format('Y-m-d H:i:s')
             ]);
 
         $queryBuilder->execute();

@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use Symfony\Component\Filesystem\Path;
 
 /**
@@ -18,8 +16,7 @@ use Symfony\Component\Filesystem\Path;
  */
 class FileCache
 {
-    /** Cache file prefix */
-    const CACHE_FILE_PREFIX = "config";
+    public const CACHE_FILE_PREFIX = 'config';
 
     /**
      * Returns cached item value by given key.
@@ -71,7 +68,7 @@ class FileCache
     public static function clearCache()
     {
         $mask = Path::join(
-            (new BootstrapConfigurationFactory())->create()->getCacheDirectory(),
+            getenv('OXID_BUILD_DIRECTORY'),
             self::CACHE_FILE_PREFIX,
             '.*.txt'
         );
@@ -104,7 +101,7 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        return (new BootstrapConfigurationFactory())->create()->getCacheDirectory();
+        return getenv('OXID_BUILD_DIRECTORY');
     }
 
     /**

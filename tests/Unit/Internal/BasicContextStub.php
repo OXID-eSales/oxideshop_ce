@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
-/**
- * @internal
- */
 class BasicContextStub implements BasicContextInterface
 {
     private string $communityEditionSourcePath;
@@ -37,6 +34,7 @@ class BasicContextStub implements BasicContextInterface
     private string $composerVendorName;
     private string $cacheDirectory;
     private string $moduleCacheDirectory;
+    private string $databaseUrl;
     protected string $activeModuleServicesFilePath;
     protected string $shopConfigurableServicesFilePath;
 
@@ -66,6 +64,7 @@ class BasicContextStub implements BasicContextInterface
         $this->shopConfigurableServicesFilePath = $basicContext->getShopConfigurableServicesFilePath(
             $this->getDefaultShopId()
         );
+        $this->databaseUrl = $basicContext->getDatabaseUrl();
     }
 
     public function getCommunityEditionSourcePath(): string
@@ -246,5 +245,10 @@ class BasicContextStub implements BasicContextInterface
     public function setActiveModuleServicesFilePath(string $path): void
     {
         $this->activeModuleServicesFilePath = $path;
+    }
+
+    public function getDatabaseUrl(): string
+    {
+        return $this->databaseUrl;
     }
 }

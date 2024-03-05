@@ -18,13 +18,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao
  */
-class MetaDataSchemataProviderTest extends TestCase
+final class MetaDataSchemataProviderTest extends TestCase
 {
-    private $metaDataSchemata;
+    private array $metaDataSchemata;
     private $schemaVersion20;
     private $schemaVersion21;
 
-    public function testGetMetaDataSchemata()
+    public function testGetMetaDataSchemata(): void
     {
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
 
@@ -33,7 +33,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertEquals($this->metaDataSchemata, $actualSchemata);
     }
 
-    public function testGetMetadataSchemaForVersion()
+    public function testGetMetadataSchemaForVersion(): void
     {
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
         $actualSchema20 = $metaDataSchema->getMetaDataSchemaForVersion('2.0');
@@ -43,7 +43,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertEquals($this->schemaVersion21, $actualSchema21);
     }
 
-    public function testGetFlippedMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
+    public function testGetFlippedMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion(): void
     {
         $this->expectException(UnsupportedMetaDataVersionException::class);
         $unsupportedVersion = '0.0';
@@ -53,7 +53,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $metaDataSchema->getFlippedMetaDataSchemaForVersion($unsupportedVersion);
     }
 
-    public function testGetFlippedMetadataSchemaForVersion()
+    public function testGetFlippedMetadataSchemaForVersion(): void
     {
         $expectedSchema20 = [
             '20only'    => 0,
@@ -69,7 +69,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertSame($expectedSchema20, $actualSchema20);
     }
 
-    public function testGetMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
+    public function testGetMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion(): void
     {
         $this->expectException(UnsupportedMetaDataVersionException::class);
         $unsupportedVersion = '0.0';

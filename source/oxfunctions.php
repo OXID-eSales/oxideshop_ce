@@ -5,76 +5,13 @@
  * See LICENSE file for license details.
  */
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\Eshop\Core\Registry;
+declare(strict_types=1);
+
 use OxidEsales\Eshop\Core\UtilsObject;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
-use Symfony\Component\Filesystem\Path;
 
-/**
- * Returns true in case framework is called from shop administrator environment.
- *
- * @return bool
- */
-function isAdmin()
+function isAdmin(): bool
 {
-    return defined('OX_IS_ADMIN') ? OX_IS_ADMIN : false;
-}
-
-/**
- * Displays 'nice' HTML formatted user error.
- * Later this method is hooked as error handler by calling set_error_handler('warningHandler', E_USER_WARNING);
- * #T2008-07-22
- * Not used yet
- *
- * @param int    $iErrorNr   error number
- * @param string $sErrorText error message
- */
-function warningHandler($iErrorNr, $sErrorText)
-{
-    echo "<div class='error_box'>" . Registry::getLang()->translateString('userError') . "<code>[$iErrorNr] " .
-         "$sErrorText</code></div>";
-}
-
-/**
- * Dumps $mVar information to vardump.txt file. Used in debugging.
- *
- * @param mixed $mVar     variable
- * @param bool  $blToFile marker to write log info to file (must be true to log)
- */
-function dumpVar($mVar, $blToFile = false)
-{
-
-    if ($blToFile) {
-        $out = var_export($mVar, true);
-        $f = fopen(
-            Path::join(
-                (new BootstrapConfigurationFactory())->create()->getCacheDirectory(),
-                'vardump.txt'
-            ),
-            "a"
-        );
-        fwrite($f, $out);
-        fclose($f);
-    } else {
-        echo '<pre>';
-        var_export($mVar);
-        echo '</pre>';
-    }
-}
-
-/**
- * prints anything given into a file, for debugging
- *
- * @param mixed $mVar variable to debug
- */
-function debug($mVar)
-{
-    $f = fopen('out.txt', 'a');
-    $sString = var_export($mVar, true);
-    fputs($f, $sString . "\n---------------------------------------------\n");
-    fclose($f);
+    return defined('OX_IS_ADMIN') && OX_IS_ADMIN;
 }
 
 /**
@@ -87,10 +24,10 @@ function debug($mVar)
  *
  * @return T
  */
-function oxNew($className, ...$args)
+function oxNew(string $className, ...$args)
 {
     startProfile('oxNew');
-    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], array_merge([$className], $args));
+    $object = call_user_func_array([UtilsObject::getInstance(), 'oxNew'], array_merge([$className], $args));
     stopProfile('oxNew');
 
     return $object;

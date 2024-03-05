@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
+use PHPUnit\Framework\Attributes\Group;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\DependencyValidationException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * @group module-dependency
- */
+#[Group('module-dependency')]
 final class ModuleDependencyActivationTest extends IntegrationTestCase
 {
     private int $shopId = 1;

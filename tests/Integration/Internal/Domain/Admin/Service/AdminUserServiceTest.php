@@ -19,7 +19,7 @@ final class AdminUserServiceTest extends TestCase
 {
     use ContainerTrait;
 
-    private $email = 'testuser@oxideshop.dev';
+    private string $email = 'testuser@oxideshop.dev';
 
     public function tearDown(): void
     {

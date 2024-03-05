@@ -42,8 +42,11 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // automatically redirect to SSL login
-        if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
+        if (!$myConfig->isSsl()) {
+            $adminUrl = $myConfig->getConfigParam('sAdminSSLURL');
+            if ($adminUrl && str_starts_with($adminUrl, 'https://')) {
+                Registry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
+            }
         }
 
         //resets user once on this screen.

@@ -13,14 +13,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class TestEvent extends Event
 {
-    private $counter = 0;
+    private int $counter = 0;
 
-    public function getNumberOfActiveHandlers()
+    public function getNumberOfActiveHandlers(): int
     {
         return $this->counter;
     }
 
-    public function handleEvent()
+    public function handleEvent(): void
     {
         $this->counter++;
     }

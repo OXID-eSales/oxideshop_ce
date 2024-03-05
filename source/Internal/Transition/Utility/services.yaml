@@ -5,7 +5,5 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\Context
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Utility\Context
-    public: true
+    arguments:
+      $shopId: '%oxid_esales.current_shop_id%'

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\Directory;
 
 use org\bovigo\vfs\vfsStream;
@@ -10,8 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
 {
-    /** @var vfsStreamDirectory */
-    private $dir;
+    private vfsStreamDirectory $dir;
 
     protected function setUp(): void
     {

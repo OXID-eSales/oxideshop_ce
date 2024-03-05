@@ -27,7 +27,7 @@ final class ModuleSettingServiceTest extends TestCase
     private ModuleSettingServiceInterface $settingFacade;
 
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->settingFacade = $this->get(ModuleSettingServiceInterface::class);

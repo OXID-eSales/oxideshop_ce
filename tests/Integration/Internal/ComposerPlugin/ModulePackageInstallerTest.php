@@ -26,8 +26,8 @@ final class ModulePackageInstallerTest extends TestCase
     use ContainerTrait;
 
     private $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
-    private $packageName = 'test-module-package-installation';
-    private $moduleId = 'testModule';
+    private string $packageName = 'test-module-package-installation';
+    private string $moduleId = 'testModule';
 
     public function tearDown(): void
     {
@@ -91,12 +91,7 @@ final class ModulePackageInstallerTest extends TestCase
         );
     }
 
-    /**
-     * @param string $packageName
-     * @param array  $extra
-     *
-     * @return ModulePackageInstaller
-     */
+
     private function getPackageInstaller(string $packageName, array $extra = []): ModulePackageInstaller
     {
         $package = new Package($packageName, '1.0.0', '1.0.0');
@@ -109,9 +104,6 @@ final class ModulePackageInstallerTest extends TestCase
         );
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     private function activateTestModule(OxidEshopPackage $package): void
     {
         $this->get(ModuleInstallerInterface::class)

@@ -16,9 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFi
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class BootstrapModuleInstallerTest extends TestCase
+final class BootstrapModuleInstallerTest extends TestCase
 {
-    public function testInstallTriggersAllInstallers()
+    public function testInstallTriggersAllInstallers(): void
     {
         $path = 'packagePath';
         $package = new OxidEshopPackage($path);
@@ -41,7 +41,7 @@ class BootstrapModuleInstallerTest extends TestCase
     }
 
     #[DataProvider('moduleInstallMatrixDataProvider')]
-    public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled)
+    public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled): void
     {
         $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
         $moduleFilesInstaller->method('isInstalled')->willReturn($filesInstalled);

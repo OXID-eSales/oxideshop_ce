@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
@@ -192,11 +193,11 @@ final class GiftRegistryCest
 
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 
     private function getAdminUserData()
     {
-        return \Codeception\Util\Fixtures::get('adminUser');
+        return Fixtures::get('adminUser');
     }
 }

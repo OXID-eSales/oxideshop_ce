@@ -16,11 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class BootstrapModuleInstallerTest extends TestCase
+final class BootstrapModuleInstallerTest extends TestCase
 {
     use ContainerTrait;
-    
-    private $moduleId = 'myTestModule';
+
+    private string $moduleId = 'myTestModule';
 
     public function testUninstall(): void
     {
@@ -37,9 +37,6 @@ class BootstrapModuleInstallerTest extends TestCase
         );
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     private function installModule(OxidEshopPackage $package): void
     {
         $installService = $this->get(ModuleInstallerInterface::class);
@@ -47,9 +44,6 @@ class BootstrapModuleInstallerTest extends TestCase
         $installService->install($package);
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     private function activateTestModule(OxidEshopPackage $package): void
     {
         $this->get(ModuleInstallerInterface::class)

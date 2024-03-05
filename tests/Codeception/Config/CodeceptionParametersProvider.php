@@ -10,28 +10,22 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Config;
 
 use OxidEsales\Codeception\Module\Database;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class CodeceptionParametersProvider
 {
-    private $dbConfig;
+    private DatabaseConfiguration $dbConfig;
 
     public function getParameters(): array
     {
-
         $facts = new Facts();
-        $systemConfiguration = (new BootstrapConfigurationFactory())->create();
-        $databaseUrl = getenv('OXID_DB_URL') ?: $systemConfiguration->getDatabaseUrl();
-        $this->dbConfig = (new DatabaseConfiguration($databaseUrl));
+        $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
         return [
             'SHOP_URL' => getenv('SHOP_URL') ?: $facts->getShopUrl(),
-            'SHOP_SOURCE_PATH' => getenv('SHOP_SOURCE_PATH') ?:
-                ContainerFacade::getParameter('oxid_shop_source_directory'),
+            'SHOP_SOURCE_PATH' => getenv('SHOP_SOURCE_PATH'),
             'VENDOR_PATH' => $facts->getVendorPath(),
             'DB_NAME' => $this->getDbName(),
             'DB_USERNAME' => $this->getDbUser(),
@@ -81,7 +75,7 @@ class CodeceptionParametersProvider
     {
         $testSuitePath = (string)getenv('TEST_SUITE');
         if ($testSuitePath === '' || $testSuitePath === '0') {
-            Path::join((new BootstrapLocator())->getProjectRoot(), 'tests');
+            Path::join((new ProjectRootLocator())->getProjectRoot(), 'tests');
         }
         return $testSuitePath;
     }

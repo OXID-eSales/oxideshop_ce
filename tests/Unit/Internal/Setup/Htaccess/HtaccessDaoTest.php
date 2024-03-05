@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessAccessException;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDao;
 use PHPUnit\Framework\TestCase;
 
-class HtaccessDaoTest extends TestCase
+final class HtaccessDaoTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -44,7 +44,6 @@ class HtaccessDaoTest extends TestCase
         $this->assertStringContainsString("RewriteBase $rewriteBase", file_get_contents($this->getTestFilePath()));
     }
 
-    /** @return string */
     private function getTestFilePath(): string
     {
         return $this->getHtaccessTplPath() . '-test';

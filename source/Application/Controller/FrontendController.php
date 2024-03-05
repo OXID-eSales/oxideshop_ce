@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
@@ -26,7 +27,8 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
  * Class is responsible for managing of components that must be
  * loaded and executed before any regular operation.
  */
-class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseController
+#[\AllowDynamicProperties]
+class FrontendController extends BaseController
 {
     /**
      * Characters which should be removed while preparing meta keywords
@@ -925,9 +927,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getListOrderBy()
     {
         //if column is with table name split it
-        $columns = explode('.', $this->_sListOrderBy);
-
-        if (is_array($columns) && count($columns) > 1) {
+        $columns = $this->_sListOrderBy ? explode('.', $this->_sListOrderBy) : [];
+        if (count($columns) > 1) {
             return $columns[1];
         }
 
@@ -1482,10 +1483,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 break;
             case 'search':
                 $result .= "&amp;listtype={$listType}";
-                if ($searchParamForLink = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'))) {
-                    $result .= "&amp;searchparam={$searchParamForLink}";
+                if ($searchParamForLink = Registry::getRequest()->getRequestParameter('searchparam')) {
+                    $result .= "&amp;searchparam=" . rawurlencode($searchParamForLink);
                 }
-
                 if (($var = Registry::getRequest()->getRequestParameter('searchcnid'))) {
                     $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
                 }
@@ -1615,12 +1615,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $url .= "&amp;anid={$value}";
         }
 
-        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('page'))) {
-            $url .= "&amp;page={$value}";
+        if ($page = Registry::getRequest()->getRequestEscapedParameter('page')) {
+            $url .= "&amp;page=" . basename($page);
         }
 
-        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
-            $url .= "&amp;tpl={$value}";
+        if ($tpl = Registry::getRequest()->getRequestEscapedParameter('tpl')) {
+            $url .= "&amp;tpl=" . basename($tpl);
         }
 
         if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
@@ -1635,8 +1635,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         // #1184M - specialchar search
-        if ($value = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'))) {
-            $url .= "&amp;searchparam={$value}";
+        if ($searchParam = Registry::getRequest()->getRequestParameter('searchparam')) {
+            $url .= "&amp;searchparam=" . rawurlencode($searchParam);
         }
 
         if ($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid')) {
@@ -1687,12 +1687,13 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('page'))) {
-            $url .= "&amp;page={$value}";
+
+        if ($page = Registry::getRequest()->getRequestEscapedParameter('page')) {
+            $url .= "&amp;page=" . basename($page);
         }
 
-        if ($value = basename(Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
-            $url .= "&amp;tpl={$value}";
+        if ($tpl = Registry::getRequest()->getRequestEscapedParameter('tpl')) {
+            $url .= "&amp;tpl=" . basename($tpl);
         }
 
         if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
@@ -1885,9 +1886,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sAdditionalParams .= 'cl=' . Registry::getConfig()->getTopActiveView()->getClassKey();
 
             // #1834M - special char search
-            $searchParamForLink = rawurlencode(Registry::getRequest()->getRequestParameter('searchparam'));
-            if (isset($searchParamForLink)) {
-                $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
+            if ($searchParam = Registry::getRequest()->getRequestParameter('searchparam')) {
+                $this->_sAdditionalParams .= "&amp;searchparam=" . rawurlencode($searchParam);
             }
             if (($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid'))) {
                 $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));

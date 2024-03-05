@@ -10,18 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use Psr\Log\LogLevel;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class LoggerTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger
- */
-class LoggerTest extends \PHPUnit\Framework\TestCase
+final class LoggerTest extends TestCase
 {
-    private $logFilePath;
+    private string $logFilePath;
+    private ContextInterface $context;
 
     public function setup(): void
     {
@@ -33,71 +29,54 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
     public function tearDown(): void
     {
         unlink($this->logFilePath);
+
         parent::tearDown();
     }
 
-    public function testLogging()
+    public function testLogging(): void
     {
-        $context = $this->getContextStub(LogLevel::ERROR);
+        $loggedMessage = uniqid('message-', true);
 
-        $logger = $this->getLogger($context);
-        $logger->critical('Carthago delenda est');
-
-        $this->assertTrue(
-            file_exists($context->getLogFilePath())
-        );
+        $logger = (new LoggerServiceFactory($this->getContext()))->getLogger();
+        $logger->critical($loggedMessage);
 
         $this->assertStringContainsString(
-            'Carthago delenda est',
-            file_get_contents($context->getLogFilePath())
+            $loggedMessage,
+            file_get_contents($this->logFilePath)
         );
     }
 
-    public function testLoggerDoesNotLogMessagesLowerAsLogLevel()
+    public function testLoggerDoesNotLogMessagesLowerAsLogLevel(): void
     {
-        $contextStub = $this->getContextStub(LogLevel::WARNING);
-        $logger = $this->getLogger($contextStub);
-        $infoMessage = 'Info message';
-        $logger->info($infoMessage);
+        $loggedMessage = uniqid('message-', true);
 
-        $this->assertFalse(
-            strpos(file_get_contents($contextStub->getLogFilePath()), $infoMessage)
+        $logger = (new LoggerServiceFactory($this->getContext()))->getLogger();
+        $logger->info($loggedMessage);
+
+        $this->assertStringNotContainsString(
+            $loggedMessage,
+            file_get_contents($this->logFilePath)
         );
     }
 
-    /**
-     * @param $context Context
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    private function getLogger($context)
+    public function testLoggerWithEnvValueMissingWillUseDefaultLogLevel(): void
     {
-        $loggerServiceFactory = new LoggerServiceFactory($context);
+        putenv('OXID_LOG_LEVEL=');
+        $loggedMessage = uniqid('message-', true);
 
-        return $loggerServiceFactory->getLogger();
+        $logger = (new LoggerServiceFactory($this->getContext()))->getLogger();
+        $logger->error($loggedMessage);
+
+        $this->assertStringContainsString(
+            $loggedMessage,
+            file_get_contents($this->logFilePath)
+        );
     }
 
-    /**
-     * Log level is not configured by default.
-     *
-     * @param string $logLevelFromConfig
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|ContextInterface
-     */
-    private function getContextStub($logLevelFromConfig = null)
+    private function getContext(): ContextStub
     {
-        $context = $this
-            ->getMockBuilder(ContextInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $context
-            ->method('getLogFilePath')
-            ->willReturn($this->logFilePath);
-
-        $context
-            ->method('getLogLevel')
-            ->willReturn($logLevelFromConfig);
+        $context = new ContextStub();
+        $context->setLogFilePath($this->logFilePath);
 
         return $context;
     }

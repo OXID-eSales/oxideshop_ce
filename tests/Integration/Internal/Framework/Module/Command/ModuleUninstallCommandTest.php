@@ -21,7 +21,7 @@ final class ModuleUninstallCommandTest extends TestCase
 {
     use ContainerTrait;
 
-    private $moduleId = 'testmodule';
+    private string $moduleId = 'testmodule';
 
     protected function setUp(): void
     {

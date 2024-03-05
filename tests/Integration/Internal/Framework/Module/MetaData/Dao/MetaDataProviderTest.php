@@ -9,29 +9,32 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-class MetaDataProviderTest extends TestCase
+final class MetaDataProviderTest extends TestCase
 {
     use ContainerTrait;
 
-    /** @var MetaDataNormalizer */
-    private $metaDataNormalizerStub;
+    /** @var MockObject&\MetaDataNormalizer */
+    private MockObject $metaDataNormalizerStub;
 
-    /** @var BasicContextInterface */
-    private $contextStub;
+    /** @var MockObject&\BasicContextInterface */
+    private MockObject $contextStub;
 
-    /** @var MetaDataValidatorInterface */
-    private $validatorStub;
+    /** @var MockObject&\MetaDataValidatorInterface */
+    private MockObject $validatorStub;
 
     public function setUp(): void
     {
@@ -42,30 +45,30 @@ class MetaDataProviderTest extends TestCase
         $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
     }
 
-    public function testGetDataThrowsExceptionOnNonExistingFile()
+    public function testGetDataThrowsExceptionOnNonExistingFile(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $metaDataProvider->getData('non existing file');
     }
 
-    public function testGetDataThrowsExceptionOnDirectory()
+    public function testGetDataThrowsExceptionOnDirectory(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $metaDataProvider->getData(__DIR__);
     }
 
     #[DataProvider('missingMetaDataVariablesDataProvider')]
-    public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
+    public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent): void
     {
         $this->expectException(InvalidMetaDataException::class);
         $metaDataFilePath = $this->getPathToTemporaryFile();
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
+            throw new RuntimeException('Could not write to ' . $metaDataFilePath);
         }
         $metaDataProvider = $this->createMetaDataProvider();
 
@@ -73,9 +76,6 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider->getData($metaDataFilePath);
     }
 
-    /**
-     * @return string
-     */
     private function getPathToTemporaryFile(): string
     {
         $temporaryFileHandle = tmpfile();
@@ -92,7 +92,7 @@ class MetaDataProviderTest extends TestCase
         ];
     }
 
-    public function testGetDataProvidesConfiguredMetadataId()
+    public function testGetDataProvidesConfiguredMetadataId(): void
     {
         $moduleId = 'test_module';
         $metaDataContent = '<?php
@@ -102,7 +102,7 @@ class MetaDataProviderTest extends TestCase
 
         $metaDataFilePath = $this->getPathToTemporaryFile();
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
+            throw new RuntimeException('Could not write to ' . $metaDataFilePath);
         }
         $metaDataProvider = $this->createMetaDataProvider();
         $metaData = $metaDataProvider->getData($metaDataFilePath);
@@ -113,7 +113,7 @@ class MetaDataProviderTest extends TestCase
         );
     }
 
-    public function testGetDataThrowsExceptionIfMetaDataIsNotConfigured()
+    public function testGetDataThrowsExceptionIfMetaDataIsNotConfigured(): void
     {
         $this->expectException(ModuleIdNotValidException::class);
         $metaDataFilePath = $this->getPathToTemporaryFile();
@@ -122,7 +122,7 @@ class MetaDataProviderTest extends TestCase
             $aModule = [];
         ';
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
+            throw new RuntimeException('Could not write to ' . $metaDataFilePath);
         }
 
         $metaDataProvider = new MetaDataProvider(
@@ -134,7 +134,7 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider->getData($metaDataFilePath);
     }
 
-    public function testGetDataConvertsBackwardsCompatibleClasses()
+    public function testGetDataConvertsBackwardsCompatibleClasses(): void
     {
         $metaDataFilePath = $this->getPathToTemporaryFile();
         $metaDataContent = '<?php
@@ -149,7 +149,7 @@ class MetaDataProviderTest extends TestCase
             ];
         ';
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
+            throw new RuntimeException('Could not write to ' . $metaDataFilePath);
         }
 
         $basicContext = $this->getMockBuilder(BasicContextInterface::class)->getMock();

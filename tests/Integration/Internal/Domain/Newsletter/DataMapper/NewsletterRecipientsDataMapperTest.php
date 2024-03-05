@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRe
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataObject\NewsletterRecipient;
 use PHPUnit\Framework\TestCase;
 
-class NewsletterRecipientsDataMapperTest extends TestCase
+final class NewsletterRecipientsDataMapperTest extends TestCase
 {
     public function testMapRecipientListDataToArray(): void
     {

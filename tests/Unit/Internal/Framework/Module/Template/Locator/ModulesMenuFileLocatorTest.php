@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Template\Locator;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\Locator\ModulesMenuFileLocator;
 use PHPUnit\Framework\TestCase;
@@ -20,9 +21,9 @@ final class ModulesMenuFileLocatorTest extends TestCase
     use ProphecyTrait;
 
     /** @var ActiveModulesDataProviderInterface */
-    private $activeModulesDataProvider;
+    private ObjectProphecy $activeModulesDataProvider;
     /** @var Filesystem */
-    private $filesystem;
+    private ObjectProphecy $filesystem;
 
     protected function setUp(): void
     {

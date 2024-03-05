@@ -9,35 +9,46 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Facts\Facts;
+use ReflectionClass;
 
 trait DatabaseTrait
 {
-    public function beginTransaction()
+    public function beginTransaction(Connection $connection = null): void
     {
-        DatabaseProvider::getDb()->startTransaction();
+        $connection ??= $this->getDbConnection();
+        $connection->beginTransaction();
     }
 
-    public function rollBackTransaction()
+    public function rollBackTransaction(Connection $connection = null): void
     {
-        if (DatabaseProvider::getDb()->isTransactionActive()) {
-            DatabaseProvider::getDb()->rollbackTransaction();
+        $connection ??= $this->getDbConnection();
+        if ($connection->isTransactionActive()) {
+            $connection->rollBack();
         }
     }
 
-    public function setupShopDatabase()
+    public function getDbConnection(): Connection
     {
-        $facts = new Facts();
+        return DatabaseProvider::getDb()->getPublicConnection();
+    }
+
+    public function setupShopDatabase(): void
+    {
         exec(
-            $facts->getCommunityEditionRootPath() .
-            '/bin/oe-console oe:database:reset' .
-            ' --db-host=' . $facts->getDatabaseHost() .
-            ' --db-port=' . $facts->getDatabasePort() .
-            ' --db-name=' . $facts->getDatabaseName() .
-            ' --db-user=' . $facts->getDatabaseUserName() .
-            ' --db-password=' . $facts->getDatabasePassword() .
-            ' --force'
+            sprintf(
+                '%s/bin/oe-console oe:database:reset --force',
+                (new Facts())->getCommunityEditionRootPath()
+            )
         );
+    }
+
+    private function resetDatabaseProvider(): void
+    {
+        $reflectionClass = new ReflectionClass(DatabaseProvider::class);
+        $reflectionProperty = $reflectionClass->getProperty('db');
+        $reflectionProperty->setValue($reflectionProperty, null);
     }
 }

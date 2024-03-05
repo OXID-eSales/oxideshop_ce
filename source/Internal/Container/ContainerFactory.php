@@ -20,20 +20,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ContainerFactory
 {
-    /**
-     * @var self
-     */
     private static $instance;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $symfonyContainer;
-
-    /**
-     * @var ContainerCacheInterface
-     */
-    private $cache;
+    private ContainerInterface $symfonyContainer;
+    private ContainerCacheInterface $cache;
+    private static int $shopId;
 
     /**
      * The constructor's private to make class a singleton
@@ -41,14 +31,12 @@ class ContainerFactory
     private function __construct()
     {
         $this->cache = new FilesystemContainerCache(new BasicContext(), new Filesystem());
+        self::$shopId = $this->getShopId();
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
-        if ($this->symfonyContainer === null) {
+        if (!isset($this->symfonyContainer)) {
             $this->initializeContainer();
         }
 
@@ -59,29 +47,24 @@ class ContainerFactory
      * Loads container from cache if available, otherwise
      * create the container from scratch.
      */
-    private function initializeContainer()
+    private function initializeContainer(): void
     {
-        $shopId = self::getShopId();
-
-        if ($this->cache->exists($shopId)) {
-            $this->symfonyContainer = $this->cache->get($shopId);
+        if ($this->cache->exists(self::$shopId)) {
+            $this->symfonyContainer = $this->cache->get(self::$shopId);
         } else {
-            $this->getCompiledSymfonyContainer();
-            $this->cache->put($this->symfonyContainer, $shopId);
+            $this->compileSymfonyContainer();
+            $this->cache->put($this->symfonyContainer, self::$shopId);
         }
     }
 
-    private function getCompiledSymfonyContainer()
+    private function compileSymfonyContainer(): void
     {
         $containerBuilder = (new ContainerBuilderFactory())->create();
         $this->symfonyContainer = $containerBuilder->getContainer();
         $this->symfonyContainer->compile(true);
     }
 
-    /**
-     * @return ContainerFactory
-     */
-    public static function getInstance()
+    public static function getInstance(): ContainerFactory
     {
         if (self::$instance === null) {
             self::$instance = new ContainerFactory();
@@ -92,16 +75,14 @@ class ContainerFactory
     /**
      * Forces reload of the ContainerFactory on next request.
      */
-    public static function resetContainer()
+    public static function resetContainer(): void
     {
-        self::getInstance()->cache->invalidate(self::getShopId());
+        self::getInstance()->cache->invalidate(self::$shopId);
         self::$instance = null;
     }
 
-    private static function getShopId(): int
+    private function getShopId(): int
     {
-        $shopIdCalculator = new ShopIdCalculator(new FileCache(), new UtilsServer());
-
-        return (int) $shopIdCalculator->getShopId();
+        return (new ShopIdCalculator(new FileCache(), new UtilsServer()))->getShopId();
     }
 }

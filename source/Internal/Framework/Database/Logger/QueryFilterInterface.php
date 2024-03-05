@@ -5,8 +5,6 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
 /**
@@ -15,10 +13,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 interface QueryFilterInterface
 {
     /**
-     * @param string $query       Query string
-     * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return bool
+     * @param string $query Query string
+     * @param array $skipLogTags Additional tags to skip
      */
     public function shouldLogQuery(string $query, array $skipLogTags): bool;
 }

@@ -19,8 +19,8 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-#[group('manufacturer')]
-class ManufacturerTest extends IntegrationTestCase
+#[Group('manufacturer')]
+final class ManufacturerTest extends IntegrationTestCase
 {
     private string $oxid = 'id1';
     private Manufacturer $manufacturer;
@@ -50,8 +50,11 @@ class ManufacturerTest extends IntegrationTestCase
     }
 
     #[DataProvider('provideImageFileData')]
-    public function testDeleteShouldRemoveTheGeneratedImage(string $imageFieldName, string $imageFileName, string $imageType): void
-    {
+    public function testDeleteShouldRemoveTheGeneratedImage(
+        string $imageFieldName,
+        string $imageFileName,
+        string $imageType
+    ): void {
         $imagePath = $this->createImage(
             Path::join($this->getImagePath($imageType, true), 'x_y_z'),
             $imageFileName
@@ -64,8 +67,11 @@ class ManufacturerTest extends IntegrationTestCase
     }
 
     #[DataProvider('provideImageFileData')]
-    public function testDeleteShouldRemoveTheMasterImage(string $imageFieldName, string $imageFileName, string $imageType): void
-    {
+    public function testDeleteShouldRemoveTheMasterImage(
+        string $imageFieldName,
+        string $imageFileName,
+        string $imageType
+    ): void {
         $imagePath = $this->createImage(
             $this->getImagePath($imageType),
             $imageFileName
@@ -79,11 +85,31 @@ class ManufacturerTest extends IntegrationTestCase
 
     public static function provideImageFileData(): Generator
     {
-        yield 'Icon should be deleted from filesystem' => ['oxicon', 'test-icon.jpg', 'MICO',];
-        yield 'Icon Alt should be deleted from filesystem' => ['oxicon_alt', 'test-icon-alt.jpg', 'MICO',];
-        yield 'Picture should be deleted from filesystem' => ['oxpicture', 'test-picture.jpg', 'MPIC',];
-        yield 'Thumbnail should be deleted from filesystem' => ['oxthumbnail', 'test-thumbnail.jpg', 'MTHU',];
-        yield 'Promotion Icon should be deleted from filesystem' => ['oxpromotion_icon', 'test-promotion-icon.jpg', 'MPICO',];
+        yield 'Icon should be deleted from filesystem' => [
+            'oxicon',
+            'test-icon.jpg',
+            'MICO',
+        ];
+        yield 'Icon Alt should be deleted from filesystem' => [
+            'oxicon_alt',
+            'test-icon-alt.jpg',
+            'MICO',
+        ];
+        yield 'Picture should be deleted from filesystem' => [
+            'oxpicture',
+            'test-picture.jpg',
+            'MPIC',
+        ];
+        yield 'Thumbnail should be deleted from filesystem' => [
+            'oxthumbnail',
+            'test-thumbnail.jpg',
+            'MTHU',
+        ];
+        yield 'Promotion Icon should be deleted from filesystem' => [
+            'oxpromotion_icon',
+            'test-promotion-icon.jpg',
+            'MPICO',
+            ];
     }
 
     public function testIconUrlShouldBeEndedWithTheGeneratedImgPath(): void
@@ -190,7 +216,10 @@ class ManufacturerTest extends IntegrationTestCase
 
     private function getImagePath(string $imageType, bool $isGenerated = false): string
     {
-        return Path::join(Registry::getConfig()->getPictureDir(false), Registry::getUtilsFile()->getImageDirByType($imageType, $isGenerated));
+        return Path::join(
+            Registry::getConfig()->getPictureDir(false),
+            Registry::getUtilsFile()->getImageDirByType($imageType, $isGenerated)
+        );
     }
 
     private function getImagePathFromSource(string $imageType, string $sizeDirectory, string $imageFileName): string

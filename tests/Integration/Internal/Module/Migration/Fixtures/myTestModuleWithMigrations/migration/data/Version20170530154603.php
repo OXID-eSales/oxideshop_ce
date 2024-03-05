@@ -17,9 +17,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20170530154603 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE `test_doctrine_migration_wrapper` (`id` char(255) NOT NULL);');

@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\FormConfiguration;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration;
 
-class FromConfigurationTest extends \PHPUnit\Framework\TestCase
+final class FromConfigurationTest extends TestCase
 {
-    public function testAddFieldConfiguration()
+    public function testAddFieldConfiguration(): void
     {
         $fieldConfiguration = new FieldConfiguration();
         $fieldConfiguration->setName('testField');

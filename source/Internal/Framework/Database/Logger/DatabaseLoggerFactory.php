@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Doctrine\DBAL\Logging\SQLLogger;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * @internal
@@ -18,23 +18,16 @@ use Doctrine\DBAL\Logging\SQLLogger;
 class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
 {
     public function __construct(
-        private ContextInterface $context,
-        private QueryLogger $queryLogger,
-        private NullLogger $nullLogger
+        private readonly ContextInterface $context,
+        private readonly SQLLogger $queryLogger,
+        private readonly SQLLogger $nullLogger
     ) {
     }
 
-    /**
-     * @return SQLLogger
-     */
     public function getDatabaseLogger(): SQLLogger
     {
-        if ($this->context->isAdmin() && $this->context->isEnabledAdminQueryLog()) {
-            $logger = $this->queryLogger;
-        } else {
-            $logger = $this->nullLogger;
-        }
-
-        return $logger;
+        return $this->context->isAdmin() && $this->context->isEnabledAdminQueryLog()
+            ? $this->queryLogger
+            : $this->nullLogger;
     }
 }

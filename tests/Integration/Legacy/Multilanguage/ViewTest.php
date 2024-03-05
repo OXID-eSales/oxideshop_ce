@@ -9,94 +9,87 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage;
 
-use oxField;
-use OxidEsales\EshopCommunity\Core\Registry;
-use oxRegistry;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 
-final class ViewTest extends MultilanguageTestCase
+#[Group('triggers-implicit-transaction-commit')]
+final class ViewTest extends TestCase
 {
-    /**
-     * Make a copy of Stewart+Brown Shirt Kisser Fish for testing
-     */
-    public const SOURCE_ARTICLE_ID = '6b6099c305f591cb39d4314e9a823fc1';
+    use DatabaseTrait;
+    use MultilanguageTrait;
 
-    /**
-     * @var string Generated test article id.
-     */
-    private string|array|null $testArticleId = null;
+    private string $productId;
+    private int $originalBaseLanguageId;
 
-    #[RunInSeparateProcess]
-    public function testMultilanguageViewsAddLanguagesAfterAddingArticle(): void
+    public function setUp(): void
     {
-        //insert article first
-        $this->insertArticle();
+        parent::setUp();
 
-        //add more languages and activate latest added language in frontend
-        $languageId = $this->prepare();
+        $this->originalBaseLanguageId = Registry::getLang()->getBaseLanguage();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->setupShopDatabase();
+    }
+
+    public function testMultilanguageViewsAddLanguagesAfterAddingProduct(): void
+    {
+        $this->createProduct();
+        $languageId = $this->createLanguages();
         Registry::getLang()->setBaseLanguage($languageId);
 
-        //load article to have a look at e.g. it's title in the current language
-        $article = oxNew('oxArticle');
-        $article->disableLazyLoading();
-        $article->setLanguage($languageId);
-        $article->load($this->testArticleId);
+        $product = oxNew(Article::class);
+        $product->setLanguage($languageId);
+        $product->load($this->productId);
 
         //As we have no data for this language added in table oxarticle_set1, so article title is null.
-        $this->assertNull($article->oxarticles__oxtitle->value);
+        $this->assertNull($product->getFieldData('oxtitle'));
 
         //Make sure we have the expected value for the base language.
         //Effect of #6216 was that base language data was wrongly used for language id >= 8 with no way to change this.
         Registry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
-        $article = oxNew('oxArticle');
-        $article->disableLazyLoading();
-        $article->setLanguage($this->originalBaseLanguageId);
-        $article->load($this->testArticleId);
-        $this->assertSame('TEST_MULTI_LANGUAGE', $article->oxarticles__oxtitle->value);
+        $product = oxNew(Article::class);
+        $product->setLanguage($this->originalBaseLanguageId);
+        $product->load($this->productId);
+        $this->assertEquals('TEST_MULTI_LANGUAGE', $product->getFieldData('oxtitle'));
     }
 
-    #[RunInSeparateProcess]
-    public function testMultilanguageViewsAddArticleInDifferentDefaultLanguage(): void
+    public function testMultilanguageViewsAddProductInDifferentDefaultLanguage(): void
     {
-        //add more languages and activate latest added language in frontend
-        $languageId = $this->prepare();
-        oxRegistry::getLang()->setBaseLanguage($languageId);
+        $languageId = $this->createLanguages();
+        Registry::getLang()->setBaseLanguage($languageId);
+        $this->createProduct();
 
-        //insert article after switching base language
-        $this->insertArticle();
-
-        //load article to have a look at e.g. it's title in the current language
-        $article = oxNew('oxArticle');
-        $article->disableLazyLoading();
-        $article->setLanguage($languageId);
-        $article->load($this->testArticleId);
+        $product = oxNew(Article::class);
+        $product->setLanguage($languageId);
+        $product->load($this->productId);
 
         //We stored article in switched default language
-        $this->assertSame('TEST_MULTI_LANGUAGE', $article->oxarticles__oxtitle->value);
+        $this->assertEquals('TEST_MULTI_LANGUAGE', $product->getFieldData('oxtitle'));
 
         //As article was stored in switched base language, related original base language field is empty.
-        oxRegistry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
-        $article = oxNew('oxArticle');
-        $article->disableLazyLoading();
-        $article->setLanguage($this->originalBaseLanguageId);
-        $article->load($this->testArticleId);
-        $this->assertSame('', $article->oxarticles__oxtitle->value);
+        Registry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
+        $product = oxNew(Article::class);
+        $product->setLanguage($this->originalBaseLanguageId);
+        $product->load($this->productId);
+        $this->assertEquals('', $product->getFieldData('oxtitle'));
     }
 
-    /**
-     * Make a copy of article and variant for testing.
-     */
-    private function insertArticle(): void
+    private function createProduct(): void
     {
-        $this->testArticleId = substr_replace((string) oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
+        $this->productId = substr_replace((string)Registry::getUtilsObject()->generateUId(), '_', 0, 1);
 
-        //copy from original article
-        $article = oxNew('oxArticle');
-        $article->disableLazyLoading();
-        $article->load(self::SOURCE_ARTICLE_ID);
-        $article->setId($this->testArticleId);
-        $article->oxarticles__oxartnum = new oxField('666-T', oxField::T_RAW);
-        $article->oxarticles__oxtitle = new oxField('TEST_MULTI_LANGUAGE', oxField::T_RAW);
-        $article->save();
+        $product = oxNew(Article::class);
+        $product->setId($this->productId);
+        $product->oxarticles__oxartnum = new Field('123');
+        $product->oxarticles__oxtitle = new Field('TEST_MULTI_LANGUAGE');
+        $product->save();
     }
 }

@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\RequiredFieldsValidator;
 
-class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
+final class RequiredFieldsValidatorTest extends TestCase
 {
-    public function testInvalidFormValidation()
+    public function testInvalidFormValidation(): void
     {
         $form = new Form();
 
@@ -30,7 +31,7 @@ class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($requiredFieldsValidator->isValid($form));
     }
 
-    public function testValidFormValidation()
+    public function testValidFormValidation(): void
     {
         $form = new Form();
 
@@ -46,7 +47,7 @@ class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($requiredFieldsValidator->isValid($form));
     }
 
-    public function testInvalidFormValidationErrors()
+    public function testInvalidFormValidationErrors(): void
     {
         $form = new Form();
 

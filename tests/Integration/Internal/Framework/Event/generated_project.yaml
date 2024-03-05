@@ -4,6 +4,8 @@ services:
     class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub
     autowire: true
     public: true
+    arguments:
+      $currentShopId: 1
 
   OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber1:
     class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber

@@ -208,7 +208,6 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
         Registry::getConfig()->setConfigParam('aSerials', [$this->licenseKeyExisting]);
         Registry::getConfig()->setConfigParam('sClusterId', [$this->clusterId]);
-        Registry::getConfig()->setConfigParam('sShopDir', $shopPath);
 
         $this->setSeversDataConfiguration();
     }
@@ -249,7 +248,6 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
     private function cleanUpTestData(): void
     {
-        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);

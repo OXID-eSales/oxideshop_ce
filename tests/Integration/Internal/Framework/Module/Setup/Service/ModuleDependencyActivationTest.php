@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\Dependen
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[group('module-dependency')]
+#[Group('module-dependency')]
 final class ModuleDependencyActivationTest extends IntegrationTestCase
 {
     private int $shopId = 1;

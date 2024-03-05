@@ -73,7 +73,7 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }
-        $container->compile();
+        $container->compile(true);
         return $container;
     }
 

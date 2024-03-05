@@ -5,18 +5,14 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
+declare(strict_types=1);
+
 $sMetadataVersion = '2.0';
 
-/**
- * Module information
- */
 $aModule = [
     'id'             => 'TestModuleWithSurplusData',
     'extraStuff'     => [
         'key1' => 'value1'
     ],
-    'moreExtraStuff' => new \StdClass()
+    'moreExtraStuff' => new StdClass()
 ];

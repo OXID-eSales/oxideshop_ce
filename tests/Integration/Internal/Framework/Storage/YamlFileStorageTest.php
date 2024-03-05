@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Storage;
 
@@ -17,10 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-/**
- * @internal
- */
-class YamlFileStorageTest extends TestCase
+final class YamlFileStorageTest extends TestCase
 {
     use ContainerTrait;
 
@@ -29,7 +26,7 @@ class YamlFileStorageTest extends TestCase
      */
     private $tempFileHandle;
 
-    public function testSaving()
+    public function testSaving(): void
     {
         $testData = [
             'one' => [
@@ -55,7 +52,7 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    public function testCreatesNewFileIfDoesNotExist()
+    public function testCreatesNewFileIfDoesNotExist(): void
     {
         $filePath = $this->getFilePath();
         unlink($filePath);
@@ -75,7 +72,7 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    public function testCreatesNewDirectoryAndFileIfDoNotExist()
+    public function testCreatesNewDirectoryAndFileIfDoNotExist(): void
     {
         $filePath = $this->getFilePath();
         unlink($filePath);
@@ -97,7 +94,7 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    public function testStorageWithCorruptedFile()
+    public function testStorageWithCorruptedFile(): void
     {
         $this->expectException(ParseException::class);
         $filePath = $this->getFilePath();
@@ -115,7 +112,7 @@ class YamlFileStorageTest extends TestCase
         $yamlFileStorage->get();
     }
 
-    public function testStorageWithEmptyFile()
+    public function testStorageWithEmptyFile(): void
     {
         $filePath = $this->getFilePath();
 
@@ -134,7 +131,7 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    public function testEmptyYamlArrayThrowsNoError()
+    public function testEmptyYamlArrayThrowsNoError(): void
     {
         $yaml = '[]';
 
@@ -151,9 +148,6 @@ class YamlFileStorageTest extends TestCase
         $this->assertEquals([], $parsedYaml);
     }
 
-    /**
-     * @return string
-     */
     private function getFilePath(): string
     {
         if ($this->tempFileHandle === null) {

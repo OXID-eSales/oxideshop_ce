@@ -13,15 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationService;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class PasswordVerificationServiceTest
- */
-class PasswordVerificationServiceTest extends TestCase
+final class PasswordVerificationServiceTest extends TestCase
 {
-    /**
-     *
-     */
-    public function testPasswordVerificationVerifiesCorrectPassword()
+    public function testPasswordVerificationVerifiesCorrectPassword(): void
     {
         $passwordUtf8 = 'äääää';
         $passwordHash = password_hash($passwordUtf8, PASSWORD_DEFAULT);
@@ -33,10 +27,7 @@ class PasswordVerificationServiceTest extends TestCase
         );
     }
 
-    /**
-     *
-     */
-    public function testPasswordVerificationDoesNotVerifyWrongPassword()
+    public function testPasswordVerificationDoesNotVerifyWrongPassword(): void
     {
         $passwordUtf8 = 'äääää';
         $passwordHash = password_hash($passwordUtf8, PASSWORD_DEFAULT);
@@ -48,17 +39,13 @@ class PasswordVerificationServiceTest extends TestCase
         );
     }
 
-    /**
-     * @return PasswordVerificationService
-     */
     private function getPasswordVerificationService(): PasswordVerificationService
     {
         $passwordPolicyMock = $this
             ->getMockBuilder(PasswordPolicyInterface::class)
             ->onlyMethods(['enforcePasswordPolicy'])
             ->getMock();
-        $passwordVerificationService = new PasswordVerificationService($passwordPolicyMock);
 
-        return $passwordVerificationService;
+        return new PasswordVerificationService($passwordPolicyMock);
     }
 }

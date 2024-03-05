@@ -1,14 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataObject;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -17,8 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ShopConfigurationTest extends TestCase
 {
-    /** @var ShopConfiguration */
-    private $shopConfiguration;
+    private ShopConfiguration $shopConfiguration;
 
     protected function setUp(): void
     {
@@ -97,7 +97,7 @@ final class ShopConfigurationTest extends TestCase
 
     public function testDeleteModuleConfigurationRemovesModuleExtensionFromChain(): void
     {
-        $moduleExtensionToStay = new ModuleConfiguration\ClassExtension(
+        $moduleExtensionToStay = new ClassExtension(
             'shopClass',
             'moduleExtensionToStay'
         );
@@ -105,7 +105,7 @@ final class ShopConfigurationTest extends TestCase
         $moduleConfigurationToStay->setId('moduleToStay');
         $moduleConfigurationToStay->addClassExtension($moduleExtensionToStay);
 
-        $moduleExtensionToDelete = new ModuleConfiguration\ClassExtension(
+        $moduleExtensionToDelete = new ClassExtension(
             'shopClass',
             'moduleExtensionToDelete'
         );

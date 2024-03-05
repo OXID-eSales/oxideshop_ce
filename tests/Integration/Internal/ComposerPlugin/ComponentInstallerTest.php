@@ -14,7 +14,7 @@ use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +54,7 @@ final class ComponentInstallerTest extends TestCase
 
         return new ComponentInstaller(
             new NullIO(),
-            (new BootstrapLocator())->getProjectRoot(),
+            (new ProjectRootLocator())->getProjectRoot(),
             $packageStub
         );
     }
@@ -69,7 +69,7 @@ final class ComponentInstallerTest extends TestCase
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
     }
 
-    private function removeGeneratedLineFromProjectFile()
+    private function removeGeneratedLineFromProjectFile(): void
     {
         /** @var ProjectYamlImportServiceInterface $projectYamlImportService */
         $projectYamlImportService = $this->get(ProjectYamlImportServiceInterface::class);

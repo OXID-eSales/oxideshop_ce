@@ -12,15 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapt
 use Doctrine\DBAL\TransactionIsolationLevel;
 use InvalidArgumentException;
 use oxDb;
-use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
-use stdClass;
 
 /**
  * Abstract base class for all implementations of the DatabaseInterface.
@@ -254,7 +251,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     public function testGetAllWithDefaultFetchMode(string $assertionMessage, string $sql, array $expectedRows): void
     {
         /** @var DatabaseInterface $database Get a fresh instance of the database handler */
-        $database = $this->createDatabase();
+        $database = DatabaseProvider::getMaster();
 
         $this->loadFixtureToTestTable($database);
 
@@ -464,29 +461,18 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         $this->assertSame($expectedRows, $allRows);
     }
 
-    /**
-     * Test that the expected exception is thrown when passing an invalid non "SELECT" query.
-     */
     public function testExecuteThrowsExceptionForInvalidNonSelectQueryString(): void
     {
-        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-
-        $this->expectException($expectedExceptionClass);
+        $this->expectException(DatabaseErrorException::class);
 
         $this->database->execute('SOME INVALID QUERY');
     }
 
-    /**
-     * Test that the expected exception is thrown when passing an invalid non "SELECT" query.
-     */
     public function testSelectThrowsExceptionForInvalidSelectQueryString(): void
     {
-        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
+        $this->expectException(DatabaseErrorException::class);
 
-        $this->expectException($expectedExceptionClass);
-
-        $masterDb = oxDb::getMaster();
-        $masterDb->select('SELECT SOME INVALID QUERY', []);
+        oxDb::getMaster()->select('SELECT SOME INVALID QUERY', []);
     }
 
     /**
@@ -512,8 +498,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
 
     public function testSetTransactionIsolationLevel(): void
     {
-        $connectionProvider = new ConnectionProvider();
-        $connection = $connectionProvider->get();
+        $connection = $this->database->getPublicConnection();
 
         $transactionIsolationLevelPre = $connection->getTransactionIsolation();
 
@@ -742,83 +727,11 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         $this->assertEquals($actualResult, $expectedResult, $message);
     }
 
-    /**
-     * Test that the expected exception is thrown for an invalid query string.
-     */
     public function testGetAllThrowsDatabaseExceptionOnInvalidQueryString(): void
     {
-        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-
-        $this->expectException($expectedExceptionClass);
+        $this->expectException(DatabaseErrorException::class);
 
         $this->database->getAll('SOME INVALID QUERY', []);
-    }
-
-    /**
-     * Provide invalid parameters for getAll.
-     * Anything which loosely evaluates to true and is not an array will trigger an exception.
-     */
-    public static function dataProviderTestGetAllThrowsDatabaseExceptionOnInvalidArguments(): array
-    {
-        return [[
-            //'Passing a plain string as parameter to getAll triggers an exception',
-            'string',
-        ], [
-            //'Passing an object as parameter to getAll triggers an exception',
-            new stdClass(),
-        ], [
-            //'Passing an integer as parameter to getAll triggers an exception',
-            1,
-        ], [
-            //'Passing a float string as parameter to getAll triggers an exception',
-            (float) 1,
-        ], [
-            //'Passing TRUE as parameter to getAll triggers an exception',
-            true,
-        ]];
-    }
-
-    /**
-     * Test that no exception is thrown for a parameter, which loosely evaluates to false.
-     * This would be a sign for a logical error in the code and probably trigger a Database error,
-     * as the query itself would expect an non empty parameter.
-     *
-     * See the data provider for arguments, which loosely evaluate to false
-     *
-     * @param string $message        An assertion message
-     * @param mixed  $validParameter A valid parameter
-     */
-    #[DataProvider('dataProviderTestGetAllThrowsNoExceptionOnValidArguments')]
-    public function testGetAllThrowsNoExceptionOnValidArguments(string $message, mixed $validParameter): void
-    {
-        $fetchMode = DatabaseInterface::FETCH_MODE_NUM;
-        $expectedResult = [[self::FIXTURE_OXID_1]];
-
-        $this->truncateTestTable();
-        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('" . self::FIXTURE_OXID_1 . "')");
-        $this->database->setFetchMode($fetchMode);
-
-        $actualResult = $this->database->getAll(
-            'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "'",
-            $validParameter
-        );
-
-        $this->assertEquals($actualResult, $expectedResult, $message);
-    }
-
-    /**
-     * Provide invalid parameters for getAll.
-     * Anything which loosely evaluates to false will not trigger an exception.
-     * Anything which loosely evaluates to true and is an array will not trigger an exception.
-     */
-    public static function dataProviderTestGetAllThrowsNoExceptionOnValidArguments(): array
-    {
-        return [['Passing an empty string as parameter to getAll does not trigger an exception', ''],
-            ['Passing an null as parameter to getAll does not trigger an exception', null],
-            ['Passing an empty array as parameter to getAll does not trigger an exception', []],
-            ['Passing a false as parameter to getAll does not trigger an exception', false],
-            ['Passing "0" as parameter to getAll triggers does not trigger an exception', '0'],
-        ];
     }
 
     /**
@@ -1291,13 +1204,5 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     protected function isEmptyTestTable(): bool
     {
         return empty($this->fetchAllTestTableRows());
-    }
-
-    /**
-     * Get an instance of ConfigFile based on a empty file.
-     */
-    protected function getBlankConfigFile(): ConfigFile
-    {
-        return new ConfigFile($this->createFile('config.inc.php', '<?php '));
     }
 }

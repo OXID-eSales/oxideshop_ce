@@ -5,19 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class WordwrapLogicTest
- */
-class WordwrapLogicTest extends TestCase
+final class WordwrapLogicTest extends TestCase
 {
-    /** @var WordwrapLogic */
-    private $wordWrapLogic;
+    private WordwrapLogic $wordWrapLogic;
 
     protected function setUp(): void
     {
@@ -25,11 +23,6 @@ class WordwrapLogicTest extends TestCase
         $this->wordWrapLogic = new WordwrapLogic();
     }
 
-    /**
-     * Provides data for testWordWrapWithNonAscii
-     *
-     * @return array
-     */
     public static function nonAsciiProvider(): array
     {
         return [
@@ -47,8 +40,7 @@ class WordwrapLogicTest extends TestCase
         int $length = 80,
         string $wrapper = "\n",
         bool $cut = false
-    ): void
-    {
+    ): void {
         self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 
@@ -64,8 +56,10 @@ class WordwrapLogicTest extends TestCase
             ["  \naaa  \n aaa", '   aaa    aaa', 5],
             ["  \naaa  \n aaa", '   aaa    aaa', 5, "\n", true],
             [
-                "Pellentesq\nue nisl\nnon\ncondimentu\nm cursus.\n \nconsectetu\nr a diam\nsit.\n finibus\ndiam eu\nlibero\nlobortis.\neu   ex  \nsit",
-                "Pellentesque nisl non condimentum cursus.\n  consectetur a diam sit.\n finibus diam eu libero lobortis.\neu   ex   sit",
+                "Pellentesq\nue nisl\nnon\ncondimentu\nm cursus.\n \nconsectetu\nr a diam\nsit.\n" .
+                " finibus\ndiam eu\nlibero\nlobortis.\neu   ex  \nsit",
+                "Pellentesque nisl non condimentum cursus.\n  consectetur a diam sit.\n" .
+                " finibus diam eu libero lobortis.\neu   ex   sit",
                 10,
                 "\n",
                 true
@@ -74,8 +68,13 @@ class WordwrapLogicTest extends TestCase
     }
 
     #[DataProvider('asciiProvider')]
-    public function testWordWrapAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false): void
-    {
+    public function testWordWrapAscii(
+        string $expected,
+        string $string,
+        int $length = 80,
+        string $wrapper = "\n",
+        bool $cut = false
+    ): void {
         self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 }

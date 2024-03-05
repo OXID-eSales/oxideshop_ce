@@ -264,16 +264,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function render()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         $article = $this->getProduct();
 
-        // assign template name
         if ($article->oxarticles__oxtemplate->value) {
             $this->_sThisTemplate = $article->oxarticles__oxtemplate->value;
         }
 
-        if (($templateName = Registry::getRequest()->getRequestEscapedParameter('tpl'))) {
+        if ($templateName = Registry::getRequest()->getRequestEscapedParameter('tpl')) {
             $this->_sThisTemplate = 'custom/' . basename($templateName);
         }
 

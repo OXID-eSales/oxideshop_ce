@@ -9,34 +9,33 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Translation\Locator;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\AdminAreaModuleTranslationFileLocator;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
-final class AdminAreaModuleTranslationFileLocatorTest extends TestCase
+final class AdminAreaModuleTranslationFileLocatorTest extends IntegrationTestCase
 {
     use ContainerTrait;
     use ProphecyTrait;
 
     /** @var ModulesDataProviderInterface */
-    private $activeModulesDataProvider;
+    private ObjectProphecy $activeModulesDataProvider;
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    /** @var string */
-    private $adminThemeName;
+    private string $adminThemeName;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->activeModulesDataProvider = $this->prophesize(ModulesDataProviderInterface::class);
         $this->filesystem = new Filesystem();
         $this->adminThemeName = 'admin';
-
-        parent::setUp();
     }
 
     public function testLocateWithEmptyPaths(): void

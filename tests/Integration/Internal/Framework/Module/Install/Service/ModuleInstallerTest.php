@@ -13,15 +13,14 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModuleInstallerTest extends TestCase
+final class ModuleInstallerTest extends TestCase
 {
     use ContainerTrait;
 
-    private $moduleId = 'myTestModule';
+    private string $moduleId = 'myTestModule';
 
     public function testUninstallNotActiveModule(): void
     {
@@ -64,9 +63,6 @@ class ModuleInstallerTest extends TestCase
             ->activate($this->moduleId, Registry::getConfig()->getShopId());
     }
 
-    /**
-     * @return OxidEshopPackage
-     */
     private function getOxidEshopPackage(): OxidEshopPackage
     {
         return new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);

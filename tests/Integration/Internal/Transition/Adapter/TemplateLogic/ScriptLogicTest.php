@@ -5,39 +5,35 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-class ScriptLogicTest extends TestCase
+use function sprintf;
+
+final class ScriptLogicTest extends IntegrationTestCase
 {
     private Config $config;
-    private int $oldIDebug;
     private ScriptLogic $scriptLogic;
 
     public function setup(): void
     {
         parent::setUp();
         $this->config = Registry::getConfig();
-        $this->oldIDebug = $this->config->getConfigParam("iDebug");
-        $this->config->setConfigParam("iDebug", -1);
+        $this->config->setConfigParam('iDebug', -1);
 
         $this->scriptLogic = new ScriptLogic();
     }
 
-    public function tearDown(): void
-    {
-        $this->config->setConfigParam("iDebug", $this->oldIDebug);
-        parent::tearDown();
-    }
-
     public function testIncludeFileNotExists(): void
     {
-        $this->config->setConfigParam("iDebug", 0);
+        $this->config->setConfigParam('iDebug', 0);
 
         $this->scriptLogic->include('somescript.js');
 
@@ -46,46 +42,45 @@ class ScriptLogicTest extends TestCase
 
     public function testIncludeFileExists(): void
     {
-        $includes = $this->config->getGlobalParameter('includes');
-
         $this->scriptLogic->include('http://someurl/src/js/libs/jquery.min.js', 3);
-        $this->assertArrayHasKey(3, $this->config->getGlobalParameter('includes'));
-        $this->assertTrue(in_array('http://someurl/src/js/libs/jquery.min.js', $this->config->getGlobalParameter('includes')[3]));
 
-        $this->config->setGlobalParameter('includes', $includes);
+        $this->assertArrayHasKey(3, $this->config->getGlobalParameter('includes'));
+        $this->assertContains(
+            'http://someurl/src/js/libs/jquery.min.js',
+            $this->config->getGlobalParameter('includes')[3]
+        );
     }
 
     public function testAddNotDynamic(): void
     {
-        $scripts = $this->config->getGlobalParameter('scripts');
-
         $this->scriptLogic->add('oxidadd');
-        $this->assertTrue(in_array('oxidadd', $this->config->getGlobalParameter('scripts')));
 
-        $this->config->setGlobalParameter('scripts', $scripts);
+        $this->assertContains('oxidadd', $this->config->getGlobalParameter('scripts'));
     }
 
     public function testAddDynamic(): void
     {
-        $scripts = $this->config->getGlobalParameter('scripts_dynamic');
-
         $this->scriptLogic->add('oxidadddynamic', true);
-        $this->assertTrue(in_array('oxidadddynamic', $this->config->getGlobalParameter('scripts_dynamic')));
 
-        $this->config->setGlobalParameter('scripts_dynamic', $scripts);
+        $this->assertContains('oxidadddynamic', $this->config->getGlobalParameter('scripts_dynamic'));
     }
 
     #[DataProvider('addWidgetProvider')]
     public function testRenderAddWidget(string $script, string $output): void
     {
-        $scripts = $this->config->getGlobalParameter('scripts');
-
-        $output = "<script type='text/javascript'>window.addEventListener('load', function() { WidgetsHandler.registerFunction('$output', 'somewidget'); }, false )</script>";
-
+        $expected = sprintf(
+            <<<EOF
+<script type='text/javascript'>
+    window.addEventListener('load', function() {
+        WidgetsHandler.registerFunction('%s', 'somewidget');
+        }, false )
+</script>
+EOF,
+            $output
+        );
         $this->scriptLogic->add($script);
-        $this->assertEquals($output, $this->scriptLogic->render('somewidget', true));
 
-        $this->config->setGlobalParameter('scripts', $scripts);
+        $this->assertEquals($expected, $this->scriptLogic->render('somewidget', true));
     }
 
     public static function addWidgetProvider(): array
@@ -101,11 +96,9 @@ class ScriptLogicTest extends TestCase
 
     public function testRenderIncludeWidget(): void
     {
-        $includes = $this->config->getGlobalParameter('includes');
-
         $this->scriptLogic->include('http://someurl/src/js/libs/jquery.min.js');
 
-        $output = <<<HTML
+        $expected = <<<HTML
 <script type='text/javascript'>
     window.addEventListener('load', function() {
         WidgetsHandler.registerFile('http://someurl/src/js/libs/jquery.min.js', 'somewidget');
@@ -113,8 +106,6 @@ class ScriptLogicTest extends TestCase
 </script>
 HTML;
 
-        $this->assertEquals($output, $this->scriptLogic->render('somewidget', true));
-
-        $this->config->setGlobalParameter('includes', $includes);
+        $this->assertEquals($expected, $this->scriptLogic->render('somewidget', true));
     }
 }

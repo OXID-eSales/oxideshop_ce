@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Path;
 
-class MetaDataMapperTest extends TestCase
+final class MetaDataMapperTest extends TestCase
 {
     public function testModuleMetaData20(): void
     {
@@ -341,19 +341,12 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
     }
 
-    /**
-     * @param string $testModuleDirectory
-     *
-     * @return string
-     */
+
     private function getMetaDataFilePath(string $testModuleDirectory): string
     {
         return Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
     }
 
-    /**
-     * @return ContainerBuilder
-     */
     private function getCompiledTestContainer(): ContainerBuilder
     {
         $container = (new TestContainerFactory())->create();

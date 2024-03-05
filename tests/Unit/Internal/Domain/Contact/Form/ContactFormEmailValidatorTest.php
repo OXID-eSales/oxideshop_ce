@@ -9,14 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator;
 
-class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
+final class ContactFormEmailValidatorTest extends TestCase
 {
-    public function testInvalidEmailValidation()
+    public function testInvalidEmailValidation(): void
     {
         $validator = $this->getContactFormEmailValidator();
 
@@ -37,7 +38,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testValidEmailValidation()
+    public function testValidEmailValidation(): void
     {
         $validator = $this->getContactFormEmailValidator();
 
@@ -53,7 +54,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testEmptyEmailIsNotValidIfEmailIsRequired()
+    public function testEmptyEmailIsNotValidIfEmailIsRequired(): void
     {
         $validator = $this->getContactFormEmailValidator();
 
@@ -71,7 +72,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testEmptyEmailIsValidIfEmailIsRequired()
+    public function testEmptyEmailIsValidIfEmailIsRequired(): void
     {
         $validator = $this->getContactFormEmailValidator();
 
@@ -88,7 +89,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function getContactFormEmailValidator()
+    private function getContactFormEmailValidator(): ContactFormEmailValidator
     {
         return new ContactFormEmailValidator(
             new EmailValidatorService()

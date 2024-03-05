@@ -5,15 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IncludeDynamicLogic::class)]
-class IncludeDynamicLogicTest extends TestCase
+final class IncludeDynamicLogicTest extends TestCase
 {
     private IncludeDynamicLogic $includeDynamicLogic;
 
@@ -22,11 +24,13 @@ class IncludeDynamicLogicTest extends TestCase
         $this->includeDynamicLogic = new IncludeDynamicLogic();
     }
 
+
     #[DataProvider('getIncludeDynamicPrefixTests')]
     public function testIncludeDynamicPrefix(array $parameters, array $expected): void
     {
         $this->assertEquals($this->includeDynamicLogic->includeDynamicPrefix($parameters), $expected);
     }
+
 
     #[DataProvider('getRenderForCacheTests')]
     public function testRenderForCache(array $parameters, string $expected): void

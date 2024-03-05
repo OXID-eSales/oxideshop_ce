@@ -9,24 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Hash\Service;
 
+use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\Argon2IPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class Argon2IPasswordHashServiceTest
- */
-class Argon2IPasswordHashServiceTest extends TestCase
+use function defined;
+
+final class Argon2IPasswordHashServiceTest extends TestCase
 {
     protected function setUp(): void
     {
         if (!defined('PASSWORD_ARGON2I')) {
-            $this->markTestSkipped("Argon2I is not available on this system.");
+            $this->markTestSkipped('Argon2I is not available on this system.');
         }
     }
 
-    public function testHashForGivenPasswordIsEncryptedWithProperAlgorithm()
+    public function testHashForGivenPasswordIsEncryptedWithProperAlgorithm(): void
     {
         $passwordHashService = $this->getPasswordHashService();
         $hash = $passwordHashService->hash('secret');
@@ -35,7 +34,7 @@ class Argon2IPasswordHashServiceTest extends TestCase
         $this->assertSame(PASSWORD_ARGON2I, $info['algo']);
     }
 
-    public function testHashForEmptyPasswordIsEncryptedWithProperAlgorithm()
+    public function testHashForEmptyPasswordIsEncryptedWithProperAlgorithm(): void
     {
         $passwordHashService = $this->getPasswordHashService();
         $hash = $passwordHashService->hash('');
@@ -44,7 +43,7 @@ class Argon2IPasswordHashServiceTest extends TestCase
         $this->assertSame(PASSWORD_ARGON2I, $info['algo']);
     }
 
-    public function testConsecutiveHashingTheSamePasswordProducesDifferentHashes()
+    public function testConsecutiveHashingTheSamePasswordProducesDifferentHashes(): void
     {
         $password = 'secret';
 
@@ -55,7 +54,7 @@ class Argon2IPasswordHashServiceTest extends TestCase
         $this->assertNotSame($hash_1, $hash_2);
     }
 
-    public function testPasswordNeedsRehashReturnsTrueOnChangedAlgorithm()
+    public function testPasswordNeedsRehashReturnsTrueOnChangedAlgorithm(): void
     {
         $passwordHashedWithOriginalAlgorithm = password_hash('secret', PASSWORD_BCRYPT);
         $passwordHashService = $this->getPasswordHashService();
@@ -65,7 +64,7 @@ class Argon2IPasswordHashServiceTest extends TestCase
         );
     }
 
-    public function testHashWithValidCostOption()
+    public function testHashWithValidCostOption(): void
     {
         $passwordHashService = $this->getPasswordHashService();
         $hash = $passwordHashService->hash('secret');
@@ -83,33 +82,23 @@ class Argon2IPasswordHashServiceTest extends TestCase
         );
     }
 
-    /**
-     * @return PasswordHashServiceInterface
-     */
     private function getPasswordHashService(): PasswordHashServiceInterface
     {
         $passwordPolicyMock = $this->getPasswordPolicyMock();
 
-        $passwordHashService = new Argon2IPasswordHashService(
+        return new Argon2IPasswordHashService(
             $passwordPolicyMock,
             PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
             PASSWORD_ARGON2_DEFAULT_TIME_COST,
             PASSWORD_ARGON2_DEFAULT_THREADS
         );
-
-        return $passwordHashService;
     }
 
-    /**
-     * @return PasswordPolicyInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
     private function getPasswordPolicyMock(): PasswordPolicyInterface
     {
-        $passwordPolicyMock = $this
+        return $this
             ->getMockBuilder(PasswordPolicyInterface::class)
             ->onlyMethods(['enforcePasswordPolicy'])
             ->getMock();
-
-        return $passwordPolicyMock;
     }
 }

@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDepe
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-#[group('module-dependency')]
+#[Group('module-dependency')]
 final class ModuleDependencyResolverTest extends IntegrationTestCase
 {
     public function testIndependentModuleDoesNotHaveUnresolvedModuleDependenciesDuringActivationProcess(): void
@@ -61,7 +61,9 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
         $moduleDependencyDao = $this->createStub(ModuleDependencyDaoInterface::class);
         $moduleDependencyDao
             ->method('get')
-            ->willReturnCallback([$this, 'getModuleDependenciesCallback']);
+            ->willReturnCallback(function ($moduleId): ModuleDependencies {
+                return $this->getModuleDependenciesCallback($moduleId);
+            });
         $moduleConfigurationDao = $this->createStub(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
             ->method('getAll')
@@ -87,7 +89,6 @@ final class ModuleDependencyResolverTest extends IntegrationTestCase
         if ($moduleId === 'module-id-1') {
             return new ModuleDependencies(['modules' => ['module-id-2', 'module-id-3']]);
         }
-
         if ($moduleId === 'module-id-4') {
             return new ModuleDependencies(['modules' => ['module-id-2']]);
         }

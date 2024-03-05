@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ClassExtensionsChainDaoTest extends TestCase
+final class ClassExtensionsChainDaoTest extends TestCase
 {
     use ContainerTrait;
 

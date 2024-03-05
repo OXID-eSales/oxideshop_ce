@@ -256,7 +256,10 @@ class UtilsObject
     protected function getShopIdCalculator()
     {
         if (is_null($this->shopIdCalculator)) {
-            $this->shopIdCalculator = new ShopIdCalculator(new FileCache(), new UtilsServer());
+            $this->shopIdCalculator = new ShopIdCalculator(
+                new \OxidEsales\Eshop\Core\FileCache(),
+                new \OxidEsales\Eshop\Core\UtilsServer()
+            );
         }
         return $this->shopIdCalculator;
     }

@@ -10,14 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-class ClassExtensionsChainTest extends TestCase
+final class ClassExtensionsChainTest extends TestCase
 {
-    public function testAddExtensionsIfChainIsEmpty()
+    public function testAddExtensionsIfChainIsEmpty(): void
     {
         $chain = new ClassExtensionsChain();
 
@@ -47,7 +47,7 @@ class ClassExtensionsChainTest extends TestCase
         );
     }
 
-    public function testAddExtensionToChainIfAnotherExtensionsAlreadyExist()
+    public function testAddExtensionToChainIfAnotherExtensionsAlreadyExist(): void
     {
         $chain = new ClassExtensionsChain();
 
@@ -93,7 +93,7 @@ class ClassExtensionsChainTest extends TestCase
         );
     }
 
-    public function testRemoveExtension()
+    public function testRemoveExtension(): void
     {
         $chain = new ClassExtensionsChain();
         $chain->setChain(
@@ -136,8 +136,9 @@ class ClassExtensionsChainTest extends TestCase
         );
     }
 
+
     #[DataProvider('invalidExtensionProvider')]
-    public function testRemoveExtensionThrowsExceptionIfClassNotExistsInChain(ClassExtension $extension)
+    public function testRemoveExtensionThrowsExceptionIfClassNotExistsInChain(ClassExtension $extension): void
     {
         $this->expectException(ExtensionNotInChainException::class);
         $chain = new ClassExtensionsChain();
@@ -150,7 +151,7 @@ class ClassExtensionsChainTest extends TestCase
             ]
         );
         $this->expectException(
-            \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException::class
+            ExtensionNotInChainException::class
         );
         $chain->removeExtension($extension);
     }

@@ -20,10 +20,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
-#[group('manufacturer'), RunTestsInSeparateProcesses]
-class ManufacturerPictureTest extends IntegrationTestCase
+#[Group('manufacturer')]
+final class ManufacturerPictureTest extends IntegrationTestCase
 {
     private string $oxid = 'manufacturerId1';
 
@@ -34,13 +33,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         'oxthumbnail'      => 'test-thumbnail.jpg',
         'oxpromotion_icon' => 'test-promotion-icon.jpg',
     ];
-
-    public function tearDown(): void
-    {
-        unset($_POST['masterPictureField'], $_POST['oxid']);
-
-        parent::tearDown();
-    }
 
     public function testRender(): void
     {
@@ -84,7 +76,10 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertSame('test-icon-alt.jpg', $loadManufacturer->oxmanufacturers__oxicon_alt->getRawValue());
         $this->assertSame('test-picture.jpg', $loadManufacturer->oxmanufacturers__oxpicture->getRawValue());
         $this->assertSame('test-thumbnail.jpg', $loadManufacturer->oxmanufacturers__oxthumbnail->getRawValue());
-        $this->assertSame('test-promotion-icon.jpg', $loadManufacturer->oxmanufacturers__oxpromotion_icon->getRawValue());
+        $this->assertSame(
+            'test-promotion-icon.jpg',
+            $loadManufacturer->oxmanufacturers__oxpromotion_icon->getRawValue()
+        );
     }
 
     public function testDeleteShouldThrowAnExceptionInDemoShopMode(): void
@@ -151,9 +146,11 @@ class ManufacturerPictureTest extends IntegrationTestCase
 
     private function fetchResult(string $imageFieldName): bool|string
     {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $this->get(QueryBuilderFactoryInterface::class)->create();
 
-        return $queryBuilder
+        return $this
+            ->getDbConnection()
+            ->createQueryBuilder()
             ->select($imageFieldName)
             ->from('oxmanufacturers')
             ->where('oxid = :oxid')

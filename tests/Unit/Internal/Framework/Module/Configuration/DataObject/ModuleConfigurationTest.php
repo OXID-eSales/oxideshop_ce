@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataObject;
 
@@ -16,12 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-class ModuleConfigurationTest extends TestCase
+final class ModuleConfigurationTest extends TestCase
 {
-    public function testAddModuleSetting()
+    public function testAddModuleSetting(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $setting = new Setting();
@@ -36,7 +33,7 @@ class ModuleConfigurationTest extends TestCase
         );
     }
 
-    public function testConfigurationHasSetting()
+    public function testConfigurationHasSetting(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
 
@@ -51,7 +48,7 @@ class ModuleConfigurationTest extends TestCase
         $this->assertTrue($moduleConfiguration->hasModuleSetting('testSetting'));
     }
 
-    public function testConfigurationHasClassExtension()
+    public function testConfigurationHasClassExtension(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
 
@@ -67,7 +64,7 @@ class ModuleConfigurationTest extends TestCase
         );
     }
 
-    public function testConfigurationDoesNotHaveClassExtension()
+    public function testConfigurationDoesNotHaveClassExtension(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
 

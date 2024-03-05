@@ -10,11 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
+
+use function sprintf;
 
 #[group('myAccount', 'giftRegistry')]
 final class GiftRegistryCest
@@ -108,14 +111,22 @@ final class GiftRegistryCest
         $giftRegistryPage = $giftRegistryPage->makeListSearchable()
             ->logoutUser();
         //login with different user and search for this list
-        $giftRegistryPage = $giftRegistryPage->loginUser($adminUserData['userLoginName'], $adminUserData['userPassword'])
-            ->searchForGiftRegistry($userData['userLoginName']);
+        $giftRegistryPage = $giftRegistryPage->loginUser(
+            $adminUserData['userLoginName'],
+            $adminUserData['userPassword']
+        )->searchForGiftRegistry($userData['userLoginName']);
         $I->see(Translator::translate('GIFT_REGISTRY_SEARCH_RESULTS'));
-        $I->see(Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName']);
+        $I->see(
+            Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName']
+        );
         $giftRegListPage = $giftRegistryPage->openFoundGiftRegistryList();
-        $title = Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName'];
-        $I->see($title, $giftRegListPage->headerTitle);
-        $I->see(sprintf(Translator::translate('WISHLIST_PRODUCTS'), $userData['userName'] . ' ' . $userData['userLastName']));
+        $I->see(
+            Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName'],
+            $giftRegListPage->headerTitle
+        );
+        $I->see(
+            sprintf(Translator::translate('WISHLIST_PRODUCTS'), $userData['userName'] . ' ' . $userData['userLastName'])
+        );
         $giftRegListPage->seeProductData($productData, 1);
 
         //making gift registry not searchable
@@ -182,11 +193,11 @@ final class GiftRegistryCest
 
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 
     private function getAdminUserData()
     {
-        return \Codeception\Util\Fixtures::get('adminUser');
+        return Fixtures::get('adminUser');
     }
 }

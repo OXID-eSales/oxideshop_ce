@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
+use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService;
@@ -19,9 +20,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigur
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 
-class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
+final class ContactFormFactoryTest extends TestCase
 {
-    public function testFormGetter()
+    public function testFormGetter(): void
     {
         $formConfiguration = new FormConfiguration();
 
@@ -33,7 +34,7 @@ class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFromConfigurationHandling()
+    public function testFromConfigurationHandling(): void
     {
         $emailField =  new FormField();
         $emailField
@@ -81,16 +82,14 @@ class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function getContactFormFactory(FormConfigurationInterface $formConfiguration)
+    private function getContactFormFactory(FormConfigurationInterface $formConfiguration): ContactFormFactory
     {
         $emailValidatorService = $this->getMockBuilder(EmailValidatorService::class)->getMock();
 
-        $contactFormFactory = new ContactFormFactory(
+        return new ContactFormFactory(
             $formConfiguration,
             new RequiredFieldsValidator(),
             new ContactFormEmailValidator($emailValidatorService)
         );
-
-        return $contactFormFactory;
     }
 }

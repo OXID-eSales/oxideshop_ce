@@ -20,10 +20,10 @@ final class ModuleFilesInstallerTest extends TestCase
 {
     use ContainerTrait;
 
-    private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
-    private $packageName = 'TestModule';
+    private string $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
+    private string $packageName = 'TestModule';
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanupTestData();
 

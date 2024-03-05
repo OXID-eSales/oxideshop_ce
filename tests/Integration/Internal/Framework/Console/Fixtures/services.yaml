@@ -1,0 +1,2 @@
+parameters:
+  oxid_value: '%env(defined:OXID_VALUE)%'

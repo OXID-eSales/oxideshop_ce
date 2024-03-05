@@ -12,12 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @internal
- */
 class TestEventSubscriber implements EventSubscriberInterface
 {
-    public function handleEvent(TestEvent $event)
+    public function handleEvent(TestEvent $event): TestEvent
     {
         $event->handle();
         return $event;

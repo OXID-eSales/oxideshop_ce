@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataPro
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ModuleSettingsBooleanConverterTest extends TestCase
+final class ModuleSettingsBooleanConverterTest extends TestCase
 {
     public static function convertToTrueDataProvider(): array
     {
@@ -28,7 +28,7 @@ class ModuleSettingsBooleanConverterTest extends TestCase
     }
 
     #[DataProvider('convertToTrueDataProvider')]
-    public function testConvertToTrue($value): void
+    public function testConvertToTrue(string|int|bool $value): void
     {
         $metaData =
             [
@@ -56,7 +56,7 @@ class ModuleSettingsBooleanConverterTest extends TestCase
     }
 
     #[DataProvider('convertToFalseDataProvider')]
-    public function testConvertToFalse($value): void
+    public function testConvertToFalse(string|int|bool $value): void
     {
         $metaData =
             [

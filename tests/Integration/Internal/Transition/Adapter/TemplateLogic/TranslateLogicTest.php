@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Language;
@@ -15,15 +17,10 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class TranslateLogicTest extends IntegrationTestCase
+final class TranslateLogicTest extends IntegrationTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * Provides data to testSimpleAssignments
-     *
-     * @return array
-     */
     public static function provider(): array
     {
         return [
@@ -35,24 +32,15 @@ class TranslateLogicTest extends IntegrationTestCase
 
     /**
      * Tests simple assignments, where only translation is fetched
-     *
-     * @param string $ident
-     * @param int    $languageId
-     * @param string $result
      */
     #[DataProvider('provider')]
-    public function testSimpleAssignments($ident, $languageId, $result)
+    public function testSimpleAssignments(string $ident, int $languageId, string $result): void
     {
         $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
 
         $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident));
     }
 
-    /**
-     * Provides data to testAssignmentsWithArguments
-     *
-     * @return array
-     */
     public static function withArgumentsProvider(): array
     {
         return [
@@ -64,8 +52,12 @@ class TranslateLogicTest extends IntegrationTestCase
     }
 
     #[DataProvider('withArgumentsProvider')]
-    public function testAssignmentsWithArguments(string $ident, int $languageId, $arguments, string $result): void
-    {
+    public function testAssignmentsWithArguments(
+        string $ident,
+        int $languageId,
+        string|array $arguments,
+        string $result
+    ): void {
         $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
 
         $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident, $arguments));
@@ -88,12 +80,11 @@ class TranslateLogicTest extends IntegrationTestCase
     }
 
     #[DataProvider('missingTranslationProviderFrontend')]
-    public function testTranslateFrontend_isMissingTranslation(
+    public function testTranslateFrontendIsMissingTranslation(
         bool $isProductiveMode,
         string $ident,
         string $translation
-    ): void
-    {
+    ): void {
         $context = $this->prophesize(ContextInterface::class);
         $context->isShopInProductiveMode()->willReturn($isProductiveMode);
         $multiLangFilterLogic = new TranslateFilterLogic($context->reveal(), $this->getTranslator(1));

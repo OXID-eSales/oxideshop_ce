@@ -11,14 +11,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
-    ModuleConfigurationMergingServiceInterface
-};
+    ModuleConfigurationMergingServiceInterface};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 final class ModuleConfigurationMergingServiceTest extends TestCase
 {
@@ -442,9 +441,6 @@ final class ModuleConfigurationMergingServiceTest extends TestCase
         return $shopConfiguration;
     }
 
-    /**
-     * @return ModuleConfigurationMergingServiceInterface
-     */
     private function getMergingService(): ModuleConfigurationMergingServiceInterface
     {
         return $this->get(ModuleConfigurationMergingServiceInterface::class);

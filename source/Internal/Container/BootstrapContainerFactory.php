@@ -22,7 +22,7 @@ class BootstrapContainerFactory
     public static function getBootstrapContainer(): ContainerInterface
     {
         $symfonyContainer = (new BootstrapContainerBuilder())->create();
-        $symfonyContainer->compile();
+        $symfonyContainer->compile(true);
 
         return $symfonyContainer;
     }

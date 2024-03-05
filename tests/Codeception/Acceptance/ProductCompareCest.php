@@ -5,15 +5,18 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('myAccount')]
+#[Group('myAccount')]
 final class ProductCompareCest
 {
     public function enableProductCompare(AcceptanceTester $I): void
@@ -191,6 +194,6 @@ final class ProductCompareCest
 
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 }

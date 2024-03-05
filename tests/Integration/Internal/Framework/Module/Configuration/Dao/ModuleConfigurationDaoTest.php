@@ -20,18 +20,15 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Filesystem\Path;
 
-/**
- * @internal
- */
-class ModuleConfigurationDaoTest extends TestCase
+final class ModuleConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->prepareProjectConfiguration();
-
         parent::setUp();
+
+        $this->prepareProjectConfiguration();
     }
 
     public function testSaving(): void
@@ -82,8 +79,6 @@ class ModuleConfigurationDaoTest extends TestCase
         );
     }
 
-
-
     public function testDeleteAll(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
@@ -96,7 +91,7 @@ class ModuleConfigurationDaoTest extends TestCase
 
         $dao->deleteAll(1);
 
-        $this->assertEquals([],$dao->getAll(1));
+        $this->assertEquals([], $dao->getAll(1));
     }
 
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void

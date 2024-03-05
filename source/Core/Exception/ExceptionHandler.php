@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
@@ -50,14 +50,10 @@ class ExceptionHandler
                 $exception->getMessage(),
                 [$exception]
             );
-        } catch (\Throwable $loggerException) {
-            /**
-             * Its not possible to get the logger from the DI container.
-             * Try again to log original exception (without DI container) in order to show the root cause of a problem.
-             */
-            $loggerServiceFactory = new LoggerServiceFactory(new Context());
-            $logger = $loggerServiceFactory->getLogger();
-            $logger->error($exception);
+        } catch (\Throwable) {
+            (new LoggerServiceFactory(new Context(ShopIdCalculator::BASE_SHOP_ID)))
+                ->getLogger()
+                ->error($exception);
         }
 
         if ($this->_iDebug || php_sapi_name() === 'cli') {

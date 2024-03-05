@@ -15,8 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,7 @@ final class ProjectYamlDaoTest extends TestCase
     /**
      * @var ProjectYamlDaoInterface $dao
      */
-    private $dao;
+    private ProjectYamlDao $dao;
 
     public function setup(): void
     {
@@ -57,7 +57,7 @@ final class ProjectYamlDaoTest extends TestCase
         }
     }
 
-    public function testLoading()
+    public function testLoading(): void
     {
         $testData = <<<EOT
 imports:
@@ -85,7 +85,7 @@ EOT;
         $this->assertTrue(Path::isRelative($imports[0]));
     }
 
-    public function testLoadingEmptyFile()
+    public function testLoadingEmptyFile(): void
     {
         file_put_contents(
             $this->getTestGeneratedServicesFilePath(),
@@ -96,13 +96,13 @@ EOT;
         $this->assertCount(0, $projectYaml->getConfigAsArray());
     }
 
-    public function testLoadingNonExistingFile()
+    public function testLoadingNonExistingFile(): void
     {
         $projectYaml = $this->dao->loadProjectConfigFile();
         $this->assertCount(0, $projectYaml->getConfigAsArray());
     }
 
-    public function testWriting()
+    public function testWriting(): void
     {
         $projectYaml = new DIConfigWrapper(
             [
@@ -122,14 +122,14 @@ EOT;
         $this->assertEquals('some/path', $projectYaml->getConfigAsArray()['imports'][0]['resource']);
     }
 
-    public function testClearingCacheOnWriting()
+    public function testClearingCacheOnWriting(): void
     {
-        $container = (new ContainerBuilder(new Context()))->getContainer();
+        $container = (new ContainerBuilder(new Context(1)))->getContainer();
         $container->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
         $container->compile();
 
         $dao = $container->get(ProjectYamlDaoInterface::class);
-        $context = $container->get(BasicContextInterface::class);
+        $context = $container->get(ContextInterface::class);
 
         $projectYaml = $dao->loadProjectConfigFile();
 

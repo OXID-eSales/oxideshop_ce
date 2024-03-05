@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configu
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyModuleConfigurationCache;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
@@ -25,21 +24,21 @@ final class ClassPropertyModuleConfigurationCacheTest extends TestCase
         $cache = new ClassPropertyModuleConfigurationCache();
         $cache->put(2, $configuration);
 
-        $this->assertSame($configuration, $cache->get('test',2));
+        $this->assertSame($configuration, $cache->get('test', 2));
     }
 
     public function testExists(): void
     {
         $cache = new ClassPropertyModuleConfigurationCache();
 
-        $this->assertFalse($cache->exists('test',1));
+        $this->assertFalse($cache->exists('test', 1));
 
         $configuration = new ModuleConfiguration();
         $configuration->setId('test');
 
         $cache->put(1, $configuration);
 
-        $this->assertTrue($cache->exists('test',1));
+        $this->assertTrue($cache->exists('test', 1));
     }
 
     #[DoesNotPerformAssertions]

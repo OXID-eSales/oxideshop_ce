@@ -15,7 +15,7 @@ class UtilsSpy extends Utils
 {
     private array $headers = [];
 
-    public function setHeader($header)
+    public function setHeader($header): void
     {
         $this->headers[$header] = null;
     }

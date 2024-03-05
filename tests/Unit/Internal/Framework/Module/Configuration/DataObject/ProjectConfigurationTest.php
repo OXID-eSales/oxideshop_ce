@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataObject;
 
@@ -14,10 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
 
-class ProjectConfigurationTest extends TestCase
+final class ProjectConfigurationTest extends TestCase
 {
-    /** @var ProjectConfiguration */
-    private $projectConfiguration;
+    private ProjectConfiguration $projectConfiguration;
 
     protected function setUp(): void
     {
@@ -25,14 +24,14 @@ class ProjectConfigurationTest extends TestCase
         $this->projectConfiguration = new ProjectConfiguration();
     }
 
-    public function testGetShopConfiguration()
+    public function testGetShopConfiguration(): void
     {
         $shopConfiguration = new ShopConfiguration();
         $this->projectConfiguration->addShopConfiguration(0, $shopConfiguration);
         $this->assertSame($shopConfiguration, $this->projectConfiguration->getShopConfiguration(0));
     }
 
-    public function testGetShopConfigurations()
+    public function testGetShopConfigurations(): void
     {
         $shopConfiguration = new ShopConfiguration();
         $this->projectConfiguration->addShopConfiguration(0, $shopConfiguration);
@@ -48,13 +47,13 @@ class ProjectConfigurationTest extends TestCase
     }
 
 
-    public function testGetShopConfigurationThrowsExceptionWithNotExistingShopId()
+    public function testGetShopConfigurationThrowsExceptionWithNotExistingShopId(): void
     {
         $this->expectException(DomainException::class);
         $this->projectConfiguration->getShopConfiguration(0);
     }
 
-    public function testGetShopIdsOfShopConfigurations()
+    public function testGetShopIdsOfShopConfigurations(): void
     {
         $shopConfiguration = new ShopConfiguration();
         $this->projectConfiguration->addShopConfiguration(1, $shopConfiguration);
@@ -62,7 +61,7 @@ class ProjectConfigurationTest extends TestCase
         $this->assertEquals([1,2], $this->projectConfiguration->getShopConfigurationIds());
     }
 
-    public function testDeleteShopConfiguration()
+    public function testDeleteShopConfiguration(): void
     {
         $shopConfiguration = new ShopConfiguration();
         $this->projectConfiguration->addShopConfiguration(1, $shopConfiguration);
@@ -71,7 +70,7 @@ class ProjectConfigurationTest extends TestCase
         $this->assertEquals([2], $this->projectConfiguration->getShopConfigurationIds());
     }
 
-    public function testDeleteShopConfigurationThrowsExceptionWithNotExistingShopId()
+    public function testDeleteShopConfigurationThrowsExceptionWithNotExistingShopId(): void
     {
         $this->expectException(DomainException::class);
         $this->projectConfiguration->deleteShopConfiguration(0);

@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Directory;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
@@ -10,8 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
 {
-    /** @var string */
-    private $shopSourcePath;
+    private string $shopSourcePath;
 
     protected function setUp(): void
     {

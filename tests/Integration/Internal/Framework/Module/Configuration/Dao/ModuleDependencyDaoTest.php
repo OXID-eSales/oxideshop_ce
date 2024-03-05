@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-#[group('module-dependency')]
+#[Group('module-dependency')]
 final class ModuleDependencyDaoTest extends TestCase
 {
     use ContainerTrait;

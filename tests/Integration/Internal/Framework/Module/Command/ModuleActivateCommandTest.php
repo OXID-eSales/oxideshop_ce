@@ -11,11 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleActivateCommand;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 final class ModuleActivateCommandTest extends ModuleCommandsTestCase
 {
-    private $commandName = 'oe:module:activate';
+    private string $commandName = 'oe:module:activate';
 
     public function testModuleActivation(): void
     {

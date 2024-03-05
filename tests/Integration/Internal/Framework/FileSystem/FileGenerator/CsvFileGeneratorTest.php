@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Class CsvFileGeneratorTest
  */
-class CsvFileGeneratorTest extends TestCase
+final class CsvFileGeneratorTest extends TestCase
 {
     use ContainerTrait;
 

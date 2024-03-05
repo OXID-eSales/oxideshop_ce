@@ -9,34 +9,50 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\OnlineModulesNotifierRequest;
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifier;
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\Facts\Facts;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifierCaller;
 use PHPUnit\Framework\MockObject\MockObject;
 use StdClass;
+use Throwable;
 
-final class OnlineModuleNotifierTest extends BaseModuleTestCase
+final class OnlineModuleNotifierTest extends IntegrationTestCase
 {
+    use FilesystemTrait;
+
+    private array $installedModules = [];
+
     public function setUp(): void
     {
         parent::setUp();
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
+
+        $this->installedModules = [];
+        $this->backupVarDirectory();
+        $this->truncateDatabase();
     }
 
-    /**
-     * Tests if module was activated.
-     */
+    public function tearDown(): void
+    {
+        $this->uninstallTestedModules();
+        $this->restoreVarDirectory();
+        $this->get(ShopCacheCleanerInterface::class)->clear(1);
+
+        parent::tearDown();
+    }
+
     public function testVersionNotify(): void
     {
         $this->installModule('extending_1_class');
@@ -65,63 +81,89 @@ final class OnlineModuleNotifierTest extends BaseModuleTestCase
      */
     private function getExpectedRequest()
     {
-        $oRequest = oxNew('oxOnlineModulesNotifierRequest');
+        $request = oxNew(OnlineModulesNotifierRequest::class);
 
-        $sShopUrl = Registry::getConfig()->getShopUrl();
-        $oRequest->edition = (new Facts())->getEdition();
-        $oRequest->version = ShopVersion::getVersion();
-        $oRequest->shopUrl = $sShopUrl;
-        $oRequest->pVersion = '1.1';
-        $oRequest->productId = 'eShop';
+        $shopUrl = Registry::getConfig()->getShopUrl();
+        $request->edition = (new Facts())->getEdition();
+        $request->version = ShopVersion::getVersion();
+        $request->shopUrl = $shopUrl;
+        $request->pVersion = '1.1';
+        $request->productId = 'eShop';
 
         $modules = new StdClass();
         $modules->module = [];
 
-        $aModulesInfo = [];
-        $aModulesInfo[] = [
+        $modulesInfo = [];
+        $modulesInfo[] = [
             'id' => 'extending_1_class',
             'version' => '1.0',
-            'activeInShop' => [$sShopUrl],
+            'activeInShop' => [$shopUrl],
         ];
-        $aModulesInfo[] = [
+        $modulesInfo[] = [
             'id' => 'extending_1_class_3_extensions',
             'version' => '1.0',
-            'activeInShop' => [$sShopUrl],
+            'activeInShop' => [$shopUrl],
         ];
-        $aModulesInfo[] = [
+        $modulesInfo[] = [
             'id' => 'with_everything',
             'version' => '1.0',
             'activeInShop' => [],
         ];
 
-        foreach ($aModulesInfo as $aModuleInfo) {
+        foreach ($modulesInfo as $moduleInfo) {
             $module = new StdClass();
-            $module->id = $aModuleInfo['id'];
-            $module->version = $aModuleInfo['version'];
+            $module->id = $moduleInfo['id'];
+            $module->version = $moduleInfo['version'];
             $module->activeInShops = new StdClass();
-            $module->activeInShops->activeInShop = $aModuleInfo['activeInShop'];
+            $module->activeInShops->activeInShop = $moduleInfo['activeInShop'];
             $modules->module[] = $module;
         }
 
-        $oRequest->modules = $modules;
+        $request->modules = $modules;
 
-        return $oRequest;
+        return $request;
     }
 
     private function installModule(string $moduleId): void
     {
-        $installService = ContainerFactory::getInstance()->getContainer()->get(ModuleInstallerInterface::class);
-
-        $package = new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId);
-        $installService->install($package);
+        $this->get(ModuleInstallerInterface::class)
+            ->install(
+                new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId)
+            );
+        $this->installedModules[] = $moduleId;
     }
 
     private function activateModule(string $moduleId): void
     {
-        $activationService = ContainerFactory::getInstance()->getContainer()->get(
-            ModuleActivationBridgeInterface::class
-        );
+        $this->get(ModuleActivationBridgeInterface::class)
+            ->activate($moduleId, 1);
+    }
 
-        $activationService->activate($moduleId, 1);
+    private function uninstallModule(string $moduleId): void
+    {
+        $this->get(ModuleInstallerInterface::class)
+            ->uninstall(
+                new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId)
+            );
+    }
+
+    private function truncateDatabase(): void
+    {
+        DatabaseProvider::getDb()->execute('DELETE FROM `oxconfigdisplay`');
+    }
+
+    public function get(string $serviceId)
+    {
+        return ContainerFactory::getInstance()->getContainer()->get($serviceId);
+    }
+
+    private function uninstallTestedModules(): void
+    {
+        foreach ($this->installedModules as $moduleId) {
+            try {
+                $this->uninstallModule($moduleId);
+            } catch (Throwable) {
+            }
+        }
     }
 }

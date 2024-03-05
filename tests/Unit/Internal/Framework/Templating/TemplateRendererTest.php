@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 final class TemplateRendererTest extends TestCase
 {
     #[DataProvider('twigTemplateNameFileDataProvider')]
-    public function testRenderTemplateFilenameExtension($filename, $expectedFilename): void
+    public function testRenderTemplateFilenameExtension(string $filename, string $expectedFilename): void
     {
         $engine = $this->getEngineMock();
         $engine->method('render')
@@ -45,7 +45,7 @@ final class TemplateRendererTest extends TestCase
         $this->assertSame($response, $renderer->renderTemplate('template', []));
     }
 
-    public function testRenderFragment()
+    public function testRenderFragment(): void
     {
         $response = 'rendered template';
         $engine = $this->getEngineMock();
@@ -59,7 +59,7 @@ final class TemplateRendererTest extends TestCase
         $this->assertSame($response, $renderer->renderFragment('template', 'testId', []));
     }
 
-    public function testRenderFragmentIfDemoShop()
+    public function testRenderFragmentIfDemoShop(): void
     {
         $engine = $this->getEngineMock();
         $engine->expects($this->never())

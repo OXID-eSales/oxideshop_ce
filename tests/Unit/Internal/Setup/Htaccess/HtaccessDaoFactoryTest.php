@@ -16,8 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-use function PHPUnit\Framework\assertSame;
-
 final class HtaccessDaoFactoryTest extends TestCase
 {
     use ProphecyTrait;

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Validator;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
@@ -22,12 +23,12 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class ServicesYamlValidatorTest extends TestCase
+final class ServicesYamlValidatorTest extends TestCase
 {
     private ModuleConfigurationValidatorInterface $validator;
     private ModuleConfiguration $moduleConfiguration;
     private ModulePathResolverInterface|MockObject $modulePathResolver;
-    private $testModuleId = 'testModuleId';
+    private string $testModuleId = 'testModuleId';
 
     public function setUp(): void
     {

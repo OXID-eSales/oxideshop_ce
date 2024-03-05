@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class TruncateLogicTest extends TestCase
+final class TruncateLogicTest extends TestCase
 {
     private TruncateLogic $truncateLogic;
 
@@ -32,9 +33,6 @@ class TruncateLogicTest extends TestCase
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
 
-    /**
-     * @return array
-     */
     public static function truncateProvider(): array
     {
         return [

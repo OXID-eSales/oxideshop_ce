@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Session;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class BasketComponentSessionTest extends IntegrationTestCase
+final class BasketComponentSessionTest extends IntegrationTestCase
 {
     private string $articleId = '1000';
 
@@ -91,7 +91,7 @@ class BasketComponentSessionTest extends IntegrationTestCase
         );
     }
 
-    private function  initSessionMock(bool $checkSessionChallenge): void
+    private function initSessionMock(bool $checkSessionChallenge): void
     {
         $session = $this->createConfiguredMock(
             Session::class,

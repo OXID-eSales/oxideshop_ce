@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Dao;
 
+use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
@@ -17,9 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
 
-class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
+final class ProductRatingDaoTest extends TestCase
 {
-    public function testUpdateProductRating()
+    public function testUpdateProductRating(): void
     {
         $this->createTestProduct();
 
@@ -38,7 +40,7 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function createTestProduct()
+    private function createTestProduct(): void
     {
         $product = oxNew(Article::class);
         $product->setId('testProduct');
@@ -55,10 +57,10 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
     private function getProductRatingDao()
     {
         $bridge = ContainerFacade::get(ProductRatingBridgeInterface::class);
-        $serviceProperty = new \ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
+        $serviceProperty = new ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
         $serviceProperty->setAccessible(true);
         $service = $serviceProperty->getValue($bridge);
-        $daoProperty = new \ReflectionProperty(ProductRatingService::class, 'productRatingDao');
+        $daoProperty = new ReflectionProperty(ProductRatingService::class, 'productRatingDao');
         $daoProperty->setAccessible(true);
 
         return $daoProperty->getValue($service);

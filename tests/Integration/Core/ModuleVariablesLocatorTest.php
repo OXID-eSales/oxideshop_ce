@@ -16,7 +16,9 @@ use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('exclude_from_compilation')]
 final class ModuleVariablesLocatorTest extends IntegrationTestCase
 {
     public function tearDown(): void

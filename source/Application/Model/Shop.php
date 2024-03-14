@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\DbMetaDataHandler;
 use oxRegistry;
 use oxDb;
 
@@ -247,8 +248,10 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aTables = $oMetaData->getAllMultiTables($sTable);
         if (count($aTables)) {
+            $primaryKeyCols = DbMetaDataHandler::getPrimaryKeyColumns($sTable);
+            $primaryKey = implode(', ', $primaryKeyCols);
             foreach ($aTables as $sTableKey => $sTableName) {
-                $sJoin .= "LEFT JOIN {$sTableName} USING (OXID) ";
+                $sJoin .= "LEFT JOIN {$sTableName} USING ($primaryKey) ";
             }
         }
 
@@ -269,7 +272,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sJoin = ' ';
         $sLangTable = getLangTableName($sTable, $iLang);
         if ($sLangTable && $sLangTable !== $sTable) {
-            $sJoin .= "LEFT JOIN {$sLangTable} USING (OXID) ";
+            $primaryKeyCols = DbMetaDataHandler::getPrimaryKeyColumns($sTable);
+            $primaryKey = implode(', ', $primaryKeyCols);
+            $sJoin .= "LEFT JOIN {$sLangTable} USING ($primaryKey) ";
         }
 
         return $sJoin;

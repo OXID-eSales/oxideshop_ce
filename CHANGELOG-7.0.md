@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.0.4 - Unreleased
+## v7.0.4 - 2024-03-11
 
 ### Fixed
 - Fix sub shops share same template cache

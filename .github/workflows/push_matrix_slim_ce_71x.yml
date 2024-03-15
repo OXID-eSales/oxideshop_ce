@@ -1,4 +1,4 @@
-name: Auto trigger on Push to 7.0.x*
+name: Auto trigger on Push to 7.1.x*
 # Matrix workflow using re-usable github actions
 
 on:

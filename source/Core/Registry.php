@@ -431,4 +431,14 @@ class Registry
 
         return self::$instances[$className];
     }
+
+    /**
+     * Returns RandomNumberGenerator
+     *
+     * @return \OxidEsales\Eshop\Core\RandomNumberGenerator
+     */
+    public static function getRandomNumberGenerator()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\RandomNumberGenerator::class);
+    }
 }

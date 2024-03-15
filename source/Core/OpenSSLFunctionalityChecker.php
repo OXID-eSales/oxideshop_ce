@@ -7,8 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+
 /**
  * Class is responsible for openSSL functionality availability checking.
+ * @deprecated Use RandomNumberGenerator class
  */
 class OpenSSLFunctionalityChecker
 {

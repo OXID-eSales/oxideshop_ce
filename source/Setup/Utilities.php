@@ -59,7 +59,7 @@ class Utilities extends Core
      */
     public function generateUID()
     {
-        return md5(uniqid(rand(), true));
+        return bin2hex(random_bytes(16));
     }
 
     /**

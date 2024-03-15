@@ -205,7 +205,7 @@ class UtilsObject
      */
     public function generateUId()
     {
-        return md5(uniqid('', true) . '|' . microtime());
+        return \OxidEsales\Eshop\Core\Registry::getRandomNumberGenerator()->getRandomHexString(32);
     }
 
     /**

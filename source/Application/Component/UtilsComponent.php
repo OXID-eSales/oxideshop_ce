@@ -91,8 +91,6 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sProductId Product/article ID (default null)
      * @param double $dAmount    amount of good (default null)
      * @param array  $aSel       product selection list (default null)
-     *
-     * @return bool
      */
     public function toNoticeList($sProductId = null, $dAmount = null, $aSel = null)
     {
@@ -110,8 +108,6 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sProductId Product/article ID (default null)
      * @param double $dAmount    amount of good (default null)
      * @param array  $aSel       product selection list (default null)
-     *
-     * @return false
      */
     public function toWishList($sProductId = null, $dAmount = null, $aSel = null)
     {

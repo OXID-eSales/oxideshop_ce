@@ -1,11 +1,10 @@
 codeception:
   title: codeception_acceptance
   suite: 'acceptance,acceptanceAdmin'
-  additional_options: '--coverage-xml=/var/www/coverage_codeception_acceptance.xml'
   logfile:
     prefix: 'codeception'
   output:
     prefix: 'codeception-artifacts'
   coverage:
-    path: 'source/coverage_codeception_acceptance.xml'
+    path: ''
     prefix: coverage-reports-codeception_acceptance

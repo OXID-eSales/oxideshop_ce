@@ -7,13 +7,6 @@ prepare_shop:
       # yamllint disable-line rule:line-length
       parameters: 'codeception/codeception codeception/module-asserts codeception/module-db codeception/module-filesystem codeception/module-webdriver oxid-esales/codeception-modules oxid-esales/codeception-page-objects'
       options: '--no-update --dev'
-    configure:
-      install: 'testing_library'
-      update_options: '--no-interaction'
-    require:
-      install: ''
-      options: '--no-update'
-      update_options: '--no-interaction'
 
 phpunit:
   matrix:
@@ -22,6 +15,9 @@ phpunit:
 codeception:
   matrix:
     testplan: *skip
+
+runtest:
+  title: 'deprecated_tests'
 
 sonarcloud:
   matrix:

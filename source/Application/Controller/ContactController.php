@@ -65,11 +65,6 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * @var mixed|null|string
-     */
-    private $_oUserData;
-
-    /**
      * @return string
      */
     public function render()

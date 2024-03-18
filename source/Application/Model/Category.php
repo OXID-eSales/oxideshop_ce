@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
  * Collects category information (articles, etc.), performs insertion/deletion
  * of categories nodes. By recursion methods are set structure of category.
  */
+#[\AllowDynamicProperties]
 class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
@@ -131,11 +132,6 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     protected $_oParent = null;
 
     /**
-     * @var string|array|bool|int
-     */
-    public $oxcategories__oxdefsort;
-
-    /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
     public function __construct()
@@ -146,17 +142,10 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
     /**
      * Gets default sorting value
-     *
-     * @return string|null
      */
     public function getDefaultSorting()
     {
-        if (is_object($this->oxcategories__oxdefsort) && $this->oxcategories__oxdefsort->value)
-        {
-            return $this->oxcategories__oxdefsort->value;
-        }
-
-        return null;
+        return $this->getFieldData('oxdefsort');
     }
 
     /**

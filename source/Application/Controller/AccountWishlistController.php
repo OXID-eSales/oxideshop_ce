@@ -18,6 +18,7 @@ use OxidEsales\Eshop\Core\Registry;
  * login name in special field. OXID eShop -> MY ACCOUNT
  *  -> Newsletter.
  */
+#[\AllowDynamicProperties]
 class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
@@ -103,11 +104,6 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      * @var int
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
-
-    /**
-     * @var bool|array
-     */
-    protected $_aWishProductList;
 
     /**
      * If user is logged in loads his wishlist articles (articles may be accessed by

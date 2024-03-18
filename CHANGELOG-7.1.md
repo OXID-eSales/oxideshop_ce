@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.1.0 - unreleased
+## v7.1.0 - 2024-03-18
 
 ### Added
 - Class `ContainerFacade` and method `Base::getService()` for quick access to the DI Container from the non-DI areas

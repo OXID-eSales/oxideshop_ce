@@ -142,17 +142,10 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
     /**
      * Gets default sorting value
-     *
-     * @return string|null
      */
     public function getDefaultSorting()
     {
-        if (is_object($this->oxcategories__oxdefsort) && $this->oxcategories__oxdefsort->value)
-        {
-            return $this->oxcategories__oxdefsort->value;
-        }
-
-        return null;
+        return $this->getFieldData('oxdefsort');
     }
 
     /**

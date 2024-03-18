@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
  * similar products, top offer articles.
  * OXID eShop -> SHOPPING CART.
  */
+#[\AllowDynamicProperties]
 class BasketController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
@@ -94,11 +95,6 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
-
-    /**
-     * @var int
-     */
-    private $_iWrapCnt;
 
     /**
      * Executes parent::render(), creates list with basket articles

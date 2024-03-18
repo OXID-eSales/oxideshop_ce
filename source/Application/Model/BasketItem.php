@@ -16,6 +16,7 @@ use stdClass;
 /**
  * UserBasketItem class, responsible for storing most important fields
  */
+#[\AllowDynamicProperties]
 class BasketItem extends \OxidEsales\Eshop\Core\Base
 {
     /**
@@ -222,8 +223,6 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @var string
      */
     protected $basketItemKey = null;
-
-    public $oxuserbasketitems__oxamount;
 
     /**
      * Getter for basketItemkey.

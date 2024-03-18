@@ -13,16 +13,19 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidRightsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidShopException;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\UserExistsException;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDaoInterface;
 
 class AdminFactory implements AdminFactoryInterface
 {
     public function __construct(
         private ShopAdapterInterface $shopAdapter,
         private EmailValidatorServiceInterface $emailValidatorService,
-        private PasswordHashServiceInterface $passwordHashService
+        private PasswordHashServiceInterface $passwordHashService,
+        private AdminDaoInterface $adminDaoService
     ) {
     }
 
@@ -50,6 +53,11 @@ class AdminFactory implements AdminFactoryInterface
 
         if (!$this->shopAdapter->validateShopId($shopId)) {
             throw new InvalidShopException($shopId);
+        }
+        
+        if($this->adminDaoService->userNameExists($email, $shopId)) {
+            echo 'User already exists: '.$email.PHP_EOL;
+            exit;
         }
 
         return new Admin(

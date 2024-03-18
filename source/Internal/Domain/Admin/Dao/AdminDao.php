@@ -42,4 +42,20 @@ class AdminDao implements AdminDaoInterface
             ]);
         $queryBuilder->execute();
     }
+    
+    # check if username for email and shop id exists
+    public function userNameExists(string $email, int $shopId): bool {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('OXID')
+            ->from('oxuser')
+            ->where('OXUSERNAME = :OXUSERNAME')
+            ->andWhere('OXSHOPID = :OXSHOPID')
+            ->setParameters([
+                'OXUSERNAME' => $email,
+                'OXSHOPID' => $shopId,
+            ]);
+        $result = $queryBuilder->execute()->fetchOne();
+        return $result !== false;
+    }
 }

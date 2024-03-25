@@ -74,10 +74,7 @@
         "bin/oe-console"
     ],
     "config": {
-        "allow-plugins": {
-            "oxid-esales/oxideshop-composer-plugin": true,
-            "oxid-esales/oxideshop-unified-namespace-generator": true
-        }
+        "allow-plugins": false
     },
     "extra": {
         "oxideshop": {
@@ -99,6 +96,14 @@
         ],
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
+        ],
+
+        "phpunit": "vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=phpunit.xml",
+        "phpunit-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=phpunit.xml --coverage-html=tests/reports/coverage",
+
+        "codeception": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/codecept run acceptance -c tests/codeception.yml"
         ]
     }
 }

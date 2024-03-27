@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverI
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -32,7 +32,7 @@ class ServicesYamlValidatorTest extends TestCase
     {
         parent::setUp();
 
-        $context = new BasicContextStub();
+        $context = new ContextStub();
         $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
         $this->moduleConfiguration = new ModuleConfiguration();
         $this->validator = new ServicesYamlValidator(

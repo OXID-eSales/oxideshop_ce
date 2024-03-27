@@ -25,7 +25,6 @@ class BasicContextStub implements BasicContextInterface
     private string $enterpriseEditionRootPath;
     private string $generatedServicesFilePath;
     private string $configurableServicesFilePath;
-    private string $shopConfigurableServicesFilePath;
     private string $professionalEditionRootPath;
     private string $sourcePath;
     private string $shopRootPath;
@@ -39,8 +38,9 @@ class BasicContextStub implements BasicContextInterface
     private string $cacheDirectory;
     private string $moduleCacheDirectory;
     private string $templateCacheDirectory;
-    private int $currentShopId;
-    private string $activeModuleServicesFilePath;
+
+    protected string $activeModuleServicesFilePath;
+    protected string $shopConfigurableServicesFilePath;
 
     public function __construct()
     {
@@ -65,10 +65,9 @@ class BasicContextStub implements BasicContextInterface
         $this->cacheDirectory = $basicContext->getCacheDirectory();
         $this->moduleCacheDirectory = $basicContext->getModuleCacheDirectory();
         $this->templateCacheDirectory = $basicContext->getTemplateCacheDirectory();
-        $this->currentShopId = $basicContext->getCurrentShopId();
-        $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getCurrentShopId());
+        $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getDefaultShopId());
         $this->shopConfigurableServicesFilePath = $basicContext->getShopConfigurableServicesFilePath(
-            $this->getCurrentShopId()
+            $this->getDefaultShopId()
         );
     }
 
@@ -255,15 +254,5 @@ class BasicContextStub implements BasicContextInterface
     public function setActiveModuleServicesFilePath(string $path): void
     {
         $this->activeModuleServicesFilePath = $path;
-    }
-
-    public function getCurrentShopId(): int
-    {
-        return $this->currentShopId;
-    }
-
-    public function setCurrentShopId(int $shopId): void
-    {
-        $this->currentShopId = $shopId;
     }
 }

@@ -71,11 +71,6 @@ interface BasicContextInterface
     public function getDefaultShopId(): int;
 
     /**
-     * @return int
-     */
-    public function getCurrentShopId(): int;
-
-    /**
      * @return array
      */
     public function getAllShopIds(): array;

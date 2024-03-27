@@ -12,16 +12,16 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Filesystem\Path;
 
 class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 {
     public function __construct(
-        private BasicContextInterface $basicContext,
+        private ContextInterface $context,
         private ProjectYamlDaoInterface $projectYamlDao,
         private ModulePathResolverInterface $modulePathResolver
     ) {
@@ -68,7 +68,7 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
      */
     private function buildContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder($this->basicContext);
+        $containerBuilder = new ContainerBuilder($this->context);
         $container = $containerBuilder->getContainer();
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);

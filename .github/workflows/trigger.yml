@@ -20,6 +20,7 @@ jobs:
           else
             REF_TO_CHECK=${{ github.ref }}
           fi
+          # shellcheck disable=SC2088
           case "${REF_TO_CHECK}" in
             refs/heads/b-7.0.x*) TESTPLAN="~/defaults/7.0.x.yml,~/shop_ce_70x.yml" ;;
             refs/heads/b-7.1.x*) TESTPLAN="~/defaults/7.1.x.yml,~/shop_ce.yml" ;;

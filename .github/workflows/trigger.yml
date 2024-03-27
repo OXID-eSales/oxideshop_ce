@@ -16,9 +16,9 @@ jobs:
         run: |
           # Build testplan
           if [ '${{  github.event_name }}' == 'pull_request' ]; then
-            REF_TO_CHECK=${{ github.base_ref }}
+            REF_TO_CHECK='refs/heads/${{ github.base_ref }}'
           else
-            REF_TO_CHECK=${{ github.ref }}
+            REF_TO_CHECK='${{ github.ref }}'
           fi
           # shellcheck disable=SC2088
           case "${REF_TO_CHECK}" in

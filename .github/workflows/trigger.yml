@@ -21,7 +21,9 @@ jobs:
             LIMIT=""
           else
             REF_TO_CHECK='${{ github.ref }}'
+            # shellcheck disable=SC2088
             LIMIT70="~/defaults/php8.1_mysql5.7_only.yml,"
+            # shellcheck disable=SC2088
             LIMIT="~/defaults/php8.2_mysql5.7_only.yml,"
           fi
           # shellcheck disable=SC2088

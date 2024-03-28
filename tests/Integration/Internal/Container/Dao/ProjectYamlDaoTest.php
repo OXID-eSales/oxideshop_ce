@@ -16,8 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
@@ -123,7 +124,7 @@ EOT;
 
     public function testClearingCacheOnWriting()
     {
-        $container = (new ContainerBuilder(new BasicContext()))->getContainer();
+        $container = (new ContainerBuilder(new Context()))->getContainer();
         $container->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
         $container->compile();
 

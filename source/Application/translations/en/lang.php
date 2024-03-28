@@ -711,7 +711,6 @@ $aLang = [
 'DETAILS_VPE_MESSAGE'                                         => 'This product can only be ordered in packaging units of %s',
 'DETAILS_CHOOSEVARIANT'                                       => 'Please select a variant',
 'INVITE_TO_SHOP'                                              => 'An invitation from %s to visit %s',
-'PAYMENT_INFO_OFF'                                            => 'PAYMENT INFORMATION SWITCHED OFF - to switch it on please edit Application/views/[theme]/tpl/email/html/order_owner and plain/order_owner.',
 'DISTRIBUTORS'                                                => 'Distributors',
 'MANUFACTURERS'                                               => 'Brands',
 'SERVICES'                                                    => 'Service',

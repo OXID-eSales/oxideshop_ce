@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Edition\EditionSelector;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,15 @@ class ContainerBuilderTest extends TestCase
     public function testWhenCeServicesLoaded(): void
     {
         $context = $this->makeContextStub();
+        $context->setEdition(EditionSelector::COMMUNITY);
+        $container = $this->makeContainer($context);
+
+        $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
+    }
+
+    public function testBuilderCanWorkWithBasicContext(): void
+    {
+        $context = $this->makeBasicContextStub();
         $context->setEdition(EditionSelector::COMMUNITY);
         $container = $this->makeContainer($context);
 
@@ -92,7 +102,7 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
-    private function makeContainer(ContextInterface $context): Container
+    private function makeContainer(BasicContextInterface $context): Container
     {
         $containerBuilder = new ContainerBuilder($context);
         $container = $containerBuilder->getContainer();
@@ -103,6 +113,19 @@ class ContainerBuilderTest extends TestCase
     private function makeContextStub(): ContextStub
     {
         $context = new ContextStub();
+        $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
+        $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/PE');
+        $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');
+        $context->setGeneratedServicesFilePath('nonexisting.yaml');
+        $context->setConfigurableServicesFilePath('nonexisting.yaml');
+        $context->setShopConfigurableServicesFilePath('nonexisting.yaml');
+        $context->setActiveModuleServicesFilePath('nonexisting.yaml');
+        return $context;
+    }
+
+    private function makeBasicContextStub(): BasicContextStub
+    {
+        $context = new BasicContextStub();
         $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
         $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/PE');
         $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');

@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
@@ -29,7 +30,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ContainerBuilder
 {
-    public function __construct(private readonly ContextInterface $context)
+    public function __construct(private readonly BasicContextInterface $context)
     {
     }
 
@@ -60,7 +61,7 @@ class ContainerBuilder
             // In case manually created services file not found, do nothing.
         }
         try {
-            $loader->load($this->context->getShopConfigurableServicesFilePath($this->context->getCurrentShopId()));
+            $loader->load($this->context->getShopConfigurableServicesFilePath($this->getShopId()));
         } catch (FileLocatorFileNotFoundException) {
             // In case manually created services file not found, do nothing.
         }
@@ -106,7 +107,7 @@ class ContainerBuilder
 
     private function loadModuleServices(SymfonyContainerBuilder $symfonyContainer): void
     {
-        $moduleServicesFilePath = $this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId());
+        $moduleServicesFilePath = $this->context->getActiveModuleServicesFilePath($this->getShopId());
         try {
             $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
             $loader->load($moduleServicesFilePath);
@@ -122,5 +123,12 @@ class ContainerBuilder
             );
             // phpcs:enable
         }
+    }
+
+    private function getShopId(): int
+    {
+        return $this->context instanceof ContextInterface
+            ? $this->context->getCurrentShopId()
+            : $this->context->getDefaultShopId();
     }
 }

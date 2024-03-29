@@ -15,4 +15,4 @@
 - Remove deprecated global function \makeReadable()
 - Redundant `TemplateFileResolverInterface` functionality
 - Smarty templates support
-- `PAYMENT_INFO_OFF` translation [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)
+- `PAYMENT_INFO_OFF` translation [#0006426](https://bugs.oxid-esales.com/view.php?id=6426) [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)

@@ -30,6 +30,7 @@ class CodeceptionParametersProvider
             'DB_PORT' => getenv('DB_PORT') ?: $facts->getDatabasePort(),
             'DUMP_PATH' => $this->getTestDataDumpFilePath(),
             'FIXTURES_PATH' => $this->getTestFixtureSqlFilePath(),
+            'OUT_DIRECTORY_FIXTURES' => $this->getOutDirectoryFixturesPath(),
             'MYSQL_CONFIG_PATH' => $this->getMysqlConfigPath(),
             'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
             'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: 'selenium',
@@ -55,6 +56,14 @@ class CodeceptionParametersProvider
         return Path::join(
             $this->getShopTestPath(),
             '/Codeception/Support/Data/dump.sql',
+        );
+    }
+
+    private function getOutDirectoryFixturesPath(): string
+    {
+        return Path::join(
+            $this->getShopTestPath(),
+            '/Codeception/Support/Data/out',
         );
     }
 

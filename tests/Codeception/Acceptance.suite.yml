@@ -20,6 +20,7 @@ modules:
         - \OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'
+            out_directory_fixtures: '%OUT_DIRECTORY_FIXTURES%'
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
             user: '%DB_USERNAME%'

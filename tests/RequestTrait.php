@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests;
 
 trait RequestTrait
 {
-    private array $post;
+    private array $post = [];
 
     public function backupRequestData(): void
     {

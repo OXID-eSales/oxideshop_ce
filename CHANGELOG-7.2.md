@@ -15,4 +15,4 @@
 -  
 
 ### Removed
-- 
+- Obsolete demo data and images from the `source/out` directory

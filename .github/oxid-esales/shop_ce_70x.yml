@@ -21,6 +21,9 @@ phpmd:
   matrix:
     testplan: '["-"]'
 
+runtest:
+  matrix: *skip_matrix
+
 sonarcloud:
   matrix: *skip_matrix
   # matrix:

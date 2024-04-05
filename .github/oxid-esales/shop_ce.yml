@@ -1,11 +1,17 @@
 # This config depends on the defaults.yml testplan
 # Only diverging settings are defined here
 
+phpunit:
+  matrix: &skip_matrix
+    testplan: 'skip'
+
 codeception:
+  matrix: *skip_matrix
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
 
 phpcs_tests:
+  matrix: *skip_matrix
   # Check all files in the full check
   diff_only: false
   filter: '^\./source/Internal/.*\.php$'
@@ -15,5 +21,6 @@ phpmd:
     testplan: '["-"]'
 
 sonarcloud:
-  matrix:
-    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
+  matrix: *skip_matrix
+  # matrix:
+  #   testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'

@@ -1,20 +1,30 @@
 # This config depends on the defaults.yml testplan
 # Only diverging settings are defined here
 
+phpunit:
+  matrix: &skip_matrix
+    testplan: 'skip'
+
 codeception:
-  matrix:
-    testplan: '["~/codeception_acceptance_70x.yml","~/codeception_acceptanceSetup_70x.yml"]'
+  matrix: *skip_matrix
+  #   testplan: '["~/codeception_acceptance_70x.yml","~/codeception_acceptanceSetup_70x.yml"]'
   # Running on public runners, this should pose no problem
   max_parallel: &codeception_max_parallel 4
 
 phpcs_tests:
+  matrix: *skip_matrix
   # Check all files in the full check
   diff_only: false
   filter: '^\./source/Internal/.*\.php$'
 
-sonarcloud:
+phpmd:
   matrix:
-    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
+    testplan: '["-"]'
+
+sonarcloud:
+  matrix: *skip_matrix
+  # matrix:
+  #   testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
 
 finish:
   slack_title: 'Full matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

@@ -1,4 +1,4 @@
-name: Nightly runs
+name: Nightly runs CE
 # Matrix workflow using re-usable github actions
 
 on:

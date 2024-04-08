@@ -20,6 +20,10 @@ phpmd:
   matrix:
     testplan: '["-"]'
 
+phpstan:
+  matrix:
+    testplan: '["-"]'
+
 sonarcloud:
   matrix: *skip_matrix
   # matrix:

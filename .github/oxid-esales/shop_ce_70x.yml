@@ -21,6 +21,10 @@ phpmd:
   matrix:
     testplan: '["-"]'
 
+phstan:
+  matrix:
+    testplan: '["-"]'
+
 runtest:
   matrix: *skip_matrix
 

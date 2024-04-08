@@ -15,8 +15,12 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('product')]
 final class ProductDetailsPageCest
 {
+    private string $productId = '1000';
+    private string $productVariantId = '1001432';
+
     #[Group('main', 'product', 'productVariants')]
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
@@ -592,6 +596,118 @@ final class ProductDetailsPageCest
         $productNavigation->openProductDetailsPage($productData['id'])
             ->seeProductData($productData)
             ->seeAmountPrices($amountPrices);
+    }
+
+    #[Group('stock')]
+    public function lowStockProductTests(AcceptanceTester $I): void
+    {
+        $I->wantToTest('product low stock label');
+
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXSTOCK' => 1
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+
+        $productListPage = $I->openShop()->searchFor($this->productId);
+        $productListPage->openProductDetailsPage(1);
+
+        $I->see(Translator::translate('LOW_STOCK'));
+
+
+        $I->amGoingTo('Test product low stock label with deactivated default option');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '0', 'bool');
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXLOWSTOCKACTIVE' => 0
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+        $I->reloadPage();
+        $product = $this->getProductData($this->productId);
+
+        $I->dontSee($product['OXSTOCKTEXT_1']);
+
+
+        $I->amGoingTo('Test product low stock label with product flag enabled');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '1', 'bool');
+        $lowStockMessage = 'product has low stock';
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXREMINDAMOUNT' => 20,
+                'OXLOWSTOCKTEXT_1' => $lowStockMessage,
+                'OXLOWSTOCKACTIVE' => 1
+            ],
+            [
+                'OXID' => $this->productId
+            ]
+        );
+        $I->reloadPage();
+
+        $I->see($lowStockMessage);
+    }
+
+    #[Group('stock', 'productVariants')]
+    public function lowStockProductVariantTests(AcceptanceTester $I): void
+    {
+        $I->wantToTest('product variant low stock label');
+
+        $productVariant = $this->getProductData($this->productVariantId);
+
+        $productListPage = $I->openShop()->searchFor($productVariant['OXPARENTID']);
+        $detailsPage = $productListPage->openProductDetailsPage(1);
+
+        $I->dontSee(Translator::translate('LOW_STOCK'));
+
+        $I->amGoingTo('Test product low stock label with deactivated default option');
+
+        $detailsPage->selectVariant(1, $productVariant['OXVARSELECT_1']);
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXLOWSTOCKACTIVE' => 0
+            ],
+            [
+                'OXID' => $this->productVariantId
+            ]
+        );
+        $I->see(Translator::translate('LOW_STOCK'));
+
+
+        $I->amGoingTo('Test product low stock label with product flag enabled');
+
+        $I->updateConfigInDatabase('blStockLowDefaultMessage', '1', 'bool');
+        $lowStockMessage = 'product has low stock';
+        $I->updateInDatabase(
+            'oxarticles',
+            [
+                'OXREMINDAMOUNT' => 20,
+                'OXLOWSTOCKTEXT_1' => $lowStockMessage,
+                'OXLOWSTOCKACTIVE' => 1
+            ],
+            [
+                'OXID' => $this->productVariantId
+            ]
+        );
+        $I->reloadPage();
+        $detailsPage->selectVariant(1, $productVariant['OXVARSELECT_1']);
+
+        $I->see($lowStockMessage);
+    }
+
+    private function getProductData(string $productID): array
+    {
+        return Fixtures::get('product-' . $productID);
     }
 
     private function getExistingUserData()

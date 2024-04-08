@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Core\Exception\ShopException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Facts\Facts;
@@ -985,24 +986,19 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return $sParams;
     }
 
-    /**
-     * Returns config param "blStockOnDefaultMessage" value
-     *
-     * @return string
-     */
     public function getStockOnDefaultMessage()
     {
         return Registry::getConfig()->getConfigParam('blStockOnDefaultMessage');
     }
 
-    /**
-     * Returns config param "blStockOnDefaultMessage" value
-     *
-     * @return string
-     */
     public function getStockOffDefaultMessage()
     {
         return Registry::getConfig()->getConfigParam('blStockOffDefaultMessage');
+    }
+
+    public function getStockLowDefaultMessage(): bool
+    {
+        return (bool) Registry::getConfig()->getConfigParam('blStockLowDefaultMessage');
     }
 
     /**

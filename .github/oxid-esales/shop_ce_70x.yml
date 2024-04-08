@@ -21,7 +21,7 @@ phpmd:
   matrix:
     testplan: '["-"]'
 
-phstan:
+phpstan:
   matrix:
     testplan: '["-"]'
 

@@ -5,13 +5,11 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 
-interface ConnectionProviderInterface
+interface ConnectionFactoryInterface
 {
-    public function get(): Connection;
+    public function create(): Connection;
 }

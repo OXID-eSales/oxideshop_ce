@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use Doctrine\DBAL\Driver\Connection;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+
 /**
  * Calculates Shop id from request data or shop url.
  *
@@ -20,15 +23,13 @@ class ShopIdCalculator
     /** @var array */
     private static $urlMap;
 
-    /** @var FileCache */
-    private $variablesCache;
-
-    /**
-     * @param FileCache $variablesCache
-     */
-    public function __construct($variablesCache)
-    {
-        $this->variablesCache = $variablesCache;
+    public function __construct(
+        private readonly \OxidEsales\Eshop\Core\FileCache $variablesCache,
+        private ?Connection $connection = null,
+    ) {
+        if (!$this->connection) {
+            $this->connection = ContainerFacade::get(\Doctrine\DBAL\Driver\Connection::class);
+        }
     }
 
     /**
@@ -54,50 +55,35 @@ class ShopIdCalculator
         }
 
         //get from file cache
-        $aMap = $this->getVariablesCache()->getFromCache("urlMap");
-        if (!is_null($aMap)) {
-            self::$urlMap = $aMap;
+        $urlMap = $this->getVariablesCache()->getFromCache("urlMap");
+        if (!is_null($urlMap)) {
+            self::$urlMap = $urlMap;
 
-            return $aMap;
+            return $urlMap;
         }
 
-        $aMap = [];
+        $urlMap = [];
+        foreach ($this->fetchUrlsFromConfigTable() as $row) {
+            $shopId = (int)$row['oxshopid'];
+            $variableName = $row['oxvarname'];
+            $urlValues = $row['oxvarvalue'];
 
-        $sSelect = "
-            SELECT oxshopid, oxvarname, oxvarvalue
-            FROM oxconfig
-            WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
-
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $oRs = $masterDb->select($sSelect);
-
-        if ($oRs && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $iShp = (int) $oRs->fields[0];
-                $sVar = $oRs->fields[1];
-                $sURL = $oRs->fields[2];
-
-                if ($sVar == 'aLanguageURLs') {
-                    $aUrls = unserialize($sURL);
-                    if (is_array($aUrls) && count($aUrls)) {
-                        $aUrls = array_filter($aUrls);
-                        $aUrls = array_fill_keys($aUrls, $iShp);
-                        $aMap = array_merge($aMap, $aUrls);
-                    }
-                } elseif ($sURL) {
-                    $aMap[$sURL] = $iShp;
+            if ($variableName === 'aLanguageURLs') {
+                $urls = \unserialize($urlValues, ['allowed_classes' => false]);
+                if (is_array($urls) && count($urls)) {
+                    $urls = \array_filter($urls);
+                    $urls = \array_fill_keys($urls, $shopId);
+                    $urlMap = \array_merge($urlMap, $urls);
                 }
-
-                $oRs->fetchRow();
+            } elseif ($urlValues) {
+                $urlMap[$urlValues] = $shopId;
             }
         }
-
         //save to cache
-        $this->getVariablesCache()->setToCache("urlMap", $aMap);
-        self::$urlMap = $aMap;
+        $this->getVariablesCache()->setToCache("urlMap", $urlMap);
+        self::$urlMap = $urlMap;
 
-        return $aMap;
+        return $urlMap;
     }
 
     /**
@@ -106,5 +92,19 @@ class ShopIdCalculator
     protected function getVariablesCache()
     {
         return $this->variablesCache;
+    }
+
+    private function fetchUrlsFromConfigTable(): array
+    {
+        $this->connection->connect();
+        $statement = $this->connection
+            ->prepare(
+                "SELECT oxshopid, oxvarname, oxvarvalue
+                FROM oxconfig
+                WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')"
+            );
+        $statement->execute();
+
+        return $statement->fetchAllAssociative();
     }
 }

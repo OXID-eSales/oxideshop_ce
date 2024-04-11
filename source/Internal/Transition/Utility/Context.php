@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Core\FileCache;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\BootstrapConnectionFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
@@ -53,12 +54,13 @@ class Context extends BasicContext implements ContextInterface
         return $contactFormRequiredFields ?? [];
     }
 
-    /**
-     * @return int
-     */
     public function getCurrentShopId(): int
     {
-        $shopIdCalculator = new ShopIdCalculator(new FileCache());
+        $bootstrapDbConnection = (new BootstrapConnectionFactory())->create();
+        $shopIdCalculator = new ShopIdCalculator(
+            new FileCache(),
+            $bootstrapDbConnection,
+        );
 
         return (int)$shopIdCalculator->getShopId();
     }

@@ -1,14 +1,15 @@
 imports:
   - { resource: Cache/services.yaml }
+  - { resource: Console/services.yaml }
+  - { resource: Configuration/services.yaml }
+  - { resource: DIContainer/services.yaml }
+  - { resource: Database/services.yaml }
+  - { resource: Event/services.yaml }
+  - { resource: FileSystem/services.yaml }
+  - { resource: Form/services.yaml }
   - { resource: Logger/services.yaml }
+  - { resource: Migration/services.yaml }
+  - { resource: Module/services.yaml }
+  - { resource: SystemRequirements/services.yaml }
   - { resource: Templating/services.yaml }
   - { resource: Theme/services.yaml }
-  - { resource: Console/services.yaml }
-  - { resource: Module/services.yaml }
-  - { resource: Event/services.yaml }
-  - { resource: Database/services.yaml }
-  - { resource: Form/services.yaml }
-  - { resource: DIContainer/services.yaml }
-  - { resource: Migration/services.yaml }
-  - { resource: FileSystem/services.yaml }
-  - { resource: SystemRequirements/services.yaml }

@@ -5,13 +5,13 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactory
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionService
+  OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory
+
+  Doctrine\DBAL\Driver\Connection:
+    public: true
+    factory: [ '@OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface', 'create' ]

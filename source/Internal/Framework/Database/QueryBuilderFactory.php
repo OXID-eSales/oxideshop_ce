@@ -9,25 +9,21 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use PDO;
+use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use PDO;
 
 class QueryBuilderFactory implements QueryBuilderFactoryInterface
 {
-    public function __construct(private ConnectionProviderInterface $connectionProvider)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
-    /**
-     * Method returns query builder.
-     *
-     * @return QueryBuilder
-     */
     public function create(): QueryBuilder
     {
-        $connection = $this->connectionProvider->get();
+        $connection = $this->connection;
         $connection->setFetchMode(PDO::FETCH_ASSOC);
 
-        return $connection->createQueryBuilder();
+        return new QueryBuilder($connection);
     }
 }

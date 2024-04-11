@@ -9,14 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Database\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class QueryLoggerTest extends TestCase
+final class QueryLoggerTest extends TestCase
 {
     public function testLoggingEnabled(): void
     {
@@ -46,7 +47,7 @@ class QueryLoggerTest extends TestCase
         $this->runQuery($queryFilter, $psrLogger);
     }
 
-    private function getPsrLoggerMock(): LoggerInterface
+    private function getPsrLoggerMock(): MockObject|LoggerInterface
     {
         $psrLogger = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
@@ -68,7 +69,7 @@ class QueryLoggerTest extends TestCase
         return $psrLogger;
     }
 
-    public function runQuery(QueryFilterInterface $queryFilter, LoggerInterface $psrLogger): void
+    private function runQuery(QueryFilterInterface $queryFilter, LoggerInterface $psrLogger): void
     {
         $logger = new QueryLogger($queryFilter, new ContextStub(), $psrLogger);
 

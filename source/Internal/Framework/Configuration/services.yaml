@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\SystemConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\SystemConfigurationDao

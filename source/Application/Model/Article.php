@@ -5267,7 +5267,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Set needed parameters to article list object like language.
      *
      * @param \OxidEsales\Eshop\Core\Model\BaseModel $baseObject          article list template object.
-     * @param bool|null                              $forceCoreTableUsage if true forces core table use, default is false [optional]
+     * @param bool|null                              $forceCoreTableUsage if true forces core table use, default is
+     *                                                                    false [optional]
      */
     protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
     {

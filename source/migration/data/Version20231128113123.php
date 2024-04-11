@@ -22,24 +22,20 @@ final class Version20231128113123 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql(
-            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT` VARCHAR(255) NOT NULL default "" COMMENT '
-                . '"Message, which is shown if the article is in low stock (multilanguage)" AFTER `OXSTOCKTEXT`'
+            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT` TEXT NOT NULL default "" COMMENT '
+                . '"Message, which is shown if the article is in low stock (multilanguage)"'
         );
         $this->addSql(
-            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_1` VARCHAR(255) NOT NULL default "" AFTER '
-                . '`OXSTOCKTEXT_3`'
+            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_1` TEXT NOT NULL default'
         );
         $this->addSql(
-            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_2` VARCHAR(255) NOT NULL default "" AFTER '
-                . '`OXLOWSTOCKTEXT_1`'
+            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_2` TEXT NOT NULL default'
         );
         $this->addSql(
-            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_3` VARCHAR(255) NOT NULL default "" AFTER '
-                . '`OXLOWSTOCKTEXT_2`'
+            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKTEXT_3` TEXT NOT NULL default'
         );
         $this->addSql(
-            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKACTIVE` TINYINT(1) AFTER '
-                . '`OXLOWSTOCKTEXT`'
+            'ALTER TABLE `oxarticles` ADD column `OXLOWSTOCKACTIVE` TINYINT(1)'
         );
     }
 

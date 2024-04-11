@@ -164,11 +164,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * $_fPricePerUnit holds price per unit value in active shop currency.
-     * $_fPricePerUnit is calculated from
-     * \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxunitquantity->value
-     * and from \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxuniname->value. If either one of these
-     * values is empty then $_fPricePerUnit is not calculated. Example: In case when product price is 10 EUR and
-     * product quantity is 0.5 (liters) then $_fPricePerUnit would be 20,00
+     * $_fPricePerUnit is calculated from \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxunitquantity->value
+     * and from \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxuniname->value. If either one of these values is empty then $_fPricePerUnit is not calculated.
+     * Example: In case when product price is 10 EUR and product quantity is 0.5 (liters) then $_fPricePerUnit would be 20,00
      */
     protected $_fPricePerUnit = null;
 
@@ -471,8 +469,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Constructor, sets shop ID for article (\OxidEsales\Eshop\Core\Config::getShopId()),
      * initiates parent constructor (parent::oxI18n()).
      *
-     * @param array $aParams The array of names and values of oxArticle instance properties to be set on object
-     *                       instantiation
+     * @param array $aParams The array of names and values of oxArticle instance properties to be set on object instantiation
      */
     public function __construct($aParams = null)
     {
@@ -712,8 +709,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Assign condition setter. In case article assignment is skipped ($_blSkipAssign = true), it does not perform
-     * additional
+     * Assign condition setter. In case article assignment is skipped ($_blSkipAssign = true), it does not perform additional
      *
      * @param bool $blSkipAssign Whether to skip assign process for the article
      */
@@ -1526,8 +1522,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param array  $aFilterIds    ids of active selections [optional]
      * @param string $sActVariantId active variant id [optional]
-     * @param int    $iLimit        limit variant lists count (if non zero, return limited number of multidimensional
-     *                              variant selections)
+     * @param int    $iLimit        limit variant lists count (if non zero, return limited number of multidimensional variant selections)
      *
      * @return array
      */
@@ -1618,8 +1613,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns variant list (list contains oxArticle objects)
      *
-     * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock
-     *                                    [optional]
+     * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
      *
      * @return \OxidEsales\Eshop\Application\Model\ArticleList
@@ -1631,8 +1625,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Collects and returns article variants.
-     * Note: Only active variants are returned by this method. If you need full variant list use
-     * \OxidEsales\Eshop\Application\Model\Article::getAdminVariants()
+     * Note: Only active variants are returned by this method. If you need full variant list use \OxidEsales\Eshop\Application\Model\Article::getAdminVariants()
      *
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
@@ -2413,8 +2406,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * This function is triggered whenever article is saved or deleted or after the stock is changed.
      * Originally we need to update the oxstock for possible article parent in case parent is not buyable
      * Plus you may want to extend this function to update some extended information.
-     * Call \OxidEsales\Eshop\Application\Model\Article::onChange($sAction, $sOXID) with ID parameter when changes are
-     * executed over SQL.
+     * Call \OxidEsales\Eshop\Application\Model\Article::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
      * (or use module class instead of oxArticle if such exists)
      *
      * @param string $action          Action constant
@@ -3557,10 +3549,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads and returns variants list.
      *
-     * @param bool      $loadSimpleVariants    if parameter $blSimple - list will be filled with oxSimpleVariant
-     *                                         objects, else - oxArticle
-     * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of
-     *                                         stock [optional]
+     * @param bool      $loadSimpleVariants    if parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
+     * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
      * @return array|\OxidEsales\Eshop\Application\Model\SimpleVariantList|\OxidEsales\Eshop\Application\Model\ArticleList
@@ -3707,8 +3697,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Calculates price of article (adds taxes, currency and discounts).
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
-     * @param double                       $dVat   vat value, optional, if passed, bypasses
-     *                                             "bl_perfCalcVatOnlyForBasketOrder" config value
+     * @param double                       $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -4493,14 +4482,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->oxarticles__oxstockflag->value != 4
         ) {
             //ORANGE light
-            $stock = $this->getAvailableStock();
+            $iStock = $this->oxarticles__oxstock->value;
 
-            if ($stock > 0 && $this->isLowStock()) {
+            if ($this->_blNotBuyableParent) {
+                $iStock = $this->oxarticles__oxvarstock->value;
+            }
+
+            if ($iStock <= $myConfig->getConfigParam('sStockWarningLimit') && $iStock > 0) {
                 $this->_iStockStatus = 1;
             }
 
             //RED light
-            if ($stock <= 0) {
+            if ($iStock <= 0) {
                 $this->_iStockStatus = -1;
             }
         }
@@ -5262,8 +5255,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Set needed parameters to article list object like language.
      *
      * @param \OxidEsales\Eshop\Core\Model\BaseModel $baseObject          article list template object.
-     * @param bool|null                              $forceCoreTableUsage if true forces core table use, default is
-     *                                                                    false [optional]
+     * @param bool|null                              $forceCoreTableUsage if true forces core table use, default is false [optional]
      */
     protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
     {
@@ -5276,24 +5268,5 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function updateManufacturerBeforeLoading($oManufacturer)
     {
         $oManufacturer->setReadOnly(true);
-    }
-
-    private function getAvailableStock(): int
-    {
-        return (int) ($this->_blNotBuyableParent
-            ? $this->oxarticles__oxvarstock->value
-            : $this->oxarticles__oxstock->value);
-    }
-
-    private function isLowStock(): bool
-    {
-        return $this->getAvailableStock() <= $this->getLowStockThreshold();
-    }
-
-    private function getLowStockThreshold(): int
-    {
-        return (int) ($this->oxarticles__oxlowstockactive->value ?
-            $this->oxarticles__oxremindamount->value :
-            Registry::getConfig()->getConfigParam('sStockWarningLimit'));
     }
 }

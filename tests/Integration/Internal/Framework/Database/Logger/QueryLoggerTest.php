@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Database\Logger;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
@@ -17,62 +18,35 @@ use Psr\Log\LoggerInterface;
 
 class QueryLoggerTest extends TestCase
 {
-    public static function providerTestLogging(): array
-    {
-        return [
-             [
-                 'query_pass' => true,
-                 'expected'   => 'once'
-             ],
-             [
-                 'query_pass' => false,
-                 'expected'   => 'never'
-             ]
-        ];
-    }
-
-    /**
-     * @dataProvider providerTestLogging
-     */
-    public function testLogging(bool $queryPass, string $expected)
-    {
-        $context = new ContextStub();
-
-        $queryFilter = $this->getQueryFilterMock($queryPass);
-        $psrLogger = $this->getPsrLoggerMock();
-
-        $psrLogger->expects($this->$expected())
-            ->method('debug');
-
-        $logger = new QueryLogger($queryFilter, $context, $psrLogger);
-        $query = 'dummy test query where oxid = :id ';
-
-        $logger->startQuery($query, [':id' => 'testid']);
-        $logger->stopQuery();
-    }
-
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|QueryFilter
-     */
-    private function getQueryFilterMock($pass = true)
+    public function testLoggingEnabled(): void
     {
         $queryFilter = $this->getMockBuilder(QueryFilter::class)
             ->onlyMethods(['shouldLogQuery'])
             ->getMock();
 
-        $queryFilter->expects($this->any())
-            ->method('shouldLogQuery')
-            ->willReturn($pass);
+        $queryFilter->method('shouldLogQuery')->willReturn(true);
 
-        return $queryFilter;
+        $psrLogger = $this->getPsrLoggerMock();
+        $psrLogger->expects($this->once())->method('debug');
+
+        $this->runQuery($queryFilter, $psrLogger);
     }
 
-    /**
-     * Test helper.
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|LoggerInterface
-     */
-    private function getPsrLoggerMock()
+    public function testLoggingDisabled(): void
+    {
+        $queryFilter = $this->getMockBuilder(QueryFilter::class)
+            ->onlyMethods(['shouldLogQuery'])
+            ->getMock();
+
+        $queryFilter->method('shouldLogQuery')->willReturn(false);
+
+        $psrLogger = $this->getPsrLoggerMock();
+        $psrLogger->expects($this->never())->method('debug');
+
+        $this->runQuery($queryFilter, $psrLogger);
+    }
+
+    private function getPsrLoggerMock(): LoggerInterface
     {
         $psrLogger = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
@@ -92,5 +66,13 @@ class QueryLoggerTest extends TestCase
             ->getMock();
 
         return $psrLogger;
+    }
+
+    public function runQuery(QueryFilterInterface $queryFilter, LoggerInterface $psrLogger): void
+    {
+        $logger = new QueryLogger($queryFilter, new ContextStub(), $psrLogger);
+
+        $logger->startQuery('dummy query', [':id' => 'testId']);
+        $logger->stopQuery();
     }
 }

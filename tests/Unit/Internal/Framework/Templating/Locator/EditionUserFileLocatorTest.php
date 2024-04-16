@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Locator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
@@ -21,10 +22,8 @@ final class EditionUserFileLocatorTest extends TestCase
     /** @var vfsStream */
     private $vfsStreamDirectory;
 
-    /**
-     * @dataProvider dataProviderTestLocate
-     */
-    public function testLocate($edition)
+    #[DataProvider('dataProviderTestLocate')]
+    public function testLocate(string $edition): void
     {
         $this->createModuleStructure($edition);
         $locator = new EditionUserFileLocator(
@@ -60,12 +59,7 @@ final class EditionUserFileLocatorTest extends TestCase
         return $adminTheme;
     }
 
-    /**
-     * @param string $edition
-     *
-     * @return BasicContextStub
-     */
-    private function getContext(string $edition)
+    private function getContext(string $edition): BasicContextStub
     {
         $context = new BasicContextStub();
         $context->setEdition($edition);
@@ -76,7 +70,7 @@ final class EditionUserFileLocatorTest extends TestCase
         return $context;
     }
 
-    private function createModuleStructure($edition)
+    private function createModuleStructure(string $edition): void
     {
         $shopPath = 'testSourcePath' . $edition;
         $structure = [

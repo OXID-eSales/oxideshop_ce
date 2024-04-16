@@ -9,22 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @runInSeparateProcess
- */
 final class DiagnosticsOutputTest extends TestCase
 {
     private string $key = "diagnostic_tool_result";
     private static string $sOutputFileName = "diagnostic_tool_result.html";
 
-    /**
-    * @runInSeparateProcess
-    */
+    #[RunInSeparateProcess]
     public function testDownloadResultFileWillSetCorrectContentLengthHeader(): void
     {
         $content = 'some-content-123';
@@ -47,10 +44,8 @@ final class DiagnosticsOutputTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider headerValuesProvider
-     * @runInSeparateProcess
-     */
+    #[DataProvider('headerValuesProvider')]
+    #[RunInSeparateProcess]
     public function testItShouldSetCorrectHeaderValue(string $headerValue): void
     {
         $utils = $this->getUtils();
@@ -77,9 +72,7 @@ final class DiagnosticsOutputTest extends TestCase
         ];
     }
 
-    /**
-     * @runInSeparateProcess
-     */
+    #[RunInSeparateProcess]
     public function testDownloadResultFilePrintsOutput(): void
     {
         $utils = $this->getUtils();

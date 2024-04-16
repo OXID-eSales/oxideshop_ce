@@ -6,7 +6,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixture
 
 class DummyGraphQLType
 {
-    public function getInfo()
+    public function getInfo(): string
     {
         return 'Type is installed';
     }

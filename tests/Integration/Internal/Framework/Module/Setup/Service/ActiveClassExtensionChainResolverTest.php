@@ -21,9 +21,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ActiveClassExtensionChainResolverTest extends TestCase
+final class ActiveClassExtensionChainResolverTest extends TestCase
 {
-    public function testActiveExtensionChainGetter()
+    public function testActiveExtensionChainGetter(): void
     {
         $activeModuleConfiguration1 = $this->getModuleConfiguration('activeModuleName', [
             'shopClassNamespace'        => 'activeModuleExtensionClass',

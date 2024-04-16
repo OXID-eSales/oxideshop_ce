@@ -874,5 +874,4 @@ final class CheckoutProcessCest
             'faxNr' => '',
         ];
     }
-
 }

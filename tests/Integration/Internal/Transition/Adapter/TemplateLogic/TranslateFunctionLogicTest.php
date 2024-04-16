@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -39,9 +40,7 @@ final class TranslateFunctionLogicTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function testGetTranslation(array $params, string $expectedTranslation): void
     {
         $translation = $this->get(TranslateFunctionLogic::class)->getTranslation($params);

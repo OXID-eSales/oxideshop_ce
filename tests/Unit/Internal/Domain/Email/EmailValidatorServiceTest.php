@@ -9,15 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Email;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class EmailValidatorServiceTest
- *
- * @covers \OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService
  */
-class EmailValidatorServiceTest extends TestCase
+#[CoversClass(EmailValidatorService::class)]
+final class EmailValidatorServiceTest extends TestCase
 {
     public static function providerEmailsToValidate(): array
     {
@@ -37,9 +38,7 @@ class EmailValidatorServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerEmailsToValidate
-     */
+    #[DataProvider('providerEmailsToValidate')]
     public function testValidateEmailWithValidEmail(string $email, bool $validMail): void
     {
         $mailValidator = new EmailValidatorService();

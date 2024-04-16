@@ -20,18 +20,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ProjectYamlImportServiceTest extends TestCase
+final class ProjectYamlImportServiceTest extends TestCase
 {
-
     /**
      * @var ProjectYamlDaoInterface|MockObject
      */
-    private $dao;
+    private MockObject $dao;
 
-    /**
-     * @var ProjectYamlImportService
-     */
-    private $service;
+    private ProjectYamlImportService $service;
 
     private $savedArray;
 
@@ -40,19 +36,21 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->dao = $this->getMockBuilder(ProjectYamlDaoInterface::class)
             ->onlyMethods(['loadProjectConfigFile', 'saveProjectConfigFile', 'loadDIConfigFile'])->getMock();
         $this->savedArray = [];
-        $this->dao->method('saveProjectConfigFile')->willReturnCallback([$this, 'getConfigWrapper']);
+        $this->dao->method('saveProjectConfigFile')->willReturnCallback(function (DIConfigWrapper $config): void {
+            $this->getConfigWrapper($config);
+        });
 
         $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__);
         $this->service = new ProjectYamlImportService($this->dao, $context);
     }
 
-    public function getConfigWrapper(DIConfigWrapper $config)
+    public function getConfigWrapper(DIConfigWrapper $config): void
     {
         $this->savedArray = $config->getConfigAsArray();
     }
 
-    public function testAddImport()
+    public function testAddImport(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
@@ -63,7 +61,7 @@ class ProjectYamlImportServiceTest extends TestCase
         );
     }
 
-    public function testAddImportSeveralTimes()
+    public function testAddImportSeveralTimes(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
@@ -72,7 +70,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->assertEquals(2, count($this->savedArray['imports']));
     }
 
-    public function testRemoveImport()
+    public function testRemoveImport(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
@@ -86,7 +84,7 @@ class ProjectYamlImportServiceTest extends TestCase
         );
     }
 
-    public function testRemoveAllImports()
+    public function testRemoveAllImports(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
@@ -96,21 +94,21 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->assertEquals([], $this->savedArray);
     }
 
-    public function testAddNonExistingDirectory()
+    public function testAddNonExistingDirectory(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->expectException(NoServiceYamlException::class);
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule3');
     }
 
-    public function testAddNonExistingServiceYaml()
+    public function testAddNonExistingServiceYaml(): void
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->expectException(NoServiceYamlException::class);
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Dao');
     }
 
-    public function testRemovingNonExistingImports()
+    public function testRemovingNonExistingImports(): void
     {
         $existingImport = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1' .
                           DIRECTORY_SEPARATOR . 'services.yaml');

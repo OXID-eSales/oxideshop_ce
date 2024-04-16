@@ -9,17 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Review\Dao;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
-use \OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
 
-class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
+final class ProductRatingDaoTest extends TestCase
 {
-    /**
-     * @dataProvider invalidProductIdsProvider
-     */
-    public function testGetProductByIdWithInvalidId($invalidProductId)
+    #[DataProvider('invalidProductIdsProvider')]
+    public function testGetProductByIdWithInvalidId(bool|int|string|null $invalidProductId): void
     {
         $this->expectException(InvalidObjectIdDaoException::class);
         $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
@@ -30,7 +30,7 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
             $mapper
         );
 
-        $this->expectException(\OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException::class);
+        $this->expectException(InvalidObjectIdDaoException::class);
 
         $productRatingDao->getProductRatingById($invalidProductId);
     }

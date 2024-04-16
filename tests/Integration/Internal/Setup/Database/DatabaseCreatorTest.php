@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use Exception;
+use Throwable;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
@@ -16,11 +19,9 @@ use OxidEsales\Facts\Config\ConfigFile;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class DatabaseCreatorTest extends TestCase
+final class DatabaseCreatorTest extends TestCase
 {
-
-    /** @var DatabaseCreator */
-    private $databaseCreator;
+    private DatabaseCreator $databaseCreator;
 
     /** @var array */
     private $params = [];
@@ -42,9 +43,7 @@ class DatabaseCreatorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateDatabase(): void
     {
         $this->databaseCreator->createDatabase(
@@ -89,7 +88,7 @@ class DatabaseCreatorTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function dropDatabase(): void
     {
@@ -101,8 +100,8 @@ class DatabaseCreatorTest extends TestCase
                 [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
             );
             $dbConnection->exec('DROP SCHEMA IF EXISTS ' . $this->params['dbName']);
-        } catch (\Throwable $exception) {
-            throw new \Exception('Failed: Could not drop database');
+        } catch (Throwable $exception) {
+            throw new Exception('Failed: Could not drop database', $exception->getCode(), $exception);
         }
     }
 

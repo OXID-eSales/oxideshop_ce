@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Converter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\ModuleSettingsBooleanConverter;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ModuleSettingsBooleanConverterTest extends TestCase
+final class ModuleSettingsBooleanConverterTest extends TestCase
 {
     public static function convertToTrueDataProvider(): array
     {
@@ -26,10 +27,8 @@ class ModuleSettingsBooleanConverterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider convertToTrueDataProvider
-     */
-    public function testConvertToTrue($value): void
+    #[DataProvider('convertToTrueDataProvider')]
+    public function testConvertToTrue(string|int|bool $value): void
     {
         $metaData =
             [
@@ -56,10 +55,8 @@ class ModuleSettingsBooleanConverterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider convertToFalseDataProvider
-     */
-    public function testConvertToFalse($value): void
+    #[DataProvider('convertToFalseDataProvider')]
+    public function testConvertToFalse(string|int|bool $value): void
     {
         $metaData =
             [
@@ -91,9 +88,7 @@ class ModuleSettingsBooleanConverterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider whenNothingToConvertDataProvider
-     */
+    #[DataProvider('whenNothingToConvertDataProvider')]
     public function testWhenNothingToConvert(array $metaData): void
     {
         $converter = new ModuleSettingsBooleanConverter();

@@ -17,10 +17,9 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EventLoggingSubscriberTest extends TestCase
+final class EventLoggingSubscriberTest extends TestCase
 {
-    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $container */
-    private $container;
+    private \Symfony\Component\DependencyInjection\ContainerBuilder $container;
 
     private $testlog = __DIR__ . DIRECTORY_SEPARATOR . 'test.log';
 

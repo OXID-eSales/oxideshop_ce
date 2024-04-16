@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\Validator;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use stdClass;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
@@ -31,9 +33,7 @@ final class SchemaValidatorTest extends TestCase
         ],
     ];
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateWithMinimalValidStructure(): void
     {
         $this->getValidator()->validate('', '2.1', []);
@@ -80,9 +80,7 @@ final class SchemaValidatorTest extends TestCase
         $this->getValidator()->validate('', '2.1', $metadata);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateWithSectionExcludedFromValidation(): void
     {
         $sectionExcludedFromValidation = MetaDataProvider::METADATA_EXTEND;
@@ -116,7 +114,7 @@ final class SchemaValidatorTest extends TestCase
 
     public function testValidateWithNonScalarValueWillThrowException(): void
     {
-        $unsupportedData = new \stdClass();
+        $unsupportedData = new stdClass();
         $metadata = [
             'key-in-schema-1' => $unsupportedData,
         ];

@@ -19,9 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidC
 /**
  * @internal
  */
-class ClassExtensionsModuleSettingValidatorTest extends TestCase
+final class ClassExtensionsModuleSettingValidatorTest extends TestCase
 {
-    public function testValidClassExtensionsModuleSetting()
+    public function testValidClassExtensionsModuleSetting(): void
     {
         $anyExistentClass = self::class;
 
@@ -46,7 +46,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         );
     }
 
-    public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace()
+    public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace(): void
     {
         $this->expectException(InvalidClassExtensionNamespaceException::class);
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
@@ -60,13 +60,13 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('shopClass', 'moduleClass'));
 
-        
+
         $validator = new ClassExtensionsValidator($shopAdapter);
         $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist()
+    public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist(): void
     {
         $this->expectException(InvalidClassExtensionNamespaceException::class);
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();

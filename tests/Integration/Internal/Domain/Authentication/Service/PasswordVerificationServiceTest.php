@@ -17,14 +17,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class PasswordVerificationServiceTest
  */
-class PasswordVerificationServiceTest extends TestCase
+final class PasswordVerificationServiceTest extends TestCase
 {
     use ContainerTrait;
 
     /**
      * End-to-end test to ensure, that the password policy checking is called during password verification
      */
-    public function testverifyPasswordHashEnforcesPasswordPolicy()
+    public function testverifyPasswordHashEnforcesPasswordPolicy(): void
     {
         $this->expectException(PasswordPolicyException::class);
 

@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
-class BootstrapLocatorTest extends TestCase
+final class BootstrapLocatorTest extends TestCase
 {
     public function testGeProjectRootDirectoryContainsDistFile(): void
     {

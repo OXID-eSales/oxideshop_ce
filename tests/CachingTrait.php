@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use ReflectionClass;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
@@ -52,7 +53,7 @@ trait CachingTrait
 
     private function removeClassCache(string $class, string $property, $default): void
     {
-        $reflectionClass = new \ReflectionClass($class);
+        $reflectionClass = new ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($property);
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($default);

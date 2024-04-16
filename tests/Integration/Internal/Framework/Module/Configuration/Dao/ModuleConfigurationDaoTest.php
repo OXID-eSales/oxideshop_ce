@@ -23,7 +23,7 @@ use Symfony\Component\Filesystem\Path;
 /**
  * @internal
  */
-class ModuleConfigurationDaoTest extends TestCase
+final class ModuleConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
@@ -96,7 +96,7 @@ class ModuleConfigurationDaoTest extends TestCase
 
         $dao->deleteAll(1);
 
-        $this->assertEquals([],$dao->getAll(1));
+        $this->assertEquals([], $dao->getAll(1));
     }
 
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void

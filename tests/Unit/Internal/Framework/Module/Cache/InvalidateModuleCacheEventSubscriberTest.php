@@ -11,17 +11,15 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\InvalidateModuleCacheEventSubscriber;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ModuleSetupEvent;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class InvalidateModuleCacheEventSubscriberTest extends TestCase
+final class InvalidateModuleCacheEventSubscriberTest extends TestCase
 {
-    public function testSubscriberCallsModuleCacheService()
+    public function testSubscriberCallsModuleCacheService(): void
     {
         $moduleCacheService = $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock();
         $moduleCacheService

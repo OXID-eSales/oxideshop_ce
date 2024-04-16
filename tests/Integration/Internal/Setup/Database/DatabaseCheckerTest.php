@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -16,7 +17,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 
-class DatabaseCheckerTest extends TestCase
+final class DatabaseCheckerTest extends TestCase
 {
     use ContainerTrait;
 
@@ -37,7 +38,7 @@ class DatabaseCheckerTest extends TestCase
             );
     }
 
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testCanCreateDatabaseWithNewDatabaseName(): void
     {
         $configFile = new ConfigFile();

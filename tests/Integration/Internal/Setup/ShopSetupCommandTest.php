@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
@@ -68,9 +69,7 @@ final class ShopSetupCommandTest extends IntegrationTestCase
         $this->commandTester = new CommandTester($this->createCommand());
     }
 
-    /**
-     * @dataProvider missingOptionsDataProvider
-     */
+    #[DataProvider('missingOptionsDataProvider')]
     public function testExecuteWithMissingArgs(string $command): void
     {
         $options = [

@@ -1,26 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Utility;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use stdClass;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ShopSettingEncoderTest extends TestCase
+final class ShopSettingEncoderTest extends TestCase
 {
-    /**
-     * @dataProvider settingDataProvider
-     */
-    public function testEncoding($value, $encodedValue, string $encodingType)
+    #[DataProvider('settingDataProvider')]
+    public function testEncoding(bool|string|int|array $value, string|int $encodedValue, string $encodingType): void
     {
         $shopSettingEncoder = new ShopSettingEncoder();
 
@@ -30,10 +30,8 @@ class ShopSettingEncoderTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider settingDataProvider
-     */
-    public function testDecoding($value, $encodedValue, string $encodingType)
+    #[DataProvider('settingDataProvider')]
+    public function testDecoding(bool|string|int|array $value, string|int $encodedValue, string $encodingType): void
     {
         $shopSettingEncoder = new ShopSettingEncoder();
 
@@ -43,13 +41,13 @@ class ShopSettingEncoderTest extends TestCase
         );
     }
 
-    public function testEncodingInvalidValue()
+    public function testEncodingInvalidValue(): void
     {
         $this->expectException(InvalidShopSettingValueException::class);
         $shopSettingEncoder = new ShopSettingEncoder();
 
         $this->expectException(InvalidShopSettingValueException::class);
-        $shopSettingEncoder->encode('object', new \stdClass());
+        $shopSettingEncoder->encode('object', new stdClass());
     }
 
     public static function settingDataProvider(): array

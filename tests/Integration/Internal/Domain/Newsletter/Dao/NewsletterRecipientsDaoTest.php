@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter\Dao;
 
+use DateTime;
+use DateInterval;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
@@ -16,9 +18,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class NewsletterRecipientsDaoTest extends IntegrationTestCase
+final class NewsletterRecipientsDaoTest extends IntegrationTestCase
 {
-
     private QueryBuilderFactoryInterface $queryBuilderFactory;
 
     public function setup(): void
@@ -108,7 +109,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
                 'username' => "test_user@test.com",
                 'userRights' => "malladmin",
                 'countryId' => "a7c40f631fc920687.20179984",
-                'create' => (new \DateTime())->format('Y-m-d H:i:s')
+                'create' => (new DateTime())->format('Y-m-d H:i:s')
             ]);
 
         $queryBuilder->execute();
@@ -220,7 +221,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
                 'username' => "test_user2@test.com",
                 'userRights' => "malladmin",
                 'countryId' => "a7c40f631fc920687.20179984",
-                'create' => (new \DateTime())->add(new \DateInterval('P1D'))->format('Y-m-d H:i:s')
+                'create' => (new DateTime())->add(new DateInterval('P1D'))->format('Y-m-d H:i:s')
             ]);
 
         $queryBuilder->execute();

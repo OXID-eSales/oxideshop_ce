@@ -16,7 +16,7 @@ use OxidEsales\Facts\Edition\EditionSelector;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class ContainerBuilderTest extends TestCase
+final class ContainerBuilderTest extends TestCase
 {
     public function testWhenCeServicesLoaded(): void
     {

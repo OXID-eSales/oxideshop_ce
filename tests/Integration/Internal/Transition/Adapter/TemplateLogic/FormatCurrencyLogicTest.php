@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class FormatCurrencyLogicTest extends IntegrationTestCase
+final class FormatCurrencyLogicTest extends IntegrationTestCase
 {
-
-    /** @var FormatCurrencyLogic */
-    private $numberFormatLogic;
+    private FormatCurrencyLogic $numberFormatLogic;
 
     public function setUp(): void
     {
@@ -25,20 +24,14 @@ class FormatCurrencyLogicTest extends IntegrationTestCase
     }
 
     /**
-     * @param string     $format
      * @param string|int $value
-     * @param string     $expected
-     *
-     * @dataProvider numberFormatProvider
      */
-    public function testNumberFormat($format, $value, $expected)
+    #[DataProvider('numberFormatProvider')]
+    public function testNumberFormat(string $format, int|float $value, string $expected): void
     {
         $this->assertEquals($expected, $this->numberFormatLogic->numberFormat($format, $value));
     }
 
-    /**
-     * @return array
-     */
     public static function numberFormatProvider(): array
     {
         return [

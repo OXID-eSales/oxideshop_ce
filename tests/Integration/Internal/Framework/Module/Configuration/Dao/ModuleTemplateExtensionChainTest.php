@@ -27,7 +27,6 @@ final class ModuleTemplateExtensionChainTest extends TestCase
         parent::setUp();
 
         $this->shopConfigurationDao = $this->getContainer()->get(ShopConfigurationDaoInterface::class);
-
     }
 
     public function testGetWithNonExistingTemplate(): void

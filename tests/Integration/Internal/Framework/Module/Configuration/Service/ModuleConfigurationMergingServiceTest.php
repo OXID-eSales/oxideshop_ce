@@ -442,9 +442,6 @@ final class ModuleConfigurationMergingServiceTest extends TestCase
         return $shopConfiguration;
     }
 
-    /**
-     * @return ModuleConfigurationMergingServiceInterface
-     */
     private function getMergingService(): ModuleConfigurationMergingServiceInterface
     {
         return $this->get(ModuleConfigurationMergingServiceInterface::class);

@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Converter\Service;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterAggregate;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterAggregate
- */
-class MetaDataConverterAggregateTest extends TestCase
+#[CoversClass(MetaDataConverterAggregate::class)]
+final class MetaDataConverterAggregateTest extends TestCase
 {
     public function testConvert(): void
     {

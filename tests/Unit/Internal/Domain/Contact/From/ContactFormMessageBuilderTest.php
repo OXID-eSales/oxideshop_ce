@@ -9,17 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilder;
 
-class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
+final class ContactFormMessageBuilderTest extends TestCase
 {
-    /**
-     * @dataProvider fieldsProvider
-     */
-    public function testContentGetter($name, $value)
+    #[DataProvider('fieldsProvider')]
+    public function testContentGetter(string $name, string $value): void
     {
         $form = $this->getContactForm();
         $form->handleRequest([$name => $value]);
@@ -66,7 +66,7 @@ class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    private function getContactForm()
+    private function getContactForm(): Form
     {
         $form = new Form();
 

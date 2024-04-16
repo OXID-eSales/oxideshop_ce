@@ -9,19 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LogLevel;
 
-/**
- * Class LoggerTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger
- */
-class LoggerTest extends \PHPUnit\Framework\TestCase
+final class LoggerTest extends TestCase
 {
-    private $logFilePath;
+    private string|bool $logFilePath;
 
     public function setup(): void
     {
@@ -36,15 +33,15 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         parent::tearDown();
     }
 
-    public function testLogging()
+    public function testLogging(): void
     {
         $context = $this->getContextStub(LogLevel::ERROR);
 
         $logger = $this->getLogger($context);
         $logger->critical('Carthago delenda est');
 
-        $this->assertTrue(
-            file_exists($context->getLogFilePath())
+        $this->assertFileExists(
+            $context->getLogFilePath()
         );
 
         $this->assertStringContainsString(
@@ -53,7 +50,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testLoggerDoesNotLogMessagesLowerAsLogLevel()
+    public function testLoggerDoesNotLogMessagesLowerAsLogLevel(): void
     {
         $contextStub = $this->getContextStub(LogLevel::WARNING);
         $logger = $this->getLogger($contextStub);
@@ -68,23 +65,16 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param $context Context
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
-    private function getLogger($context)
+    private function getLogger(ContextInterface|MockObject $context)
     {
         $loggerServiceFactory = new LoggerServiceFactory($context);
 
         return $loggerServiceFactory->getLogger();
     }
 
-    /**
-     * Log level is not configured by default.
-     *
-     * @param string $logLevelFromConfig
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|ContextInterface
-     */
-    private function getContextStub($logLevelFromConfig = null)
+    private function getContextStub(string $logLevelFromConfig): ContextInterface|MockObject
     {
         $context = $this
             ->getMockBuilder(ContextInterface::class)

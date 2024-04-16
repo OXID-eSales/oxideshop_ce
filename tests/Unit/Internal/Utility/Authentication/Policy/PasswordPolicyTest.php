@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Authentication\Policy;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicy;
 use PHPUnit\Framework\TestCase;
@@ -16,12 +18,10 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class PasswordVerificationServiceTest
  */
-class PasswordPolicyTest extends TestCase
+final class PasswordPolicyTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testPasswordPolicyAcceptsUtf8EncodedStrings()
+    #[DoesNotPerformAssertions]
+    public function testPasswordPolicyAcceptsUtf8EncodedStrings(): void
     {
         $passwordUtf8 = 'äääää';
 
@@ -30,10 +30,10 @@ class PasswordPolicyTest extends TestCase
     }
 
     /**
-     * @dataProvider unsupportedEncodingDataProvider
      * @throws PasswordPolicyException
      */
-    public function testPasswordPolicyRejectsStringNonUtf8Encoding(string $unsupportedEncoding)
+    #[DataProvider('unsupportedEncodingDataProvider')]
+    public function testPasswordPolicyRejectsStringNonUtf8Encoding(string $unsupportedEncoding): void
     {
         $this->expectException(PasswordPolicyException::class);
         $this->expectExceptionMessage('The password policy requires UTF-8 encoded strings');

@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Wrapper;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
 use Psr\Log\LoggerInterface;
 
@@ -17,15 +20,13 @@ use Psr\Log\LoggerInterface;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Wrapper
  */
-class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
+final class LoggerWrapperTest extends TestCase
 {
-
     /**
-     * @dataProvider dataProviderPsrInterfaceMethods
-     *
      * @param string $methodName The name of the method to test
      */
-    public function testAllInterfaceMethodsExceptLogAreHandled($methodName)
+    #[DataProvider('dataProviderPsrInterfaceMethods')]
+    public function testAllInterfaceMethodsExceptLogAreHandled(string $methodName): void
     {
         $messageToLog = "The message is {myMessage}";
         $contextToLog = ['myMessage' => 'Hello World!'];
@@ -41,9 +42,6 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         $loggerServiceWrapper->$methodName($messageToLog, $contextToLog);
     }
 
-    /**
-     * @return array
-     */
     public static function dataProviderPsrInterfaceMethods(): array
     {
         return [
@@ -59,7 +57,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testLog()
+    public function testLog(): void
     {
         $messageToLog = "The message is {myMessage}";
         $contextToLog = ['myMessage' => 'Hello World!'];
@@ -80,9 +78,9 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
     /**
      * @return LoggerInterface
      */
-    private function getLoggerMock()
+    private function getLoggerMock(): MockObject
     {
-        $loggerMock = $this
+        return $this
             ->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
             ->onlyMethods(
@@ -99,7 +97,5 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
                 ]
             )
             ->getMock();
-
-        return $loggerMock;
     }
 }

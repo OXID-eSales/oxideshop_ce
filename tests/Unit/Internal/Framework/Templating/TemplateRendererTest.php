@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -16,8 +17,8 @@ use PHPUnit\Framework\TestCase;
 
 final class TemplateRendererTest extends TestCase
 {
-    /** @dataProvider twigTemplateNameFileDataProvider */
-    public function testRenderTemplateFilenameExtension($filename, $expectedFilename): void
+    #[DataProvider('twigTemplateNameFileDataProvider')]
+    public function testRenderTemplateFilenameExtension(string $filename, string $expectedFilename): void
     {
         $engine = $this->getEngineMock();
         $engine->method('render')
@@ -44,7 +45,7 @@ final class TemplateRendererTest extends TestCase
         $this->assertSame($response, $renderer->renderTemplate('template', []));
     }
 
-    public function testRenderFragment()
+    public function testRenderFragment(): void
     {
         $response = 'rendered template';
         $engine = $this->getEngineMock();
@@ -58,7 +59,7 @@ final class TemplateRendererTest extends TestCase
         $this->assertSame($response, $renderer->renderFragment('template', 'testId', []));
     }
 
-    public function testRenderFragmentIfDemoShop()
+    public function testRenderFragmentIfDemoShop(): void
     {
         $engine = $this->getEngineMock();
         $engine->expects($this->never())

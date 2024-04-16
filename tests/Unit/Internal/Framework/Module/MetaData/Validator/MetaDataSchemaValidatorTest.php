@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\Validator;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use stdClass;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
@@ -17,13 +19,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use PHPUnit\Framework\TestCase;
 
-class MetaDataSchemaValidatorTest extends TestCase
+final class MetaDataSchemaValidatorTest extends TestCase
 {
-    private $metaDataSchemata;
+    private array $metaDataSchemata;
     private $metaDataSchemaVersion20;
     private $metaDataSchemaVersion21;
 
-    public function testValidateThrowsExceptionOnUnsupportedMetaDataVersion()
+    public function testValidateThrowsExceptionOnUnsupportedMetaDataVersion(): void
     {
         $this->expectException(UnsupportedMetaDataVersionException::class);
         $metaDataToValidate = [];
@@ -35,7 +37,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
 
-    public function testValidateUnsupportedMetaDataKey()
+    public function testValidateUnsupportedMetaDataKey(): void
     {
         $this->expectException(UnsupportedMetaDataKeyException::class);
 
@@ -52,7 +54,7 @@ class MetaDataSchemaValidatorTest extends TestCase
     /**
      * This test covers metaData sections like 'blocks' or 'settings', which have their own well defined subKeys
      */
-    public function testValidateUnsupportedMetaDataSubKey()
+    public function testValidateUnsupportedMetaDataSubKey(): void
     {
         $this->expectException(UnsupportedMetaDataKeyException::class);
 
@@ -78,9 +80,9 @@ class MetaDataSchemaValidatorTest extends TestCase
 
     /**
      * This test covers metaData sections like 'extend', or 'templates', which have their custom subKeys
-     * @doesNotPerformAssertions
      */
-    public function testExcludedSectionItemValidation()
+    #[DoesNotPerformAssertions]
+    public function testExcludedSectionItemValidation(): void
     {
         $metaDataToValidate = [
             '20only'                                             => 'value',
@@ -106,7 +108,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    public function testValidateIsCaseSensitive()
+    public function testValidateIsCaseSensitive(): void
     {
         $this->expectException(UnsupportedMetaDataKeyException::class);
 
@@ -130,11 +132,11 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    public function testValidateThrowsExceptionOnUnsupportedMetaDataValueType()
+    public function testValidateThrowsExceptionOnUnsupportedMetaDataValueType(): void
     {
         $this->expectException(UnsupportedMetaDataValueTypeException::class);
         $metaDataToValidate = [
-            '20only' => new \stdClass(),
+            '20only' => new stdClass(),
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
@@ -144,10 +146,8 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testValidateThrowsNoExceptionOnIncompleteFirstLevel()
+    #[DoesNotPerformAssertions]
+    public function testValidateThrowsNoExceptionOnIncompleteFirstLevel(): void
     {
         $metaDataToValidate = [
             // missing '20only'        => 'value',
@@ -165,10 +165,8 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testValidateThrowsNoExceptionOnIncompleteSecondLevel()
+    #[DoesNotPerformAssertions]
+    public function testValidateThrowsNoExceptionOnIncompleteSecondLevel(): void
     {
         $metaDataToValidate = [
             '20only'   => 'value',

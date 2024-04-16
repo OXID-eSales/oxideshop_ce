@@ -5,14 +5,12 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
+declare(strict_types=1);
+
+use OxidEsales\Eshop\Application\Model\Payment;
+
 $sMetadataVersion = '2.1';
 
-/**
- * Module information
- */
 $aModule = [
     'id'                      => 'TestModuleMetaData21',
     'title'                   => 'Module for testModuleMetaData21',
@@ -27,7 +25,7 @@ $aModule = [
     'url'                     => 'https://www.oxid-esales.com',
     'email'                   => 'info@oxid-esales.com',
     'extend'                  => [
-        \OxidEsales\Eshop\Application\Model\Payment::class => 'TestModuleMetaData21\Payment',
+        Payment::class => 'TestModuleMetaData21\Payment',
         'oxArticle'                                        => 'TestModuleMetaData21\Article'
     ],
     'controllers'             => [

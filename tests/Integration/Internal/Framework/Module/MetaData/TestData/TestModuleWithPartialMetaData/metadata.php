@@ -5,17 +5,16 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
+declare(strict_types=1);
+
+use OxidEsales\Eshop\Application\Model\Payment;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\TestData\TestModuleWithPartialMetaData\Article;
+
 $sMetadataVersion = '2.0';
 
-/**
- * Module information
- */
 $aModule = [
     'extend' => [
-        \OxidEsales\Eshop\Application\Model\Payment::class => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\TestData\TestModuleWithPartialMetaData\Payment::class,
-        'oxArticle'                                        => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\TestData\TestModuleWithPartialMetaData\Article::class
+        Payment::class => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\TestData\TestModuleWithPartialMetaData\Payment::class,
+        'oxArticle'                                        => Article::class
     ],
 ];

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
@@ -60,7 +61,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function testActivation()
+    public function testActivation(): void
     {
         $moduleStateService = $this->container->get(ModuleStateServiceInterface::class);
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
@@ -74,7 +75,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $this->assertFalse($moduleStateService->isActive($this->testModuleId, $this->shopId));
     }
 
-    public function testSetActivatedInModuleConfiguration()
+    public function testSetActivatedInModuleConfiguration(): void
     {
         $moduleConfigurationDao = $this->container->get(ModuleConfigurationDaoInterface::class);
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
@@ -90,7 +91,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $this->assertFalse($moduleConfiguration->isActivated());
     }
 
-    public function testActivationOfModuleServices()
+    public function testActivationOfModuleServices(): void
     {
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
@@ -224,10 +225,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     */
-    private function persistModuleConfiguration(ModuleConfiguration $moduleConfiguration)
+    private function persistModuleConfiguration(ModuleConfiguration $moduleConfiguration): void
     {
         $chain = new ClassExtensionsChain();
         $chain->setChain([
@@ -245,11 +243,11 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
     /**
      * We need to replace services in the container with a mock
      *
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @return ContainerBuilder
      */
     private function setupAndConfigureContainer()
     {
-        if ($this->testContainerFactory === null) {
+        if (!$this->testContainerFactory instanceof TestContainerFactory) {
             $this->testContainerFactory = new TestContainerFactory();
         }
         $container = $this->testContainerFactory->create();

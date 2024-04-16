@@ -69,7 +69,7 @@ final class ComponentInstallerTest extends TestCase
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
     }
 
-    private function removeGeneratedLineFromProjectFile()
+    private function removeGeneratedLineFromProjectFile(): void
     {
         /** @var ProjectYamlImportServiceInterface $projectYamlImportService */
         $projectYamlImportService = $this->get(ProjectYamlImportServiceInterface::class);

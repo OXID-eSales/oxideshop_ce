@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataMapper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use MyVendor\MyController\Controller1;
+use MyVendor\MyController\Controller2;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
@@ -21,17 +24,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ModuleConfigurationDataMapperTest extends TestCase
+final class ModuleConfigurationDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @dataProvider moduleConfigurationDataProvider
-     *
-     * @param array                                  $data
-     * @param ModuleConfigurationDataMapperInterface $dataMapper
-     */
-    public function testToDataAndFromData(array $data, ModuleConfigurationDataMapperInterface $dataMapper)
+    #[DataProvider('moduleConfigurationDataProvider')]
+    public function testToDataAndFromData(array $data, ModuleConfigurationDataMapperInterface $dataMapper): void
     {
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -59,8 +57,8 @@ class ModuleConfigurationDataMapperTest extends TestCase
             [
                 'data' => [
                     ControllersDataMapper::MAPPING_KEY => [
-                        'controller1' => \MyVendor\MyController\Controller1::class,
-                        'controller2' => \MyVendor\MyController\Controller2::class
+                        'controller1' => Controller1::class,
+                        'controller2' => Controller2::class
                     ]
                 ],
                 'dataMapper' => new ControllersDataMapper()

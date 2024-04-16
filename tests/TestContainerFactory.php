@@ -25,7 +25,7 @@ class TestContainerFactory
     /**
      * @var BasicContextStub
      */
-    private $context;
+    private ContextStub $context;
 
     public function __construct()
     {

@@ -11,14 +11,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Databas
 
 use Doctrine\DBAL\Driver\Connection;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 
-class ConnectionFactoryTest extends TestCase
+final class ConnectionFactoryTest extends TestCase
 {
     use ContainerTrait;
 

@@ -21,7 +21,7 @@ final class ModuleFilesInstallerTest extends TestCase
     use ContainerTrait;
 
     private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
-    private $packageName = 'TestModule';
+    private string $packageName = 'TestModule';
 
     protected function tearDown(): void
     {

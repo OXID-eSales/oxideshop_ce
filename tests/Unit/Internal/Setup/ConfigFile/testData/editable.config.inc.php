@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 $this->dbType = 'pdo_mysql';
 $this->dbCharset = 'utf8';
 $this->dbHost = '<dbHost>';

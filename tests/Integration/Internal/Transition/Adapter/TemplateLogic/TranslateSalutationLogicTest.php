@@ -5,17 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * Class TranslateSalutationLogic
- */
-class TranslateSalutationLogicTest extends IntegrationTestCase
+final class TranslateSalutationLogicTest extends IntegrationTestCase
 {
     public static function translateSalutationProvider(): array
     {
@@ -27,13 +27,8 @@ class TranslateSalutationLogicTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @param string $ident
-     * @param int    $languageId
-     * @param string $expected
-     *
-     * @dataProvider translateSalutationProvider
-     */
+
+    #[DataProvider('translateSalutationProvider')]
     public function testTranslateSalutation(string $ident, int $languageId, string $expected): void
     {
         $translateSalutationLogic = new TranslateSalutationLogic($this->getTranslator($languageId));

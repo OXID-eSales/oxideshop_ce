@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Integration\Application\Controller\Admin;
 
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
@@ -63,7 +64,7 @@ final class ShopConfigurationTest extends IntegrationTestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testUnserializeConfVar(): void
     {
         $value = ['a' => 'test'];
@@ -82,7 +83,7 @@ final class ShopConfigurationTest extends IntegrationTestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testUnserializeConfVarNestedArray(): void
     {
         $value = ['a' => ['b' => 'test']];

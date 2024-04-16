@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class TestEventSubscriber implements EventSubscriberInterface
 {
-    public function handleEvent(TestEvent $event)
+    public function handleEvent(TestEvent $event): TestEvent
     {
         $event->handle();
         return $event;

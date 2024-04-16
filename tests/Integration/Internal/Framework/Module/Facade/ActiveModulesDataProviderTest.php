@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Integration\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -102,8 +104,8 @@ final class ActiveModulesDataProviderTest extends TestCase
 
         $this->assertEquals(
             [
-                new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'),
-                new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2'),
+                new Controller('activeController1', 'activeControllerNamespace1'),
+                new Controller('activeController2', 'activeControllerNamespace2'),
             ],
             $activeModulesDataProvider->getControllers()
         );
@@ -151,17 +153,17 @@ final class ActiveModulesDataProviderTest extends TestCase
         $activeModule
             ->setId($this->activeModuleId)
             ->setModuleSource($this->activeModuleSource)
-            ->addController(new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'))
-            ->addController(new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2'))
-            ->addClassExtension(new ModuleConfiguration\ClassExtension('shopClass', 'moduleExtensionClassName1'))
-            ->addClassExtension(new ModuleConfiguration\ClassExtension(
+            ->addController(new Controller('activeController1', 'activeControllerNamespace1'))
+            ->addController(new Controller('activeController2', 'activeControllerNamespace2'))
+            ->addClassExtension(new ClassExtension('shopClass', 'moduleExtensionClassName1'))
+            ->addClassExtension(new ClassExtension(
                 'anotherShopClass',
                 'moduleExtensionClassName2'
             ));
 
         $chain = new ClassExtensionsChain();
-        $chain->addExtension(new ModuleConfiguration\ClassExtension('shopClass', 'moduleExtensionClassName1'));
-        $chain->addExtension(new ModuleConfiguration\ClassExtension('anotherShopClass', 'moduleExtensionClassName2'));
+        $chain->addExtension(new ClassExtension('shopClass', 'moduleExtensionClassName1'));
+        $chain->addExtension(new ClassExtension('anotherShopClass', 'moduleExtensionClassName2'));
         $chain->setChain([
             'shopClass'        => ['moduleExtensionClassName1'],
             'anotherShopClass' => ['moduleExtensionClassName2'],
@@ -171,7 +173,7 @@ final class ActiveModulesDataProviderTest extends TestCase
         $inactiveModule
             ->setId($this->inactiveModuleId)
             ->setModuleSource($this->inactiveModuleSource)
-            ->addController(new ModuleConfiguration\Controller('inactiveController', 'inactiveControllerNamespace'));
+            ->addController(new Controller('inactiveController', 'inactiveControllerNamespace'));
 
         /** @var ShopConfigurationDaoInterface $dao */
         $dao = $this->get(ShopConfigurationDaoInterface::class);

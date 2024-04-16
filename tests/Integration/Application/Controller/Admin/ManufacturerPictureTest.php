@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Integration\Application\Controller\Admin;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Generator;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerPicture;
@@ -19,10 +22,8 @@ use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-/**
- * @group manufacturer
- */
-class ManufacturerPictureTest extends IntegrationTestCase
+#[Group('manufacturer')]
+final class ManufacturerPictureTest extends IntegrationTestCase
 {
     private string $oxid = 'manufacturerId1';
 
@@ -34,7 +35,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         'oxpromotion_icon' => 'test-promotion-icon.jpg',
     ];
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testRender(): void
     {
         $view = oxNew(ManufacturerPicture::class);
@@ -42,7 +43,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertEquals('manufacturer_picture', $view->render());
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testSaveShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -60,7 +61,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertInstanceOf(ExceptionToDisplay::class, $exception);
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testItShouldSaveImages(): void
     {
         $manufacturer = oxNew(Manufacturer::class);
@@ -82,7 +83,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertSame('test-promotion-icon.jpg', $loadManufacturer->oxmanufacturers__oxpromotion_icon->getRawValue());
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testDeleteShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -100,10 +101,8 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertInstanceOf(ExceptionToDisplay::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @dataProvider provideImageData
-     */
+    #[DataProvider('provideImageData')]
+    #[RunInSeparateProcess]
     public function testDeleteShouldRemoveOnlyOneImageValueFromDb(string $expected, string $imageFieldName): void
     {
         $this->setupManufacturer();
@@ -150,7 +149,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
 
     private function fetchResult(string $imageFieldName): bool|string
     {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $this->get(QueryBuilderFactoryInterface::class)->create();
 
         return $this
             ->getDbConnection()

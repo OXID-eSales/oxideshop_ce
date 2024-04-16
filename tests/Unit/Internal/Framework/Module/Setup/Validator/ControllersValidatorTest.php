@@ -1,11 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Validator;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
@@ -22,9 +26,7 @@ use Psr\Log\LoggerInterface;
  */
 final class ControllersValidatorTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidationWithCorrectSetting(): void
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();

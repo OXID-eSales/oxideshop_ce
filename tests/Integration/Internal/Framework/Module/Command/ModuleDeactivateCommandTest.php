@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 
 final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
 {
-    private $commandName = 'oe:module:deactivate';
+    private string $commandName = 'oe:module:deactivate';
 
     public function testModuleDeactivation(): void
     {

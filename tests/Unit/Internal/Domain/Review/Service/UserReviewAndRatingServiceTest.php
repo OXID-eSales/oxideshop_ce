@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Review\Service;
 
+use PHPUnit\Framework\TestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ReviewAndRatingMergingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
@@ -16,9 +17,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewAndRating
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\ViewDataObject\ReviewAndRating;
 
-class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
+final class UserReviewAndRatingServiceTest extends TestCase
 {
-    public function testReviewAndRatingListSorting()
+    public function testReviewAndRatingListSorting(): void
     {
         $reviewAndRatingMergingServiceMock = $this
             ->getMockBuilder(ReviewAndRatingMergingServiceInterface::class)
@@ -40,7 +41,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testReviewAndRatingListCount()
+    public function testReviewAndRatingListCount(): void
     {
         $reviewAndRatingMergingServiceMock = $this
             ->getMockBuilder(ReviewAndRatingMergingServiceInterface::class)
@@ -88,7 +89,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         return $userRatingService;
     }
 
-    private function getUnsortedReviewAndRatingList()
+    private function getUnsortedReviewAndRatingList(): ArrayCollection
     {
         return new ArrayCollection([
             $this->getFirstReviewAndRating(),
@@ -97,7 +98,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    private function getSortedReviewAndRatingList()
+    private function getSortedReviewAndRatingList(): ArrayCollection
     {
         return new ArrayCollection([
             $this->getThirdReviewAndRating(),
@@ -106,7 +107,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    private function getFirstReviewAndRating()
+    private function getFirstReviewAndRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating->setCreatedAt('2011-02-16 15:21:20');
@@ -114,7 +115,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         return $reviewAndRating;
     }
 
-    private function getSecondReviewAndRating()
+    private function getSecondReviewAndRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating->setCreatedAt('2017-02-16 15:21:20');
@@ -122,7 +123,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
         return $reviewAndRating;
     }
 
-    private function getThirdReviewAndRating()
+    private function getThirdReviewAndRating(): ReviewAndRating
     {
         $reviewAndRating = new ReviewAndRating();
         $reviewAndRating->setCreatedAt('2018-02-16 15:21:20');

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\Configuration\Dao;
 
-use Doctrine\DBAL\Driver\Connection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 /**
  * @internal
  */
-class ShopConfigurationSettingDaoTest extends IntegrationTestCase
+final class ShopConfigurationSettingDaoTest extends IntegrationTestCase
 {
     public function setUp(): void
     {
@@ -33,10 +33,8 @@ class ShopConfigurationSettingDaoTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    /**
-     * @dataProvider settingValueDataProvider
-     */
-    public function testSave(string $name, string $type, $value): void
+    #[DataProvider('settingValueDataProvider')]
+    public function testSave(string $name, string $type, string|int|float|bool|array $value): void
     {
         $settingDao = $this->getConfigurationSettingDao();
 

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Install\Service;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
@@ -33,10 +34,9 @@ final class ModuleConfigurationInstallerTest extends TestCase
     /** @var string  */
     private $modulePath;
     /**
-     * @var string
      * @see TestData/TestModule/metadata.php
      */
-    private $testModuleId = 'test-module';
+    private string $testModuleId = 'test-module';
     /** @var ProjectConfigurationDaoInterface */
     private $projectConfigurationDao;
 
@@ -59,7 +59,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
 
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testInstallWithPreExistingEnvironmentFile(): void
     {
         $this->configureModuleInEnvironmentFile();

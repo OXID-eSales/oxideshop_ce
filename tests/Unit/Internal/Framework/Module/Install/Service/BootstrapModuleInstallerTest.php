@@ -9,15 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Install\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
 use PHPUnit\Framework\TestCase;
 
-class BootstrapModuleInstallerTest extends TestCase
+final class BootstrapModuleInstallerTest extends TestCase
 {
-    public function testInstallTriggersAllInstallers()
+    public function testInstallTriggersAllInstallers(): void
     {
         $path = 'packagePath';
         $package = new OxidEshopPackage($path);
@@ -39,10 +40,8 @@ class BootstrapModuleInstallerTest extends TestCase
         $moduleInstaller->install($package);
     }
 
-    /**
-     * @dataProvider moduleInstallMatrixDataProvider
-     */
-    public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled)
+    #[DataProvider('moduleInstallMatrixDataProvider')]
+    public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled): void
     {
         $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
         $moduleFilesInstaller->method('isInstalled')->willReturn($filesInstalled);

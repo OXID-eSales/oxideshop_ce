@@ -9,12 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer;
 use PHPUnit\Framework\TestCase;
 
-class MetaDataNormalizerTest extends TestCase
+final class MetaDataNormalizerTest extends TestCase
 {
-    public function testNormalizeMetaData()
+    public function testNormalizeMetaData(): void
     {
         $metaData =
             [
@@ -40,7 +41,7 @@ class MetaDataNormalizerTest extends TestCase
         $this->assertEquals($expectedNormalizedData, $normalizedData);
     }
 
-    public function testNormalizerConvertsModuleSettingConstraintsToArray()
+    public function testNormalizerConvertsModuleSettingConstraintsToArray(): void
     {
         $metadata = [
             'settings' => [
@@ -60,10 +61,8 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider multiLanguageFieldDataProvider
-     */
-    public function testNormalizerConvertsMultiLanguageFieldToArrayWithDefaultLanguageIfItIsString(string $fieldName, string $value)
+    #[DataProvider('multiLanguageFieldDataProvider')]
+    public function testNormalizerConvertsMultiLanguageFieldToArrayWithDefaultLanguageIfItIsString(string $fieldName, string $value): void
     {
         $metadata = [
             $fieldName => $value,
@@ -79,10 +78,8 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider multiLanguageFieldDataProvider
-     */
-    public function testNormalizerConvertsMultiLanguageFieldToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet(string $fieldName, string $value)
+    #[DataProvider('multiLanguageFieldDataProvider')]
+    public function testNormalizerConvertsMultiLanguageFieldToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet(string $fieldName, string $value): void
     {
         $metadata = [
             $fieldName => $value,

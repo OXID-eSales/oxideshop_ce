@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Container;
 trait ContainerTrait
 {
     private $container;
-    
+
     protected function get(string $serviceId)
     {
         $this->prepareContainer();

@@ -12,14 +12,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ModuleStateServiceTest extends TestCase
+final class ModuleStateServiceTest extends TestCase
 {
     use ContainerTrait;
 

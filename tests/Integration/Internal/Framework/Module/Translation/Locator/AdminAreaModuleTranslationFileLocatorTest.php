@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Translation\Locator;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\AdminAreaModuleTranslationFileLocator;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -22,13 +23,11 @@ final class AdminAreaModuleTranslationFileLocatorTest extends IntegrationTestCas
     use ProphecyTrait;
 
     /** @var ModulesDataProviderInterface */
-    private $activeModulesDataProvider;
+    private ObjectProphecy $activeModulesDataProvider;
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    /** @var string */
-    private $adminThemeName;
+    private string $adminThemeName;
 
     public function setUp(): void
     {

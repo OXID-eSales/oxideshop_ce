@@ -22,9 +22,9 @@ use Symfony\Component\Filesystem\Path;
  */
 class ModuleCommandsTestCase extends TestCase
 {
-    protected $modulesPath = __DIR__ . '/Fixtures/modules/';
+    protected string $modulesPath = __DIR__ . '/Fixtures/modules/';
 
-    protected $moduleId = 'testmodule';
+    protected string $moduleId = 'testmodule';
 
     public function tearDown(): void
     {
@@ -37,9 +37,6 @@ class ModuleCommandsTestCase extends TestCase
         return ContainerFacade::get($serviceId);
     }
 
-    /**
-     * @return Application
-     */
     protected function getApplication(): Application
     {
         $application = $this->get('oxid_esales.console.symfony.component.console.application');

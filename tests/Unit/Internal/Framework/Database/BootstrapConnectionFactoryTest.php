@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\BootstrapConnectionFactory;
 use PHPUnit\Framework\TestCase;
 
-class BootstrapConnectionFactoryTest extends TestCase
+final class BootstrapConnectionFactoryTest extends TestCase
 {
     public function testCreateWhenCalledTwiceWillReturnTheSameInstance(): void
     {

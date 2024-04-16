@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsValidator;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\ModuleEvents;
@@ -17,12 +18,10 @@ use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
-class EventsModuleSettingValidatorTest extends TestCase
+final class EventsModuleSettingValidatorTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testValidate()
+    #[DoesNotPerformAssertions]
+    public function testValidate(): void
     {
         $validator = $this->createValidator();
 
@@ -33,7 +32,7 @@ class EventsModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function testValidateThrowsExceptionIfEventsDefinedAreNotCallable()
+    public function testValidateThrowsExceptionIfEventsDefinedAreNotCallable(): void
     {
         $this->expectException(ModuleSettingNotValidException::class);
         $validator = $this->createValidator();
@@ -47,15 +46,13 @@ class EventsModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidEventsProvider
      *
-     * @param Event $invalidEvent
      *
-     * @doesNotPerformAssertions
-     *
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException
+     * @throws ModuleSettingNotValidException
      */
-    public function testValidateDoesNotValidateSyntax($invalidEvent)
+    #[DataProvider('invalidEventsProvider')]
+    #[DoesNotPerformAssertions]
+    public function testValidateDoesNotValidateSyntax(Event $invalidEvent): void
     {
         $validator = $this->createValidator();
 
@@ -73,9 +70,6 @@ class EventsModuleSettingValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @return EventsValidator
-     */
     private function createValidator(): EventsValidator
     {
         return new EventsValidator();

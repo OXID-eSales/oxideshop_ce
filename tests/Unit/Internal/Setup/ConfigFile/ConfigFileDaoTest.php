@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\ConfigFile;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDao;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
@@ -26,11 +27,10 @@ final class ConfigFileDaoTest extends TestCase
 
     protected function tearDown(): void
     {
-        if (file_exists($this->tmpFile)){
+        if (file_exists($this->tmpFile)) {
             unlink($this->tmpFile);
         }
         parent::tearDown();
-
     }
 
     public function testReplacingPlaceholder(): void
@@ -94,7 +94,7 @@ final class ConfigFileDaoTest extends TestCase
         $configFileDao->checkIsEditable();
     }
 
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testCheckIsEditableWithValidFile(): void
     {
         $basicContext = $this->prophesize(BasicContextInterface::class);

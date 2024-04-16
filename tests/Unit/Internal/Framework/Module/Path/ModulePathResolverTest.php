@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use PHPUnit\Framework\TestCase;
 
-class ModulePathResolverTest extends TestCase
+final class ModulePathResolverTest extends TestCase
 {
     public function testGetFullModulePathFromConfiguration(): void
     {

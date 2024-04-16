@@ -5,14 +5,17 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ScriptLogicTest extends IntegrationTestCase
+final class ScriptLogicTest extends IntegrationTestCase
 {
     private Config $config;
     private ScriptLogic $scriptLogic;
@@ -66,9 +69,7 @@ class ScriptLogicTest extends IntegrationTestCase
         $this->config->setGlobalParameter('scripts_dynamic', $scripts);
     }
 
-    /**
-     * @dataProvider addWidgetProvider
-     */
+    #[DataProvider('addWidgetProvider')]
     public function testRenderAddWidget(string $script, string $output): void
     {
         $scripts = $this->config->getGlobalParameter('scripts');

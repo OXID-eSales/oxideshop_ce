@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Language;
 
+use Doctrine\DBAL\Driver\Connection;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
@@ -18,6 +19,18 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class LanguageInstallerTest extends IntegrationTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->beginTransactionForConnectionFromTestContainer();
+    }
+
+    public function tearDown(): void
+    {
+        $this->rollBackTransactionForConnectionFromTestContainer();
+        parent::tearDown();
+    }
+
     public function testInstallSetsDefaultLanguage(): void
     {
         $english = new DefaultLanguage('en');

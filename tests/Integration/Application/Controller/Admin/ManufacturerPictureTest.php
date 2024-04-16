@@ -34,13 +34,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         'oxpromotion_icon' => 'test-promotion-icon.jpg',
     ];
 
-    public function tearDown(): void
-    {
-        unset($_POST['masterPictureField'], $_POST['oxid']);
-
-        parent::tearDown();
-    }
-
     /**  @runInSeparateProcess   */
     public function testRender(): void
     {
@@ -159,7 +152,9 @@ class ManufacturerPictureTest extends IntegrationTestCase
     {
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
 
-        return $queryBuilder
+        return $this
+            ->getDbConnection()
+            ->createQueryBuilder()
             ->select($imageFieldName)
             ->from('oxmanufacturers')
             ->where('oxid = :oxid')

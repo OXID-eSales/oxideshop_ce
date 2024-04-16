@@ -16,10 +16,9 @@ class BootstrapConnectionFactoryTest extends TestCase
 {
     public function testCreateWhenCalledTwiceWillReturnTheSameInstance(): void
     {
-        $bootstrapConnectionFactory = new BootstrapConnectionFactory();
         $this->assertSame(
-            $bootstrapConnectionFactory->create(),
-            $bootstrapConnectionFactory->create(),
+            BootstrapConnectionFactory::create(),
+            BootstrapConnectionFactory::create(),
         );
     }
 }

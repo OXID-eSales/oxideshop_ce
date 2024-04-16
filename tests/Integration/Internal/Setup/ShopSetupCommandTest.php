@@ -26,13 +26,13 @@ use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class ShopSetupCommandTest extends TestCase
+final class ShopSetupCommandTest extends IntegrationTestCase
 {
     use ProphecyTrait;
     use ContainerTrait;
@@ -61,7 +61,7 @@ final class ShopSetupCommandTest extends TestCase
     private ObjectProphecy|BasicContextInterface $basicContext;
     private ObjectProphecy|ShopAdapterInterface $shopAdapter;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 

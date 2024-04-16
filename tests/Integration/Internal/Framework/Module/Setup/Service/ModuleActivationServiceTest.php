@@ -47,19 +47,17 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $this->container = $this->setupAndConfigureContainer();
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
-
-        parent::setUp();
     }
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
         ContainerFacade::get(ModuleInstallerInterface::class)->uninstall(
             new OxidEshopPackage($this->testModulePath)
         );
+        parent::tearDown();
     }
 
     public function testActivation()

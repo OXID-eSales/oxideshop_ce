@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Translation\Locator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\FrontendModuleTranslationFileLocator;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
-final class FrontendModuleTranslationFileLocatorTest extends TestCase
+final class FrontendModuleTranslationFileLocatorTest extends IntegrationTestCase
 {
     use ContainerTrait;
     use ProphecyTrait;
@@ -27,12 +27,12 @@ final class FrontendModuleTranslationFileLocatorTest extends TestCase
     /** @var Filesystem */
     private $filesystem;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->activeModulesDataProvider = $this->prophesize(ActiveModulesDataProviderInterface::class);
         $this->filesystem = new Filesystem();
-
-        parent::setUp();
     }
 
     public function testLocateWithEmptyPaths(): void

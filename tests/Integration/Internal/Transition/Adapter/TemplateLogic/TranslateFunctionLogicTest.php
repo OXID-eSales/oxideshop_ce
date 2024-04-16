@@ -12,9 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class TranslateFunctionLogicTest extends TestCase
+final class TranslateFunctionLogicTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

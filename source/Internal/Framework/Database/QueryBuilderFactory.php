@@ -21,9 +21,8 @@ class QueryBuilderFactory implements QueryBuilderFactoryInterface
 
     public function create(): QueryBuilder
     {
-        $connection = $this->connection;
-        $connection->setFetchMode(PDO::FETCH_ASSOC);
+        $this->connection->setFetchMode(PDO::FETCH_ASSOC);
 
-        return new QueryBuilder($connection);
+        return new QueryBuilder($this->connection);
     }
 }

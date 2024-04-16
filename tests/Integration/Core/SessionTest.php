@@ -12,15 +12,14 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\Eshop\Core\UtilsServer;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class SessionTest extends TestCase
+final class SessionTest extends IntegrationTestCase
 {
     public function setUp(): void
     {
         parent::setUp();
         $this->setApplicationDefaults();
-        unset($_POST);
     }
 
     /**  @runInSeparateProcess   */

@@ -18,18 +18,22 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 class NewsletterRecipientsDaoTest extends IntegrationTestCase
 {
-    /**
-     * @var object|QueryBuilderFactoryInterface|null
-     */
-    private $queryBuilderFactory;
+
+    private QueryBuilderFactoryInterface $queryBuilderFactory;
 
     public function setup(): void
     {
         parent::setUp();
 
+        $this->beginTransactionForConnectionFromTestContainer();
         $this->queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
         $this->prepareTestData();
+    }
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->rollBackTransactionForConnectionFromTestContainer();
     }
 
     public function testGetNewsletterRecipients(): void

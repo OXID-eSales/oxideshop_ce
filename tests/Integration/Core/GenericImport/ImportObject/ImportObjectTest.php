@@ -16,12 +16,11 @@ use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Accessories2Articl
 use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Article;
 use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ArticleExtends;
 use OxidEsales\EshopCommunity\Core\Registry;
-use PHPUnit\Framework\TestCase;
-
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use function array_map;
 use function sort;
 
-final class ImportObjectTest extends TestCase
+final class ImportObjectTest extends IntegrationTestCase
 {
     public function setUp(): void
     {

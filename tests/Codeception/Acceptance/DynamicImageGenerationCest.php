@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 #[Group('images')]
-final class DynamicImageGenartionCest
+final class DynamicImageGenerationCest
 {
     private string $pathToGeneratedImages = '/out/pictures/generated/product/1/500_500_75';
 

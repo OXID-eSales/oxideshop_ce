@@ -41,11 +41,11 @@ class ShopStateService implements ShopStateServiceInterface
     private function doesConfigTableExist(): bool
     {
         try {
-            (new BootstrapConnectionFactory())
-                ->create()
-                ->exec(
-                    sprintf("SELECT 1 FROM `%s` LIMIT 1", $this->basicContext->getConfigTableName())
-                );
+            $connection = BootstrapConnectionFactory::create();
+            $connection->exec(
+                sprintf("SELECT 1 FROM `%s` LIMIT 1", $this->basicContext->getConfigTableName())
+            );
+            $connection->close();
         } catch (TableNotFoundException) {
             return false;
         }

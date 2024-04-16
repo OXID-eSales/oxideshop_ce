@@ -13,19 +13,19 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\DriverManager;
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 
-class BootstrapConnectionFactory implements ConnectionFactoryInterface
+class BootstrapConnectionFactory
 {
-    private Connection $connection;
+    private static Connection $connection;
 
-    public function create(): Connection
+    public static function create(): Connection
     {
-        if (!isset($this->connection)) {
+        if (!isset(self::$connection)) {
             $bootstrapConfiguration = (new BootstrapConfigurationFactory())->create();
-            $this->connection = DriverManager::getConnection(
+            self::$connection = DriverManager::getConnection(
                 ['url' => $bootstrapConfiguration->getDatabaseUrl()]
             );
         }
 
-        return $this->connection;
+        return self::$connection;
     }
 }

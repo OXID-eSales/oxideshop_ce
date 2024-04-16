@@ -56,7 +56,7 @@ class Context extends BasicContext implements ContextInterface
 
     public function getCurrentShopId(): int
     {
-        $bootstrapDbConnection = (new BootstrapConnectionFactory())->create();
+        $bootstrapDbConnection = BootstrapConnectionFactory::create();
         $shopIdCalculator = new ShopIdCalculator(
             new FileCache(),
             $bootstrapDbConnection,

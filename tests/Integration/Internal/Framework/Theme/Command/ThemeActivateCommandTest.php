@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 final class ThemeActivateCommandTest extends IntegrationTestCase
 {
     use ContainerTrait;
@@ -93,14 +96,17 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private function setShopFixtures(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sShopDir', "$this->fixtureDirectory/shop/source/");
         Registry::getConfig()->setConfigParam('sTheme', 'absolute-dummy-value');
+
+        $this->createContainer();
+        $this->container->setParameter('oxid_shop_source_directory', "$this->fixtureDirectory/shop/source/");
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
     }
 
     private function saveOriginalConfig(): void
     {
         $this->originalConfig = [
-            'sShopDir' => Registry::getConfig()->getConfigParam('sShopDir'),
             'sTheme' => Registry::getConfig()->getConfigParam('sTheme')
         ];
     }
@@ -108,7 +114,6 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private function restoreOriginalConfig(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sShopDir', $this->originalConfig['sShopDir']);
         Registry::getConfig()->setConfigParam('sTheme', $this->originalConfig['sTheme']);
     }
 }

@@ -89,7 +89,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         parent::__construct();
 
-        $this->_sShopDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir');
+        $this->_sShopDir = ContainerFacade::getParameter('oxid_shop_source_directory');
         $this->_oOutput = oxNew(\OxidEsales\Eshop\Application\Model\DiagnosticsOutput::class);
     }
 

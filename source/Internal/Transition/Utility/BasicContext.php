@@ -11,10 +11,12 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\Facts\Config\ConfigFile;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\SystemConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 
 /**
  * @inheritdoc
@@ -30,6 +32,18 @@ class BasicContext implements BasicContextInterface
      */
     private $facts;
 
+    protected SystemConfiguration $systemConfiguration;
+    private string $shopRootPath;
+
+    public function __construct()
+    {
+        $this->systemConfiguration = (new BootstrapConfigurationFactory())->create();
+        $this->shopRootPath = (new BootstrapLocator())->getProjectRoot();
+    }
+
+    /**
+     * @return string
+     */
     public function getContainerCacheFilePath(int $shopId): string
     {
         return Path::join($this->getCacheDirectory(), 'container', 'container_cache_shop_' . $shopId . '.php');
@@ -60,7 +74,7 @@ class BasicContext implements BasicContextInterface
 
     public function getSourcePath(): string
     {
-        return $this->getFacts()->getSourcePath();
+        return Path::join($this->getShopRootPath(), 'source');
     }
 
     public function getEdition(): string
@@ -122,7 +136,7 @@ class BasicContext implements BasicContextInterface
 
     public function getShopRootPath(): string
     {
-        return $this->getFacts()->getShopRootPath();
+        return $this->shopRootPath;
     }
 
     public function getVendorPath(): string
@@ -148,7 +162,7 @@ class BasicContext implements BasicContextInterface
     public function getCacheDirectory(): string
     {
         return Path::join(
-            (new ConfigFile())->getVar('sCompileDir'),
+            $this->systemConfiguration->getCacheDirectory(),
             'cache'
         );
     }
@@ -161,6 +175,9 @@ class BasicContext implements BasicContextInterface
         );
     }
 
+    /**
+     * @return Facts
+     */
     public function getFacts(): Facts
     {
         if ($this->facts === null) {

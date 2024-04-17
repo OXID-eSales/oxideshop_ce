@@ -23,6 +23,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Registry;
 
 /**
@@ -104,7 +105,7 @@ abstract class BaseRegistrator
         $config = Registry::getConfig();
         return str_replace(
             rtrim($config->getCurrentShopUrl(false), '/'),
-            rtrim($config->getConfigParam('sShopDir'), '/'),
+            rtrim(ContainerFacade::getParameter('oxid_shop_source_directory'), '/'),
             $url
         );
     }

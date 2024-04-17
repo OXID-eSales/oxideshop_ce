@@ -33,4 +33,7 @@
 - Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
 - Remove deprecated model property `Attribute::_sTitle` [PR-914](https://github.com/OXID-eSales/oxideshop_ce/pull/914)
 - Obsolete caching related functionalities
+- Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
+- Obsolete `TransactionServiceInterface`, `FinderFactoryInterface` and `ConnectionProviderInterface`
+- Config parameters sShopDir, sCompileDir and sLogLevel
 - Deprecated class `ModuleVariablesLocator`

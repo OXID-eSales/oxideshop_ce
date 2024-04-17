@@ -43,8 +43,6 @@ runscript: &runscript
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'
-    container:
-      options: '-e GITHUB_TOKEN=${GITHUB_TOKEN}'
     custom_script_container: |
       cd vendor/oxid-esales/oxideshop-ce
       composer config -g github-oauth.github.com "${GITHUB_TOKEN}"

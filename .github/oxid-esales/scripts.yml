@@ -44,6 +44,7 @@ runscript: &runscript
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'
     custom_script_container: |
+      cd vendor/oxid-esales/oxideshop-ce
       composer update --no-interaction
 runslim:
   <<: *runscript

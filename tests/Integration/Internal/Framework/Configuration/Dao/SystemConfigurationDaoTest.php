@@ -21,10 +21,17 @@ final class SystemConfigurationDaoTest extends TestCase
     use ContainerTrait;
     use RequestTrait;
 
+    private SystemConfigurationDao  $systemConfigurationDao;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->backupRequestData();
+
+        new DotenvLoader(
+            (new BootstrapLocator())->getProjectRoot()
+        );
+        $this->systemConfiguration = new SystemConfigurationDao();
     }
 
     public function tearDown(): void
@@ -35,13 +42,15 @@ final class SystemConfigurationDaoTest extends TestCase
 
     public function testGetDatabaseConfigurationWillContainSomeDefaults(): void
     {
-        $envLoader = new DotenvLoader(
-            (new BootstrapLocator())->getProjectRoot()
-        );
-        $databaseUrl = (new SystemConfigurationDao($envLoader))
+        $databaseUrl = (new SystemConfigurationDao())
             ->get()
             ->getDatabaseUrl();
 
         $this->assertNotEmpty($databaseUrl);
+    }
+
+    public function testGetBootstrapParametersWillContainsDefaults(): void
+    {
+        $this->assertNotEmpty($this->systemConfiguration->get()->getCacheDirectory());
     }
 }

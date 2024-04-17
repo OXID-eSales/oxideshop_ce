@@ -12,6 +12,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject;
 class SystemConfiguration
 {
     private string $databaseUrl;
+    private string $shopSourceDirectory;
+    private string $cacheDirectory;
+
+    private string $logLevel;
 
     public function getDatabaseUrl(): string
     {
@@ -21,5 +25,25 @@ class SystemConfiguration
     public function setDatabaseUrl(string $databaseUrl): void
     {
         $this->databaseUrl = $databaseUrl;
+    }
+
+    public function getCacheDirectory(): string
+    {
+        return $this->cacheDirectory;
+    }
+
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
+    }
+
+    public function getLogLevel(): string
+    {
+        return $this->logLevel;
+    }
+
+    public function setLogLevel(string $logLevel): void
+    {
+        $this->logLevel = $logLevel;
     }
 }

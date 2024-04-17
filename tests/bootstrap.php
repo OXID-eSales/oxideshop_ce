@@ -11,10 +11,11 @@ use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
-define('INSTALLATION_ROOT_PATH', (new Facts())->getShopRootPath());
+define('INSTALLATION_ROOT_PATH', (new BootstrapLocator())->getProjectRoot());
 const VENDOR_PATH = INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR;
 require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
 

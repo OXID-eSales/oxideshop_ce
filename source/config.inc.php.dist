@@ -8,8 +8,6 @@
 $this->sShopURL     = '<sShopURL>'; // eShop base url, required
 $this->sSSLShopURL  = null;            // eShop SSL url, optional
 $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
-$this->sShopDir     = '<sShopDir>';
-$this->sCompileDir  = '<sCompileDir>';
 
 /**
  * Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
@@ -22,11 +20,6 @@ $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mp
 
 // Timezone information
 date_default_timezone_set('Europe/Berlin');
-
-/**
- * String PSR3 log level Psr\Log\LogLevel
- */
-$this->sLogLevel = 'error';
 
 /**
  * Log all modifications performed in Admin

@@ -11,10 +11,12 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\Facts\Config\ConfigFile;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\SystemConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 
 /**
  * @inheritdoc
@@ -29,6 +31,15 @@ class BasicContext implements BasicContextInterface
      * @var Facts
      */
     private $facts;
+
+    protected SystemConfiguration $systemConfiguration;
+    private string $shopRootPath;
+
+    public function __construct()
+    {
+        $this->systemConfiguration = (new BootstrapConfigurationFactory())->create();
+        $this->shopRootPath = (new BootstrapLocator())->getProjectRoot();
+    }
 
     /**
      * @return string
@@ -72,7 +83,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getSourcePath(): string
     {
-        return $this->getFacts()->getSourcePath();
+        return Path::join($this->getShopRootPath(), 'source');
     }
 
     /**
@@ -179,7 +190,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getShopRootPath(): string
     {
-        return $this->getFacts()->getShopRootPath();
+        return $this->shopRootPath;
     }
 
     /**
@@ -219,7 +230,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getCacheDirectory(): string
     {
-        return (new ConfigFile())->getVar('sCompileDir');
+        return $this->systemConfiguration->getCacheDirectory();
     }
 
     public function getModuleCacheDirectory(): string

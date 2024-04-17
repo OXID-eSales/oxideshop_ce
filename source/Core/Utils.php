@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * General utils class
@@ -673,15 +674,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function oxResetFileCache(bool $includePermanentCache = false)
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
+        $cacheFilePath = $this->getCacheFilePath(null, true);
+        $files = $cacheFilePath ?? glob($cacheFilePath . '*');
+        if (is_array($files)) {
             if (!$includePermanentCache) {
                 // delete all the files, except cached tables field names
-                $aFiles = preg_grep($this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT);
+                $files = preg_grep($this->_sPermanentCachePattern, $files, PREG_GREP_INVERT);
             }
 
-            foreach ($aFiles as $sFile) {
-                @unlink($sFile);
+            foreach ($files as $file) {
+                @unlink($file);
             }
         }
     }
@@ -1208,7 +1210,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $versionPrefix = $this->getEditionCacheFilePrefix();
 
-        $sPath = realpath(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir'));
+        $sPath = realpath(ContainerFacade::getParameter('oxid_build_directory'));
 
         if (!$sPath) {
             return false;
@@ -1256,9 +1258,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
         $sFileName = $this->getCacheFilePath($sCacheName);
-        $cacheDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir');
 
-        $tmpFile = $cacheDirectory . basename($sFileName) . uniqid('.temp', true) . '.txt';
+        $tmpFile = Path::join(
+            ContainerFacade::getParameter('oxid_build_directory'),
+            basename($sFileName) . uniqid('.temp', true) . '.txt'
+        );
         $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);
 
         rename($tmpFile, $sFileName);

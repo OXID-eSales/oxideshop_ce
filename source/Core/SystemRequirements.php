@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\SystemSecurityChecker;
 
 /**
@@ -312,28 +313,16 @@ class SystemRequirements
     public function getPermissionIssuesList($shopPath = null, $minPerm = 777)
     {
         clearstatcache();
-        $shopPath = $shopPath ? $shopPath : getShopBasePath();
+        $shopPath = $shopPath ?: getShopBasePath();
         $pathCheckResults = [
             'missing' => [],
             'not_writable' => []
         ];
 
-        $tmpPath = "$shopPath/tmp/";
-        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-        $configTmpPath = $config->getVar('sCompileDir');
-        if ($configTmpPath && strpos($configTmpPath, '<sCompileDir') === false) {
-            $tmpPath = $configTmpPath;
-        }
+        $buildDirectory = ContainerFacade::getParameter('oxid_build_directory');
 
         $pathsToCheck = [
-            $shopPath . 'out/pictures/promo/',
-            $shopPath . 'out/pictures/master/',
-            $shopPath . 'out/pictures/generated/',
-            $shopPath . 'out/pictures/media/', // @deprecated, use out/media instead
-            $shopPath . 'out/media/',
-            $shopPath . 'log/',
-            $shopPath . '../var/',
-            $tmpPath
+            $buildDirectory
         ];
 
         $onePathToCheck = reset($pathsToCheck);

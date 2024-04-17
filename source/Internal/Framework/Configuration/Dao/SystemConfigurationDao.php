@@ -19,6 +19,8 @@ class SystemConfigurationDao implements SystemConfigurationDaoInterface
     {
         $systemConfiguration = new SystemConfiguration();
         $systemConfiguration->setDatabaseUrl(getenv('OXID_DB_URL'));
+        $systemConfiguration->setCacheDirectory(getenv('OXID_BUILD_DIRECTORY'));
+        $systemConfiguration->setLogLevel(getenv('OXID_LOG_LEVEL'));
 
         return $systemConfiguration;
     }

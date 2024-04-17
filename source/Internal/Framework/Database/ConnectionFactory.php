@@ -33,5 +33,4 @@ class ConnectionFactory implements ConnectionFactoryInterface
             $dbalConfiguration,
         );
     }
-
 }

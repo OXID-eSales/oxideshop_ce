@@ -21,6 +21,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
+use Symfony\Component\Filesystem\Path;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
@@ -521,7 +522,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $runOnceExecuted = Registry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
-            if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
+            $setupIndexFile = Path::join(
+                ContainerFacade::getParameter('oxid_shop_source_directory'),
+                'Setup',
+                'index.php'
+            );
+            if (file_exists($setupIndexFile)) {
                 $tpl = 'message/err_setup';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $context = [

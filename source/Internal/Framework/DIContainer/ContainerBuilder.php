@@ -41,6 +41,7 @@ class ContainerBuilder
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
+        $symfonyContainer->setParameter('oxid_shop_source_directory', $this->context->getSourcePath());
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);

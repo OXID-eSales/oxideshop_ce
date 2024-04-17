@@ -8,8 +8,8 @@
 
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,7 +50,7 @@ if (!isset($shopConfigurations[$shopId])) {
 
 $_POST['shp'] = $shopId;
 
-$bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
+$bootstrapFilePath = Path::join((new BootstrapLocator())->getProjectRoot(), 'source', 'bootstrap.php');
 require_once $bootstrapFilePath;
 
 $container = (new ContainerBuilderFactory())->create()->getContainer();

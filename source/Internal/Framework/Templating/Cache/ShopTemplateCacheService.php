@@ -17,14 +17,15 @@ class ShopTemplateCacheService implements ShopTemplateCacheServiceInterface
 {
     public function __construct(
         private readonly ContextInterface $context,
-        private readonly Filesystem $filesystem
+        private readonly Filesystem $filesystem,
+        private readonly string $compilationDirectory
     ) {
     }
 
     public function getCacheDirectory(int $shopId): string
     {
         return Path::join(
-            $this->context->getCacheDirectory(),
+            $this->compilationDirectory,
             'template_cache',
             'shops',
             (string) $shopId
@@ -33,10 +34,8 @@ class ShopTemplateCacheService implements ShopTemplateCacheServiceInterface
 
     public function invalidateCache(int $shopId): void
     {
-        $templateCacheDirectory = $this->getCacheDirectory($shopId);
-
-        if ($this->filesystem->exists($templateCacheDirectory)) {
-            $this->filesystem->remove($templateCacheDirectory);
+        if ($this->filesystem->exists($this->getCacheDirectory($shopId))) {
+            $this->filesystem->remove($this->getCacheDirectory($shopId));
         }
     }
 

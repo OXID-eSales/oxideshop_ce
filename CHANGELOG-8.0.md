@@ -5,6 +5,7 @@
 ### Added
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
 - Registering environment variables via Symfony Dotenv Component, and integrating them into system configuration
+- Bootstrap parameters have been moved from config.inc.php to environment and container parameters
 
 ### Changed
 - Admin directory is not removed from the url in `ViewConfig::getModuleUrl` anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)
@@ -23,3 +24,4 @@
 - Remove deprecated `TemplateCacheService` implementation
 - Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
 - Obsolete `TransactionServiceInterface`, `FinderFactoryInterface` and `ConnectionProviderInterface`
+- Config parameters sShopDir, sCompileDir and sLogLevel

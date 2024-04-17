@@ -14,9 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 class ConfigFileDao implements ConfigFileDaoInterface
 {
     private const PLACEHOLDERS = [
-        'sShopURL',
-        'sShopDir',
-        'sCompileDir',
+        'sShopURL'
     ];
 
     public function __construct(private BasicContextInterface $context)

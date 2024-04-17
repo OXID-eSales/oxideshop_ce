@@ -12,5 +12,4 @@ use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\System
 interface SystemConfigurationDaoInterface
 {
     public function get(): SystemConfiguration;
-
 }

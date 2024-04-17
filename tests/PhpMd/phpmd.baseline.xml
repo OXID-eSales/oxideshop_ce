@@ -1,0 +1,1281 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Component/BasketComponent.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Component/BasketComponent.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/BasketComponent.php" method="init"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/BasketComponent.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/BasketComponent.php" method="toBasket"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/BasketComponent.php" method="changeBasket"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Component/BasketComponent.php" method="changeBasket"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/BasketComponent.php" method="getItems"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Component/BasketComponent.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/CategoriesComponent.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/CategoriesComponent.php" method="addAdditionalParams"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/CurrencyComponent.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Component/Locator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/Locator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Component/Locator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/Locator.php" method="setSearchLocatorData"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Component/Locator.php" method="setSearchLocatorData"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/Locator.php" method="_setRecommlistLocatorData"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/ShopComponent.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Component/UserComponent.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Component/UserComponent.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Component/UserComponent.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/UserComponent.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Component/UserComponent.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/UserComponent.php" method="createUser"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Component/UserComponent.php" method="createUser"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/Application/Component/UserComponent.php" method="createUser"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/UserComponent.php" method="changeUserWithoutRedirect"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Component/UtilsComponent.php" method="toCompareList"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Component/UtilsComponent.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Component/Widget/ArticleBox.php" method="getDisableToCart"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Component/Widget/ArticleBox.php" method="getShowMainLink"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Component/Widget/ArticleBox.php" method="getAltProduct"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Component/Widget/ArticleDetails.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Component/Widget/ArticleDetails.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Component/Widget/ArticleDetails.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Component/Widget/ArticleDetails.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Component/Widget/ArticleDetails.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Component/Widget/Rating.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Component/Widget/WidgetController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/AccountController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/AccountController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/AccountController.php" method="getAccountDeletionStatus"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountDownloadsController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountNewsletterController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/AccountNoticeListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountNoticeListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountPasswordController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/AccountRecommlistController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/AccountRecommlistController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountReviewController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/AccountWishlistController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/AccountWishlistController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ActionsArticleAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ActionsArticleAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ActionsArticleAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ActionsGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ActionsGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ActionsList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ActionsList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ActionsMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ActionsMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ActionsMain.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ActionsMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ActionsMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ActionsMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ActionsMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ActionsMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ActionsOrderAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/Admin/AdminController.php" method="getCountryByCode"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/AdminController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AdminDetailsController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/AdminDetailsController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/AdminDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/AdminListController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AdminListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AdminListController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/AdminListController.php" method="prepareOrderByQuery"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/AdminListController.php" method="buildWhere"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/AdminListController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/AdminListController.php" method="setListNavigationParams"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/AdminListController.php" method="setListNavigationParams"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AdminNewsletter.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AdminNewsletter.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AdminlinksMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleAccessoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleAccessoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleAccessoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleAccessoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleAttribute.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleAttributeAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleAttributeAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleAttributeAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleBundleAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleBundleAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleBundleAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleCrossselling.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleCrosssellingAjax.php" method="getQuery"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleCrosssellingAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleCrosssellingAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleCrosssellingAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleCrosssellingAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Controller/Admin/ArticleExtend.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleExtend.php" method="save"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ArticleExtend.php" method="save"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleExtend.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleExtend.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleExtendAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleExtendAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleExtendAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleFiles.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleFiles.php" method="processOptions"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ArticleMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="copyArticle"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="copyArticle"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleMain.php" method="formJumpList"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleOverview.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleOverview.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticlePictures.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleReview.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleSelectionAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleSelectionAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleSelectionAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ArticleSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ArticleStock.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleStock.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleStock.php" method="addprice"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ArticleStock.php" method="addprice"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ArticleStock.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ArticleVariant.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ArticleVariant.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ArticleVariant.php" method="savevariant"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ArticleVariant.php" method="savevariant"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ArticleVariant.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AttributeCategory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AttributeCategoryAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/AttributeCategoryAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AttributeMain.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/AttributeMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/AttributeMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/AttributeMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/AttributeMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/AttributeMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/AttributeOrderAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/CategoryList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/CategoryMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/CategoryMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/CategoryMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/CategoryMain.php" method="parseRequestParametersForSave"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/CategoryMain.php" method="parseRequestParametersForSave"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/CategoryMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/CategoryMainAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/CategoryOrderAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/CategoryOrderAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/CategorySeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/CategorySeo.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ContentList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ContentList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ContentMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ContentSeo.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DeliveryArticles.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryArticlesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliveryArticlesAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryCategoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliveryCategoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DeliveryGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliveryGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliveryMainAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetCountryAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetCountryAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DeliverySetPayment.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetPaymentAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetPaymentAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DeliverySetRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DeliverySetUsers.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliverySetUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliverySetUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DeliveryUsers.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DeliveryUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DeliveryUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="source/Application/Controller/Admin/DiagnosticsMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiagnosticsMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DiscountArticles.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/DiscountArticlesAjax.php" method="getQuery"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountArticlesAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountArticlesAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DiscountArticlesAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountCategoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountCategoriesAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/DiscountItemAjax.php" method="getQuery"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountItemAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountItemAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DiscountItemAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DiscountItemAjax.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/DiscountMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DiscountMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DiscountMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DiscountMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DiscountUsers.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DiscountUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DiscountUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/DiscountUsersAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/DynamicExportBaseController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/GenericExport.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/GenericExportDo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/GenericExportMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/GenericImportMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/GenericImportMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/GenericImportMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/GenericImportMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/LanguageList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/LanguageMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/LanguageMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/LanguageMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/LanguageMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/LanguageMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/LanguageMain.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ListComponentAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ListReview.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ListReview.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ListReview.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ListReview.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ListUser.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/LoginController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/LoginController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ManufacturerMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ManufacturerMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ManufacturerMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ManufacturerMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ManufacturerMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ManufacturerMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ManufacturerSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ManufacturerSeo.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ModuleConfiguration.php" method="saveModuleConfigVariables"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ModuleConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ModuleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ModuleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ModuleMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ModuleSortList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/NavigationController.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/NavigationController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/NavigationController.php" method="doStartUpChecks"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/NavigationTree.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/NavigationTree.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/NavigationTree.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/NavigationTree.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/NavigationTree.php" method="checkRights"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/NavigationTree.php" method="checkGroups"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/NavigationTree.php" method="getInitialDom"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ObjectSeo.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/Admin/ObjectSeo.php" method="getActCatType"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/OrderList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/OrderMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/OrderMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/OrderMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/OrderMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/OrderOverview.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/OrderOverview.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PaymentCountryAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/PaymentCountryAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PaymentMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/PaymentMainAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PaymentRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/PaymentRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/PaymentRdfa.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/PriceAlarmList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/PriceAlarmList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PriceAlarmMail.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PriceAlarmMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/PriceAlarmSend.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/PriceAlarmSend.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/SelectListMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/SelectListMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/SelectListMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/SelectListMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/SelectListMain.php" method="rearrangeFields"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/SelectListMain.php" method="rearrangeFields"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/SelectListMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/SelectListMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/SelectListMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/SelectListOrderAjax.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ShopConfiguration.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ShopConfiguration.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ShopConfiguration.php" method="unserializeConfVar"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ShopLicense.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ShopLicense.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ShopLicense.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ShopList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ShopList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ShopMain.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ShopMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ShopMain.php" method="save"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ShopMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ShopMain.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/ShopMain.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/ShopRdfa.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/ShopRdfa.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/ShopSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ShopSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/SystemInfoController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ThemeConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/Admin/ToolsList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ToolsList.php" method="performsql"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/ToolsList.php"/>
+  <violation rule="PHPMD\Rule\Design\CountInLoopExpression" file="source/Application/Controller/Admin/ToolsList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/ToolsList.php" method="prepareSQL"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/Admin/ToolsList.php" method="prepareSQL"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/UserGroupMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/UserGroupMainAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/UserList.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/UserList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/UserMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/UserMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/UserMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/UserMainAjax.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/Admin/VendorMain.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VendorMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VendorMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/VendorMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/Admin/VendorMainAjax.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/Admin/VendorMainAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/VendorSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VendorSeo.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VoucherSerieExport.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/VoucherSerieExport.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/Admin/VoucherSerieGroups.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VoucherSerieGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/Admin/VoucherSerieGroupsAjax.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/VoucherSerieMain.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/Admin/WrappingMain.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/ArticleDetailsController.php" method="saveReview"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/ArticleDetailsController.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/ArticleListController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/BasketController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/BasketController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ClearCookiesController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/CompareController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/CompareController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/CompareController.php" method="moveLeft"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/CompareController.php" method="moveRight"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/CompareController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ContactController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/ContentController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/ContentController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/ContentController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ContentController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/ContentController.php" method="getRdfaVAT"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/ContentController.php" method="getRdfaPriceValidity"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ForgotPasswordController.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/FrontendController.php" method="getIsOrderStep"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/FrontendController.php" method="setNrOfArtPerPage"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/FrontendController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/FrontendController.php" method="getRequestParams"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/FrontendController.php" method="getRequestParams"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/FrontendController.php" method="generatePageNavigation"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/FrontendController.php" method="getContentCategory"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/FrontendController.php" method="getShowPromotionList"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/FrontendController.php" method="isVatIncluded"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/InviteController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/InviteController.php" method="send"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/InviteController.php" method="send"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/ManufacturerListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ManufacturerListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/ManufacturerListController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/ManufacturerListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/ManufacturerListController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/NewsletterController.php" method="send"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/OrderController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/OrderController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/OrderController.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/OrderController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/OrderController.php" method="getNextStep"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/OrderController.php" method="validateTermsAndConditions"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/OxidStartController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/PaymentController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/PaymentController.php" method="render"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Controller/PaymentController.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/PaymentController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/PaymentController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/PaymentController.php" method="getCheckedPaymentId"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/PriceAlarmController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/RecommListController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/RecommListController.php" method="render"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/RecommListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/RecommListController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/RecommListController.php" method="saveReview"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/RecommendationAddController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/ReviewController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ReviewController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Controller/ReviewController.php" method="saveReview"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/ReviewController.php" method="getReviewSendStatus"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Controller/SearchController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/SearchController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/SearchController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/SearchController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/SearchController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/StartController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/TextEditorHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/ThankYouController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/UserController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/UserController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Controller/UserController.php" method="getShowNoRegOption"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Controller/VendorListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/VendorListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Controller/VendorListController.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Controller/VendorListController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Controller/VendorListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/WishListController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Controller/WrappingController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/ActionList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/ActionList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/ActionList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Actions.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Actions.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/AmountPriceList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/AmountPriceList.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Article.php" method="getLoadParentData"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="isVisible"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/Article.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="getSelections"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="getSelections"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="isAssignedToCategory"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="getPictureGallery"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="onChange"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="onChange"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="checkForStock"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="checkForStock"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="loadVariantList"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="loadVariantList"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="saveArtLongDesc"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="isFieldEmpty"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="isFieldEmpty"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Article.php" method="assignStock"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Article.php" method="assignStock"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/ArticleList.php" method="loadSearchIds"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/ArticleList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/ArticleList.php" method="getSearchSelect"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Attribute.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/Attribute.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Attribute.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Attribute.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/AttributeList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/AttributeList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/AttributeList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/AttributeList.php" method="getCategoryAttributes"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Basket.php" method="addToBasket"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Basket.php" method="addToBasket"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Basket.php" method="getStockCheckMode"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Basket.php" method="calcVoucherDiscount"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Basket.php" method="calcBasketDiscount"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Basket.php" method="getBasketSummary"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Basket.php" method="getBasketSummary"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Basket.php" method="canAddProductToBasket"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Basket.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/BasketItem.php" method="getStockCheckStatus"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/BasketItem.php" method="getArticle"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/BasketItem.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/BasketReservation.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/BasketReservation.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Category.php" method="__get"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Category.php" method="getIsVisible"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Category.php" method="getExpanded"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Category.php" method="getHasSubCats"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Category.php" method="getHasVisibleSubCats"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Category.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Category.php" method="update"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Category.php" method="update"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/Application/Model/Category.php" method="update"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/CategoryList.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/CategoryList.php" method="getLoadFull"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/CategoryList.php" method="ppRemoveInactiveCategories"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/CategoryList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/CategoryList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/CategoryList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Content.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Content.php" method="getExpanded"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Content.php" method="getBaseStdLink"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Content.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/ContentList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Country.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Country.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Country.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/CountryList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Delivery.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Delivery.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Delivery.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Delivery.php" method="getDeliveryAmount"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Delivery.php" method="isForBasket"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Delivery.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/DeliveryList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/DeliveryList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/DeliveryList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/DeliveryList.php" method="getDeliveryList"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/DeliverySet.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/DeliverySet.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/DeliverySet.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/DeliverySetList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/DeliverySetList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/DeliverySetList.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/DeliverySetList.php" method="getDeliverySetData"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/DeliverySetList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Diagnostics.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/DiagnosticsOutput.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Discount.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Discount.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Discount.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Discount.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/DiscountList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/DiscountList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/DiscountList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/File.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/File.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/FileCollector.php" method="addDirectoryFiles"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Groups.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Groups.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Manufacturer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Manufacturer.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Manufacturer.php" method="getIsVisible"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Manufacturer.php" method="getHasVisibleSubCats"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/ManufacturerList.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/ManufacturerList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/ManufacturerList.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/ManufacturerList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/MdVariant.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/NewsSubscribed.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Order.php" method="finalizeOrder"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Order.php" method="finalizeOrder"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Order.php" method="loadFromBasket"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Order.php" method="loadFromBasket"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Order.php" method="setOrderArticles"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Order.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/OrderArticle.php" method="getOrderArticleSelectList"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/OrderFile.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/OrderFile.php" method="getValidUntil"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/OrderFile.php" method="getLeftDownloadCount"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Payment.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Payment.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Payment.php" method="getBaseBasketPriceForPaymentCostCalc"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Payment.php" method="getBaseBasketPriceForPaymentCostCalc"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Payment.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Payment.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Payment.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/PaymentGateway.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/PaymentList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/PaymentList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/PaymentList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/PriceAlarm.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Rating.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/RecommendationList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/RecommendationList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/RecommendationList.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/RecommendationList.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/RequiredAddressFields.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Review.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Review.php" method="loadList"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Search.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Search.php" method="getSearchSelect"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/Search.php" method="getSearchSelect"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/Application/Model/Search.php" method="getSearchSelect"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Search.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Search.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/Search.php" method="getWhere"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/SelectList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SelectList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/SeoEncoderArticle.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/SeoEncoderCategory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderCategory.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/SeoEncoderCategory.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/SeoEncoderContent.php" method="getContentUri"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderContent.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/SeoEncoderManufacturer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderManufacturer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderRecomm.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SeoEncoderVendor.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Shop.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Shop.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/Shop.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Shop.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/SimpleVariant.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/SimpleVariant.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/State.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/State.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/State.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="__get"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="convertBirthday"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/User.php" method="convertBirthday"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="login"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/User.php" method="login"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="loadActiveUser"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="getUserRights"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/User.php" method="getUserRights"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="checkIfEmailExists"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/User.php" method="setAutoGroups"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Application/Model/User.php" method="setAutoGroups"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/User.php"/>
+  <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="source/Application/Model/User.php" method="deleteItemById"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/UserAddressList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/UserBasket.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/UserBasket.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/UserBasketItem.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/UserPayment.php" method="getPaymentByPaymentType"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/UserPayment.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/UserPayment.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/VariantHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/VariantHandler.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/VariantHandler.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/VariantHandler.php" method="assignValues"/>
+  <violation rule="PHPMD\Rule\Design\CountInLoopExpression" file="source/Application/Model/VariantHandler.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/VariantHandler.php" method="applyVariantSelectionsFilter"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/VariantHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/VatSelector.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/VatSelector.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/VatSelector.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Vendor.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Vendor.php" method="getIsVisible"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Application/Model/Vendor.php" method="getHasVisibleSubCats"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/VendorList.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/VendorList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/VendorList.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/VendorList.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Application/Model/Voucher.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/VoucherSerie.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/VoucherSerie.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Application/Model/VoucherSerie.php" method="getVoucherStatusByDatetime"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Application/Model/Wrapping.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Application/Model/Wrapping.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Application/Model/Wrapping.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Autoload/BackwardsCompatibilityAutoload.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Config.php" method="setDefaults"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Config.php" method="setDefaults"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Config.php" method="checkSsl"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Config.php" method="getOutUrl"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Config.php" method="getDir"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Config.php" method="getDir"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="source/Core/Config.php" method="getShopLevelDir"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Config.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Config.php" method="saveShopConfVar"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Core/Controller/BaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Core/Controller/BaseController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Controller/BaseController.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Controller/BaseController.php" method="getIsCallForCache"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Controller/BaseController.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Controller/BaseController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Counter.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/Curl.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Curl.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Dao/ApplicationServerDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Dao/ApplicationServerDaoInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Dao/BaseDaoInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/DataObject/ApplicationServer.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Database/Adapter/Doctrine/Database.php" method="metaColumns"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Database/Adapter/Doctrine/Database.php" method="metaColumns"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/Core/Database/Adapter/Doctrine/Database.php" method="metaColumns"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Database/Adapter/Doctrine/Database.php" method="getColumnMaxLengthAndScale"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Database/Adapter/Doctrine/Database.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/DatabaseProvider.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/DatabaseProvider.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/DatabaseProvider.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/DbMetaDataHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/DbMetaDataHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/DbMetaDataHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/DbMetaDataHandler.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/DbMetaDataHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/DebugInfo.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/DisplayError.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/DynamicImageGenerator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/DynamicImageGenerator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/DynamicImageGenerator.php" method="isValidPath"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/DynamicImageGenerator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/DynamicImageGenerator.php" method="generateImage"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/DynamicImageGenerator.php" method="generateImage"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Email.php" method="includeImages"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Email.php" method="includeImages"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Core/Email.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Email.php" method="getUseInlineImages"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/EmailBuilder.php"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="source/Core/Exception/ExceptionHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Exception/ExceptionToDisplay.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Exception/StandardException.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Form/FormFieldsCleaner.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/GenericImport/GenericImport.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/GenericImport/GenericImport.php"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Core/GenericImport/GenericImport.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/GenericImport/GenericImport.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/GenericImport/GenericImport.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/GenericImport/ImportObject/Article.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/GenericImport/ImportObject/ImportObject.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/GenericImport/ImportObject/ImportObject.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/GenericImport/ImportObject/ImportObject.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/GenericImport/ImportObject/ImportObject.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/GenericImport/ImportObject/OrderArticle.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/GenericImport/ImportObject/User.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/InputValidator.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/InputValidator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/InputValidator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/InputValidator.php" method="checkLogin"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/InputValidator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/InputValidator.php" method="checkCountries"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/InputValidator.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Language.php" method="getBaseLanguage"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Language.php" method="getBaseLanguage"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Language.php" method="getLanguageArray"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Language.php" method="getLanguageArray"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Language.php" method="getLanguageFileData"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Language.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Model/BaseModel.php" method="getUseSkipSaveFields"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Model/BaseModel.php" method="__get"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Model/BaseModel.php" method="getUpdateSeo"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Model/BaseModel.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Model/BaseModel.php" method="save"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Model/FieldNameHelper.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Model/ListModel.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Model/ListModel.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Model/ListModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Model/ListModel.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Model/MultiLanguageModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Model/MultiLanguageModel.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Model/MultiLanguageModel.php" method="getAvailableInLangs"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/Model/MultiLanguageModel.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Model/MultiLanguageModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Model/MultiLanguageModel.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Model/MultiLanguageModel.php" method="getFieldLang"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Model/MultiLanguageModel.php" method="getUpdateFieldsForTable"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Model/MultiLanguageModel.php" method="getUpdateFieldsForTable"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Module/Module.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Module/Module.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Module/ModuleChainsGenerator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Module/ModuleChainsGenerator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Module/ModuleList.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Module/ModuleVariablesLocator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/NamespaceInformationProvider.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/OnlineCaller.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/OnlineLicenseCheck.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/OnlineLicenseCheck.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/OnlineLicenseCheckCaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/OnlineLicenseCheckRequest.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/OnlineModuleVersionNotifier.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/OnlineRequest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Output.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/PictureHandler.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/PictureHandler.php" method="deleteArticleMasterPicture"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/PictureHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/PictureHandler.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/PictureHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/PictureHandler.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/PictureHandler.php" method="getPicUrl"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Price.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/Registry.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Registry.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Registry.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/Request.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Request.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Routing/ControllerClassNameResolver.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SeoDecoder.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/SeoDecoder.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/SeoDecoder.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/SeoDecoder.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SeoEncoder.php" method="loadFromDb"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SeoEncoder.php" method="saveToDb"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SeoEncoder.php" method="encodeStaticUrls"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/SeoEncoder.php" method="encodeStaticUrls"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SeoEncoder.php" method="addSeoEntry"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/SeoEncoder.php" method="addSeoEntry"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="source/Core/SeoEncoder.php" method="addSeoEntry"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/SeoEncoder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SepaIBANValidator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Service/ApplicationServerExporter.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Service/ApplicationServerService.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Service/ApplicationServerServiceInterface.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/Session.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Session.php" method="start"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Session.php" method="isSidNeeded"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/Session.php" method="isSidNeeded"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Session.php" method="allowSessionStart"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Session.php" method="checkCookies"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/Session.php" method="getSessionUseCookies"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SettingsHandler.php" method="addModuleSettings"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SettingsHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/SettingsHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/SettingsHandler.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/ShopControl.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/ShopIdCalculator.php" method="getShopUrlMap"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ShopIdCalculator.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/StrMb.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/StrMb.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/StrRegular.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Core/SystemEventHandler.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/SystemEventHandler.php"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Core/SystemEventHandler.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SystemEventHandler.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/SystemRequirements.php" method="getPermissionIssuesList"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/SystemRequirements.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/SystemRequirements.php" method="getSysReqStatus"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/TableViewNameGenerator.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/TableViewNameGenerator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Theme.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UserCounter.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Utils.php" method="fromFileCache"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Utils.php" method="lockFile"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Utils.php" method="checkAccessRights"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="source/Core/Utils.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/Utils.php" method="fillExplodeArray"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/UtilsCount.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/UtilsCount.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsCount.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/UtilsCount.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/UtilsDate.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsDate.php" method="formatDBDate"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/UtilsDate.php" method="formatDBDate"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsDate.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsDate.php" method="convertDBDateTime"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/UtilsDate.php" method="convertDBDateTime"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/Core/UtilsDate.php" method="convertDBDateTime"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/UtilsFile.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsFile.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsFile.php" method="copyDir"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/UtilsFile.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsFile.php" method="processFiles"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/UtilsObject.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsObject.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/UtilsObject.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsObject.php" method="oxNew"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/UtilsObject.php" method="oxNew"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/UtilsObject.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsPic.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/UtilsPic.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/UtilsServer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsServer.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/UtilsServer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsString.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Core/UtilsUrl.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/UtilsUrl.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsUrl.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/UtilsUrl.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/UtilsUrl.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/UtilsView.php" method="addErrorToDisplay"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Core/UtilsView.php" method="addErrorToDisplay"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/UtilsView.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/ViewConfig.php" method="getLogoutLink"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowWishlist"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowCompareList"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowListmania"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowVouchers"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowGiftWrapping"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Core/ViewConfig.php" method="getShowBasketTimeout"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="source/Core/ViewConfig.php" method="isModuleEnabled"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/ViewConfig.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ViewHelper/BaseRegistrator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ViewHelper/JavaScriptRenderer.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/ViewHelper/JavaScriptRenderer.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Core/ViewHelper/StyleRegistrator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/ViewHelper/StyleRenderer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Core/WidgetControl.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Core/WidgetControl.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Core/WidgetControl.php" method="initializeViewObject"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Core/utils/oxpicgenerator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Container/ContainerBuilderFactory.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Container/Event/ConfigurationChangedEventSubscriber.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Container/Event/ConfigurationChangedEventSubscriber.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Admin/Command/CreateUserCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Domain/Admin/DataObject/Admin.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Domain/Admin/Exception/InvalidShopException.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Admin/Factory/AdminFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Authentication/Bridge/PasswordServiceBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Contact/Form/ContactFormBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Contact/Form/ContactFormConfigurationFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Contact/Form/ContactFormEmailValidator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Contact/Form/ContactFormFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Domain/Contact/Form/ContactFormFieldsConfigurationDataProvider.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Newsletter/Bridge/NewsletterRecipientsDaoBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Review/Bridge/UserReviewAndRatingBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Domain/Review/DataObject/Rating.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Domain/Review/DataObject/Review.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Domain/Review/Service/RatingCalculatorService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Review/Service/ReviewAndRatingMergingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Domain/Review/Service/UserReviewAndRatingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Domain/Review/ViewDataObject/ReviewAndRating.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Framework/Cache/Command/ClearCacheCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Config/Dao/ShopConfigurationSettingDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Config/Dao/ShopConfigurationSettingDaoInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Config/Event/ShopConfigurationChangedEvent.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Framework/Console/Command/NamedArgumentsTrait.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Console/Executor.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Internal/Framework/DIContainer/ContainerBuilder.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/DIContainer/ContainerBuilder.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Framework/DIContainer/Dao/ProjectYamlDao.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Framework/Database/Logger/NullLogger.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Framework/Database/Logger/QueryLogger.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/FormConfiguration/FormFieldsConfigurationDataProviderInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Logger/Factory/MonologLoggerFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Cache/FilesystemModuleCache.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Command/ModuleActivateCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Command/ModuleDeactivateCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Bridge/ModuleConfigurationDaoBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Bridge/ModuleSettingBridge.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Internal/Framework/Module/Configuration/Dao/ModuleConfigurationDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Dao/ModuleConfigurationDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Dao/ModuleEnvironmentConfigurationDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Configuration/Dao/ModuleEnvironmentConfigurationDaoInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Dao/ModuleEnvironmentConfigurationExtender.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Dao/ShopConfigurationDao.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Configuration/Dao/ShopEnvironmentMisconfigurationEventSubscriber.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/DataMapper/ModuleConfiguration/ControllersDataMapper.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Framework/Module/Configuration/DataObject/ModuleConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/DataObject/ModuleConfiguration/ClassExtension.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Framework/Module/Configuration/DataObject/ModuleConfiguration/Controller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/DataObject/ModuleConfiguration/Controller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/DataObject/ShopConfiguration.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Service/ModuleClassExtensionsMergingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Configuration/Service/ModuleClassExtensionsMergingServiceInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Service/ModuleConfigurationMergingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Configuration/Service/ModuleConfigurationMergingServiceInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Service/ModuleConfigurationMergingServiceInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Service/SettingsMergingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Configuration/Service/SettingsMergingServiceInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Facade/ActiveModulesDataProvider.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Facade/ActiveModulesDataProviderBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Facade/ModuleSettingService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Install/Service/BootstrapModuleInstaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Install/Service/ModuleConfigurationInstaller.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Internal/Framework/Module/Install/Service/ModuleConfigurationInstaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Install/Service/ModuleFilesInstaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Install/Service/ModuleInstaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/MetaData/Dao/MetaDataNormalizer.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/MetaData/Dao/MetaDataProvider.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/MetaData/DataMapper/MetaDataMapper.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/MetaData/DataMapper/MetaDataToModuleConfigurationDataMapperInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/MetaData/Validator/MetaDataSchemaValidator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Path/ModuleAssetsPathResolverBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Path/ModulePathResolver.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/Bridge/ModuleActivationBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/Event/ServicesYamlConfigurationErrorEvent.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/EventSubscriber/DispatchLegacyEventsSubscriber.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Setup/Exception/ControllersDuplicationModuleConfigurationException.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/Service/ActiveClassExtensionChainResolver.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Setup/Service/ActiveClassExtensionChainResolverInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/Service/ModuleActivationService.php"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Internal/Framework/Module/Setup/Service/ModuleActivationService.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Framework/Module/Setup/Service/ModuleServicesImporter.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Setup/Validator/ControllersValidator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/State/ModuleStateService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Template/Locator/ModulesMenuFileLocator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Bridge/AdminAreaModuleTranslationFileLocatorBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Translation/Bridge/AdminAreaModuleTranslationFileLocatorBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Bridge/AdminAreaModuleTranslationFileLocatorBridgeInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Bridge/FrontendModuleTranslationFileLocatorBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Translation/Bridge/FrontendModuleTranslationFileLocatorBridge.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Bridge/FrontendModuleTranslationFileLocatorBridgeInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Locator/AdminAreaModuleTranslationFileLocatorInterface.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Module/Translation/Locator/FrontendModuleTranslationFileLocator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongClassName" file="source/Internal/Framework/Module/Translation/Locator/FrontendModuleTranslationFileLocatorInterface.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Framework/Storage/YamlFileStorage.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Templating/Cache/ShopTemplateCacheService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Templating/Cache/TemplateCacheService.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Framework/Theme/Event/ThemeSettingChangedEvent.php"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Internal/Setup/Database/Service/DatabaseInstaller.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Setup/Database/Service/DatabaseInstaller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Setup/Language/LanguageInstaller.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Internal/Setup/Language/LanguageInstaller.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Internal/Setup/ShopSetupCommand.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="source/Internal/Setup/ShopSetupCommand.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Setup/ShopSetupCommand.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/ShopAdapter.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/AbstractInsertNewBasketItemLogic.php" method="getNewBasketItemTemplate"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/TemplateLogic/AbstractInsertNewBasketItemLogic.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/FormatDateLogic.php" method="formdate"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/TemplateLogic/FormatDateLogic.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/TemplateLogic/FormatPriceLogic.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Transition/Adapter/TemplateLogic/FormatPriceLogic.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/IfContentLogic.php" method="getContent"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/TemplateLogic/IncludeWidgetLogic.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Adapter/TemplateLogic/InputHelpLogic.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/SeoUrlLogic.php" method="seoUrl"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/SmartWordwrapLogic.php" method="wrapWords"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Internal/Transition/Adapter/TemplateLogic/SmartWordwrapLogic.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Internal/Transition/Adapter/TemplateLogic/TranslateFunctionLogic.php" method="getTranslation"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/Internal/Transition/Adapter/TemplateLogic/TruncateLogic.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Transition/Utility/Context.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Internal/Transition/Utility/Context.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Internal/Utility/Email/EmailValidatorServiceBridge.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Setup/Controller.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/Setup/Controller.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Controller.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Setup/Controller.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Controller.php" method="dbCreate"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Setup/Controller.php" method="dbCreate"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Controller.php" method="dirsWrite"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Setup/Controller.php" method="dirsWrite"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Controller/ModuleStateMapGenerator.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/Setup/Controller/ModuleStateMapGenerator.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Core.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Setup/Database.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Setup/Database.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Database.php" method="saveShopSettings"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="source/Setup/Database.php" method="saveShopSettings"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Database.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="source/Setup/Database.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Database.php" method="parseQuery"/>
+  <violation rule="PHPMD\Rule\Design\EmptyCatchBlock" file="source/Setup/Dispatcher.php"/>
+  <violation rule="PHPMD\Rule\Naming\BooleanGetMethodName" file="source/Setup/Session.php" method="getIsNewSession"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Setup.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="source/Setup/Utilities.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/Setup/Utilities.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Utilities.php" method="removeDir"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/Setup/Utilities.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/Setup/Utilities.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="source/Setup/Utilities.php" method="getRequestVar"/>
+  <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="source/Setup/Utilities.php" method="getVendorDirectory"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20170718124421.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20170718124421.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20171018144650.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20171018144650.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20180214152228.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20180214152228.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20180228160418.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20180228160418.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20180703135728.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20180703135728.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20180928072235.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20180928072235.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20191007144155.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20191007144155.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20201029110624.php" method="up"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20201103010101.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20201103010101.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20201203101929.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20201203101929.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20211117193324.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20211117193324.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20230109135625.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20230109135625.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="source/migration/data/Version20230301123522.php" method="up"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/migration/data/Version20230301123522.php"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="source/overridablefunctions.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/oxfunctions.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/oxfunctions.php"/>
+  <violation rule="PHPMD\Rule\Design\LongClass" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="source/tmp/container/container_cache_shop_1.php" method="getRemovedIds"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="source/tmp/container/container_cache_shop_1.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="source/tmp/container/container_cache_shop_1.php"/>
+</phpmd-baseline>

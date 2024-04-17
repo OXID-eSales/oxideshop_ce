@@ -53,6 +53,8 @@ jobs:
         run: |
           # Build testplan
           # shellcheck disable=SC2088
+          PLAN="~/scripts.yml"
+          # shellcheck disable=SC2088
           case "${{ inputs.limit }}" in
             "no") LIMIT='';;
             "PHP8.0/MySQL5.7") LIMIT='~/defaults/php8.0_mysql5.7_only.yml,' ;;
@@ -69,10 +71,10 @@ jobs:
           esac
           # shellcheck disable=SC2088
           case '${{ inputs.scenario}}' in
-            "7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/shop_ce_70x.yml" ;;
-            "7.1.x") TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}~/shop_ce.yml" ;;
-            "7.2.x") TESTPLAN="~/defaults/7.2.x.yml,${LIMIT}~/shop_ce.yml" ;;
-            "8.0.x") TESTPLAN="${LIMIT}~/shop_ce.yml" ;;
+            "7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}${PLAN}" ;;
+            "7.1.x") TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}${PLAN}" ;;
+            "7.2.x") TESTPLAN="~/defaults/7.2.x.yml,${LIMIT}${PLAN}" ;;
+            "8.0.x") TESTPLAN="${LIMIT}${PLAN}" ;;
             "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml" ;;
             "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
@@ -85,11 +87,11 @@ jobs:
   dispatch_stable:
     if: ${{ inputs.use_dev_version == 'no' }}
     needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yml@v0
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
-      defaults: 'v4'
+      defaults: 'v0'
       plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
@@ -104,7 +106,7 @@ jobs:
   dispatch_v0:
     if: ${{ inputs.use_dev_version == 'v0' }}
     needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yml@v0
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}

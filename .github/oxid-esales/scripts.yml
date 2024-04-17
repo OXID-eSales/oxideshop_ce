@@ -1,0 +1,63 @@
+# {{ $org := "oxid-esales" }}organisation: {{ $org }}
+# {{ $name := "oxideshop-ce" }}name: {{ $name }}
+# {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
+
+install_shop_with_modules:
+  cache:
+    prepared_shop: true
+  composer:
+    transform: |
+      {
+          "preferred-install": {
+            "oxid-esales/*": "source",
+            "oxid-professional-services/*": "source",
+            "ddoe/*": "source"
+          },
+          "require": {
+              "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+              "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+              "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+              "{{ $org }}/{{ $name }}": "{{ .Data.global.composer.ref_name }}"
+          },
+          "repositories": {
+            "{{ $org }}/{{ $name }}": {
+              "type": "git",
+              "url": "https://github.com/{{ $repo }}.git"
+            }
+          }
+      }
+
+runscript: &runscript
+  matrix:
+    script: |
+      [
+        "shop:tests-unit",
+        "shop:tests-integration",
+        "shop:tests-codeception",
+        "setup:tests-codeception-shopSetup"
+      ]
+  shop:
+    path: 'vendor/{{ $org}}/{{ $name }}'
+  setup:
+    load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
+    path: 'vendor/{{ $org}}/{{ $name }}'
+
+
+runslim:
+  <<: *runscript
+  matrix:
+    script: |
+      [
+        "shop:phpcs-report",
+        "shop:phpmd-report",
+        "shop:phpstan-report"
+      ]
+
+sonarcloud:
+  matrix:
+    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
+  strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
+
+
+finish:
+  slack_title: '{{ print $name }} ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'

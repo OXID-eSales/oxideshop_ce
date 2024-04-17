@@ -2,7 +2,7 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Oxid Coding Standard" xsi:noNamespaceSchemaLocation="phpcs.xsd">
     <description>The coding standard for PHP_CodeSniffer itself.</description>
     <file>../source</file>
-    <file>./source</file>
+    <file>./</file>
     <exclude-pattern>*source/Application/views/.*$</exclude-pattern>
     <exclude-pattern>*source/tmp/.*$</exclude-pattern>
     <arg name="colors"/>

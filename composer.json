@@ -62,6 +62,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "prefer-dist": true,
     "autoload": {
         "psr-4": {
             "OxidEsales\\EshopCommunity\\": "./source"

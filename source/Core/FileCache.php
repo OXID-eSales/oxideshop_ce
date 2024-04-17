@@ -7,8 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Cache for storing module variables selected from database.
@@ -58,7 +59,7 @@ class FileCache
         $fileName = $this->getCacheFilePath($key);
         $cacheDirectory = $this->getCacheDir();
 
-        $tmpFile = $cacheDirectory . "/" . basename($fileName) . uniqid('.temp', true) . '.txt';
+        $tmpFile = Path::join($cacheDirectory, basename($fileName) . uniqid('.temp', true) . '.txt');
         file_put_contents($tmpFile, serialize($value), LOCK_EX);
 
         rename($tmpFile, $fileName);
@@ -69,8 +70,11 @@ class FileCache
      */
     public static function clearCache()
     {
-        $tempDirectory = Registry::get(ConfigFile::class)->getVar("sCompileDir");
-        $mask = $tempDirectory . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
+        $mask = Path::join(
+            (new BootstrapConfigurationFactory())->create()->getCacheDirectory(),
+            self::CACHE_FILE_PREFIX,
+            '.*.txt'
+        );
         $files = glob($mask);
         if (is_array($files)) {
             foreach ($files as $file) {
@@ -90,7 +94,7 @@ class FileCache
      */
     protected function getCacheFilePath($key)
     {
-        return $this->getCacheDir() . "/" . $this->getCacheFileName($key);
+        return Path::join($this->getCacheDir(), $this->getCacheFileName($key));
     }
 
     /**
@@ -100,7 +104,7 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        return Registry::get(ConfigFile::class)->getVar("sCompileDir");
+        return (new BootstrapConfigurationFactory())->create()->getCacheDirectory();
     }
 
     /**

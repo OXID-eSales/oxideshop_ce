@@ -32,7 +32,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogLevel(): string
     {
-        return $this->getFactsConfigFile()->getVar('sLogLevel') ?? LogLevel::ERROR;
+        return $this->systemConfiguration->getLogLevel() ?? LogLevel::ERROR;
     }
 
     /**
@@ -40,7 +40,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogFilePath(): string
     {
-        return Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log', 'oxideshop.log');
+        return Path::join($this->getSourcePath(), 'log', 'oxideshop.log');
     }
 
     /**

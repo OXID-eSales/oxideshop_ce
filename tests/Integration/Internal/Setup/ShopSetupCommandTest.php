@@ -80,8 +80,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ];
 
@@ -100,8 +98,6 @@ final class ShopSetupCommandTest extends TestCase
             'Missing db-user'           => ['--db-user'],
             'Missing db-password'       => ['--db-password'],
             'Missing shop-url'          => ['--shop-url'],
-            'Missing shop-directory'    => ['--shop-directory'],
-            'Missing compile-directory' => ['--compile-directory'],
         ];
     }
 
@@ -119,8 +115,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ]);
     }
@@ -141,8 +135,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ]);
     }
@@ -170,8 +162,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ]);
     }
@@ -191,8 +181,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ]);
 
@@ -219,8 +207,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
@@ -244,8 +230,6 @@ final class ShopSetupCommandTest extends TestCase
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
             '--shop-url'          => self::URL,
-            '--shop-directory'    => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
             '--language'          => self::LANG,
         ]);
 
@@ -283,6 +267,9 @@ final class ShopSetupCommandTest extends TestCase
         $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
         $this->shopAdapter = $this->prophesize(ShopAdapterInterface::class);
+
+        $this->basicContext->getSourcePath()->willReturn(self::DIR);
+        $this->basicContext->getCacheDirectory()->willReturn(self::TMP_DIR);
     }
 
     private function assertServiceCallsWithCompleteArgs(): void
@@ -296,12 +283,6 @@ final class ShopSetupCommandTest extends TestCase
         )
             ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sShopURL', self::URL)
-            ->shouldHaveBeenCalledOnce();
-        $this->configFileDao->replacePlaceholder('sShopDir', self::DIR)
-            ->shouldHaveBeenCalledOnce();
-        $this->configFileDao->replacePlaceholder('sCompileDir', self::TMP_DIR)
-            ->shouldHaveBeenCalledOnce();
-        $this->directoryValidator->validateDirectory(self::DIR, self::TMP_DIR)
             ->shouldHaveBeenCalledOnce();
         $this->languageInstaller->install(new DefaultLanguage(self::LANG))
             ->shouldHaveBeenCalledOnce();

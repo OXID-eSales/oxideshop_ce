@@ -32,4 +32,7 @@
 - Remove deprecated `TemplateCacheService` implementation
 - Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
 - Obsolete caching related functionalities
+- Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
+- Obsolete `TransactionServiceInterface`, `FinderFactoryInterface` and `ConnectionProviderInterface`
+- Config parameters sShopDir, sCompileDir and sLogLevel
 - Deprecated class `ModuleVariablesLocator`

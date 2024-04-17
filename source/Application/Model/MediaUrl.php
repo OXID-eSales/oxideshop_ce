@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
+
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     protected $_sClassName = 'oxmediaurls';
@@ -89,8 +92,12 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function delete($sOXID = null)
     {
-        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/out/media/" .
-                     basename($this->oxmediaurls__oxurl->value);
+        $sFilePath = Path::join(
+            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            'out',
+            'media',
+            basename($this->oxmediaurls__oxurl->value)
+        );
 
         if ($this->oxmediaurls__oxisuploaded->value) {
             if (file_exists($sFilePath)) {

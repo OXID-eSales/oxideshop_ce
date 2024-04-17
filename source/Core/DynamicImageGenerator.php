@@ -61,6 +61,8 @@ namespace OxidEsales\EshopCommunity\Core {
 
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
     use OxidEsales\Eshop\Core\Registry;
+    use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+    use Symfony\Component\Filesystem\Path;
 
     /**
      * Image generator class
@@ -174,7 +176,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function getShopBasePath()
         {
-            return Registry::getConfig()->getConfigParam("sShopDir");
+            return ContainerFacade::getParameter('oxid_shop_source_directory') . DIRECTORY_SEPARATOR;
         }
 
         /**

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
 use OxidEsales\Eshop\Core\Registry;
@@ -84,7 +85,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
 
         if (!Registry::getConfig()->getConfigParam('sAltImageUrl')) {
             $generatedImagePath = str_replace('/master/', '/generated/', $masterImagePath);
-            $files = glob("{$generatedImagePath}*/{$filename}");
+            $files = glob(Path::join($generatedImagePath,'*',$filename));
             if (\is_array($files)) {
                 foreach ($files as $file) {
                     $removed = unlink($file);
@@ -285,6 +286,9 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      */
     private function makePathRelativeToShopSource(string $path): string
     {
-        return Path::makeRelative($path, (new Facts())->getSourcePath());
+        return Path::makeRelative(
+            $path,
+            ContainerFacade::getParameter('oxid_shop_source_directory')
+        );
     }
 }

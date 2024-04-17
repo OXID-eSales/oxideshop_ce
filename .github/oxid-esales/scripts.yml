@@ -26,6 +26,8 @@ install_shop_with_modules:
             }
           }
       }
+  custom_script: |
+    cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
 
 runscript: &runscript
   matrix:
@@ -41,8 +43,8 @@ runscript: &runscript
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'
-
-
+    custom_script_container: |
+      composer update --no-interaction
 runslim:
   <<: *runscript
   matrix:

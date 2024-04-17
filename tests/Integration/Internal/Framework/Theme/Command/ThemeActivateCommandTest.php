@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 final class ThemeActivateCommandTest extends IntegrationTestCase
 {
     use ContainerTrait;

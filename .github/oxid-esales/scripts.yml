@@ -45,6 +45,7 @@ runscript: &runscript
     path: 'vendor/{{ $org}}/{{ $name }}'
     custom_script_container: |
       cd vendor/oxid-esales/oxideshop-ce
+      composer config -g github-oauth.github.com "${GITHUB_TOKEN}"
       composer update --no-interaction
 runslim:
   <<: *runscript

@@ -105,11 +105,19 @@
         ],
 
         "phpcs": "phpcs --standard=tests/phpcs.xml  --report=full",
-        "phpcs-report": "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json",
-        "phpcbf": "phpcbf --standard=tests/phpcs.xml",
-
-        "phpstan": "phpstan -ctests/PhpStan/phpstan.neon analyse source/",
-        "phpstan-report": "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --error-format=json > tests/Reports/phpstan.report.json",
+        "phpcs-report": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json",
+            "phpcs --standard=tests/phpcs.xml  --report=full"
+        ],
+        "phpstan": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpstan -ctests/PhpStan/phpstan.neon analyse source/"
+        ],
+        "phpstan-report": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --error-format=json > tests/Reports/phpstan.report.json"
+        ],
 
         "phpmd": "phpmd source ansi tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit",
         "phpmd-report": "phpmd source json tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit --reportfile tests/Reports/phpmd.report.json",

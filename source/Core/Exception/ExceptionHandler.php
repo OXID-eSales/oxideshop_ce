@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 

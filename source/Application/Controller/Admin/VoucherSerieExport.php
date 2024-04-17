@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * General export class.
@@ -100,7 +102,11 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     protected function getExportFilePath()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/export/" . $this->getExportFileName();
+        return Path::join(
+            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            'export',
+            $this->getExportFileName()
+        );
     }
 
     /**

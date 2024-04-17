@@ -8,6 +8,9 @@
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Returns true in case framework is called from shop administrator environment.
@@ -42,10 +45,16 @@ function warningHandler($iErrorNr, $sErrorText)
  */
 function dumpVar($mVar, $blToFile = false)
 {
-    $myConfig = Registry::getConfig();
+
     if ($blToFile) {
         $out = var_export($mVar, true);
-        $f = fopen($myConfig->getConfigParam('sCompileDir') . "/vardump.txt", "a");
+        $f = fopen(
+            Path::join(
+                (new BootstrapConfigurationFactory())->create()->getCacheDirectory(),
+                'vardump.txt'
+            ),
+            "a"
+        );
         fwrite($f, $out);
         fclose($f);
     } else {

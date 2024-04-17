@@ -17,6 +17,7 @@ use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
+use Symfony\Component\Filesystem\Path;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -85,20 +86,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @var string
      */
     protected $sAdminSSLURL = null;
-
-    /**
-     * Shops install directory
-     *
-     * @var string
-     */
-    protected $sShopDir = null;
-
-    /**
-     * Shops compile directory
-     *
-     * @var string
-     */
-    protected $sCompileDir = null;
 
     /**
      * Debug mode (default is set depending on if it is productive mode or not):
@@ -461,8 +448,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //adding trailing slashes
         $fileUtils = Registry::getUtilsFile();
-        $this->sShopDir = $fileUtils->normalizeDir($this->sShopDir);
-        $this->sCompileDir = $fileUtils->normalizeDir($this->sCompileDir);
         $this->sShopURL = $fileUtils->normalizeDir($this->sShopURL);
         $this->sSSLShopURL = $fileUtils->normalizeDir($this->sSSLShopURL);
         $this->sAdminSSLURL = $fileUtils->normalizeDir($this->sAdminSSLURL);
@@ -1064,9 +1049,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getOutDir($absolute = true)
     {
         if ($absolute) {
-            return $this->getConfigParam('sShopDir') . $this->_sOutDir . '/';
+
+            return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), $this->_sOutDir)
+                . DIRECTORY_SEPARATOR;
         } else {
-            return $this->_sOutDir . '/';
+
+            return $this->_sOutDir . DIRECTORY_SEPARATOR;
         }
     }
 
@@ -1079,11 +1067,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewsDir($absolute = true)
     {
-        if ($absolute) {
-            return $this->getConfigParam('sShopDir') . 'Application/views/';
-        } else {
-            return 'Application/views/';
-        }
+        return Path::join($this->getAppDir($absolute), 'views') . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -1097,13 +1081,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getTranslationsDir($file, $dir, $absolute = true)
     {
-        $path = $absolute ? $this->getConfigParam('sShopDir') : '';
-        $path .= 'Application/translations/';
-        if (is_readable($path . $dir . '/' . $file)) {
-            return $path . $dir . '/' . $file;
-        }
+        $path = Path::join($this->getAppDir($absolute), 'translations', $dir, $file);
 
-        return false;
+        return is_readable($path) ? $path : false;
     }
 
     /**
@@ -1116,9 +1096,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getAppDir($absolute = true)
     {
         if ($absolute) {
-            return $this->getConfigParam('sShopDir') . 'Application/';
+
+            return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'Application')
+                . DIRECTORY_SEPARATOR;
         } else {
-            return 'Application/';
+
+            return 'Application' . DIRECTORY_SEPARATOR;
         }
     }
 
@@ -1627,7 +1610,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getPackageInfo()
     {
-        $fileName = $this->getConfigParam('sShopDir') . "/pkg.info";
+        $fileName = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'pkg.info');
         $rev = @file_get_contents($fileName);
         $rev = str_replace("\n", "<br>", $rev);
 
@@ -1939,7 +1922,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getLogsDir()
     {
-        return $this->getConfigParam('sShopDir') . 'log/';
+        return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'log');
     }
 
     /**

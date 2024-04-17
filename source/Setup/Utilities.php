@@ -11,6 +11,8 @@ use Exception;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Filesystem\Path;
@@ -482,7 +484,7 @@ class Utilities extends Core
     public function getSqlDirectory(): string
     {
         return Path::join(
-            (new Facts())->getSourcePath(),
+            ContainerFacade::getParameter('oxid_shop_source_directory'),
             self::SETUP_DIRECTORY,
             self::DATABASE_SQL_DIRECTORY
         );

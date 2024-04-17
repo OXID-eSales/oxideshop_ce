@@ -9,29 +9,39 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Config;
 
-use OxidEsales\Codeception\Module\Database\DatabaseDefaultsFileGenerator;
-use OxidEsales\Facts\Config\ConfigFile;
+use OxidEsales\Codeception\Module\Database;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class CodeceptionParametersProvider
 {
+    private $dbConfig;
+
     public function getParameters(): array
     {
+
         $facts = new Facts();
+        $systemConfiguration = (new BootstrapConfigurationFactory())->create();
+        $databaseUrl = getenv('OXID_DB_URL') ?: $systemConfiguration->getDatabaseUrl();
+        $this->dbConfig = (new DatabaseConfiguration($databaseUrl));
         return [
             'SHOP_URL' => getenv('SHOP_URL') ?: $facts->getShopUrl(),
-            'SHOP_SOURCE_PATH' => getenv('SHOP_SOURCE_PATH') ?: $facts->getSourcePath(),
+            'SHOP_SOURCE_PATH' => getenv('SHOP_SOURCE_PATH') ?:
+                ContainerFacade::getParameter('oxid_shop_source_directory'),
             'VENDOR_PATH' => $facts->getVendorPath(),
-            'DB_NAME' => getenv('DB_NAME') ?: $facts->getDatabaseName(),
-            'DB_USERNAME' => getenv('DB_USERNAME') ?: $facts->getDatabaseUserName(),
-            'DB_PASSWORD' => getenv('DB_PASSWORD') ?: $facts->getDatabasePassword(),
-            'DB_HOST' => getenv('DB_HOST') ?: $facts->getDatabaseHost(),
-            'DB_PORT' => getenv('DB_PORT') ?: $facts->getDatabasePort(),
+            'DB_NAME' => $this->getDbName(),
+            'DB_USERNAME' => $this->getDbUser(),
+            'DB_PASSWORD' => $this->getDbPass(),
+            'DB_HOST' => $this->getDbHost(),
+            'DB_PORT' => $this->getDbPort(),
             'DUMP_PATH' => $this->getTestDataDumpFilePath(),
             'FIXTURES_PATH' => $this->getTestFixtureSqlFilePath(),
             'OUT_DIRECTORY_FIXTURES' => $this->getOutDirectoryFixturesPath(),
-            'MYSQL_CONFIG_PATH' => $this->getMysqlConfigPath(),
+            'MYSQL_CONFIG_PATH' => $this->generateMysqlStarUpConfigurationFile(),
             'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
             'SELENIUM_SERVER_HOST' => getenv('SELENIUM_SERVER_HOST') ?: 'selenium',
             'PHP_BIN' => (getenv('PHPBIN')) ?: 'php',
@@ -67,11 +77,11 @@ class CodeceptionParametersProvider
         );
     }
 
-    private function getShopSuitePath(Facts $facts): string
+    private function getShopSuitePath(): string
     {
         $testSuitePath = (string)getenv('TEST_SUITE');
         if ($testSuitePath === '' || $testSuitePath === '0') {
-            $testSuitePath = $facts->getShopRootPath() . '/tests';
+            Path::join((new BootstrapLocator())->getProjectRoot(), 'tests');
         }
         return $testSuitePath;
     }
@@ -81,16 +91,41 @@ class CodeceptionParametersProvider
         $facts = new Facts();
         return $facts->isEnterprise()
             ? $facts->getEnterpriseEditionRootPath() . '/Tests'
-            : $this->getShopSuitePath($facts);
+            : $this->getShopSuitePath();
     }
 
-    private function getMysqlConfigPath(): string
+    private function generateMysqlStarUpConfigurationFile(): string
     {
-        return (
-        new DatabaseDefaultsFileGenerator(
-            new ConfigFile()
-        )
-        )
-            ->generate();
+        return Database::generateStartupOptionsFile(
+            $this->getDbUser(),
+            $this->getDbPass(),
+            $this->getDbHost(),
+            $this->getDbPort(),
+        );
+    }
+
+    private function getDbName(): string
+    {
+        return getenv('DB_NAME') ?: $this->dbConfig->getName();
+    }
+
+    private function getDbUser(): string
+    {
+        return getenv('DB_USERNAME') ?: $this->dbConfig->getUser();
+    }
+
+    private function getDbPass(): string
+    {
+        return getenv('DB_PASSWORD') ?: $this->dbConfig->getPass();
+    }
+
+    private function getDbHost(): string
+    {
+        return getenv('DB_HOST') ?: $this->dbConfig->getHost();
+    }
+
+    private function getDbPort(): int
+    {
+        return (int) getenv('DB_PORT') ?: $this->dbConfig->getPort();
     }
 }

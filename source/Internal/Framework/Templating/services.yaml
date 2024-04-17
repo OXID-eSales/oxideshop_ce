@@ -52,3 +52,4 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
       - '@oxid_esales.symfony.file_system'
+      - '%oxid_build_directory%'

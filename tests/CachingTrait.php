@@ -52,8 +52,7 @@ trait CachingTrait
     {
         $reflectionClass = new \ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($reflectionClass, $default);
+        $reflectionProperty->setValue($reflectionProperty, $default);
     }
 
     private function cleanUpDirectory($directory): void

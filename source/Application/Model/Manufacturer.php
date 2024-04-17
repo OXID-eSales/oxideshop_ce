@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\Eshop\Core\UtilsPic;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Manufacturer manager
@@ -440,7 +441,7 @@ class Manufacturer extends MultiLanguageModel implements IUrl
 
         $utilsPic->safePictureDelete(
             $pictureName,
-            $pictureDirectory . $utilsFile->getImageDirByType($pictureType),
+            Path::join($pictureDirectory, $utilsFile->getImageDirByType($pictureType)),
             'oxmanufacturers',
             $pictureFieldName
         );

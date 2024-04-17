@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -34,7 +34,7 @@ trait FilesystemTrait
 
     private function init(): void
     {
-        $shopRootPath = (new Facts())->getShopRootPath();
+        $shopRootPath = (new BootstrapLocator())->getProjectRoot();
         $this->filesystem = new Filesystem();
         $this->varPath = Path::join($shopRootPath, 'var');
         $this->varBackupPath = Path::join(

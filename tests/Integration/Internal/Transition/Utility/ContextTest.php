@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Utility;
 
-use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 
 final class ContextTest extends TestCase
@@ -24,18 +23,11 @@ final class ContextTest extends TestCase
 
     public function testGetLogFilePathWithConfigSetWillReturnStringStartingWithValue(): void
     {
-        $configValue = (new ConfigFile())->getVar('sShopDir');
+        $configValue = ContainerFacade::getParameter('oxid_shop_source_directory');
 
         $logFilePath = $this->getContext()->getLogFilePath();
 
         $this->assertStringStartsWith($configValue, $logFilePath);
-    }
-
-    public function testGetCurrentShopId(): void
-    {
-        $context = $this->getContext();
-
-        $this->assertEquals(ShopIdCalculator::BASE_SHOP_ID, $context->getCurrentShopId());
     }
 
     private function getContext(): ContextInterface

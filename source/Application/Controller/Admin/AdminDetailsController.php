@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Application\Controller\TextEditorHandler;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
 
 class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
@@ -21,7 +23,11 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         // generate help link
         $myConfig = Registry::getConfig();
-        $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
+        $sDir = Path::join(
+            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            'documentation',
+            'admin'
+        );
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {

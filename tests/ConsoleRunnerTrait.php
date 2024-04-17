@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
@@ -43,7 +43,7 @@ trait ConsoleRunnerTrait
     private function getPathToConsoleScript(): string
     {
         $scriptPath = 'bin/oe-console';
-        $shopRootPath = (new Facts())->getShopRootPath();
+        $shopRootPath = (new BootstrapLocator())->getProjectRoot();
         if (is_file("$shopRootPath/vendor/$scriptPath")) {
             return "$shopRootPath/vendor/$scriptPath";
         }

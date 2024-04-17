@@ -1171,7 +1171,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $config = Registry::getConfig();
 
         $moduleUrl = str_replace(
-            rtrim($config->getConfigParam('sShopDir'), '/'),
+            rtrim(ContainerFacade::getParameter('oxid_shop_source_directory'), '/'),
             rtrim($config->getCurrentShopUrl(false), '/'),
             $this->getModulePath($sModule, $sFile)
         );

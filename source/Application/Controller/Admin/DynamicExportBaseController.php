@@ -8,9 +8,11 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use stdClass;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Error constants
@@ -120,7 +122,12 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         parent::__construct();
 
         // set generic frame template
-        $this->_sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
+        $this->_sFilePath = Path::join(
+            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            $this->sExportPath,
+            $this->sExportFileName,
+            $this->sExportFileType
+        );
     }
 
     /**

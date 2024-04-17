@@ -1,5 +1,10 @@
 imports:
     - { resource: bootstrap-services.yaml }
+
+parameters:
+    oxid_build_directory: '%env(OXID_BUILD_DIRECTORY)%'
+    oxid_log_level: '%env(OXID_LOG_LEVEL)%'
+
 services:
     _defaults:
         autowire: true

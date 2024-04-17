@@ -14,9 +14,9 @@ use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\BootstrapLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentInstallerTest extends TestCase
@@ -54,7 +54,7 @@ final class ComponentInstallerTest extends TestCase
 
         return new ComponentInstaller(
             new NullIO(),
-            (new Facts())->getShopRootPath(),
+            (new BootstrapLocator())->getProjectRoot(),
             $packageStub
         );
     }

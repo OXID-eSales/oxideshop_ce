@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
@@ -359,7 +360,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function processFiles($oObject = null, $aFiles = [], $blUseMasterImage = false, $blUnique = true)
     {
-        $aFiles = $aFiles ? $aFiles : $_FILES;
+        $aFiles = $aFiles ?: $_FILES;
         if (isset($aFiles['myfile']['name'])) {
             $oConfig = Registry::getConfig();
 
@@ -367,7 +368,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $blDemo = (bool) $oConfig->isDemoShop();
 
             // folder where images will be processed
-            $sTmpFolder = $oConfig->getConfigParam("sCompileDir");
+            $sTmpFolder = ContainerFacade::getParameter('oxid_build_directory');
 
             $iNewFilesCounter = 0;
             $aSource = $aFiles['myfile']['tmp_name'];
@@ -466,7 +467,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Process uploaded files. Returns unique file name, on fail false
      *
      * @param string $sFileName   form file item name
-     * @param string $sUploadPath RELATIVE (to config sShopDir parameter) path for uploaded file to be copied
+     * @param string $sUploadPath RELATIVE (to container parameter oxid_shop_source_directory) path for uploaded file to be copied
      *
      * @throws \OxidEsales\Eshop\Core\Exception\StandardException if file is not valid
      *
@@ -476,7 +477,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $aFileInfo = $_FILES[$sFileName];
 
-        $sBasePath = Registry::getConfig()->getConfigParam('sShopDir');
+        $absoluteUploadPath = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), $sUploadPath);
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -505,9 +506,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
-        $sFileName = $this->getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);
+        $sFileName = $this->getUniqueFileName($absoluteUploadPath, $sFileName, $sExt);
 
-        $destination = Path::join($sBasePath, $sUploadPath, $sFileName);
+        $destination = Path::join($absoluteUploadPath, $sFileName);
         if ($this->uploadMasterImage($aFileInfo['tmp_name'], $destination)) {
             return $sFileName;
         }
@@ -670,6 +671,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     private function makePathRelativeToShopSource(string $path): string
     {
-        return Path::makeRelative($path, (new Facts())->getSourcePath());
+
+        return Path::makeRelative(
+            $path,
+            ContainerFacade::getParameter('oxid_shop_source_directory')
+        );
     }
 }

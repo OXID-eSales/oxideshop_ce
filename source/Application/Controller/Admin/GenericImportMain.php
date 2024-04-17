@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Admin general export manager.
@@ -73,7 +75,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     /** @inheritdoc */
     public function render()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
         $this->_sCsvFilePath = null;
@@ -176,7 +178,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     protected function getCsvFieldsNames()
     {
         $blCsvContainsHeader = Registry::getRequest()->getRequestEscapedParameter('blContainsHeader');
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
+        Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $this->getUploadedCsvFilePath();
 
         $aFirstRow = $this->getCsvFirstRow();
@@ -222,8 +224,8 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     protected function resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', null);
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', null);
+        Registry::getSession()->setVariable('sCsvFilePath', null);
+        Registry::getSession()->setVariable('blCsvContainsHeader', null);
     }
 
     /**
@@ -240,7 +242,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if (!$this->getUploadedCsvFilePath()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORUPLOADINGFILE');
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
+                Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 1;
             }
@@ -259,7 +261,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if ($blIsEmpty) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORASSIGNINGFIELDS');
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
+                Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 2;
             }
@@ -279,16 +281,19 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         //try to get uploaded csv file path
         if ($this->_sCsvFilePath !== null) {
             return $this->_sCsvFilePath;
-        } elseif ($this->_sCsvFilePath = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sCsvFilePath')) {
+        } elseif ($this->_sCsvFilePath = Registry::getSession()->getVariable('sCsvFilePath')) {
             return $this->_sCsvFilePath;
         }
 
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
-            $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
+            $this->_sCsvFilePath = Path::join(
+                ContainerFacade::getParameter('oxid_build_directory'),
+                basename($aFile['tmp_name'])
+            );
             move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
+            Registry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
 
             return $this->_sCsvFilePath;
         }
@@ -305,7 +310,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             if (!$aValue ['r']) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage($aValue ['m']);
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
+                Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
             }
         }
     }
@@ -319,7 +324,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
-            if ($char = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
+            if ($char = Registry::getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
                 $this->_sStringTerminator = $char;
             }
         }
@@ -336,7 +341,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;
-            if ($char = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
+            if ($char = Registry::getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
                 $this->_sStringEncloser = $char;
             }
         }
@@ -352,6 +357,6 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
         $error->setFormatParameters(htmlspecialchars($invalidData));
         $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-        \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
+        Registry::getUtilsView()->addErrorToDisplay($error);
     }
 }

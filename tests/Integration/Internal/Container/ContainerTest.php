@@ -127,6 +127,11 @@ final class ContainerTest extends IntegrationTestCase
         );
     }
 
+    public function testGetShopDirectoryParameter(): void
+    {
+        $this->assertFileExists($this->container->getParameter('oxid_shop_source_directory'));
+    }
+
     private function getCacheFilePath(): string
     {
         return $this

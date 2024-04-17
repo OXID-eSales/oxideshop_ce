@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\Facts\Facts;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Administrator GUI navigation manager class.
@@ -179,12 +180,20 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
 
         // check if setup dir is deleted
-        if (file_exists(Registry::getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
+        if (
+            file_exists(
+                Path::join(
+                    ContainerFacade::getParameter('oxid_shop_source_directory'),
+                    'Setup',
+                    'index.php'
+                )
+            )
+        ) {
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
-        $sConfPath = Registry::getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
+        $sConfPath = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'config.inc.php');
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }

@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler as LocalImageHandler;
@@ -197,7 +198,7 @@ final class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
 
     private function prepareTestDirectories(): void
     {
-        $this->someTmpDir = Registry::getConfig()->getConfigParam('sCompileDir');
+        $this->someTmpDir = ContainerFacade::getParameter('oxid_build_directory');
         $pictureDir = Registry::getConfig()->getPictureDir(false);
         $uniqueFilename = uniqid('some_image_', true);
         $this->testFile = sprintf('%s.jpg', $uniqueFilename);

@@ -38,22 +38,20 @@ class ShopSetupCommand extends Command
     private const DB_USER = 'db-user';
     private const DB_PASSWORD = 'db-password';
     private const SHOP_URL = 'shop-url';
-    private const SHOP_DIRECTORY = 'shop-directory';
-    private const COMPILE_DIRECTORY = 'compile-directory';
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
     public function __construct(
-        private DatabaseCheckerInterface $databaseChecker,
-        private DatabaseInstallerInterface $databaseInstaller,
-        private ConfigFileDaoInterface $configFileDao,
-        private DirectoryValidatorInterface $directoriesValidator,
-        private LanguageInstallerInterface $languageInstaller,
-        private HtaccessUpdaterInterface $htaccessUpdateService,
-        private ShopStateServiceInterface $shopStateService,
-        private ShopAdapterInterface $shopAdapter,
-        private BasicContextInterface $basicContext,
-        private ShopConfigurationSettingDaoInterface $settingDao
+        private readonly DatabaseCheckerInterface $databaseChecker,
+        private readonly DatabaseInstallerInterface $databaseInstaller,
+        private readonly ConfigFileDaoInterface $configFileDao,
+        private readonly DirectoryValidatorInterface $directoriesValidator,
+        private readonly LanguageInstallerInterface $languageInstaller,
+        private readonly HtaccessUpdaterInterface $htaccessUpdateService,
+        private readonly ShopStateServiceInterface $shopStateService,
+        private readonly ShopAdapterInterface $shopAdapter,
+        private readonly BasicContextInterface $basicContext,
+        private readonly ShopConfigurationSettingDaoInterface $settingDao
     ) {
         parent::__construct();
     }
@@ -67,8 +65,6 @@ class ShopSetupCommand extends Command
             ->addOption(self::DB_USER, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::DB_PASSWORD, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::SHOP_URL, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::SHOP_DIRECTORY, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::COMPILE_DIRECTORY, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
         $this->setDescription('Performs initial shop setup');
 
@@ -79,8 +75,6 @@ class ShopSetupCommand extends Command
             self::DB_USER,
             self::DB_PASSWORD,
             self::SHOP_URL,
-            self::SHOP_DIRECTORY,
-            self::COMPILE_DIRECTORY,
         ]);
     }
 
@@ -124,7 +118,7 @@ class ShopSetupCommand extends Command
         $this->checkShopIsNotLaunched();
         $this->configFileDao->checkIsEditable();
         $this->checkCanCreateDatabase($input);
-        $this->checkDirectories($input);
+        $this->checkLanguage($input);
     }
 
     /** @throws ShopIsLaunchedException */
@@ -147,19 +141,8 @@ class ShopSetupCommand extends Command
         );
     }
 
-    /** @param InputInterface $input */
-    private function checkDirectories(InputInterface $input): void
+    private function checkLanguage(InputInterface $input): void
     {
-        $this->directoriesValidator->checkPathIsAbsolute(
-            $input->getOption(self::SHOP_DIRECTORY),
-            $input->getOption(self::COMPILE_DIRECTORY)
-        );
-
-        $this->directoriesValidator->validateDirectory(
-            $input->getOption(self::SHOP_DIRECTORY),
-            $input->getOption(self::COMPILE_DIRECTORY)
-        );
-
         $this->getLanguage($input);
     }
 
@@ -167,8 +150,6 @@ class ShopSetupCommand extends Command
     private function updateConfigFile(InputInterface $input): void
     {
         $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
-        $this->configFileDao->replacePlaceholder('sShopDir', $input->getOption(self::SHOP_DIRECTORY));
-        $this->configFileDao->replacePlaceholder('sCompileDir', $input->getOption(self::COMPILE_DIRECTORY));
     }
 
     /** @param InputInterface $input */

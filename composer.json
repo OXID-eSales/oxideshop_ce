@@ -107,7 +107,7 @@
         "phpcs": "phpcs --standard=tests/phpcs.xml  --report=full",
         "phpcs-report": [
             "Composer\\Config::disableProcessTimeout",
-            "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json",
+            "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json ||true ",
             "phpcs --standard=tests/phpcs.xml  --report=full"
         ],
         "phpstan": [

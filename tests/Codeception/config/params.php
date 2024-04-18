@@ -11,6 +11,10 @@ use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Facts;
 use OxidEsales\Codeception\Module\Database\DatabaseDefaultsFileGenerator;
 
+if ($shopRootPath = getenv('SHOP_ROOT_PATH')){
+    require_once(Path::join($shopRootPath, 'source', 'bootstrap.php'));
+}
+
 $facts = new Facts();
 
 return [
@@ -71,7 +75,9 @@ function getShopTestPath(): string
 
 function getMysqlConfigPath(): string
 {
-    $configFile = new ConfigFile();
+    $facts = new Facts();
+    $configFilePath = Path::join($facts->getSourcePath(), 'config.inc.php');
+    $configFile = new ConfigFile($configFilePath);
 
     return (new DatabaseDefaultsFileGenerator($configFile))->generate();
 }

@@ -131,7 +131,7 @@
         ],
 
         "tests-unit": "XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_unit.xml tests/Unit 2>&1 | tee tests/Output/unit_tests.txt",
-        "tests-integration": "XDEBUG_MODE=coverage -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_integration.xml tests/Integration 2>&1 | tee tests/Output/integration_tests.txt",
+        "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_integration.xml tests/Integration 2>&1 | tee tests/Output/integration_tests.txt",
 
         "tests-codeception": [
             "Composer\\Config::disableProcessTimeout",

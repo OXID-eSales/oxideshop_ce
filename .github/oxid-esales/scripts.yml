@@ -36,7 +36,8 @@ runscript: &runscript
         "shop:tests-unit",
         "shop:tests-integration",
         "shop:tests-codeception",
-        "setup:tests-codeception-shopSetup"
+        "setup:tests-codeception-shopSetup",
+        "deprecated:tests-deprecated"
       ]
   shop:
     path: 'vendor/{{ $org}}/{{ $name }}'
@@ -47,6 +48,18 @@ runscript: &runscript
       cd vendor/oxid-esales/oxideshop-ce
       composer config -g github-oauth.github.com "${GITHUB_TOKEN}"
       composer update --no-interaction
+  deprecated:
+    path: 'vendor/{{ $org}}/{{ $name }}'
+    composer:
+      transform: |
+        {
+            "require-dev": {
+                "oxid-esales/testing-library": "{{ .Data.global.composer-dev-ref }}",
+                "oxid-esales/tests-deprecated-ce": "{{ .Data.global.composer-dev-ref }}",
+                "codeception/module-webdriver": "^3.1",
+                "phpunit/phpunit": "^9.1.1"
+            }
+        }
 runslim:
   <<: *runscript
   matrix:
@@ -54,7 +67,8 @@ runslim:
       [
         "shop:phpcs-report",
         "shop:phpmd-report",
-        "shop:phpstan-report"
+        "shop:phpstan-report",
+        "shop:phpstan-baseline"
       ]
 
 sonarcloud:

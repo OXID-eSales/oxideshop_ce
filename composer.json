@@ -120,6 +120,10 @@
             "Composer\\Config::disableProcessTimeout",
             "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --error-format=json > tests/Reports/phpstan.report.json"
         ],
+        "phpstan-baseline": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --generate-baseline tests/Reports/phpstan-baseline.neon"
+        ],
 
         "phpmd": "phpmd source ansi tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit",
         "phpmd-report": "phpmd source json tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit --reportfile tests/Reports/phpmd.report.json",
@@ -143,11 +147,18 @@
             "vendor/bin/codecept build -c tests/codeception.yml",
             "SELENIUM_SERVER_HOST=selenium BROWSER_NAME=chrome DB_NAME=setup_test DB_USERNAME=root DB_PASSWORD=root DB_HOST=mysql DB_PORT=3306 SHOP_URL=http://localhost.local/ SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/ THEME_ID=apex SHOP_ROOT_PATH=/var/www vendor/bin/codecept run acceptanceSetup -c tests/codeception.yml --ext DotReporter 2>&1 | tee tests/Output/codeception_ShopSetup.txt"
         ],
+        "tests-deprecated": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/reset-shop",
+            "XDEBUG_MODE=coverage vendor/bin/runtests --coverage-clover=/tests/Reports/coverage_deprecated_tests.xml AllTestsUnit | tee "tests/Output/deprecated_tests.txt" 2>&1"
+        ],
 
         "tests-all": [
             "@tests-unit",
             "@tests-integration",
-            "@tests-codeception"
+            "@tests-codeception",
+            "@tests-codeception-shopSetup",
+            "@tests-deprecated"
         ]
     }
 }

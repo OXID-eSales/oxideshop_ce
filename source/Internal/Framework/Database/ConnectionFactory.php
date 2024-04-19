@@ -12,13 +12,12 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\DriverManager;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\SystemConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
 
 class ConnectionFactory implements ConnectionFactoryInterface
 {
     public function __construct(
-        private readonly SystemConfigurationDaoInterface $systemConfigurationDao,
+        private readonly ConnectionParameterProviderInterface $connectionParameterProvider,
         private readonly DatabaseLoggerFactoryInterface $databaseLoggerFactory,
     ) {
     }
@@ -30,7 +29,7 @@ class ConnectionFactory implements ConnectionFactoryInterface
             $this->databaseLoggerFactory->getDatabaseLogger()
         );
         return DriverManager::getConnection(
-            ['url' => $this->systemConfigurationDao->get()->getDatabaseUrl()],
+            $this->connectionParameterProvider->getParameters(),
             $dbalConfiguration,
         );
     }

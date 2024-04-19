@@ -10,14 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Env;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\EnvTrait;
 use OxidEsales\EshopCommunity\Tests\RequestTrait;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -25,6 +21,7 @@ final class EnvLoaderTest extends TestCase
 {
     use RequestTrait;
     use ContainerTrait;
+    use EnvTrait;
 
     private string $dotEnvFixture = '';
     private string $fixtures = __DIR__ . '/Fixtures';
@@ -59,7 +56,7 @@ final class EnvLoaderTest extends TestCase
     public function testApplicationEnvironmentCanBeRedefined(): void
     {
         $someValue = uniqid('some-value', true);
-        $this->loadEnvValue("$this->appEnvKey=$someValue");
+        $this->loadEnvFixture($this->fixtures, ["$this->appEnvKey=$someValue"]);
 
         $currentEnvironment = getenv($this->appEnvKey);
 
@@ -74,26 +71,13 @@ final class EnvLoaderTest extends TestCase
             [$dsnString, $dsnString, $dsnString],
             JSON_THROW_ON_ERROR
         );
-        $this->loadEnvValue("$this->serializedEnvKey='$serializedValue'");
-        $this->setContainerFixture();
+        $this->loadEnvFixture($this->fixtures, ["$this->serializedEnvKey='$serializedValue'"]);
+        $this->createContainer();
+        $this->loadYamlFixture($this->fixtures);
+        $this->compileContainer();
 
         $containerParameter = $this->getParameter($this->serializedParameterKey);
 
         $this->assertEquals($dsnString, $containerParameter[2]);
-    }
-
-    private function setContainerFixture(): void
-    {
-        $containerBuilder = new ContainerBuilder(new ContextStub());
-        $this->container = $containerBuilder->getContainer();
-        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
-        $loader->load(Path::join($this->fixtures, 'services.yaml'));
-        $this->container->compile(true);
-    }
-
-    private function loadEnvValue(string $content): void
-    {
-        (new Filesystem())->dumpFile($this->dotEnvFixture, $content);
-        (new DotenvLoader($this->fixtures))->loadEnvironmentVariables();
     }
 }

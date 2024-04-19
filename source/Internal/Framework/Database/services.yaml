@@ -15,3 +15,6 @@ services:
   Doctrine\DBAL\Driver\Connection:
     public: true
     factory: [ '@OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface', 'create' ]
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionParameterProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionParameterProvider

@@ -11,10 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Databas
 
 use Doctrine\DBAL\Driver\Connection;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 
 final class ConnectionFactoryTest extends TestCase
@@ -54,17 +52,17 @@ final class ConnectionFactoryTest extends TestCase
 
     private function injectContextMock(): void
     {
-        $this->container = (new TestContainerFactory())->create();
-        $contextMock = $this->createConfiguredMock(
+        $this->createContainer();
+        $this->replaceService(
             ContextInterface::class,
-            [
-                'isAdmin' => true,
-                'isEnabledAdminQueryLog' => true,
-                'getAdminLogFilePath' => $this->logFile
-            ]
-        );
-        $this->container->set(ContextInterface::class, $contextMock);
-        $this->container->autowire(ContextInterface::class, Context::class);
-        $this->container->compile();
+            $this->createConfiguredMock(
+                ContextInterface::class,
+                [
+                    'isAdmin' => true,
+                    'isEnabledAdminQueryLog' => true,
+                    'getAdminLogFilePath' => $this->logFile
+                ]
+            ));
+        $this->compileContainer();
     }
 }

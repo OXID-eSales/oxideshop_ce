@@ -150,7 +150,7 @@
         "tests-deprecated": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/reset-shop",
-            "XDEBUG_MODE=coverage vendor/bin/runtests --coverage-clover=/tests/Reports/coverage_deprecated_tests.xml AllTestsUnit | tee "tests/Output/deprecated_tests.txt" 2>&1"
+            "XDEBUG_MODE=coverage vendor/bin/runtests --coverage-clover=/tests/Reports/coverage_deprecated_tests.xml AllTestsUnit  2>&1 | tee 'tests/Output/deprecated_tests.txt'"
         ],
 
         "tests-all": [

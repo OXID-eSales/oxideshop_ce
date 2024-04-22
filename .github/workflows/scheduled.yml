@@ -14,6 +14,11 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      custom_testplan_yaml: |
+        global:
+          title: '7.1.x-nightly'
+        finish:
+          slack_title: 'Nightly Shop CE 7.1.x on {{ .Github.Repository }}'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -33,6 +38,11 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      custom_testplan_yaml: |
+        global:
+          title: '7.2.x-nightly'
+        finish:
+          slack_title: 'Nightly Shop CE 7.2.x on {{ .Github.Repository }}'  
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -52,6 +62,11 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      custom_testplan_yaml: |
+        global:
+          title: '8.0.x-nightly'
+        finish:
+          slack_title: 'Nightly Shop CE 8.0.x on {{ .Github.Repository }}'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

@@ -17,4 +17,4 @@ sonarcloud:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
 
 finish:
-  slack_title: 'Full matrix CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'
+  slack_title: 'Shop CE ({{ .Data.global.git.shop_ref }}) on {{ .Github.Repository }} by {{ .Github.Actor }}'

@@ -75,7 +75,7 @@ runtest:
   matrix:
     testplan: '["-"]'
   container:
-    options: '--workdir vendor/oxid-esales/oxideshop-ce'
+    options: '--workdir vendor/{{ $org}}/{{ $name }}'
 
 sonarcloud:
   matrix:

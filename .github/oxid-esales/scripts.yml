@@ -87,6 +87,8 @@ runtest:
     testplan: '["-"]'
   container:
     options: '-e XDEBUG_MODE=coverage -e SHOP_PATH=vendor/{{ $org}}/{{ $name }}/source -e SHOP_TESTS_PATH=vendor/{{ $org}}/{{ $name }}/tests'
+  custom_script: |
+    cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php source/source/config.inc.php
 
 sonarcloud:
   matrix:

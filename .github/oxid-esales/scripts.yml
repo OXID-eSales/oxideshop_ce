@@ -75,7 +75,7 @@ runtest:
   matrix:
     testplan: '["-"]'
   container:
-    options: '--workdir vendor/{{ $org}}/{{ $name }}'
+    options: '-e XDEBUG_MODE=coverage -e SHOP_PATH=vendor/{{ $org}}/{{ $name }}/source -e SHOP_TESTS_PATH=vendor/{{ $org}}/{{ $name }}/tests'
 
 sonarcloud:
   matrix:

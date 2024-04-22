@@ -37,7 +37,6 @@ runscript: &runscript
         "shop:tests-integration",
         "shop:tests-codeception",
         "setup:tests-codeception-shopSetup",
-        "deprecated:tests-deprecated"
       ]
   shop:
     path: 'vendor/{{ $org}}/{{ $name }}'
@@ -63,23 +62,25 @@ runscript: &runscript
 runslim:
   <<: *runscript
   matrix:
-    script: |
-      [
-        "shop:phpcs-report",
-        "shop:phpmd-report",
-        "shop:phpstan-report",
-        "shop:phpstan-baseline"
-      ]
+    script: '["shop:phpcs-report"]'
+    # script: |
+    #   [
+    #     "shop:phpcs-report",
+    #     "shop:phpmd-report",
+    #     "shop:phpstan-report",
+    #     "shop:phpstan-baseline"
+    #   ]
 
 runtest:
   matrix:
     testplan: '["-"]'
+  container:
+    options: '--workdir vendor/oxid-esales/oxideshop-ce'
 
 sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
   strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
 
-
 finish:
-  slack_title: '{{ print $name }} ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Shop CE ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'

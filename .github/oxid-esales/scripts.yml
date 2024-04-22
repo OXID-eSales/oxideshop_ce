@@ -71,6 +71,10 @@ runslim:
         "shop:phpstan-baseline"
       ]
 
+runtest:
+  matrix:
+    testplan: '["-"]'
+
 sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'

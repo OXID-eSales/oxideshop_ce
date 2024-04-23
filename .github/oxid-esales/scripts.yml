@@ -57,7 +57,7 @@ runscript: &runscript
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'
     container:
-      options: 'XDEBUG_MODE=coverage'
+      options: '-e XDEBUG_MODE=coverage'
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'

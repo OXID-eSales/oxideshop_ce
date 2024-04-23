@@ -48,9 +48,16 @@ runscript: &runscript
         "shop:tests-integration",
         "shop:tests-codeception",
         "setup:tests-codeception-shopSetup",
+        "unit:",
+        "integration:",
+        "codeception:",
+        "shop_setup:",
+        "deprecated"
       ]
-  shop:
+  shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'
+    container:
+      options: 'XDEBUG_MODE=coverage'
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'
@@ -58,8 +65,23 @@ runscript: &runscript
       cd vendor/oxid-esales/oxideshop-ce
       composer config -g github-oauth.github.com "${GITHUB_TOKEN}"
       composer update --no-interaction
+  unit:
+    <<: *shop
+    custom_script_container: |
+      vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_unit.xml --log-junit tests/Reports/phpunit-unit.xml tests/Unit 2>&1 | tee tests/Output/unit_tests.txt
+  integration:
+    <<: *shop
+    custom_script_container: |
+      vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_integration.xml tests/Integration 2>&1 | tee tests/Output/integration_tests.txt
+  codeception:
+    <<: *shop
+    container:
+      options: '-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome -e DB_NAME=setup_test -e DB_USERNAME=root -e DB_PASSWORD=root -e DB_HOST=mysql -e DB_PORT=3306 -e SHOP_URL=http://localhost.local/ -e SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/ -e THEME_ID=apex -e SHOP_ROOT_PATH=/var/www'
+    custom_script_container: |
+      vendor/bin/codecept build -c tests/codeception.yml",
+      vendor/bin/codecept run acceptanceSetup -c tests/codeception.yml --ext DotReporter 2>&1 | tee tests/Output/codeception_ShopSetup.txt"
   deprecated:
-    path: 'vendor/{{ $org}}/{{ $name }}'
+    <<: *shop
     composer:
       transform: |
         {
@@ -70,6 +92,22 @@ runscript: &runscript
                 "phpunit/phpunit": "^9.1.1"
             }
         }
+    container:
+      options: '-e XDEBUG_MODE=coverage -e SHOP_PATH=vendor/{{ $org}}/{{ $name }}/source -e SHOP_TESTS_PATH=vendor/{{ $org}}/{{ $name }}/tests'
+    custom_script: |
+      cp source/vendor/oxid-esales/testing-library/test_config.yml.dist source/test_config.yml
+      #sed -e "s|shop_tests_path:.*|shop_tests_path: 'vendor/oxid-esales/tests'|" \
+      #    -e "s|shop_path:.*|shop_path: 'vendor/oxid-esales/oxideshop-ce/source'|" \
+      #    -i source/test_config.yml
+      cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php source/source/config.inc.php
+      cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php source/config.inc.php
+    custom_script_container: |
+      php vendor/bin/runtests \
+        --coverage-clover=tests/Reports/deprecated_tests_coverage.xml \
+        AllTestsUnit 2>&1 \
+      | tee "tests/Output/deprecated_tests.txt"
+    reset_shop: false
+
 runslim:
   <<: *runscript
   matrix:

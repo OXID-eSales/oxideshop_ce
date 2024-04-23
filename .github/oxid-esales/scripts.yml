@@ -51,7 +51,7 @@ runscript: &runscript
         "shop:~/Unit.sh",
         "shop:~/Integration.sh",
         "shop:~/Codeception.sh",
-        "setup:~ShopSetup.sh",
+        "setup:~/ShopSetup.sh",
         "deprecated:~/Deprecated.sh"
       ]
   shop: &shop

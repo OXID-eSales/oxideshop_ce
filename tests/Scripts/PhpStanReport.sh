@@ -1,5 +1,5 @@
 #!/bin/bash
-phpstan \
+vendor/bin/phpstan \
     -ctests/PhpStan/phpstan.neon \
     analyse source/ \
     --error-format=json \

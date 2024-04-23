@@ -52,7 +52,7 @@ runscript: &runscript
         "integration:",
         "codeception:",
         "shop_setup:",
-        "deprecated"
+        "deprecated:"
       ]
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'

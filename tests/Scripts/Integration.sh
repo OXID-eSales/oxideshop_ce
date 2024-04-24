@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 vendor/bin/phpunit \
     -c phpunit.xml \
     --bootstrap tests/bootstrap.php \

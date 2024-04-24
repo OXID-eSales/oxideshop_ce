@@ -77,6 +77,9 @@ runscript: &runscript
                 "phpunit/phpunit": "^9.1.1"
             }
         }
+    custom_script: |
+      mkdir -p source/vendor/oxid-esales/oxideshop-ce/tests/Output 
+      find . >source/vendor/oxid-esales/oxideshop-ce/tests/Output/files.txt
 
 runslim:
   <<: *runscript

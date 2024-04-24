@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 vendor/bin/phpmd \
     source json tests/PhpMd/standard.xml \
     --ignore-errors-on-exit \

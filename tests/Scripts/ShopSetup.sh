@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 vendor/bin/codecept build \
     -c tests/codeception.yml
 SELENIUM_SERVER_HOST=selenium \

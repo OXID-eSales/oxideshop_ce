@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 vendor/bin/phpstan \
     -ctests/PhpStan/phpstan.neon \
     analyse source/ \

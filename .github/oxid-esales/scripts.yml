@@ -28,8 +28,6 @@ install_shop_with_modules:
             }
           }
       }
-  custom_script: |
-    cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
   output:
     files: |
       docker-compose.yml
@@ -78,7 +76,12 @@ runscript: &runscript
             }
         }
     custom_script: |
-      mkdir -p source/vendor/oxid-esales/oxideshop-ce/tests/Output 
+      # Allocate 10G swap, needed for deprected tests
+      sudo fallocate -l 10G swapfile
+      sudo chmod 600 swapfile
+      sudo mkswap swapfile
+      sudo swapon swapfile
+      mkdir -p source/vendor/oxid-esales/oxideshop-ce/tests/Output
       find . >source/vendor/oxid-esales/oxideshop-ce/tests/Output/files.txt
 
 runslim:

@@ -3,6 +3,7 @@ imports:
   - { resource: Console/services.yaml }
   - { resource: Configuration/services.yaml }
   - { resource: DIContainer/services.yaml }
+  - { resource: Database/parameters.yaml }
   - { resource: Database/services.yaml }
   - { resource: Event/services.yaml }
   - { resource: FileSystem/services.yaml }

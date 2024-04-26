@@ -1,0 +1,8 @@
+parameters:
+  oxid_esales.db.url: '%env(OXID_DB_URL)%'
+  oxid_esales.db.host: '%env(string:key:host:url:OXID_DB_URL)%'
+  oxid_esales.db.name: '%env(string:key:path:url:OXID_DB_URL)%'
+  oxid_esales.db.user: '%env(string:key:user:url:OXID_DB_URL)%'
+  oxid_esales.db.pass: '%env(string:key:pass:url:OXID_DB_URL)%'
+  oxid_esales.db.port: '%env(int:key:port:url:OXID_DB_URL)%'
+  oxid_esales.db.options: '%env(string:key:query:url:OXID_DB_URL)%'

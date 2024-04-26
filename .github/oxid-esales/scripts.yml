@@ -42,15 +42,11 @@ runscript: &runscript
   matrix:
     script: |
       [
-        "shop:tests-unit",
-        "shop:tests-integration",
-        "shop:tests-codeception",
-        "setup:tests-codeception-shopSetup",
-        "shop:~/Unit.sh",
-        "shop:~/Integration.sh",
-        "shop:~/Codeception.sh",
-        "setup:~/ShopSetup.sh",
-        "deprecated:~/Deprecated.sh"
+        "shop:~/unit.sh",
+        "shop:~/integration.sh",
+        "shop:~/codeception.sh",
+        "setup:~/shop-setup.sh",
+        "deprecated:~/deprecated.sh"
       ]
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'
@@ -81,20 +77,11 @@ runscript: &runscript
       sudo chmod 600 swapfile
       sudo mkswap swapfile
       sudo swapon swapfile
-      mkdir -p source/vendor/oxid-esales/oxideshop-ce/tests/Output
-      find . >source/vendor/oxid-esales/oxideshop-ce/tests/Output/files.txt
 
 runslim:
   <<: *runscript
   matrix:
-    script: '["shop:~/PhpCsReport.sh"]'
-    # script: |
-    #   [
-    #     "shop:phpcs-report",
-    #     "shop:phpmd-report",
-    #     "shop:phpstan-report",
-    #     "shop:phpstan-baseline"
-    #   ]
+    script: '["shop:~/php-cs-report.sh"]'
 
 sonarcloud:
   matrix:
@@ -103,3 +90,4 @@ sonarcloud:
 
 finish:
   slack_title: 'Shop CE ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_compact: true

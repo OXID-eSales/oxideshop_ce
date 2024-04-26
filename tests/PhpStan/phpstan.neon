@@ -1,8 +1,0 @@
-includes:
-	- phpstan-baseline.neon
-
-parameters:
-    level: 8
-    stubFiles:
-        - stubs/EshopUser.stub
-        - stubs/StartController.stub

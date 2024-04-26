@@ -13,10 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Configuration\BootstrapConfigur
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\EnvTrait;
 use OxidEsales\EshopCommunity\Tests\RequestTrait;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
+#[RunTestsInSeparateProcesses]
 final class EnvLoaderTest extends TestCase
 {
     use RequestTrait;

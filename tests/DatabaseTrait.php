@@ -38,14 +38,7 @@ trait DatabaseTrait
     {
         $facts = new Facts();
         exec(
-            $facts->getCommunityEditionRootPath() .
-            '/bin/oe-console oe:database:reset' .
-            ' --db-host=' . $facts->getDatabaseHost() .
-            ' --db-port=' . $facts->getDatabasePort() .
-            ' --db-name=' . $facts->getDatabaseName() .
-            ' --db-user=' . $facts->getDatabaseUserName() .
-            ' --db-password=' . $facts->getDatabasePassword() .
-            ' --force'
+            "{$facts->getCommunityEditionRootPath()}/bin/oe-console oe:database:reset --force"
         );
     }
 }

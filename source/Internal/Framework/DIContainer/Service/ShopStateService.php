@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\BootstrapConnectionFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
@@ -46,7 +45,7 @@ class ShopStateService implements ShopStateServiceInterface
                 sprintf("SELECT 1 FROM `%s` LIMIT 1", $this->basicContext->getConfigTableName())
             );
             $connection->close();
-        } catch (TableNotFoundException) {
+        } catch (\Throwable) {
             return false;
         }
 

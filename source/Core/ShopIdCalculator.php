@@ -20,15 +20,14 @@ class ShopIdCalculator
     /** Shop id which is used for CE/PE eShops. */
     const BASE_SHOP_ID = 1;
 
-    /** @var array */
-    private static $urlMap;
+    private static array $urlMap;
 
     public function __construct(
         private readonly \OxidEsales\Eshop\Core\FileCache $variablesCache,
         private ?Connection $connection = null,
     ) {
         if (!$this->connection) {
-            $this->connection = ContainerFacade::get(\Doctrine\DBAL\Driver\Connection::class);
+            $this->connection = ContainerFacade::get(Connection::class);
         }
     }
 

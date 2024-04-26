@@ -18,6 +18,11 @@ class SystemConfiguration
         return $this->databaseUrl;
     }
 
+    public function getDatabaseConfiguration(): DatabaseConfiguration
+    {
+        return new DatabaseConfiguration($this->databaseUrl);
+    }
+
     public function setDatabaseUrl(string $databaseUrl): void
     {
         $this->databaseUrl = $databaseUrl;

@@ -83,12 +83,9 @@ class ContainerFactory
 
     private static function getShopId(): int
     {
-        $bootstrapDbConnection = BootstrapConnectionFactory::create();
-        $shopIdCalculator = new ShopIdCalculator(
+        return (int)(new ShopIdCalculator(
             new FileCache(),
-            $bootstrapDbConnection
-        );
-
-        return (int)$shopIdCalculator->getShopId();
+            BootstrapConnectionFactory::create()
+        ))->getShopId();
     }
 }

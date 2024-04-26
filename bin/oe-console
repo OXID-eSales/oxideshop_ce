@@ -54,7 +54,7 @@ $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php')
 require_once $bootstrapFilePath;
 
 $container = (new ContainerBuilderFactory())->create()->getContainer();
-$container->compile();
+$container->compile(true);
 
 $commandLoader = $container->get('console.command_loader');
 
@@ -69,4 +69,5 @@ $application->setDispatcher($container->get(EventDispatcherInterface::class));
 $application->addCommands(
     $idCommands
 );
+
 $application->run();

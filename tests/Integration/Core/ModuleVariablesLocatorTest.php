@@ -58,9 +58,7 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
 
     private function getModuleVariablesLocator(): ModuleVariablesLocator
     {
-        $shopIdCalculator = new ShopIdCalculator(
-            new FileCache()
-        );
+        $shopIdCalculator = new ShopIdCalculator(new FileCache());
         $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
         return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
     }

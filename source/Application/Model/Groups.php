@@ -72,6 +72,6 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxid' => $sOXID
         ]);
 
-        return $rs->EOF;
+        return (bool) $rs;
     }
 }

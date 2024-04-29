@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN" testParam="module1-some-param">
+        <MAINMENU id="mxmainmenu">
+            <SUBMENU id="TEST-MODULE-1-SOME-SUBMENU-NODE"/>
+            <!--
+            Following element (with ID: "mxcoresett" and attribute/value: cl="shop") is expected to exist in shop's XML
+            @see EDITION_PATH/Application/views/admin/menu.xml
+            -->
+            <SUBMENU id="mxcoresett" cl="MODULE1_SOME_OVERWRITTEN_VALUE"/>
+        </MAINMENU>
+    </OXMENU>
+</OX>

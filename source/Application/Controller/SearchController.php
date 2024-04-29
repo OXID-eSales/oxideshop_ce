@@ -143,24 +143,26 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         parent::init();
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         // #1184M - special char search
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sSearchParamForQuery = trim(Registry::getRequest()->getRequestParameter('searchparam'));
+        $searchParameter = Registry::getRequest()->getRequestParameter('searchparam');
+        $searchParamForQuery = !empty($searchParameter) ? trim($searchParameter) : null;
 
         // searching in category ?
-        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode(Registry::getRequest()->getRequestEscapedParameter('searchcnid'));
+        $searchCategory = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
+        $initialSearchCat = $searchCategory ? rawurldecode($searchCategory) : null;
+        $this->_sSearchCatId = $initialSearchCat;
 
         // searching in vendor #671
-        $sInitialSearchVendor = rawurldecode(Registry::getRequest()->getRequestEscapedParameter('searchvendor'));
+        $searchVendor = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
+        $initialSearchVendor = $searchVendor ? rawurldecode($searchVendor) : null;
 
         // searching in Manufacturer #671
-        $sManufacturerParameter = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
-        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
+        $searchManufacturer = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
+        $initialSearchManufacturer = $searchManufacturer ? rawurldecode($searchManufacturer) : null;
+        $this->_sSearchManufacturer = $initialSearchManufacturer;
 
         $this->_blEmptySearch = false;
-        if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
+        if (!$searchParamForQuery && !$initialSearchCat && !$initialSearchVendor && !$initialSearchManufacturer) {
             //no search string
             $this->_aArticleList = null;
             $this->_blEmptySearch = true;
@@ -169,18 +171,18 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         }
 
         // config allows to search in Manufacturers ?
-        if (!$myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
-            $sInitialSearchManufacturer = null;
+        if (!Registry::getConfig()->getConfigParam('bl_perfLoadManufacturerTree')) {
+            $initialSearchManufacturer = null;
         }
 
         // searching ..
         /** @var \OxidEsales\Eshop\Application\Model\Search $oSearchHandler */
         $oSearchHandler = oxNew(\OxidEsales\Eshop\Application\Model\Search::class);
         $oSearchList = $oSearchHandler->getSearchArticles(
-            $sSearchParamForQuery,
-            $sInitialSearchCat,
-            $sInitialSearchVendor,
-            $sInitialSearchManufacturer,
+            $searchParamForQuery,
+            $initialSearchCat,
+            $initialSearchVendor,
+            $initialSearchManufacturer,
             $this->getSortingSql($this->getSortIdent())
         );
 
@@ -191,15 +193,15 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         // skip count calculation if no articles in list found
         if ($oSearchList->count()) {
             $this->_iAllArtCnt = $oSearchHandler->getSearchArticleCount(
-                $sSearchParamForQuery,
-                $sInitialSearchCat,
-                $sInitialSearchVendor,
-                $sInitialSearchManufacturer
+                $searchParamForQuery,
+                $initialSearchCat,
+                $initialSearchVendor,
+                $initialSearchManufacturer
             );
         }
 
-        $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
-        $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
+        $iNrofCatArticles = (int) Registry::getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrofCatArticles = $iNrofCatArticles ?: 1;
         $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
     }
 

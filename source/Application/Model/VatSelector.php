@@ -11,6 +11,8 @@ use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxObjectException;
 
+use function array_key_exists;
+
 /**
  * Class, responsible for retrieving correct vat for users and articles
  */
@@ -41,15 +43,17 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      */
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
     {
-        $cacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
-
-        if (!$blCacheReset) {
-            if (
-                array_key_exists($cacheId, self::$_aUserVatCache) &&
-                self::$_aUserVatCache[$cacheId] !== null
-            ) {
-                return self::$_aUserVatCache[$cacheId];
-            }
+        $cacheId = sprintf(
+            '%s_%s',
+            $oUser->getId(),
+            $oUser->getFieldData('oxcountryid') ?? ''
+        );
+        if (
+            !$blCacheReset &&
+            array_key_exists($cacheId, self::$_aUserVatCache) &&
+            self::$_aUserVatCache[$cacheId] !== null
+        ) {
+            return self::$_aUserVatCache[$cacheId];
         }
 
         $ret = false;
@@ -216,6 +220,6 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return $oUser->oxuser__oxcountryid->value;
+        return $oUser->getFieldData('oxcountryid');
     }
 }

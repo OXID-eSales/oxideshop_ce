@@ -389,7 +389,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function save()
     {
         $blSaved = parent::save();
-        if ($blSaved && $this->oxcontents__oxloadid->value === 'oxagb') {
+        if ($blSaved && $this->getFieldData('oxloadid') === 'oxagb') {
             $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 

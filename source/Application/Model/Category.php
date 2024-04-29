@@ -837,11 +837,11 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     protected function insert()
     {
-        if ($this->oxcategories__oxparentid->value != "oxrootid") {
+        if ($this->getFieldData('oxparentid') != "oxrootid") {
             // load parent
             $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             //#M317 check if parent is loaded
-            if (!$oParent->load($this->oxcategories__oxparentid->value)) {
+            if (!$oParent->load($this->getFieldData('oxparentid'))) {
                 return false;
             }
 

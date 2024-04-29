@@ -127,7 +127,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
-            $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
+            $this->addTplParam('profile', $sProfile ? $oStr->htmlspecialchars($sProfile) : '');
 
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {

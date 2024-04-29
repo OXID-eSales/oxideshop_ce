@@ -370,15 +370,15 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
             $iNewFilesCounter = 0;
             $aSource = $aFiles['myfile']['tmp_name'];
-            $aError = $aFiles['myfile']['error'];
+            $aError = $aFiles['myfile']['error'] ?? [];
 
             $oEx = oxNew(ExceptionToDisplay::class);
             // process all files
             foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
-                $iError = $aError[$sKey];
+                $iError = $aError[$sKey] ?? null;
                 $aFiletype = explode("@", $sKey);
-                $sKey = $aFiletype[1];
+                $sKey = $aFiletype[1] ?? null;
                 $sType = $aFiletype[0];
 
                 $sValue = strtolower($sValue);

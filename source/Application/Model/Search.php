@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 /**
  * Implements search
  */
+#[\AllowDynamicProperties]
 class Search extends \OxidEsales\Eshop\Core\Base
 {
     /**

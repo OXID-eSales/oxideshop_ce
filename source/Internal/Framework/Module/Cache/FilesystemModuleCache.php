@@ -22,7 +22,7 @@ use function json_decode;
 use function json_encode;
 
 /**
- * @deprecated and it will be moved to ModuleCache as of v8.0
+ * @deprecated v7.2 and will be removed as of v8.0. Instead, new ModuleCache service will be introduced.
  */
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {

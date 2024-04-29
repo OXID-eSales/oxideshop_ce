@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
+/**
+ * @deprecated v7.2 and will be removed as of v8.0. Instead, new ModuleCache interface will be introduced.
+ */
 interface ModuleCacheServiceInterface
 {
     /**
@@ -19,6 +22,9 @@ interface ModuleCacheServiceInterface
      */
     public function invalidate(string $moduleId, int $shopId): void;
 
+    /**
+     * @deprecated and will be removed as of v8.0.
+     */
     public function invalidateAll(): void;
 
     /**

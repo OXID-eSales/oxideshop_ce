@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
 /**
- * @deprecated and it will be moved to ModuleCacheBridge as of v8.0
+ * @deprecated v7.2 and will be removed as of v8.0
  */
 class FilesystemModuleCacheBridge implements ModuleCacheServiceBridgeInterface
 {

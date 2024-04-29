@@ -6,7 +6,7 @@
 - 
 
 ### Deprecated
-- 
+- Filesystem module cache will be moved to module cache
 
 ### Fixed
 - User registration in the Private Sales mode

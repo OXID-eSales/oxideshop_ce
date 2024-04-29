@@ -21,6 +21,9 @@ use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 use function json_decode;
 use function json_encode;
 
+/**
+ * @deprecated and it will be moved to ModuleCache as of v8.0
+ */
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {
     public function __construct(

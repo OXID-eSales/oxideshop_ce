@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
-cat vendor/oxid-esales/testing-library/test_config.yml.dist | \
-  sed -e "s|shop_path:.*|shop_path: 'vendor/oxid-esales/oxideshop-ce/source'|" \
-  >test_config.yml
+sed -e "s|shop_path:.*|shop_path: 'vendor/oxid-esales/oxideshop-ce/source'|" \
+  <vendor/oxid-esales/testing-library/test_config.yml.dist >test_config.yml
 XDEBUG_MODE=coverage vendor/bin/runtests \
     --coverage-clover=tests/Reports/deprecated_tests_coverage.xml \
     AllTestsUnit 2>&1 \

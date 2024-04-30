@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVer
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class PasswordVerificationServiceTest
- */
 final class PasswordVerificationServiceTest extends TestCase
 {
     use ContainerTrait;

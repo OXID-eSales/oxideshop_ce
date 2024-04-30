@@ -13,14 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationService;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class PasswordVerificationServiceTest
- */
 final class PasswordVerificationServiceTest extends TestCase
 {
-    /**
-     *
-     */
     public function testPasswordVerificationVerifiesCorrectPassword(): void
     {
         $passwordUtf8 = 'äääää';
@@ -33,9 +27,6 @@ final class PasswordVerificationServiceTest extends TestCase
         );
     }
 
-    /**
-     *
-     */
     public function testPasswordVerificationDoesNotVerifyWrongPassword(): void
     {
         $passwordUtf8 = 'äääää';

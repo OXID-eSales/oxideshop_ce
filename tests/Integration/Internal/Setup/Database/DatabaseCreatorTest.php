@@ -9,111 +9,94 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use Exception;
-use Throwable;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\Dao\SystemConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
-use OxidEsales\Facts\Config\ConfigFile;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PDO;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class DatabaseCreatorTest extends TestCase
 {
-    private DatabaseCreator $databaseCreator;
+    use ContainerTrait;
 
-    /** @var array */
-    private $params = [];
+    private string $testDatabase = 'oxid_setup_command_db_test';
+    private DatabaseConfiguration $dbConfig;
 
     public function setUp(): void
     {
-        $this->params = $this->getDatabaseConnectionInfo();
-        $this->params['dbName'] = 'oxid_setup_command_db_test';
-
-        $this->databaseCreator = new DatabaseCreator();
-
         parent::setUp();
+
+        $this->dbConfig = new DatabaseConfiguration(
+            $this->get(SystemConfigurationDaoInterface::class)->get()->getDatabaseUrl()
+        );
     }
 
     public function tearDown(): void
     {
-        $this->dropDatabase();
-
         parent::tearDown();
+
+        $this->dropDatabase();
     }
 
     #[DoesNotPerformAssertions]
     public function testCreateDatabase(): void
     {
-        $this->databaseCreator->createDatabase(
-            $this->params['dbHost'],
-            $this->params['dbPort'],
-            $this->params['dbUser'],
-            $this->params['dbPwd'],
-            $this->params['dbName']
-        );
+        (new DatabaseCreator())
+            ->createDatabase(
+                $this->dbConfig->getHost(),
+                $this->dbConfig->getPort(),
+                $this->dbConfig->getUser(),
+                $this->dbConfig->getPass(),
+                $this->testDatabase
+            );
     }
 
     public function testCreateDatabaseWhenDatabaseCredentialsIsIncorrect(): void
     {
         $this->expectException(DatabaseConnectionException::class);
-        $this->databaseCreator->createDatabase(
-            $this->params['dbHost'],
-            $this->params['dbPort'],
-            '',
-            '',
-            $this->params['dbName']
-        );
+        (new DatabaseCreator())
+            ->createDatabase(
+                $this->dbConfig->getHost(),
+                $this->dbConfig->getPort(),
+                '',
+                '',
+                $this->testDatabase
+            );
     }
 
     public function testCreateDatabaseWhenDatabaseIsAlreadyExist(): void
     {
-        $this->databaseCreator->createDatabase(
-            $this->params['dbHost'],
-            $this->params['dbPort'],
-            $this->params['dbUser'],
-            $this->params['dbPwd'],
-            $this->params['dbName']
-        );
+        (new DatabaseCreator())
+            ->createDatabase(
+                $this->dbConfig->getHost(),
+                $this->dbConfig->getPort(),
+                $this->dbConfig->getUser(),
+                $this->dbConfig->getPass(),
+                $this->testDatabase
+            );
 
         $this->expectException(DatabaseExistsException::class);
-        $this->databaseCreator->createDatabase(
-            $this->params['dbHost'],
-            $this->params['dbPort'],
-            $this->params['dbUser'],
-            $this->params['dbPwd'],
-            $this->params['dbName']
-        );
+        (new DatabaseCreator())
+            ->createDatabase(
+                $this->dbConfig->getHost(),
+                $this->dbConfig->getPort(),
+                $this->dbConfig->getUser(),
+                $this->dbConfig->getPass(),
+                $this->testDatabase
+            );
     }
 
-    /**
-     * @throws Exception
-     */
     private function dropDatabase(): void
     {
-        try {
-            $dbConnection = new PDO(
-                sprintf('mysql:host=%s;port=%s', $this->params['dbHost'], $this->params['dbPort']),
-                $this->params['dbUser'],
-                $this->params['dbPwd'],
-                [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
-            );
-            $dbConnection->exec('DROP SCHEMA IF EXISTS ' . $this->params['dbName']);
-        } catch (Throwable $exception) {
-            throw new Exception('Failed: Could not drop database', $exception->getCode(), $exception);
-        }
-    }
-
-    private function getDatabaseConnectionInfo(): array
-    {
-        $configFile = new ConfigFile();
-
-        return [
-            'dbHost' => $configFile->getVar('dbHost'),
-            'dbPort' => (int) $configFile->getVar('dbPort'),
-            'dbUser' => $configFile->getVar('dbUser'),
-            'dbPwd'  => $configFile->getVar('dbPwd')
-        ];
+        (new PDO(
+            "mysql:host={$this->dbConfig->getHost()};port={$this->dbConfig->getPort()}",
+            $this->dbConfig->getUser(),
+            $this->dbConfig->getPass(),
+        ))
+            ->exec("DROP SCHEMA IF EXISTS $this->testDatabase");
     }
 }

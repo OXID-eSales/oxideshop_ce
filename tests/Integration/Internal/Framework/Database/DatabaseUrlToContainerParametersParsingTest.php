@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 #[RunTestsInSeparateProcesses]
-final class DatabaseConfigurationTest extends IntegrationTestCase
+final class DatabaseUrlToContainerParametersParsingTest extends IntegrationTestCase
 {
     use EnvTrait;
     use ContainerTrait;

@@ -17,7 +17,8 @@ final class DatabaseConfigurationTest extends TestCase
 {
     public function testGetParameters(): void
     {
-        $driver = 'mysql';
+        $scheme = 'mysql';
+        $driver = 'pdo_mysql';
         $username = uniqid('user-', true);
         $password = uniqid('secret-', true);
         $server = uniqid('server-', true);
@@ -27,7 +28,7 @@ final class DatabaseConfigurationTest extends TestCase
         $driverOptions = '"SET @@SESSION.sql_mode=\"\""';
         $url = sprintf(
             '%s://%s:%s@%s:%d/%s?charset=%s&driverOptions[1002]=%s',
-            $driver,
+            $scheme,
             $username,
             $password,
             $server,
@@ -53,13 +54,14 @@ final class DatabaseConfigurationTest extends TestCase
 
     public function testGetParametersWithMinimalUrl(): void
     {
-        $driver = 'mysql';
+        $scheme = 'sqlite';
+        $driver = 'pdo_sqlite';
         $username = uniqid('user-', true);
         $password = uniqid('secret-', true);
         $server = uniqid('server-', true);
         $url = sprintf(
             '%s://%s:%s@%s',
-            $driver,
+            $scheme,
             $username,
             $password,
             $server

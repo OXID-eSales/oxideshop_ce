@@ -17,6 +17,22 @@ class DatabaseConfiguration
 {
     private array $urlComponents;
 
+    /**
+     * List of URL schemes from a database URL and their mappings to driver.
+     * @see \Doctrine\DBAL\DriverManager::$driverSchemeAliases
+     */
+    private array $driverSchemeAliases = [
+        'db2' => 'ibm_db2',
+        'mssql' => 'pdo_sqlsrv',
+        'mysql' => 'pdo_mysql',
+        'mysql2' => 'pdo_mysql', // Amazon RDS, for some weird reason
+        'postgres' => 'pdo_pgsql',
+        'postgresql' => 'pdo_pgsql',
+        'pgsql' => 'pdo_pgsql',
+        'sqlite' => 'pdo_sqlite',
+        'sqlite3' => 'pdo_sqlite',
+    ];
+
     public function __construct(private readonly string $databaseUrl)
     {
         $urlComponents = parse_url($this->databaseUrl);
@@ -28,7 +44,7 @@ class DatabaseConfiguration
 
     public function getDriver(): string
     {
-        return $this->urlComponents['scheme'];
+        return $this->driverSchemeAliases[$this->urlComponents['scheme']];
     }
 
     public function getDatabaseUrl(): string

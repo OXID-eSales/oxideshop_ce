@@ -4,7 +4,7 @@
 
 ### Added
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
-- Registration of environment variables via Symfony Dotenv Component
+- Registering environment variables via Symfony Dotenv Component, and integrating them into system configuration
 
 ### Changed
 - Admin directory is not removed from the url in `ViewConfig::getModuleUrl` anymore [PR-817](https://github.com/OXID-eSales/oxideshop_ce/pull/817)
@@ -21,3 +21,5 @@
 - Smarty templates support
 - `PAYMENT_INFO_OFF` translation [#0006426](https://bugs.oxid-esales.com/view.php?id=6426) [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)
 - Remove deprecated `TemplateCacheService` implementation
+- Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
+- Obsolete `TransactionServiceInterface`, `FinderFactoryInterface` and `ConnectionProviderInterface`

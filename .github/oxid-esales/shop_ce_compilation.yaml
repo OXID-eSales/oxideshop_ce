@@ -3,6 +3,8 @@
 # {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
 
 install:
+  git:
+    sdk_ref: master-no-config-inc-OXDEV-7248
   method: script
   cache:
     prepared_shop: true

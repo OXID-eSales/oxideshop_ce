@@ -2,6 +2,8 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 
 install: &install
+  git:
+    sdk_ref: master-no-config-inc-OXDEV-7248
   add_services: 'selenium-chrome-126'
   method: script
   script: 'source/.github/oxid-esales/install.sh'
@@ -17,7 +19,7 @@ install: &install
             "ddoe/*": "source"
           },
           "require": {
-            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-component": "dev-b-8.0.x-no-config-inc-OXDEV-7248",
             "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
             "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
             "twig/twig": "v3.8.0"

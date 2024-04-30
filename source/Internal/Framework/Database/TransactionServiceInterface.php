@@ -5,10 +5,11 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
+/**
+ * @deprecated will be removed in next major, use methods from \Doctrine\DBAL\Driver\Connection directly
+ */
 interface TransactionServiceInterface
 {
     /**

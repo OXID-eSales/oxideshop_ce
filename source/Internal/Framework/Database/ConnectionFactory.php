@@ -9,15 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Connection;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 
-/**
- * @deprecated will be removed in next major, use ConnectionFactory instead
- */
-class ConnectionProvider implements ConnectionProviderInterface
+class ConnectionFactory implements ConnectionFactoryInterface
 {
-    public function get(): Connection
+    public function create(): Connection
     {
         return DatabaseProvider::getDb()->getPublicConnection();
     }

@@ -25,6 +25,10 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactory
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '7.2.0'
+      message: 'The "%service_id%" service is deprecated.'
 
   OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Storage\YamlFileStorageFactory

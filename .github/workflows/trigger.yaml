@@ -28,7 +28,7 @@ jobs:
           fi
           # shellcheck disable=SC2088
           case "${REF_TO_CHECK}" in
-            refs/heads/b-7.0.x*) TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT70}~/shop_ce_70x.yaml" ;;
+            refs/heads/b-7.0.x*) TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT70}~/shop_ce.yaml" ;;
             refs/heads/b-7.1.x*) TESTPLAN="~/defaults/7.1.x.yaml,${LIMIT}~/shop_ce.yaml" ;;
             refs/heads/b-7.2.x*) TESTPLAN="~/defaults/7.2.x.yaml,${LIMIT}~/shop_ce.yaml" ;;
             refs/heads/b-8.0.x*) TESTPLAN="${LIMIT}~/shop_ce.yaml" ;;

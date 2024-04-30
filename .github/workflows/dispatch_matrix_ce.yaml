@@ -31,7 +31,7 @@ on:
       custom_testplan:
         type: string
         description: 'Custom testplan'
-        default: '~/defaults/php8.2_mysql5.7_only.yml,~/shop_ce.yml'
+        default: '~/defaults/php8.2_mysql5.7_only.yaml,~/shop_ce.yaml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -53,29 +53,29 @@ jobs:
         run: |
           # Build testplan
           # shellcheck disable=SC2088
-          PLAN="~/scripts.yml"
+          PLAN="~/shop_ce.yaml"
           # shellcheck disable=SC2088
           case "${{ inputs.limit }}" in
             "no") LIMIT='';;
-            "PHP8.0/MySQL5.7") LIMIT='~/defaults/php8.0_mysql5.7_only.yml,' ;;
-            "PHP8.0/MySQL8.0") LIMIT='~/defaults/php8.0_mysql8.0_only.yml,' ;;
-            "PHP8.1/MySQL5.7") LIMIT='~/defaults/php8.1_mysql5.7_only.yml,' ;;
-            "PHP8.1/MySQL8.0") LIMIT='~/defaults/php8.1_mysql8.0_only.yml,' ;;
-            "PHP8.2/MySQL5.7") LIMIT='~/defaults/php8.2_mysql5.7_only.yml,' ;;
-            "PHP8.2/MySQL8.0") LIMIT='~/defaults/php8.2_mysql8.0_only.yml,' ;;
-            "PHP8.3/MySQL5.7") LIMIT='~/defaults/php8.3_mysql5.7_only.yml,' ;;
-            "PHP8.3/MySQL8.0") LIMIT='~/defaults/php8.3_mysql8.0_only.yml,' ;;
+            "PHP8.0/MySQL5.7") LIMIT='~/defaults/php8.0_mysql5.7_only.yaml,' ;;
+            "PHP8.0/MySQL8.0") LIMIT='~/defaults/php8.0_mysql8.0_only.yaml,' ;;
+            "PHP8.1/MySQL5.7") LIMIT='~/defaults/php8.1_mysql5.7_only.yaml,' ;;
+            "PHP8.1/MySQL8.0") LIMIT='~/defaults/php8.1_mysql8.0_only.yaml,' ;;
+            "PHP8.2/MySQL5.7") LIMIT='~/defaults/php8.2_mysql5.7_only.yaml,' ;;
+            "PHP8.2/MySQL8.0") LIMIT='~/defaults/php8.2_mysql8.0_only.yaml,' ;;
+            "PHP8.3/MySQL5.7") LIMIT='~/defaults/php8.3_mysql5.7_only.yaml,' ;;
+            "PHP8.3/MySQL8.0") LIMIT='~/defaults/php8.3_mysql8.0_only.yaml,' ;;
             *) echo "Illegal choice, fix the workflow"
               exit 1
               ;;
           esac
           # shellcheck disable=SC2088
           case '${{ inputs.scenario}}' in
-            "7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}${PLAN}" ;;
-            "7.1.x") TESTPLAN="~/defaults/7.1.x.yml,${LIMIT}${PLAN}" ;;
-            "7.2.x") TESTPLAN="~/defaults/7.2.x.yml,${LIMIT}${PLAN}" ;;
+            "7.0.x") TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT}${PLAN}" ;;
+            "7.1.x") TESTPLAN="~/defaults/7.1.x.yaml,${LIMIT}${PLAN}" ;;
+            "7.2.x") TESTPLAN="~/defaults/7.2.x.yaml,${LIMIT}${PLAN}" ;;
             "8.0.x") TESTPLAN="${LIMIT}${PLAN}" ;;
-            "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yml,${LIMIT}~/smarty_7.0.x.yml" ;;
+            "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT}~/smarty_7.0.x.yaml" ;;
             "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
               echo "Illegal choice, fix the workflow"
@@ -87,7 +87,7 @@ jobs:
   dispatch_stable:
     if: ${{ inputs.use_dev_version == 'no' }}
     needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
@@ -106,7 +106,7 @@ jobs:
   dispatch_v0:
     if: ${{ inputs.use_dev_version == 'v0' }}
     needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}

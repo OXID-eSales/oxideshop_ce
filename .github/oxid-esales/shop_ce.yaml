@@ -85,7 +85,7 @@ runslim:
 
 sonarcloud:
   matrix:
-    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yml"]'
+    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
   strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
 
 finish:

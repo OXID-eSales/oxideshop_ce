@@ -1,5 +1,4 @@
 name: Manual run
-# Matrix workflow using re-usable github actions
 
 on:
   workflow_dispatch:
@@ -11,7 +10,6 @@ on:
           - 7.1.x
           - 7.2.x
           - 8.0.x
-          - smarty 7.0.x
           - use custom testplan
         default: '8.0.x'
         description: 'Choose test scenario'
@@ -75,7 +73,6 @@ jobs:
             "7.1.x") TESTPLAN="~/defaults/7.1.x.yaml,${LIMIT}${PLAN}" ;;
             "7.2.x") TESTPLAN="~/defaults/7.2.x.yaml,${LIMIT}${PLAN}" ;;
             "8.0.x") TESTPLAN="${LIMIT}${PLAN}" ;;
-            "smarty 7.0.x") TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT}~/smarty_7.0.x.yaml" ;;
             "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
               echo "Illegal choice, fix the workflow"
@@ -91,7 +88,7 @@ jobs:
     with:
       testplan: ${{ needs.build_testplan.outputs.testplan }}
       runs_on: ${{ inputs.runs_on }}
-      defaults: 'v0'
+      defaults: 'v4'
       plan_folder: '.github/oxid-esales'
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}

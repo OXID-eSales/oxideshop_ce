@@ -1,5 +1,4 @@
 name: Auto trigger on push or pull requests
-# Matrix workflow using re-usable github actions
 
 on:
   pull_request: {}

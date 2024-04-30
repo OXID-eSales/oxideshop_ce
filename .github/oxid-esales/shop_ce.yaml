@@ -45,8 +45,7 @@ runscript: &runscript
         "shop:~/unit.sh",
         "shop:~/integration.sh",
         "shop:~/codeception.sh",
-        "setup:~/shop-setup.sh",
-        "deprecated:~/deprecated.sh"
+        "setup:~/shop-setup.sh"
       ]
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'
@@ -59,24 +58,6 @@ runscript: &runscript
       cd vendor/oxid-esales/oxideshop-ce
       composer config -g github-oauth.github.com "${GITHUB_TOKEN}"
       composer update --no-interaction
-  deprecated:
-    path: 'vendor/{{ $org}}/{{ $name }}'
-    composer:
-      transform: |
-        {
-            "require-dev": {
-                "oxid-esales/testing-library": "{{ .Data.global.composer.dev_ref }}",
-                "oxid-esales/tests-deprecated-ce": "{{ .Data.global.composer.dev_ref }}",
-                "codeception/module-webdriver": "^3.1",
-                "phpunit/phpunit": "^9.1.1"
-            }
-        }
-    custom_script: |
-      # Allocate 10G swap, needed for deprected tests
-      sudo fallocate -l 10G swapfile
-      sudo chmod 600 swapfile
-      sudo mkswap swapfile
-      sudo swapon swapfile
 
 runslim:
   <<: *runscript

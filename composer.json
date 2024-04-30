@@ -56,9 +56,7 @@
         "oxid-esales/oxideshop-ide-helper": "dev-b-7.0.x",
         "phpspec/prophecy-phpunit": "^v2.0.1",
         "phpunit/phpunit": "^9.1.1",
-        "squizlabs/php_codesniffer": "^3.5.4",
-        "phpstan/phpstan": "^1.9.14",
-        "phpmd/phpmd": "^2.11"
+        "squizlabs/php_codesniffer": "^3.5.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -102,58 +100,6 @@
         ],
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
-        ],
-
-        "phpcs": "phpcs --standard=tests/phpcs.xml  --report=full",
-        "phpcs-report": [
-            "Composer\\Config::disableProcessTimeout",
-            "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json ||true ",
-            "phpcs --standard=tests/phpcs.xml  --report=full"
-        ],
-        "phpcbf": "phpcbf --standard=tests/phpcs.xml",
-
-        "phpstan": [
-            "Composer\\Config::disableProcessTimeout",
-            "phpstan -ctests/PhpStan/phpstan.neon analyse source/"
-        ],
-        "phpstan-report": [
-            "Composer\\Config::disableProcessTimeout",
-            "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --error-format=json > tests/Reports/phpstan.report.json"
-        ],
-        "phpstan-baseline": [
-            "Composer\\Config::disableProcessTimeout",
-            "phpstan -ctests/PhpStan/phpstan.neon analyse source/ --generate-baseline tests/Reports/phpstan-baseline.neon"
-        ],
-
-        "phpmd": "phpmd source ansi tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit",
-        "phpmd-report": "phpmd source json tests/PhpMd/standard.xml --ignore-errors-on-exit --ignore-violations-on-exit --reportfile tests/Reports/phpmd.report.json",
-
-        "static": [
-            "@phpcs",
-            "@phpstan",
-            "@phpmd"
-        ],
-
-        "tests-unit": "XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_unit.xml --log-junit tests/Reports/phpunit-unit.xml tests/Unit 2>&1 | tee tests/Output/unit_tests.txt",
-        "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php --coverage-clover=tests/Reports/coverage_phpunit_integration.xml tests/Integration 2>&1 | tee tests/Output/integration_tests.txt",
-
-        "tests-codeception": [
-            "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/codecept build -c tests/codeception.yml",
-            "SELENIUM_SERVER_HOST=selenium BROWSER_NAME=chrome THEME_ID=apex SHOP_ROOT_PATH=/var/www vendor/bin/codecept run acceptance -c tests/codeception.yml --ext DotReporter 2>&1 | tee tests/Output/codeception_Acceptance.txt"
-        ],
-        "tests-codeception-shopSetup": [
-            "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/codecept build -c tests/codeception.yml",
-            "SELENIUM_SERVER_HOST=selenium BROWSER_NAME=chrome DB_NAME=setup_test DB_USERNAME=root DB_PASSWORD=root DB_HOST=mysql DB_PORT=3306 SHOP_URL=http://localhost.local/ SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/ THEME_ID=apex SHOP_ROOT_PATH=/var/www vendor/bin/codecept run acceptanceSetup -c tests/codeception.yml --ext DotReporter 2>&1 | tee tests/Output/codeception_ShopSetup.txt"
-        ],
-
-        "tests-all": [
-            "@tests-unit",
-            "@tests-integration",
-            "@tests-codeception",
-            "@tests-codeception-shopSetup",
-            "@tests-deprecated"
         ]
     }
 }

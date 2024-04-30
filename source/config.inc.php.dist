@@ -5,16 +5,6 @@
  * See LICENSE file for license details.
  */
 
-// Database connection information
-$this->dbType = 'pdo_mysql';
-$this->dbCharset = 'utf8';
-$this->dbHost = '<dbHost>'; // database host name
-$this->dbPort  = '<dbPort>'; // tcp port to which the database is bound
-$this->dbName = '<dbName>'; // database name
-$this->dbUser = '<dbUser>'; // database user name
-$this->dbPwd  = '<dbPwd>'; // database user password
-$this->dbDriverOptions = []; // database driver options
-$this->dbUnixSocket = null; // unix domain socket, optional
 $this->sShopURL     = '<sShopURL>'; // eShop base url, required
 $this->sSSLShopURL  = null;            // eShop SSL url, optional
 $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional

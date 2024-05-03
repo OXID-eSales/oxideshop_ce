@@ -1,23 +1,18 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestData\modules\unifiednamespace_module2\Model;
 
-/**
- * CMS - loads pages and displays it
- */
 class Test2Content
 {
-    /**
-     * Template variable getter. Returns tag title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
-        return " Module2";
+        return ' Module2';
     }
 }

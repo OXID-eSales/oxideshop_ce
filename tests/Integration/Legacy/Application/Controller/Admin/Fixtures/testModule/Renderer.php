@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin\Fixtures\testModule;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\Admin\Fixtures\testModule;
 
 class Renderer implements RendererInterface
 {

@@ -5,16 +5,14 @@
  * See LICENSE file for license details.
  */
 
-$sMetadataVersion = '2.0';
+declare(strict_types=1);
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'           => 'Vendor1_ModuleInheritance28a',
-    'title'        => 'Test PHP class inheritance 2.8',
-    'description'  => 'Namespaced module class extends namespaced module',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-);
+$sMetadataVersion = '2.0';
+$aModule = [
+    'id' => 'Vendor1_ModuleInheritance28a',
+    'title' => 'Test PHP class inheritance 2.8',
+    'description' => 'Namespaced module class extends namespaced module',
+    'thumbnail' => 'picture.png',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+];

@@ -7,12 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Component\Widget;
 
 use OxidEsales\Eshop\Application\Component\Widget\CategoryTree;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * @todo move to templating engine component tests
@@ -20,6 +18,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 final class CategoryTreeTest extends IntegrationTestCase
 {
     private CategoryTree $categoryTree;
+
     private string $fallbackWidgetTemplate = 'widget/sidebar/categorytree';
 
     public function setUp(): void
@@ -38,7 +37,9 @@ final class CategoryTreeTest extends IntegrationTestCase
     public function testRenderWithNonExistingTemplate(): void
     {
         $nonExistingWidgetType = uniqid('widget-', true);
-        $this->categoryTree->setViewParameters(['sWidgetType' => $nonExistingWidgetType]);
+        $this->categoryTree->setViewParameters([
+            'sWidgetType' => $nonExistingWidgetType,
+        ]);
 
         $renderedTemplate = $this->categoryTree->render();
 

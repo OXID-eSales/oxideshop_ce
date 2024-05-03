@@ -5,23 +5,23 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 /**
  * Base class for module integration tests.
- *
- * @group module
  */
 abstract class BaseModuleTestCase extends TestCase
 {
@@ -29,15 +29,20 @@ abstract class BaseModuleTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->getContainer()->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+        $this->getContainer()
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+            ->generate();
 
         $this->clean();
     }
 
     public function tearDown(): void
     {
-        $this->getContainer()->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
-        $this->getContainer()->get(ModuleCacheServiceBridgeInterface::class)->invalidateAll();
+        $this->getContainer()
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+            ->generate();
+        $this->getContainer()
+            ->get(ModuleCacheServiceBridgeInterface::class)->invalidateAll();
         parent::tearDown();
     }
 
@@ -48,22 +53,20 @@ abstract class BaseModuleTestCase extends TestCase
 
     protected function installAndActivateModule(string $moduleId, int $shopId = 1): void
     {
-        $installService = $this->getContainer()->get(ModuleInstallerInterface::class);
+        $installService = $this->getContainer()
+            ->get(ModuleInstallerInterface::class);
         $package = new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId);
         $installService->install($package);
 
-        $activationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $activationService = $this->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
         $activationService->activate($moduleId, $shopId);
     }
 
     /**
      * Deactivates module.
      *
-     * @param Module $module
      * @param null   $moduleId
-     * @param int    $shopId
-     *
-     * @throws \Exception
      */
     protected function deactivateModule(Module $module, $moduleId = null, int $shopId = 1): void
     {
@@ -71,19 +74,18 @@ abstract class BaseModuleTestCase extends TestCase
             $moduleId = $module->getId();
         }
 
-        $activationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $activationService = $this->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
 
         $activationService->deactivate($moduleId, $shopId);
     }
 
     /**
      * Runs all asserts
-     *
-     * @param array $expectedResult
      */
     protected function runAsserts(array $expectedResult): void
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         $validator = new Validator($config);
 

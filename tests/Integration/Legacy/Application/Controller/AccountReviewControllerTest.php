@@ -1,56 +1,35 @@
 <?php
 
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2018
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller;
+declare(strict_types=1);
 
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller;
+
+use Exception;
 use OxidEsales\Eshop\Application\Controller\AccountReviewController;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Application\Model\User;
-use \OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class AccountReviewControllerTest extends IntegrationTestCase
+final class AccountReviewControllerTest extends IntegrationTestCase
 {
-    const TESTUSER_ID = 'AccountReviewControllerTest';
+    public const TESTUSER_ID = 'AccountReviewControllerTest';
 
-    /**
-     * @inheritdoc
-     */
-    public function setup(): void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->createUser(self::TESTUSER_ID);
     }
 
-    /**
-     * @inheritdoc
-     *
-     * @throws \Exception
-     */
     public function tearDown(): void
     {
         $this->getUser(self::TESTUSER_ID)->delete();
@@ -58,7 +37,7 @@ class AccountReviewControllerTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function testDeleteReviewAndRating()
+    public function testDeleteReviewAndRating(): void
     {
         $this->createTestDataForDeleteReviewAndRating();
         $this->setUserToSession();
@@ -70,7 +49,7 @@ class AccountReviewControllerTest extends IntegrationTestCase
         $this->assertFalse($this->ratingToDeleteExists());
     }
 
-    public function testDeleteReviewAndRatingDoNotDeleteWithInvalidSessionChallenge()
+    public function testDeleteReviewAndRatingDoNotDeleteWithInvalidSessionChallenge(): void
     {
         $this->createTestDataForDeleteReviewAndRating();
         $this->setUserToSession();
@@ -83,29 +62,23 @@ class AccountReviewControllerTest extends IntegrationTestCase
         $this->assertTrue($this->ratingToDeleteExists());
     }
 
-    public function testReviewAndRatingListPaginationItemsPerPage()
+    public function testReviewAndRatingListPaginationItemsPerPage(): void
     {
         $accountReviewController = oxNew(AccountReviewController::class);
         $itemsPerPage = $accountReviewController->getItemsPerPage();
 
-        $this->assertEquals(
-            10,
-            $itemsPerPage
-        );
+        $this->assertEquals(10, $itemsPerPage);
     }
 
-    public function testReviewAndRatingListIsAnEmptyArrayOnNoRatingsAndReviews()
+    public function testReviewAndRatingListIsAnEmptyArrayOnNoRatingsAndReviews(): void
     {
         $this->setUserToSession();
         $accountReviewController = oxNew(AccountReviewController::class);
 
-        $this->assertSame(
-            [],
-            $accountReviewController->getReviewList()
-        );
+        $this->assertSame([], $accountReviewController->getReviewList());
     }
 
-    public function testReviewAndRatingListPagination()
+    public function testReviewAndRatingListPagination(): void
     {
         $this->setUserToSession();
         $this->createTestDataForReviewAndRatingList();
@@ -113,67 +86,70 @@ class AccountReviewControllerTest extends IntegrationTestCase
         $accountReviewController = oxNew(AccountReviewController::class);
         $displayedReviews = count($accountReviewController->getReviewList());
 
-        $this->assertSame(
-            $accountReviewController->getItemsPerPage(),
-            $displayedReviews
-        );
+        $this->assertSame($accountReviewController->getItemsPerPage(), $displayedReviews);
     }
 
-    public function testInitDoesNotRedirect()
+    public function testInitDoesNotRedirect(): void
     {
         $this->setUserToSession();
         Registry::getConfig()->setConfigParam('blAllowUsersToManageTheirReviews', true);
         $this->createTestDataForReviewAndRatingList();
 
         $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
-        $utilsStub->expects($this->never())->method('redirect');
+        $utilsStub->expects($this->never())
+            ->method('redirect');
         Registry::set(Utils::class, $utilsStub);
 
         $accountReviewController = oxNew(AccountReviewController::class);
         $accountReviewController->init();
     }
 
-    public function testInitRedirectsIfFeatureIsDisabled()
+    public function testInitRedirectsIfFeatureIsDisabled(): void
     {
         $this->setUserToSession();
         Registry::getConfig()->setConfigParam('blAllowUsersToManageTheirReviews', false);
         $this->createTestDataForReviewAndRatingList();
 
         $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
-        $utilsStub->expects($this->once())->method('redirect');
+        $utilsStub->expects($this->once())
+            ->method('redirect');
         Registry::set(Utils::class, $utilsStub);
 
         $accountReviewController = oxNew(AccountReviewController::class);
         $accountReviewController->init();
     }
 
-//    public function testInitRedirectsIfUserIsNotLogged()
-//    {
-//        Registry::getConfig()->setConfigParam('blAllowUsersToManageTheirReviews', true);
-//        $this->createTestDataForReviewAndRatingList();
-//
-//        $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
-//        $utilsStub->expects($this->once())->method('redirect');
-//        Registry::set(Utils::class, $utilsStub);
-//
-//        $accountReviewController = oxNew(AccountReviewController::class);
-//        $accountReviewController->init();
-//    }
-
-    public function testReviewAndRatingListCount()
+    public function testReviewAndRatingListCount(): void
     {
         $this->setUserToSession();
         $this->createTestDataForReviewAndRatingList();
 
         $accountReviewController = oxNew(AccountReviewController::class);
 
-        $this->assertSame(
-            20,
-            $accountReviewController->getReviewAndRatingItemsCount()
-        );
+        $this->assertSame(20, $accountReviewController->getReviewAndRatingItemsCount());
     }
 
-    private function createTestDataForReviewAndRatingList()
+    private function getUser(string $userId)
+    {
+        $user = oxNew(\OxidEsales\EshopCommunity\Application\Model\User::class);
+        if (!$user->load($userId)) {
+            throw new Exception('User ' . $userId . ' could not be loaded');
+        }
+
+        return $user;
+    }
+
+    private function createUser(string $userId)
+    {
+        $user = oxNew(User::class);
+        $user->setId($userId);
+        $user->oxuser__oxactive = new Field(1, Field::T_RAW);
+        $user->save();
+
+        return $user;
+    }
+
+    private function createTestDataForReviewAndRatingList(): void
     {
         for ($i = 0; $i < 10; $i++) {
             $review = oxNew(Review::class);
@@ -195,7 +171,7 @@ class AccountReviewControllerTest extends IntegrationTestCase
         }
     }
 
-    private function createTestDataForDeleteReviewAndRating()
+    private function createTestDataForDeleteReviewAndRating(): void
     {
         $review = oxNew(Review::class);
         $review->setId('testReviewToDelete');
@@ -215,25 +191,25 @@ class AccountReviewControllerTest extends IntegrationTestCase
         $rating->save();
     }
 
-    private function setUserToSession()
+    private function setUserToSession(): void
     {
         $user = $this->getUser(self::TESTUSER_ID);
         Registry::getSession()->setUser($user);
     }
 
-    private function setSessionChallenge()
+    private function setSessionChallenge(): void
     {
         Registry::getSession()->setVariable('sess_stoken', 'token');
         $this->setRequestParameter('stoken', 'token');
     }
 
-    private function setInvalidSessionChallenge()
+    private function setInvalidSessionChallenge(): void
     {
         Registry::getSession()->setVariable('sess_stoken', 'token');
         $this->setRequestParameter('stoken', 'invalid_token');
     }
 
-    private function doDeleteReviewAndRatingRequest()
+    private function doDeleteReviewAndRatingRequest(): void
     {
         $this->setRequestParameter('reviewId', 'testReviewToDelete');
         $this->setRequestParameter('ratingId', 'testRatingToDelete');
@@ -245,40 +221,18 @@ class AccountReviewControllerTest extends IntegrationTestCase
     private function reviewToDeleteExists()
     {
         $review = oxNew(Review::class);
-        $exists = $review->load('testReviewToDelete');
 
-        return $exists;
+        return $review->load('testReviewToDelete');
     }
 
     private function ratingToDeleteExists()
     {
         $rating = oxNew(Rating::class);
-        $exists = $rating->load('testRatingToDelete');
 
-        return $exists;
+        return $rating->load('testRatingToDelete');
     }
 
-    protected function getUser($userId)
-    {
-        $user = oxNew(\OxidEsales\EshopCommunity\Application\Model\User::class);
-        if (!$user->load($userId)) {
-            throw new \Exception('User ' . $userId . ' could not be loaded');
-        }
-
-        return $user;
-    }
-
-    protected function createUser($userId)
-    {
-        $user = oxNew(User::class);
-        $user->setId($userId);
-        $user->oxuser__oxactive = new Field(1, Field::T_RAW);
-        $user->save();
-
-        return $user;
-    }
-
-    private function setRequestParameter(string $key, $value): void
+    private function setRequestParameter(string $key, string $value): void
     {
         $_POST[$key] = $value;
     }

@@ -5,10 +5,11 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\User;
 
 use oxField;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use oxUser;
 use PHPUnit\Framework\TestCase;
 
@@ -42,13 +43,19 @@ abstract class UserTestCase extends TestCase
      */
     protected $_sNewSalt = '56784f8ffc657fff84915b93e12a626e';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $_sDefaultUserName = '_testUserName@oxid-esales.com';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $_sDefaultUserPassword = '_testPassword';
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     protected $_blSkipCustomTearDown = false;
 
     /**
@@ -102,10 +109,10 @@ abstract class UserTestCase extends TestCase
      */
     protected function login($sUserName = null, $sUserPassword = null)
     {
-        if (is_null($sUserName)) {
+        if ($sUserName === null) {
             $sUserName = $this->_sDefaultUserName;
         }
-        if (is_null($sUserPassword)) {
+        if ($sUserPassword === null) {
             $sUserPassword = $this->_sDefaultUserPassword;
         }
         $this->setLoginParametersToRequest($sUserName, $sUserPassword);
@@ -117,7 +124,7 @@ abstract class UserTestCase extends TestCase
      * @param string $sUserName
      * @param string $sUserPassword
      */
-    private function setLoginParametersToRequest($sUserName, $sUserPassword)
+    private function setLoginParametersToRequest($sUserName, $sUserPassword): void
     {
         $this->setRequestParameter('lgn_usr', $sUserName);
         $this->setRequestParameter('lgn_pwd', $sUserPassword);

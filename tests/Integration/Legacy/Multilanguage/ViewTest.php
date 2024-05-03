@@ -5,37 +5,29 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage;
 
 use oxField;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage\MultilanguageTestCase;
 use oxRegistry;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
-/**
- * Class ViewTest
- *
- * @group slow-tests
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Multilanguage
- */
-class ViewTest extends MultilanguageTestCase
+final class ViewTest extends MultilanguageTestCase
 {
     /**
      * Make a copy of Stewart+Brown Shirt Kisser Fish for testing
      */
-    const SOURCE_ARTICLE_ID = '6b6099c305f591cb39d4314e9a823fc1';
-
-    /** @var string Generated test article id. */
-    private $testArticleId;
+    public const SOURCE_ARTICLE_ID = '6b6099c305f591cb39d4314e9a823fc1';
 
     /**
-     * @runInSeparateProcess
-     *
-     * Assert that we get the expected multilanguage data for some language id >= 8.
-     * Testing the case that no data is available for the article title in new default language.
+     * @var string Generated test article id.
      */
-    public function testMultilanguageViewsAddLanguagesAfterAddingArticle()
+    private string|array|null $testArticleId = null;
+
+    #[RunInSeparateProcess]
+    public function testMultilanguageViewsAddLanguagesAfterAddingArticle(): void
     {
         //insert article first
         $this->insertArticle();
@@ -63,13 +55,8 @@ class ViewTest extends MultilanguageTestCase
         $this->assertSame('TEST_MULTI_LANGUAGE', $article->oxarticles__oxtitle->value);
     }
 
-    /**
-     * @runInSeparateProcess
-     *
-     * Assert that we get the expected multilanguage data for some language id >= 8.
-     * Testing the case that we add the article when base language has some language id >= 8.
-     */
-    public function testMultilanguageViewsAddArticleInDifferentDefaultLanguage()
+    #[RunInSeparateProcess]
+    public function testMultilanguageViewsAddArticleInDifferentDefaultLanguage(): void
     {
         //add more languages and activate latest added language in frontend
         $languageId = $this->prepare();
@@ -99,9 +86,9 @@ class ViewTest extends MultilanguageTestCase
     /**
      * Make a copy of article and variant for testing.
      */
-    private function insertArticle()
+    private function insertArticle(): void
     {
-        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
+        $this->testArticleId = substr_replace((string) oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $article = oxNew('oxArticle');
@@ -109,7 +96,7 @@ class ViewTest extends MultilanguageTestCase
         $article->load(self::SOURCE_ARTICLE_ID);
         $article->setId($this->testArticleId);
         $article->oxarticles__oxartnum = new oxField('666-T', oxField::T_RAW);
-        $article->oxarticles__oxtitle  = new oxField('TEST_MULTI_LANGUAGE', oxField::T_RAW);
+        $article->oxarticles__oxtitle = new oxField('TEST_MULTI_LANGUAGE', oxField::T_RAW);
         $article->save();
     }
 }

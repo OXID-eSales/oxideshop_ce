@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestData\modules\unifiednamespace_module1\Controller;
 
@@ -23,8 +26,7 @@ class Test1ContentController extends Test1ContentController_parent
         $contentTitle = parent::getTitle();
 
         $content = oxNew(Module1TestContent::class);
-        $contentTitle = $contentTitle . " - Module_1_Controller " . $content->getTitle();
 
-        return $contentTitle;
+        return $contentTitle . ' - Module_1_Controller ' . $content->getTitle();
     }
 }

@@ -5,22 +5,18 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
-$sMetadataVersion = '2.0';
+declare(strict_types=1);
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'           => 'with_1_extension',
-    'title'        => 'Test extending 1 shop classes',
-    'description'  => 'Module testing extending 3 shop classes',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-    'extend'       => array(
+public function setUp
+$sMetadataVersion = '2.0';
+$aModule = [
+    'id' => 'with_1_extension',
+    'title' => 'Test extending 1 shop classes',
+    'description' => 'Module testing extending 3 shop classes',
+    'thumbnail' => 'picture.png',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+    'extend' => [
         'oxarticle' => 'with_1_extension/mybaseclass',
-    )
-);
+    ],
+];

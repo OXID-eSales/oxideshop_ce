@@ -5,24 +5,23 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
-$sMetadataVersion = '2.1';
+declare(strict_types=1);
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'          => 'with_multiple_extensions',
-    'title'       => 'with multiple extensions',
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\Eshop\Application\Model\Order;
+
+$sMetadataVersion = '2.1';
+$aModule = [
+    'id' => 'with_multiple_extensions',
+    'title' => 'with multiple extensions',
     'description' => 'Test multiple extensions',
-    'thumbnail'   => 'picture.png',
-    'version'     => '1.0',
-    'author'      => 'OXID eSales AG',
-    'extend'      => [
-        \OxidEsales\Eshop\Application\Model\Article::class => 'with_multiple_extensions/articleExtension1&with_multiple_extensions/articleExtension2&with_multiple_extensions/articleExtension3',
-        \OxidEsales\Eshop\Application\Model\Order::class   => 'with_multiple_extensions/oxOrder',
-        \OxidEsales\Eshop\Application\Model\Basket::class  => 'with_multiple_extensions/basketExtension',
-    ]
-);
+    'thumbnail' => 'picture.png',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+    'extend' => [
+        Article::class => 'with_multiple_extensions/articleExtension1&with_multiple_extensions/articleExtension2&with_multiple_extensions/articleExtension3',
+        Order::class => 'with_multiple_extensions/oxOrder',
+        Basket::class => 'with_multiple_extensions/basketExtension',
+    ],
+];

@@ -5,8 +5,12 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16;
 
-class MyClass extends \oxArticle
+use oxArticle;
+
+class MyClass extends oxArticle
 {
 }

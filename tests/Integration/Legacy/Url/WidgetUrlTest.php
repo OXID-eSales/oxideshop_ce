@@ -5,35 +5,47 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Url;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Url;
 
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use oxRegistry;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class WidgetUrlTest extends IntegrationTestCase
+final class WidgetUrlTest extends IntegrationTestCase
 {
-    private $shopUrl = 'http://www.example.com/';
+    private string $shopUrl = 'http://www.example.com/';
 
-    public static function providerGetWidgetUrlAddParametersIdNeed()
+    public static function providerGetWidgetUrlAddParametersIdNeed(): array
     {
         $basicUrl = 'http://www.example.com/' . 'widget.php';
         $urlWithoutParams = $basicUrl . '?lang=0';
 
-        $urlParameters = array('param1' => 'value1', 'param2' => 'value2');
+        $urlParameters = [
+            'param1' => 'value1',
+            'param2' => 'value2',
+        ];
         $urlWithParams = $basicUrl . '?lang=0&amp;param1=value1&amp;param2=value2';
 
-        $urlLanguageParameters = array('lang' => '1', 'param1' => 'value1', 'param2' => 'value2');
+        $urlLanguageParameters = [
+            'lang' => '1',
+            'param1' => 'value1',
+            'param2' => 'value2',
+        ];
         $urlWithLanguageParams = $basicUrl . '?lang=1&amp;param1=value1&amp;param2=value2';
 
-        $urlLeveledParameters = array('lang' => '1', 'param1' => array('value1', 'value2'));
+        $urlLeveledParameters = [
+            'lang' => '1',
+            'param1' => ['value1', 'value2'],
+        ];
         $urlWithLeveledParameters = $basicUrl . '?lang=1&amp;param1%5B0%5D=value1&amp;param1%5B1%5D=value2';
 
-        return array(
-            array(array(), $urlWithoutParams),
-            array($urlParameters, $urlWithParams),
-            array($urlLanguageParameters, $urlWithLanguageParams),
-            array($urlLeveledParameters, $urlWithLeveledParameters),
-        );
+        return [[[], $urlWithoutParams],
+            [$urlParameters, $urlWithParams],
+            [$urlLanguageParameters, $urlWithLanguageParams],
+            [$urlLeveledParameters, $urlWithLeveledParameters],
+        ];
     }
 
     /**
@@ -41,10 +53,9 @@ class WidgetUrlTest extends IntegrationTestCase
      *
      * @param array $urlParameters parameters to add to url.
      * @param string $sUrl to check if form url matches expectation.
-     *
-     * @dataProvider providerGetWidgetUrlAddParametersIdNeed
      */
-    public function testGetWidgetUrlWithParameters($urlParameters, $sUrl)
+    #[DataProvider('providerGetWidgetUrlAddParametersIdNeed')]
+    public function testGetWidgetUrlWithParameters(array $urlParameters, string $sUrl): void
     {
         oxRegistry::getLang()->setBaseLanguage(0);
 
@@ -55,22 +66,18 @@ class WidgetUrlTest extends IntegrationTestCase
         $this->assertEquals($sUrl, $config->getWidgetUrl(null, null, $urlParameters));
     }
 
-    public static function providerGetWidgetUrlAddCorrectLanguage()
+    public static function providerGetWidgetUrlAddCorrectLanguage(): array
     {
-        return array(
-            array(1),
-            array(2),
-        );
+        return [[1], [2]];
     }
 
     /**
      * Testing getShopHomeUrl for widget getter
      *
      * @param int $iLang Shop basic language.
-     *
-     * @dataProvider providerGetWidgetUrlAddCorrectLanguage
      */
-    public function testGetWidgetUrlAddCorrectLanguage($iLang)
+    #[DataProvider('providerGetWidgetUrlAddCorrectLanguage')]
+    public function testGetWidgetUrlAddCorrectLanguage(int $iLang): void
     {
         oxRegistry::getLang()->setBaseLanguage($iLang);
 
@@ -81,22 +88,18 @@ class WidgetUrlTest extends IntegrationTestCase
         $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl());
     }
 
-    public function providerGetWidgetUrlAddCorrectLanguageWithParameter()
+    public function providerGetWidgetUrlAddCorrectLanguageWithParameter(): array
     {
-        return array(
-            array(1),
-            array(2),
-        );
+        return [[1], [2]];
     }
 
     /**
      * Testing getShopHomeUrl for widget getter
      *
      * @param int $iLang Shop basic language.
-     *
-     * @dataProvider providerGetWidgetUrlAddCorrectLanguage
      */
-    public function testGetWidgetUrlAddCorrectLanguageWithParameter($iLang)
+    #[DataProvider('providerGetWidgetUrlAddCorrectLanguage')]
+    public function testGetWidgetUrlAddCorrectLanguageWithParameter(int $iLang): void
     {
         oxRegistry::getLang()->setBaseLanguage(1);
 

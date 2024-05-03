@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Checkout;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Basket;
@@ -15,12 +15,13 @@ use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class BasketWithStockTest extends IntegrationTestCase
 {
     private const PRODUCT_ID = 'abc';
+
     private const PRODUCT_STOCK_SIZE = 8.0;
+
     private const STOCK_FLAG_NON_ORDERABLE = 3;
 
     public function setUp(): void
@@ -34,7 +35,6 @@ final class BasketWithStockTest extends IntegrationTestCase
 
     public function testAddToBasketWithinStockWillAddExpectedAmount(): void
     {
-
         $basket = oxNew(Basket::class);
         $expectedCount = self::PRODUCT_STOCK_SIZE - 1;
 
@@ -52,7 +52,7 @@ final class BasketWithStockTest extends IntegrationTestCase
 
         try {
             $basket->addToBasket(self::PRODUCT_ID, 10);
-        } catch (OutOfStockException $e) {
+        } catch (OutOfStockException) {
             /** stock size was exceeded */
         }
         $basket->calculateBasket(true);

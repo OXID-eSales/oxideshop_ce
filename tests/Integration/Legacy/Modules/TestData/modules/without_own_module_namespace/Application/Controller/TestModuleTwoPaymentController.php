@@ -5,10 +5,11 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestData\modules\without_own_module_namespace\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-
 
 class TestModuleTwoPaymentController extends TestModuleTwoPaymentController_parent
 {
@@ -20,7 +21,10 @@ class TestModuleTwoPaymentController extends TestModuleTwoPaymentController_pare
         $message = $model->getInfo();
 
         Registry::getSession()->setVariable('payerror', '-1');
-        Registry::getSession()->setVariable('payerrortext', 'Test module prevents payment! ' . microtime(true) . $message);
+        Registry::getSession()->setVariable(
+            'payerrortext',
+            'Test module prevents payment! ' . microtime(true) . $message
+        );
 
         return $template;
     }

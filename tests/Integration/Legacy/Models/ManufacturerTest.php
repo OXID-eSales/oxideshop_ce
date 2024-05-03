@@ -1,16 +1,21 @@
 <?php
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Models;
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Models;
 
 use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ManufacturerTest extends IntegrationTestCase
+final class ManufacturerTest extends IntegrationTestCase
 {
-
     public function testDelete(): void
     {
         $seoEncoderManufacturerMock = $this->createPartialMock(SeoEncoderManufacturer::class, ['onDeleteManufacturer']);
@@ -19,14 +24,15 @@ class ManufacturerTest extends IntegrationTestCase
         $id = '_testId';
         $manufacturer = oxNew(Manufacturer::class);
         $manufacturer->setId($id);
-        $manufacturer->assign(['oxactive' => 1, 'oxtitle' => 'bla']);
+        $manufacturer->assign([
+            'oxactive' => 1,
+            'oxtitle' => 'bla',
+        ]);
         $manufacturer->save();
 
-        $seoEncoderManufacturerMock->expects($this->once())->method('onDeleteManufacturer')->with(
-            $this->callback(function($manufacturer) use ($id) {
-                return $manufacturer->getId() == $id;
-            })
-        );
+        $seoEncoderManufacturerMock->expects($this->once())
+            ->method('onDeleteManufacturer')
+            ->with($this->callback(fn ($manufacturer): bool => $manufacturer->getId() === $id));
         unset($manufacturer);
 
         $newManufacturer = oxNew(Manufacturer::class);

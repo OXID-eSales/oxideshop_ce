@@ -5,79 +5,82 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Model;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Model;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-class BaseModelTest extends TestCase
+final class BaseModelTest extends TestCase
 {
-    /** @runInSeparateProcess  */
-    public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNotLoadedAndIsField()
+    #[RunInSeparateProcess]
+    public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNotLoadedAndIsField(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
         $this->assertFalse($model->isPropertyLoaded($fieldName));
     }
 
-    public function testFunctionIsPropertyLoadedReturnsTrueWhenPropertyIsLoadedAndIsField()
+    public function testFunctionIsPropertyLoadedReturnsTrueWhenPropertyIsLoadedAndIsField(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $model->$fieldName;
+        $model->{$fieldName};
 
         $this->assertTrue($model->isPropertyLoaded($fieldName));
     }
 
-    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsNotLoadedAndIsField()
+    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsNotLoadedAndIsField(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $this->assertTrue(isset($model->$fieldName));
+        $this->assertTrue(isset($model->{$fieldName}));
     }
 
-    public function testLazyLoadingMagicIssetLoadsPropertyWhenPropertyIsNotLoadedAndIsField()
+    public function testLazyLoadingMagicIssetLoadsPropertyWhenPropertyIsNotLoadedAndIsField(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $this->assertTrue(isset($model->$fieldName));
+        $this->assertTrue(isset($model->{$fieldName}));
     }
 
-    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsLoadedAndIsField()
+    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsLoadedAndIsField(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $model->$fieldName;
+        $model->{$fieldName};
 
-        $this->assertTrue(isset($model->$fieldName));
+        $this->assertTrue(isset($model->{$fieldName}));
     }
 
-    /** @runInSeparateProcess  */
-    public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsNotLoaded()
+    #[RunInSeparateProcess]
+    public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsNotLoaded(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $this->assertTrue(isset($model->$fieldName->value));
+        $this->assertTrue(isset($model->{$fieldName}->value));
     }
 
-    /** @runInSeparateProcess  */
-    public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsLoaded()
+    #[RunInSeparateProcess]
+    public function testLazyLoadingMagicIssetOnValueOfFieldReturnsTrueWhenFieldIsLoaded(): void
     {
-        $model      = $this->getModelWithLazyLoading();
-        $fieldName  = $this->getTestFieldNameOfModelWithLazyLoading();
+        $model = $this->getModelWithLazyLoading();
+        $fieldName = $this->getTestFieldNameOfModelWithLazyLoading();
 
-        $model->$fieldName;
+        $model->{$fieldName};
 
-        $this->assertTrue(isset($model->$fieldName->value));
+        $this->assertTrue(isset($model->{$fieldName}->value));
     }
 
-    public function testLazyLoadingMagicIssetOnValueOfPropertyReturnsFalseWhenPropertyIsNotFieldAndNotLoaded()
+    public function testLazyLoadingMagicIssetOnValueOfPropertyReturnsFalseWhenPropertyIsNotFieldAndNotLoaded(): void
     {
         $model = $this->getModelWithLazyLoading();
 
@@ -87,7 +90,7 @@ class BaseModelTest extends TestCase
     private function getModelWithLazyLoading()
     {
         $model = oxNew(Article::class);
-        $model->init("oxarticles");
+        $model->init('oxarticles');
 
         $model->setId('2000');
         $model->save();
@@ -95,7 +98,7 @@ class BaseModelTest extends TestCase
         return $model;
     }
 
-    private function getTestFieldNameOfModelWithLazyLoading()
+    private function getTestFieldNameOfModelWithLazyLoading(): string
     {
         return 'oxarticles__oxartnum';
     }

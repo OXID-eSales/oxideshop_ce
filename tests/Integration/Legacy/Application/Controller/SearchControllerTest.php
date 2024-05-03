@@ -1,27 +1,29 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller;
 
 use OxidEsales\EshopCommunity\Application\Controller\SearchController;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class SearchControllerTest extends IntegrationTestCase
 {
-    private $productTitle1 = '1000';
-    private $productid1 = 'seacharticle1000';
-    private $productTitle2 = '1001';
-    private $productid2 = 'seacharticle1001';
+    private string $productTitle1 = '1000';
+
+    private string $productid1 = 'seacharticle1000';
+
+    private string $productTitle2 = '1001';
+
+    private string $productid2 = 'seacharticle1001';
 
     public function setUp(): void
     {
@@ -74,21 +76,11 @@ final class SearchControllerTest extends IntegrationTestCase
 
         $articleArray = $articleList->getArray();
 
-        $this->assertTrue(
-            array_key_exists(
-                $this->productid1,
-                $articleArray
-            )
-        );
-        $this->assertTrue(
-            array_key_exists(
-                $this->productid2,
-                $articleArray
-            )
-        );
+        $this->assertTrue(array_key_exists($this->productid1, $articleArray));
+        $this->assertTrue(array_key_exists($this->productid2, $articleArray));
     }
 
-    private function setRequestParameter(string $key, $value): void
+    private function setRequestParameter(string $key, string $value): void
     {
         $_POST[$key] = $value;
     }

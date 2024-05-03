@@ -5,20 +5,20 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
-$sMetadataVersion = '2.0';
+declare(strict_types=1);
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'          => 'Vendor1_ModuleChainExtension35',
-    'title'       => 'Test OXID eShop class module chain extension 3.5',
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension35\MyClass35;
+
+$sMetadataVersion = '2.0';
+$aModule = [
+    'id' => 'Vendor1_ModuleChainExtension35',
+    'title' => 'Test OXID eShop class module chain extension 3.5',
     'description' => 'The module class and the chain extended OXID eShop class life in their namespaces.',
-    'thumbnail'   => 'picture.png',
-    'version'     => '1.0',
-    'author'      => 'OXID eSales AG',
-    'extend'      => [\OxidEsales\EshopCommunity\Application\Model\Article::class => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension35\MyClass35::class]
-);
+    'thumbnail' => 'picture.png',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+    'extend' => [
+        Article::class => MyClass35::class,
+    ],
+];

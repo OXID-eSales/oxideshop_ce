@@ -5,8 +5,10 @@
  * See LICENSE file for license details.
  */
 
-$sLangName  = "English";
+declare(strict_types=1);
 
-$aLang = array(
+$sLangName = 'English';
+
+$aLang = [
     'BIRTHDATE' => 'MODULE: Date of birth',
-);
+];

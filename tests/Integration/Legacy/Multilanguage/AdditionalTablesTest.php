@@ -5,35 +5,27 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage;
 
 use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage\MultilanguageTestCase;
 
-/**
- * Class AdditionalTablesTest
- *
- * @group slow-tests
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Multilanguage
- */
-class AdditionalTablesTest extends MultilanguageTestCase
+final class AdditionalTablesTest extends MultilanguageTestCase
 {
     /**
      * Additional multilanguage tables.
-     *
-     * @var array
      */
-    protected $additionalTables = array();
+    private array $additionalTables = [];
 
     /**
      * Fixture tearDown.
      */
-    protected function tearDown(): void
+    public function tearDown(): void
     {
-        $this->setConfigParam('aMultiLangTables', array());
+        $this->setConfigParam('aMultiLangTables', []);
         $this->updateViews();
 
         foreach ($this->additionalTables as $name) {
@@ -48,10 +40,10 @@ class AdditionalTablesTest extends MultilanguageTestCase
      * Assert that set tables are automatically created for additional multilanguage table
      * in case we add first the table and then create the languages.
      */
-    public function testCreateLanguagesAfterAdditionalTable()
+    public function testCreateLanguagesAfterAdditionalTable(): void
     {
         $this->createTable('addtest');
-        Registry::getConfig()->setConfigParam('aMultiLangTables', array('addtest'));
+        Registry::getConfig()->setConfigParam('aMultiLangTables', ['addtest']);
 
         //add nine more languages
         $this->prepare(9);
@@ -59,13 +51,10 @@ class AdditionalTablesTest extends MultilanguageTestCase
         $tableSchemaQuery = "SELECT TABLE_NAME, TABLE_COLLATION  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE 'addtest_set1'";
         $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($tableSchemaQuery);
 
-        self::assertEquals(
-            [
-                'TABLE_NAME'      => "addtest_set1",
-                'TABLE_COLLATION' => "latin1_general_ci"
-            ],
-            $result
-        );
+        self::assertEquals([
+            'TABLE_NAME' => 'addtest_set1',
+            'TABLE_COLLATION' => 'latin1_general_ci',
+        ], $result);
 
         $charset_query = "SELECT character_set_name FROM information_schema.`COLUMNS` 
                             WHERE table_name = 'addtest_set1'
@@ -81,13 +70,13 @@ class AdditionalTablesTest extends MultilanguageTestCase
      * in case first create the languages, then set the table in config.inc.php variable 'aMultiLangTables'
      * and call updateViews. Without *_set1 tables, view creating throws and exception.
      */
-    public function testCreateAdditionalTableAfterCreatingLanguages()
+    public function testCreateAdditionalTableAfterCreatingLanguages(): void
     {
         //add nine more languages
         $this->prepare(9);
 
         $this->createTable('addtest');
-        $this->setConfigParam('aMultiLangTables', array('addtest'));
+        $this->setConfigParam('aMultiLangTables', ['addtest']);
 
         $this->updateViews();
 
@@ -99,12 +88,12 @@ class AdditionalTablesTest extends MultilanguageTestCase
     /**
      * Verify that the expected data turned up in the language views
      */
-    public function testViewContentsCreateLanguagesAfterAdditionalTable()
+    public function testViewContentsCreateLanguagesAfterAdditionalTable(): void
     {
         $oxid = '_test101';
 
         $this->createTable('addtest');
-        $this->setConfigParam('aMultiLangTables', array('addtest'));
+        $this->setConfigParam('aMultiLangTables', ['addtest']);
 
         //add nine more languages
         $languageId = $this->prepare(9);
@@ -114,28 +103,34 @@ class AdditionalTablesTest extends MultilanguageTestCase
         oxDb::getDb()->execute($sql);
 
         //insert testdata for last added language id in set1 table
-        $sql = "INSERT INTO addtest_set1 (OXID, TITLE_" . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
+        $sql = 'INSERT INTO addtest_set1 (OXID, TITLE_' . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
         oxDb::getDb()->execute($sql);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
+        $sql = 'SELECT TITLE FROM ' . $tableViewNameGenerator->getViewName(
+            'addtest',
+            $languageId
+        ) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some additional title', oxDb::getDb()->getOne($sql));
 
-        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
+        $sql = 'SELECT TITLE FROM ' . $tableViewNameGenerator->getViewName(
+            'addtest',
+            0
+        ) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
     }
 
     /**
      * Verify that the expected data turned up in the language views
      */
-    public function testViewContentsCreateAdditionalTableAfterCreatingLanguages()
+    public function testViewContentsCreateAdditionalTableAfterCreatingLanguages(): void
     {
         //add nine more languages
         $languageId = $this->prepare(9);
         $oxid = '_test101';
 
         $this->createTable('addtest');
-        $this->setConfigParam('aMultiLangTables', array('addtest'));
+        $this->setConfigParam('aMultiLangTables', ['addtest']);
 
         $this->updateViews();
 
@@ -144,25 +139,29 @@ class AdditionalTablesTest extends MultilanguageTestCase
         oxDb::getDb()->execute($sql);
 
         //insert testdata for last added language id in set1 table
-        $sql = "INSERT INTO addtest_set1 (OXID, TITLE_" . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
+        $sql = 'INSERT INTO addtest_set1 (OXID, TITLE_' . $languageId . ") VALUES ('" . $oxid . "', 'some additional title')";
         oxDb::getDb()->execute($sql);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', $languageId) . " WHERE OXID = '" . $oxid . "'";
+        $sql = 'SELECT TITLE FROM ' . $tableViewNameGenerator->getViewName(
+            'addtest',
+            $languageId
+        ) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some additional title', oxDb::getDb()->getOne($sql));
 
-        $sql = "SELECT TITLE FROM " . $tableViewNameGenerator->getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
+        $sql = 'SELECT TITLE FROM ' . $tableViewNameGenerator->getViewName(
+            'addtest',
+            0
+        ) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
     }
 
     /**
      * Create additional multilanguage table.
-     *
-     * @param string $name
      */
-    protected function createTable($name = 'addtest')
+    private function createTable(string $name = 'addtest'): void
     {
-        $sql = "CREATE TABLE `" . $name . "` (" .
+        $sql = 'CREATE TABLE `' . $name . '` (' .
                 "`OXID` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL COMMENT 'Item id'," .
                 "`TITLE` varchar(128) NOT NULL DEFAULT '' COMMENT 'Title (multilanguage)'," .
                 "`TITLE_1` varchar(128) NOT NULL DEFAULT ''," .
@@ -172,7 +171,7 @@ class AdditionalTablesTest extends MultilanguageTestCase
                 "`TITLE_5` varchar(128) NOT NULL DEFAULT ''," .
                 "`TITLE_6` varchar(128) NOT NULL DEFAULT ''," .
                 "`TITLE_7` varchar(128) NOT NULL DEFAULT ''," .
-                "PRIMARY KEY (`OXID`)" .
+                'PRIMARY KEY (`OXID`)' .
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='for testing'";
 
         oxDb::getDb()->execute($sql);
@@ -182,19 +181,17 @@ class AdditionalTablesTest extends MultilanguageTestCase
 
     /**
      * Remove additional multilanguage tables and related.
-     *
-     * @return null
      */
-    protected function removeAdditionalTables($name)
+    private function removeAdditionalTables(string $name): void
     {
         $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE '%" . $name . "%'";
         $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sql);
         foreach ($result as $sub) {
-            oxDb::getDb()->execute("DROP TABLE IF EXISTS `" . $sub['TABLE_NAME'] . "`");
+            oxDb::getDb()->execute('DROP TABLE IF EXISTS `' . $sub['TABLE_NAME'] . '`');
         }
     }
 
-    private function setConfigParam(string $name, $value)
+    private function setConfigParam(string $name, $value): void
     {
         Registry::getConfig()->setConfigParam($name, $value);
     }

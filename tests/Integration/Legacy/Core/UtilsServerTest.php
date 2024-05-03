@@ -5,7 +5,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core;
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
@@ -16,7 +18,7 @@ final class UtilsServerTest extends TestCase
 {
     use ContainerTrait;
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $utils = oxNew('oxutilsserver');
         if ($utils->getUserCookie()) {
@@ -33,10 +35,13 @@ final class UtilsServerTest extends TestCase
 
         $utils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
 
-        $aData = explode('@@@', $utils->getUserCookie());
+        $aData = explode('@@@', (string) $utils->getUserCookie());
 
         $this->assertTrue(
-            $this->get(PasswordServiceBridgeInterface::class)->verifyPassword('admin' . User::USER_COOKIE_SALT, $aData[1])
+            $this->get(PasswordServiceBridgeInterface::class)->verifyPassword(
+                'admin' . User::USER_COOKIE_SALT,
+                $aData[1]
+            )
         );
 
         $utils->deleteUserCookie();

@@ -13,27 +13,22 @@ use OxidEsales\Eshop\Core\Curl;
 
 final class CurlSpy extends Curl
 {
-    private string $logPath;
-
-    public function __construct(string $logPath)
-    {
-        $this->logPath = $logPath;
+    public function __construct(
+        private readonly string $logPath
+    ) {
     }
 
-    /** @inheritDoc */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return 200;
     }
 
-    /** @inheritDoc */
-    public function execute()
+    public function execute(): bool
     {
         return true;
     }
 
-    /** @inheritDoc */
-    public function setParameters($parameters)
+    public function setParameters($parameters): void
     {
         file_put_contents($this->logPath, $parameters['xmlRequest']);
         parent::setParameters($parameters);

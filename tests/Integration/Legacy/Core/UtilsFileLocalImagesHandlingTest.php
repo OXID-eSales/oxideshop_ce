@@ -7,27 +7,29 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Field;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler as LocalImageHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler as LocalImageHandler;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
+final class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    private $testFile = '';
-    private $testFileDestination = '';
-    private $testFileDuplicateDestination = '';
+    private string $testFile = '';
+
+    private string $testFileDestination = '';
+
+    private string $testFileDuplicateDestination = '';
+
     private $someTmpDir = '';
 
     public function setUp(): void
@@ -49,8 +51,12 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
         $product = oxNew(Article::class);
         $files = [
             'myfile' => [
-                'tmp_name' => [0 => $tempPath],
-                'name' => [0 => $this->testFile],
+                'tmp_name' => [
+                    0 => $tempPath,
+                ],
+                'name' => [
+                    0 => $this->testFile,
+                ],
             ],
         ];
         (new Filesystem())->touch($tempPath);
@@ -64,9 +70,15 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
     {
         $tempPath = Path::join($this->someTmpDir, 'tmp.jpg');
         $_FILES['myfile'] = [
-            'name' => [0 => $this->testFile],
-            'tmp_name' => [0 => $tempPath],
-            'error' => [0 => 0],
+            'name' => [
+                0 => $this->testFile,
+            ],
+            'tmp_name' => [
+                0 => $tempPath,
+            ],
+            'error' => [
+                0 => 0,
+            ],
         ];
         (new Filesystem())->touch($tempPath);
 
@@ -75,15 +87,18 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
         $this->assertFileExists($this->testFileDestination);
     }
 
-
     public function testProcessFilesWithCreateDuplicateName(): void
     {
         $tempPath = Path::join($this->someTmpDir, 'tmp.jpg');
         $product = oxNew(Article::class);
         $files = [
             'myfile' => [
-                'tmp_name' => [0 => $tempPath],
-                'name' => [0 => $this->testFile],
+                'tmp_name' => [
+                    0 => $tempPath,
+                ],
+                'name' => [
+                    0 => $this->testFile,
+                ],
             ],
         ];
         (new Filesystem())->touch($tempPath);
@@ -102,14 +117,22 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
         $product = oxNew(Article::class);
         $files = [
             'myfile' => [
-                'tmp_name' => [0 => $tempPath1],
-                'name' => [0 => $this->testFile],
+                'tmp_name' => [
+                    0 => $tempPath1,
+                ],
+                'name' => [
+                    0 => $this->testFile,
+                ],
             ],
         ];
         $files2 = [
             'myfile' => [
-                'tmp_name' => [0 => $tempPath2],
-                'name' => [0 => $this->testFile],
+                'tmp_name' => [
+                    0 => $tempPath2,
+                ],
+                'name' => [
+                    0 => $this->testFile,
+                ],
             ],
         ];
         $utilsFile = new UtilsFile();
@@ -133,7 +156,7 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
             'myfile' => [
                 'tmp_name' => [
                     0 => $tempPath1,
-                    1 => $tempPath2
+                    1 => $tempPath2,
                 ],
                 'name' => [
                     0 => $this->testFile,
@@ -157,8 +180,12 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
         $product->oxarticles__oxfile = new Field();
         $files = [
             'myfile' => [
-                'tmp_name' => ['something@oxarticles__oxfile' => $tempPath],
-                'name' => ['something@oxarticles__oxfile' => $this->testFile],
+                'tmp_name' => [
+                    'something@oxarticles__oxfile' => $tempPath,
+                ],
+                'name' => [
+                    'something@oxarticles__oxfile' => $this->testFile,
+                ],
             ],
         ];
         (new Filesystem())->touch($tempPath);
@@ -187,7 +214,7 @@ class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
 
     private function checkImageHandlerIsTestable(): void
     {
-        if (\get_class($this->get(ImageHandlerInterface::class)) !== LocalImageHandler::class) {
+        if ($this->get(ImageHandlerInterface::class)::class !== LocalImageHandler::class) {
             $this->markTestSkipped('This test runs only when local filesystem is used for image storage.');
         }
     }

@@ -7,9 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\chainTestModuleClasses;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Module\Fixtures\chainTestModuleClasses;
 
 class SecondUser extends SecondUser_parent
 {
-
 }

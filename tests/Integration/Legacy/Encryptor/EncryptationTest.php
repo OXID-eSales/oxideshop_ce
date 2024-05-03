@@ -5,27 +5,27 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Encryptor;
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Encryptor;
 
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class EncryptationTest extends IntegrationTestCase
+final class EncryptationTest extends IntegrationTestCase
 {
-    public static function providerEncodingAndDecodingGivesSameResultWithCorrectKey()
+    public static function providerEncodingAndDecodingGivesSameResultWithCorrectKey(): array
     {
-        return array(
-            array('testString', ''),
-            array('testString', 1),
-            array('testString', 'shortKey'),
-            array('testString', 'longKeyLongKey_LongKeyLongKey'),
-            array('', 'testKey'),
-        );
+        return [['testString', ''],
+            ['testString', 1],
+            ['testString', 'shortKey'],
+            ['testString', 'longKeyLongKey_LongKeyLongKey'],
+            ['', 'testKey'],
+        ];
     }
 
-    /**
-     * @dataProvider providerEncodingAndDecodingGivesSameResultWithCorrectKey
-     */
-    public function testEncodingAndDecodingGivesSameResultWithCorrectKey($sString, $sKey)
+    #[DataProvider('providerEncodingAndDecodingGivesSameResultWithCorrectKey')]
+    public function testEncodingAndDecodingGivesSameResultWithCorrectKey(string $sString, string|int $sKey): void
     {
         $oEncryptor = oxNew('oxEncryptor');
         $oDecryptor = oxNew('oxDecryptor');
@@ -34,7 +34,7 @@ class EncryptationTest extends IntegrationTestCase
         $this->assertSame($sString, $oDecryptor->decrypt($sEncrypted, $sKey));
     }
 
-    public function testEncodingAndDecodingGivesDifferentResultWithIncorrectKey()
+    public function testEncodingAndDecodingGivesDifferentResultWithIncorrectKey(): void
     {
         $oEncryptor = oxNew('oxEncryptor');
         $oDecryptor = oxNew('oxDecryptor');

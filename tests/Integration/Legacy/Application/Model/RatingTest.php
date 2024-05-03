@@ -5,17 +5,18 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
-class RatingTest extends IntegrationTestCase
+final class RatingTest extends IntegrationTestCase
 {
-    public function testUpdateProductRatingOnRatingDelete()
+    public function testUpdateProductRatingOnRatingDelete(): void
     {
         $this->createTestProduct();
         $this->createTestRatings();
@@ -27,18 +28,12 @@ class RatingTest extends IntegrationTestCase
         $product = oxNew(Article::class);
         $product->load('testId');
 
-        $this->assertEquals(
-            2,
-            $product->oxarticles__oxratingcnt->value
-        );
+        $this->assertEquals(2, $product->oxarticles__oxratingcnt->value);
 
-        $this->assertEquals(
-            1.5,
-            $product->oxarticles__oxrating->value
-        );
+        $this->assertEquals(1.5, $product->oxarticles__oxrating->value);
     }
 
-    public function testUpdateProductRatingOnRatingDeleteWhenAllRatingsForProductAreDeleted()
+    public function testUpdateProductRatingOnRatingDeleteWhenAllRatingsForProductAreDeleted(): void
     {
         $this->createTestProduct();
         $this->createTestRatings();
@@ -57,18 +52,12 @@ class RatingTest extends IntegrationTestCase
         $product = oxNew(Article::class);
         $product->load('testId');
 
-        $this->assertEquals(
-            0,
-            $product->oxarticles__oxratingcnt->value
-        );
+        $this->assertEquals(0, $product->oxarticles__oxratingcnt->value);
 
-        $this->assertEquals(
-            0,
-            $product->oxarticles__oxrating->value
-        );
+        $this->assertEquals(0, $product->oxarticles__oxrating->value);
     }
 
-    private function createTestProduct()
+    private function createTestProduct(): void
     {
         $product = oxNew(Article::class);
         $product->setId('testId');
@@ -77,7 +66,7 @@ class RatingTest extends IntegrationTestCase
         $product->save();
     }
 
-    private function createTestRatings()
+    private function createTestRatings(): void
     {
         $rating = oxNew(Rating::class);
         $rating->setId('id1');

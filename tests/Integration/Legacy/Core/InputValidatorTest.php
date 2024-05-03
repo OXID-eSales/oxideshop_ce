@@ -7,23 +7,22 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core;
 
 use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
-class InputValidatorTest extends IntegrationTestCase
+final class InputValidatorTest extends IntegrationTestCase
 {
-    private $oxidDebitNote = 'oxiddebitnote';
+    private string $oxidDebitNote = 'oxiddebitnote';
 
-    public function testValidatePaymentInputDataWithSpaceCharacterForBankCode()
+    public function testValidatePaymentInputDataWithSpaceCharacterForBankCode(): void
     {
         $testValues = [
-            'lsbankname'   => 'Bank name',
-            'lsblz'        => ' ',
-            'lsktonr'      => '123456',
-            'lsktoinhaber' => 'Hans Mustermann'
+            'lsbankname' => 'Bank name',
+            'lsblz' => ' ',
+            'lsktonr' => '123456',
+            'lsktoinhaber' => 'Hans Mustermann',
         ];
 
         $validator = oxNew(InputValidator::class);
@@ -31,13 +30,13 @@ class InputValidatorTest extends IntegrationTestCase
         $this->assertEquals(InputValidator::INVALID_BANK_CODE, $result, 'Should validate as invalid bank code error.');
     }
 
-    public function testValidatePaymentInputDataWithCorrectBankCode()
+    public function testValidatePaymentInputDataWithCorrectBankCode(): void
     {
         $testValues = [
-            'lsbankname'   => 'Bank name',
-            'lsblz'        => '12345678',
-            'lsktonr'      => '123456',
-            'lsktoinhaber' => 'Hans Mustermann'
+            'lsbankname' => 'Bank name',
+            'lsblz' => '12345678',
+            'lsktonr' => '123456',
+            'lsktoinhaber' => 'Hans Mustermann',
         ];
 
         $validator = oxNew(InputValidator::class);
@@ -45,18 +44,22 @@ class InputValidatorTest extends IntegrationTestCase
         $this->assertTrue($result, 'Should validate as True');
     }
 
-    public function testValidatePaymentInputDataWithBlankBankCode()
+    public function testValidatePaymentInputDataWithBlankBankCode(): void
     {
         $testValues = [
-            'lsbankname'   => 'Bank name',
-            'lsblz'        => '',
-            'lsktonr'      => '123456',
-            'lsktoinhaber' => 'Hans Mustermann'
+            'lsbankname' => 'Bank name',
+            'lsblz' => '',
+            'lsktonr' => '123456',
+            'lsktoinhaber' => 'Hans Mustermann',
         ];
 
         $validator = oxNew(InputValidator::class);
         $validationResult = $validator->validatePaymentInputData($this->oxidDebitNote, $testValues);
 
-        $this->assertEquals(InputValidator::INVALID_BANK_CODE, $validationResult, 'Should validate as bank code error.');
+        $this->assertEquals(
+            InputValidator::INVALID_BANK_CODE,
+            $validationResult,
+            'Should validate as bank code error.'
+        );
     }
 }

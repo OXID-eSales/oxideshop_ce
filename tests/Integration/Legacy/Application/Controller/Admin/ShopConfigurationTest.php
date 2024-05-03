@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
 use OxidEsales\Eshop\Core\Registry;
@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class ShopConfigurationTest extends IntegrationTestCase
 {
@@ -30,38 +29,38 @@ final class ShopConfigurationTest extends IntegrationTestCase
     {
         $this->prepareTestModuleConfiguration();
 
-        $_POST['confstrs'] = ['stringSetting' => 'newValue'];
+        $_POST['confstrs'] = [
+            'stringSetting' => 'newValue',
+        ];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
             ->onlyMethods(['getModuleForConfigVars'])
             ->disableOriginalConstructor()
             ->getMock();
-        $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
+        $shopConfigurationController->method('getModuleForConfigVars')
+            ->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
         $container = ContainerFactory::getInstance()->getContainer();
         $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($this->testModuleId);
 
-        $this->assertSame(
-            'newValue',
-            $moduleConfiguration->getModuleSetting('stringSetting')->getValue()
-        );
+        $this->assertSame('newValue', $moduleConfiguration->getModuleSetting('stringSetting') ->getValue());
     }
 
     public function testSaveWhenSettingIsMissingInMetadata(): void
     {
         $this->prepareTestModuleConfiguration();
 
-        $_POST['confstrs'] = ['nonExisting' => 'newValue'];
+        $_POST['confstrs'] = [
+            'nonExisting' => 'newValue',
+        ];
 
         $shopConfigurationController = $this->createPartialMock(ShopConfiguration::class, ['getModuleForConfigVars']);
-        $shopConfigurationController->method('getModuleForConfigVars')->willReturn('module:testModuleId');
+        $shopConfigurationController->method('getModuleForConfigVars')
+            ->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
 
-        $this->assertSame(
-            'newValue',
-            Registry::getConfig()->getConfigParam('nonExisting')
-        );
+        $this->assertSame('newValue', Registry::getConfig()->getConfigParam('nonExisting'));
     }
 
     private function prepareTestModuleConfiguration(): void

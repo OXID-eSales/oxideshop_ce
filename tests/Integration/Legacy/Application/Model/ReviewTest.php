@@ -12,10 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Model;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ReviewTest extends IntegrationTestCase
+final class ReviewTest extends IntegrationTestCase
 {
     use DatabaseTrait;
 

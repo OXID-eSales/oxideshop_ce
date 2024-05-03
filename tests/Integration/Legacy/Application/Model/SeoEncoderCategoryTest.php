@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
@@ -16,15 +16,19 @@ use OxidEsales\EshopCommunity\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class SeoEncoderCategoryTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
     private int $subcategoryPerCategory = 2;
+
     private int $productPerCategory = 3;
-    private array $categoryLanguages = ['de' => 0, 'en' => 1];
+
+    private array $categoryLanguages = [
+        'de' => 0,
+        'en' => 1,
+    ];
 
     public function testOnDeleteCategoryWillSetDependantRecordsToExpired(): void
     {

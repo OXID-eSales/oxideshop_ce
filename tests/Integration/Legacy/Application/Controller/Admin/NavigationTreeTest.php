@@ -7,8 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\Admin;
 
+use DOMDocument;
+use DOMXPath;
+use oxfield;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
@@ -17,22 +20,26 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 final class NavigationTreeTest extends IntegrationTestCase
 {
-    private const FIXTURE_MODULE_NAMES = [
-        'module1',
-        'module2'
-    ];
+    private const FIXTURE_MODULE_NAMES = ['module1', 'module2'];
+
     private const EXISTING_XML_ELEMENT_ID = 'mxcoresett';
+
     private const EXISTING_XML_ELEMENTS_ATTRIBUTE_NAME = 'cl';
+
     private const EXISTING_XML_ELEMENTS_ATTRIBUTE_VALUE_ORIGINAL = 'shop';
+
     private const EXISTING_XML_ELEMENTS_ATTRIBUTE_VALUE_CHANGED = 'MODULE1_SOME_OVERWRITTEN_VALUE';
+
     private const NEW_XML_ELEMENT_ID_MODULE_1 = 'TEST-MODULE-1-SOME-SUBMENU-NODE';
+
     private const NEW_XML_ELEMENT_ID_MODULE_2 = 'TEST-MODULE-2-SOME-SUBMENU-NODE';
+
     private BasicContext $context;
+
     private ?ContainerInterface $container = null;
 
     public function setUp(): void
@@ -62,7 +69,9 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->installModuleFixture('module1');
         $this->activateModule('module1');
 
-        $xml = $this->getNavigationTree()->getDomXml()->saveXML();
+        $xml = $this->getNavigationTree()
+            ->getDomXml()
+            ->saveXML();
 
         $this->assertStringContainsString(self::NEW_XML_ELEMENT_ID_MODULE_1, $xml);
     }
@@ -75,7 +84,9 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->activateModule('module1');
         $this->activateModule('module2');
 
-        $xml = $this->getNavigationTree()->getDomXml()->saveXML();
+        $xml = $this->getNavigationTree()
+            ->getDomXml()
+            ->saveXML();
 
         $this->assertStringContainsString(self::NEW_XML_ELEMENT_ID_MODULE_1, $xml);
         $this->assertStringContainsString(self::NEW_XML_ELEMENT_ID_MODULE_2, $xml);
@@ -90,7 +101,9 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->activateModule('module2');
         $this->deactivateModule('module1');
 
-        $xml = $this->getNavigationTree()->getDomXml()->saveXML();
+        $xml = $this->getNavigationTree()
+            ->getDomXml()
+            ->saveXML();
 
         $this->assertStringNotContainsString(self::NEW_XML_ELEMENT_ID_MODULE_1, $xml);
         $this->assertStringContainsString(self::NEW_XML_ELEMENT_ID_MODULE_2, $xml);
@@ -102,21 +115,9 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->installModuleFixture('module1');
         $this->activateModule('module1');
 
-        $attributeValue = $this->getTestedAttributeValue(
-            $this->getNavigationTree()->getDomXml()
-        );
+        $attributeValue = $this->getTestedAttributeValue($this->getNavigationTree() ->getDomXml());
 
         $this->assertSame(self::EXISTING_XML_ELEMENTS_ATTRIBUTE_VALUE_CHANGED, $attributeValue);
-    }
-
-    private function getNavigationTree(): NavigationTree
-    {
-        $navigationTree = (new NavigationTree());
-        /** Add user stub */
-        $user = oxNew('oxuser');
-        $user->oxuser__oxrights = new \oxfield('testRights');
-        $navigationTree->setUser($user);
-        return $navigationTree;
     }
 
     protected function get(string $class)
@@ -125,6 +126,16 @@ final class NavigationTreeTest extends IntegrationTestCase
             $this->container = ContainerFactory::getInstance()->getContainer();
         }
         return $this->container->get($class);
+    }
+
+    private function getNavigationTree(): NavigationTree
+    {
+        $navigationTree = (new NavigationTree());
+        /** Add user stub */
+        $user = oxNew('oxuser');
+        $user->oxuser__oxrights = new oxfield('testRights');
+        $navigationTree->setUser($user);
+        return $navigationTree;
     }
 
     private function installModuleFixture(string $moduleName): void
@@ -153,7 +164,7 @@ final class NavigationTreeTest extends IntegrationTestCase
 
     private function getTestPackage(string $moduleName): OxidEshopPackage
     {
-        $packageFixturePath = __DIR__ . "/Fixtures/$moduleName/";
+        $packageFixturePath = __DIR__ . "/Fixtures/{$moduleName}/";
         return new OxidEshopPackage($packageFixturePath);
     }
 
@@ -176,9 +187,9 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->assertStringNotContainsString(self::NEW_XML_ELEMENT_ID_MODULE_2, $xml);
     }
 
-    private function getTestedAttributeValue(\DOMDocument $dom): string
+    private function getTestedAttributeValue(DOMDocument $dom): string
     {
-        $xPath = new \DOMXPath($dom);
+        $xPath = new DOMXPath($dom);
         $existingElementXPath = sprintf('//*[@id="%s"]', self::EXISTING_XML_ELEMENT_ID);
         return $xPath->query($existingElementXPath)
             ->item(0)

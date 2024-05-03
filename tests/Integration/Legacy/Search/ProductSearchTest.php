@@ -7,22 +7,26 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Checkout;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Search;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 final class ProductSearchTest extends IntegrationTestCase
 {
     private const CONFIG_KEY_SEARCH_COLUMNS = 'aSearchCols';
+
     private const SEARCH_STRING_WITH_HITS = 'abc-123';
+
     private const SEARCH_STRING_WITHOUT_HITS = 'XYZ-987';
+
     private const ID_PRODUCT_WITH_TITLE_HIT = '1';
+
     private const ID_PRODUCT_WITH_SEARCH_KEYS_HIT = '2';
+
     private const ID_PRODUCT_WITHOUT_HITS = '3';
 
     public function setUp(): void

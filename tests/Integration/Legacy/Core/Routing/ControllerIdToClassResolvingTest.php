@@ -5,37 +5,39 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Routing;
+declare(strict_types=1);
 
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Routing;
+
+use OxidEsales\Eshop\Application\Controller\StartController;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ControllerIdToClassResolvingTest extends IntegrationTestCase
+final class ControllerIdToClassResolvingTest extends IntegrationTestCase
 {
     /**
      * Test controller classid to class mapping.
      */
-    public function testIdToClassMapping()
+    public function testIdToClassMapping(): void
     {
         $classId = 'start';
         $resolvedClass = Registry::getControllerClassNameResolver()->getClassNameById($classId);
-        $this->assertEquals(\OxidEsales\Eshop\Application\Controller\StartController::class, $resolvedClass);
+        $this->assertEquals(StartController::class, $resolvedClass);
     }
 
     /**
      * Test controller class to classId mapping.
      */
-    public function testClassToIdMapping()
+    public function testClassToIdMapping(): void
     {
-        $class = \OxidEsales\Eshop\Application\Controller\StartController::class;
+        $class = StartController::class;
         $this->assertEquals('start', Registry::getControllerClassNameResolver()->getIdByClassName($class));
     }
 
     /**
      * Test controller class to classId mapping.
      */
-    public function testClassToIdMappingNotExistingClass()
+    public function testClassToIdMappingNotExistingClass(): void
     {
         $class = 'classDoesNotExist';
         $this->assertEquals(null, Registry::getControllerClassNameResolver()->getClassNameById($class));

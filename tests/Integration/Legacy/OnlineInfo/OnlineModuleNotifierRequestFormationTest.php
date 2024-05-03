@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\OnlineInfo;
 
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifier;
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller;
@@ -20,23 +20,34 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\OnlineInfo\CurlSpy;
 use OxidEsales\Facts\Facts;
 use Psr\Container\ContainerInterface;
+use SimpleXMLElement;
 
 final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
 {
     private ContainerInterface $container;
+
     private string $clusterId;
+
     private string $documentName = 'omvnRequest';
+
     private string $edition;
+
     private string $moduleId1 = 'extending_1_class';
+
     private string $moduleId2 = 'extending_1_class_3_extensions';
+
     private string $moduleVersion = '1.0';
+
     private string $pVersion = '1.1';
+
     private string $productId = 'eShop';
+
     private string $shopUrl;
+
     private string $shopVersion;
+
     private string $xmlLog;
 
     public function setUp(): void
@@ -90,7 +101,7 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
 
     private function prepareTestData(): void
     {
-        $this->xmlLog = sprintf("%s/%s.xml", __DIR__, uniqid('request_log_', true));
+        $this->xmlLog = sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
         $this->edition = (new Facts())->getEdition();
         $this->shopVersion = ShopVersion::getVersion();
         $this->shopUrl = Registry::getConfig()->getShopUrl();
@@ -120,11 +131,9 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
         $this->container->get(ModuleActivationBridgeInterface::class)->activate($moduleId, 1);
     }
 
-    private function loadRequestLogXml(): \SimpleXMLElement
+    private function loadRequestLogXml(): SimpleXMLElement
     {
-        return simplexml_load_string(
-            file_get_contents($this->xmlLog)
-        );
+        return simplexml_load_string(file_get_contents($this->xmlLog));
     }
 
     private function cleanUpTestData(): void

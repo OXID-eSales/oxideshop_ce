@@ -5,19 +5,14 @@
  * See LICENSE file for license details.
  */
 
-/**
- * Metadata version
- */
-$sMetadataVersion = '2.0';
+declare(strict_types=1);
 
-/**
- * Module information
- */
-$aModule = array(
-    'id'           => 'no_extending',
-    'title'        => 'Test no extending classes',
-    'description'  => 'Module testing no extending classes',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-);
+$sMetadataVersion = '2.0';
+$aModule = [
+    'id' => 'no_extending',
+    'title' => 'Test no extending classes',
+    'description' => 'Module testing no extending classes',
+    'thumbnail' => 'picture.png',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+];

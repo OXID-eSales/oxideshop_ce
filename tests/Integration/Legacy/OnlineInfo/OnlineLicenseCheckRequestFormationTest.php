@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\OnlineInfo;
 
 use OxidEsales\Eshop\Core\Dao\ApplicationServerDao;
 use OxidEsales\Eshop\Core\DatabaseProvider;
@@ -25,29 +25,40 @@ use OxidEsales\Eshop\Core\UtilsDate;
 use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\OnlineInfo\CurlSpy;
 use OxidEsales\Facts\Facts;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use SimpleXMLElement;
 
 final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
     private int $adminUserCount;
-    private int $timestamp;
-    private string $clusterId;
-    private string $documentName = 'olcRequest';
-    private string $edition;
-    private string $licenseKeyExisting;
-    private string $licenseKeyNew;
-    private string $pVersion = '1.1';
-    private string $productId = 'eShop';
-    private string $serverId = 'server_id1';
-    private string $serverIp = '127.0.0.1';
-    private string $shopUrl;
-    private string $shopVersion;
-    private string $xmlLog;
 
+    private int $timestamp;
+
+    private string $clusterId;
+
+    private string $documentName = 'olcRequest';
+
+    private string $edition;
+
+    private string $licenseKeyExisting;
+
+    private string $licenseKeyNew;
+
+    private string $pVersion = '1.1';
+
+    private string $productId = 'eShop';
+
+    private string $serverId = 'server_id1';
+
+    private string $serverIp = '127.0.0.1';
+
+    private string $shopUrl;
+
+    private string $shopVersion;
+
+    private string $xmlLog;
 
     public function setUp(): void
     {
@@ -94,8 +105,14 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         $this->assertEquals(1, $xml->productSpecificInformation->servers->children()->count());
         $this->assertEquals($this->serverId, $xml->productSpecificInformation->servers->server->id);
         $this->assertEquals($this->serverIp, $xml->productSpecificInformation->servers->server->ip);
-        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastFrontendUsage);
-        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastAdminUsage);
+        $this->assertEquals(
+            (string) $this->timestamp,
+            $xml->productSpecificInformation->servers->server->lastFrontendUsage
+        );
+        $this->assertEquals(
+            (string) $this->timestamp,
+            $xml->productSpecificInformation->servers->server->lastAdminUsage
+        );
         /** counters */
         $this->assertEquals(3, $xml->productSpecificInformation->counters->children()->count());
         /** admin users */
@@ -104,7 +121,10 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[0]->value);
         /** active admin users */
         $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[1]->children()->count());
-        $this->assertEquals('active admin users', (string) $xml->productSpecificInformation->counters->counter[1]->name);
+        $this->assertEquals(
+            'active admin users',
+            (string) $xml->productSpecificInformation->counters->counter[1]->name
+        );
         $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[1]->value);
         /** subShops */
         $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[2]->children()->count());
@@ -145,8 +165,14 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         $this->assertEquals(1, $xml->productSpecificInformation->servers->children()->count());
         $this->assertEquals($this->serverId, $xml->productSpecificInformation->servers->server->id);
         $this->assertEquals($this->serverIp, $xml->productSpecificInformation->servers->server->ip);
-        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastFrontendUsage);
-        $this->assertEquals((string) $this->timestamp, $xml->productSpecificInformation->servers->server->lastAdminUsage);
+        $this->assertEquals(
+            (string) $this->timestamp,
+            $xml->productSpecificInformation->servers->server->lastFrontendUsage
+        );
+        $this->assertEquals(
+            (string) $this->timestamp,
+            $xml->productSpecificInformation->servers->server->lastAdminUsage
+        );
         /** counters */
         $this->assertEquals(3, $xml->productSpecificInformation->counters->children()->count());
         /** admin users */
@@ -155,7 +181,10 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[0]->value);
         /** active admin users */
         $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[1]->children()->count());
-        $this->assertEquals('active admin users', (string) $xml->productSpecificInformation->counters->counter[1]->name);
+        $this->assertEquals(
+            'active admin users',
+            (string) $xml->productSpecificInformation->counters->counter[1]->name
+        );
         $this->assertEquals($this->adminUserCount, (int) $xml->productSpecificInformation->counters->counter[1]->value);
         /** subShops */
         $this->assertEquals(2, $xml->productSpecificInformation->counters->counter[2]->children()->count());
@@ -167,7 +196,7 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
     {
         $shopPath = __DIR__ . DIRECTORY_SEPARATOR;
 
-        $this->xmlLog = sprintf("%s/%s.xml", __DIR__, uniqid('request_log_', true));
+        $this->xmlLog = sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
         $this->licenseKeyExisting = uniqid('license-', true);
         $this->licenseKeyNew = uniqid('license-', true);
         $this->clusterId = uniqid('cluster-', true);
@@ -175,7 +204,7 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         $this->shopVersion = ShopVersion::getVersion();
         $this->shopUrl = Registry::getConfig()->getShopUrl();
         $this->timestamp = Registry::getUtilsDate()->getTime();
-        $this->adminUserCount = 0;
+        $this->adminUserCount = $this->getActiveAdminCount();
 
         Registry::getConfig()->setConfigParam('aSerials', [$this->licenseKeyExisting]);
         Registry::getConfig()->setConfigParam('sClusterId', [$this->clusterId]);
@@ -200,20 +229,14 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
             );
     }
 
-    private function loadRequestLogXml(): \SimpleXMLElement
+    private function loadRequestLogXml(): SimpleXMLElement
     {
-        return simplexml_load_string(
-            file_get_contents($this->xmlLog)
-        );
+        return simplexml_load_string(file_get_contents($this->xmlLog));
     }
 
     private function getApplicationServerExporter(): ApplicationServerExporterInterface
     {
-        $appServerDao = oxNew(
-            ApplicationServerDao::class,
-            DatabaseProvider::getDb(),
-            Registry::getConfig()
-        );
+        $appServerDao = oxNew(ApplicationServerDao::class, DatabaseProvider::getDb(), Registry::getConfig());
         $service = oxNew(
             ApplicationServerService::class,
             $appServerDao,
@@ -226,12 +249,16 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
     private function cleanUpTestData(): void
     {
-        DatabaseProvider::getDb()->execute(
-            "DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'"
-        );
+        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
         }
+    }
+
+    private function getActiveAdminCount(): int
+    {
+        return (int) DatabaseProvider::getDb()
+            ->getOne("SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user' AND oxactive = 1 ");
     }
 }

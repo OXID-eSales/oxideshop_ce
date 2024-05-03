@@ -7,30 +7,25 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Module;
 
-use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Core\Module\ModuleList;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\TestingLibrary\UnitTestCase;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use OxidEsales\Eshop\Application\Controller\ContentController;
-use OxidEsales\Eshop\Application\Model\Order;
-use OxidEsales\Eshop\Application\Model\Basket;
 
 /**
  * @internal
  */
-class ModuleListTest extends IntegrationTestCase
+final class ModuleListTest extends IntegrationTestCase
 {
-    public function setup(): void
+    public function setUp(): void
     {
         $this->getContainer()
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
@@ -54,27 +49,21 @@ class ModuleListTest extends IntegrationTestCase
         $this->installModule($notActiveModuleId);
 
         $this->assertSame(
-            [
-                'with_class_extensions/ModuleArticle',
-            ],
+            ['with_class_extensions/ModuleArticle'],
             oxNew(ModuleList::class)->getDisabledModuleClasses()
         );
     }
 
-    public function testGetModuleExtensionsWithMultipleExtensions()
+    public function testGetModuleExtensionsWithMultipleExtensions(): void
     {
         $extensions = [
-            'OxidEsales\Eshop\Application\Model\Article' => [
+            Article::class => [
                 'with_multiple_extensions/articleExtension1',
                 'with_multiple_extensions/articleExtension2',
                 'with_multiple_extensions/articleExtension3',
             ],
-            Order::class => [
-                'with_multiple_extensions/oxOrder'
-            ],
-            Basket::class => [
-                'with_multiple_extensions/basketExtension'
-            ]
+            Order::class => ['with_multiple_extensions/oxOrder'],
+            Basket::class => ['with_multiple_extensions/basketExtension'],
         ];
 
         $this->installModule('with_multiple_extensions');
@@ -93,13 +82,15 @@ class ModuleListTest extends IntegrationTestCase
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
 
-        $this->getContainer()->get(ModuleInstallerInterface::class)
+        $this->getContainer()
+            ->get(ModuleInstallerInterface::class)
             ->install($package);
     }
 
     private function activateModule(string $id): void
     {
-        $this->getContainer()->get(ModuleActivationBridgeInterface::class)->activate($id, 1);
+        $this->getContainer()
+            ->get(ModuleActivationBridgeInterface::class)->activate($id, 1);
     }
 
     private function getContainer(): ContainerInterface

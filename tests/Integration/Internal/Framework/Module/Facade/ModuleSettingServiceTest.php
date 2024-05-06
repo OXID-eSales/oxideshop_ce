@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\Facade;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServ
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+
 use function Symfony\Component\String\u;
 
 final class ModuleSettingServiceTest extends TestCase
@@ -51,7 +52,7 @@ final class ModuleSettingServiceTest extends TestCase
     {
         $this->settingFacade->saveBoolean('boolSetting', true, $this->testModuleId);
 
-        $this->assertSame(true, $this->settingFacade->getBoolean('boolSetting', $this->testModuleId));
+        $this->assertTrue($this->settingFacade->getBoolean('boolSetting', $this->testModuleId));
     }
 
     public function testString(): void

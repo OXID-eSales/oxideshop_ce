@@ -10,60 +10,46 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\CacheNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-final class FilesystemModuleCacheTest extends TestCase
+#[Group('cache')]
+final class ModuleCacheTest extends TestCase
 {
     use ContainerTrait;
 
     public function testPut(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test', ['something']);
 
         $this->assertEquals(
             ['something'],
-            $cache->get('test', 1)
+            $cache->get('test')
         );
     }
 
     public function testExists(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test', ['something']);
 
         $this->assertTrue(
-            $cache->exists('test', 1)
+            $cache->exists('test')
         );
     }
 
     public function testInvalidate(): void
     {
         $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
+        $cache->put('test_key', ['something']);
 
-        $cache->invalidate('someModule', 1);
-
-        $this->assertFalse(
-            $cache->exists('test', 1)
-        );
-    }
-
-    public function testInvalidateAll(): void
-    {
-        $cache = $this->getModuleCacheService();
-        $cache->put('test', 1, ['something']);
-        $cache->put('test2', 2, ['something']);
-
-        $cache->invalidateAll();
+        $cache->deleteItem('test_key');
 
         $this->assertFalse(
-            $cache->exists('test', 1)
-        );
-        $this->assertFalse(
-            $cache->exists('test2', 2)
+            $cache->exists('test_key')
         );
     }
 
@@ -72,11 +58,11 @@ final class FilesystemModuleCacheTest extends TestCase
         $cache = $this->getModuleCacheService();
 
         $this->expectException(CacheNotFoundException::class);
-        $cache->get('nonExistent', 1);
+        $cache->get('nonExistent');
     }
 
-    private function getModuleCacheService(): ModuleCacheServiceInterface
+    private function getModuleCacheService(): ModuleCacheInterface
     {
-        return $this->get(ModuleCacheServiceInterface::class);
+        return $this->get(ModuleCacheInterface::class);
     }
 }

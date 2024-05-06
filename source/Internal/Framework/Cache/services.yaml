@@ -1,2 +1,11 @@
 imports:
+  - { resource: Pool/services.yaml }
   - { resource: Command/services.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheFacade
+    public: true

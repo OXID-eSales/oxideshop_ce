@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\CacheItemPoolFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\FilesystemCacheItemPoolFactory
+
+  Psr\Cache\CacheItemPoolInterface:
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Cache\Pool\CacheItemPoolFactoryInterface', 'create']
+    arguments: ['@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getCurrentShopId()']

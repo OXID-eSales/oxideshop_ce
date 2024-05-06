@@ -39,6 +39,9 @@ class ContainerBuilder
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
+
+        $symfonyContainer->setParameter('oxid_cache_directory', $this->context->getCacheDirectory());
+
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
@@ -115,13 +118,13 @@ class ContainerBuilder
             //no active modules, do nothing.
         } catch (LoaderLoadException $exception) {
             $loggerServiceFactory = new LoggerServiceFactory(new Context());
-            $logger = $loggerServiceFactory->getLogger();
-            // phpcs:disable
-            $logger->error(
-                "Can't load module services file path $moduleServicesFilePath. Please check if file exists and all imports in the file are correct.",
-                [$exception]
-            );
-            // phpcs:enable
+            $loggerServiceFactory
+                ->getLogger()
+                ->error(
+                    "Can't load module services file path $moduleServicesFilePath.
+                    Please check if file exists and all imports in the file are correct.",
+                    [$exception]
+                );
         }
     }
 

@@ -30,25 +30,16 @@ class BasicContext implements BasicContextInterface
      */
     private $facts;
 
-    /**
-     * @return string
-     */
     public function getContainerCacheFilePath(int $shopId): string
     {
         return Path::join($this->getCacheDirectory(), 'container', 'container_cache_shop_' . $shopId . '.php');
     }
 
-    /**
-     * @return string
-     */
     public function getGeneratedServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'generated', 'generated_services.yaml');
     }
 
-    /**
-     * @return string
-     */
     public function getConfigurableServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'configuration', 'configurable_services.yaml');
@@ -67,66 +58,41 @@ class BasicContext implements BasicContextInterface
         return Path::join($this->getShopConfigurationDirectory($shopId), 'active_module_services.yaml');
     }
 
-    /**
-     * @return string
-     */
     public function getSourcePath(): string
     {
         return $this->getFacts()->getSourcePath();
     }
 
-    /**
-     * @return string
-     * @throws \Exception
-     */
     public function getEdition(): string
     {
         return $this->getFacts()->getEdition();
     }
 
-    /**
-     * @return string
-     */
     public function getCommunityEditionSourcePath(): string
     {
         return $this->getFacts()->getCommunityEditionSourcePath();
     }
 
-    /**
-     * @return string
-     */
     public function getProfessionalEditionRootPath(): string
     {
         return $this->getFacts()->getProfessionalEditionRootPath();
     }
 
-    /**
-     * @return string
-     */
     public function getOutPath(): string
     {
         return $this->getFacts()->getOutPath();
     }
 
-    /**
-     * @return string
-     */
     public function getEnterpriseEditionRootPath(): string
     {
         return $this->getFacts()->getEnterpriseEditionRootPath();
     }
 
-    /**
-     * @return int
-     */
     public function getDefaultShopId(): int
     {
         return ShopIdCalculator::BASE_SHOP_ID;
     }
 
-    /**
-     * @return array
-     */
     public function getAllShopIds(): array
     {
         return [
@@ -134,84 +100,57 @@ class BasicContext implements BasicContextInterface
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getBackwardsCompatibilityClassMap(): array
     {
         return (new BackwardsCompatibilityClassMapProvider())->getMap();
     }
 
-    /**
-     * @return string
-     */
     public function getProjectConfigurationDirectory(): string
     {
         return $this->getConfigurationDirectoryPath();
     }
 
-    /**
-     * @return string
-     */
     public function getConfigurationDirectoryPath(): string
     {
         return $this->getShopRootPath() . '/var/configuration/';
     }
 
-    /**
-     * @return string
-     */
     public function getShopConfigurationDirectory(int $shopId): string
     {
-        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string) $shopId);
+        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string)$shopId);
     }
 
-    /**
-     * @return string
-     */
     public function getShopRootPath(): string
     {
         return $this->getFacts()->getShopRootPath();
     }
 
-    /**
-     * @return string
-     */
     public function getVendorPath(): string
     {
         return $this->getFacts()->getVendorPath();
     }
 
-    /**
-     * @return string
-     */
     public function getComposerVendorName(): string
     {
         return $this->getFacts()::COMPOSER_VENDOR_OXID_ESALES;
     }
 
-    /**
-     * @return string
-     */
     public function getConfigFilePath(): string
     {
         return $this->getSourcePath() . '/config.inc.php';
     }
 
-    /**
-     * @return string
-     */
     public function getConfigTableName(): string
     {
         return 'oxconfig';
     }
 
-    /**
-     * @return string
-     */
     public function getCacheDirectory(): string
     {
-        return (new ConfigFile())->getVar('sCompileDir');
+        return Path::join(
+            (new ConfigFile())->getVar('sCompileDir'),
+            'cache'
+        );
     }
 
     public function getModuleCacheDirectory(): string
@@ -222,9 +161,6 @@ class BasicContext implements BasicContextInterface
         );
     }
 
-    /**
-     * @return Facts
-     */
     public function getFacts(): Facts
     {
         if ($this->facts === null) {

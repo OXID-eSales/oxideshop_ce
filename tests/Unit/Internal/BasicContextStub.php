@@ -218,14 +218,14 @@ class BasicContextStub implements BasicContextInterface
         return $this->composerVendorName;
     }
 
-    public function setCacheDirectory(string $cacheDirectory): void
-    {
-        $this->cacheDirectory = $cacheDirectory;
-    }
-
     public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;
+    }
+
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
     }
 
     public function getModuleCacheDirectory(): string

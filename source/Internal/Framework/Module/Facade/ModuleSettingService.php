@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
@@ -20,10 +20,10 @@ use Symfony\Component\String\UnicodeString;
 class ModuleSettingService implements ModuleSettingServiceInterface
 {
     public function __construct(
-        private ContextInterface $context,
-        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private ModuleCacheServiceInterface $moduleCacheService,
-        private EventDispatcherInterface $eventDispatcher
+        private readonly ContextInterface $context,
+        private readonly ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private readonly ModuleCacheInterface $moduleCache,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -92,8 +92,6 @@ class ModuleSettingService implements ModuleSettingServiceInterface
     {
         $shopId = $this->context->getCurrentShopId();
 
-        $this->moduleCacheService->invalidate($moduleId, $shopId);
-
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
         $setting = $moduleConfiguration->getModuleSetting($name);
         $setting->setValue($value);
@@ -107,15 +105,14 @@ class ModuleSettingService implements ModuleSettingServiceInterface
         $shopId = $this->context->getCurrentShopId();
         $cacheKey = $this->getCacheKey($moduleId, $name);
 
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put(
+        if (!$this->moduleCache->exists($cacheKey)) {
+            $this->moduleCache->put(
                 $cacheKey,
-                $shopId,
                 ['value' => $this->moduleConfigurationDao->get($moduleId, $shopId)->getModuleSetting($name)->getValue()]
             );
         }
 
-        return $this->moduleCacheService->get($cacheKey, $shopId)['value'];
+        return $this->moduleCache->get($cacheKey, $shopId)['value'];
     }
 
     private function getCacheKey(string $moduleId, string $name): string

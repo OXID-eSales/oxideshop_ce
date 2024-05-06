@@ -14,10 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Edition\EditionSelector;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class ContainerBuilderTest extends TestCase
+final class ContainerBuilderTest extends TestCase
 {
     public function testWhenCeServicesLoaded(): void
     {
@@ -99,6 +100,19 @@ class ContainerBuilderTest extends TestCase
         $this->assertSame(
             'Service overwriting for Project!',
             $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
+    }
+
+    #[Group('cache')]
+    public function testCacheDirectoryParameterIsSet(): void
+    {
+        $context = $this->makeContextStub();
+        $context->setCacheDirectory('cache');
+        $container = $this->makeContainer($context);
+
+        $this->assertSame(
+            $context->getCacheDirectory(),
+            $container->getParameter('oxid_cache_directory')
         );
     }
 

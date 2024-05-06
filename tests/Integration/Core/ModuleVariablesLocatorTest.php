@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -72,15 +72,13 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
 
     private function putChainToCache(array $chain): void
     {
-        $shopId = 1;
         $cacheKey = 'module_class_extensions';
 
         ContainerFactory::getInstance()
             ->getContainer()
-            ->get(ModuleCacheServiceInterface::class)
+            ->get(ModuleCacheInterface::class)
             ->put(
                 $cacheKey,
-                $shopId,
                 $chain
             );
     }

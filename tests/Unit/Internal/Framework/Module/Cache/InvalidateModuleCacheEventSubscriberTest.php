@@ -9,29 +9,24 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\InvalidateModuleCacheEventSubscriber;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ModuleSetupEvent;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-class InvalidateModuleCacheEventSubscriberTest extends TestCase
+final class InvalidateModuleCacheEventSubscriberTest extends TestCase
 {
-    public function testSubscriberCallsModuleCacheService()
+    public function testSubscriberCallsModuleCacheService(): void
     {
-        $moduleCacheService = $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock();
-        $moduleCacheService
+        $shopCacheCleaner = $this->getMockBuilder(ShopCacheCleanerInterface::class)->getMock();
+        $shopCacheCleaner
             ->expects($this->once())
-            ->method('invalidate');
+            ->method('clear');
 
         $event = new class (1, 'testModuleId') extends ModuleSetupEvent {
         };
 
-        $subscriber = new InvalidateModuleCacheEventSubscriber($moduleCacheService);
+        $subscriber = new InvalidateModuleCacheEventSubscriber($shopCacheCleaner);
         $subscriber->invalidateModuleCache($event);
     }
 }

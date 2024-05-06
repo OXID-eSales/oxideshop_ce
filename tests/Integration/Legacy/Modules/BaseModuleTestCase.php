@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -42,7 +42,7 @@ abstract class BaseModuleTestCase extends TestCase
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
         $this->getContainer()
-            ->get(ModuleCacheServiceBridgeInterface::class)->invalidateAll();
+            ->get(ShopCacheCleanerInterface::class)->clearAll();
         parent::tearDown();
     }
 

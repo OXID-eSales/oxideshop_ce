@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\Facade;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Facade;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
@@ -22,6 +22,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActi
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 
@@ -71,10 +72,11 @@ final class ActiveModulesDataProviderTest extends TestCase
         );
     }
 
+    #[Group('cache')]
     public function testGetModulePathsUsesCacheIfItExists(): void
     {
         $cache = $this->getDummyCache();
-        $cache->put('absolute_module_paths', 1, ['moduleId' => 'somePath']);
+        $cache->put('absolute_module_paths', ['moduleId' => 'somePath']);
 
         $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
 
@@ -98,7 +100,8 @@ final class ActiveModulesDataProviderTest extends TestCase
 
     public function testGetControllers(): void
     {
-        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheServiceInterface::class));
+        $activeModulesDataProvider =
+            $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheInterface::class));
 
         $this->assertEquals(
             [
@@ -111,7 +114,8 @@ final class ActiveModulesDataProviderTest extends TestCase
 
     public function testGetModuleClassExtensionsIfCacheDoesNotExist(): void
     {
-        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheServiceInterface::class));
+        $activeModulesDataProvider =
+            $this->getActiveModulesDataProviderWithCache($this->get(ModuleCacheInterface::class));
 
         $this->assertEquals(
             [
@@ -127,7 +131,6 @@ final class ActiveModulesDataProviderTest extends TestCase
         $cache = $this->getDummyCache();
         $cache->put(
             'module_class_extensions',
-            1,
             [
                 'shopClassCache'        => ['moduleExtensionClassName1'],
                 'anotherShopClassCache' => ['moduleExtensionClassName2'],
@@ -154,10 +157,12 @@ final class ActiveModulesDataProviderTest extends TestCase
             ->addController(new ModuleConfiguration\Controller('activeController1', 'activeControllerNamespace1'))
             ->addController(new ModuleConfiguration\Controller('activeController2', 'activeControllerNamespace2'))
             ->addClassExtension(new ModuleConfiguration\ClassExtension('shopClass', 'moduleExtensionClassName1'))
-            ->addClassExtension(new ModuleConfiguration\ClassExtension(
-                'anotherShopClass',
-                'moduleExtensionClassName2'
-            ));
+            ->addClassExtension(
+                new ModuleConfiguration\ClassExtension(
+                    'anotherShopClass',
+                    'moduleExtensionClassName2'
+                )
+            );
 
         $chain = new ClassExtensionsChain();
         $chain->addExtension(new ModuleConfiguration\ClassExtension('shopClass', 'moduleExtensionClassName1'));
@@ -193,7 +198,7 @@ final class ActiveModulesDataProviderTest extends TestCase
             ->deactivate($this->activeModuleId, $this->context->getDefaultShopId());
     }
 
-    private function getActiveModulesDataProviderWithCache(ModuleCacheServiceInterface $cache): ActiveModulesDataProvider
+    private function getActiveModulesDataProviderWithCache(ModuleCacheInterface $cache): ActiveModulesDataProvider
     {
         return new ActiveModulesDataProvider(
             $this->get(ModuleConfigurationDaoInterface::class),
@@ -204,32 +209,28 @@ final class ActiveModulesDataProviderTest extends TestCase
         );
     }
 
-    private function getDummyCache(): ModuleCacheServiceInterface
+    private function getDummyCache(): ModuleCacheInterface
     {
-        return new class implements ModuleCacheServiceInterface {
+        return new class implements ModuleCacheInterface {
             private array $cache;
 
-            public function invalidate(string $moduleId, int $shopId): void
+            public function deleteItem(string $key): void
             {
             }
 
-            public function invalidateAll(): void
+            public function put(string $key, array $data): void
             {
+                $this->cache[$key] = $data;
             }
 
-            public function put(string $key, int $shopId, array $data): void
+            public function get(string $key): array
             {
-                $this->cache[$shopId][$key] = $data;
+                return $this->cache[$key];
             }
 
-            public function get(string $key, int $shopId): array
+            public function exists(string $key): bool
             {
-                return $this->cache[$shopId][$key];
-            }
-
-            public function exists(string $key, int $shopId): bool
-            {
-                return isset($this->cache[$shopId][$key]);
+                return isset($this->cache[$key]);
             }
         };
     }

@@ -11,10 +11,8 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 
-/**
- * Category tree widget.
- * Forms category tree.
- */
+use function basename;
+
 class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
@@ -40,11 +38,14 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     {
         parent::render();
 
-        $widgetType = \basename($this->getViewParameter('sWidgetType'));
+        $widgetType = $this->getViewParameter('sWidgetType');
         if (!$widgetType) {
             return $this->_sThisTemplate;
         }
-        $template = "widget/$widgetType/categorylist";
+        $template = sprintf(
+            'widget/%s/categorylist',
+            basename($widgetType)
+        );
         $templateExists = ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer()
             ->exists($template);

@@ -99,7 +99,7 @@ class SimpleXml
         }
 
         if (is_object($mElement) || is_array($mElement)) {
-            if (is_int(key($mElement))) {
+            if (is_array($mElement) && is_int(key($mElement))) {
                 $this->addSimpleXmlElement($oXml, $mElement, $sKey);
             } else {
                 $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);

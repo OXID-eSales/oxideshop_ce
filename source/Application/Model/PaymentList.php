@@ -57,7 +57,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;
+        $sBoni = ($oUser && $oUser->getFieldData('oxboni')) ? $oUser->oxuser__oxboni->value : 0;
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxpayments');

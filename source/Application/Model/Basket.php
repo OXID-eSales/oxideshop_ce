@@ -14,6 +14,7 @@ use stdClass;
 /**
  * Basket manager
  */
+#[\AllowDynamicProperties]
 class Basket extends \OxidEsales\Eshop\Core\Base
 {
     /**
@@ -1746,7 +1747,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
             // still not found ?
             if (!$sDeliveryCountry) {
-                $sDeliveryCountry = $oUser->oxuser__oxcountryid->value;
+                $sDeliveryCountry = $oUser->getFieldData('oxcountryid');
             }
         }
 

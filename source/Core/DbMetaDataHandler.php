@@ -252,7 +252,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         // removing comments;
         $tableSql = preg_replace('/COMMENT \\\'.*?\\\'/', '', $tableSql);
         preg_match("/.*,\s+(['`]?" . preg_quote($field, '/') . "['`]?\s+[^,]+),.*/", $tableSql, $match);
-        $fieldSql = $match[1];
+        $fieldSql = $match[1] ?? '';
 
         $sql = "";
         if (!empty($fieldSql)) {

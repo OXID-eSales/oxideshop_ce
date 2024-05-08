@@ -1500,7 +1500,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getVariantsCount()
     {
-        return $this->oxarticles__oxvarcount->value;
+        return $this->getFieldData('oxvarcount');
     }
 
     /**
@@ -3334,7 +3334,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sFields = 'oxid';
         }
         $sSelectWhere = "select $sFields from " . $this->getObjectViewName('oxcategories') . " where";
-        $sQuotedPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->oxarticles__oxprice->value);
+        $sQuotedPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getFieldData('oxprice') ?? '');
 
         return "$sSelectWhere oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice"
                . " union $sSelectWhere oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice"
@@ -4800,7 +4800,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if ($oldStock < 0) {
                 $oldStock = 0;
             }
-            if ($this->oxarticles__oxstockflag->value == 2 && $oldStock xor $stock) {
+            if ($this->getFieldData('oxstockflag') == 2 && $oldStock xor $stock) {
                 //means the stock status could be changed (oxstock turns from 0 to 1 or from 1 to 0)
                 // so far we leave it like this but later we could move all count resets to one or two functions
                 $this->onChangeResetCounts($parentId, $vendorId, $manufacturerId);

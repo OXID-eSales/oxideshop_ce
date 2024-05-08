@@ -13,6 +13,7 @@ use Exception;
 /**
  * Seo encoder base
  */
+#[\AllowDynamicProperties]
 class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 {
     /**

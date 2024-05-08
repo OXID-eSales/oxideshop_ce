@@ -44,7 +44,7 @@ class Encryptor
     protected function formKey($key, $string)
     {
         $key = '_' . $key;
-        $keyLength = (strlen($string) / strlen($key)) + 5;
+        $keyLength = (int) (strlen($string) / strlen($key)) + 5;
 
         return str_repeat($key, $keyLength);
     }

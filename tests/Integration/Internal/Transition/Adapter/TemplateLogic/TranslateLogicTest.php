@@ -83,7 +83,7 @@ class TranslateLogicTest extends IntegrationTestCase
             ],
             [
                 false,
-                'ident' => 'MY_MISING_TRANSLATION',
+                'MY_MISING_TRANSLATION',
                 'ERROR: Translation for MY_MISING_TRANSLATION not found!',
             ],
         ];

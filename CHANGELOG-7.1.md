@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.1.1 - Unreleased
+
+### Deprecated
+- Deprecated the `BasicContextInterface::getCurrentShopId`. Use the `ContextInterface::getCurrentShopId` instead.
+
 ## v7.1.0 - 2024-03-18
 
 ### Added
@@ -19,7 +24,6 @@
 - `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,
 template extension resolving is already performed in `TemplateRenderer`
 - Smarty template engine support
-- Deprecated `BasicContextInterface::getCurrentShopId`. Use the `ContextInterface::getCurrentShopId` to get the current shop id.
 
 ### Fixed
 - Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)

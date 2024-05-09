@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.1.1 - Unreleased
+
+### Deprecated
+- Deprecated the `BasicContextInterface::getCurrentShopId`. Use the `ContextInterface::getCurrentShopId` instead.
+
 ## v7.1.0 - 2024-03-18
 
 ### Added
@@ -26,7 +31,7 @@ template extension resolving is already performed in `TemplateRenderer`
 - Docblocks in `UtilsComponent` [PR-950](https://github.com/OXID-eSales/oxideshop_ce/pull/950)
 
 ### Changed
--  Executing `oe-console` command with an invalid `shop-id` value will be interrupted
+- Executing `oe-console` command with an invalid `shop-id` value will be interrupted
 
 ### Removed
 - PHP v8.0 support

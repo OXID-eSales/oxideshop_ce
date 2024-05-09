@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNot
 
 interface ContextInterface extends BasicContextInterface
 {
+    public function getCurrentShopId(): int;
+
     /**
      * @return string
      */

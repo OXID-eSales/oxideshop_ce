@@ -71,7 +71,7 @@ interface BasicContextInterface
     public function getDefaultShopId(): int;
 
     /**
-     * @return int
+     * @deprecated on v7.0.4, Please use the ContextInterface::getCurrentShopId instead of current one
      */
     public function getCurrentShopId(): int;
 

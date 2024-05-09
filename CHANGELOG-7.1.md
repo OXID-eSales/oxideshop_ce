@@ -19,6 +19,7 @@
 - `TemplateFileResolverInterface` is redundant and will be  removed in the next major version,
 template extension resolving is already performed in `TemplateRenderer`
 - Smarty template engine support
+- Deprecated `BasicContextInterface::getCurrentShopId`. Use the `ContextInterface::getCurrentShopId` to get the current shop id.
 
 ### Fixed
 - Wrong property "_oUserData" used in ContactController [PR-918](https://github.com/OXID-eSales/oxideshop_ce/pull/918)
@@ -26,7 +27,7 @@ template extension resolving is already performed in `TemplateRenderer`
 - Docblocks in `UtilsComponent` [PR-950](https://github.com/OXID-eSales/oxideshop_ce/pull/950)
 
 ### Changed
--  Executing `oe-console` command with an invalid `shop-id` value will be interrupted
+- Executing `oe-console` command with an invalid `shop-id` value will be interrupted
 
 ### Removed
 - PHP v8.0 support

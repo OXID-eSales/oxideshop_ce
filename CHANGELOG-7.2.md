@@ -7,6 +7,7 @@
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed
+- Config parameters sShopDir, sCompileDir and sLogLevel will be moved from config file to env parameters
 
 ### Fixed
 - User registration in the Private Sales mode

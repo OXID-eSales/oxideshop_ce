@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem;
 
 use Symfony\Component\Finder\Finder;
 
+/**
+ *  @deprecated will be removed in next major, use \Symfony\Component\Finder\Finder::create() instead
+ */
 class FinderFactory implements FinderFactoryInterface
 {
     /**

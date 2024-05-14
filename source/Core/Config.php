@@ -89,6 +89,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Shops install directory
      *
      * @var string
+     *
+     * @deprecated will be removed in next major, use environment variables instead
      */
     protected $sShopDir = null;
 
@@ -96,6 +98,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Shops compile directory
      *
      * @var string
+     *
+     * @deprecated will be removed in next major, use environment variables instead
      */
     protected $sCompileDir = null;
 
@@ -868,6 +872,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop
+     *
+     * @deprecated since v8.0 use getShopUrl instead
      *
      * @param int $lang language (default is null)
      *

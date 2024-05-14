@@ -47,13 +47,16 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getConfigurableServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'configuration', 'configurable_services.yaml');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getShopConfigurableServicesFilePath(int $shopId): string
     {
         return Path::join(
@@ -159,7 +162,7 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getConfigurationDirectoryPath(): string
     {

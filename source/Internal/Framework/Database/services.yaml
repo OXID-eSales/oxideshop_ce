@@ -8,6 +8,14 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider
     public: true
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '7.2.0'
+      message: 'The "%service_id%" service is deprecated.'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactory
@@ -15,3 +23,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionService
+    deprecated:
+      package: 'oxid-esales/oxideshop-ce'
+      version: '7.2.0'
+      message: 'The "%service_id%" service is deprecated.'

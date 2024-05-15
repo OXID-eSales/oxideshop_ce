@@ -9,7 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal
@@ -18,7 +22,7 @@ use Symfony\Component\DependencyInjection\Container;
 trait ContainerTrait
 {
     private $container;
-    
+
     protected function get(string $serviceId)
     {
         $this->prepareContainer();
@@ -34,9 +38,42 @@ trait ContainerTrait
     private function prepareContainer(): void
     {
         if ($this->container === null) {
-            $this->container = (new TestContainerFactory())->create();
-            $this->container->compile();
-            $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+            $this->createContainer();
+            $this->compileContainer();
         }
+    }
+
+    private function createContainer(): void
+    {
+        $this->container = (new TestContainerFactory())->create();
+    }
+
+    private function compileContainer(): void
+    {
+        $this->container->compile(true);
+        $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+    }
+
+    private function loadYamlFixture(string $fixtureDir): void
+    {
+        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
+        $loader->load(Path::join($fixtureDir, 'services.yaml'));
+    }
+
+    private function replaceService(string $id, object $service): void
+    {
+        $this->container->set($id, $service);
+        $this->container->autowire($id, $id);
+    }
+
+    /**
+     * Run tests in a separate process if you use this function.
+     */
+    private function attachContainerToContainerFactory(): void
+    {
+        $reflectionClass = new \ReflectionClass(ContainerFactory::getInstance());
+        $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }
 }

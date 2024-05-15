@@ -9,9 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use ReflectionClass;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Yaml;
 use UnitEnum;
 
 /**
@@ -61,6 +68,24 @@ trait ContainerTrait
         $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
     }
 
+    private function loadYamlFixture(string $fixtureDir): void
+    {
+        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
+        $loader->load(Path::join($fixtureDir, 'services.yaml'));
+    }
+
+    private function replaceService(string $id, object $service): void
+    {
+        $this->container->set($id, $service);
+        $this->container->autowire($id, $id);
+    }
+
+    private function replaceContainerInstance(): void
+    {
+        $this->prepareContainer();
+        $this->attachContainerToContainerFactory();
+    }
+
     /**
      * Run tests in a separate process if you use this function.
      */
@@ -72,5 +97,16 @@ trait ContainerTrait
         $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
         $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
+    }
+
+    private function rewriteProjectConfiguration(array $config): void
+    {
+        (new Filesystem())->dumpFile(
+            Path::join(
+                ContainerFacade::get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
+                'parameters.yaml'
+            ),
+            Yaml::dump($config)
+        );
     }
 }

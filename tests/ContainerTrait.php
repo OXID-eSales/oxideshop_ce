@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -59,9 +60,20 @@ trait ContainerTrait
         $loader->load(Path::join($fixtureDir, 'services.yaml'));
     }
 
-    private function replaceService(string $id, ?object $service): void
+    private function replaceService(string $id, object $service): void
     {
         $this->container->set($id, $service);
         $this->container->autowire($id, $id);
+    }
+
+    /**
+     * Run tests in a separate process if you use this function.
+     */
+    private function attachContainerToContainerFactory(): void
+    {
+        $reflectionClass = new \ReflectionClass(ContainerFactory::getInstance());
+        $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }
 }

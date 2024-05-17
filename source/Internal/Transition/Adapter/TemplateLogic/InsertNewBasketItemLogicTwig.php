@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\ViewConfig;
 use Twig\Environment;
 
 class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
@@ -30,13 +32,13 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
     {
         // loading article object here because on some system passing article by session causes problems
         $newItem->oArticle = oxNew(Article::class);
-        $newItem->oArticle->Load($newItem->sId);
+        $newItem->oArticle->load($newItem->sId);
 
         // passing variable to template with unique name
-        $templateEngine->addGlobal('_newitem', $newItem);
+        $templateEngine->addGlobal('_newitem', clone $newItem);
 
         // deleting article object data
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('_newitem');
+        Registry::getSession()->deleteVariable('_newitem');
     }
 
     /**
@@ -55,7 +57,9 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
     public function getGlobals(): array
     {
         return [
-            '_newitem' => null
+            '_newitem' => null,
+            'oViewConf' => oxNew(ViewConfig::class),
+            'sessionBasket' => Registry::getSession()->getBasket(),
         ];
     }
 }

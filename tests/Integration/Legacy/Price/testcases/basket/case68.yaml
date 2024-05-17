@@ -1,0 +1,12 @@
+articles:
+    - { oxid: _testProduct, oxprice: 10.0, oxvat: 19, amount: 31 }
+discounts:
+    - { oxid: basket_0, oxaddsum: 6.0, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxprice: 100, oxpriceto: 199, oxactive: 1, oxarticles: [_testProduct], oxsort: 10 }
+    - { oxid: basket_1, oxaddsum: 9.0, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxprice: 200, oxpriceto: 299, oxactive: 1, oxarticles: [_testProduct], oxsort: 20 }
+    - { oxid: basket_2, oxaddsum: 12.0, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxprice: 300, oxpriceto: 99999, oxactive: 1, oxarticles: [_testProduct], oxsort: 30 }
+expected:
+    articles: { _testProduct: ['8,80', '272,80'] }
+    totals: { totalBrutto: '272,80', totalNetto: '229,24', vats: { 19: '43,56' }, grandTotal: '272,80' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

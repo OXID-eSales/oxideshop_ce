@@ -1,0 +1,12 @@
+articles:
+    - { oxid: variantDiscountTestParentArticle, oxprice: 50.0 }
+    - { oxid: variantDiscountTestChildArticle, oxparentid: variantDiscountTestParentArticle, oxprice: 50.0 }
+categories:
+    - { oxid: variantDiscountTestCategory, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [variantDiscountTestChildArticle] }
+discounts:
+    - { oxid: variantDiscountDiscountId, oxaddsum: 20, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxcategories: [variantDiscountTestCategory], oxsort: 10 }
+expected:
+    variantDiscountTestChildArticle: { base_price: '50,00', price: '30,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

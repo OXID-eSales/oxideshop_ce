@@ -1,0 +1,19 @@
+articles:
+    - { oxid: 1001, oxprice: 20.0, oxvat: 10, amount: 15 }
+    - { oxid: 1002, oxprice: 200.0, oxvat: 19, amount: 1 }
+    - { oxid: 1004, oxprice: 200.0, oxvat: 19 }
+discounts:
+    - { oxid: discountitm, oxaddsum: 0, oxaddsumtype: itm, oxamount: 1, oxamountto: 99999, oxactive: 1, oxitmartid: 1004, oxitmamount: 1, oxitmultiple: 1, oxarticles: [1002], oxsort: 10 }
+costs:
+    wrapping: [{ oxtype: CARD, oxname: testCard1001, oxprice: 2.5, oxactive: 1 }]
+    delivery: [{ oxactive: 1, oxaddsum: 55, oxaddsumtype: '%', oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 55, oxaddsumtype: '%', oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1, oxaddsumrules: 1 }]
+    voucherserie: [{ oxdiscount: 10.0, oxdiscounttype: '%', oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
+expected:
+    1: { articles: { 1001: ['20,00', '300,00'], 1002: ['200,00', '200,00'], 1004: ['0,00', '0,00'] }, totals: { totalBrutto: '511,20', totalNetto: '500,00', vats: { 19: '34,20', 10: '27,00' }, delivery: { brutto: '302,50', netto: '275,00', vat: '27,50' }, payment: { brutto: '302,50', netto: '275,00', vat: '27,50' }, discount: '0,00', voucher: { brutto: '50,00' }, giftcard: { brutto: '2,75', netto: '2,50', vat: '0,25' }, grandTotal: '1.118,95' } }
+    2: { articles: { 1001: ['20,00', '300,00'], 1002: ['200,00', '400,00'], 1004: ['0,00', '0,00'] }, totals: { totalBrutto: '725,40', totalNetto: '700,00', vats: { 19: '68,40', 10: '27,00' }, delivery: { brutto: '458,15' }, discount: '0,00', payment: { brutto: '458,15' }, voucher: { brutto: '70,00' }, giftcard: { brutto: '2,98' }, grandTotal: '1.644,68' } }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForDelivery: true, blShowVATForPayCharge: true, blShowVATForWrapping: true, sAdditionalServVATCalcMethod: biggest_net, blDeliveryVatOnTop: true, blPaymentVatOnTop: true, blWrappingVatOnTop: true }
+    activeCurrencyRate: 1
+actions:
+    changeArticles: [{ oxid: '1002', amount: 2 }]

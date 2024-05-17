@@ -1,0 +1,18 @@
+articles:
+    - { oxid: 1000, oxprice: 100.55, oxpricea: 100, oxpriceb: 10 }
+user:
+    oxid: _testUser
+    oxactive: 1
+    oxusername: user
+discounts:
+    - { oxid: percentForShop, oxaddsum: 5.5, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+    - { oxid: groupADiscount, oxaddsum: 10, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxgroups: [oxidpricea], oxsort: 20 }
+    - { oxid: groupBDiscount, oxaddsum: 5, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxgroups: [oxidpriceb], oxsort: 30 }
+group:
+    - { oxid: oxidpricea, oxactive: 1, oxtitle: 'Price A', oxobject2group: [_testUserA, groupADiscount] }
+    - { oxid: oxidpriceb, oxactive: 1, oxtitle: 'Price B', oxobject2group: [_testUserB, groupBDiscount] }
+expected:
+    1000: { base_price: '100,55', price: '95,02' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: true, dDefaultVAT: 20 }
+    activeCurrencyRate: 1

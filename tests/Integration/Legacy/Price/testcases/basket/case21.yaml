@@ -1,0 +1,8 @@
+articles:
+    - { oxid: 9202, oxprice: 16.2, oxvat: 0, amount: 1 }
+expected:
+    articles: { 9202: ['16,20', '16,20'] }
+    totals: { totalBrutto: '16,20', totalNetto: '16,20', vats: ['0,00'], grandTotal: '16,20' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

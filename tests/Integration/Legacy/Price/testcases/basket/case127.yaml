@@ -1,0 +1,8 @@
+articles:
+    - { oxid: 111, oxprice: 24.95, oxvat: 19, amount: 150 }
+expected:
+    articles: { 111: ['10,49', '1.573,50'] }
+    totals: { totalBrutto: '1.872,47', totalNetto: '1.573,50', vats: { 19: '298,97' }, grandTotal: '1.872,47' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: true, blShowVATForWrapping: true, blShowVATForPayCharge: true, blShowVATForDelivery: true, sAdditionalServVATCalcMethod: biggest_net }
+    activeCurrencyRate: 0.5

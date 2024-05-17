@@ -1,0 +1,9 @@
+articles:
+    - { oxid: '3587', oxtitle: newspaper, oxprice: 2.98, amount: 200 }
+discounts:
+    - { oxid: discount2forShop, oxaddsum: 2, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: ['3587'], oxsort: 10 }
+expected:
+    articles: { 3587: ['2,92', '584,00'] }
+    totals: { totalBrutto: '584,00', totalNetto: '490,76', vats: { 19: '93,24' }, grandTotal: '584,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }

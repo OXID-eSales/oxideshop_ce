@@ -1,0 +1,16 @@
+articles:
+    - { oxid: '111', oxtitle: '111', oxprice: 55.55, oxvat: 15.55, oxstock: 999, amount: 6 }
+discounts:
+    - { oxid: discount15fo678, oxaddsum: 15, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [111], oxsort: 10 }
+    - { oxid: discountitm, oxaddsum: 0, oxaddsumtype: itm, oxamount: 1, oxamountto: 99999, oxactive: 1, oxitmartid: 1004, oxitmamount: 1, oxitmultiple: 2, oxarticles: [111], oxsort: 20 }
+costs:
+    delivery: [{ oxactive: 1, oxtitle: 'Shipping costs for Example Set2: UPS 24 hrs Express: $12.90', oxaddsum: 13, oxaddsumtype: '%', oxdeltype: p, oxfinalize: 1, oxparamend: 99999, oxsort: '5000', oxfixed: 0, oxdeliveryset: { oxactive: 1, oxpos: 30, oxtitle: 'Example Set2: UPS Express 24 hours' } }]
+    payment: [{ oxaddsum: 13, oxaddsumtype: '%', oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1, oxaddsumrules: 7 }]
+expected:
+    1: { articles: { 111: ['40,86', '245,16'] }, totals: { totalBrutto: '283,28', discount: '0,00', totalNetto: '245,16', vats: { 15: '38,12' }, delivery: { brutto: '31,87' }, payment: { brutto: '31,87' }, grandTotal: '347,02' } }
+    2: { articles: { 111: ['40,86', '40,86'] }, totals: { totalBrutto: '47,21', discount: '0,00', totalNetto: '40,86', vats: { 15: '6,35' }, delivery: { brutto: '5,31' }, payment: { brutto: '5,31' }, grandTotal: '57,83' } }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: true }
+actions:
+    changeConfigs: { blEnterNetPrice: false, blShowNetPrice: true }
+    changeArticles: [{ oxid: '111', amount: 1 }]

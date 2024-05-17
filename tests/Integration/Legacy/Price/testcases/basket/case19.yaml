@@ -1,0 +1,10 @@
+articles:
+    - { oxid: 9201, oxprice: 66.58, oxvat: 17, amount: 1 }
+discounts:
+    - { oxid: abs_discount_for_9201, oxaddsum: 4.32, oxaddsumtype: abs, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [9201], oxsort: 10 }
+expected:
+    articles: { 9201: ['73,58', '73,58'] }
+    totals: { totalBrutto: '73,58', totalNetto: '62,89', vats: { 17: '10,69' }, grandTotal: '73,58' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false }
+    activeCurrencyRate: 1

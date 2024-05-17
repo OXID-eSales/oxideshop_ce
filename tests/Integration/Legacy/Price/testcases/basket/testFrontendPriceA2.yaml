@@ -1,0 +1,16 @@
+articles:
+    - { oxid: 1002, oxprice: 50.0, oxpricea: 35, oxpriceb: 45, oxpricec: 55, amount: 1, oxvat: 19, oxtitle: 'Wall Clock ROBOT', oxunitname: kg, oxunitquantity: 2, oxweight: 10 }
+user:
+    oxid: _testUserA
+    oxactive: 1
+    oxusername: groupAUser
+group:
+    - { oxid: oxidpricea, oxactive: 1, oxtitle: 'Price A', oxobject2group: [1002, _testUserA] }
+    - { oxid: oxidpriceb, oxactive: 1, oxtitle: 'Price B', oxobject2group: [_testUserB] }
+    - { oxid: oxidpricec, oxactive: 1, oxtitle: 'Price C', oxobject2group: [_testUserC] }
+expected:
+    articles: { 1002: ['35,00', '35,00'] }
+    totals: { totalBrutto: '35,00', totalNetto: '29,41', vats: { 19: '5,59' }, grandTotal: '35,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blOverrideZeroABCPrices: true, dDefaultVAT: 19 }
+    activeCurrencyRate: 1

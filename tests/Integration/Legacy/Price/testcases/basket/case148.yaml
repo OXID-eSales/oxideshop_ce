@@ -1,0 +1,11 @@
+articles:
+    - { oxid: 9202, oxprice: 15.93, oxvat: 15, amount: 21 }
+    - { oxid: 9208, oxprice: 70.87, oxvat: 15, amount: 9 }
+    - { oxid: 9213, oxprice: 25.86, oxvat: 0, amount: 10 }
+    - { oxid: 9216, oxprice: 48.25, oxvat: 0, amount: 4 }
+    - { oxid: 9218, oxprice: 58.09, oxvat: 15, amount: 5 }
+expected:
+    articles: { 9202: ['15,93', '334,53'], 9208: ['70,87', '637,83'], 9213: ['25,86', '258,60'], 9216: ['48,25', '193,00'], 9218: ['58,09', '290,45'] }
+    totals: { totalBrutto: '1.714,41', totalNetto: '1.549,70', vats: { 0: '0,00', 15: '164,71' }, grandTotal: '1.714,41' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }

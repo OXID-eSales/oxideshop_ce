@@ -1,0 +1,10 @@
+articles:
+    - { oxid: 9200, oxprice: 87.0, oxvat: 17, amount: 120 }
+    - { oxid: 9201, oxprice: 72.85, oxvat: 17, amount: 5 }
+    - { oxid: 9202, oxprice: 16.21, oxvat: 17, amount: 39 }
+expected:
+    articles: { 9200: ['59,16', '7.099,20'], 9201: ['49,54', '247,70'], 9202: ['11,02', '429,78'] }
+    totals: { totalBrutto: '7.776,68', totalNetto: '6.646,74', vats: { 17: '1.129,94' }, grandTotal: '7.776,68' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 0.68

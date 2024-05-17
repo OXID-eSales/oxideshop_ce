@@ -1,0 +1,16 @@
+articles:
+    0: { oxid: 9200, oxprice: 87, oxvat: 17, amount: 63 }
+    1: { oxid: 9206, oxprice: 103, oxvat: 19, amount: 125 }
+    3: { oxid: 9216, oxprice: 56.45, oxvat: 17, amount: 14 }
+    4: { oxid: 9218, oxprice: 59.6, oxvat: 18, amount: 39 }
+discounts:
+    - { oxid: discount2for9200and9206, oxaddsum: 2, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [9200, 9206], oxsort: 10 }
+costs:
+    wrapping: [{ oxtype: WRAP, oxname: wrapFor9216, oxprice: 0.57, oxactive: 1, oxarticles: [9216] }]
+    delivery: [{ oxactive: 1, oxaddsum: 15, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+expected:
+    articles: { 9200: ['85,26', '5.371,38'], 9206: ['100,94', '12.617,50'], 9216: ['56,45', '790,30'], 9218: ['59,60', '2.324,40'] }
+    totals: { totalBrutto: '21.103,58', totalNetto: '17.839,16', vats: { 17: '895,29', 18: '354,57', 19: '2.014,56' }, wrapping: { brutto: '7,98', netto: '6,82', vat: '1,16' }, delivery: { brutto: '15,00', netto: '12,61', vat: '2,39' }, grandTotal: '21.126,56' }
+options:
+    activeCurrencyRate: 1
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blShowVATForWrapping: true, blShowVATForDelivery: true }

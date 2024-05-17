@@ -1,0 +1,20 @@
+articles:
+    - { oxid: 9007, oxprice: 100, oxvat: 19, amount: 33 }
+    - { oxid: 9008, oxprice: 66, oxvat: 19, amount: 16 }
+discounts:
+    - { oxid: shopdiscount5for9007, oxaddsum: 5, oxaddsumtype: abs, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [9007], oxsort: 10 }
+    - { oxid: shopdiscount5for9008, oxaddsum: 5, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [9008], oxsort: 20 }
+    - { oxid: basketdiscount5for9007, oxaddsum: 1, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [9007], oxsort: 30 }
+    - { oxid: basketdiscount5for9008, oxaddsum: 6, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [9008], oxsort: 40 }
+    - { oxid: absolutebasketdiscount, oxaddsum: 5, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 50 }
+costs:
+    wrapping: [{ oxtype: WRAP, oxname: testWrap9007, oxprice: 9, oxactive: 1, oxarticles: [9007] }, { oxtype: WRAP, oxname: testWrap9008, oxprice: 6, oxactive: 1, oxarticles: [9008] }]
+    delivery: [{ oxtitle: 6_abs_del, oxactive: 1, oxaddsum: 6, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxtitle: '1 abs payment', oxaddsum: 1, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+    voucherserie: [{ oxdiscount: 6.0, oxdiscounttype: absolute, oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
+expected:
+    articles: { 9007: ['76,84', '2.535,72'], 9008: ['47,70', '763,20'] }
+    totals: { totalBrutto: '3.298,92', totalNetto: '2.765,92', vats: { 19: '525,52' }, discounts: { absolutebasketdiscount: '3,40' }, wrapping: { brutto: '267,24', netto: '224,57', vat: '42,67' }, delivery: { brutto: '4,08', netto: '3,43', vat: '0,65' }, payment: { brutto: '0,68', netto: '0,57', vat: '0,11' }, voucher: { brutto: '4,08' }, grandTotal: '3.563,44' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false, blShowVATForWrapping: true, blShowVATForPayCharge: true, blShowVATForDelivery: true }
+    activeCurrencyRate: 0.68

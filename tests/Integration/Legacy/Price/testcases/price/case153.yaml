@@ -1,0 +1,15 @@
+articles:
+    - { oxid: 1000, oxprice: 50.0, oxpricea: 35, oxpriceb: 45, oxpricec: 55 }
+user:
+    oxid: _testUserA
+    oxactive: 1
+    oxusername: groupAUser
+group:
+    - { oxid: oxidpricea, oxactive: 1, oxtitle: 'Price A', oxobject2group: [_testUserA] }
+    - { oxid: oxidpriceb, oxactive: 1, oxtitle: 'Price B', oxobject2group: [_testUserB] }
+    - { oxid: oxidpricec, oxactive: 1, oxtitle: 'Price C', oxobject2group: [_testUserC] }
+expected:
+    1000: { base_price: '35,00', price: '35,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false, dDefaultVAT: 20, blOverrideZeroABCPrices: true }
+    activeCurrencyRate: 1

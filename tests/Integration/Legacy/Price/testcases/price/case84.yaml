@@ -1,0 +1,18 @@
+articles:
+    - { oxid: '1000', oxprice: 100, oxtprice: 94.52 }
+    - { oxid: '1001', oxprice: 100, oxtprice: 94.52 }
+    - { oxid: '1002', oxprice: 100, oxtprice: 94.52 }
+    - { oxid: '1003', oxprice: 100, oxtprice: 94.52 }
+discounts:
+    - { oxid: percentFor1000, oxaddsum: 20, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1000], oxsort: 10 }
+    - { oxid: percentFor1001, oxaddsum: -10, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001], oxsort: 20 }
+    - { oxid: percentFor1002, oxaddsum: -5.2, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1002], oxsort: 30 }
+    - { oxid: percentFor1003, oxaddsum: 5.5, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1003], oxsort: 40 }
+expected:
+    1000: { base_price: '100,00', price: '80,00', rrp_price: '94,52', show_rrp: true }
+    1001: { base_price: '100,00', price: '110,00', rrp_price: '', show_rrp: false }
+    1002: { base_price: '100,00', price: '105,20', rrp_price: '', show_rrp: false }
+    1003: { base_price: '100,00', price: '94,50', rrp_price: '94,52', show_rrp: true }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false, dDefaultVAT: 15 }
+    activeCurrencyRate: 1

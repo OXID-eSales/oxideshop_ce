@@ -1,0 +1,9 @@
+articles:
+    - { oxid: 1000, oxprice: 50, oxvat: 5, oxunitname: kg, oxunitquantity: 10, oxweight: 10, amount: 3.4 }
+discounts:
+    - { oxid: test, oxshopid: 1, oxaddsum: 10, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxprice: 0, oxpriceto: 999999, oxactive: 1, oxsort: 10 }
+expected:
+    articles: { 1000: ['45,00', '153,00'] }
+    totals: { totalBrutto: '153,00', totalNetto: '145,71', vats: { 5: '7,29' }, grandTotal: '153,00' }
+options:
+    config: { blAllowUnevenAmounts: true, blEnterNetPrice: false, blShowNetPrice: false }

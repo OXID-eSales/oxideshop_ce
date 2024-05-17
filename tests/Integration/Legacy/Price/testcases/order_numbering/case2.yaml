@@ -1,0 +1,11 @@
+articles:
+    - { oxid: '111', oxtitle: '111', oxprice: 1, oxvat: 19, oxstock: 999, amount: 1 }
+    - { oxid: '111', oxtitle: '111', oxprice: 1, oxvat: 19, oxstock: 999, amount: 1 }
+discounts:
+    - { oxid: discount10for111, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+    - { oxid: discount10for111, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 20 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 4.64, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }, { oxactive: 1, oxaddsum: 4.64, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 59.5, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }, { oxaddsum: 59.5, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+options:
+    separateNumbering: true

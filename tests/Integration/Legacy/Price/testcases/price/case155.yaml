@@ -1,0 +1,15 @@
+articles:
+    - { oxid: 1003, oxprice: 70.0, oxpricea: 70, oxpriceb: 85, oxpricec: 0, scaleprices: { oxaddabs: 75.0, oxamount: 2, oxamountto: 5, oxartid: 1003 } }
+user:
+    oxid: _testUserB
+    oxactive: 1
+    oxusername: groupBUser
+group:
+    - { oxid: oxidpricea, oxactive: 1, oxtitle: 'Price A', oxobject2group: [_testUserA] }
+    - { oxid: oxidpriceb, oxactive: 1, oxtitle: 'Price B', oxobject2group: [_testUserB] }
+    - { oxid: oxidpricec, oxactive: 1, oxtitle: 'Price C', oxobject2group: [_testUserC] }
+expected:
+    1003: { base_price: '85,00', price: '85,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blOverrideZeroABCPrices: true, dDefaultVAT: 20 }
+    activeCurrencyRate: 1

@@ -1,0 +1,10 @@
+articles:
+    - { oxid: 1000, oxprice: 50.0, oxvat: 5, amount: 3 }
+costs:
+    wrapping: [{ oxtype: WRAP, oxname: 'Test wrapping [EN] ðÄßü?', oxprice: 0.9, oxactive: 1, oxarticles: [1000] }, { oxtype: CARD, oxname: 'Test card [EN] ðÄßü', oxprice: 0.2, oxactive: 1 }]
+expected:
+    articles: { 1000: ['52,50', '157,50'] }
+    totals: { totalBrutto: '157,50', totalNetto: '150,00', vats: { 5: '7,50' }, wrapping: { brutto: '2,84' }, giftcard: { brutto: '0,21' }, grandTotal: '160,55' }
+options:
+    config: { blShowNetPrice: false, blEnterNetPrice: true, blWrappingVatOnTop: true, blDeliveryVatOnTop: true }
+    activeCurrencyRate: 1

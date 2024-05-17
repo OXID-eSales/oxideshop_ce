@@ -1,0 +1,16 @@
+articles:
+    - { oxid: 111, oxprice: 0.55, oxvat: 33, amount: 1 }
+    - { oxid: 1112, oxprice: 1101.1, oxvat: 33, amount: 1 }
+    - { oxid: 1113, oxprice: 110, oxvat: 33, amount: 1 }
+    - { oxid: 1114, oxprice: 1.0, oxvat: 33, amount: 1 }
+discounts:
+    - { oxid: discountforbasket10%, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 55, oxaddsumtype: '%', oxdeltype: p, oxfinalize: 1, oxparam: 0.1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 55, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+expected:
+    articles: { 111: ['0,55', '0,55'], 1112: ['1.101,10', '1.101,10'], 1113: ['110,00', '110,00'], 1114: ['1,00', '1,00'] }
+    totals: { totalBrutto: '1.451,54', totalNetto: '1.212,65', vats: { 33: '360,16' }, discounts: { discountforbasket10%: '121,27' }, delivery: { brutto: '887,06', netto: '666,96', vat: '220,10' }, payment: { brutto: '73,15', netto: '55,00', vat: '18,15' }, grandTotal: '2.411,75' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForPayCharge: true, blShowVATForDelivery: true, blDeliveryVatOnTop: true, blPaymentVatOnTop: true }
+    activeCurrencyRate: 1

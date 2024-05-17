@@ -1,0 +1,12 @@
+articles:
+    - { oxid: 1001_a, oxprice: 100.55, oxvat: 20 }
+    - { oxid: 1001_b, oxprice: 100.55, oxvat: 20 }
+discounts:
+    - { oxid: abs, oxaddsum: 20, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001_a], oxsort: 10 }
+    - { oxid: percent, oxaddsum: 20, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001_b], oxsort: 20 }
+expected:
+    1001_a: { base_price: '100,55', price: '100,66' }
+    1001_b: { base_price: '100,55', price: '96,53' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false }
+    activeCurrencyRate: 1

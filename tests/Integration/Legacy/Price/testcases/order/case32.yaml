@@ -1,0 +1,18 @@
+articles:
+    - { oxid: '111', oxtitle: '111', oxprice: 55.55, oxvat: 15.55, oxstock: 999, amount: 6 }
+    - { oxid: '222', oxtitle: '222', oxprice: 12.5, oxvat: 19, oxstock: 999, amount: 7 }
+discounts:
+    - { oxid: discount15fo678, oxaddsum: 15, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [111, 222], oxsort: 10 }
+    - { oxid: discountitm, oxaddsum: 0, oxaddsumtype: itm, oxamount: 1, oxamountto: 99999, oxactive: 1, oxitmartid: 1004, oxitmamount: 1, oxitmultiple: 2, oxarticles: [111], oxsort: 20 }
+costs:
+    wrapping: [{ oxtype: WRAP, oxname: testWrap9001, oxprice: 2.95, oxactive: 1, oxarticles: [111] }, { oxtype: WRAP, oxname: testWrap9002, oxprice: 2.95, oxactive: 1, oxarticles: [222] }, { oxtype: CARD, oxname: testCard, oxprice: 3, oxactive: 1 }]
+    delivery: [{ oxactive: 1, oxtitle: 'Shipping costs for Example Set2: UPS 24 hrs Express: $12.90', oxaddsum: 13, oxaddsumtype: '%', oxdeltype: p, oxfinalize: 1, oxparamend: 99999, oxsort: '5000', oxfixed: 0, oxdeliveryset: { oxactive: 1, oxpos: 30, oxtitle: 'Example Set2: UPS Express 24 hours' } }]
+    payment: [{ oxaddsum: 13, oxaddsumtype: '%', oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1, oxaddsumrules: 21 }]
+expected:
+    1: { articles: { 111: ['40,86', '245,16'], 222: ['8,93', '62,51'] }, totals: { totalBrutto: '357,67', discount: '0,00', totalNetto: '307,67', vats: { 15: '38,12', 19: '11,88' }, delivery: { brutto: '40,00', neto: '34,62', vat: '5,38' }, payment: { brutto: '44,58', neto: '38,58', vat: '6,00' }, grandTotal: '483,60' } }
+    2: { articles: { 111: ['40,86', '122,58'], 222: ['8,93', '62,51'] }, totals: { totalBrutto: '216,03', discount: '0,00', totalNetto: '185,09', vats: { 15: '19,06', 19: '11,88' }, delivery: { brutto: '24,06', neto: '20,82', vat: '3,24' }, payment: { brutto: '27,65', neto: '23,92', vat: '3,72' }, grandTotal: '300,24' } }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: true, blShowVATForDelivery: true, blShowVATForPayCharge: true, blShowVATForWrapping: true, sAdditionalServVATCalcMethod: biggest_net }
+actions:
+    changeConfigs: { blEnterNetPrice: false, blShowNetPrice: false }
+    changeArticles: [{ oxid: '111', amount: 3 }]

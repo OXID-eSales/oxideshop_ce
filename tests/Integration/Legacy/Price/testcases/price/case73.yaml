@@ -1,0 +1,30 @@
+articles:
+    1: { oxid: 1001_a, oxprice: 1001 }
+    2: { oxid: 1001_b, oxprice: 1001 }
+    3: { oxid: 1002_a, oxprice: 1001 }
+    4: { oxid: 1002_b, oxprice: 1001 }
+    5: { oxid: 1003_a, oxprice: 1001 }
+    6: { oxid: 1003_b, oxprice: 1001 }
+    7: { oxid: 1004_a, oxprice: 1001 }
+    8: { oxid: 1004_b, oxprice: 1001 }
+discounts:
+    1: { oxid: absFor1001, oxaddsum: 20, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001_a], oxsort: 10 }
+    2: { oxid: percentFor1001, oxaddsum: 20, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001_b], oxsort: 20 }
+    3: { oxid: absFor1002, oxaddsum: -10, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1002_a], oxsort: 30 }
+    4: { oxid: percentFor1002, oxaddsum: -10, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1002_b], oxsort: 40 }
+    5: { oxid: absFor1003, oxaddsum: -5.2, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1003_a], oxsort: 50 }
+    6: { oxid: percentFor1003, oxaddsum: -5.2, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1003_b], oxsort: 60 }
+    7: { oxid: absFor1004, oxaddsum: 5.5, oxaddsumtype: abs, oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1004_a], oxsort: 70 }
+    8: { oxid: percentFor1004, oxaddsum: 5.5, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1004_b], oxsort: 80 }
+expected:
+    1001_a: { base_price: '1.001,00', price: '981,00' }
+    1001_b: { base_price: '1.001,00', price: '800,80' }
+    1002_a: { base_price: '1.001,00', price: '1.011,00' }
+    1002_b: { base_price: '1.001,00', price: '1.101,10' }
+    1003_a: { base_price: '1.001,00', price: '1.006,20' }
+    1003_b: { base_price: '1.001,00', price: '1.053,05' }
+    1004_a: { base_price: '1.001,00', price: '995,50' }
+    1004_b: { base_price: '1.001,00', price: '945,95' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: true, dDefaultVAT: 20 }
+    activeCurrencyRate: 1

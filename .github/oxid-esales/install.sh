@@ -4,6 +4,7 @@
 # We use a validation loop in init to ensure, they're set
 # shellcheck disable=SC2086
 # We want install_container_options to count as multiple arguments
+set -e
 
 function error() {
     echo -e "\033[0;31m${1}\033[0m"
@@ -30,7 +31,7 @@ function init() {
             error "Can't find oe-console in bin or vendor/bin!"
         fi
     fi
-    echo "OK"
+    echo "OK, using '${OE_CONSOLE}'"
 }
 
 init

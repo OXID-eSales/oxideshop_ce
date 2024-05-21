@@ -13,7 +13,11 @@ function error() {
 function init() {
     for VAR in install_container_method install_container_options install_container_name \
         install_config_idebug install_is_enterprise; do
-        [[ -z "${!VAR}" ]] && error "Variable '${!VAR}' not set"
+        echo -n "Checking, if $VAR is set ..."
+        if [ -z ${VAR+x} ]; then
+            error "Variable '${VAR}' not set"
+        fi
+        echo "OK, ${VAR}='${!VAR}'"
     done
     echo -n "Locating oe-console ... "
     cd source || exit 1

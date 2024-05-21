@@ -2,7 +2,8 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 # {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
 
-install_shop_with_modules:
+install:
+  method: script
   cache:
     prepared_shop: true
   container:

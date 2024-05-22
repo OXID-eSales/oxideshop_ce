@@ -51,7 +51,7 @@ runscript: &runscript
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'
     container:
-      options: '-e XDEBUG_MODE=coverage'
+      options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME= {{ .Github.EventName }} -e GITHUB_BASE_REF={{ .Github.BaseRef }} -e GITHUB_REF={{ .Github.Ref }} -e GITHUB_REF_NAME={{ .Github.RefName }}'
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
     path: 'vendor/{{ $org}}/{{ $name }}'

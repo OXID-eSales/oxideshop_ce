@@ -4,6 +4,7 @@
 # shellcheck disable=SC2086
 # We want FILES to count as multiple arguments
 set -e
+env
 set -x
 
 PHPCS_DIFF_ONLY='true'

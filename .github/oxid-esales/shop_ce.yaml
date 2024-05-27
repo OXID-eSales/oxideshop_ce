@@ -37,7 +37,6 @@ install:
       source/source/config.inc.php
       source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
       data/php/logs/error_log.txt
-      files.txt
 
 runscript: &runscript
   matrix:

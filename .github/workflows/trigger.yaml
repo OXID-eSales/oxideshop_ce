@@ -34,7 +34,22 @@ jobs:
             *)
               echo "Can't match ${REF_TO_CHECK} to a version, can't determine test plan."
               echo "Branch names should start with b-<major>.<minor>.x"
-              exit 1
+              echo "Using the shop changelog to determine the shop version"
+              git clone --depth 2 "${{ github.repositoryUrl }}" --branch "${{ github.ref_name}}" --single-branch .tmp
+              if [ -f .tmp/CHANGELOG-8.0 ]; then
+                TESTPLAN="${LIMIT}~/shop_ce.yaml"
+              elif [ -f .tmp/CHANGELOG-7.2 ]; then
+                TESTPLAN="~/defaults/7.2.x.yaml,${LIMIT}~/shop_ce.yaml"
+              elif [ -f .tmp/CHANGELOG-7.1 ]; then
+                TESTPLAN="~/defaults/7.1.x.yaml,${LIMIT}~/shop_ce.yaml"
+              elif [ -f .tmp/CHANGELOG-7.0 ]; then
+                TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT70}~/shop_ce.yaml"
+              else
+                echo "Could not find any of CHANGELOG-8.0, CHANGELOG-7.2, CHANGELOG-71. or CHANGELOG-7.0"
+                echo "Still can't determine the test plan"
+                exit 1
+              fi
+              rm -rf .tmp
               ;;
           esac
           echo "testplan=${TESTPLAN}" | tee -a "${GITHUB_OUTPUT}"

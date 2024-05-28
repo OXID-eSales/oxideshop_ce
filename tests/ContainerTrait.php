@@ -73,7 +73,6 @@ trait ContainerTrait
     {
         $reflectionClass = new \ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }
 }

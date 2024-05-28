@@ -52,7 +52,6 @@ trait CachingTrait
     {
         $reflectionClass = new \ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($reflectionProperty, $default);
     }
 

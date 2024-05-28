@@ -47,8 +47,7 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        parent::delete($sOXID);
-
+        $parentResult = parent::delete($sOXID);
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // deleting related data records
@@ -68,10 +67,10 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         ]);
 
         $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = :oxid';
-        $rs = $oDb->execute($sDelete, [
+        $oDb->execute($sDelete, [
             ':oxid' => $sOXID
         ]);
 
-        return $rs->EOF;
+        return $parentResult;
     }
 }

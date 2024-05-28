@@ -724,7 +724,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = [];
 
         if ($sCustomTheme) {
-            $customThemePath = $sAppDir . 'views/' . $sCustomTheme;
+            $customThemePath = $sAppDir . 'views/' . $sCustomTheme .'/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
         }
 

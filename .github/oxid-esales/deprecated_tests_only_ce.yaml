@@ -1,0 +1,21 @@
+# This config depends on the defaults.yml testplan
+# Only diverging settings are defined here
+
+skip: &skip
+  matrix:
+    testplan: 'skip'
+  skip: true
+
+phpunit: *skip
+codeception: *skip
+sonarcloud: *skip
+phpcs_tests: *skip
+yamllint: *skip
+actionlint: *skip
+
+runtest:
+  matrix:
+    testplan: '["-"]'
+
+finish:
+  slack_title: 'Deprecated Tests Shop CE on {{ .Github.Repository }} by {{ .Github.Actor }}'

@@ -1,9 +1,0 @@
-codeception:
-  title: codeception_Acceptance
-  logfile:
-    prefix: 'codeception'
-  output:
-    prefix: 'codeception-artifacts'
-  coverage:
-    path: ''
-    prefix: coverage-reports-codeception_Acceptance

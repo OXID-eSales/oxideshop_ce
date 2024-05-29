@@ -1,5 +1,6 @@
 sonarcloud:
   title: 'sonarcloud_internal'
+  strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
   project_key: 'OXID-eSales_oxideshop_ce_internal'
   project_name: 'oxideshop_ce_internal'
   parameters: |

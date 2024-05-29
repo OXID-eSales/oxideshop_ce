@@ -1,5 +1,4 @@
 name: Nightly runs
-# Matrix workflow using re-usable github actions
 
 on:
   schedule:
@@ -8,9 +7,9 @@ on:
 jobs:
   oxideshop_ce_71x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.1.x.yml,~/defaults/scheduled.yml,~/shop_ce.yml'
+      testplan: '~/defaults/7.1.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
@@ -30,11 +29,10 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   oxideshop_ce_72x_nightly:
-    needs: oxideshop_ce_71x_nightly
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.2.x.yml,~/defaults/scheduled.yml,~/shop_ce.yml'
+      testplan: '~/defaults/7.2.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
@@ -54,11 +52,10 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   oxideshop_ce_80x_nightly:
-    needs: oxideshop_ce_72x_nightly
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/call-universal_test_workflow.yml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/scheduled.yml,~/shop_ce.yml'
+      testplan: '~/defaults/8.0.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'

@@ -7,9 +7,10 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Utility;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Configuration\Utility;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
 use PHPUnit\Framework\TestCase;
 
 /**

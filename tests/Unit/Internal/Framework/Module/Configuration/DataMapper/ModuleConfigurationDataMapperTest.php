@@ -16,21 +16,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 class ModuleConfigurationDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @dataProvider moduleConfigurationDataProvider
-     *
-     * @param array                                  $data
-     * @param ModuleConfigurationDataMapperInterface $dataMapper
-     */
+    #[DataProvider('moduleConfigurationDataProvider')]
     public function testToDataAndFromData(array $data, ModuleConfigurationDataMapperInterface $dataMapper)
     {
 

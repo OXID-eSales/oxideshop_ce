@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Wrapper;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -19,26 +20,21 @@ use Psr\Log\LoggerInterface;
  */
 class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @dataProvider dataProviderPsrInterfaceMethods
-     *
-     * @param string $methodName The name of the method to test
-     */
-    public function testAllInterfaceMethodsExceptLogAreHandled($methodName)
+    #[DataProvider('dataProviderPsrInterfaceMethods')]
+    public function testAllInterfaceMethodsExceptLogAreHandled(string $methodNameToTest)
     {
         $messageToLog = "The message is {myMessage}";
         $contextToLog = ['myMessage' => 'Hello World!'];
         $loggerMock = $this->getLoggerMock();
         $loggerMock->expects($this->once())
-            ->method($methodName)
+            ->method($methodNameToTest)
             ->with(
                 $this->equalTo($messageToLog),
                 $this->equalTo($contextToLog)
             );
 
         $loggerServiceWrapper = new LoggerWrapper($loggerMock);
-        $loggerServiceWrapper->$methodName($messageToLog, $contextToLog);
+        $loggerServiceWrapper->$methodNameToTest($messageToLog, $contextToLog);
     }
 
     /**
@@ -77,10 +73,7 @@ class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
         $loggerServiceWrapper->log($levelToLog, $messageToLog, $contextToLog);
     }
 
-    /**
-     * @return LoggerInterface
-     */
-    private function getLoggerMock()
+    private function getLoggerMock(): LoggerInterface
     {
         $loggerMock = $this
             ->getMockBuilder(LoggerInterface::class)

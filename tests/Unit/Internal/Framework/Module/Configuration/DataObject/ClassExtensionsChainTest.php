@@ -10,12 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
-/**
- * @internal
- */
+
 class ClassExtensionsChainTest extends TestCase
 {
     public function testAddExtensionsIfChainIsEmpty()
@@ -137,12 +136,7 @@ class ClassExtensionsChainTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidExtensionProvider
-     *
-     * @param ClassExtension $extension
-     *
-     */
+    #[DataProvider('invalidExtensionProvider')]
     public function testRemoveExtensionThrowsExceptionIfClassNotExistsInChain(ClassExtension $extension)
     {
         $this->expectException(ExtensionNotInChainException::class);

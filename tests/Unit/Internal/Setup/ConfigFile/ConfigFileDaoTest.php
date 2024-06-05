@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDao;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -94,7 +95,7 @@ final class ConfigFileDaoTest extends TestCase
         $configFileDao->checkIsEditable();
     }
 
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testCheckIsEditableWithValidFile(): void
     {
         $basicContext = $this->prophesize(BasicContextInterface::class);

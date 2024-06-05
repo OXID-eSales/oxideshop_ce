@@ -10,20 +10,19 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Locator;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class EditionMenuFileLocatorTest extends TestCase
 {
-    /** @var vfsStream */
-    private $vfsStreamDirectory;
+    private vfsStreamDirectory $vfsStreamDirectory;
 
-    /**
-     * @dataProvider dataProviderTestLocate
-     */
+    #[DataProvider('dataProviderTestLocate')]
     public function testLocate($edition)
     {
         $this->createModuleStructure($edition);
@@ -49,10 +48,7 @@ final class EditionMenuFileLocatorTest extends TestCase
         ];
     }
 
-    /**
-     * @return AdminThemeBridgeInterface
-     */
-    private function getAdminThemeMock()
+    private function getAdminThemeMock(): AdminThemeBridgeInterface
     {
         $adminTheme = $this->getMockBuilder(AdminThemeBridgeInterface::class)->getMock();
         $adminTheme->method('getActiveTheme')->willReturn('admin');
@@ -60,12 +56,7 @@ final class EditionMenuFileLocatorTest extends TestCase
         return $adminTheme;
     }
 
-    /**
-     * @param string $edition
-     *
-     * @return BasicContextStub
-     */
-    private function getContext(string $edition)
+    private function getContext(string $edition): BasicContextStub
     {
         $context = new BasicContextStub();
         $context->setEdition($edition);

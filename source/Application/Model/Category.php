@@ -270,19 +270,34 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
         $sOXID = isset($sOXID) ? $sOXID : $this->getId();
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $blRet = false;
 
         if ($this->oxcategories__oxright->value == ($this->oxcategories__oxleft->value + 1)) {
-            $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
+            $myUtilsPic = Registry::getUtilsPic();
             $sDir = $myConfig->getPictureDir(false);
 
             // only delete empty categories
             // #1173M - not all pic are deleted, after article is removed
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxthumb->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('TC'), 'oxcategories', 'oxthumb');
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('CICO'), 'oxcategories', 'oxicon');
-            $myUtilsPic->safePictureDelete($this->oxcategories__oxpromoicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon');
+            $myUtilsPic->safePictureDelete(
+                $this->getFieldData('oxthumb'),
+                $sDir . Registry::getUtilsFile()->getImageDirByType('TC'),
+                'oxcategories',
+                'oxthumb'
+            );
+            $myUtilsPic->safePictureDelete(
+                $this->getFieldData('oxicon'),
+                $sDir . Registry::getUtilsFile()->getImageDirByType('CICO'),
+                'oxcategories',
+                'oxicon'
+            );
+            $myUtilsPic->safePictureDelete(
+                $this->getFieldData('oxpromoicon'),
+                $sDir . Registry::getUtilsFile()->getImageDirByType('PICO'),
+                'oxcategories',
+                'oxpromoicon'
+            );
 
             $query = "UPDATE oxcategories SET OXLEFT = OXLEFT - 2
                       WHERE OXROOTID = :oxrootid AND
@@ -327,7 +342,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 ':oxid' => $sOXID
             ]);
 
-            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->onDeleteCategory($this);
+            Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->onDeleteCategory($this);
         }
 
         return $blRet;
@@ -440,7 +455,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getNrOfArticles()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         if (
             !isset($this->_iNrOfArticles)
@@ -451,9 +466,15 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             )
         ) {
             if ($this->isPriceCategory()) {
-                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getPriceCatArticleCount($this->getId(), $this->oxcategories__oxpricefrom->value, $this->oxcategories__oxpriceto->value);
+                $this->_iNrOfArticles = Registry::getUtilsCount()
+                    ->getPriceCatArticleCount(
+                        $this->getId(),
+                        $this->getFieldData('oxpricefrom'),
+                        $this->getFieldData('oxpriceto')
+                    );
             } else {
-                $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getCatArticleCount($this->getId());
+                $this->_iNrOfArticles = Registry::getUtilsCount()
+                    ->getCatArticleCount($this->getId());
             }
         }
 
@@ -478,7 +499,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getIsVisible()
     {
         if (!isset($this->_blIsVisible)) {
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDontShowEmptyCategories')) {
+            if (Registry::getConfig()->getConfigParam('blDontShowEmptyCategories')) {
                 $blEmpty = ($this->getNrOfArticles() < 1) && !$this->getHasVisibleSubCats();
             } else {
                 $blEmpty = false;
@@ -509,7 +530,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if ($this->_sDynImageDir === null) {
             $sThisShop = $this->oxcategories__oxshopid->value;
-            $this->_sDynImageDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
+            $this->_sDynImageDir = Registry::getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
         }
 
         return $this->_sDynImageDir;
@@ -525,7 +546,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
+        $oEncoder = Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
         if (!$iPage) {
             return $oEncoder->getCategoryUrl($this, $iLang);
         }
@@ -543,7 +564,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getLink($iLang = null)
     {
         if (
-            !\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ||
+            !Registry::getUtils()->seoIsActive() ||
             (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value)
         ) {
             return $this->getStdLink($iLang);
@@ -568,7 +589,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function setLink($sLink)
     {
         $iLang = $this->getLanguage();
-        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+        if (Registry::getUtils()->seoIsActive()) {
             $this->_aSeoUrls[$iLang] = $sLink;
         } else {
             $this->_aStdUrls[$iLang] = $sLink;
@@ -622,7 +643,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
+            $sUrl = Registry::getConfig()->getShopUrl($iLang, false);
         }
 
         //always returns shop url, not admin
@@ -639,8 +660,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
-            return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->oxcategories__oxextlink->value, true);
+        $extLink = $this->getFieldData('oxextlink');
+        if ($extLink) {
+            return Registry::getUtilsUrl()->processUrl($extLink);
         }
 
         if ($iLang === null) {
@@ -651,7 +673,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $this->_aStdUrls[$iLang] = $this->getBaseStdLink($iLang);
         }
 
-        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
+        return Registry::getUtilsUrl()->processUrl($this->_aStdUrls[$iLang], true, $aParams, $iLang);
     }
 
     /**
@@ -727,7 +749,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         $sActCat = $this->getId();
 
-        $sKey = md5($sActCat . serialize(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter')));
+        $sKey = md5($sActCat . serialize(Registry::getSession()->getVariable('session_attrfilter')));
         if (!isset(self::$_aCatAttributes[$sKey])) {
             $oAttrList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
             $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage());
@@ -910,7 +932,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         ]);
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
-            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
+            Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
         }
 
         $blRes = parent::update();
@@ -1007,7 +1029,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         }
 
         if ($blRes && $this->_blIsSeoObject && $this->isAdmin()) {
-            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
+            Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
         }
 
         return $blRes;
@@ -1044,13 +1066,13 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxicon->value)) {
-            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $oConfig = Registry::getConfig();
             $sSize = $oConfig->getConfigParam('sCatIconsize');
             if (!isset($sSize)) {
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/icon/", $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/icon/', $sIcon, $sSize);
         }
     }
 
@@ -1062,9 +1084,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getThumbUrl()
     {
         if (($sIcon = $this->oxcategories__oxthumb->value)) {
-            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCatThumbnailsize');
+            $sSize = Registry::getConfig()->getConfigParam('sCatThumbnailsize');
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/thumb/", $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/thumb/', $sIcon, $sSize);
         }
     }
 
@@ -1076,9 +1098,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getPromotionIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
-            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCatPromotionsize');
+            $sSize = Registry::getConfig()->getConfigParam('sCatPromotionsize');
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/promo_icon/", $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/promo_icon/', $sIcon, $sSize);
         }
     }
 

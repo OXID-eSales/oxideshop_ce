@@ -2203,7 +2203,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->onDeleteArticle($this);
 
-            $this->onChange(ACTION_DELETE, $sOXID, $this->oxarticles__oxparentid->value);
+            $this->onChange(ACTION_DELETE, $sOXID, $this->getFieldData('oxparentid'));
 
             $database->commitTransaction();
         } catch (Exception $exception) {
@@ -4451,7 +4451,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function assignParentFieldValues()
     {
         startProfile('articleAssignParentInternal');
-        if ($this->oxarticles__oxparentid->value) {
+        if ($this->getFieldData('oxparentid')) {
             // yes, we are in fact a variant
             if (!$this->isAdmin() || ($this->_blLoadParentData && $this->isAdmin())) {
                 foreach ($this->_aFieldNames as $sFieldName => $sVal) {
@@ -4469,7 +4469,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if (
             !Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
-            ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value)
+            (
+                $this->_blHasVariants ||
+                $this->getFieldData('oxvarstock') ||
+                $this->getFieldData('oxvarcount')
+            )
         ) {
             $this->_blNotBuyableParent = true;
         }
@@ -4487,16 +4491,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // #1125 A. must round (using floor()) value taken from database and cast to int
         if (!$myConfig->getConfigParam('blAllowUnevenAmounts') && !$this->isAdmin()) {
-            $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field((int) floor($this->oxarticles__oxstock->value));
+            $stock = $this->getFieldData('oxstock') ?? 0;
+            $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field((int) floor($stock));
         }
         //GREEN light
         $this->_iStockStatus = 0;
 
         // if we have flag /*1 or*/ 4 - we show always green light
-        if (
-            $myConfig->getConfigParam('blUseStock') && /*$this->oxarticles__oxstockflag->value != 1 && */
-            $this->oxarticles__oxstockflag->value != 4
-        ) {
+        $stockFlag = $this->getFieldData('oxstockflag');
+        if ($myConfig->getConfigParam('blUseStock') && $stockFlag != 4) {
             //ORANGE light
             $stock = $this->getAvailableStock();
 
@@ -4510,9 +4513,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
 
-
         // stock
-        if ($myConfig->getConfigParam('blUseStock') && ($this->oxarticles__oxstockflag->value == 3 || $this->oxarticles__oxstockflag->value == 2)) {
+        $stockFlag = $this->getFieldData('oxstockflag');
+        if ($myConfig->getConfigParam('blUseStock') && ($stockFlag == 3 || $stockFlag == 2)) {
             $iOnStock = $this->oxarticles__oxstock->value;
             if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = Registry::getSession();
@@ -4774,9 +4777,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $rs = $database->select($query, [
                 ':oxid' => $parentId
             ]);
-            $oldStock = $rs->fields[0];
-            $vendorId = $rs->fields[1];
-            $manufacturerId = $rs->fields[2];
 
             $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . '
                 WHERE oxparentid = :oxparentid
@@ -4797,13 +4797,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if ($stock < 0) {
                 $stock = 0;
             }
+            $oldStock = $rs->fields[0] ?? null;
             if ($oldStock < 0) {
                 $oldStock = 0;
             }
             if ($this->getFieldData('oxstockflag') == 2 && $oldStock xor $stock) {
                 //means the stock status could be changed (oxstock turns from 0 to 1 or from 1 to 0)
                 // so far we leave it like this but later we could move all count resets to one or two functions
-                $this->onChangeResetCounts($parentId, $vendorId, $manufacturerId);
+                $this->onChangeResetCounts($parentId, $rs->fields[1] ?? null, $rs->fields[2] ?? null);
             }
         }
     }

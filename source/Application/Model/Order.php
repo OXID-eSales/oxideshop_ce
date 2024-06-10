@@ -1918,10 +1918,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $aVats = [];
         if ($this->oxorder__oxartvat1->value) {
-            $aVats[$this->oxorder__oxartvat1->value] = $this->oxorder__oxartvatprice1->value;
+            $aVats[(int)$this->oxorder__oxartvat1->value] = $this->oxorder__oxartvatprice1->value;
         }
         if ($this->oxorder__oxartvat2->value) {
-            $aVats[$this->oxorder__oxartvat2->value] = $this->oxorder__oxartvatprice2->value;
+            $aVats[(int)$this->oxorder__oxartvat2->value] = $this->oxorder__oxartvatprice2->value;
         }
 
         if ($blFormatCurrency) {

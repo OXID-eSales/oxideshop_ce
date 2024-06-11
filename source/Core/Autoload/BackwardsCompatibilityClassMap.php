@@ -470,7 +470,6 @@ return [
     'oxmodulelist' => 'OxidEsales\\Eshop\\Core\\Module\\ModuleList',
     'oxmodulemetadatavalidator' => 'OxidEsales\\Eshop\\Core\\Module\\ModuleMetadataValidator',
     'oxmodulevalidatorfactory' => 'OxidEsales\\Eshop\\Core\\Module\\ModuleValidatorFactory',
-    'oxmodulevariableslocator' => 'OxidEsales\\Eshop\\Core\\Module\\ModuleVariablesLocator',
     'oxnojsvalidator' => 'OxidEsales\\Eshop\\Core\\NoJsValidator',
     'oxonlinecaller' => 'OxidEsales\\Eshop\\Core\\OnlineCaller',
     'oxonlinelicensecheck' => 'OxidEsales\\Eshop\\Core\\OnlineLicenseCheck',

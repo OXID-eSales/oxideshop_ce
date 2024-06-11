@@ -31,3 +31,4 @@
 - Remove deprecated `TemplateCacheService` implementation
 - Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
 - Obsolete caching related functionalities
+- Class OxidEsales\Eshop\Core\Module\ModuleVariablesLocator

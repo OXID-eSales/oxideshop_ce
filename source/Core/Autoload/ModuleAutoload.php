@@ -7,11 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core\Autoload;
 
-use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 
 /**
  * Autoloader for module classes and extensions.
@@ -95,8 +93,7 @@ class ModuleAutoload
      */
     protected function createExtensionClassChain($class)
     {
-        $extensions = $this->getModuleVariablesLocator()
-            ->getModuleVariable('aModules');
+        $extensions = ContainerFacade::get(ActiveModulesDataProviderBridgeInterface::class)->getClassExtensions();
 
         if (is_array($extensions)) {
             $class = preg_quote($class, '/');
@@ -110,14 +107,5 @@ class ModuleAutoload
                 }
             }
         }
-    }
-
-    private function getModuleVariablesLocator(): ModuleVariablesLocator
-    {
-        $shopIdCalculator = new ShopIdCalculator(
-            new FileCache()
-        );
-        $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
-        return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
     }
 }

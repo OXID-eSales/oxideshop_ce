@@ -2733,12 +2733,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\NamespaceInformationProvider'                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\NamespaceInformationProvider::class,
         'isAbstract'       => false,

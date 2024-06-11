@@ -58,8 +58,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
-        if (defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
-            // do NOT set cookies in php unit or in cli because it would issue warnings
+        if (php_sapi_name() === 'cli') {
+            // do NOT set cookies in cli because it would issue warnings
             return;
         }
 

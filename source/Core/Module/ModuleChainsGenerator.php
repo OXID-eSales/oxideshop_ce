@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
+
 /**
  * Generates class chains for extended classes by modules.
  * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
@@ -16,17 +19,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class ModuleChainsGenerator
 {
-    /** @var \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator */
-    private $moduleVariablesLocator;
-
-    /**
-     * @param \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $moduleVariablesLocator
-     */
-    public function __construct($moduleVariablesLocator)
-    {
-        $this->moduleVariablesLocator = $moduleVariablesLocator;
-    }
-
     /**
      * Creates given class chains.
      *
@@ -71,7 +63,7 @@ class ModuleChainsGenerator
      */
     public function getFullChain($className, $classAlias)
     {
-        $chain = $this->getClassExtensionChain($this->getModuleVariablesLocator());
+        $chain = ContainerFacade::get(ActiveModulesDataProviderBridgeInterface::class)->getClassExtensions();
         $classChain = $chain[$className] ?? [];
 
         return $classAlias && $classAlias !== $className
@@ -138,7 +130,6 @@ class ModuleChainsGenerator
         /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
         if (
-            !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
             !strpos($moduleClass, '_parent') &&
             !$composerClassLoader->findFile($moduleClass)
         ) {
@@ -205,38 +196,6 @@ class ModuleChainsGenerator
         $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
         $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
-    }
-
-    /**
-     * Getter for ModuleVariablesLocator.
-     *
-     * @return \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
-     */
-    public function getModuleVariablesLocator()
-    {
-        return $this->moduleVariablesLocator;
-    }
-
-    /**
-     * Only classes of active modules are considered.
-     *
-     * @param \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator
-     *
-     * @return array
-     */
-    protected function getClassExtensionChain(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator)
-    {
-        return (array) $variablesLocator->getModuleVariable('aModules');
-    }
-
-    /**
-     * Convenience method for tests
-     *
-     * @return bool
-     */
-    protected function isUnitTest()
-    {
-        return defined('OXID_PHP_UNIT');
     }
 
     private function getChainForBackwardsCompatibilityClassAlias(array $chain, string $classAlias): array

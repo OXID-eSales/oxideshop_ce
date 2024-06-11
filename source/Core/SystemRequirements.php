@@ -173,7 +173,7 @@ class SystemRequirements
      */
     public function __call($method, $arguments)
     {
-        if (defined('OXID_PHP_UNIT') && method_exists($this, $method)) {
+        if (method_exists($this, $method)) {
             return call_user_func_array([& $this, $method], $arguments);
         }
         throw new SystemComponentException(

@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Symfony\Component\Filesystem\Filesystem;
 use RecursiveIteratorIterator;
@@ -46,7 +45,6 @@ trait CachingTrait
 
     private function removeClassCaches(): void
     {
-        $this->removeClassCache(ModuleVariablesLocator::class, 'moduleVariables', []);
         $this->removeClassCache(DatabaseProvider::class, 'db', null);
     }
 

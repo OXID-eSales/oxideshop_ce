@@ -39,13 +39,6 @@ class UtilsObject
     protected static $_aInstanceCache = [];
 
     /**
-     * Class instance array
-     *
-     * @var array
-     */
-    protected static $_aClassInstances = [];
-
-    /**
      * UtilsObject class instance.
      *
      * @var UtilsObject instance
@@ -75,11 +68,6 @@ class UtilsObject
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if (defined('OXID_PHP_UNIT')) {
-            static::$_instance = null;
-        }
-
         if (null === static::$_instance) {
             static::$_instance = new static();
         }
@@ -164,11 +152,7 @@ class UtilsObject
         //Get storage key as the class might be aliased.
         $storageKey = Registry::getStorageKey($className);
 
-        //UtilsObject::$_aClassInstances is only intended to be used in unit tests.
-        if (defined('OXID_PHP_UNIT') && isset(static::$_aClassInstances[$storageKey])) {
-            return static::$_aClassInstances[$storageKey];
-        }
-        if (!defined('OXID_PHP_UNIT') && $shouldUseCache) {
+        if ($shouldUseCache) {
             $cacheKey = ($argumentsCount) ? $storageKey . md5(serialize($arguments)) : $storageKey;
             if (isset(static::$_aInstanceCache[$cacheKey])) {
                 return clone static::$_aInstanceCache[$cacheKey];
@@ -261,9 +245,7 @@ class UtilsObject
     protected function getModuleChainsGenerator()
     {
         if (is_null($this->moduleChainsGenerator)) {
-            $subShopSpecificCache = new \OxidEsales\Eshop\Core\SubShopSpecificFileCache($this->getShopIdCalculator());
-            $moduleVariablesLocator = new \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator($subShopSpecificCache, $this->getShopIdCalculator());
-            $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator($moduleVariablesLocator);
+            $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator();
         }
         return $this->moduleChainsGenerator;
     }

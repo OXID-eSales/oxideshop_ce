@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
@@ -46,8 +45,6 @@ class ShopAdapter implements ShopAdapterInterface
         $utils->resetLanguageCache();
         $utils->resetMenuCache();
         $utils->oxResetFileCache(true);
-
-        ModuleVariablesLocator::resetModuleVariables();
 
         if (extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();

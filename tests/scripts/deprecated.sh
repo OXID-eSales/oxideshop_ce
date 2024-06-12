@@ -2,11 +2,12 @@
 set -e
 cp vendor/oxid-esales/testing-library/test_config.yml.dist test_config.yml
 XDEBUG_MODE=coverage vendor/bin/runtests \
-    --coverage-clover=tests/Reports/deprecated_tests_coverage.xml \
+    --coverage-clover=tests/Reports/coverage_deprecated_tests.xml \
     AllTestsUnit 2>&1 \
 | tee "tests/Output/deprecated_tests.txt"
+RESULT=$?
+echo "runtest exited with error code ${RESULT}"
 
-RESULT=0
 if [ ! -s "tests/Output/deprecated_tests.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1
@@ -42,8 +43,8 @@ while read -r LINE ; do
         fi
     fi
 done <failure_pattern.tmp
-if [[ ! -s "tests/Reports/deprecated_tests_coverage.xml" ]]; then
-    echo -e "\033[0;31m coverage report tests/Reports/deprecated_tests_coverage.xml is empty\033[0m"
+if [[ ! -s "tests/Reports/coverage_deprecated_tests.xml" ]]; then
+    echo -e "\033[0;31m coverage report tests/Reports/coverage_deprecated_tests.xml is empty\033[0m"
     RESULT=1
 fi
 exit ${RESULT}

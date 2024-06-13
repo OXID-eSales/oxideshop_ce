@@ -1,5 +1,18 @@
 #!/bin/bash
 set -e
+export SELENIUM_SERVER_HOST=selenium
+export BROWSER_NAME=chrome
+# wait for selenium host
+I=60
+until  [ $I -le 0 ]; do
+    curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status" |grep '"ready": true' && break
+    echo "."
+    sleep 1
+    ((I--))
+done
+set -e
+curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
+
 vendor/bin/codecept build \
     -c tests/codeception.yml
 RESULT=$?

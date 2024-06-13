@@ -1,20 +1,31 @@
 #!/bin/bash
 set -e
+export SELENIUM_SERVER_HOST=selenium
+export BROWSER_NAME=chrome
+export DB_NAME=setup_test
+export DB_USERNAME=root
+export DB_PASSWORD=root
+export DB_HOST=mysql
+export DB_PORT=3306
+export SHOP_URL=http://localhost.local/
+export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+export THEME_ID=apex
+export SHOP_ROOT_PATH=/var/www
+# wait for selenium host
+I=60
+until  [ $I -le 0 ]; do
+    curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status" |grep '"ready": true' && break
+    echo "."
+    sleep 1
+    ((I--))
+done
+set -e
+curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
+
 vendor/bin/codecept build \
     -c tests/codeception.yml
 RESULT=$?
 echo "codecept build exited with error code ${RESULT}"
-SELENIUM_SERVER_HOST=selenium \
-BROWSER_NAME=chrome \
-DB_NAME=setup_test \
-DB_USERNAME=root \
-DB_PASSWORD=root \
-DB_HOST=mysql \
-DB_PORT=3306 \
-SHOP_URL=http://localhost.local/ \
-SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/ \
-THEME_ID=apex \
-SHOP_ROOT_PATH=/var/www \
 vendor/bin/codecept run AcceptanceSetup \
     -c tests/codeception.yml \
     --ext DotReporter 2>&1 \

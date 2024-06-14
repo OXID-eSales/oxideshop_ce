@@ -6,46 +6,8 @@ install:
   method: script
   cache:
     prepared_shop: true
-  container:
-    options: '-e SHOP_PATH=vendor/{{ $org}}/{{ $name }}/source'
   composer:
-    transform: |
-      {
-          "preferred-install": {
-            "oxid-esales/*": "source",
-            "oxid-professional-services/*": "source",
-            "ddoe/*": "source"
-          },
-          "require": {
-              "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-              "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
-              "{{ $org }}/{{ $name }}": "{{ .Data.global.composer.ref_name }}"
-          },
-          "require-dev": {
-              "codeception/codeception": "^5.0",
-              "codeception/module-asserts": "^3.0",
-              "codeception/module-db": "^3.0",
-              "codeception/module-filesystem": "^3.0",
-              "codeception/module-webdriver": "^4.0",
-              "composer/composer": "^2.0",
-              "incenteev/composer-parameter-handler": "^v2.1.4",
-              "mikey179/vfsstream": "~1.6.8",
-              "oxid-esales/codeception-modules": "dev-b-7.1.x",
-              "oxid-esales/codeception-page-objects": "dev-b-7.1.x",
-              "oxid-esales/developer-tools": "dev-b-7.1.x",
-              "oxid-esales/oxideshop-ide-helper": "dev-b-7.1.x",
-              "phpspec/prophecy-phpunit": "^v2.0.1",
-              "phpunit/phpunit": "^10.4",
-              "squizlabs/php_codesniffer": "^3.5.4"
-          },
-          "repositories": {
-            "{{ $org }}/{{ $name }}": {
-              "type": "git",
-              "url": "https://github.com/{{ $repo }}.git"
-            }
-          }
-      }
+    root_url: 'https://raw.githubusercontent.com/{{ .Github.Repository }}/{{ .Data.global.git.safe_ref_name }}/composer.json'
   output:
     files: |
       docker-compose.yml
@@ -65,16 +27,12 @@ runscript: &runscript
         "setup:~/shop-setup.sh"
       ]
   shop: &shop
-    path: 'vendor/{{ $org}}/{{ $name }}'
+    path: ''
     container:
       options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME={{ .Github.EventName }} -e GITHUB_BASE_REF={{ .Github.BaseRef }} -e GITHUB_REF={{ .Github.Ref }} -e GITHUB_REF_NAME={{ .Github.RefName }}'
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
-    path: 'vendor/{{ $org}}/{{ $name }}'
-    custom_script_container: |
-      cd vendor/oxid-esales/oxideshop-ce
-      composer config -g github-oauth.github.com "${GITHUB_TOKEN}"
-      composer update --no-interaction
+    path: ''
 
 runslim:
   <<: *runscript

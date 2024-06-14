@@ -7,8 +7,27 @@ install:
   cache:
     prepared_shop: true
   composer:
-    # root_url: 'https://raw.githubusercontent.com/{{ .Github.Repository }}/{{ .Data.global.git.safe_ref_name }}/composer.json'
-    root_url: ''
+    early: true
+    transform: |
+      {
+          "preferred-install": {
+            "oxid-esales/*": "source",
+            "oxid-professional-services/*": "source",
+            "ddoe/*": "source"
+          },
+          "require": {
+              "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+              "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+              "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+              "{{ $org }}/{{ $name }}": "{{ .Data.global.composer.ref_name }}"
+          },
+          "repositories": {
+            "{{ $org }}/{{ $name }}": {
+              "type": "git",
+              "url": "https://github.com/{{ $repo }}.git"
+            }
+          }
+      }
   output:
     files: |
       docker-compose.yml
@@ -28,12 +47,12 @@ runscript: &runscript
         "setup:~/shop-setup.sh"
       ]
   shop: &shop
-    path: ''
+    path: 'vendor/{{ $org}}/{{ $name }}'
     container:
       options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME={{ .Github.EventName }} -e GITHUB_BASE_REF={{ .Github.BaseRef }} -e GITHUB_REF={{ .Github.Ref }} -e GITHUB_REF_NAME={{ .Github.RefName }}'
   setup:
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
-    path: ''
+    path: 'vendor/{{ $org}}/{{ $name }}'
 
 runslim:
   <<: *runscript

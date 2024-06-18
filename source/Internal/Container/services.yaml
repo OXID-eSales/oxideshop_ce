@@ -4,6 +4,8 @@ imports:
 parameters:
     oxid_build_directory: '%env(OXID_BUILD_DIRECTORY)%'
     oxid_log_level: '%env(OXID_LOG_LEVEL)%'
+    oxid_debug_mode: '%env(OXID_DEBUG_MODE)%'
+    oxid_smtp_debug_mode: false
 
 services:
     _defaults:

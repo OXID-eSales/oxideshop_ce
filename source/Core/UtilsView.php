@@ -38,7 +38,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateOutput($templateName, $oObject)
     {
-        $debugMode = Registry::getConfig()->getConfigParam('iDebug');
+        $debugMode = ContainerFacade::getParameter('oxid_debug_mode');
 
         // assign
         $viewData = $oObject->getViewData();

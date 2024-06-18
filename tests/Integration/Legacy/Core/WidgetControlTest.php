@@ -24,7 +24,6 @@ final class WidgetControlTest extends IntegrationTestCase
      */
     public function testIfDoesNotAllowToInitiateNonWidgetClass(): void
     {
-        Registry::get(ConfigFile::class)->setVar('iDebug', 1);
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
         $this->expectException(ObjectException::class);

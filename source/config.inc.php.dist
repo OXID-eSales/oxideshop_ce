@@ -33,15 +33,6 @@ $this->blLogChangesInAdmin = false;
 $this->blSeoLogging = false;
 
 /**
- * Enable debug mode for template development or bugfixing
- * -1 = Log more messages and throw exceptions on errors (not recommended for production)
- * 0 = off
- * 5 = Delivery Cost calculation info
- * 6 = SMTP Debug Messages
- */
-$this->iDebug = 0;
-
-/**
  * Should template blocks be highlighted in frontend?
  * This is mainly intended for module writers in non productive environment
  */

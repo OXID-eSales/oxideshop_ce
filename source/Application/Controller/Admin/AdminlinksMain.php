@@ -40,7 +40,6 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
             $oOtherLang = $oLinks->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oLinks->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oLinks;

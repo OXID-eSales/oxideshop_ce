@@ -88,19 +88,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $sAdminSSLURL = null;
 
     /**
-     * Debug mode (default is set depending on if it is productive mode or not):
-     *  -1 = Logger Messages internal use only
-     *   0 = off
-     *   2 = SQL
-     *   5 = Delivery Cost calculation info
-     *   6 = SMTP Debug Messages
-     *   7 = Slow SQL query indication
-     *
-     * @var int
-     */
-    protected $iDebug = null;
-
-    /**
      * Administrator email address, used to send critical notices
      *
      * @var string
@@ -487,10 +474,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
             $this->setConfigParam('iZoomPicCount', 4);
-        }
-
-        if (is_null($this->getConfigParam('iDebug'))) {
-            $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);
         }
 
         $this->setConfigParam('sCoreDir', __DIR__ . DIRECTORY_SEPARATOR);

@@ -228,15 +228,14 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blIsSe = false;
 
-        if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
+        if (!(ContainerFacade::getParameter('oxid_debug_mode') && $this->isAdmin())) {
             $aRobots = $myConfig->getConfigParam('aRobots');
             $aRobots = is_array($aRobots) ? $aRobots : [];
 
             $aRobotsExcept = $myConfig->getConfigParam('aRobotsExcept');
             $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : [];
 
-            $sClient = $sClient ? $sClient : strtolower(getenv('HTTP_USER_AGENT'));
-            $blIsSe = false;
+            $sClient = $sClient ?: strtolower(getenv('HTTP_USER_AGENT'));
             $aRobots = array_merge($aRobots, $aRobotsExcept);
             foreach ($aRobots as $sRobot) {
                 if (strpos($sClient, $sRobot) !== false) {

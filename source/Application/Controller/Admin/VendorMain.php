@@ -35,7 +35,6 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
 
             $oOtherLang = $oVendor->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oVendor->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oVendor;

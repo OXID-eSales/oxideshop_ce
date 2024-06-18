@@ -62,7 +62,6 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $shop->loadInLang($subjLang, $shopId);
 
             $this->_aViewData["edit"] = $shop;
-            //\OxidEsales\Eshop\Core\Session::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $shopId);
         }
 

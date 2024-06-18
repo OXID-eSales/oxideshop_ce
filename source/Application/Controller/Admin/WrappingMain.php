@@ -30,7 +30,6 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
             $oOtherLang = $oWrapping->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oWrapping->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oWrapping;

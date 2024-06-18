@@ -49,7 +49,6 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
                 $value = var_export($value, true);
                 $value = str_replace("\n", "<br>", $value);
                 $aSystemInfo[$name] = $value;
-                //echo( "$name = $value <br>");
             }
             $context = [
                 "oViewConf" => $this->_aViewData["oViewConf"],

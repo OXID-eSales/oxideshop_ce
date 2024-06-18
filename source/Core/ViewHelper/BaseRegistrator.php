@@ -52,7 +52,7 @@ abstract class BaseRegistrator
             $parameters = $this->getFileModificationTime($path);
         }
 
-        if (empty($url) && $this->config->getConfigParam('iDebug') != 0) {
+        if (empty($url) && ContainerFacade::getParameter('oxid_debug_mode')) {
             $error = "{" . static::TAG_NAME . "} resource not found: " . \OxidEsales\Eshop\Core\Str::getStr()->htmlspecialchars($url);
             trigger_error($error, E_USER_WARNING);
         }

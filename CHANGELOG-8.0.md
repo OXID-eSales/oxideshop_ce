@@ -7,6 +7,7 @@
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
 - Support PSR caching interface, related functionalities and applied them on module cache.
 - Registration of environment variables via Symfony Dotenv Component
+- New debug container parameters `oxid_debug_mode` and `oxid_smtp_debug_mode`
 
 ### Changed
 
@@ -38,5 +39,5 @@
 - Redundant interfaces `TransactionServiceInterface`, `FinderFactoryInterface`
 - `ConnectionProviderInterface::get()` was superseded by `ConnectionFactory::create()`
 - Deprecated global functions `warningHandler(), dumpVar(), debug()`
-- Config parameters `sShopDir`, `sCompileDir` and `sLogLevel`
+- Config parameters `sShopDir`, `sCompileDir`, `sLogLevel` and `iDebug`
 - Deprecated class `ModuleVariablesLocator`

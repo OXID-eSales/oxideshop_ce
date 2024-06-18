@@ -7,7 +7,7 @@ install:
   cache:
     prepared_shop: true
   composer:
-    early: &early true
+    early: &early false
     transform: |
       {
           "preferred-install": {

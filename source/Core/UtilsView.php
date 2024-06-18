@@ -38,19 +38,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateOutput($templateName, $oObject)
     {
-        $debugMode = Registry::getConfig()->getConfigParam('iDebug');
-
-        // assign
         $viewData = $oObject->getViewData();
-        if (is_array($viewData)) {
-            foreach (array_keys($viewData) as $viewName) {
-                // show debug information
-                if ($debugMode == 4) {
-                    echo("TemplateData[$viewName] : \n");
-                    var_export($viewData[$viewName]);
-                }
-            }
-        } else {
+        if (!is_array($viewData)) {
             $viewData = [];
         }
 

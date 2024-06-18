@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * Enable debug mode for template development or bugfixing
+ * -1 = Log more messages and throw exceptions on errors (not recommended for production)
+ * 0 = off
+ * 5 = Delivery Cost calculation info
+ * 6 = SMTP Debug Messages
+ */
+$this->iDebug = 0;
+
+/**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
@@ -27,15 +36,6 @@ $this->blLogChangesInAdmin = false;
  * Note: only active if in productive mode, as the eShop in non productive mode will always log such urls
  */
 $this->blSeoLogging = false;
-
-/**
- * Enable debug mode for template development or bugfixing
- * -1 = Log more messages and throw exceptions on errors (not recommended for production)
- * 0 = off
- * 5 = Delivery Cost calculation info
- * 6 = SMTP Debug Messages
- */
-$this->iDebug = 0;
 
 /**
  * Should template blocks be highlighted in frontend?

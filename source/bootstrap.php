@@ -63,7 +63,7 @@ Registry::set(ConfigFile::class, new ConfigFile(OX_BASE_PATH . 'config.inc.php')
 /** Set exception handler before including modules/functions.php, so it can be overwritten by shop operators. */
 set_exception_handler(
     [
-        new ExceptionHandler(Registry::get(ConfigFile::class)->getVar('iDebug')),
+        new ExceptionHandler((bool) getenv('OXID_DEBUG_MODE')),
         'handleUncaughtException'
     ]
 );

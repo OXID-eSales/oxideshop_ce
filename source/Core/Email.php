@@ -411,7 +411,7 @@ class Email extends PHPMailer
             $this->setSmtpAuthInfo($shop->oxshops__oxsmtpuser->value, $shop->oxshops__oxsmtppwd->getRawValue());
         }
 
-        if ($myConfig->getConfigParam('iDebug') == 6) {
+        if (ContainerFacade::getParameter('oxid_smtp_debug_mode')) {
             $this->setSmtpDebug(true);
         }
     }
@@ -565,10 +565,6 @@ class Email extends PHPMailer
         $result = $this->send();
 
         $this->onOrderEmailToOwnerSent($user, $order);
-
-        if ($config->getConfigParam('iDebug') == 6) {
-            Registry::getUtils()->showMessageAndExit("");
-        }
 
         return $result;
     }
@@ -1929,7 +1925,7 @@ class Email extends PHPMailer
      */
     private function isDebugModeEnabled()
     {
-        return Registry::getConfig()->getConfigParam('iDebug') != 0;
+        return ContainerFacade::getParameter('oxid_debug_mode');
     }
 
     /**

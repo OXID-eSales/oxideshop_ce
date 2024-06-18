@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * Session manager.
@@ -254,8 +255,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             if (!self::$_blIsNewSession && $blSwapped) {
                 $this->initNewSession();
 
-                $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-                if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
+                if ($this->_sErrorMsg && ContainerFacade::getParameter('oxid_debug_mode')) {
                     Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
             } elseif (!$blSwapped) {
@@ -931,7 +931,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         //if cookie was there once but now is gone it means we have to reset
         if ($blSessCookieSetOnce && !$sCookieSid) {
-            if ($myConfig->getConfigParam('iDebug')) {
+            if (ContainerFacade::getParameter('oxid_debug_mode')) {
                 $this->_sErrorMsg = "Cookie not found, creating new SID...<br>";
                 $this->_sErrorMsg .= "Cookie: $sCookieSid<br>";
                 $this->_sErrorMsg .= "Session: $blSessCookieSetOnce<br>";

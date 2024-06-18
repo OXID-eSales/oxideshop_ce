@@ -1377,7 +1377,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         if (!file_exists($filePath)) {
             $exception = new FileException("Requested file not found for module $moduleId ($filePath)");
-            if (Registry::getConfig()->getConfigParam('iDebug')) {
+            if (ContainerFacade::getParameter('oxid_debug_mode')) {
                 throw $exception;
             } else {
                 Registry::getLogger()->error($exception->getMessage(), [$exception]);

@@ -553,7 +553,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function isDebugMode()
     {
-        return (bool) Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
+        return ContainerFacade::getParameter('oxid_debug_mode');
     }
 
     /**
@@ -580,12 +580,11 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($this->isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
             $header = $debugInfo->formatGeneralInfo();
-            $display = ($debugLevel == -1) ? 'none' : 'block';
+            $display = ContainerFacade::getParameter('oxid_debug_mode') ? 'none' : 'block';
             $monitorMessage = $this->formMonitorMessage($view);
 
             $logMessage = "
@@ -619,19 +618,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-        $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
-
-        $message = '';
-
-        // Outputting template params
-        if ($debugLevel == 4) {
-            $message .= $debugInfo->formatTemplateData($view->getViewData());
-        }
-
         // Output timing
         $this->_dTimeEnd = microtime(true);
 
-        $message .= $debugInfo->formatMemoryUsage();
+        $message = $debugInfo->formatMemoryUsage();
         $message .= $debugInfo->formatTimeStamp();
         $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
 

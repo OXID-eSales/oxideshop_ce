@@ -228,7 +228,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blIsSe = false;
 
-        if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
+        if (!(ContainerFacade::getParameter('oxid_debug_mode') && $this->isAdmin())) {
             $aRobots = $myConfig->getConfigParam('aRobots');
             $aRobots = is_array($aRobots) ? $aRobots : [];
 

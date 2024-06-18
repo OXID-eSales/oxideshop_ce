@@ -553,7 +553,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function isDebugMode()
     {
-        return (bool) Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
+        return ContainerFacade::getParameter('oxid_debug_mode');
     }
 
     /**
@@ -580,7 +580,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($this->isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
+            $debugLevel = ContainerFacade::getParameter('oxid_debug_mode');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
@@ -619,7 +619,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-        $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
+        $debugLevel = ContainerFacade::getParameter('oxid_debug_mode');
 
         $message = '';
 

@@ -50,6 +50,10 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory /var/www/source/tmp
 
+diff source/config.ing.php.dist source/config.ing.php
+if [ $? -eq 0 ]; then
+    cp source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php source/source/config.inc.php
+fi
 # Activate iDebug
 if [ "${install_config_idebug}" == 'true' ]; then
     if [ -f source/source/config.inc.php ]; then

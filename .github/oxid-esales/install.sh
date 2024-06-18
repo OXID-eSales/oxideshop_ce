@@ -46,6 +46,7 @@ docker compose "${install_container_method}" -T \
     --db-user root \
     --db-password root \
     --shop-url http://localhost.local/ \
+    --shop-id 1 \
     --shop-directory /var/www/source \
     --compile-directory /var/www/source/tmp
 

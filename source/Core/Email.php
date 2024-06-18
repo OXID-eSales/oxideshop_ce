@@ -1936,7 +1936,7 @@ class Email extends PHPMailer
      */
     private function isDebugModeEnabled()
     {
-        return ContainerFacade::getParameter('oxid_debug_mode') === false;
+        return ContainerFacade::getParameter('oxid_debug_mode');
     }
 
     /**

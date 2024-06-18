@@ -9,29 +9,39 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
+#[RunTestsInSeparateProcesses]
 final class ScriptLogicTest extends IntegrationTestCase
 {
+    use ContainerTrait;
     private Config $config;
     private ScriptLogic $scriptLogic;
 
     public function setup(): void
     {
         parent::setUp();
-        $this->config = Registry::getConfig();
-        $this->config->setConfigParam("iDebug", -1);
+        $this->createContainer();
+        $this->container->setParameter('oxid_debug_mode', true);
+        $this->container->compile();
+        $this->attachContainerToContainerFactory();
 
+        $this->config = Registry::getConfig();
         $this->scriptLogic = new ScriptLogic();
     }
 
     public function testIncludeFileNotExists(): void
     {
-        $this->config->setConfigParam("iDebug", 0);
+        $this->createContainer();
+        $this->container->setParameter('oxid_debug_mode', false);
+        $this->container->compile();
+        $this->attachContainerToContainerFactory();
 
         $this->scriptLogic->include('somescript.js');
 

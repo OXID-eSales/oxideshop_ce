@@ -25,7 +25,7 @@ class ShopAdapter implements ShopAdapterInterface
 
     /**
      * @deprecated since v7.0.0 (2023-03-14).
-     * Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface instead.
+     * Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface instead.
      */
     public function invalidateModuleCache(string $moduleId): void
     {
@@ -38,7 +38,7 @@ class ShopAdapter implements ShopAdapterInterface
 
     /**
      * @deprecated since v7.0.0 (2023-03-14).
-     * Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface instead.
+     * Please use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface instead.
      */
     public function invalidateModulesCache(): void
     {

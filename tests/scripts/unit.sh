@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
-vendor/bin/phpunit \
+PHPUNIT="vendor/bin/phpunit"
+if [ ! -f "${PHPUNIT}" ]; then
+    PHPUNIT="/var/www/${PHPUNIT}"
+    if [ ! -f "${PHPUNIT}" ]; then
+        echo -e "\033[0;31mCould not find phpunit in vendor/bin or /var/www/vendor/bin\033[0m"
+        exit 1
+    fi
+fi
+"${PHPUNIT}" \
     -c phpunit.xml \
     --bootstrap tests/bootstrap.php \
     --coverage-clover=tests/Reports/coverage_phpunit_unit.xml \

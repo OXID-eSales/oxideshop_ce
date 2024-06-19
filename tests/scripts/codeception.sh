@@ -2,6 +2,15 @@
 set -e
 export SELENIUM_SERVER_HOST=selenium
 export BROWSER_NAME=chrome
+SUITE="Acceptance"
+CODECEPT="vendor/bin/codecept"
+if [ ! -f "${CODECEPT}" ]; then
+    CODECEPT="/var/www/${CODECEPT}"
+    if [ ! -f "${CODECEPT}" ]; then
+        echo -e "\033[0;31mCould not find codecept in vendor/bin or /var/www/vendor/bin\033[0m"
+        exit 1
+    fi
+fi
 # wait for selenium host
 I=60
 until  [ $I -le 0 ]; do
@@ -13,17 +22,17 @@ done
 set -e
 curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
 
-vendor/bin/codecept build \
+"${CODECEPT}" build \
     -c tests/codeception.yml
 RESULT=$?
 echo "Codecept build exited with error code ${RESULT}"
-vendor/bin/codecept run Acceptance \
+"${CODECEPT}" run "${SUITE}" \
     -c tests/codeception.yml \
     --ext DotReporter 2>&1 \
-| tee tests/Output/codeception_Acceptance.txt
+| tee "tests/Output/codeception_${SUITE}.txt"
 RESULT=$?
 echo "Codecept run exited with error code ${RESULT}"
-if [ ! -s "tests/Output/codeception_Acceptance.txt" ]; then
+if [ ! -s "tests/Output/codeception_${SUITE}.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1
 fi
@@ -49,7 +58,7 @@ EOF
 sed -e 's|(.*)\r|$1|' -i failure_pattern.tmp
 while read -r LINE ; do
     if [ -n "${LINE}" ]; then
-        if grep -q -E "${LINE}" "tests/Output/codeception_Acceptance.txt"; then
+        if grep -q -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"; then
             echo -e "\033[0;31m runtest failed matching pattern ${LINE}\033[0m"
             grep -E "${LINE}" "tests/Output/codeception_Acceptance.txt"
             RESULT=1

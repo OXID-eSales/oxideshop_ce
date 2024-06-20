@@ -3,6 +3,13 @@ set -e
 export SELENIUM_SERVER_HOST=selenium
 export BROWSER_NAME=chrome
 SUITE="Acceptance"
+if [ ! -d "tests/Codeception/${SUITE}" ]; then
+  SUITE="acceptance"
+  if [ ! -d "tests/Codeception/${SUITE}" ]; then
+    echo -e "\033[0;31mCould not find suite Acceptance or acceptance in tests/Codeception\033[0m"
+    exit 1
+  fi
+fi
 CODECEPT="vendor/bin/codecept"
 if [ ! -f "${CODECEPT}" ]; then
     CODECEPT="/var/www/${CODECEPT}"

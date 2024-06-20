@@ -12,6 +12,14 @@ export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
 export THEME_ID=apex
 export SHOP_ROOT_PATH=/var/www
 SUITE="AcceptanceSetup"
+if [ ! -d "tests/Codeception/${SUITE}" ]; then
+  SUITE="acceptanceSetup"
+  if [ ! -d "tests/Codeception/${SUITE}" ]; then
+    echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in tests/Codeception\033[0m"
+    exit 1
+  fi
+fi
+
 CODECEPT="vendor/bin/codecept"
 if [ ! -f "${CODECEPT}" ]; then
     CODECEPT="/var/www/${CODECEPT}"

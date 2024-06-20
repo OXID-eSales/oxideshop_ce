@@ -4,6 +4,7 @@
 
 install:
   method: script
+  script: 'source/.github/oxid-esales/install.sh'
   cache:
     prepared_shop: true
   composer:

@@ -48,7 +48,7 @@ while read -r LINE ; do
             grep -E "${LINE}" "tests/Output/unit_tests.txt"
             RESULT=1
         else
-            echo -e "\033[0;32m runtest passed matching pattern ${LINE}"
+            echo -e "\033[0;32m unit test passed matching pattern ${LINE}"
         fi
     fi
 done <failure_pattern.tmp

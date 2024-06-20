@@ -66,11 +66,11 @@ sed -e 's|(.*)\r|$1|' -i failure_pattern.tmp
 while read -r LINE ; do
     if [ -n "${LINE}" ]; then
         if grep -q -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"; then
-            echo -e "\033[0;31m runtest failed matching pattern ${LINE}\033[0m"
+            echo -e "\033[0;31m codecept ${SUITE} failed matching pattern ${LINE}\033[0m"
             grep -E "${LINE}" "tests/Output/codeception_Acceptance.txt"
             RESULT=1
         else
-            echo -e "\033[0;32m codeception passed matching pattern ${LINE}"
+            echo -e "\033[0;32m codecept ${SUITE} passed matching pattern ${LINE}"
         fi
     fi
 done <failure_pattern.tmp

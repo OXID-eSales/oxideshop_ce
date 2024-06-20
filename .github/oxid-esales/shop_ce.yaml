@@ -2,7 +2,7 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 # {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
 
-install:
+install: &install
   method: script
   script: 'source/.github/oxid-esales/install.sh'
   cache:
@@ -17,6 +17,8 @@ install:
       source/source/config.inc.php
       source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
       data/php/logs/error_log.txt
+
+install_shop_with_modules: *install
 
 runscript: &runscript
   matrix:

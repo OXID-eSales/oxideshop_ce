@@ -1,0 +1,97 @@
+# {{ $org := "oxid-esales" }}organisation: {{ $org }}
+# {{ $name := "oxideshop-ce" }}name: {{ $name }}
+# {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
+
+install:
+  method: script
+  cache:
+    prepared_shop: true
+  composer:
+    transform: |
+      {
+        "config": {
+            "allow-plugins": {
+                "oxid-esales/oxideshop-composer-plugin": true,
+                "oxid-esales/oxideshop-unified-namespace-generator": true
+            }
+        },
+        "preferred-install": {
+          "oxid-esales/*": "source",
+          "oxid-professional-services/*": "source",
+          "ddoe/*": "source"
+        },
+        "require": {
+            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+            "{{ $org }}/{{ $name }}": "{{ .Data.global.composer.ref_name }}"
+        },
+        "require-dev": {
+            "codeception/codeception": "^5.0",
+            "codeception/module-asserts": "^3.0",
+            "codeception/module-db": "^3.0",
+            "codeception/module-filesystem": "^3.0",
+            "codeception/module-webdriver": "^4.0",
+            "composer/composer": "^2.0",
+            "incenteev/composer-parameter-handler": "^v2.1.4",
+            "mikey179/vfsstream": "~1.6.8",
+            "oxid-esales/codeception-modules": "dev-b-7.1.x",
+            "oxid-esales/codeception-page-objects": "dev-b-7.1.x",
+            "oxid-esales/developer-tools": "dev-b-7.1.x",
+            "oxid-esales/oxideshop-ide-helper": "dev-b-7.1.x",
+            "phpspec/prophecy-phpunit": "^v2.0.1",
+            "phpunit/phpunit": "^10.4",
+            "squizlabs/php_codesniffer": "^3.5.4"
+        },
+        "autoload-dev": {
+            "psr-4": {
+                "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests"
+            }
+        },
+        "minimum-stability": "dev",
+        "repositories": {
+          "{{ $org }}/{{ $name }}": {
+            "type": "git",
+            "url": "https://github.com/{{ $repo }}.git"
+          }
+        }
+      }
+  output:
+    files: |
+      docker-compose.yml
+      source/composer.json*
+      source/composer.lock
+      source/source/config.inc.php
+      source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
+      data/php/logs/error_log.txt
+
+runscript: &runscript
+  matrix:
+    script: |
+      [
+        "shop:~/unit.sh",
+        "shop:~/integration.sh",
+        "shop:~/codeception.sh",
+        "setup:~/shop-setup.sh"
+      ]
+  shop: &shop
+    path: 'vendor/{{ $org}}/{{ $name }}'
+    container:
+      options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME={{ .Github.EventName }} -e GITHUB_BASE_REF={{ .Github.BaseRef }} -e GITHUB_REF={{ .Github.Ref }} -e GITHUB_REF_NAME={{ .Github.RefName }}'
+  setup:
+    <<: *shop
+    load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
+
+runslim:
+  <<: *runscript
+  matrix:
+    script: '["shop:~/php-cs-report.sh"]'
+
+sonarcloud:
+  matrix:
+    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
+  strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
+
+finish:
+  slack_title: 'Shop CE ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_compact: true

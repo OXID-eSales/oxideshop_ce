@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterBasketSaveToUserBasketEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterUserBasketLoadToBasketEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeBasketSaveToUserBasketEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeUserBasketDeleteEvent;
 use stdClass;
 
 /**
@@ -1709,6 +1713,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 // caught and ignored
             }
         }
+        $this->dispatchEvent(new AfterUserBasketLoadToBasketEvent($oBasket, $this));
     }
 
     /**
@@ -1717,23 +1722,23 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->isSaveToDataBaseEnabled()) {
-            if ($oUser = $this->getBasketUser()) {
-                //first delete all contents
-                //#2039
-                $oSavedBasket = $oUser->getBasket('savedbasket');
-                $oSavedBasket->delete();
-
-                //then save
-                /** @var \oxBasketItem $oBasketItem */
-                foreach ($this->_aBasketContents as $oBasketItem) {
-                    // discount or bundled products will be added automatically if available
-                    if (!$oBasketItem->isBundle() && !$oBasketItem->isDiscountArticle()) {
-                        $oSavedBasket->addItemToBasket($oBasketItem->getProductId(), $oBasketItem->getAmount(), $oBasketItem->getSelList(), true, $oBasketItem->getPersParams());
-                    }
-                }
+        if (!$this->isSaveToDataBaseEnabled() || !$user = $this->getBasketUser()) {
+            return;
+        }
+        //first delete all contents
+        //#2039
+        $userBasket = $user->getBasket('savedbasket');
+        $this->dispatchEvent(new BeforeBasketSaveToUserBasketEvent($this, $userBasket));
+        $userBasket->delete();
+        //then save
+        /** @var \oxBasketItem $basketItem */
+        foreach ($this->_aBasketContents as $basketItem) {
+            // discount or bundled products will be added automatically if available
+            if (!$basketItem->isBundle() && !$basketItem->isDiscountArticle()) {
+                $userBasket->addItemToBasket($basketItem->getProductId(), $basketItem->getAmount(), $basketItem->getSelList(), true, $basketItem->getPersParams());
             }
         }
+        $this->dispatchEvent(new AfterBasketSaveToUserBasketEvent($this, $userBasket));
     }
 
     /**
@@ -1746,7 +1751,9 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         // deleting basket if session user available
         if ($oUser = $this->getBasketUser()) {
-            $oUser->getBasket('savedbasket')->delete();
+            $userBasket = $oUser->getBasket('savedbasket');
+            $this->dispatchEvent(new BeforeUserBasketDeleteEvent($userBasket));
+            $userBasket->delete();
         }
 
         // basket exclude

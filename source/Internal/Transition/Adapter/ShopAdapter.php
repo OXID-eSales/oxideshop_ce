@@ -9,12 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
+use OxidEsales\Eshop\Core\UtilsDate;
 
 class ShopAdapter implements ShopAdapterInterface
 {
@@ -119,5 +121,13 @@ class ShopAdapter implements ShopAdapterInterface
     public function getSmartyInstance(): \Smarty
     {
         return Registry::getUtilsView()->getSmarty();
+    }
+
+    /** @inheritDoc */
+    public function isoDateToAdminFormat(string $isoDate): string
+    {
+        $field = new Field($isoDate);
+        oxNew(UtilsDate::class)->convertDBDate($field);
+        return $field->value;
     }
 }

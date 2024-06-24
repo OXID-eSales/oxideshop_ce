@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxField;
 use oxDb;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminControllerOrderOverviewRenderEvent;
 
 /**
  * Admin order overview manager.
@@ -63,6 +64,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $this->_aViewData["alangs"] = $oLang->getLanguageNames();
 
         $this->_aViewData["currency"] = $oCur;
+        $this->dispatchEvent(new AfterAdminControllerOrderOverviewRenderEvent($this, $oOrder));
 
         return "order_overview.tpl";
     }

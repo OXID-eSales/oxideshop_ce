@@ -17,6 +17,9 @@ use oxField;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterOrderFinalizeEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterOrderValidatedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeOrderDeleteEvent;
 
 /**
  * Order manager.
@@ -574,6 +577,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         } else {
             $iRet = self::ORDER_STATE_OK;
         }
+        $this->dispatchEvent(new AfterOrderFinalizeEvent($this, $oBasket, $oUser));
 
         return $iRet;
     }
@@ -1357,6 +1361,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             return false;
         }
 
+        $this->dispatchEvent(new BeforeOrderDeleteEvent($this));
         // delete order articles
         $oOrderArticles = $this->getOrderArticles(false);
         foreach ($oOrderArticles as $oOrderArticle) {
@@ -2089,6 +2094,14 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (!$iValidState) {
             // validating vouchers
             $iValidState = $this->validateVouchers($oBasket);
+        }
+
+        if (!$iValidState) {
+            /** @var AfterOrderValidatedEvent $event */
+            $event = $this->dispatchEvent(new AfterOrderValidatedEvent($this, $oBasket, $oUser));
+            if (!$event->isValidOrder()) {
+                $iValidState = $event->getOrderStep();
+            }
         }
 
         return $iValidState;

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeUserBasketItemDeleteEvent;
 
 /**
  * Shopping basket item manager.
@@ -185,6 +186,12 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setPersParams($sPersParams)
     {
         $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+    }
+
+    public function delete($oxid = null)
+    {
+        $this->dispatchEvent(new BeforeUserBasketItemDeleteEvent($this));
+        return parent::delete($oxid);
     }
 
     /**

@@ -13,6 +13,7 @@ use oxBasket;
 use oxBasketContentMarkGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeOrderControllerRenderEvent;
 use oxNoArticleException;
 use oxOrder;
 use oxOutOfStockException;
@@ -144,6 +145,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function render()
     {
+        $this->dispatchEvent(new BeforeOrderControllerRenderEvent($this, $this->getBasket()));
         if ($this->getIsOrderStep()) {
             $oBasket = $this->getBasket();
             $myConfig = $this->getConfig();

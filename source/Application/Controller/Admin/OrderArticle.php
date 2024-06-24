@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminControllerOrderProductRenderEvent;
+
 
 /**
  * Admin order article manager.
@@ -63,6 +65,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->_aViewData["edit"] = $oOrder;
             $this->_aViewData["aProductVats"] = $oOrder->getProductVats(true);
         }
+        $this->dispatchEvent(new AfterAdminControllerOrderProductRenderEvent($this, $oOrder));
 
         return "order_article.tpl";
     }

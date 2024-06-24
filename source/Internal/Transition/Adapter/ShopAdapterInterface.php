@@ -64,4 +64,10 @@ interface ShopAdapterInterface
      * @return \Smarty
      */
     public function getSmartyInstance(): \Smarty;
+
+    /**
+     * @param string $isoDate
+     * @return string
+     */
+    public function isoDateToAdminFormat(string $isoDate): string;
 }

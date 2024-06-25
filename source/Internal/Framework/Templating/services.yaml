@@ -1,6 +1,7 @@
 parameters:
   oxid_esales.templating.engine_template_extension: 'html.twig'
   oxid_esales.templating.engine_autoescapes_html: false
+  oxid_esales.templating.filter_content_tags: false
 
 services:
   _defaults:

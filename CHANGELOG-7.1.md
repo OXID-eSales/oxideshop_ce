@@ -9,6 +9,11 @@
 - Wrong path calculated for custom theme translations directory [PR-963](https://github.com/OXID-eSales/oxideshop_ce/pull/963) [#0007386](https://bugs.oxid-esales.com/view.php?id=7386) [#0007643](https://bugs.oxid-esales.com/view.php?id=7643)
 - Fix group delete result calculation [PR-962](https://github.com/OXID-eSales/oxideshop_ce/pull/962)
 
+### Added
+- Introduce `oxid_esales.templating.filter_content_tags` setting
+- `HtmlFilter` and `NodeRemover` classes along with interfaces in
+`OxidEsales\EshopCommunity\Internal\Framework\Templating\HtmlFilter` namespace
+
 ## v7.1.0 - 2024-03-18
 
 ### Added

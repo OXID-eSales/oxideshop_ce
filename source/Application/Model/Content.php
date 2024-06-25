@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\HtmlFilter\HtmlFilter;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\HtmlFilter\NodeRemover;
 
 /**
  * Content manager.
@@ -234,8 +237,19 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
 
         if ($this->oxcontents__oxcontent) {
-            $this->oxcontents__oxcontent->setValue(str_replace('&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $content = str_replace('&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value);
+            $this->oxcontents__oxcontent->setValue($this->filter($content), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
+    }
+
+    private function filter(string $content): string
+    {
+        if (!ContainerFacade::getParameter('oxid_esales.templating.filter_content_tags')) {
+            return $content;
+        }
+
+        $htmlFilter = new HtmlFilter(new NodeRemover());
+        return $htmlFilter->filter($content);
     }
 
     /**

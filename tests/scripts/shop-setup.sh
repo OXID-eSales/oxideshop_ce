@@ -49,6 +49,8 @@ echo "codecept build exited with error code ${RESULT}"
 | tee tests/Output/codeception_${SUITE}.txt
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
+[[ ! -d tests/Output ]] && mkdir tests/output
+cp tests/Codeception/_output/* tests/output
 if [ ! -s "tests/Output/codeception_${SUITE}.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1

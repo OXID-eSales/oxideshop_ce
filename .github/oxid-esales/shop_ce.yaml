@@ -9,6 +9,12 @@ install: &install
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+          "require": {
+            "twig/twig": "v3.8.0"
+          }
+      }
   output:
     files: |
       docker-compose.yml

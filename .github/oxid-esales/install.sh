@@ -60,12 +60,10 @@ if [ "${install_config_idebug}" == 'true' ]; then
 fi
 
 # Activate theme
-if [ "${install_is_enterprise}" == 'true' ]; then
-    docker compose "${install_container_method}" -T \
-        ${install_container_options} \
-        "${install_container_name}" \
-        ${OE_CONSOLE} oe:theme:activate apex
-fi
+docker compose "${install_container_method}" -T \
+    ${install_container_options} \
+    "${install_container_name}" \
+    ${OE_CONSOLE} oe:theme:activate apex
 
 # Output PHP error log
 if [ -s data/php/logs/error_log.txt ]; then

@@ -62,8 +62,6 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory "${OXID_BUILD_DIRECTORY}"
 
-pwd
-ls -lA vendor/oxid-esales
 if [ -e vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
     if [ -f source/config.inc.php.dist ] && [ -f source/config.inc.php ]; then
@@ -85,7 +83,7 @@ if [ -e vendor/oxid-esales/oxideshop-ce ]; then
                 echo "ERROR: Neither source/config.inc.php nor vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
                 exit 1
             fi
-            TARGET=source/config.inc.php
+            TARGET=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
         else
             if [ -n "${CONFIG_FILE}" ]; then
             echo "ERROR: Both source/config.inc.php and vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
@@ -101,7 +99,7 @@ if [ -e vendor/oxid-esales/oxideshop-ce ]; then
         fi
         TARGET=source/config.inc.php
     fi
-    cp "${SOURCE}" "${TARGET}"
+    cp "${CONFIG_FILE}" "${TARGET}"
 else
     echo "vendor/oxid-esales/oxideshop-ce does not exist, assuming conventional shop install"
 fi

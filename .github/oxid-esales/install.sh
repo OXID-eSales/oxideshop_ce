@@ -62,25 +62,43 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory "${OXID_BUILD_DIRECTORY}"
 
-if diff -q source/source/config.inc.php.dist source/source/config.inc.php; then
-    echo "source/config.inc.php has not been modified"
-    if diff -q source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
-        echo "vendor/oxid-esales/oxideshop-ce/source/config.inc.php has not been modified"
-        echo "No valid config"
-        exit 1
+if [ -d vendor/oxid-esales/oxideshop-ce ]; then
+    # Handle copying of the config
+    if [ -f source/source/config.inc.php.dist ] && [ -f source/source/config.inc.php.dist.dist ]; then
+        if diff -q source/source/config.inc.php.dist source/source/config.inc.php; then
+            echo "source/config.inc.php has not been modified"
+            TARGET=source/config.inc.php    
+        else
+            echo "Config file is source/config.inc.php"
+            CONFIG_FILE=source/config.inc.php
+        fi
     else
-        echo "Config file is vendor/oxid-esales/oxideshop-ce/source/config.inc.php copying to source/config.inc.php"
-        CONFIG_FILE=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
-        cp source/${CONFIG_FILE} source/source/config.inc.php
+        TARGET=source/config.inc.php
     fi
-else
-    echo "Config file is source/config.inc.php"
-    CONFIG_FILE=source/config.inc.php
-    if diff -q source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
-        echo "vendor/oxid-esales/oxideshop-ce/source/config.inc.php has not been modified, copying from source"
-        cp source/${CONFIG_FILE} source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
+    if [ -f source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist ] && [ -f source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist.dist ]; then
+        if diff -q source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
+            echo "vendor/oxid-esales/oxideshop-ce/source/config.inc.php has not been modified"
+            if [ -n "${TARGET}" ]; then
+                echo "ERROR: Neither source/config.inc.php nor vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
+                exit 1
+            fi
+            TARGET=source/config.inc.php
+        else
+            if [ -n "${CONFIG_FILE}" ]; then
+            echo "ERROR: Both source/config.inc.php and vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
+            exit 1
+            fi
+            echo "ERROR: Config file is source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php"
+            CONFIG_FILE=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
+        fi
+    else
+        if [ -n "${TARGET}" ]; then
+            echo "ERROR: Neither source/config.inc.php nor vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
+            exit 1
+        fi
+        TARGET=source/config.inc.php
     fi
-
+    cp "source/${SOURCE}" "source/${TARGET}"
 fi
 
 # Activate iDebug

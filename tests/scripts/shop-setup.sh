@@ -8,7 +8,11 @@ export DB_PASSWORD=root
 export DB_HOST=mysql
 export DB_PORT=3306
 export SHOP_URL=http://localhost.local/
-export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+if [ -d /var/www/vendor/oxid-esales/oxideshop-ce/source/ ]; then
+    export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+else
+    export SHOP_SOURCE_PATH=/var/www/source/
+fi
 export THEME_ID=apex
 export SHOP_ROOT_PATH=/var/www
 SUITE="AcceptanceSetup"

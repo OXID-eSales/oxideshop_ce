@@ -32,6 +32,16 @@ function init() {
         fi
     fi
     echo "OK, using '${OE_CONSOLE}'"
+    if [ -z "${OXID_BUILD_DIRECTORY}" ]; then
+        echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/source/tmp"
+        export OXID_BUILD_DIRECTORY="/var/www/source/tmp"
+    else
+        echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
+    fi
+    if [ ! -d "${OXID_BUILD_DIRECTORY}" ]; then
+        echo "Creating '${OXID_BUILD_DIRECTORY}'"
+        mkdir -p "${OXID_BUILD_DIRECTORY}"
+    fi
 }
 
 init
@@ -47,7 +57,7 @@ docker compose "${install_container_method}" -T \
     --db-password root \
     --shop-url http://localhost.local/ \
     --shop-directory /var/www/source \
-    --compile-directory /var/www/source/tmp
+    --compile-directory "${OXID_BUILD_DIRECTORY}"
 
 # Activate iDebug
 if [ "${install_config_idebug}" == 'true' ]; then

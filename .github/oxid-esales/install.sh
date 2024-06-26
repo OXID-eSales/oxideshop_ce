@@ -62,7 +62,8 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory "${OXID_BUILD_DIRECTORY}"
 
-if [ -d source/vendor/oxid-esales/oxideshop-ce ]; then
+ls -lA source/vendor/oxid-esales
+if [ -e source/vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
     if [ -f source/source/config.inc.php.dist ] && [ -f source/source/config.inc.php ]; then
         if diff -q source/source/config.inc.php.dist source/source/config.inc.php; then

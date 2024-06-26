@@ -62,11 +62,12 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory "${OXID_BUILD_DIRECTORY}"
 
-ls -lA source/vendor/oxid-esales
-if [ -e source/vendor/oxid-esales/oxideshop-ce ]; then
+pwd
+ls -lA vendor/oxid-esales
+if [ -e vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
-    if [ -f source/source/config.inc.php.dist ] && [ -f source/source/config.inc.php ]; then
-        if diff -q source/source/config.inc.php.dist source/source/config.inc.php; then
+    if [ -f source/config.inc.php.dist ] && [ -f source/config.inc.php ]; then
+        if diff -q source/config.inc.php.dist source/config.inc.php; then
             echo "source/config.inc.php has not been modified"
             TARGET=source/config.inc.php    
         else
@@ -77,8 +78,8 @@ if [ -e source/vendor/oxid-esales/oxideshop-ce ]; then
         echo "source/config.inc.php does not exist"
         TARGET=source/config.inc.php
     fi
-    if [ -f source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist ] && [ -f source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php ]; then
-        if diff -q source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
+    if [ -f vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist ] && [ -f vendor/oxid-esales/oxideshop-ce/source/config.inc.php ]; then
+        if diff -q vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
             echo "vendor/oxid-esales/oxideshop-ce/source/config.inc.php has not been modified"
             if [ -n "${TARGET}" ]; then
                 echo "ERROR: Neither source/config.inc.php nor vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
@@ -90,7 +91,7 @@ if [ -e source/vendor/oxid-esales/oxideshop-ce ]; then
             echo "ERROR: Both source/config.inc.php and vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
             exit 1
             fi
-            echo "Config file is source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php"
+            echo "Config file is vendor/oxid-esales/oxideshop-ce/source/config.inc.php"
             CONFIG_FILE=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
         fi
     else
@@ -100,7 +101,7 @@ if [ -e source/vendor/oxid-esales/oxideshop-ce ]; then
         fi
         TARGET=source/config.inc.php
     fi
-    cp "source/${SOURCE}" "source/${TARGET}"
+    cp "${SOURCE}" "${TARGET}"
 else
     echo "vendor/oxid-esales/oxideshop-ce does not exist, assuming conventional shop install"
 fi

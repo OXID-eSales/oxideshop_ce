@@ -11,7 +11,9 @@ vendor/bin/codecept run acceptance \
 RESULT=$?
 echo "Codecept run exited with error code ${RESULT}"
 [[ ! -d tests/Output ]] && mkdir tests/Output
-cp tests/Codeception/_output/* tests/Output
+if [ -n "$(find tests/Codeception/_output -type f)" ]; then
+    cp tests/Codeception/_output/* tests/Output
+fi
 if [ ! -s "tests/Output/codeception_Acceptance.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1

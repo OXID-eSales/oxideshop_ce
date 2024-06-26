@@ -33,13 +33,16 @@ function init() {
     fi
     echo "OK, using '${OE_CONSOLE}'"
     if [ -z "${OXID_BUILD_DIRECTORY}" ]; then
-        echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/source/tmp"
-        export OXID_BUILD_DIRECTORY="/var/www/source/tmp"
+      echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/source/tmp"
+      export OXID_BUILD_DIRECTORY="/var/www/source/tmp"
     else
-        echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
+      echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
     fi
     if [ ! -d "${OXID_BUILD_DIRECTORY}" ]; then
-        echo "Creating '${OXID_BUILD_DIRECTORY}'"
+      echo "Creating '${OXID_BUILD_DIRECTORY}'"
+      docker compose "${install_container_method}" -T \
+        ${install_container_options} \
+        "${install_container_name}" \
         mkdir -p "${OXID_BUILD_DIRECTORY}"
     fi
 }

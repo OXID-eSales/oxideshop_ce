@@ -62,7 +62,7 @@ docker compose "${install_container_method}" -T \
     --shop-directory /var/www/source \
     --compile-directory "${OXID_BUILD_DIRECTORY}"
 
-if [ -d vendor/oxid-esales/oxideshop-ce ]; then
+if [ -d source/vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
     if [ -f source/source/config.inc.php.dist ] && [ -f source/source/config.inc.php ]; then
         if diff -q source/source/config.inc.php.dist source/source/config.inc.php; then
@@ -100,6 +100,8 @@ if [ -d vendor/oxid-esales/oxideshop-ce ]; then
         TARGET=source/config.inc.php
     fi
     cp "source/${SOURCE}" "source/${TARGET}"
+else
+    echo "vendor/oxid-esales/oxideshop-ce does not exist, assuming conventional shop install"
 fi
 
 # Activate iDebug

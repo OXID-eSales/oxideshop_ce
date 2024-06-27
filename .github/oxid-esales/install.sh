@@ -32,6 +32,19 @@ function init() {
         fi
     fi
     echo "OK, using '${OE_CONSOLE}'"
+    if [ -z "${OXID_BUILD_DIRECTORY}" ]; then
+      echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/source/tmp"
+      export OXID_BUILD_DIRECTORY="/var/www/source/tmp"
+    else
+      echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
+    fi
+    if [ ! -d "${OXID_BUILD_DIRECTORY}" ]; then
+      echo "Creating '${OXID_BUILD_DIRECTORY}'"
+      docker compose "${install_container_method}" -T \
+        ${install_container_options} \
+        "${install_container_name}" \
+        mkdir -p "${OXID_BUILD_DIRECTORY}"
+    fi
 }
 
 init
@@ -47,7 +60,49 @@ docker compose "${install_container_method}" -T \
     --db-password root \
     --shop-url http://localhost.local/ \
     --shop-directory /var/www/source \
-    --compile-directory /var/www/source/tmp
+    --compile-directory "${OXID_BUILD_DIRECTORY}"
+
+if [ -e vendor/oxid-esales/oxideshop-ce ]; then
+    # Handle copying of the config
+    if [ -f source/config.inc.php.dist ] && [ -f source/config.inc.php ]; then
+        if diff -q source/config.inc.php.dist source/config.inc.php; then
+            echo "source/config.inc.php has not been modified"
+            TARGET=source/config.inc.php    
+        else
+            echo "Config file is source/config.inc.php"
+            CONFIG_FILE=source/config.inc.php
+        fi
+    else
+        echo "source/config.inc.php does not exist"
+        TARGET=source/config.inc.php
+    fi
+    if [ -f vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist ] && [ -f vendor/oxid-esales/oxideshop-ce/source/config.inc.php ]; then
+        if diff -q vendor/oxid-esales/oxideshop-ce/source/config.inc.php.dist vendor/oxid-esales/oxideshop-ce/source/config.inc.php; then
+            echo "vendor/oxid-esales/oxideshop-ce/source/config.inc.php has not been modified"
+            if [ -n "${TARGET}" ]; then
+                echo "ERROR: Neither source/config.inc.php nor vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
+                exit 1
+            fi
+            TARGET=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
+        else
+            if [ -n "${CONFIG_FILE}" ]; then
+            echo "ERROR: Both source/config.inc.php and vendor/oxid-esales/oxideshop-ce/source/config.inc.php have been updated"
+            exit 1
+            fi
+            echo "Config file is vendor/oxid-esales/oxideshop-ce/source/config.inc.php"
+            CONFIG_FILE=vendor/oxid-esales/oxideshop-ce/source/config.inc.php
+        fi
+    else
+        if [ -n "${TARGET}" ]; then
+            echo "ERROR: Neither vendor/oxid-esales/oxideshop-ce/source/config.inc.php nor source/config.inc.php have been updated"
+            exit 1
+        fi
+        TARGET=source/config.inc.php
+    fi
+    cp "${CONFIG_FILE}" "${TARGET}"
+else
+    echo "vendor/oxid-esales/oxideshop-ce does not exist, assuming conventional shop install"
+fi
 
 # Activate iDebug
 if [ "${install_config_idebug}" == 'true' ]; then
@@ -60,12 +115,10 @@ if [ "${install_config_idebug}" == 'true' ]; then
 fi
 
 # Activate theme
-if [ "${install_is_enterprise}" == 'true' ]; then
-    docker compose "${install_container_method}" -T \
-        ${install_container_options} \
-        "${install_container_name}" \
-        ${OE_CONSOLE} oe:theme:activate apex
-fi
+docker compose "${install_container_method}" -T \
+    ${install_container_options} \
+    "${install_container_name}" \
+    ${OE_CONSOLE} oe:theme:activate apex
 
 # Output PHP error log
 if [ -s data/php/logs/error_log.txt ]; then

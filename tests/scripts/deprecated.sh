@@ -1,9 +1,19 @@
 #!/bin/bash
 set -e
+export XDEBUG_MODE=coverage
+SUITE="AllTestsUnit"
+RUNTEST="vendor/bin/runtests"
+if [ ! -f "${RUNTEST}" ]; then
+    RUNTEST="/var/www/${RUNTEST}"
+    if [ ! -f "${RUNTEST}" ]; then
+        echo -e "\033[0;31mCould not find runtests in vendor/bin or /var/www/vendor/bin\033[0m"
+        exit 1
+    fi
+fi
 cp vendor/oxid-esales/testing-library/test_config.yml.dist test_config.yml
-XDEBUG_MODE=coverage vendor/bin/runtests \
+"${RUNTEST}" \
     --coverage-clover=tests/Reports/coverage_deprecated_tests.xml \
-    AllTestsUnit 2>&1 \
+    "${SUITE}" 2>&1 \
 | tee "tests/Output/deprecated_tests.txt"
 RESULT=$?
 echo "runtest exited with error code ${RESULT}"

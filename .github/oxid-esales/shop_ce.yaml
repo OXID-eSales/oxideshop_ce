@@ -1,6 +1,5 @@
 # {{ $org := "oxid-esales" }}organisation: {{ $org }}
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
-# {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
 
 install: &install
   method: script
@@ -9,6 +8,20 @@ install: &install
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+          "preferred-install": {
+            "oxid-esales/*": "source",
+            "oxid-professional-services/*": "source",
+            "ddoe/*": "source"
+          },
+          "require": {
+            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+            "twig/twig": "v3.8.0"
+          }
+      }
   output:
     files: |
       docker-compose.yml
@@ -32,7 +45,7 @@ runscript: &runscript
   shop: &shop
     path: ''
     container:
-      options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME={{ .Github.EventName }} -e GITHUB_BASE_REF={{ .Github.BaseRef }} -e GITHUB_REF={{ .Github.Ref }} -e GITHUB_REF_NAME={{ .Github.RefName }}'
+      options: '-e XDEBUG_MODE=coverage -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="{{ .Github.Ref }}" -e GITHUB_REF_NAME="{{ .Github.RefName }}" -e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome'
   setup:
     <<: *shop
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'

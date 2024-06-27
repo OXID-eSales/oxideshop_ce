@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 export SELENIUM_SERVER_HOST=selenium
 export BROWSER_NAME=chrome
 export DB_NAME=setup_test
@@ -9,12 +8,15 @@ export DB_PASSWORD=root
 export DB_HOST=mysql
 export DB_PORT=3306
 export SHOP_URL=http://localhost.local/
-export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+if [ -d /var/www/vendor/oxid-esales/oxideshop-ce/source/ ]; then
+    export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+else
+    export SHOP_SOURCE_PATH=/var/www/source/
+fi
 export THEME_ID=apex
 export SHOP_ROOT_PATH=/var/www
 SUITE="AcceptanceSetup"
 if [ ! -d "tests/Codeception/${SUITE}" ]; then
-  echo "Suite ${SUITE} not found, switching to acceptanceSetup"
   SUITE="acceptanceSetup"
   if [ ! -d "tests/Codeception/${SUITE}" ]; then
     echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in tests/Codeception\033[0m"
@@ -51,6 +53,10 @@ echo "codecept build exited with error code ${RESULT}"
 | tee tests/Output/codeception_${SUITE}.txt
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
+[[ ! -d tests/Output ]] && mkdir tests/Output
+if [ -n "$(find tests/Codeception/_output -type f)" ]; then
+    cp tests/Codeception/_output/* tests/Output
+fi
 if [ ! -s "tests/Output/codeception_${SUITE}.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1

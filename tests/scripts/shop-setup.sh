@@ -1,27 +1,63 @@
 #!/bin/bash
 set -e
-vendor/bin/codecept build \
+export SELENIUM_SERVER_HOST=selenium
+export BROWSER_NAME=chrome
+export DB_NAME=setup_test
+export DB_USERNAME=root
+export DB_PASSWORD=root
+export DB_HOST=mysql
+export DB_PORT=3306
+export SHOP_URL=http://localhost.local/
+if [ -d /var/www/vendor/oxid-esales/oxideshop-ce/source/ ]; then
+    export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+else
+    export SHOP_SOURCE_PATH=/var/www/source/
+fi
+export THEME_ID=apex
+export SHOP_ROOT_PATH=/var/www
+SUITE="AcceptanceSetup"
+if [ ! -d "tests/Codeception/${SUITE}" ]; then
+  SUITE="acceptanceSetup"
+  if [ ! -d "tests/Codeception/${SUITE}" ]; then
+    echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in tests/Codeception\033[0m"
+    exit 1
+  fi
+fi
+
+CODECEPT="vendor/bin/codecept"
+if [ ! -f "${CODECEPT}" ]; then
+    CODECEPT="/var/www/${CODECEPT}"
+    if [ ! -f "${CODECEPT}" ]; then
+        echo -e "\033[0;31mCould not find codecept in vendor/bin or /var/www/vendor/bin\033[0m"
+        exit 1
+    fi
+fi
+# wait for selenium host
+I=60
+until  [ $I -le 0 ]; do
+    curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status" |grep '"ready": true' && break
+    echo "."
+    sleep 1
+    ((I--))
+done
+set -e
+curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
+
+"${CODECEPT}" build \
     -c tests/codeception.yml
 RESULT=$?
 echo "codecept build exited with error code ${RESULT}"
-SELENIUM_SERVER_HOST=selenium \
-BROWSER_NAME=chrome \
-DB_NAME=setup_test \
-DB_USERNAME=root \
-DB_PASSWORD=root \
-DB_HOST=mysql \
-DB_PORT=3306 \
-SHOP_URL=http://localhost.local/ \
-SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/ \
-THEME_ID=apex \
-SHOP_ROOT_PATH=/var/www \
-vendor/bin/codecept run acceptanceSetup \
+"${CODECEPT}" run "${SUITE}" \
     -c tests/codeception.yml \
     --ext DotReporter 2>&1 \
-| tee tests/Output/codeception_ShopSetup.txt
+| tee tests/Output/codeception_${SUITE}.txt
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
-if [ ! -s "tests/Output/codeception_ShopSetup.txt" ]; then
+[[ ! -d tests/Output ]] && mkdir tests/Output
+if [ -n "$(find tests/Codeception/_output -type f)" ]; then
+    cp tests/Codeception/_output/* tests/Output
+fi
+if [ ! -s "tests/Output/codeception_${SUITE}.txt" ]; then
     echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
     RESULT=1
 fi
@@ -47,12 +83,12 @@ EOF
 sed -e 's|(.*)\r|$1|' -i failure_pattern.tmp
 while read -r LINE ; do
     if [ -n "${LINE}" ]; then
-        if grep -q -E "${LINE}" "tests/Output/codeception_ShopSetup.txt"; then
-            echo -e "\033[0;31m runtest failed matching pattern ${LINE}\033[0m"
-            grep -E "${LINE}" "tests/Output/codeception_ShopSetup.txt"
+        if grep -q -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"; then
+            echo -e "\033[0;31m codecept ${SUITE} failed matching pattern ${LINE}\033[0m"
+            grep -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"
             RESULT=1
         else
-            echo -e "\033[0;32m codeception passed matching pattern ${LINE}"
+            echo -e "\033[0;32m codecept ${SUITE} passed matching pattern ${LINE}"
         fi
     fi
 done <failure_pattern.tmp

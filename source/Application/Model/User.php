@@ -529,7 +529,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $blAddRemark = false;
         if (
-            $this->oxuser__oxpassword->value
+            $this->getFieldData('oxpassword')
             && (!$this->oxuser__oxregister instanceof \OxidEsales\Eshop\Core\Field || $this->oxuser__oxregister->value < 1)
         ) {
             $blAddRemark = true;
@@ -706,7 +706,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sSelect = 'SELECT oxid FROM ' . $this->getViewName() . '
                     WHERE oxusername = :oxusername ';
         $sSelect .= $sShopSelect;
-        $params[':oxusername'] = (string) $this->oxuser__oxusername->value;
+        $params[':oxusername'] = (string) $this->getFieldData('oxusername');
 
         if (($sOxid = $masterDb->getOne($sSelect, $params))) {
             // update - set oxid
@@ -1718,7 +1718,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function update()
     {
         //V #M418: for not registered users, don't change boni during update
-        if (!$this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
+        if (!$this->getFieldData('oxpassword') && $this->getFieldData('oxregister') < 1) {
             $this->_aSkipSaveFields[] = 'oxboni';
         }
 

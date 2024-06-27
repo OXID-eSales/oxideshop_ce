@@ -227,7 +227,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function updateSubscription($oUser)
     {
         // user email changed ?
-        if ($oUser->oxuser__oxusername->value && $this->oxnewssubscribed__oxemail->value != $oUser->oxuser__oxusername->value) {
+        if ($oUser->getFieldData('oxusername') && $this->getFieldData('oxemail') != $oUser->getFieldData('oxusername')) {
             $this->oxnewssubscribed__oxemail = new \OxidEsales\Eshop\Core\Field($oUser->oxuser__oxusername->value, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 

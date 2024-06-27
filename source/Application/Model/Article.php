@@ -4435,7 +4435,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function assignParentFieldValues()
     {
         startProfile('articleAssignParentInternal');
-        if ($this->oxarticles__oxparentid->value) {
+        if ($this->getFieldData('oxparentid')) {
             // yes, we are in fact a variant
             if (!$this->isAdmin() || ($this->_blLoadParentData && $this->isAdmin())) {
                 foreach ($this->_aFieldNames as $sFieldName => $sVal) {
@@ -4453,7 +4453,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if (
             !Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
-            ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value)
+            ($this->_blHasVariants || $this->getFieldData('oxvarstock') || $this->getFieldData('oxvarcount'))
         ) {
             $this->_blNotBuyableParent = true;
         }
@@ -4479,7 +4479,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // if we have flag /*1 or*/ 4 - we show always green light
         if (
             $myConfig->getConfigParam('blUseStock') && /*$this->oxarticles__oxstockflag->value != 1 && */
-            $this->oxarticles__oxstockflag->value != 4
+            $this->getFieldData('oxstockflag') != 4
         ) {
             //ORANGE light
             $iStock = $this->oxarticles__oxstock->value;
@@ -4500,7 +4500,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
 
         // stock
-        if ($myConfig->getConfigParam('blUseStock') && ($this->oxarticles__oxstockflag->value == 3 || $this->oxarticles__oxstockflag->value == 2)) {
+        if ($myConfig->getConfigParam('blUseStock') && ($this->getFieldData('oxstockflag') == 3 || $this->getFieldData('oxstockflag') == 2)) {
             $iOnStock = $this->oxarticles__oxstock->value;
             if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = Registry::getSession();
@@ -4540,7 +4540,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $myConfig = Registry::getConfig();
 
-        $sThisShop = $this->oxarticles__oxshopid->value;
+        $sThisShop = $this->getFieldData('oxshopid');
 
         $this->_sDynImageDir = $myConfig->getPictureUrl(null, false);
         $this->dabsimagedir = $myConfig->getPictureDir(false); //$sThisShop

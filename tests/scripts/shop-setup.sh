@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 export SELENIUM_SERVER_HOST=selenium
 export BROWSER_NAME=chrome
 export DB_NAME=setup_test
@@ -12,9 +13,10 @@ export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
 export THEME_ID=apex
 export SHOP_ROOT_PATH=/var/www
 SUITE="AcceptanceSetup"
-if [ ! -d "source/tests/Codeception/${SUITE}" ]; then
+if [ ! -d "tests/Codeception/${SUITE}" ]; then
+  echo "Suite ${SUITE} not found, switching to acceptanceSetup"
   SUITE="acceptanceSetup"
-  if [ ! -d "source/tests/Codeception/${SUITE}" ]; then
+  if [ ! -d "tests/Codeception/${SUITE}" ]; then
     echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in tests/Codeception\033[0m"
     exit 1
   fi

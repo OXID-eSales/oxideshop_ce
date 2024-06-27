@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
+set -x
 export SELENIUM_SERVER_HOST=selenium
 export BROWSER_NAME=chrome
 SUITE="Acceptance"
-if [ ! -d "source/tests/Codeception/${SUITE}" ]; then
+if [ ! -d "tests/Codeception/${SUITE}" ]; then
+  echo "Suite ${SUITE} not found, switching to acceptance"
   SUITE="acceptance"
-  if [ ! -d "source/tests/Codeception/${SUITE}" ]; then
+  if [ ! -d "tests/Codeception/${SUITE}" ]; then
     echo -e "\033[0;31mCould not find suite Acceptance or acceptance in tests/Codeception\033[0m"
     exit 1
   fi

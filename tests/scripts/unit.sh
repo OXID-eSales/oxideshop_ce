@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
-vendor/bin/phpunit \
+PHPUNIT="vendor/bin/phpunit"
+if [ ! -f "${PHPUNIT}" ]; then
+    PHPUNIT="/var/www/${PHPUNIT}"
+    if [ ! -f "${PHPUNIT}" ]; then
+        echo -e "\033[0;31mCould not find phpunit in vendor/bin or /var/www/vendor/bin\033[0m"
+        exit 1
+    fi
+fi
+"${PHPUNIT}" \
     -c phpunit.xml \
     --bootstrap tests/bootstrap.php \
     --coverage-clover=tests/Reports/coverage_phpunit_unit.xml \
@@ -40,7 +48,7 @@ while read -r LINE ; do
             grep -E "${LINE}" "tests/Output/unit_tests.txt"
             RESULT=1
         else
-            echo -e "\033[0;32m runtest passed matching pattern ${LINE}"
+            echo -e "\033[0;32m unit test passed matching pattern ${LINE}"
         fi
     fi
 done <failure_pattern.tmp

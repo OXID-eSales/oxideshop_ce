@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Email;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Email;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService;
 use PHPUnit\Framework\TestCase;

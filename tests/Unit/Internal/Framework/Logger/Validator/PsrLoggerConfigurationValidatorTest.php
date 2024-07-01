@@ -25,7 +25,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')
-            ->will($this->returnValue($logLevel));
+            ->willReturn($logLevel);
 
         $validator = new PsrLoggerConfigurationValidator();
         $validator->validate($configurationMock);
@@ -57,7 +57,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')
-            ->will($this->returnValue($logLevel));
+            ->willReturn($logLevel);
 
         $validator = new PsrLoggerConfigurationValidator();
         $validator->validate($configurationMock);

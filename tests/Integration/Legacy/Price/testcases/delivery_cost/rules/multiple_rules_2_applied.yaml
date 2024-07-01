@@ -1,0 +1,17 @@
+articles:
+  - { oxid: parent_product_id }
+  - { oxid: variant_product_id, oxparentid: parent_product_id, oxprice: 10.0, amount: 5 }
+categories:
+  - { oxid: category_id_1, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [ variant_product_id ] }
+user:
+  oxid: testUser
+  oxactive: 1
+  oxusername: testUser
+costs:
+  delivery: [
+    { oxactive: 1, oxtitle: 'first', oxaddsum: 11, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 0, oxparam: 0, oxparamend: 100, oxsort: 100, oxfixed: 0 }
+    { oxactive: 1, oxtitle: 'second', oxaddsum: 22, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 0, oxparam: 100, oxparamend: 200, oxsort: 200, oxfixed: 0 }
+    { oxactive: 1, oxtitle: 'third', oxaddsum: 33, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 0, oxparam: 0, oxparamend: 200, oxsort: 300, oxfixed: 0 }
+  ]
+expected:
+  costs: { totals: { delivery: { brutto: 44.0 } } }

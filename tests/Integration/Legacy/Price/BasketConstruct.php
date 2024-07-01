@@ -22,7 +22,6 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
-
 use function is_array;
 
 class BasketConstruct
@@ -95,13 +94,13 @@ class BasketConstruct
 
         // try to add delivery
         if (!empty($delivery)) {
-            $basket->setShipping($delivery[0]);
+            $basket->setShipping($delivery['delivery_set_id'] ?? $delivery[0]);
         }
 
         // try to add payment
-        if ($payment !== []) {
-            $basket->setPayment($payment[0]);
-        }
+        $basket->setPayment(
+            $payment[0] ?? 'oxidinvoice'
+        );
 
         // try to add vouchers
         $basket->setSkipVouchersChecking(true);
@@ -183,13 +182,19 @@ class BasketConstruct
         return $object;
     }
 
+    public static function getDefaultCountryId(): string
+    {
+        return (string)DatabaseProvider::getDb()
+            ->select('SELECT OXID FROM oxcountry WHERE OXTITLE = "Deutschland"')
+            ->fetchRow();
+    }
+
     private function createUser(array $userData): User
     {
         if (empty($userData['oxcountryid'])) {
-            $userData['oxcountryid'] = DatabaseProvider::getDb()
-                ->select('SELECT OXID FROM oxcountry WHERE OXTITLE = "Deutschland"')
-                ->fetchRow();
+            $userData['oxcountryid'] = self::getDefaultCountryId();
         }
+
         return $this->createObj($userData, 'oxuser', 'oxuser');
     }
 
@@ -297,10 +302,14 @@ class BasketConstruct
         }
         $deliveries = [];
 
-        $data = empty($deliveryCosts['oxdeliveryset']) ? [
-            'oxactive' => 1,
-        ] : $deliveryCosts['oxdeliveryset'];
-        $deliverySet = $this->createObj($data, 'oxdeliveryset', 'oxdeliveryset');
+        $deliverySet = $this->createObj(
+            [
+                'oxtitle' => 'Delivery set',
+                'oxactive' => 1,
+            ],
+            'oxdeliveryset',
+            'oxdeliveryset'
+        );
 
         foreach ($deliveryCosts as $deliveryData) {
             $delivery = oxNew(Delivery::class);
@@ -322,12 +331,24 @@ class BasketConstruct
             }
             $delivery->save();
             $deliveries[] = $delivery->getId();
-            $data = [
-                'oxdelid' => $delivery->getId(),
-                'oxdelsetid' => $deliverySet->getId(),
-            ];
-            $this->createObj2Obj($data, 'oxdel2delset');
+
+            $this->createObj2Obj(
+                [
+                    'oxdelid' => $delivery->getId(),
+                    'oxdelsetid' => $deliverySet->getId(),
+                ],
+                'oxdel2delset'
+            );
         }
+        $this->createObj2Obj(
+            [
+                'oxpaymentid' => 'oxidinvoice',
+                'oxobjectid' => $deliverySet->getId(),
+                'oxtype' => 'oxdelset'
+            ],
+            'oxobject2payment'
+        );
+        $deliveries['delivery_set_id'] = $deliverySet->getId();
 
         return $deliveries;
     }

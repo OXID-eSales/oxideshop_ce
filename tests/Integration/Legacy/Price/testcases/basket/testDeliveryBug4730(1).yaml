@@ -5,7 +5,12 @@ articles:
     - { oxid: vine1, oxprice: 5, oxvat: 10, amount: 6 }
     - { oxid: supply1, oxprice: 10, oxvat: 10, amount: 1 }
 costs:
-    delivery: [{ oxtitle: 'more than 12 Bottles', oxactive: 1, oxaddsum: 0, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 12, oxparamend: 99999, oxsort: 1, oxcategories: [vine] }, { oxtitle: '4 - 11 Bottles', oxactive: 1, oxaddsum: 5.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 4, oxparamend: 11, oxsort: 1, oxcategories: [vine] }, { oxtitle: '1 - 3 Bottles', oxactive: 1, oxaddsum: 4.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 1, oxparamend: 3, oxsort: 1, oxcategories: [vine] }, { oxtitle: supplies, oxactive: 1, oxaddsum: 2.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 0, oxparamend: 99999, oxsort: 4, oxcategories: [supplies] }]
+    delivery: [
+        { oxtitle: '1 - 3 Bottles', oxactive: 1, oxaddsum: 4.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 1, oxparamend: 3, oxsort: 1, oxcategories: [vine] },
+        { oxtitle: '4 - 11 Bottles', oxactive: 1, oxaddsum: 5.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 4, oxparamend: 11, oxsort: 1, oxcategories: [vine] },
+        { oxtitle: 'more than 12 Bottles', oxactive: 1, oxaddsum: 0, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 12, oxparamend: 99999, oxsort: 1, oxcategories: [vine] },
+        { oxtitle: supplies, oxactive: 1, oxaddsum: 2.9, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 0, oxparamend: 99999, oxsort: 4, oxcategories: [supplies] }
+    ]
 expected:
     articles: { vine1: ['5,00', '30,00'], supply1: ['10,00', '10,00'] }
     totals: { totalBrutto: '40,00', totalNetto: '36,36', vats: { 10: '3,64' }, delivery: { brutto: '5,90' }, grandTotal: '45,90' }

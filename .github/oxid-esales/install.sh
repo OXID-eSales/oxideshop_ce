@@ -38,7 +38,7 @@ function init() {
     else
       echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
     fi
-    if [ ! -d "${OXID_BUILD_DIRECTORY}" ]; then
+    if [ ! -d "${OXID_BUILD_DIRECTORY/\/var\/www/source}" ]; then
       echo "Creating '${OXID_BUILD_DIRECTORY}'"
       docker compose "${install_container_method}" -T \
         ${install_container_options} \

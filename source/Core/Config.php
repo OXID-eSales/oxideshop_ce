@@ -67,40 +67,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $dbType = null;
 
     /**
-     * Shop Url
-     *
-     * @var string
-     */
-    protected $sShopURL = null;
-
-    /**
-     * Shop SSL mode Url
-     *
-     * @var string
-     */
-    protected $sSSLShopURL = null;
-
-    /**
-     * Shops admin SSL mode Url
-     *
-     * @var string
-     */
-    protected $sAdminSSLURL = null;
-
-    /**
-     * Debug mode (default is set depending on if it is productive mode or not):
-     *  -1 = Logger Messages internal use only
-     *   0 = off
-     *   2 = SQL
-     *   5 = Delivery Cost calculation info
-     *   6 = SMTP Debug Messages
-     *   7 = Slow SQL query indication
-     *
-     * @var int
-     */
-    protected $iDebug = null;
-
-    /**
      * Administrator email address, used to send critical notices
      *
      * @var string
@@ -446,12 +412,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         //config variables from config.inc.php takes priority over the ones loaded from db
         include getShopBasePath() . '/config.inc.php';
 
-        //adding trailing slashes
-        $fileUtils = Registry::getUtilsFile();
-        $this->sShopURL = $fileUtils->normalizeDir($this->sShopURL);
-        $this->sSSLShopURL = $fileUtils->normalizeDir($this->sSSLShopURL);
-        $this->sAdminSSLURL = $fileUtils->normalizeDir($this->sAdminSSLURL);
-
         $this->loadCustomConfig();
     }
 
@@ -487,10 +447,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
             $this->setConfigParam('iZoomPicCount', 4);
-        }
-
-        if (is_null($this->getConfigParam('iDebug'))) {
-            $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);
         }
 
         $this->setConfigParam('sCoreDir', __DIR__ . DIRECTORY_SEPARATOR);
@@ -572,7 +528,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Sets config variable to config object, first unserializing it by given type.
-     * sShopURL and sSSLShopURL are skipped for admin or when URL values are not set
      *
      * @param string $varName variable name
      * @param string $varType variable type - arr, aarr, bool or str
@@ -582,13 +537,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function setConfVarFromDb($varName, $varType, $varVal)
     {
-        if (
-            ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
-            (!$varVal || $this->isAdmin() === true)
-        ) {
-            return;
-        }
-
         switch ($varType) {
             case 'arr':
             case 'aarr':
@@ -747,11 +695,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $this->setIsSsl();
         if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
-            // "1&1" hoster provides "1"
-            $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
+            $this->setIsSsl(ContainerFacade::getParameter('oxid_shop_url') || $this->getConfigParam('sMallSSLShopURL'));
             if ($this->isAdmin() && !$this->_blIsSsl) {
-                //#4026
-                $this->setIsSsl(!is_null($this->getConfigParam('sAdminSSLURL')));
+                $this->setIsSsl(!is_null(ContainerFacade::getParameter('oxid_shop_admin_url')));
             }
         }
 
@@ -788,7 +734,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isHttpsOnly()
     {
-        return $this->isSsl() && $this->getSslShopUrl() == $this->getShopUrl();
+        return $this->isSsl();
     }
 
     /**
@@ -843,38 +789,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!$url) {
-            $url = $this->getConfigParam('sShopURL');
-        }
-
-        return $url;
-    }
-
-    /**
-     * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop
-     *
-     * @param int $lang language (default is null)
-     *
-     * @return string
-     */
-    public function getSslShopUrl($lang = null)
-    {
-        $url = $this->getShopUrlByLanguage($lang, true);
-
-        if (!$url) {
-            $url = $this->getMallShopUrl(true);
-        }
-
-        if (!$url) {
-            $url = $this->getMallShopUrl();
-        }
-
-        //normal section
-        if (!$url) {
-            $url = $this->getConfigParam('sSSLShopURL');
-        }
-
-        if (!$url) {
-            $url = $this->getShopUrl($lang);
+            $url = ContainerFacade::getParameter('oxid_shop_url');
         }
 
         return $url;
@@ -904,18 +819,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $admin = $this->isAdmin();
         }
         if ($admin) {
-            if ($this->isSsl()) {
-                $url = $this->getConfigParam('sAdminSSLURL');
-                if (!$url) {
-                    return $this->getSslShopUrl() . $this->getConfigParam('sAdminDir') . '/';
-                }
-
-                return $url;
-            } else {
+            $url = ContainerFacade::getParameter('oxid_shop_admin_url');
+            if (!$url) {
                 return $this->getShopUrl() . $this->getConfigParam('sAdminDir') . '/';
             }
+
+            return $url;
         } else {
-            return $this->isSsl() ? $this->getSslShopUrl() : $this->getShopUrl();
+            return $this->getShopUrl();
         }
     }
 
@@ -928,13 +839,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopCurrentUrl($lang = null)
     {
-        if ($this->isSsl()) {
-            $url = $this->getSSLShopURL($lang);
-        } else {
-            $url = $this->getShopURL($lang);
-        }
-
-        return Registry::getUtilsUrl()->processUrl($url . 'index.php', false);
+        return Registry::getUtilsUrl()->processUrl($this->getShopURL($lang) . 'index.php', false);
     }
 
     /**
@@ -962,7 +867,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = [])
     {
         $utilsUrl = Registry::getUtilsUrl();
-        $widgetUrl = $this->isSsl() ? $this->getSslShopUrl($languageId) : $this->getShopUrl($languageId, $inAdmin);
+        $widgetUrl = $this->getShopUrl($languageId, $inAdmin);
         $widgetUrl = $utilsUrl->processUrl($widgetUrl . 'widget.php', false);
 
         if (!isset($languageId)) {
@@ -970,11 +875,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $languageId = $language->getBaseLanguage();
         }
         $urlLang = $utilsUrl->getUrlLanguageParameter($languageId);
+
         $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlLang, true);
 
-        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
-
-        return $widgetUrl;
+        return $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
     }
 
     /**
@@ -984,7 +888,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopSecureHomeUrl()
     {
-        return Registry::getUtilsUrl()->processUrl($this->getSslShopUrl() . 'index.php', false);
+        return Registry::getUtilsUrl()->processUrl($this->getShopUrl() . 'index.php', false);
     }
 
     /**
@@ -1116,20 +1020,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getOutUrl($ssl = null, $admin = null, $nativeImg = false)
     {
-        $ssl = is_null($ssl) ? $this->isSsl() : $ssl;
         $admin = is_null($admin) ? $this->isAdmin() : $admin;
 
-        if ($ssl) {
-            if ($nativeImg && !$admin) {
-                $url = $this->getSslShopUrl();
-            } else {
-                $url = $this->getConfigParam('sSSLShopURL');
-                if (!$url && $admin) {
-                    $url = $this->getConfigParam('sAdminSSLURL') . '../';
-                }
-            }
+        if ($nativeImg && !$admin) {
+            $url = $this->getShopUrl();
         } else {
-            $url = ($nativeImg && !$admin) ? $this->getShopUrl() : $this->getConfigParam('sShopURL');
+            $url = ContainerFacade::getParameter('oxid_shop_url');
+            if (!$url && $admin) {
+                $url = ContainerFacade::getParameter('oxid_shop_admin_url') . '../';
+            }
         }
 
         return $url . $this->_sOutDir . '/';
@@ -1944,7 +1843,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopMainUrl()
     {
-        return $this->_blIsSsl ? $this->getConfigParam('sSSLShopURL') : $this->getConfigParam('sShopURL');
+        return ContainerFacade::getParameter('oxid_shop_url');
     }
 
     /**
@@ -1980,14 +1879,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Function returns mall shop url.
      *
-     * @param bool $ssl
-     *
      * @return null|string
      */
-    public function getMallShopUrl($ssl = false)
+    public function getMallShopUrl()
     {
-        $configParameter = $ssl ? 'sMallSSLShopURL' : 'sMallShopURL';
-        $mallShopUrl = $this->getConfigParam($configParameter);
+        $mallShopUrl = $this->getConfigParam('sMallSSLShopURL');
         if ($mallShopUrl) {
             return Registry::getUtils()->checkUrlEndingSlash($mallShopUrl);
         }

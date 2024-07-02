@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Doctrine\DBAL\DriverManager;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 
 use function array_fill_keys;

@@ -132,7 +132,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
 
-        $oDiagnostics->setShopLink(Registry::getConfig()->getConfigParam('sShopURL'));
+        $oDiagnostics->setShopLink(ContainerFacade::getParameter('oxid_shop_url'));
         $oDiagnostics->setEdition(Registry::getConfig()->getFullEdition());
         $oDiagnostics->setVersion(
             oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion()

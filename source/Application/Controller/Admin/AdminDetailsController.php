@@ -29,7 +29,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             'admin'
         );
         if (is_dir($sDir)) {
-            $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
+            $sDir = ContainerFacade::getParameter('oxid_shop_url') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
             $shopVersion = oxNew(ShopVersion::class)->getVersion();

@@ -23,6 +23,7 @@ use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use function array_key_exists;
 use function is_array;
 
@@ -348,7 +349,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
 
             // redirecting if user logs out in SSL mode
-            if (Registry::getRequest()->getRequestEscapedParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
+            if (Registry::getRequest()->getRequestEscapedParameter('redirect') && ContainerFacade::getParameter('oxid_shop_url')) {
                 Registry::getUtils()->redirect($this->getLogoutLink());
             }
         }

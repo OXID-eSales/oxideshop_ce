@@ -13,8 +13,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
@@ -54,7 +52,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
     private CommandTester $commandTester;
     private DatabaseCheckerInterface|ObjectProphecy $databaseChecker;
     private DatabaseInstallerInterface|ObjectProphecy $databaseInstall;
-    private ConfigFileDaoInterface|ObjectProphecy $configFileDao;
     private ObjectProphecy|DirectoryValidatorInterface $directoryValidator;
     private ObjectProphecy|LanguageInstallerInterface $languageInstaller;
     private HtaccessUpdaterInterface|ObjectProphecy $htaccessUpdateService;
@@ -78,7 +75,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB,
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
             '--language'          => self::LANG,
         ];
 
@@ -96,7 +92,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             'Missing db-name'           => ['--db-name'],
             'Missing db-user'           => ['--db-user'],
             'Missing db-password'       => ['--db-password'],
-            'Missing shop-url'          => ['--shop-url'],
         ];
     }
 
@@ -113,27 +108,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB . uniqid('_', false),
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
-            '--language'          => self::LANG,
-        ]);
-    }
-
-    public function testExecuteWithConfigNotEditable(): void
-    {
-        $this->shopStateService->isLaunched()
-            ->willReturn(false);
-        $this->configFileDao->checkIsEditable()
-            ->willThrow(FileNotEditableException::class);
-
-        $this->expectException(FileNotEditableException::class);
-
-        $this->commandTester->execute([
-            '--db-host'           => self::HOST,
-            '--db-port'           => self::PORT,
-            '--db-name'           => self::DB . uniqid('_', false),
-            '--db-user'           => self::DB_USER,
-            '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
             '--language'          => self::LANG,
         ]);
     }
@@ -160,13 +134,17 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB,
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
             '--language'          => self::LANG,
         ]);
     }
 
     public function testExecuteWithCompleteArgs(): void
     {
+        $this->createContainer();
+        $this->container->setParameter('oxid_shop_url', self::URL);
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
+
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->shopStateService->isLaunched()
             ->willReturn(false);
@@ -179,7 +157,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB,
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
             '--language'          => self::LANG,
         ]);
 
@@ -205,7 +182,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB,
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
@@ -228,7 +204,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             '--db-name'           => self::DB,
             '--db-user'           => self::DB_USER,
             '--db-password'       => self::DB_PASS,
-            '--shop-url'          => self::URL,
             '--language'          => self::LANG,
         ]);
 
@@ -244,7 +219,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
         return new ShopSetupCommand(
             $this->databaseChecker->reveal(),
             $this->databaseInstall->reveal(),
-            $this->configFileDao->reveal(),
             $this->directoryValidator->reveal(),
             $this->languageInstaller->reveal(),
             $this->htaccessUpdateService->reveal(),
@@ -259,7 +233,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
     {
         $this->databaseChecker = $this->prophesize(DatabaseCheckerInterface::class);
         $this->databaseInstall = $this->prophesize(DatabaseInstallerInterface::class);
-        $this->configFileDao = $this->prophesize(ConfigFileDaoInterface::class);
         $this->directoryValidator = $this->prophesize(DirectoryValidatorInterface::class);
         $this->languageInstaller = $this->prophesize(LanguageInstallerInterface::class);
         $this->htaccessUpdateService = $this->prophesize(HtaccessUpdaterInterface::class);
@@ -280,8 +253,6 @@ final class ShopSetupCommandTest extends IntegrationTestCase
             self::DB_PASS,
             self::DB
         )
-            ->shouldHaveBeenCalledOnce();
-        $this->configFileDao->replacePlaceholder('sShopURL', self::URL)
             ->shouldHaveBeenCalledOnce();
         $this->languageInstaller->install(new DefaultLanguage(self::LANG))
             ->shouldHaveBeenCalledOnce();

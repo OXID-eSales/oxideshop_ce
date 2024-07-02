@@ -434,17 +434,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getBaseDir()
     {
-        if (($sValue = $this->getViewConfigParam('basedir')) === null) {
-            if (Registry::getConfig()->isSsl()) {
-                $sValue = Registry::getConfig()->getSSLShopURL();
-            } else {
-                $sValue = Registry::getConfig()->getShopURL();
-            }
+        if (($basedir = $this->getViewConfigParam('basedir')) === null) {
+            $basedir = Registry::getConfig()->getShopURL();
 
-            $this->setViewConfigParam('basedir', $sValue);
+            $this->setViewConfigParam('basedir', $basedir);
         }
 
-        return $sValue;
+        return $basedir;
     }
 
     /**

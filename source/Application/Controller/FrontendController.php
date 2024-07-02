@@ -2075,7 +2075,7 @@ class FrontendController extends BaseController
 
         $config = Registry::getConfig();
         $this->_aViewData["defaultLang"] = $config->getConfigParam('sDefaultLang');
-        $this->_aViewData["shopURLParam"] = $config->getConfigParam('sShopURL');
+        $this->_aViewData["shopURLParam"] = ContainerFacade::getParameter('oxid_shop_url');
 
         return $this->_sThisTemplate;
     }

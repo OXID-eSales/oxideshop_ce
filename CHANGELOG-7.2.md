@@ -7,11 +7,13 @@
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed
-- Config parameters sShopDir, sCompileDir, sLogLevel and iDebug will be moved from config file to env parameters
+- Config parameters `sShopDir`, `sCompileDir`, `sLogLevel`, `iDebug`, `sShopURL`, `sSSLShopURL` and `sAdminSSLURL` will be moved from config file to env parameters
 - Global functions `warningHandler(), dumpVar(), debug()`
 - `ConnectionProviderInterface` will be superseded by `ConnectionFactory` in next major
 - Redundant interfaces `TransactionServiceInterface, FinderFactoryInterface`
 - `BasicContextInterface` methods
+- - The `getSslShopUrl` method will be deprecated and replaced by `getShopUrl`, which will now support SSL exclusively
+- The configFile for a setup will be replaced by container parameters
 
 ### Fixed
 - User registration in the Private Sales mode

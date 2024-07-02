@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 
+/**
+ * @deprecated since version 8.0 you can use container parameters
+ */
 interface ConfigFileDaoInterface
 {
     /**

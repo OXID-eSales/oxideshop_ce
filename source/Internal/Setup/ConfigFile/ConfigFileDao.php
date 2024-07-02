@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
+/**
+ * @deprecated since version 8.0 you can use container parameters
+ */
 class ConfigFileDao implements ConfigFileDaoInterface
 {
     private const PLACEHOLDERS = [

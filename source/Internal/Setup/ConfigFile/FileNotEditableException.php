@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 
+/**
+ * @deprecated since version 8.0 the ConfigFile will be removed
+ */
 class FileNotEditableException extends \Exception
 {
 }

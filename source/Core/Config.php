@@ -873,6 +873,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop
      *
+     * @deprecated since v8.0 use getShopUrl instead
+     *
      * @param int $lang language (default is null)
      *
      * @return string

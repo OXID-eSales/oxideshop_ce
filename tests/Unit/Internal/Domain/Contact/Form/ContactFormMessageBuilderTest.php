@@ -13,12 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider fieldsProvider
-     */
+    #[DataProvider('fieldsProvider')]
     public function testContentGetter($name, $value)
     {
         $form = $this->getContactForm();

@@ -10,15 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Url;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class UrlParserTest extends TestCase
 {
-    /**
-     * @dataProvider getPathWithoutTrailingSlashDataProvider
-     * @param $url
-     * @param $exp
-     */
+    #[DataProvider('getPathWithoutTrailingSlashDataProvider')]
     public function testGetPathWithoutTrailingSlashWithDataProvider(string $url, string $exp): void
     {
         $act = (new UrlParser())->getPathWithoutTrailingSlash($url);

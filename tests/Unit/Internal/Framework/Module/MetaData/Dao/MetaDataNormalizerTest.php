@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataNormalizerTest extends TestCase
@@ -60,9 +61,7 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider multiLanguageFieldDataProvider
-     */
+    #[DataProvider('multiLanguageFieldDataProvider')]
     public function testNormalizerConvertsMultiLanguageFieldToArrayWithDefaultLanguageIfItIsString(string $fieldName, string $value)
     {
         $metadata = [
@@ -79,9 +78,7 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider multiLanguageFieldDataProvider
-     */
+    #[DataProvider('multiLanguageFieldDataProvider')]
     public function testNormalizerConvertsMultiLanguageFieldToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet(string $fieldName, string $value)
     {
         $metadata = [

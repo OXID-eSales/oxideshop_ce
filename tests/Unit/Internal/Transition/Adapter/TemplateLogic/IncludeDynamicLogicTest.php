@@ -8,49 +8,32 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class IncludeDynamicLogicTest
- *
- * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic
- */
+#[CoversClass(IncludeDynamicLogic::class)]
 class IncludeDynamicLogicTest extends TestCase
 {
-
-    /** @var IncludeDynamicLogic */
-    private $includeDynamicLogic;
+    private IncludeDynamicLogic $includeDynamicLogic;
 
     public function setup(): void
     {
         $this->includeDynamicLogic = new IncludeDynamicLogic();
     }
 
-    /**
-     * @param array $parameters
-     * @param array $expected
-     *
-     * @dataProvider getIncludeDynamicPrefixTests
-     */
+    #[DataProvider('getIncludeDynamicPrefixTests')]
     public function testIncludeDynamicPrefix(array $parameters, array $expected): void
     {
         $this->assertEquals($this->includeDynamicLogic->includeDynamicPrefix($parameters), $expected);
     }
 
-    /**
-     * @param array  $parameters
-     * @param string $expected
-     *
-     * @dataProvider getRenderForCacheTests
-     */
+    #[DataProvider('getRenderForCacheTests')]
     public function testRenderForCache(array $parameters, string $expected): void
     {
         $this->assertEquals($this->includeDynamicLogic->renderForCache($parameters), $expected);
     }
 
-    /**
-     * @return array
-     */
     public static function getIncludeDynamicPrefixTests(): array
     {
         return [
@@ -63,9 +46,6 @@ class IncludeDynamicLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function getRenderForCacheTests(): array
     {
         return [

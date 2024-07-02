@@ -8,14 +8,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(DateFormatHelper::class, 'fixWindowsTimeFormat')]
 class DateFormatHelperTest extends TestCase
 {
-
-    /**
-     * @return array
-     */
     public static function provider(): array
     {
         return [
@@ -29,14 +28,7 @@ class DateFormatHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $format
-     * @param int    $timestamp
-     * @param string $expectedFormat
-     *
-     * @dataProvider provider
-     * @covers       \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper::fixWindowsTimeFormat
-     */
+    #[DataProvider('provider')]
     public function testFixWindowsTimeFormat($format, $timestamp, $expectedFormat)
     {
         $dateFormatHelper = new DateFormatHelper();

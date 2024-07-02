@@ -13,15 +13,15 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsValidator;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\ModuleEvents;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidate()
     {
         $validator = $this->createValidator();
@@ -47,15 +47,11 @@ class EventsModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidEventsProvider
-     *
-     * @param Event $invalidEvent
-     *
-     * @doesNotPerformAssertions
-     *
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException
      */
-    public function testValidateDoesNotValidateSyntax($invalidEvent)
+    #[DataProvider('invalidEventsProvider')]
+    #[DoesNotPerformAssertions]
+    public function testValidateDoesNotValidateSyntax(Event $invalidEvent)
     {
         $validator = $this->createValidator();
 
@@ -73,9 +69,6 @@ class EventsModuleSettingValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @return EventsValidator
-     */
     private function createValidator(): EventsValidator
     {
         return new EventsValidator();

@@ -11,11 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Convert
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterAggregate;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterAggregate
- */
+#[CoversClass(MetaDataConverterAggregate::class)]
 class MetaDataConverterAggregateTest extends TestCase
 {
     public function testConvert(): void

@@ -13,18 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
 final class ControllersValidatorTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidationWithCorrectSetting(): void
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();

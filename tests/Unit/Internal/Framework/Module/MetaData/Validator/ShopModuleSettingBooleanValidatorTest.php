@@ -12,11 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaDat
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleSettingBooleanValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleSettingBooleanValidator
- */
+#[CoversClass(ModuleSettingBooleanValidator::class)]
 class ShopModuleSettingBooleanValidatorTest extends TestCase
 {
     public static function validationPassWithDataProvider(): array
@@ -33,14 +34,11 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider validationPassWithDataProvider
-     *
-     * @param $value
-     *
-     * @doesNotPerformAssertions
      * @deprecated   since v6.4.0 (2019-06-10);This is not recommended values for use,
      *               only boolean values should be used.
      */
+    #[DataProvider('validationPassWithDataProvider')]
+    #[DoesNotPerformAssertions]
     public function testValidationPassWithBackwardsCompatibleValues($value)
     {
         $this->executeValidationForBoolSetting($value);
@@ -54,11 +52,8 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param bool $value
-     * @dataProvider validationPassDataProvider
-     * @doesNotPerformAssertions
-     */
+    #[DataProvider('validationPassDataProvider')]
+    #[DoesNotPerformAssertions]
     public function testValidationPass(bool $value)
     {
         $this->executeValidationForBoolSetting($value);
@@ -73,19 +68,14 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param mixed $value
-     * @dataProvider validationFailsDataProvider
-     */
-    public function testValidationFails($value)
+    #[DataProvider('validationFailsDataProvider')]
+    public function testValidationFails(mixed $value)
     {
         $this->expectException(SettingNotValidException::class);
         $this->executeValidationForBoolSetting($value);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWhenStringTypeProvided()
     {
         $settings =
@@ -102,9 +92,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $validator->validate($settings);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWhenNoTypeProvided()
     {
         $settings =

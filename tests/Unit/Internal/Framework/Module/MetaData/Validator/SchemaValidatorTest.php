@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class SchemaValidatorTest extends TestCase
@@ -31,9 +32,7 @@ final class SchemaValidatorTest extends TestCase
         ],
     ];
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateWithMinimalValidStructure(): void
     {
         $this->getValidator()->validate('', '2.1', []);
@@ -80,9 +79,7 @@ final class SchemaValidatorTest extends TestCase
         $this->getValidator()->validate('', '2.1', $metadata);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateWithSectionExcludedFromValidation(): void
     {
         $sectionExcludedFromValidation = MetaDataProvider::METADATA_EXTEND;

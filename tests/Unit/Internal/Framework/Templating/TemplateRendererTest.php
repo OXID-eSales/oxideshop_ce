@@ -12,11 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class TemplateRendererTest extends TestCase
 {
-    /** @dataProvider twigTemplateNameFileDataProvider */
+    #[DataProvider('twigTemplateNameFileDataProvider')]
     public function testRenderTemplateFilenameExtension($filename, $expectedFilename): void
     {
         $engine = $this->getEngineMock();

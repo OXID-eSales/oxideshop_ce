@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
@@ -37,14 +37,12 @@ class ShopSetupCommand extends Command
     private const DB_NAME = 'db-name';
     private const DB_USER = 'db-user';
     private const DB_PASSWORD = 'db-password';
-    private const SHOP_URL = 'shop-url';
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
     public function __construct(
         private readonly DatabaseCheckerInterface $databaseChecker,
         private readonly DatabaseInstallerInterface $databaseInstaller,
-        private readonly ConfigFileDaoInterface $configFileDao,
         private readonly DirectoryValidatorInterface $directoriesValidator,
         private readonly LanguageInstallerInterface $languageInstaller,
         private readonly HtaccessUpdaterInterface $htaccessUpdateService,
@@ -64,7 +62,6 @@ class ShopSetupCommand extends Command
             ->addOption(self::DB_NAME, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::DB_USER, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::DB_PASSWORD, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::SHOP_URL, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
         $this->setDescription('Performs initial shop setup');
 
@@ -74,7 +71,6 @@ class ShopSetupCommand extends Command
             self::DB_NAME,
             self::DB_USER,
             self::DB_PASSWORD,
-            self::SHOP_URL,
         ]);
     }
 
@@ -91,11 +87,8 @@ class ShopSetupCommand extends Command
         $output->writeln('<info>Running pre-setup checks...</info>');
         $this->runPreSetupChecks($input);
 
-        $output->writeln('<info>Updating config file...</info>');
-        $this->updateConfigFile($input);
-
         $output->writeln('<info>Updating htaccess file...</info>');
-        $this->htaccessUpdateService->updateRewriteBaseDirective($input->getOption(self::SHOP_URL));
+        $this->htaccessUpdateService->updateRewriteBaseDirective(ContainerFacade::getParameter('oxid_shop_url'));
 
         $output->writeln('<info>Installing database...</info>');
         $this->installDatabase($input);
@@ -116,7 +109,6 @@ class ShopSetupCommand extends Command
     private function runPreSetupChecks(InputInterface $input): void
     {
         $this->checkShopIsNotLaunched();
-        $this->configFileDao->checkIsEditable();
         $this->checkCanCreateDatabase($input);
         $this->checkLanguage($input);
     }
@@ -144,12 +136,6 @@ class ShopSetupCommand extends Command
     private function checkLanguage(InputInterface $input): void
     {
         $this->getLanguage($input);
-    }
-
-    /** @param InputInterface $input */
-    private function updateConfigFile(InputInterface $input): void
-    {
-        $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
     }
 
     /** @param InputInterface $input */

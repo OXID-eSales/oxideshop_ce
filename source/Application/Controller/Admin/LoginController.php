@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * Administrator login form.
@@ -43,9 +44,9 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl()) {
-            $adminUrl = $myConfig->getConfigParam('sAdminSSLURL');
+            $adminUrl = ContainerFacade::getParameter('oxid_shop_admin_url');
             if ($adminUrl && str_starts_with($adminUrl, 'https://')) {
-                Registry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
+                Registry::getUtils()->redirect($adminUrl, false, 302);
             }
         }
 

@@ -354,100 +354,32 @@ class SystemRequirements
     }
 
     /**
-     * returns host, port, base dir, ssl information as assotiative array, false on error
-     * takes this info from eShop config.inc.php (via oxConfig class)
-     *
-     * @return array
-     */
-    protected function getShopHostInfoFromConfig()
-    {
-        $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
-        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
-            $sHost = $m[2];
-            $iPort = (int) $m[4];
-            $blSsl = (strtolower($m[1]) == 'https://');
-            if (!$iPort) {
-                $iPort = $blSsl ? 443 : 80;
-            }
-            $sScript = rtrim($m[5], '/') . '/';
-
-            return [
-                'host' => $sHost,
-                'port' => $iPort,
-                'dir'  => $sScript,
-                'ssl'  => $blSsl,
-            ];
-        }
-
-        return false;
-    }
-
-    /**
-     * returns host, port, base dir, ssl information as assotiative array, false on error
+     * returns host, port, base dir, ssl information as associative array, false on error
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
      */
     protected function getShopSSLHostInfoFromConfig()
     {
-        $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
-        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
-            $sHost = $m[2];
-            $iPort = (int) $m[4];
-            $blSsl = (strtolower($m[1]) == 'https://');
-            if (!$iPort) {
-                $iPort = $blSsl ? 443 : 80;
+        $sslShopURL = ContainerFacade::getParameter('oxid_shop_url');
+        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
+            $host = $shopUrlComponents[2];
+            $port = (int) $shopUrlComponents[4];
+            $ssl = (strtolower($shopUrlComponents[1]) == 'https://');
+            if (!$port) {
+                $port = $ssl ? 443 : 80;
             }
-            $sScript = rtrim($m[5], '/') . '/';
+            $script = rtrim($shopUrlComponents[5], '/') . '/';
 
             return [
-                'host' => $sHost,
-                'port' => $iPort,
-                'dir'  => $sScript,
-                'ssl'  => $blSsl,
+                'host' => $host,
+                'port' => $port,
+                'dir'  => $script,
+                'ssl'  => $ssl,
             ];
         }
 
         return false;
-    }
-
-    /**
-     * returns host, port, base dir, ssl information as assotiative array, false on error
-     * takes this info from _SERVER variable
-     *
-     * @return array
-     */
-    protected function getShopHostInfoFromServerVars()
-    {
-        // got here from setup dir
-        $sScript = $_SERVER['SCRIPT_NAME'];
-        $iPort = (int) $_SERVER['SERVER_PORT'];
-        $blSsl = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on'));
-        if (!$iPort) {
-            $iPort = $blSsl ? 443 : 80;
-        }
-        $sScript = rtrim(dirname(dirname($sScript)), '/') . '/';
-
-        return [
-            'host' => $_SERVER['HTTP_HOST'],
-            'port' => $iPort,
-            'dir'  => $sScript,
-            'ssl'  => $blSsl,
-        ];
-    }
-
-    /**
-     * returns host, port, current script, ssl information as assotiative array, false on error
-     *
-     * @return array
-     */
-    protected function getShopHostInfo()
-    {
-        if ($this->isAdmin()) {
-            return $this->getShopHostInfoFromConfig();
-        }
-
-        return $this->getShopHostInfoFromServerVars();
     }
 
     /**
@@ -473,26 +405,23 @@ class SystemRequirements
      */
     public function checkModRewrite()
     {
-        $iModStat = null;
-        $aHostInfo = $this->getShopHostInfo();
-        $iModStat = $this->isModeRewriteExtensionLoaded($aHostInfo);
+        $sslHostInfo = $this->getShopSSLHostInfo();
+        $modStat = $this->isModeRewriteExtensionLoaded($sslHostInfo);
 
-        $aSSLHostInfo = $this->getShopSSLHostInfo();
-        // Don't need to check if mod status is already failed.
-        if (0 != $iModStat && $aSSLHostInfo) {
-            $iSSLModStat = $this->isModeRewriteExtensionLoaded($aSSLHostInfo);
+        if (0 != $modStat && $sslHostInfo) {
+            $sslModStat = $this->isModeRewriteExtensionLoaded($sslHostInfo);
 
-            // Send if failed, even if couldn't check another
-            if (0 == $iSSLModStat) {
+            // Send if failed, even if you couldn't check another
+            if (0 == $sslModStat) {
                 return 0;
-            } elseif (1 == $iSSLModStat || 1 == $iModStat) {
+            } elseif (1 == $sslModStat || 1 == $modStat) {
                 return 1;
             }
 
-            return min($iModStat, $iSSLModStat);
+            return min($modStat, $sslModStat);
         }
 
-        return $iModStat;
+        return $modStat;
     }
 
     /**

@@ -65,17 +65,15 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function getDownloadUrl()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
-        // override cause of admin dir
-        $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
-        if ($myConfig->getConfigParam('sAdminSSLURL')) {
-            $sUrl = $myConfig->getConfigParam('sAdminSSLURL');
-        }
+        ContainerFacade::getParameter('oxid_shop_admin_url');
+        $url = ContainerFacade::getParameter('oxid_shop_admin_url') ?:
+            ContainerFacade::getParameter('oxid_shop_url') . $myConfig->getConfigParam('sAdminDir');
 
-        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl . '/index.php');
+        $url = Registry::getUtilsUrl()->processUrl($url . '/index.php');
 
-        return $sUrl . '&amp;cl=' . $this->sClassDo . '&amp;fnc=download';
+        return $url . '&amp;cl=' . $this->sClassDo . '&amp;fnc=download';
     }
 
     /**
@@ -85,11 +83,11 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     protected function getExportFileName()
     {
-        $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
+        $sSessionFileName = Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
-            $sSessionFileName = md5($session->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportFileName", $sSessionFileName);
+            $session = Registry::getSession();
+            $sSessionFileName = md5($session->getId() . Registry::getUtilsObject()->generateUId());
+            Registry::getSession()->setVariable("sExportFileName", $sSessionFileName);
         }
 
         return $sSessionFileName;
@@ -114,7 +112,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function download()
     {
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $oUtils = Registry::getUtils();
         $oUtils->setHeader("Pragma: public");
         $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         $oUtils->setHeader("Expires: 0");
@@ -185,7 +183,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
 
                 // writing header text
                 if ($iStart == 0) {
-                    $this->write(\OxidEsales\Eshop\Core\Registry::getLang()->translateString("VOUCHERSERIE_MAIN_VOUCHERSTATISTICS", \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage(), true));
+                    $this->write(Registry::getLang()->translateString("VOUCHERSERIE_MAIN_VOUCHERSTATISTICS", Registry::getLang()->getTplLanguage(), true));
                 }
             }
 

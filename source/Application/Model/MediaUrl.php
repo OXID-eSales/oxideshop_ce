@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use Symfony\Component\Filesystem\Path;
 
@@ -55,22 +56,15 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         return $sHtmlLink;
     }
 
-    /**
-     * Returns  link
-     *
-     * @return string
-     */
     public function getLink()
     {
         if ($this->oxmediaurls__oxisuploaded->value) {
-            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl() : \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
-            $sUrl .= 'out/media/';
-            $sUrl .= basename($this->oxmediaurls__oxurl->value);
+            $url = Registry::getConfig()->getShopUrl() . 'out/media/' . basename($this->oxmediaurls__oxurl->value);
         } else {
-            $sUrl = $this->oxmediaurls__oxurl->value;
+            $url = $this->oxmediaurls__oxurl->value;
         }
 
-        return $sUrl;
+        return $url;
     }
 
     /**

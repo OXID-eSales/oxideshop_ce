@@ -33,8 +33,8 @@ function init() {
     fi
     echo "OK, using '${OE_CONSOLE}'"
     if [ -z "${OXID_BUILD_DIRECTORY}" ]; then
-      echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/source/tmp"
-      export OXID_BUILD_DIRECTORY="/var/www/source/tmp"
+      echo "OXID_BUILD_DIRECTORY is not set, setting it to /var/www/var/cache/"
+      export OXID_BUILD_DIRECTORY="/var/www/var/cache/"
     else
       echo "OXID_BUILD_DIRECTORY is set to '${OXID_BUILD_DIRECTORY}'"
     fi
@@ -58,9 +58,6 @@ docker compose "${install_container_method}" -T \
     --db-name example \
     --db-user root \
     --db-password root \
-    --shop-url http://localhost.local/ \
-    --shop-directory /var/www/source \
-    --compile-directory "${OXID_BUILD_DIRECTORY}"
 
 if [ -e vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
@@ -106,12 +103,7 @@ fi
 
 # Activate iDebug
 if [ "${install_config_idebug}" == 'true' ]; then
-    if [ -f source/source/config.inc.php ]; then
-        perl -pi -e 's#iDebug = 0;#iDebug = -1;#g;' source/source/config.inc.php
-    fi
-    if [ -f source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php ]; then
-        perl -pi -e 's#iDebug = 0;#iDebug = -1;#g;' source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
-    fi
+    export OXID_DEBUG_MODE="true"
 fi
 
 # Activate theme

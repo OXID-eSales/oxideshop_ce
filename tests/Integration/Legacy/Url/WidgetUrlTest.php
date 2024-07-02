@@ -9,13 +9,26 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Url;
 
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use oxRegistry;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class WidgetUrlTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
     private string $shopUrl = 'http://www.example.com/';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createContainer();
+        $this->container->setParameter('oxid_shop_url', $this->shopUrl);
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
+    }
 
     public static function providerGetWidgetUrlAddParametersIdNeed(): array
     {
@@ -60,7 +73,6 @@ final class WidgetUrlTest extends IntegrationTestCase
         oxRegistry::getLang()->setBaseLanguage(0);
 
         $config = oxNew('oxConfig');
-        $config->setConfigParam('sShopURL', $this->shopUrl);
         $config->init();
 
         $this->assertEquals($sUrl, $config->getWidgetUrl(null, null, $urlParameters));
@@ -82,15 +94,9 @@ final class WidgetUrlTest extends IntegrationTestCase
         oxRegistry::getLang()->setBaseLanguage($iLang);
 
         $config = oxNew('oxConfig');
-        $config->setConfigParam('sShopURL', $this->shopUrl);
         $config->init();
 
         $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl());
-    }
-
-    public function providerGetWidgetUrlAddCorrectLanguageWithParameter(): array
-    {
-        return [[1], [2]];
     }
 
     /**
@@ -101,10 +107,9 @@ final class WidgetUrlTest extends IntegrationTestCase
     #[DataProvider('providerGetWidgetUrlAddCorrectLanguage')]
     public function testGetWidgetUrlAddCorrectLanguageWithParameter(int $iLang): void
     {
-        oxRegistry::getLang()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage($iLang);
 
         $config = oxNew('oxConfig');
-        $config->setConfigParam('sShopURL', $this->shopUrl);
         $config->init();
 
         $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl($iLang));

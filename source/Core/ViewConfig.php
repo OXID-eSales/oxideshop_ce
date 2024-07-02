@@ -434,17 +434,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getBaseDir()
     {
-        if (($sValue = $this->getViewConfigParam('basedir')) === null) {
-            if (Registry::getConfig()->isSsl()) {
-                $sValue = Registry::getConfig()->getSSLShopURL();
-            } else {
-                $sValue = Registry::getConfig()->getShopURL();
-            }
+        if (($basedir = $this->getViewConfigParam('basedir')) === null) {
+            $basedir = Registry::getConfig()->getShopURL();
 
-            $this->setViewConfigParam('basedir', $sValue);
+            $this->setViewConfigParam('basedir', $basedir);
         }
 
-        return $sValue;
+        return $basedir;
     }
 
     /**
@@ -1224,10 +1220,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function isAltImageServerConfigured()
     {
-        $oConfig = Registry::getConfig();
-
-        return $oConfig->getConfigParam('sAltImageUrl') || $oConfig->getConfigParam('sSSLAltImageUrl') ||
-               $oConfig->getConfigParam('sAltImageDir') || $oConfig->getConfigParam('sSSLAltImageDir');
+        return (bool) ContainerFacade::getParameter('oxid_alternative_image_url');
     }
 
     /**
@@ -1265,7 +1258,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getShopLogo()
     {
         if (is_null($this->_sShopLogo)) {
-            $sLogoImage = Registry::getConfig()->getConfigParam('sShopLogo');
+            $sLogoImage = ContainerFacade::getParameter('oxid_shop_logo');
             if (empty($sLogoImage)) {
                 $sLogoImage = "logo_" . strtolower((new Facts())->getEdition()) . ".png";
             }

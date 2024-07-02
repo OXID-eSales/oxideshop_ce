@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 

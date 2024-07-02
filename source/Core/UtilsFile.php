@@ -124,10 +124,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function __construct()
     {
-        $myConfig = Registry::getConfig();
-
-        if ($iPicCount = $myConfig->getConfigParam('iPicCount')) {
-            $this->_iMaxPicImgCount = $iPicCount;
+        if ($picturesCount = ContainerFacade::getParameter('oxid_max_product_picture_count')) {
+            $this->_iMaxPicImgCount = $picturesCount;
         }
 
         $this->_iMaxZoomImgCount = $this->_iMaxPicImgCount;

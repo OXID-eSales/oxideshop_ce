@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+
 /**
  * @internal Do not make a module extension for this class.
  *
@@ -115,7 +117,7 @@ abstract class EmailBuilder
     protected function getEmailOriginMessage()
     {
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL');
+        $shopUrl = ContainerFacade::getParameter('oxid_shop_url');
 
         return "<br>" . sprintf(
             $lang->translateString(

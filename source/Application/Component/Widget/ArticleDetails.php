@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Application\Model\Vendor;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
 
@@ -942,8 +943,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         $config = Registry::getConfig();
         $this->_aViewData['preview'] = Registry::getRequest()->getRequestEscapedParameter('preview');
-        $this->_aViewData['altImageUrl'] = $config->getConfigParam('sAltImageUrl');
-        $this->_aViewData['SSLAltImageUrl'] = $config->getConfigParam('sSSLAltImageUrl');
+        $this->_aViewData['altImageUrl'] = ContainerFacade::getParameter('oxid_alternative_image_url');
+        $this->_aViewData['SSLAltImageUrl'] = ContainerFacade::getParameter('oxid_alternative_image_url');
 
         return $this->_sThisTemplate;
     }

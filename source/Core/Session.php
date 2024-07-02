@@ -482,7 +482,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function sid($blForceSid = false)
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $sRet = '';
 
         $blDisableSid = Registry::getUtils()->isSearchEngine()
@@ -700,7 +700,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             return true;
         }
 
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
 
         if (!$this->getSessionUseCookies() || ($sUrl && $this->getCookieSid() && !$oConfig->isCurrentProtocol($sUrl))) {
             // switching from ssl to non ssl or vice versa?
@@ -828,7 +828,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function allowSessionStart()
     {
         $blAllowSessionStart = true;
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         // special handling only in non-admin mode
         if (!$this->isAdmin()) {
@@ -921,12 +921,12 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function checkCookies($sCookieSid, $aSessCookieSetOnce)
     {
         $blSwapped = false;
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sCurrUrl = $myConfig->isSsl() ? $myConfig->getSslShopUrl() : $myConfig->getShopUrl();
+        $myConfig = Registry::getConfig();
+        $currUrl = $myConfig->getShopUrl();
 
         $blSessCookieSetOnce = false;
-        if (is_array($aSessCookieSetOnce) && isset($aSessCookieSetOnce[$sCurrUrl])) {
-            $blSessCookieSetOnce = $aSessCookieSetOnce[$sCurrUrl];
+        if (is_array($aSessCookieSetOnce) && isset($aSessCookieSetOnce[$currUrl])) {
+            $blSessCookieSetOnce = $aSessCookieSetOnce[$currUrl];
         }
 
         //if cookie was there once but now is gone it means we have to reset
@@ -935,7 +935,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 $this->_sErrorMsg = "Cookie not found, creating new SID...<br>";
                 $this->_sErrorMsg .= "Cookie: $sCookieSid<br>";
                 $this->_sErrorMsg .= "Session: $blSessCookieSetOnce<br>";
-                $this->_sErrorMsg .= "URL: " . $sCurrUrl . "<br>";
+                $this->_sErrorMsg .= "URL: " . $currUrl . "<br>";
             }
             $blSwapped = true;
         }
@@ -946,7 +946,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 $aSessCookieSetOnce = [];
             }
 
-            $aSessCookieSetOnce[$sCurrUrl] = "ox_true";
+            $aSessCookieSetOnce[$currUrl] = "ox_true";
             $this->setVariable("sessioncookieisset", $aSessCookieSetOnce);
         }
 
@@ -985,7 +985,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getBasketName()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         if ($myConfig->getConfigParam('blMallSharedBasket') == 0) {
             return $myConfig->getShopId() . "_basket";
         }
@@ -1011,7 +1011,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getRequireSessionWithParams()
     {
-        $aCfgArray = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
+        $aCfgArray = Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
         if (is_array($aCfgArray)) {
             $aDefault = $this->_aRequireSessionWithParams;
             foreach ($aCfgArray as $key => $val) {
@@ -1056,7 +1056,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getSessionUseCookies()
     {
-        return $this->isAdmin() || \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSessionUseCookies');
+        return $this->isAdmin() || Registry::getConfig()->getConfigParam('blSessionUseCookies');
     }
 
     /**

@@ -7,11 +7,16 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Validator;
+
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\PsrLoggerConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
+class PsrLoggerConfigurationValidatorTest extends TestCase
 {
 
     /**
@@ -20,12 +25,12 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
      */
     public function testValidLogLevelValidation($logLevel)
     {
-        /** @var PHPUnit\Framework\MockObject\MockObject|PsrLoggerConfigurationInterface $configurationMock */
+        /** @var MockObject|PsrLoggerConfigurationInterface $configurationMock */
         $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')
-            ->will($this->returnValue($logLevel));
+            ->willReturn($logLevel);
 
         $validator = new PsrLoggerConfigurationValidator();
         $validator->validate($configurationMock);
@@ -50,14 +55,14 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
      */
     public function testInvalidLogLevelValidation($logLevel)
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
-        /** @var PHPUnit\Framework\MockObject\MockObject|PsrLoggerConfigurationInterface $configurationMock */
+        /** @var MockObject|PsrLoggerConfigurationInterface $configurationMock */
         $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')
-            ->will($this->returnValue($logLevel));
+            ->willReturn($logLevel);
 
         $validator = new PsrLoggerConfigurationValidator();
         $validator->validate($configurationMock);

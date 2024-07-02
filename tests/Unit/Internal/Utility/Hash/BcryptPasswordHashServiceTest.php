@@ -91,15 +91,12 @@ class BcryptPasswordHashServiceTest extends TestCase
 
     /**
      * @dataProvider invalidCostOptionDataProvider
-     *
-     * @param array $invalidCostOption
      */
     public function testHashWithInvalidCostOptionValueThrowsPasswordHashException($invalidCostOption)
     {
         $this->expectException(PasswordHashException::class);
 
         $this->getPasswordHashServiceMock($invalidCostOption);
-        $bcryptPasswordHashService->hash('secret');
     }
 
     /**

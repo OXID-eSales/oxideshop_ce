@@ -12,17 +12,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaDat
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleIdValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleIdValidator
- */
+#[CoversClass(ModuleIdValidator::class)]
 class ModuleIdValidatorTest extends TestCase
 {
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateWhenValid(): void
     {
         $metaData = [
@@ -41,10 +40,7 @@ class ModuleIdValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param mixed $moduleId
-     * @dataProvider validateInvalidIdProvidedDataProvider
-     */
+    #[DataProvider('validateInvalidIdProvidedDataProvider')]
     public function testValidateWhenInvalidIdProvided($moduleId): void
     {
         $this->expectException(ModuleIdNotValidException::class);

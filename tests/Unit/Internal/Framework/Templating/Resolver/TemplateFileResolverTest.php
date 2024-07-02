@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Res
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class TemplateFileResolverTest extends TestCase
@@ -22,7 +23,7 @@ final class TemplateFileResolverTest extends TestCase
         (new TemplateFileResolver('tpl'))->getFilename('');
     }
 
-    /** @dataProvider smartyTemplateNameFileDataProvider */
+    #[DataProvider('smartyTemplateNameFileDataProvider')]
     public function testGetFilenameSmartyTemplate($templateName, $expectedFilename): void
     {
         $filename = (new TemplateFileResolver('tpl'))->getFilename($templateName);
@@ -30,7 +31,7 @@ final class TemplateFileResolverTest extends TestCase
         $this->assertEquals($expectedFilename, $filename);
     }
 
-    /** @dataProvider twigTemplateNameFileDataProvider */
+    #[DataProvider('twigTemplateNameFileDataProvider')]
     public function testGetFilenameTwigTemplate($templateName, $expectedFilename): void
     {
         $filename = (new TemplateFileResolver('html.twig'))->getFilename($templateName);

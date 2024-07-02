@@ -1,5 +1,4 @@
 imports:
-    - { resource: ConfigFile/services.yaml }
     - { resource: Database/services.yaml }
     - { resource: Directory/services.yaml }
     - { resource: Htaccess/services.yaml }

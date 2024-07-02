@@ -5,10 +5,6 @@
  * See LICENSE file for license details.
  */
 
-$this->sShopURL     = '<sShopURL>'; // eShop base url, required
-$this->sSSLShopURL  = null;            // eShop SSL url, optional
-$this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
-
 /**
  * Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
  * Possible options: CE|PE|EE or left empty (will be determined automatically).

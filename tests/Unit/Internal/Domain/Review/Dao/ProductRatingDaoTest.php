@@ -13,12 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 use \OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider invalidProductIdsProvider
-     */
+    #[DataProvider('invalidProductIdsProvider')]
     public function testGetProductByIdWithInvalidId($invalidProductId)
     {
         $this->expectException(InvalidObjectIdDaoException::class);

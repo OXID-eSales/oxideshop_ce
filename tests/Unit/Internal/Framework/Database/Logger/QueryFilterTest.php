@@ -10,13 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logger;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class QueryFilterTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @return array
-     */
     public static function providerTestFiltering(): array
     {
         return [
@@ -79,13 +76,7 @@ class QueryFilterTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param string $query
-     * @param array  $skipLogTags
-     * @param bool   $expected
-     *
-     * @dataProvider providerTestFiltering
-     */
+    #[DataProvider('providerTestFiltering')]
     public function testFiltering(string $query, array $skipLogTags, bool $expected)
     {
         $queryFilter = new QueryFilter();

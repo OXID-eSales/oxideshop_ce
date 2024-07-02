@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashExcept
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -89,9 +90,7 @@ class BcryptPasswordHashServiceTest extends TestCase
         $this->assertSame(4, $info['options']['cost']);
     }
 
-    /**
-     * @dataProvider invalidCostOptionDataProvider
-     */
+    #[DataProvider('invalidCostOptionDataProvider')]
     public function testHashWithInvalidCostOptionValueThrowsPasswordHashException($invalidCostOption)
     {
         $this->expectException(PasswordHashException::class);

@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSch
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataSchemaValidatorTest extends TestCase
@@ -78,8 +79,8 @@ class MetaDataSchemaValidatorTest extends TestCase
 
     /**
      * This test covers metaData sections like 'extend', or 'templates', which have their custom subKeys
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testExcludedSectionItemValidation()
     {
         $metaDataToValidate = [
@@ -144,9 +145,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateThrowsNoExceptionOnIncompleteFirstLevel()
     {
         $metaDataToValidate = [
@@ -165,9 +164,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateThrowsNoExceptionOnIncompleteSecondLevel()
     {
         $metaDataToValidate = [

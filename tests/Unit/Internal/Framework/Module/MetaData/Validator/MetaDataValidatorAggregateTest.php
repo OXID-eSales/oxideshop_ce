@@ -11,11 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Convert
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorAggregate;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorAggregate
- */
+#[CoversClass(MetaDataValidatorAggregate::class)]
 class MetaDataValidatorAggregateTest extends TestCase
 {
     public function testValidate(): void

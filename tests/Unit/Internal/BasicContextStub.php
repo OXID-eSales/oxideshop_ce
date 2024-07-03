@@ -21,7 +21,6 @@ class BasicContextStub implements BasicContextInterface
     private string $edition;
     private string $enterpriseEditionRootPath;
     private string $generatedServicesFilePath;
-    private string $configurableServicesFilePath;
     private string $professionalEditionRootPath;
     private string $sourcePath;
     private string $shopRootPath;
@@ -35,8 +34,10 @@ class BasicContextStub implements BasicContextInterface
     private string $cacheDirectory;
     private string $moduleCacheDirectory;
     private string $databaseUrl;
+    private string $configurationDirectory;
     protected string $activeModuleServicesFilePath;
     protected string $shopConfigurableServicesFilePath;
+
 
     public function __construct()
     {
@@ -48,7 +49,6 @@ class BasicContextStub implements BasicContextInterface
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
         $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
-        $this->configurableServicesFilePath = $basicContext->getConfigurableServicesFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
         $this->configFilePath = $basicContext->getConfigFilePath();
@@ -61,10 +61,8 @@ class BasicContextStub implements BasicContextInterface
         $this->cacheDirectory = $basicContext->getCacheDirectory();
         $this->moduleCacheDirectory = $basicContext->getModuleCacheDirectory();
         $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getDefaultShopId());
-        $this->shopConfigurableServicesFilePath = $basicContext->getShopConfigurableServicesFilePath(
-            $this->getDefaultShopId()
-        );
         $this->databaseUrl = $basicContext->getDatabaseUrl();
+        $this->projectConfigurationDirectory = $basicContext->getProjectConfigurationDirectory();
     }
 
     public function getCommunityEditionSourcePath(): string
@@ -110,26 +108,6 @@ class BasicContextStub implements BasicContextInterface
     public function setGeneratedServicesFilePath(string $generatedServicesFilePath): void
     {
         $this->generatedServicesFilePath = $generatedServicesFilePath;
-    }
-
-    public function getConfigurableServicesFilePath(): string
-    {
-        return $this->configurableServicesFilePath;
-    }
-
-    public function setConfigurableServicesFilePath(string $configurableServicesFilePath): void
-    {
-        $this->configurableServicesFilePath = $configurableServicesFilePath;
-    }
-
-    public function getShopConfigurableServicesFilePath(int $shopId): string
-    {
-        return $this->shopConfigurableServicesFilePath;
-    }
-
-    public function setShopConfigurableServicesFilePath(string $shopConfigurableServicesFilePath): void
-    {
-        $this->shopConfigurableServicesFilePath = $shopConfigurableServicesFilePath;
     }
 
     public function getProfessionalEditionRootPath(): string
@@ -190,11 +168,6 @@ class BasicContextStub implements BasicContextInterface
     public function getConfigTableName(): string
     {
         return 'oxconfig';
-    }
-
-    public function getConfigurationDirectoryPath(): string
-    {
-        return $this->getSourcePath() . '/tmp/';
     }
 
     public function getShopRootPath(): string

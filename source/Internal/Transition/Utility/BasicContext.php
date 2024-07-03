@@ -28,25 +28,16 @@ class BasicContext implements BasicContextInterface
 
     public function getContainerCacheFilePath(int $shopId): string
     {
-        return Path::join($this->getCacheDirectory(), 'container', 'container_cache_shop_' . $shopId . '.php');
+        return Path::join(
+            $this->getCacheDirectory(),
+            'container',
+            sprintf('container_cache_shop_%d.%s.php', $shopId, getenv('OXID_ENV'))
+        );
     }
 
     public function getGeneratedServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'generated', 'generated_services.yaml');
-    }
-
-    public function getConfigurableServicesFilePath(): string
-    {
-        return Path::join($this->getShopRootPath(), 'var', 'configuration', 'configurable_services.yaml');
-    }
-
-    public function getShopConfigurableServicesFilePath(int $shopId): string
-    {
-        return Path::join(
-            $this->getShopConfigurationDirectory($shopId),
-            'configurable_services.yaml'
-        );
     }
 
     public function getActiveModuleServicesFilePath(int $shopId): string
@@ -106,17 +97,16 @@ class BasicContext implements BasicContextInterface
 
     public function getProjectConfigurationDirectory(): string
     {
-        return $this->getConfigurationDirectoryPath();
-    }
-
-    public function getConfigurationDirectoryPath(): string
-    {
-        return $this->getShopRootPath() . '/var/configuration/';
+        return Path::join($this->getShopRootPath(), 'var', 'configuration');
     }
 
     public function getShopConfigurationDirectory(int $shopId): string
     {
-        return Path::join($this->getProjectConfigurationDirectory(), 'shops', (string)$shopId);
+        return Path::join(
+            $this->getProjectConfigurationDirectory(),
+            'shops',
+            (string)$shopId
+        );
     }
 
     public function getShopRootPath(): string

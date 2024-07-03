@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DIConfigWrapperTest extends TestCase
 {
-    private $servicePath1;
-    private $servicePath2;
+    private string $servicePath1;
+    private string $servicePath2;
 
     public function setup(): void
     {
@@ -57,7 +57,7 @@ final class DIConfigWrapperTest extends TestCase
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->addImport($this->servicePath2);
 
-        $this->assertEquals(2, count($wrapper->getConfigAsArray()['imports']));
+        $this->assertCount(2, $wrapper->getConfigAsArray()['imports']);
     }
 
     public function testAddFirstImport(): void
@@ -81,7 +81,7 @@ final class DIConfigWrapperTest extends TestCase
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->removeImport($this->servicePath1);
 
-        $this->assertEquals(1, count($wrapper->getConfigAsArray()['imports']));
+        $this->assertCount(1, $wrapper->getConfigAsArray()['imports']);
     }
 
     public function testRemoveLastImport(): void

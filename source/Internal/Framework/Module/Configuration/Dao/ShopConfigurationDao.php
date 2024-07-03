@@ -9,12 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
+use DirectoryIterator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\TemplateExtensionChainDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use function dirname;
+use function in_array;
 
 class ShopConfigurationDao implements ShopConfigurationDaoInterface
 {
@@ -54,7 +57,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
     /**
      * @param ShopConfiguration $shopConfiguration
-     * @param int               $shopId
+     * @param int $shopId
      */
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void
     {
@@ -102,7 +105,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         $shopIds = [];
 
         if (file_exists($this->getShopsConfigurationDirectory())) {
-            $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
+            $dir = new DirectoryIterator($this->getShopsConfigurationDirectory());
 
             foreach ($dir as $fileInfo) {
                 if ($fileInfo->isDir() && is_numeric($fileInfo->getFilename())) {
@@ -114,12 +117,13 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         return $shopIds;
     }
 
-    /**
-     * @return string
-     */
     private function getShopsConfigurationDirectory(): string
     {
-        return $this->context->getProjectConfigurationDirectory() . 'shops/';
+        return dirname(
+            $this->context->getShopConfigurationDirectory(
+                $this->context->getDefaultShopId()
+            )
+        );
     }
 
     /**
@@ -129,6 +133,6 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function isShopIdExists(int $shopId): bool
     {
-        return \in_array($shopId, $this->getShopIds(), true);
+        return in_array($shopId, $this->getShopIds(), true);
     }
 }

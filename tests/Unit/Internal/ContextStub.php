@@ -42,9 +42,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->productiveMode = $context->isShopInProductiveMode();
 
         $this->activeModuleServicesFilePath = $context->getActiveModuleServicesFilePath($this->getCurrentShopId());
-        $this->shopConfigurableServicesFilePath = $context->getShopConfigurableServicesFilePath(
-            $this->getCurrentShopId()
-        );
     }
 
     public function setLogLevel(string $logLevel): void

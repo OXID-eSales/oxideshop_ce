@@ -1,0 +1,6 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\Ce\Internal\ServiceInterface:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\Ce\Internal\Service
+    arguments:
+      $namespace: ce
+    public: true

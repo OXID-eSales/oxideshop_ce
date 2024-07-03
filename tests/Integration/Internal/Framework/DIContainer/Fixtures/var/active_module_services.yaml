@@ -1,0 +1,3 @@
+imports:
+  -
+    resource: ../Module/Internal/services.yaml

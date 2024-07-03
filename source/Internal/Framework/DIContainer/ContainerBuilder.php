@@ -11,8 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -24,116 +23,153 @@ use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal
  */
 class ContainerBuilder
 {
-    public function __construct(private readonly BasicContextInterface $basicContext)
-    {
+    private int $shopId;
+    private SymfonyContainerBuilder $containerBuilder;
+
+    public function __construct(
+        private readonly BasicContextInterface $basicContext,
+    ) {
     }
 
     public function getContainer(): SymfonyContainerBuilder
     {
-        $shopId = $this->getCurrentShopId();
-        $symfonyContainer = new SymfonyContainerBuilder();
-        $symfonyContainer->setParameter('oxid_esales.current_shop_id', $shopId);
-        $symfonyContainer->setParameter('oxid_shop_source_directory', $this->basicContext->getSourcePath());
-        $symfonyContainer->addCompilerPass(new RegisterListenersPass());
-        $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
+        $this->shopId = (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+        $this->containerBuilder = new SymfonyContainerBuilder();
 
-        $symfonyContainer->setParameter('oxid_cache_directory', $this->basicContext->getCacheDirectory());
-        $symfonyContainer->setParameter('oxid_shop_source_directory', $this->basicContext->getSourcePath());
+        $this->containerBuilder->setParameter('oxid_esales.current_shop_id', $this->shopId);
+        $this->containerBuilder->setParameter('oxid_shop_source_directory', $this->basicContext->getSourcePath());
+        $this->containerBuilder->setParameter('oxid_cache_directory', $this->basicContext->getCacheDirectory());
 
-        $this->loadEditionServices($symfonyContainer);
-        $this->loadModuleServices($symfonyContainer, $shopId);
-        $this->loadProjectServices($symfonyContainer, $shopId);
+        $this->containerBuilder->addCompilerPass(new RegisterListenersPass());
+        $this->containerBuilder->addCompilerPass(new AddConsoleCommandPass());
 
-        return $symfonyContainer;
+        $this->loadEditionServices();
+        $this->loadComponentServices();
+        $this->loadModuleServices();
+        $this->loadProjectExtensionsForDefaultEnvironment();
+        $this->loadProjectExtensionsForSpecificShopAndDefaultEnvironment();
+        $this->loadProjectExtensionsForCurrentEnvironment();
+        $this->loadProjectExtensionsForSpecificShopAndSpecificEnvironment();
+
+        return $this->containerBuilder;
     }
 
-    private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer, int $shopId): void
+    private function loadEditionServices(): void
     {
-        $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
-        try {
-            $this->cleanupProjectYaml();
-            $loader->load($this->basicContext->getGeneratedServicesFilePath());
-        } catch (FileLocatorFileNotFoundException) {
-            // In case generated services file not found, do nothing.
-        }
-        try {
-            $loader->load($this->basicContext->getConfigurableServicesFilePath());
-        } catch (FileLocatorFileNotFoundException) {
-            // In case manually created services file not found, do nothing.
-        }
-        try {
-            $loader->load($this->basicContext->getShopConfigurableServicesFilePath($shopId));
-        } catch (FileLocatorFileNotFoundException) {
-            // In case manually created services file not found, do nothing.
-        }
-    }
-
-    /**
-     * Removes imports from modules that have deleted on the file system.
-     */
-    private function cleanupProjectYaml(): void
-    {
-        $projectYamlDao = new ProjectYamlDao($this->basicContext, new Filesystem());
-        $yamlImportService = new ProjectYamlImportService($projectYamlDao, $this->basicContext);
-        $yamlImportService->removeNonExistingImports();
-    }
-
-    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer): void
-    {
-        foreach ($this->getEditionsRootPaths() as $path) {
-            $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($path));
-            $servicesLoader->load('Internal/services.yaml');
+        foreach ($this->getEditionsRootPaths() as $editionPath) {
+            $this->getYamlLoader([$editionPath])->load('Internal/services.yaml');
         }
     }
 
     private function getEditionsRootPaths(): array
     {
-        $allEditionPaths = [
+        return match ($this->basicContext->getEdition()) {
             BasicContext::COMMUNITY_EDITION => [
                 $this->basicContext->getCommunityEditionSourcePath(),
             ],
             BasicContext::PROFESSIONAL_EDITION => [
                 $this->basicContext->getCommunityEditionSourcePath(),
-                $this->basicContext->getProfessionalEditionRootPath(),
+                $this->basicContext->getProfessionalEditionRootPath()
             ],
             BasicContext::ENTERPRISE_EDITION => [
                 $this->basicContext->getCommunityEditionSourcePath(),
                 $this->basicContext->getProfessionalEditionRootPath(),
                 $this->basicContext->getEnterpriseEditionRootPath(),
             ],
-        ];
-
-        return $allEditionPaths[$this->basicContext->getEdition()];
+        };
     }
 
-    private function loadModuleServices(SymfonyContainerBuilder $symfonyContainer, int $shopId): void
+    private function loadComponentServices(): void
     {
-        $moduleServicesFilePath = $this->basicContext->getActiveModuleServicesFilePath($shopId);
+        $this->loadYamlIfExists($this->getYamlLoader([]), $this->basicContext->getGeneratedServicesFilePath());
+    }
+
+    private function loadModuleServices(): void
+    {
+        $moduleServicesFilePath = $this->basicContext->getActiveModuleServicesFilePath($this->shopId);
         try {
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
-            $loader->load($moduleServicesFilePath);
-        } catch (FileLocatorFileNotFoundException) {
-            //no active modules, do nothing.
+            $this->loadYamlIfExists($this->getYamlLoader([]), $moduleServicesFilePath);
         } catch (LoaderLoadException $exception) {
-            (new LoggerServiceFactory(new Context($shopId)))
+            (new LoggerServiceFactory(new Context($this->shopId)))
                 ->getLogger()
                 ->error(
                     "Can't load module services file path $moduleServicesFilePath. "
-                    . 'Please check if file exists and all imports in the file are correct.',
+                    . 'Please check if all imports in the file are correct.',
                     [$exception]
                 );
         }
     }
 
-    private function getCurrentShopId(): int
+    private function loadProjectExtensionsForDefaultEnvironment(): void
     {
-        return (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+        $this->loadProjectExtensionFiles(
+            $this->basicContext->getProjectConfigurationDirectory()
+        );
+    }
+
+    private function loadProjectExtensionsForSpecificShopAndDefaultEnvironment(): void
+    {
+        $this->loadProjectExtensionFiles(
+            $this->basicContext->getShopConfigurationDirectory($this->shopId)
+        );
+    }
+
+    private function loadProjectExtensionsForSpecificShopAndSpecificEnvironment(): void
+    {
+        $this->loadProjectExtensionFiles(
+            $this->getShopConfigurationPathForSpecificEnvironment()
+        );
+    }
+
+    private function getShopConfigurationPathForSpecificEnvironment(): string
+    {
+        return Path::join(
+            EnvUrlFormatter::toEnvUrl(
+                $this->basicContext->getProjectConfigurationDirectory()
+            ),
+            Path::makeRelative(
+                $this->basicContext->getShopConfigurationDirectory($this->shopId),
+                $this->basicContext->getProjectConfigurationDirectory()
+            )
+        );
+    }
+
+    private function loadProjectExtensionsForCurrentEnvironment(): void
+    {
+        $this->loadProjectExtensionFiles(
+            EnvUrlFormatter::toEnvUrl(
+                $this->basicContext->getProjectConfigurationDirectory()
+            )
+        );
+    }
+
+    private function loadProjectExtensionFiles(string $configurationUrl): void
+    {
+        foreach (['services.yaml', 'parameters.yaml'] as $file) {
+            $this->loadYamlIfExists(
+                $this->getYamlLoader([]),
+                Path::join($configurationUrl, $file)
+            );
+        }
+    }
+
+    private function getYamlLoader(array $paths): YamlFileLoader
+    {
+        return new YamlFileLoader($this->containerBuilder, new FileLocator($paths));
+    }
+
+    private function loadYamlIfExists(YamlFileLoader $loader, string $yamlFile): void
+    {
+        try {
+            $loader->load($yamlFile);
+        } catch (FileLocatorFileNotFoundException) {
+        }
     }
 }

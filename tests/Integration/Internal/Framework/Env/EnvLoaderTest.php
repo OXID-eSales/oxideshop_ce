@@ -21,7 +21,7 @@ final class EnvLoaderTest extends TestCase
     use EnvTrait;
 
     private string $dotEnvFixture = '';
-    private string $fixtures = __DIR__ . '/Fixtures';
+    private string $fixtures = __DIR__ . '/Fixtures/EnvLoader';
     private string $appEnvKey = 'OXID_ENV';
     private string $serializedEnvKey = 'SERIALIZED_VALUE_KEY';
     private string $serializedParameterKey = 'serialized_value_key';

@@ -22,7 +22,7 @@ class ContainerFactory
     private static $instance;
     private ContainerInterface $symfonyContainer;
     private ContainerCacheInterface $cache;
-    private static int $shopId;
+    private static ?int $shopId;
 
     /**
      * The constructor's private to make class a singleton
@@ -30,7 +30,6 @@ class ContainerFactory
     private function __construct()
     {
         $this->cache = new FilesystemContainerCache(new BasicContext(), new Filesystem());
-        self::$shopId = $this->getShopId();
     }
 
     public function getContainer(): ContainerInterface
@@ -42,17 +41,13 @@ class ContainerFactory
         return $this->symfonyContainer;
     }
 
-    /**
-     * Loads container from cache if available, otherwise
-     * create the container from scratch.
-     */
     private function initializeContainer(): void
     {
-        if ($this->cache->exists(self::$shopId)) {
-            $this->symfonyContainer = $this->cache->get(self::$shopId);
+        if ($this->cache->exists(self::getShopId())) {
+            $this->symfonyContainer = $this->cache->get(self::getShopId());
         } else {
             $this->compileSymfonyContainer();
-            $this->cache->put($this->symfonyContainer, self::$shopId);
+            $this->cache->put($this->symfonyContainer, self::getShopId());
         }
     }
 
@@ -71,17 +66,18 @@ class ContainerFactory
         return self::$instance;
     }
 
-    /**
-     * Forces reload of the ContainerFactory on next request.
-     */
     public static function resetContainer(): void
     {
-        self::getInstance()->cache->invalidate(self::$shopId);
+        self::$shopId = null;
+        self::getInstance()->cache->invalidate(self::getShopId());
         self::$instance = null;
     }
 
-    private function getShopId(): int
+    private static function getShopId(): int
     {
-        return (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+        if (!isset(self::$shopId)) {
+            self::$shopId = (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+        }
+        return self::$shopId;
     }
 }

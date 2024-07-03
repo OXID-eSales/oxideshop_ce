@@ -31,7 +31,8 @@
 .DS_Store
 
 # Shop config & DI for modules and packages
-/var/
+/var/*
+!/var/.gitignore
 
 # DotEnv files
 /.env

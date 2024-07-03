@@ -1,0 +1,6 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\ProjectEnv\Internal\ServiceDecorator:
+    decorates: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\Ce\Internal\ServiceInterface
+    arguments:
+      $decorated: '@.inner'
+      $namespace: project_%project_specific_env%

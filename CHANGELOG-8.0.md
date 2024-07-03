@@ -18,6 +18,7 @@
 - `ModuleConfigurationValidatorInterface` is not optional anymore in the module activation service.
 - The visibility of time-activated products has changed, products with an undefined end date appear in the shop for an
   unlimited period of time
+- Functionality to extend Symfony DIC for environments and shops
 
 ### Removed
 
@@ -39,3 +40,4 @@
 - Deprecated global functions `warningHandler(), dumpVar(), debug()`
 - Config parameters `sShopDir`, `sCompileDir` and `sLogLevel`
 - Deprecated class `ModuleVariablesLocator`
+- Redundant `BasicContextInterface` methods

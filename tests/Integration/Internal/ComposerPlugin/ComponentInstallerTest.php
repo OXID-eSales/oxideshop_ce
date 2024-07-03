@@ -17,19 +17,28 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYaml
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentInstallerTest extends TestCase
 {
     use ContainerTrait;
+    use FilesystemTrait;
 
     private string $servicesFilePath = 'Fixtures/services.yaml';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->backupVarDirectory();
+    }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
-        $this->removeGeneratedLineFromProjectFile();
+        $this->restoreVarDirectory();
     }
 
     public function testInstall(): void
@@ -67,12 +76,5 @@ final class ComponentInstallerTest extends TestCase
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
-    }
-
-    private function removeGeneratedLineFromProjectFile(): void
-    {
-        /** @var ProjectYamlImportServiceInterface $projectYamlImportService */
-        $projectYamlImportService = $this->get(ProjectYamlImportServiceInterface::class);
-        $projectYamlImportService->removeImport(__DIR__ . '/Fixtures');
     }
 }

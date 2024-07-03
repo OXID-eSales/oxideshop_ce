@@ -1,0 +1,3 @@
+imports:
+  -
+    resource: module-1/services.yaml

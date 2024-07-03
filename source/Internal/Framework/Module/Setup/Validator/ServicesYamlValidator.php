@@ -11,84 +11,94 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainer;
 use Symfony\Component\Filesystem\Path;
+use Throwable;
 
 class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 {
+    private DIConfigWrapper $configFile;
+    private DIConfigWrapper $originalConfigFile;
+    private SymfonyContainer $fakeContainer;
+    private string $moduleId;
+    private int $shopId;
+
     public function __construct(
-        private ContextInterface $context,
-        private ProjectYamlDaoInterface $projectYamlDao,
-        private ModulePathResolverInterface $modulePathResolver
+        private readonly ContextInterface $context,
+        private readonly ProjectYamlDaoInterface $projectYamlDao,
+        private readonly ModulePathResolverInterface $modulePathResolver
     ) {
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int $shopId
-     * @throws \Throwable
-     */
     public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
-        $projectYaml = $this->projectYamlDao->loadProjectConfigFile();
-        $originalProjectYaml = clone $projectYaml;
-
+        $this->backupProjectConfigFile();
+        $this->moduleId = $configuration->getId();
+        $this->shopId = $shopId;
         try {
-            $projectYaml->addImport(
-                Path::join(
-                    $this->modulePathResolver->getFullModulePathFromConfiguration($configuration->getId(), $shopId),
-                    'services.yaml'
-                )
-            );
-            $this->projectYamlDao->saveProjectConfigFile($projectYaml);
-
-            $container = $this->buildContainer();
-            $this->checkContainer($container);
-        } catch (NoServiceYamlException $e) {
+            $this->importValidatedModulesServicesIntoProjectConfigFile();
+            $this->buildFakeContainerWithModifiedProjectConfigFile();
+            $this->validateContainerDefinitions();
+        } catch (NoServiceYamlException) {
             return;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new InvalidModuleServicesException(
-                "Service Yaml for moduleId of [" . $configuration->getId() . "] is invalid",
-                0,
-                $e
+                message: "Service YAML for module [$this->moduleId] is invalid",
+                previous: $e
             );
         } finally {
-            // Restore the old settings
-            $this->projectYamlDao->saveProjectConfigFile($originalProjectYaml);
+            $this->restoreProjectConfigFile();
         }
     }
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     * @throws \Exception
-     */
-    private function buildContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    private function backupProjectConfigFile(): void
     {
-        $containerBuilder = new ContainerBuilder($this->context);
-        $container = $containerBuilder->getContainer();
-        foreach ($container->getDefinitions() as $definition) {
+        $this->configFile = $this->projectYamlDao->loadProjectConfigFile();
+        $this->originalConfigFile = clone $this->configFile;
+    }
+
+    /**
+     * We use project service file just to run validation, actual
+     * module's service.yaml will be imported into active_module_services.yaml.
+     * @throws NoServiceYamlException
+     */
+    private function importValidatedModulesServicesIntoProjectConfigFile(): void
+    {
+        $importFilePath = Path::join(
+            $this->modulePathResolver->getFullModulePathFromConfiguration($this->moduleId, $this->shopId),
+            'services.yaml'
+        );
+        if (!realpath($importFilePath)) {
+            throw new NoServiceYamlException();
+        }
+        $this->configFile->addImport($importFilePath);
+        $this->projectYamlDao->saveProjectConfigFile($this->configFile);
+    }
+
+    private function buildFakeContainerWithModifiedProjectConfigFile(): void
+    {
+        $this->fakeContainer = (new ContainerBuilder($this->context))->getContainer();
+        foreach ($this->fakeContainer->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }
-        $container->compile(true);
-        return $container;
+        $this->fakeContainer->compile(true);
     }
 
-    /**
-     * Try to fetch all services defined
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @throws \Exception
-     */
-    private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
+    private function validateContainerDefinitions(): void
     {
-        foreach ($container->getDefinitions() as $definitionKey => $definition) {
-            if ($definition->isPublic()) {
-                $container->get($definitionKey);
-            }
+        foreach ($this->fakeContainer->getDefinitions() as $definitionKey => $definition) {
+            $this->fakeContainer->get($definitionKey);
         }
+    }
+
+    private function restoreProjectConfigFile(): void
+    {
+        $this->projectYamlDao->saveProjectConfigFile($this->originalConfigFile);
     }
 }

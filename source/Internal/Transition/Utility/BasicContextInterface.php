@@ -27,10 +27,6 @@ interface BasicContextInterface
 
     public function getConfigTableName(): string;
 
-    public function getConfigurableServicesFilePath(): string;
-
-    public function getConfigurationDirectoryPath(): string;
-
     public function getContainerCacheFilePath(int $shopId): string;
 
     public function getDatabaseUrl(): string;
@@ -52,8 +48,6 @@ interface BasicContextInterface
     public function getProfessionalEditionRootPath(): string;
 
     public function getProjectConfigurationDirectory(): string;
-
-    public function getShopConfigurableServicesFilePath(int $shopId): string;
 
     public function getShopConfigurationDirectory(int $shopId): string;
 

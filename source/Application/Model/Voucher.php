@@ -73,6 +73,9 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sQ .= "( {$sViewName}.oxorderid is NULL || {$sViewName}.oxorderid = '' ) ";
             $sQ .= " and ( {$sViewName}.oxdateused is NULL || {$sViewName}.oxdateused = 0 ) ";
 
+            // Validate end date of voucher (To prevent issue in case same voucher number been used for multiple voucherseries)
+            $sQ .= " and ({$sSeriesViewName}.oxenddate >= NOW() OR {$sSeriesViewName}.oxenddate = '0000-00-00 00:00:00')";
+
             //voucher timeout for 3 hours
             if ($blCheckavalability) {
                 $iTime = time() - $this->getVoucherTimeout();

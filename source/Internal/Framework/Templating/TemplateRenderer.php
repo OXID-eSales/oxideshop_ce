@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
+use AllowDynamicProperties;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
+#[AllowDynamicProperties]
 class TemplateRenderer implements TemplateRendererInterface
 {
     public function __construct(

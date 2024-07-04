@@ -95,7 +95,7 @@ class TranslateFunctionLogic
      */
     private function assignArgumentsToTranslation(string $translation, $args): string
     {
-        if ($args) {
+        if ($args !== false) {
             if (is_array($args)) {
                 $translation = vsprintf($translation, $args);
             } else {

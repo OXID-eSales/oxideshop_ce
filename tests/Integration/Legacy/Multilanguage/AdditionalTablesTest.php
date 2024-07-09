@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\DbMetaDataHandler;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +22,7 @@ final class AdditionalTablesTest extends TestCase
 {
     use DatabaseTrait;
     use MultilanguageTrait;
+    use ContainerTrait;
 
     public function tearDown(): void
     {
@@ -75,7 +76,11 @@ final class AdditionalTablesTest extends TestCase
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='for testing'";
 
         DatabaseProvider::getDb()->execute($sql);
-        Registry::getConfig()->setConfigParam('aMultiLangTables', ['addtest']);
+
+        $this->createContainer();
+        $this->container->setParameter('oxid_multilingual_tables', ['addtest']);
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
     }
 
     private function insertTestData(int $languageId): void

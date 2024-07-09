@@ -1,6 +1,0 @@
-services:
-  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\Ee\Internal\ServiceDecorator:
-    decorates: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIContainer\Fixtures\Ce\Internal\ServiceInterface
-    arguments:
-      $decorated: '@.inner'
-      $namespace: ee

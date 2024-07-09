@@ -115,14 +115,8 @@ $this->iBasketReservationCleanPerRequest = 200;
  */
 $this->aUserComponentNames = null;
 
-// Additional multi language tables
-$this->aMultiLangTables = null;
-
 // Instructs shop that price update is performed by cron (time based job sheduler)
 $this->blUseCron = false;
-
-// Enable temporarily in case you can't access the backend due to broken views
-$this->blSkipViewUsage = false;
 
 /**
  * Enterprise Edition related config options.
@@ -140,16 +134,6 @@ $this->iDebugSlowQueryTime = 20;
  * 3 - both
  */
 $this->blUseRightsRoles = 3;
-
-/**
- * Define oxarticles fields which could be edited individually in subshops.
- * Do not forget to add these fields to oxfield2shop table.
- * Note: The field names are case sensitive here.
- */
-$this->aMultishopArticleFields = array("OXPRICE", "OXPRICEA", "OXPRICEB", "OXPRICEC", "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME");
-
-// Show "Update Views" button in admin
-$this->blShowUpdateViews = true;
 
 // If default 30 seconds is not enougth
 // @set_time_limit(3000);

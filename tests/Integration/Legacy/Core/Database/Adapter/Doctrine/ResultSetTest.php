@@ -306,9 +306,4 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
     {
         return $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
     }
-
-    private function getResultSet(): ResultSetInterface
-    {
-        return $this->database->select('SELECT OXID FROM ' . self::TABLE_NAME);
-    }
 }

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * Class manages discount articles
@@ -186,7 +187,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
     private function getLanguageSuffix(): string
     {
-        return Registry::getConfig()->getConfigParam('blSkipViewUsage')
+        return ContainerFacade::getParameter('oxid_skip_database_views_usage')
             ? Registry::getLang()->getLanguageTag()
             : '';
     }

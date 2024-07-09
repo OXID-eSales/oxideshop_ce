@@ -7,7 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * CVS export manager.
@@ -19,18 +21,17 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /** @inheritdoc */
     public function render()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
+        if (Registry::getConfig()->isDemoShop()) {
+            Registry::getUtils()->showMessageAndExit("Access denied !");
         }
 
         parent::render();
 
-        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        $oAuthUser = oxNew(User::class);
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
-        $blShowUpdateViews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowUpdateViews');
-        $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
+        $this->_aViewData['showViewUpdate'] = ContainerFacade::getParameter('oxid_show_update_views_button');
 
         return "tools_main";
     }

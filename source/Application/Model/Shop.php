@@ -30,6 +30,13 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /** @var bool Defines if multishop inherits categories. */
     protected $_blMultiShopInheritCategories = false;
 
+    protected bool $disabledViewUsage = false;
+
+    public function disableViews(): void
+    {
+        $this->disabledViewUsage = true;
+    }
+
     /**
      * Database tables setter.
      *
@@ -184,6 +191,15 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         foreach ($aLanguages as $iLang => $sLang) {
             $this->addViewLanguageQuery($sStart, $sTable, $iLang, $sLang);
         }
+    }
+
+    public function getViewName($forceCoreTableUsage = null)
+    {
+        if ($this->disabledViewUsage) {
+            return $this->getCoreTableName();
+        }
+
+        return parent::getViewName($forceCoreTableUsage);
     }
 
     /**

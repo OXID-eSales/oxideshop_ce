@@ -1,4 +1,5 @@
 imports:
+    - { resource: parameters.yaml }
     - { resource: Container/services.yaml }
     - { resource: Domain/services.yaml }
     - { resource: Framework/services.yaml }

@@ -11,6 +11,7 @@
 - Global functions `warningHandler(), dumpVar(), debug()`
 - `ConnectionProviderInterface` will be superseded by `ConnectionFactory` in next major
 - Redundant interfaces `TransactionServiceInterface, FinderFactoryInterface`
+- `BasicContextInterface` methods
 
 ### Fixed
 - User registration in the Private Sales mode

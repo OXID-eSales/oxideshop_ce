@@ -24,10 +24,13 @@ interface BasicContextInterface
     public function getGeneratedServicesFilePath(): string;
 
     /**
-     * @return string
+     * @deprecated functionality will be superseded, method will be removed in next major
      */
     public function getConfigurableServicesFilePath(): string;
 
+    /**
+     * @deprecated functionality will be superseded, method will be removed in next major
+     */
     public function getShopConfigurableServicesFilePath(int $shopId): string;
 
     /**
@@ -97,7 +100,7 @@ interface BasicContextInterface
     public function getShopConfigurationDirectory(int $shopId): string;
 
     /**
-     * @return string
+     * @deprecated method will be removed in next major, use getProjectConfigurationDirectory() instead
      */
     public function getConfigurationDirectoryPath(): string;
 

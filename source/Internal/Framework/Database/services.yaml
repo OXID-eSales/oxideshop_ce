@@ -1,6 +1,12 @@
 imports:
   - { resource: Logger/services.yaml }
 
+parameters:
+  oxid_multilingual_tables: []
+  oxid_skip_database_views_usage: false
+  oxid_multishop_article_fields: []
+  oxid_show_update_views_button: true
+
 services:
   _defaults:
     autowire: true

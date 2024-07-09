@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+
 /**
  * Generates view name for given table name.
  */
@@ -50,7 +52,7 @@ class TableViewNameGenerator
     {
         $config = $this->getConfig();
 
-        if (!$config->getConfigParam('blSkipViewUsage')) {
+        if (!ContainerFacade::getParameter('oxid_skip_database_views_usage')) {
             $language = $this->getLanguage();
             $languageId = $languageId !== null ? $languageId : $language->getBaseLanguage();
             $shopId = $shopId !== null ? $shopId : $config->getShopId();

@@ -9,9 +9,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 /**
  * Class ConnectionexceptionTest
- *
- * @group database-adapter
  */
+#[\PHPUnit\Framework\Attributes\Group('database-adapter')]
 class ConnectionexceptionTest extends \OxidTestCase
 {
     public function testSetGetAddress()

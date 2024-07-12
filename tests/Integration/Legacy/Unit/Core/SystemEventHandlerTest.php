@@ -146,9 +146,8 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * @param string $checkTime
-     *
-     * @depends testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat')]
     public function testInformationSendTimeIsBetweenCorrectHours($checkTime)
     {
         $hourToCheck = explode(':', $checkTime);

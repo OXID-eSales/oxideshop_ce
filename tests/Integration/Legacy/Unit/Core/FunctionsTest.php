@@ -89,9 +89,7 @@ class FunctionsTest extends \OxidTestCase
         $this->assertEquals('xxx', $tableViewNameGenerator->getViewName('xxx', 'xxx'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testError_404_handler()
     {
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['handlePageNotFoundError']);

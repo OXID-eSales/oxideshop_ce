@@ -73,10 +73,9 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * @depends testValidationPassed
-     *
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $licenseCheck
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testValidationPassed')]
     public function testErrorMessageEmptyOnSuccess($licenseCheck)
     {
         $this->assertEquals('', $licenseCheck->getErrorMessage());
@@ -102,10 +101,9 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * @depends testValidationFailed
-     *
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $licenseCheck
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testValidationFailed')]
     public function testErrorMessageSetOnFailure($licenseCheck)
     {
         $this->assertEquals(

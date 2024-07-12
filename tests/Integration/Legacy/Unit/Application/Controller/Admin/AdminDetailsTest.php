@@ -131,9 +131,7 @@ class AdminDetailsTest extends \OxidTestCase
         $this->assertEquals($sActCatId, $oCat->getId());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testGetCategoryTreeUnsettingActiveCategory(): void
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -150,9 +148,7 @@ class AdminDetailsTest extends \OxidTestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testGetCategoryTreeMarkingActiveCategory(): void
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);

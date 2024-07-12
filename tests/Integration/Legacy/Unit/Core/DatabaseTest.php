@@ -20,10 +20,10 @@ use ReflectionClass;
 /**
  * Class DbTest
  *
- * @group   database-adapter
  * @covers  \OxidEsales\Eshop\Core\DatabaseProvider
  * @package Unit\Core
  */
+#[\PHPUnit\Framework\Attributes\Group('database-adapter')]
 class DatabaseTest extends UnitTestCase
 {
     /**

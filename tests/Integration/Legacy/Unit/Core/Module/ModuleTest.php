@@ -17,9 +17,9 @@ use oxModule;
 use oxRegistry;
 
 /**
- * @group module
  * @package Unit\Core
  */
+#[\PHPUnit\Framework\Attributes\Group('module')]
 class ModuleTest extends \OxidTestCase
 {
     /**

@@ -14,9 +14,9 @@ use oxTestModules;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @group module
  * @package Unit\Core
  */
+#[\PHPUnit\Framework\Attributes\Group('module')]
 class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**

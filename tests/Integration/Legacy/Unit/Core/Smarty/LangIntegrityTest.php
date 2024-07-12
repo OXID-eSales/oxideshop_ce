@@ -212,9 +212,8 @@ class LangIntegrityTest extends \OxidTestCase
 
     /**
      * Tests if maps are bound to the same language constants
-     *
-     * @depends testMapIdentsMatch
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testMapIdentsMatch')]
     public function testMapEquality()
     {
         $aMapIdentsDE = $this->getMap($this->_sTheme, 'de');

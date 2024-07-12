@@ -81,9 +81,8 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test, that by default the text editor is not disabled.
-     *
-     * @group texteditordisabled
      */
+    #[\PHPUnit\Framework\Attributes\Group('texteditordisabled')]
     public function testIsTextEditorDisabledIsFalseOnDefault()
     {
         $textEditorHandler = oxNew(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class);
@@ -95,9 +94,8 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test, that switching the text editor to disabled works.
-     *
-     * @group texteditordisabled
      */
+    #[\PHPUnit\Framework\Attributes\Group('texteditordisabled')]
     public function testDisableTextEditorLeadsToRightResult()
     {
         $textEditorHandler = $this->testIsTextEditorDisabledIsFalseOnDefault();

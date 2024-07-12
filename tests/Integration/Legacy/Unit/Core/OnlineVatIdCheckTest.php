@@ -25,9 +25,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker
-     *
-     * @group quarantine
      */
+    #[\PHPUnit\Framework\Attributes\Group('quarantine')]
     public function testCheckOnlineWithGoodVatId()
     {
         $this->markTestSkipped('TEMPORARY SKIPPING: as vat id check system banned us. Test need to be rewritten to UNIT');
@@ -61,9 +60,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker - with wrong vat id
-     *
-     * @group quarantine
      */
+    #[\PHPUnit\Framework\Attributes\Group('quarantine')]
     public function testCheckOnlineWithWrongVatId()
     {
         $this->markTestSkipped('TEMPORARY SKIPPING: as vat id check system banned us. Test need to be rewritten to UNIT');
@@ -87,9 +85,8 @@ class OnlineVatIdCheckTest extends \OxidTestCase
 
     /**
      * Testing vat id online checker - with invalid vat id
-     *
-     * @group quarantine
      */
+    #[\PHPUnit\Framework\Attributes\Group('quarantine')]
     public function testCheckOnlineWithInvalidVatId()
     {
         $this->markTestSkipped('TEMPORARY SKIPPING: as vat id check system banned us. Test need to be rewritten to UNIT');

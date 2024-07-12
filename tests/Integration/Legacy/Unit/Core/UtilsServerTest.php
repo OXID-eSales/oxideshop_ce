@@ -273,9 +273,7 @@ class UtilsServerTest extends \OxidTestCase
         return $sServerId;
     }
 
-    /**
-     * @depends testGetServerNodeIdNotEmpty
-     */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetServerNodeIdNotEmpty')]
     public function testGetServerNodeIdReturnSameValue($sServerId1)
     {
         $oUtilsServer = oxNew('oxUtilsServer');
@@ -284,9 +282,7 @@ class UtilsServerTest extends \OxidTestCase
         $this->assertSame($sServerId1, $sServerId2);
     }
 
-    /**
-     * @depends testGetServerNodeIdNotEmpty
-     */
+    #[\PHPUnit\Framework\Attributes\Depends('testGetServerNodeIdNotEmpty')]
     public function testGetServerNodeIdReturnDifferentValueIfDifferentIp($sServerId1)
     {
         $sOldServerIp = $_SERVER['SERVER_ADDR'];

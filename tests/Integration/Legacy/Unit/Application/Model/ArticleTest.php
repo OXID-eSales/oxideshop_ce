@@ -347,9 +347,9 @@ class ArticleTest extends \OxidTestCase
     /**
      * Test get stock check query.
      *
-     * @ticket #4822
      *
      */
+    #[\RectorPrefix202407\PHPUnit\Framework\Attributes\Ticket('#4822')]
     public function testGetSqlActiveSnippetParentProductStockIsNegativeVariantsWithPositiveStockAreBuyable()
     {
         $sArticleId = '_testArticleId';
@@ -1149,10 +1149,10 @@ class ArticleTest extends \OxidTestCase
     /**
      * Test enable price load.
      *
-     * @depends testDisablePriceLoad
      *
      * @param oxArticle $oArticle
      */
+    #[\PHPUnit\Framework\Attributes\Depends('testDisablePriceLoad')]
     public function testEnablePriceLoad(\OxidEsales\EshopCommunity\Application\Model\Article $oArticle)
     {
         $oArticle->enablePriceLoad();

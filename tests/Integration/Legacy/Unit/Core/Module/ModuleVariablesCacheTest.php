@@ -8,9 +8,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 /**
- * @group module
  * @package Unit\Core
  */
+#[\PHPUnit\Framework\Attributes\Group('module')]
 class ModuleVariablesCacheTest extends \OxidTestCase
 {
     public function testSetGetCache()

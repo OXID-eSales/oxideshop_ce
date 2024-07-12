@@ -1984,7 +1984,6 @@ class ViewConfigTest extends \OxidTestCase
      * /**
      * Tests retrieve session challenge token from session.
      *
-     * @group getsessionchallengetoken
      *
      * @dataProvider _dpGetSessionChallengeToken
      *
@@ -1992,6 +1991,7 @@ class ViewConfigTest extends \OxidTestCase
      * @param integer $callTimes        method How many times getSessionChallengeToken is expected to be called.
      * @param string  $token            Security token.
      */
+    #[\PHPUnit\Framework\Attributes\Group('getsessionchallengetoken')]
     public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $session */

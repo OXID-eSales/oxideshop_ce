@@ -44,10 +44,10 @@ class ListReviewTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getDomXml"));
+        $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ["getDomXml"]);
         $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListReview::class, array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListReview::class, ["getNavigation"]);
         $oView->expects($this->atLeastOnce())->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_review", $oView->render());
     }
@@ -61,19 +61,19 @@ class ListReviewTest extends \OxidTestCase
     {
         $oArtList = oxNew('Article_List');
         $sSql = $oArtList->buildSelectString(oxNew('oxArticle'));
-        $sSql = $oArtList->prepareWhereQuery(array(), $sSql);
+        $sSql = $oArtList->prepareWhereQuery([], $sSql);
 
         // checking if exists string oxarticle.oxparentid = ''
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", (string) $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
         $sSql = $oList->buildSelectString("");
-        $sSql = $oList->prepareWhereQuery(array(), $sSql);
+        $sSql = $oList->prepareWhereQuery([], $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", (string) $sSql);
         $this->assertFalse((bool) $blCheckForParent);
     }
 
@@ -86,19 +86,19 @@ class ListReviewTest extends \OxidTestCase
     {
         $oArtList = oxNew('Article_List');
         $sSql = $oArtList->buildSelectString(oxNew('oxArticle'));
-        $sSql = $oArtList->prepareWhereQuery(array(), $sSql);
+        $sSql = $oArtList->prepareWhereQuery([], $sSql);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         // checking if exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", (string) $sSql);
         $this->assertTrue((bool) $blCheckForParent);
 
         $oList = oxNew('List_Review');
         $sSql = $oList->buildSelectString("");
-        $sSql = $oList->prepareWhereQuery(array(), $sSql);
+        $sSql = $oList->prepareWhereQuery([], $sSql);
 
         // checking if not exists string oxarticle.oxparentid = ''
-        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", $sSql);
+        $blCheckForParent = preg_match("/\s+and\s+" . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid\s+=\s+''/", (string) $sSql);
         $this->assertFalse((bool) $blCheckForParent);
     }
 }

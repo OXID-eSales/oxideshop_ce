@@ -25,30 +25,17 @@ class LanguageListTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
         $this->setRequestParameter('oxid', 1);
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getConfigParam", "saveShopConfVar"]);
 
-        $map = array(
-            array('blAllowSharedEdit',  null, "1"),
-            array('aLanguageParams', null, array(1 => array('baseId' => 1))),
-            array('aLanguages', null, array(1 => 1)),
-            array('aLanguageURLs', null, array(1 => 1)),
-            array('aLanguageSSLURLs', null, array(1 => 1)),
-            array('sDefaultLang', null, 1),
-        );
+        $map = [['blAllowSharedEdit', null, "1"], ['aLanguageParams', null, [1 => ['baseId' => 1]]], ['aLanguages', null, [1 => 1]], ['aLanguageURLs', null, [1 => 1]], ['aLanguageSSLURLs', null, [1 => 1]], ['sDefaultLang', null, 1]];
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
 
-        $map = array(
-            array('aarr', "aLanguageParams", array(), null),
-            array('aarr', "aLanguages", array(), null),
-            array('arr', "aLanguageURLs", array(), null),
-            array('arr', "aLanguageSSLURLs", array(), null),
-            array('str', "sDefaultLang", 0, null),
-        );
+        $map = [['aarr', "aLanguageParams", [], null], ['aarr', "aLanguages", [], null], ['arr', "aLanguageURLs", [], null], ['arr', "aLanguageSSLURLs", [], null], ['str', "sDefaultLang", 0, null]];
         $oConfig->expects($this->exactly(5))->method('saveShopConfVar')->will($this->returnValueMap($map));
 
-        $aTasks = array("getConfig");
+        $aTasks = ["getConfig"];
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageList::class, $aTasks, array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageList::class, $aTasks, [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oView->deleteEntry();
@@ -94,7 +81,7 @@ class LanguageListTest extends \OxidTestCase
         $oLang2->default = false;
 
         $oView = oxNew('Language_List');
-        $this->assertEquals(array($oLang1, $oLang2), $oView->getLanguagesList());
+        $this->assertEquals([$oLang1, $oLang2], $oView->getLanguagesList());
     }
 
     /**

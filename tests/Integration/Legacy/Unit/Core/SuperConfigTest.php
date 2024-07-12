@@ -21,7 +21,7 @@ class SuperConfigTest extends \OxidTestCase
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $oActUser = oxNew('oxuser');
         $oActUser->loadActiveUser();
-        $this->assertEquals(oxADMIN_LOGIN, $oOxSuperCfg->getUser()->oxuser__oxusername->value);
+        $this->assertEquals(\OXADMIN_LOGIN, $oOxSuperCfg->getUser()->oxuser__oxusername->value);
         $this->getSession()->setVariable('usr', null);
         $oActUser = oxNew('oxuser');
         $oActUser->oxuser__oxusername = new oxField('testUser', oxField::T_RAW);

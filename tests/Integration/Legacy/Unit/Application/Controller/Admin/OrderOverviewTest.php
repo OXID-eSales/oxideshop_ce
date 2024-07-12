@@ -105,7 +105,7 @@ class OrderOverviewTest extends \OxidTestCase
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oOrder->oxorder__oxuserid = new oxField("oxdefaultadmin");
         $oOrder->oxorder__oxbillcompany = new oxField("Ihr Firmenname");
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField("Hans");
         $oOrder->oxorder__oxbilllname = new oxField("Musterm0ann");
         $oOrder->oxorder__oxbillstreet = new oxField("Musterstr");

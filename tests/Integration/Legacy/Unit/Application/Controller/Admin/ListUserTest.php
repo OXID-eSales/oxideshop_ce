@@ -24,7 +24,7 @@ class ListUserTest extends \OxidTestCase
     public function testGetViewListSize()
     {
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getUserDefListSize"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, ["getUserDefListSize"]);
         $oView->expects($this->once())->method('getUserDefListSize')->will($this->returnValue(999));
         $this->assertEquals(999, $oView->getViewListSize());
     }
@@ -36,10 +36,10 @@ class ListUserTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oNavTree = $this->getMock(NavigationTree::class, array("getDomXml"));
+        $oNavTree = $this->getMock(NavigationTree::class, ["getDomXml"]);
         $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, ["getNavigation"]);
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_user", $oView->render());
     }

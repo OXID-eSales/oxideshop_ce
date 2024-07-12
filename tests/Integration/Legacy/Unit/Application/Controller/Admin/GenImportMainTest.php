@@ -37,10 +37,7 @@ class GenImportMainTest extends \OxidTestCase
      */
     public function providerRenderIfConvertedViewData()
     {
-        return array(
-            array('sGiCsvFieldTerminator', "'<b>", "&#039;&lt;b&gt;"),
-            array('sGiCsvFieldEncloser', "'<b>", "&#039;&lt;b&gt;")
-        );
+        return [['sGiCsvFieldTerminator', "'<b>", "&#039;&lt;b&gt;"], ['sGiCsvFieldEncloser', "'<b>", "&#039;&lt;b&gt;"]];
     }
 
     /**
@@ -75,7 +72,7 @@ class GenImportMainTest extends \OxidTestCase
         $this->assertTrue(file_exists($sFilePath));
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getUploadedCsvFilePath"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getUploadedCsvFilePath"]);
         $oView->expects($this->once())->method('getUploadedCsvFilePath')->will($this->returnValue($sFilePath));
         $oView->deleteCsvFile();
 
@@ -91,10 +88,10 @@ class GenImportMainTest extends \OxidTestCase
     {
         $this->setRequestParameter('blContainsHeader', false);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getUploadedCsvFilePath", "getCsvFirstRow"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getUploadedCsvFilePath", "getCsvFirstRow"]);
         $oView->expects($this->once())->method('getUploadedCsvFilePath')->will($this->returnValue(false));
-        $oView->expects($this->once())->method('getCsvFirstRow')->will($this->returnValue(array(1, 2, 3)));
-        $this->assertEquals(array(2 => 'Column 1', 3 => 'Column 2', 4 => 'Column 3'), $oView->getCsvFieldsNames());
+        $oView->expects($this->once())->method('getCsvFirstRow')->will($this->returnValue([1, 2, 3]));
+        $this->assertEquals([2 => 'Column 1', 3 => 'Column 2', 4 => 'Column 3'], $oView->getCsvFieldsNames());
     }
 
     /**
@@ -106,10 +103,10 @@ class GenImportMainTest extends \OxidTestCase
     {
         $this->setRequestParameter('blContainsHeader', true);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getUploadedCsvFilePath", "getCsvFirstRow"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getUploadedCsvFilePath", "getCsvFirstRow"]);
         $oView->expects($this->once())->method('getUploadedCsvFilePath')->will($this->returnValue(false));
-        $oView->expects($this->once())->method('getCsvFirstRow')->will($this->returnValue(array(1, 2, 3)));
-        $this->assertEquals(array(1, 2, 3), $oView->getCsvFieldsNames());
+        $oView->expects($this->once())->method('getCsvFirstRow')->will($this->returnValue([1, 2, 3]));
+        $this->assertEquals([1, 2, 3], $oView->getCsvFieldsNames());
     }
 
     /**
@@ -126,11 +123,11 @@ class GenImportMainTest extends \OxidTestCase
         fclose($rFile);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getCsvFieldsTerminator", "getCsvFieldsEncolser", "getUploadedCsvFilePath"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getCsvFieldsTerminator", "getCsvFieldsEncolser", "getUploadedCsvFilePath"]);
         $oView->expects($this->once())->method('getCsvFieldsTerminator')->will($this->returnValue(";"));
         $oView->expects($this->once())->method('getCsvFieldsEncolser')->will($this->returnValue("\""));
         $oView->expects($this->once())->method('getUploadedCsvFilePath')->will($this->returnValue($sFilePath));
-        $this->assertEquals(array("test1", "test2", "test3"), $oView->getCsvFirstRow());
+        $this->assertEquals(["test1", "test2", "test3"], $oView->getCsvFirstRow());
     }
 
     /**
@@ -164,7 +161,7 @@ class GenImportMainTest extends \OxidTestCase
         // defining parameters
         $iNavStep = 2;
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getUploadedCsvFilePath"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getUploadedCsvFilePath"]);
         $oView->expects($this->once())->method('getUploadedCsvFilePath')->will($this->returnValue(false));
         $this->assertEquals(1, $oView->checkErrors($iNavStep));
     }
@@ -176,7 +173,7 @@ class GenImportMainTest extends \OxidTestCase
      */
     public function testCheckErrorsStep3EmptyCsvFields()
     {
-        $this->setRequestParameter('aCsvFields', array());
+        $this->setRequestParameter('aCsvFields', []);
 
         // defining parameters
         $iNavStep = 3;
@@ -193,7 +190,7 @@ class GenImportMainTest extends \OxidTestCase
     public function testCheckErrorsStep3()
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{}');
-        $this->setRequestParameter('aCsvFields', array("sTestField"));
+        $this->setRequestParameter('aCsvFields', ["sTestField"]);
 
         // defining parameters
         $iNavStep = 3;
@@ -242,11 +239,11 @@ class GenImportMainTest extends \OxidTestCase
         $sFileName = md5(time());
 
         // testing..
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "getConfigParam"));
-        $oConfig->expects($this->once())->method('getUploadedFile')->will($this->returnValue(array("name" => $sFileName, "tmp_name" => rtrim(sys_get_temp_dir(), '/') . '/' . $sFileName)));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getUploadedFile", "getConfigParam"]);
+        $oConfig->expects($this->once())->method('getUploadedFile')->will($this->returnValue(["name" => $sFileName, "tmp_name" => rtrim(sys_get_temp_dir(), '/') . '/' . $sFileName]));
         // $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue($this->getConfig()->getConfigParam("sCompileDir")));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain::class, ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals($this->getConfig()->getConfigParam("sCompileDir") . $sFileName, $oView->getUploadedCsvFilePath());
@@ -263,8 +260,8 @@ class GenImportMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new Exception( "addErrorToDisplay" );}');
 
         // defining parameters
-        $oErpImport = $this->getMock("oxErpGenImport", array("getStatistics"));
-        $oErpImport->expects($this->once())->method('getStatistics')->will($this->returnValue(array(array("r" => false, "m" => true))));
+        $oErpImport = $this->getMock("oxErpGenImport", ["getStatistics"]);
+        $oErpImport->expects($this->once())->method('getStatistics')->will($this->returnValue([["r" => false, "m" => true]]));
 
         try {
             $oView = oxNew('GenImport_Main');

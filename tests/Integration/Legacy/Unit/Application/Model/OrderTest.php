@@ -116,7 +116,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oOrder->oxorder__oxuserid = new oxField("oxdefaultadmin");
         $oOrder->oxorder__oxbillcompany = new oxField("Ihr Firmenname");
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField("Hans");
         $oOrder->oxorder__oxbilllname = new oxField("Mustermann");
         $oOrder->oxorder__oxbillstreet = new oxField("Musterstr");
@@ -576,7 +576,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
         $oOrder->oxorder__oxordernr = new oxField(time());
         $oOrder->oxorder__oxbillcompany = new oxField('Ihr Firmenname');
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField('Hans');
         $oOrder->oxorder__oxbilllname = new oxField('Mustermann');
         $oOrder->oxorder__oxbillstreet = new oxField('Musterstr.');
@@ -1102,7 +1102,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
         $oOrder->oxorder__oxordernr = new oxField(time());
         $oOrder->oxorder__oxbillcompany = new oxField('Ihr Firmenname');
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField('Hans');
         $oOrder->oxorder__oxbilllname = new oxField('Mustermann');
         $oOrder->oxorder__oxbillstreet = new oxField('Musterstr.');
@@ -1166,7 +1166,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
         $oOrder->oxorder__oxordernr = new oxField(time());
         $oOrder->oxorder__oxbillcompany = new oxField('Ihr Firmenname');
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField('Hans');
         $oOrder->oxorder__oxbilllname = new oxField('Mustermann');
         $oOrder->oxorder__oxbillstreet = new oxField('Musterstr.');
@@ -1220,7 +1220,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
         $oOrder->oxorder__oxordernr = new oxField(time());
         $oOrder->oxorder__oxbillcompany = new oxField('Ihr Firmenname');
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField('Hans');
         $oOrder->oxorder__oxbilllname = new oxField('Mustermann');
         $oOrder->oxorder__oxbillstreet = new oxField('Musterstr.');
@@ -1309,7 +1309,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
         $oOrder->oxorder__oxordernr = new oxField(time());
         $oOrder->oxorder__oxbillcompany = new oxField('Ihr Firmenname');
-        $oOrder->oxorder__oxbillemail = new oxField(oxADMIN_LOGIN);
+        $oOrder->oxorder__oxbillemail = new oxField(\OXADMIN_LOGIN);
         $oOrder->oxorder__oxbillfname = new oxField('Hans');
         $oOrder->oxorder__oxbilllname = new oxField('Mustermann');
         $oOrder->oxorder__oxbillstreet = new oxField('Musterstr.');

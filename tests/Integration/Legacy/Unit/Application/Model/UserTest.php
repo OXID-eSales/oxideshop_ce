@@ -583,7 +583,7 @@ final class UserTest extends \OxidTestCase
             $oUser->setMallUsersStatus(true);
         }
 
-        $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
+        $this->assertTrue($oUser->checkIfEmailExists(\OXADMIN_LOGIN));
     }
 
     public function testCheckIfEmailExistsMallUsersOldEntryWithoutPass()
@@ -603,7 +603,7 @@ final class UserTest extends \OxidTestCase
             $oUser->setMallUsersStatus(true);
         }
 
-        $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
+        $this->assertTrue($oUser->checkIfEmailExists(\OXADMIN_LOGIN));
     }
 
     /**
@@ -620,7 +620,7 @@ final class UserTest extends \OxidTestCase
         $oUser->expects($this->any())->method('getViewName')->will($this->returnValue('oxuser'));
 
         $oUser->init('oxuser');
-        $this->assertTrue($oUser->checkIfEmailExists(oxADMIN_LOGIN));
+        $this->assertTrue($oUser->checkIfEmailExists(\OXADMIN_LOGIN));
     }
 
     // QA reported that newly created user has not rights set in db
@@ -2007,7 +2007,7 @@ final class UserTest extends \OxidTestCase
         $this->assertFalse($oUser->loadAdminUser());
         //logging in
         $oAdminUser = oxNew('oxUser');
-        $oAdminUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $oAdminUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         $oActiveUser = oxNew('oxUser');
         $oActiveUser->loadAdminUser();
 
@@ -2015,11 +2015,11 @@ final class UserTest extends \OxidTestCase
 
         $oAdminUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
         $oAdminUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oAdminUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $oAdminUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
 
         $oActiveUser->loadAdminUser();
 
-        $this->assertEquals($oActiveUser->oxuser__oxusername->value, oxADMIN_LOGIN);
+        $this->assertEquals($oActiveUser->oxuser__oxusername->value, \OXADMIN_LOGIN);
         $oAdminUser->logout();
         $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->loadAdminUser());
@@ -2036,10 +2036,10 @@ final class UserTest extends \OxidTestCase
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         //trying to login
-        $testUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $testUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         $oActUser->loadActiveUser();
         $testUser->logout();
-        $this->assertEquals($oActUser->oxuser__oxusername->value, oxADMIN_LOGIN);
+        $this->assertEquals($oActUser->oxuser__oxusername->value, \OXADMIN_LOGIN);
     }
 
     /**
@@ -2063,7 +2063,7 @@ final class UserTest extends \OxidTestCase
 
         $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
-        $sVal = oxADMIN_LOGIN . '@@@' . crypt((string) $sTemporaryPassword, \OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT);
+        $sVal = \OXADMIN_LOGIN . '@@@' . crypt((string) $sTemporaryPassword, \OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT);
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('oxid_' . $sShopId, $sVal);
 
         $oActUser->loadActiveUser();
@@ -2072,7 +2072,7 @@ final class UserTest extends \OxidTestCase
         $sSql = "update oxuser set OXPASSWORD = '{$sOriginalPassword}' where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
 
-        $this->assertEquals(oxADMIN_LOGIN, $oActUser->oxuser__oxusername->value);
+        $this->assertEquals(\OXADMIN_LOGIN, $oActUser->oxuser__oxusername->value);
     }
 
     /**
@@ -2087,7 +2087,7 @@ final class UserTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->delOxCookie();
         try {
             //should throw no cookie support exception
-            $oUser->login(1, oxADMIN_PASSWD);
+            $oUser->login(1, \OXADMIN_PASSWD);
         } catch (Exception) {
             return;
         }
@@ -2101,7 +2101,7 @@ final class UserTest extends \OxidTestCase
     public function testLogin_Logout()
     {
         $oUser = oxNew('oxUser');
-        $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         $this->assertEquals(oxRegistry::getSession()->getVariable('usr'), 'oxdefaultadmin');
         $this->assertNull(oxRegistry::getSession()->getVariable('auth'));
 
@@ -2125,7 +2125,7 @@ final class UserTest extends \OxidTestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["setUser"]);
         $oUser->expects($this->once())->method("setUser")->with($this->equalTo(null));
 
-        $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
     }
 
     /**
@@ -2136,7 +2136,7 @@ final class UserTest extends \OxidTestCase
         $exceptionThrown = false;
         $oUser = oxNew('oxUser');
         try {
-            $oUser->login(1, oxADMIN_PASSWD);
+            $oUser->login(1, \OXADMIN_PASSWD);
         } catch (Exception $oExcp) {
             $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
@@ -2154,7 +2154,7 @@ final class UserTest extends \OxidTestCase
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(false));
 
         try {
-            $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+            $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         } catch (Exception $oExcp) {
             $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
@@ -2175,7 +2175,7 @@ final class UserTest extends \OxidTestCase
         $oUser->method('load')->will($this->returnValue(false));
 
         try {
-            $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+            $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         } catch (Exception $oExcp) {
             $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
@@ -2193,7 +2193,7 @@ final class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         try {
-            $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
+            $this->assertTrue($oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD, true));
         } catch (Exception $oExcp) {
             $exceptionThrown = true;
             $this->assertEquals("cookie is set", $oExcp->getMessage());
@@ -2211,7 +2211,7 @@ final class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         try {
-            $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
+            $this->assertTrue($oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD, true));
         } catch (Exception) {
             $this->fail('Cookie should not be set, it\'s disabled.');
         }
@@ -2229,7 +2229,7 @@ final class UserTest extends \OxidTestCase
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
 
         try {
-            $oUser->login('nonadmin', oxADMIN_PASSWD);
+            $oUser->login('nonadmin', \OXADMIN_PASSWD);
         } catch (Exception $oExcp) {
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
 
@@ -2275,7 +2275,7 @@ final class UserTest extends \OxidTestCase
     public function testLogout()
     {
         $oUser = oxNew('oxUser');
-        $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
+        $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
 
         $this->getSession()->setVariable('dynvalue', 'test');
         $this->getSession()->setVariable('paymentid', 'test');

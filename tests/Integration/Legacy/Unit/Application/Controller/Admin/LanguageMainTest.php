@@ -45,22 +45,22 @@ class LanguageMainTest extends \OxidTestCase
         $aNewParams['baseurl'] = 'testBaseUrl';
         $aNewParams['basesslurl'] = 'testBaseSslUrl';
 
-        $aDefaultLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aDefaultLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 2);
-        $aDefaultLangData['lang'] = array("de" => "Deutsch", "en" => "English");
-        $aDefaultLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
-        $aDefaultLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
+        $aDefaultLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aDefaultLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 2];
+        $aDefaultLangData['lang'] = ["de" => "Deutsch", "en" => "English"];
+        $aDefaultLangData['urls'] = [0 => "", 1 => "testBaseUrl"];
+        $aDefaultLangData['sslUrls'] = [0 => "", 1 => "testBaseSslUrl"];
 
         $this->setRequestParameter("oxid", "en");
         $this->setRequestParameter("editval", $aNewParams);
 
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "testEnglish");
-        $aLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
-        $aLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "testEnglish"];
+        $aLangData['urls'] = [0 => "", 1 => "testBaseUrl"];
+        $aLangData['sslUrls'] = [0 => "", 1 => "testBaseSslUrl"];
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["saveShopConfVar"]);
         $oConfig
             ->method('saveShopConfVar')
             ->withConsecutive(
@@ -72,7 +72,7 @@ class LanguageMainTest extends \OxidTestCase
 
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
-        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("validateInput", "getConfig", "getLanguages"), array(), '', false);
+        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["validateInput", "getConfig", "getLanguages"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oMainLang->expects($this->once())->method('getLanguages')->will($this->returnValue($aDefaultLangData));
         $oMainLang->expects($this->once())->method('validateInput')->will($this->returnValue(true));
@@ -87,11 +87,11 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testSave_addingNewMultilangFieldsToDb()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "English");
-        $aLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
-        $aLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "English"];
+        $aLangData['urls'] = [0 => "", 1 => "testBaseUrl"];
+        $aLangData['sslUrls'] = [0 => "", 1 => "testBaseSslUrl"];
 
         $aNewParams['baseurl'] = 'testUrl';
         $aNewParams['basesslurl'] = 'testUrl';
@@ -104,11 +104,11 @@ class LanguageMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", -1);
         $this->setRequestParameter("editval", $aNewParams);
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["saveShopConfVar"]);
         $oConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValue(true));
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
-        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("validateInput", "getConfig", "checkMultilangFieldsExistsInDb", "addNewMultilangFieldsToDb", "getLanguages"), array(), '', false);
+        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["validateInput", "getConfig", "checkMultilangFieldsExistsInDb", "addNewMultilangFieldsToDb", "getLanguages"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oMainLang->expects($this->once())->method('getLanguages')->will($this->returnValue($aLangData));
         $oMainLang->expects($this->once())->method('validateInput')->will($this->returnValue(true));
@@ -125,11 +125,11 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testGetLanguageInfo()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "testEnglish");
-        $aLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
-        $aLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "testEnglish"];
+        $aLangData['urls'] = [0 => "", 1 => "testBaseUrl"];
+        $aLangData['sslUrls'] = [0 => "", 1 => "testBaseSslUrl"];
 
         $aRes['baseId'] = 1;
         $aRes['active'] = 1;
@@ -153,11 +153,11 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testGetLanguages()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 2);
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "English");
-        $aLangData['urls'] = array(0 => "", 1 => "");
-        $aLangData['sslUrls'] = array(0 => "", 1 => "");
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 2];
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "English"];
+        $aLangData['urls'] = [0 => "", 1 => ""];
+        $aLangData['sslUrls'] = [0 => "", 1 => ""];
 
         $oView = $this->getProxyClass("Language_Main");
 
@@ -171,13 +171,13 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testUpdateAbbervation()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "testEnglish");
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "testEnglish"];
 
-        $aRes['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aRes['params']['fr'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aRes['lang'] = array("de" => "Deutsch", "fr" => "testEnglish");
+        $aRes['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aRes['params']['fr'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aRes['lang'] = ["de" => "Deutsch", "fr" => "testEnglish"];
 
         // defining parameters
         $oView = $this->getProxyClass("Language_Main");
@@ -194,17 +194,17 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testSortLangArraysByBaseId()
     {
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['lang'] = array("en" => "testEnglish", "de" => "Deutsch");
-        $aLangData['urls'] = array(1 => "testBaseUrl", 0 => "");
-        $aLangData['sslUrls'] = array(1 => "testBaseSslUrl", 0 => "");
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['lang'] = ["en" => "testEnglish", "de" => "Deutsch"];
+        $aLangData['urls'] = [1 => "testBaseUrl", 0 => ""];
+        $aLangData['sslUrls'] = [1 => "testBaseSslUrl", 0 => ""];
 
-        $aRes['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aRes['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aRes['lang'] = array("de" => "Deutsch", "en" => "testEnglish");
-        $aRes['urls'] = array(0 => "", 1 => "testBaseUrl");
-        $aRes['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
+        $aRes['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aRes['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aRes['lang'] = ["de" => "Deutsch", "en" => "testEnglish"];
+        $aRes['urls'] = [0 => "", 1 => "testBaseUrl"];
+        $aRes['sslUrls'] = [0 => "", 1 => "testBaseSslUrl"];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -220,10 +220,10 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testAssignDefaultLangParams()
     {
-        $aLangData = array("de" => "Deutsch", "en" => "testEnglish");
+        $aLangData = ["de" => "Deutsch", "en" => "testEnglish"];
 
-        $aRes['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aRes['en'] = array("baseId" => 1, "active" => 1, "sort" => 2);
+        $aRes['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aRes['en'] = ["baseId" => 1, "active" => 1, "sort" => 2];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -238,14 +238,14 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testSetDefaultLang()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["saveShopConfVar"]);
         $oConfig->expects($this->atLeastOnce())->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(1));
 
         /** @var MockObject|Language_Main $oView */
-        $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
+        $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
@@ -259,8 +259,8 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testGetAvailableLangBaseId()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -275,14 +275,14 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testCheckLangTranslations()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTranslationsDir"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getTranslationsDir"]);
         $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue("dir/to/langfile"));
 
         /** @var MockObject|Language_Main $oView */
-        $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
+        $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
@@ -300,15 +300,15 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testCheckLangTranslations_withError()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTranslationsDir"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getTranslationsDir"]);
 
         $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue(""));
 
         /** @var MockObject|Language_Main $oView */
-        $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
+        $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
@@ -328,9 +328,9 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testCheckMultilangFieldsExistsInDb()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
-        $aLangData['params']['fr'] = array("baseId" => 9, "active" => 1, "sort" => 20, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
+        $aLangData['params']['fr'] = ["baseId" => 9, "active" => 1, "sort" => 20, "default" => false];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -387,7 +387,7 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testCheckLangExists()
     {
-        $aLangData['lang'] = array("de" => "Deutsch", "en" => "English");
+        $aLangData['lang'] = ["de" => "Deutsch", "en" => "English"];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -404,8 +404,8 @@ class LanguageMainTest extends \OxidTestCase
      */
     public function testSortLangParamsByBaseIdCallback()
     {
-        $aLangData['params']['de'] = array("baseId" => 0, "active" => 1, "sort" => 1);
-        $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
+        $aLangData['params']['de'] = ["baseId" => 0, "active" => 1, "sort" => 1];
+        $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
@@ -422,9 +422,9 @@ class LanguageMainTest extends \OxidTestCase
     public function testValidateInput_langExists()
     {
         $this->setRequestParameter("oxid", "-1");
-        $this->setRequestParameter("editval", array('abbr' => 'en'));
+        $this->setRequestParameter("editval", ['abbr' => 'en']);
 
-        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("checkLangExists"));
+        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
         $oMainLang->expects($this->once())->method('checkLangExists')->with($this->equalTo("en"))->will($this->returnValue(true));
 
         $this->assertFalse($oMainLang->validateInput());
@@ -444,9 +444,9 @@ class LanguageMainTest extends \OxidTestCase
     public function testValidateInput_emptyLangName()
     {
         $this->setRequestParameter("oxid", "1");
-        $this->setRequestParameter("editval", array('abbr' => 'en', "desc" => ""));
+        $this->setRequestParameter("editval", ['abbr' => 'en', "desc" => ""]);
 
-        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("checkLangExists"));
+        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
         $oMainLang->expects($this->never())->method('checkLangExists');
 
         $this->assertFalse($oMainLang->validateInput());
@@ -466,9 +466,9 @@ class LanguageMainTest extends \OxidTestCase
     public function testValidateInput_validInput()
     {
         $this->setRequestParameter("oxid", "1");
-        $this->setRequestParameter("editval", array('abbr' => 'en', "desc" => "English"));
+        $this->setRequestParameter("editval", ['abbr' => 'en', "desc" => "English"]);
 
-        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("checkLangExists"));
+        $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
         $oMainLang->expects($this->never())->method('checkLangExists');
 
         $this->assertTrue($oMainLang->validateInput());
@@ -483,9 +483,9 @@ class LanguageMainTest extends \OxidTestCase
     public function testValidateInputInvalidAbbreviation()
     {
         $this->setRequestParameter("oxid", "-1");
-        $this->setRequestParameter("editval", array('abbr' => 'ch-xx'));
+        $this->setRequestParameter("editval", ['abbr' => 'ch-xx']);
 
-        $mainLanguage = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("checkLangExists"));
+        $mainLanguage = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
         $mainLanguage->expects($this->once())->method('checkLangExists')->with($this->equalTo("ch-xx"))->will($this->returnValue(false));
 
         $this->assertFalse($mainLanguage->validateInput());

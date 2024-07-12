@@ -20,8 +20,6 @@ class ThankyouTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -48,8 +46,8 @@ class ThankyouTest extends \OxidTestCase
 
         try {
             $oThankyou->init();
-        } catch (\Exception $e) {
-            $this->assertEquals("expected redirect", $e->getMessage());
+        } catch (\Exception $exception) {
+            $this->assertEquals("expected redirect", $exception->getMessage());
         }
 
         $this->assertEquals($oBasket, $oThankyou->getBasket());
@@ -80,6 +78,7 @@ class ThankyouTest extends \OxidTestCase
     {
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(10.12);
+
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getPrice']);
         $oBasket->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
 
@@ -136,6 +135,7 @@ class ThankyouTest extends \OxidTestCase
     {
         $this->oArticle = $this->getProxyClass('oxarticle');
         $this->oArticle->load('1126');
+
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['getArticle']);
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($this->oArticle));
 
@@ -152,6 +152,7 @@ class ThankyouTest extends \OxidTestCase
     {
         $this->oArticle = $this->getProxyClass('oxarticle');
         $this->oArticle->setId('_testArt');
+
         $this->oArticle->oxarticles__oxprice = new oxField(15.5, oxField::T_RAW);
         $this->oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $this->oArticle->oxarticles__oxtitle = new oxField("test", oxField::T_RAW);
@@ -162,6 +163,7 @@ class ThankyouTest extends \OxidTestCase
 
         $oBasketItem = $this->getProxyClass('oxbasketitem');
         $oBasketItem->setNonPublicVar('_sProductId', '_testArt');
+
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents', 'getProductsCount', 'getOrderId']);
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue([$oBasketItem]));
         $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
@@ -201,8 +203,6 @@ class ThankyouTest extends \OxidTestCase
 
     /**
      * Testing Thankyou::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -213,8 +213,6 @@ class ThankyouTest extends \OxidTestCase
 
     /**
      * Testing Thankyou::getCountryISO3()
-     *
-     * @return null
      */
     public function testGetCountryISO3()
     {

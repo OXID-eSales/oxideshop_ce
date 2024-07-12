@@ -14,8 +14,6 @@ class VariantselectlistTest extends \OxidTestCase
 
     /**
      * Testing constructor and setters
-     *
-     * @return null
      */
     public function testConstructorAndSetters()
     {

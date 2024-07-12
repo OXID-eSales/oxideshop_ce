@@ -15,8 +15,6 @@ class AdminPricealarmTest extends \OxidTestCase
 
     /**
      * Admin_Pricealarm::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

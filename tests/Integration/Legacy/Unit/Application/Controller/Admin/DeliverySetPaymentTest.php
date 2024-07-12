@@ -18,8 +18,6 @@ class DeliverySetPaymentTest extends \OxidTestCase
 
     /**
      * DeliverySet_Payment::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -37,8 +35,6 @@ class DeliverySetPaymentTest extends \OxidTestCase
 
     /**
      * DeliverySet_Payment::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {

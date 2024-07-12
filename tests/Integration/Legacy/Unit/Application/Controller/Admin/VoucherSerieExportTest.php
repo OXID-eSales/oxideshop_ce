@@ -18,8 +18,6 @@ class VoucherSerieExportTest extends \OxidTestCase
 
     /**
      * Cleanup
-     *
-     * @return null
      */
     public function tearDown(): void
     {
@@ -32,8 +30,6 @@ class VoucherSerieExportTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Export::getDownloadUrl() test case
-     *
-     * @return null
      */
     public function testGetDownloadUrl()
     {
@@ -58,8 +54,6 @@ class VoucherSerieExportTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Export::getExportFileName() test case
-     *
-     * @return null
      */
     public function testGetExportFileName()
     {
@@ -71,8 +65,6 @@ class VoucherSerieExportTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Export::getExportFilePath() test case
-     *
-     * @return null
      */
     public function testGetExportFilePath()
     {
@@ -84,8 +76,6 @@ class VoucherSerieExportTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Export::exportVouchers() test case
-     *
-     * @return null
      */
     public function testExportVouchers()
     {
@@ -97,6 +87,7 @@ class VoucherSerieExportTest extends \OxidTestCase
         $oVoucher = oxNew("oxBase");
         $oVoucher->init("oxvouchers");
         $oVoucher->setId("_testvoucher");
+
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField("_testvoucherserie");
         $oVoucher->oxvouchers__oxvouchernr = new oxField("_testvoucher");
         $oVoucher->save();

@@ -15,8 +15,6 @@ class VendorListTest extends \OxidTestCase
 
     /**
      * Vendor::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

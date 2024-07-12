@@ -19,8 +19,6 @@ class OrderAddressTest extends \OxidTestCase
 
     /**
      * Order_Address::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class OrderAddressTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -53,8 +49,6 @@ class OrderAddressTest extends \OxidTestCase
 
     /**
      * Order_Address::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -66,18 +60,17 @@ class OrderAddressTest extends \OxidTestCase
         try {
             $oView = oxNew('Order_Address');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Order_Address::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Order_Address::save()");
 
             return;
         }
+
         $this->fail("error in Order_Address::save()");
     }
 
     /**
      * Test case for Order_Address::_processAddress(), specially for #0002440
-     *
-     * @return null
      */
     public function testProcessAddress()
     {

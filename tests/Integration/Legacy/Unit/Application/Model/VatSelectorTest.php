@@ -21,9 +21,6 @@ class VatSelectorTest extends \OxidTestCase
     /** @var oxCategory */
     private $oCategory;
 
-    /** @var double */
-    private $dDefaultVAT;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,6 +34,7 @@ class VatSelectorTest extends \OxidTestCase
 
         // making copy
         $this->oArticle->setId($sNewId);
+
         $this->oArticle->oxarticles__oxweight = new oxField(10, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstock = new oxField(100, oxField::T_RAW);
         $this->oArticle->oxarticles__oxprice = new oxField(19, oxField::T_RAW);
@@ -62,8 +60,6 @@ class VatSelectorTest extends \OxidTestCase
         $oO2Group->oxobject2category__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oO2Group->save();
-
-        $this->dDefaultVAT = $this->getConfig()->getConfigParam('dDefaultVAT');
         $this->getConfig()->setConfigParam('dDefaultVAT', '99');
     }
 
@@ -73,6 +69,7 @@ class VatSelectorTest extends \OxidTestCase
         if ($this->oArticle) {
             $this->oArticle->delete();
         }
+
         if ($this->oCategory) {
             $this->oCategory->delete();
         }
@@ -244,6 +241,7 @@ class VatSelectorTest extends \OxidTestCase
         //swiss address
         $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
+
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
         $oAddressList = oxNew('oxList');
@@ -274,6 +272,7 @@ class VatSelectorTest extends \OxidTestCase
         //swiss address
         $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
+
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
         $oAddressList = oxNew('oxList');
@@ -304,6 +303,7 @@ class VatSelectorTest extends \OxidTestCase
         //swiss address
         $oAddress = oxNew('oxAddress');
         $oAddress->setId('_testAddress');
+
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getUserAddresses", "getSelectedAddressId"]);

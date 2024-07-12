@@ -45,8 +45,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Tests oxLang::processUrl()
-     *
-     * @return null
      */
     public function testProcessUrl()
     {
@@ -57,19 +55,17 @@ class LangTest extends \OxidTestCase
         $this->assertEquals("url", $oLang->processUrl("url", $iDefL));
         $this->assertEquals("url?lang=9&amp;", $oLang->processUrl("url", 9));
         $this->assertEquals("url?lang=9&amp;", $oLang->processUrl("url?", 9));
-        $this->assertEquals("url?lang=$iDefL&amp;", $oLang->processUrl("url?lang=15&amp;", $iDefL));
+        $this->assertEquals(sprintf('url?lang=%s&amp;', $iDefL), $oLang->processUrl("url?lang=15&amp;", $iDefL));
         $this->assertEquals("url?lang=9", $oLang->processUrl("url?lang=3", 9));
 
         $this->assertEquals("url?x&amp;lang=9&amp;", $oLang->processUrl("url?x&amp;", 9));
         $this->assertEquals("url?x&amp;", $oLang->processUrl("url?x&amp;", $iDefL));
         $this->assertEquals("url?x&amp;lang=9", $oLang->processUrl("url?x&amp;lang=3", 9));
-        $this->assertEquals("url?x&amp;lang=$iDefL&amp;", $oLang->processUrl("url?x&amp;lang=5&amp;", $iDefL));
+        $this->assertEquals(sprintf('url?x&amp;lang=%s&amp;', $iDefL), $oLang->processUrl("url?x&amp;lang=5&amp;", $iDefL));
     }
 
     /**
      * Tests oxLang::getName()
-     *
-     * @return null
      */
     public function testGetName()
     {
@@ -79,12 +75,10 @@ class LangTest extends \OxidTestCase
 
     /**
      * Tests oxLang::getFormLang()
-     *
-     * @return null
      */
     public function testGetFormLang()
     {
-        $sFormLang = "<input type=\"hidden\" name=\"lang\" value=\"9\" />";
+        $sFormLang = '<input type="hidden" name="lang" value="9" />';
 
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, ["getBaseLanguage"]);
         $oLang->expects($this->any())->method('getBaseLanguage')->will($this->returnValue(9));
@@ -93,8 +87,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Tests oxLang::getUrlLang()
-     *
-     * @return null
      */
     public function testgetUrlLang()
     {
@@ -159,7 +151,7 @@ class LangTest extends \OxidTestCase
         $aResult = $language->getAdminLangFilesPathArray(0);
 
         foreach ($aPathArray as $sPath) {
-            $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
+            $this->assertTrue(in_array($sPath, $aResult), sprintf('Language file \'%s\' was not found as registered', $sPath));
         }
     }
 
@@ -184,10 +176,10 @@ class LangTest extends \OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "UTF-8", "TESTKEY" => "baseVal");');
-        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1", "t4"=>"add"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
+        file_put_contents($sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "UTF-8", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . sprintf('/testlang%s.txt', $sFilePrefix), '<?php $aSeoReplaceChars = array("t1" => "overide1", "t4"=>"add"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
 
-        $aLangFilesPath = [$sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt"];
+        $aLangFilesPath = [$sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), $sFilePath . sprintf('/testlang%s.txt', $sFilePrefix)];
 
         $aResult = ["charset" => "UTF-8", "TESTKEY" => "testVal", '_aSeoReplaceChars' => ["t1" => "overide1", "t2" => "r2", "t3" => "r3", "t4" => "add"]];
 
@@ -204,9 +196,9 @@ class LangTest extends \OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aLang = array( "TESTKEY" => "value");');
+        file_put_contents($sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), '<?php $aLang = array( "TESTKEY" => "value");');
 
-        $aLangFilesPath = [$sFilePath . "/baselang$sFilePrefix.txt"];
+        $aLangFilesPath = [$sFilePath . sprintf('/baselang%s.txt', $sFilePrefix)];
 
         $aResult = ["charset" => "UTF-8", "TESTKEY" => "value", "_aSeoReplaceChars" => []];
 
@@ -226,10 +218,10 @@ class LangTest extends \OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "baseVal");');
-        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
+        file_put_contents($sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . sprintf('/testlang%s.txt', $sFilePrefix), '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "ISO-8859-15", "TESTKEY" => "testVal");');
 
-        $aLangFilesPath = [$sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt"];
+        $aLangFilesPath = [$sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), $sFilePath . sprintf('/testlang%s.txt', $sFilePrefix)];
 
         $aResult = ["charset" => "UTF-8", '_aSeoReplaceChars' => ['t1' => 'overide1', 't2' => 'r2', 't3' => 'r3'], 'TESTKEY' => 'testVal'];
 
@@ -249,10 +241,10 @@ class LangTest extends \OxidTestCase
 
         //writing a test lang file
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir');
-        file_put_contents($sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "iso-8859-15", "TESTKEY" => "baseVal");');
-        file_put_contents($sFilePath . "/testlang$sFilePrefix.txt", '<?php $aLang = array( "charset" => "iso-8859-15", "TESTKEY" => "testVal");');
+        file_put_contents($sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "iso-8859-15", "TESTKEY" => "baseVal");');
+        file_put_contents($sFilePath . sprintf('/testlang%s.txt', $sFilePrefix), '<?php $aLang = array( "charset" => "iso-8859-15", "TESTKEY" => "testVal");');
 
-        $aLangFilesPath = [$sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt"];
+        $aLangFilesPath = [$sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), $sFilePath . sprintf('/testlang%s.txt', $sFilePrefix)];
 
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, ['getLangFileCacheName', "getLangFilesPathArray"]);
         $oLang->expects($this->any())->method('getLangFileCacheName')->will($this->returnValue(false));
@@ -276,7 +268,7 @@ class LangTest extends \OxidTestCase
 
 
         file_put_contents(
-            $sFilePath . "/baselang$sFilePrefix.txt",
+            $sFilePath . sprintf('/baselang%s.txt', $sFilePrefix),
             '<?php
             $aSeoReplaceChars = array(
                 "ä" => "ae",
@@ -291,7 +283,7 @@ class LangTest extends \OxidTestCase
         );
 
         file_put_contents(
-            $sFilePath . "/testlang$sFilePrefix.txt",
+            $sFilePath . sprintf('/testlang%s.txt', $sFilePrefix),
             '<?php
             $aLang = array(
                 "charset" => "ISO-8859-15",
@@ -299,7 +291,7 @@ class LangTest extends \OxidTestCase
             );'
         );
 
-        $aLangFilesPath = [$sFilePath . "/baselang$sFilePrefix.txt", $sFilePath . "/testlang$sFilePrefix.txt"];
+        $aLangFilesPath = [$sFilePath . sprintf('/baselang%s.txt', $sFilePrefix), $sFilePath . sprintf('/testlang%s.txt', $sFilePrefix)];
 
         $aResult = ["charset" => "UTF-8", '_aSeoReplaceChars' => ["ä" => "ae", "ö" => "oe", "ß" => "ss", "x" => "z"], "TESTKEY" => "testVäl"];
 
@@ -322,7 +314,7 @@ class LangTest extends \OxidTestCase
         $sCacheName = "langcache_1_1_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . '_default';
 
         //writing a test file
-        $sFileName = $this->getConfig()->getConfigParam('sCompileDir') . "/ox{$sVersionPrefix}c_{$sCacheName}.txt";
+        $sFileName = $this->getConfig()->getConfigParam('sCompileDir') . sprintf('/ox%sc_%s.txt', $sVersionPrefix, $sCacheName);
         $sFileContents = '<?php $aLangCache = array( "ACCOUNT_MAIN_BACKTOSHOP" => "' . $sVal . '");';
         file_put_contents($sFileName, $sFileContents);
 
@@ -1124,6 +1116,7 @@ class LangTest extends \OxidTestCase
     {
         $oSubj = $this->getProxyClass("oxLang");
         $oSubj->setNonPublicVar('_aLangCache', ['langcache_0_1_' . $this->getConfig()->getShopId() . '_basic_default' => ['1' => ["ACCOUNT_LOGIN" => "Login"]]]);
+
         $aTrArray = $oSubj->getLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");
@@ -1146,7 +1139,7 @@ class LangTest extends \OxidTestCase
         $sFileContents = '<?php $aLang = array( "charset" => "UTF-8", "TESTKEY" => "testVal");';
         $sFileName = getShopBasePath() . "/Application/views/azure/de/my_lang.php";
         $sShopId = $this->getConfig()->getShopId();
-        $sCacheKey = "languagefiles__0_$sShopId";
+        $sCacheKey = 'languagefiles__0_' . $sShopId;
         oxRegistry::getUtils()->toFileCache($sCacheKey, null);
 
         file_put_contents($sFileName, $sFileContents);
@@ -1348,8 +1341,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Testing oxLang::getObjectTplLanguage()
-     *
-     * @return null
      */
     public function testGetObjectTplLanguage()
     {
@@ -1365,8 +1356,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Testing oxLang::getAdminTplLanguageArray()
-     *
-     * @return null
      */
     public function testGetAdminTplLanguageArray()
     {
@@ -1438,8 +1427,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Test case for oxLang::_collectSimilar()
-     *
-     * @return null
      */
     public function testCollectSimilar()
     {
@@ -1462,8 +1449,6 @@ class LangTest extends \OxidTestCase
 
     /**
      * Test case for oxLang::getSimilarByKey()
-     *
-     * @return null
      */
     public function testGetSimilarByKey()
     {
@@ -1538,7 +1523,7 @@ class LangTest extends \OxidTestCase
         $this->setBaseShopLanguageParameters();
 
         // disable language config parameter because we are testing each language parameter separately
-        $oDb->execute("delete from `oxconfig` WHERE `oxvarname` = '{$sLanguageParamNameDisabled}' ");
+        $oDb->execute(sprintf('delete from `oxconfig` WHERE `oxvarname` = \'%s\' ', $sLanguageParamNameDisabled));
 
         $aAssertLanguageIds = [0 => 'de', 1 => 'ru', 3 => 'en'];
 

@@ -21,8 +21,6 @@ class DeliveryMainTest extends \OxidTestCase
 
     /**
      * Delivery_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,8 +37,6 @@ class DeliveryMainTest extends \OxidTestCase
 
     /**
      * DeliverySet_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -56,8 +52,6 @@ class DeliveryMainTest extends \OxidTestCase
 
     /**
      * Delivery_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -69,18 +63,17 @@ class DeliveryMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Delivery_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Delivery_Main::save()");
 
             return;
         }
+
         $this->fail("error in Delivery_Main::save()");
     }
 
     /**
      * Delivery_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -92,18 +85,17 @@ class DeliveryMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Delivery_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Delivery_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Delivery_Main::save()");
 
             return;
         }
+
         $this->fail("error in Delivery_Main::save()");
     }
 
     /**
      * Delivery_Main::getDeliveryTypes() test case
-     *
-     * @return null
      */
     public function testGetDeliveryTypes()
     {

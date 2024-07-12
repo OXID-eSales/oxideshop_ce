@@ -95,7 +95,7 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $oGen->method('getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
         $oGen->method('getImageName')->will($this->returnValue("test.jpg"));
 
-        $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/$filename", $oGen->getNopicImageTarget());
+        $this->assertEquals(getShopBasePath() . ('/test1/test2/test3/12_12_12/' . $filename), $oGen->getNopicImageTarget());
     }
 
     public function getNopicImageTargetDataProvider(): array

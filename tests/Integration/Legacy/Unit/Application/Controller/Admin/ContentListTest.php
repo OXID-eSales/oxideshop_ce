@@ -17,8 +17,6 @@ class ContentListTest extends \OxidTestCase
 
     /**
      * Content_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class ContentListTest extends \OxidTestCase
 
     /**
      * Content_List::PrepareWhereQuery() test case
-     *
-     * @return null
      */
     public function testPrepareWhereQueryUserDefinedFolder()
     {
@@ -53,7 +49,7 @@ class ContentListTest extends \OxidTestCase
         $oView = oxNew('Content_List');
         $sResQ = $oView->prepareWhereQuery([], "");
 
-        $sQ = " and {$sViewName}.oxfolder = 'testFolder'";
+        $sQ = sprintf(' and %s.oxfolder = \'testFolder\'', $sViewName);
 
         $this->assertEquals($sQ, $sResQ);
     }

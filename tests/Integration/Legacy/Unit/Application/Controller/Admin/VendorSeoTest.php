@@ -21,8 +21,6 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -34,8 +32,6 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -46,8 +42,6 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::GetType() test case
-     *
-     * @return null
      */
     public function testGetType()
     {
@@ -58,8 +52,6 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -72,18 +64,17 @@ class VendorSeoTest extends \OxidTestCase
         try {
             $oView = oxNew('Vendor_Seo');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Seo::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Seo::save()");
 
             return;
         }
+
         $this->fail("Error in Vendor_Seo::save()");
     }
 
     /**
      * Vendor_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -93,8 +84,6 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::isSuffixSupported() test case
-     *
-     * @return null
      */
     public function testIsSuffixSupported()
     {
@@ -104,18 +93,18 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::isEntrySuffixed() test case
-     *
-     * @return null
      */
     public function testIsEntrySuffixed()
     {
         $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
+
         $oVendor->oxvendor__oxshowsuffix = new oxField(1);
         $oVendor->save();
 
         $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test2");
+
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();
 
@@ -133,13 +122,12 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::getEntryUri() test case
-     *
-     * @return null
      */
     public function testGetEntryUri()
     {
         $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
+
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();
 
@@ -154,13 +142,12 @@ class VendorSeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::_getStdUrl() test case
-     *
-     * @return null
      */
     public function testGetStdUrl()
     {
         $oVendor = oxNew('oxVendor');
         $oVendor->setId("_test1");
+
         $oVendor->oxvendor__oxshowsuffix = new oxField(0);
         $oVendor->save();
 

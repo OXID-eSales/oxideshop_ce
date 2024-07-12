@@ -16,12 +16,11 @@ use OxidEsales\Facts\Facts;
 class DeliverysetGroupsAjaxTest extends \OxidTestCase
 {
     protected $_sShopId = '1';
+
     protected $_sGroupsView = 'oxv_oxgroups_de';
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -43,8 +42,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -85,8 +82,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -96,8 +91,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -110,8 +103,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -124,8 +115,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -140,8 +129,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::removeGroupFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveGroupFromSet()
     {
@@ -156,8 +143,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::removeGroupFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveGroupFromSetAll()
     {
@@ -174,15 +159,13 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::addGroupToSet() test case
-     *
-     * @return null
      */
     public function testAddGroupToset()
     {
         $sSynchoxid = '_testActionAddGroup';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetGroupsAjax::class, ["getActionIds"]);
@@ -194,8 +177,6 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetGroupsAjax::addGroupToSet() test case
-     *
-     * @return null
      */
     public function testAddGroupToSetAll()
     {
@@ -206,7 +187,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getGroupsViewTable() . ".oxid) from " . $this->getGroupsViewTable() . " where 1  and " . $this->getGroupsViewTable() . ".oxid not in ( select " . $this->getGroupsViewTable() . ".oxid from oxobject2delivery, " . $this->getGroupsViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxobjectid = " . $this->getGroupsViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelsetg' )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetGroupsAjax::class, ["getActionIds"]);

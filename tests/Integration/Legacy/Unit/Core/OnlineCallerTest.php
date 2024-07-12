@@ -77,7 +77,6 @@ class OnlineCallerTest extends \OxidTestCase
             ['getXMLDocumentName', 'getServiceUrl']
         );
         $oCaller->expects($this->any())->method('getXMLDocumentName')->will($this->returnValue('testXML'));
-        /** @var oxOnlineCaller $oCaller */
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
 
         $oCaller->call($this->getRequest());
@@ -217,15 +216,13 @@ class OnlineCallerTest extends \OxidTestCase
 class oxOnlineCallerOxCurlOptionDouble extends oxCurl
 {
     /** @var array Hash map of options which were set before execution */
-    private $options;
+    private $options = [];
 
     /** @var bool Flag which indicated that execute method was called */
-    private $executionCalled;
+    private $executionCalled = false;
 
     public function __construct()
     {
-        $this->options = [];
-        $this->executionCalled = false;
     }
 
     public function setOption($name, $value)
@@ -243,7 +240,7 @@ class oxOnlineCallerOxCurlOptionDouble extends oxCurl
         $keyExistsCondition = array_key_exists($name, $this->options);
 
         if ($callCondition && $keyExistsCondition) {
-            $result = $this->options[$name];
+            return $this->options[$name];
         }
 
         return $result;

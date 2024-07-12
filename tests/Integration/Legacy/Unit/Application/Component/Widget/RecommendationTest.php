@@ -18,22 +18,19 @@ class RecommendationTest extends \OxidTestCase
 
     /**
      * Testing oxwRecomm::getSimilarRecommLists()
-     *
-     * @return null
      */
     public function testGetSimilarRecommLists_empty()
     {
         $aParams["aArticleIds"] = [];
         $oRecomm = oxNew('oxwRecommendation');
         $oRecomm->setViewParameters($aParams);
+
         $oRecommList = $oRecomm->getSimilarRecommLists();
         $this->assertTrue(!isset($oRecommList), "Should be empty if no articles id given");
     }
 
     /**
      * Testing oxwRecomm::getSimilarRecommLists()
-     *
-     * @return null
      */
     public function testGetSimilarRecommLists()
     {
@@ -51,8 +48,6 @@ class RecommendationTest extends \OxidTestCase
 
     /**
      * Testing oxwRecommendation::getRecommList()
-     *
-     * @return null
      */
     public function testGetRecommList()
     {

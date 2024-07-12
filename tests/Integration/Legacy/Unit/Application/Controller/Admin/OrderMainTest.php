@@ -28,8 +28,6 @@ class OrderMainTest extends \OxidTestCase
 
     /**
      * Order_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -46,8 +44,6 @@ class OrderMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -63,8 +59,6 @@ class OrderMainTest extends \OxidTestCase
 
     /**
      * Order_Main::senddownloadlinks() test case
-     *
-     * @return null
      */
     public function testSenddownloadlinks()
     {
@@ -78,18 +72,17 @@ class OrderMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Order_Main');
             $oView->senddownloadlinks();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("sendDownloadLinksMail", $oExcp->getMessage(), "error in Order_Main::senddownloadlinks()");
+        } catch (Exception $exception) {
+            $this->assertEquals("sendDownloadLinksMail", $exception->getMessage(), "error in Order_Main::senddownloadlinks()");
 
             return;
         }
+
         $this->fail("error in Order_Main::senddownloadlinks()");
     }
 
     /**
      * Order_Main::Resetorder() test case
-     *
-     * @return null
      */
     public function testResetorder()
     {
@@ -101,11 +94,12 @@ class OrderMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Order_Main');
             $oView->resetorder();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("recalculateOrder", $oExcp->getMessage(), "error in Order_Main::resetorder()");
+        } catch (Exception $exception) {
+            $this->assertEquals("recalculateOrder", $exception->getMessage(), "error in Order_Main::resetorder()");
 
             return;
         }
+
         $this->fail("error in Order_Main::resetorder()");
     }
 }

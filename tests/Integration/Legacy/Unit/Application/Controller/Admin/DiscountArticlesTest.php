@@ -18,8 +18,6 @@ class DiscountArticlesTest extends \OxidTestCase
 
     /**
      * Discount_Articles::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

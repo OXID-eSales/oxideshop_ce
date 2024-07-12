@@ -15,8 +15,6 @@ class PriceTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -483,8 +481,6 @@ class PriceTest extends \OxidTestCase
 
     /**
      * Test getPrice
-     *
-     * @return null
      */
     public function testGetPrice()
     {
@@ -501,8 +497,6 @@ class PriceTest extends \OxidTestCase
 
     /**
      * Test getPrice
-     *
-     * @return null
      */
     public function testNettoBruttoCalculation()
     {
@@ -524,8 +518,6 @@ class PriceTest extends \OxidTestCase
 
     /**
      * Test getPrice
-     *
-     * @return null
      */
     public function testApplyDiscount()
     {

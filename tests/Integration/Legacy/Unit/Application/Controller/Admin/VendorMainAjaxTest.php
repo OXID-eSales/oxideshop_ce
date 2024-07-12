@@ -19,8 +19,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -28,10 +26,10 @@ class VendorMainAjaxTest extends \OxidTestCase
 
         $sShopId = $this->getShopId();
 
-        $this->addToDatabase("insert into oxarticles set oxid='_testArticle1', oxshopid='{$sShopId}', oxtitle='testArticle1', oxvendorid='_testVendorId'", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testArticle2', oxshopid='{$sShopId}', oxtitle='testArticle2', oxvendorid='_testVendorId'", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testArticle3', oxshopid='{$sShopId}', oxtitle='testArticle3', oxvendorid=''", 'oxarticles');
-        $this->addToDatabase("insert into oxarticles set oxid='_testArticle4', oxshopid='{$sShopId}', oxtitle='testArticle4', oxvendorid=''", 'oxarticles');
+        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle1\', oxshopid=\'%s\', oxtitle=\'testArticle1\', oxvendorid=\'_testVendorId\'', $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle2\', oxshopid=\'%s\', oxtitle=\'testArticle2\', oxvendorid=\'_testVendorId\'', $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle3\', oxshopid=\'%s\', oxtitle=\'testArticle3\', oxvendorid=\'\'', $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle4\', oxshopid=\'%s\', oxtitle=\'testArticle4\', oxvendorid=\'\'', $sShopId), 'oxarticles');
 
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid1', oxobjectid='_testArticle1', oxcatnid='_testCat1'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid2', oxobjectid='_testArticle1', oxcatnid='_testCat2'", 'oxobject2category');
@@ -57,8 +55,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_selectingMainArticles()
     {
@@ -74,8 +70,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_selectingVariants()
     {
@@ -89,8 +83,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_OxId_variantsOff()
     {
@@ -111,8 +103,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_OxId_variantsOn()
     {
@@ -132,8 +122,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_OxId_EqalTo_SyncId_variantsOff()
     {
@@ -152,8 +140,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery_OxId_EqalTo_SyncId_variantsOn()
     {
@@ -172,8 +158,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testAddFilter()
     {
@@ -183,8 +167,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testAddFilter_VariantsOff()
     {
@@ -196,8 +178,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testAddFilter_VariantsOn()
     {
@@ -209,8 +189,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::removeVendor() test case
-     *
-     * @return null
      */
     public function testRemoveVendor_oneArticle()
     {
@@ -229,8 +207,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::removeVendor() test case
-     *
-     * @return null
      */
     public function testRemoveVendor_allArticles()
     {
@@ -248,8 +224,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::removeVendor() test case
-     *
-     * @return null
      */
     public function testRemoveVendor_resetingCounter()
     {
@@ -264,8 +238,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::addVendor() test case
-     *
-     * @return null
      */
     public function testAddVendor_oneArticle()
     {
@@ -283,8 +255,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::addVendor() test case
-     *
-     * @return null
      */
     public function testAddVendor_allArticles()
     {
@@ -292,7 +262,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("all", true);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getQuery"]);
-        $oView->expects($this->once())->method('getQuery')->will($this->returnValue("from {$this->getArticleViewTable()} where oxid like '\_test%' and oxvendorid='' "));
+        $oView->expects($this->once())->method('getQuery')->will($this->returnValue(sprintf('from %s where oxid like \'\_test%%\' and oxvendorid=\'\' ', $this->getArticleViewTable())));
 
         $oDb = oxDb::getDb();
         $this->assertEquals("2", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='_testVendorId' "));
@@ -304,8 +274,6 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     /**
      * AttributeMainAjax::addVendor() test case
-     *
-     * @return null
      */
     public function testAddVendor_resetingCounter()
     {

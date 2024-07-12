@@ -15,8 +15,6 @@ class LanguageTest extends \OxidTestCase
 
     /**
      * Language::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -39,9 +39,8 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
     {
         if ($this->_blCollectFittingDeliveriesSets) {
             return $this->aTestDeliveriesSetsRetValue;
-        } else {
-            return [];
         }
+        return [];
     }
 }
 
@@ -113,6 +112,7 @@ class OrderTest extends \OxidTestCase
         // writing test order
         $oOrder = oxNew('oxorder');
         $oOrder->setId($soxId);
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oOrder->oxorder__oxuserid = new oxField("oxdefaultadmin");
         $oOrder->oxorder__oxbillcompany = new oxField("Ihr Firmenname");
@@ -158,6 +158,7 @@ class OrderTest extends \OxidTestCase
         // updating delivery costs
         $oOrder = oxNew('oxOrder');
         $oOrder->load($soxId);
+
         $oOrder->oxorder__oxdelcost = new oxField(25);
         $oOrder->oxorder__oxbillstreet = new oxField("Teststr");
         $oOrder->reloadDelivery(false);
@@ -377,8 +378,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test case for oxOrder::validateBasket()
-     *
-     * @return null
      */
     public function testValidateBasket()
     {
@@ -446,6 +445,7 @@ class OrderTest extends \OxidTestCase
         // test products for stock check
         $oProd = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oProd->setId("_testProdId");
+
         $oProd->oxarticles__oxactive = new oxField(1);
         $oProd->oxarticles__oxtitle = new oxField("testprod");
         $oProd->oxarticles__oxstock = new oxField(9);
@@ -454,12 +454,14 @@ class OrderTest extends \OxidTestCase
         // test order
         $oOrder = oxNew('oxOrder');
         $oOrder->setId("_testOrderId");
+
         $oOrder->oxorder__oxshopid = new oxField($sShopId);
         $oOrder->save();
 
         // test order products
         $oOrderProd = oxNew('oxOrderArticle');
         $oOrderProd->setId("_testOrderProdId");
+
         $oOrderProd->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderProd->oxorderarticles__oxartid = new oxField($oProd->getId());
         $oOrderProd->oxorderarticles__oxamount = new oxField(6);
@@ -571,6 +573,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrderId');
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getShopid());
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
@@ -601,6 +604,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
@@ -612,6 +616,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1126');
@@ -624,6 +629,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId3');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField(2);
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1127');
@@ -634,6 +640,7 @@ class OrderTest extends \OxidTestCase
 
         // now loading and recalculating
         $oOrderArticle = oxNew('oxOrderArticle');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('1651');
         $oOrderArticle->oxorderarticles__oxamount = new oxField(5);
@@ -667,6 +674,7 @@ class OrderTest extends \OxidTestCase
         //set order
         $this->_oOrder = oxNew("oxOrder");
         $this->_oOrder->setId($sId);
+
         $this->_oOrder->oxorder__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
         $this->_oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
         //$this->_oOrder->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
@@ -683,6 +691,7 @@ class OrderTest extends \OxidTestCase
     {
         $oOrderArticle = oxNew("oxOrderArticle");
         $oOrderArticle->setId($sOrdArtId);
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxartid = new oxField($sArtId, oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new oxField(5, oxField::T_RAW);
@@ -714,12 +723,14 @@ class OrderTest extends \OxidTestCase
         $this->insertTestArticle();
         $oOrderArticle = $this->insertTestOrderArticle();
         $oOrderArticle->load($oOrderArticle->getId());
+
         $oOrderArticle->oxorderarticles__oxwrapid = new oxField("xxx", oxField::T_RAW);
 
         $oOrderArticles['_testOrderArticleId'] = $oOrderArticle;
 
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
+
         $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, ['getOrderUser']);
@@ -754,6 +765,7 @@ class OrderTest extends \OxidTestCase
 
         $oUser = oxNew('oxuser', 'core');
         $oUser->setId("_testUserId");
+
         $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
 
         $oOrder = $this->getProxyClass("oxOrder");
@@ -761,12 +773,14 @@ class OrderTest extends \OxidTestCase
 
         $oVoucherSerie = oxNew("oxVoucherSerie");
         $oVoucherSerie->setId('_testVoucherSerieId');
+
         $oVoucherSerie->oxvoucherseries__oxdiscount = new oxField('50', oxField::T_RAW);
         $oVoucherSerie->oxvoucherseries__oxdiscounttype = new oxField('absolute', oxField::T_RAW);
         $oVoucherSerie->save();
 
         $oVoucher = oxNew("oxVoucher");
         $oVoucher->setId('_testVoucherId');
+
         $oVoucher->oxvouchers__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
         $oVoucher->oxvouchers__oxvouchernr = new oxField('_testVoucherNr', oxField::T_RAW);
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField('_testVoucherSerieId', oxField::T_RAW);
@@ -797,6 +811,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId("_testOrderId");
+
         $oOrder->oxorder__oxuserid = new oxField('_testUserId', oxField::T_RAW);
 
         $aRet = $oOrder->getShippingSetList();
@@ -819,6 +834,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load("_testOrderId");
+
         $oOrder->oxorder__oxfolder = new oxField('Bearbeitet', oxField::T_RAW);
         $oOrder->oxorder__oxip = new oxField('111.111.111.111', oxField::T_RAW);
         $oOrder->oxorder__oxremark = new oxField('test remark', oxField::T_RAW);
@@ -839,7 +855,7 @@ class OrderTest extends \OxidTestCase
     {
         $this->insertTestOrder();
         $this->insertTestArticle();
-        $oOrderArticle = $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
+        $this->insertTestOrderArticle('_testOrderArticleId', '_testArticleId');
         $oOrderArticle2 = $this->insertTestOrderArticle('_testOrderArticleId2', '_testArticleId2');
 
         $oUser = oxNew('oxuser');
@@ -1062,6 +1078,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder', 'core');
         $oOrder->load("_testOrderId");
+
         $oOrder->oxorder__oxtotalnetsum = new oxField(500, oxField::T_RAW);
         $oOrder->oxorder__oxtotalbrutsum = new oxField(595, oxField::T_RAW);
         $oOrder->oxorder__oxtotalordersum = new oxField(595, oxField::T_RAW);
@@ -1097,6 +1114,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getShopid());
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
@@ -1127,6 +1145,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
@@ -1140,6 +1159,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrderId2');
         $oOrder->setDelivery('1b842e732a23255b1.91207750');
+
         $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
         $oOrder->recalculateOrder();
 
@@ -1161,6 +1181,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getShopid());
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
@@ -1191,6 +1212,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
@@ -1203,6 +1225,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrderId2');
         $oOrder->setDelivery('1b842e732a23255b1.91207750');
+
         $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
         $oOrder->recalculateOrder();
 
@@ -1215,6 +1238,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getShopid());
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
@@ -1245,6 +1269,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('test');
@@ -1304,6 +1329,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getShopid());
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->oxorder__oxorderdate = new oxField('2008-11-04 17:44:39');
@@ -1334,6 +1360,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
@@ -1344,6 +1371,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew('oxbase');
         $oOrderArticle->init('oxorderarticles');
         $oOrderArticle->setId('_testOrderArticleId3');
+
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
         $oOrderArticle->oxorderarticles__oxamount = new oxField('1');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651');
@@ -1455,6 +1483,7 @@ class OrderTest extends \OxidTestCase
         //insert test delivery set
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_testDeliverySetId');
+
         $oDelSet->oxdeliveryset__oxtitle = new oxField('testDeliverySetTitle', oxField::T_RAW);
         $oDelSet->save();
 
@@ -1677,7 +1706,7 @@ class OrderTest extends \OxidTestCase
 
         $order = $this->getMock(Order::class, $testMethods);
 
-        foreach ($methods as $key => $method) {
+        foreach ($methods as $method) {
             $order->expects($this->once())
                 ->method($method)
                 ->will($this->returnValue(true));
@@ -1711,7 +1740,7 @@ class OrderTest extends \OxidTestCase
         $order = $this->getMock(Order::class, $testMethods);
 
 
-        foreach ($methods as $key => $method) {
+        foreach ($methods as $method) {
             $order
                 ->method($method)
                 ->will($this->returnValue(true));
@@ -1812,7 +1841,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->load("_testOrderId");
 
         $sSql = "select oxorderdate from oxorder where oxid='_testOrderId'";
-        $sOldDate = oxDb::getDb()->getOne($sSql);
+        oxDb::getDb()->getOne($sSql);
 
         $oOrder->setOrderStatus("OK");
 
@@ -2032,6 +2061,7 @@ class OrderTest extends \OxidTestCase
         $oOrder->setId('_testOrderId');
 
         $oOrder->setOrderArticles($aBasketItems);
+
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         //$this->assertEquals( 1, count($oArticles) );
         $this->assertEquals(1, $oArticles->count());
@@ -2074,6 +2104,7 @@ class OrderTest extends \OxidTestCase
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         $oArticles->rewind();
+
         $oOrderArticle = $oArticles->current();
 
         //check if article info was copied to oxorderarticle
@@ -2108,6 +2139,7 @@ class OrderTest extends \OxidTestCase
 
         $oArticles = $oOrder->getNonPublicVar('_oArticles');
         $oArticles->rewind();
+
         $oOrderArticle = $oArticles->current();
 
         $this->assertEquals('selectName : selectValue, selectName : selectValue', $oOrderArticle->oxorderarticles__oxselvariant->value);
@@ -2470,7 +2502,7 @@ class OrderTest extends \OxidTestCase
         $sArtId = ((new Facts())->getEdition() === 'EE') ? '2363' : '2077';
 
         $oBasketItem = $this->getProxyClass("oxBasketItem");
-        $oBasketItem->setNonPublicVar('_sProductId', "$sArtId-01");
+        $oBasketItem->setNonPublicVar('_sProductId', $sArtId . '-01');
         $oBasketItem->setNonPublicVar('_dAmount', 1);
         $oBasketItem->setWishId('oxdefaultadmin');
         $oBasketItem->setWishArticleId($sArtId);
@@ -2482,7 +2514,7 @@ class OrderTest extends \OxidTestCase
         $oDB = oxDb::getDb();
         $sSql = "insert into oxuserbaskets (OXID, OXUSERID, OXTITLE) VALUES ('_testUserBasketId','oxdefaultadmin','wishlist')";
         $oDB->execute($sSql);
-        $sSql = "insert into oxuserbasketitems (OXID, OXBASKETID, OXARTID, OXAMOUNT) VALUES ('_testUserBasketItemId', '_testUserBasketId', '$sArtId', '1')";
+        $sSql = sprintf('insert into oxuserbasketitems (OXID, OXBASKETID, OXARTID, OXAMOUNT) VALUES (\'_testUserBasketItemId\', \'_testUserBasketId\', \'%s\', \'1\')', $sArtId);
         $oDB->execute($sSql);
 
         $oUser = oxNew('oxuser');
@@ -2490,7 +2522,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder->updateWishlist($aBasketItems, $oUser);
 
-        $sSql = "select count(*) from oxuserbasketitems where oxartid = '$sArtId' and oxbasketid = '_testUserBasketId'";
+        $sSql = sprintf('select count(*) from oxuserbasketitems where oxartid = \'%s\' and oxbasketid = \'_testUserBasketId\'', $sArtId);
         $iRes = $oDB->getOne($sSql);
         $this->assertEquals(0, $iRes);
     }
@@ -2527,8 +2559,10 @@ class OrderTest extends \OxidTestCase
         $oVSerie = oxNew('oxvoucherserie');
         $oVSerie->setId('_testVoucherSerieId');
         $oVSerie->save();
+
         $oVoucher = oxNew('oxvoucher');
         $oVoucher->setId('_testVoucherId');
+
         $oVoucher->oxvouchers__oxvoucherserieid = new oxField('_testVoucherSerieId', oxField::T_RAW);
         $oVoucher->save();
         $aVouchers[$oVoucher->getId()] = $oVoucher;
@@ -2561,6 +2595,7 @@ class OrderTest extends \OxidTestCase
     {
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxuserid = new oxField('_testUserId', oxField::T_RAW);
 
         $oOrder->save();
@@ -2580,6 +2615,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1126', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new oxField($order->getId(), oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new oxField('3', oxField::T_RAW);
@@ -2607,6 +2643,7 @@ class OrderTest extends \OxidTestCase
         $oDelAdress = oxNew('oxBase');
         $oDelAdress->init('oxaddress');
         $oDelAdress->setId('_testDelAddrId');
+
         $oDelAdress->oxaddress__oxuserid = new oxField('_testUserId', oxField::T_RAW);
         $oDelAdress->oxaddress__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
         $oDelAdress->save();
@@ -2633,6 +2670,7 @@ class OrderTest extends \OxidTestCase
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxstock = new oxField('2', oxField::T_RAW);
         $oArticle->oxarticles__oxstockflag = new oxField(0, oxField::T_RAW);
         $oArticle->save();
@@ -2677,7 +2715,7 @@ class OrderTest extends \OxidTestCase
         try {
             $oOrder->validateStock($oBasket);
         } catch (Exception $exception) {
-            $this->assertTrue(is_a($exception, \OxidEsales\Eshop\Core\Exception\OutOfStockException::class));
+            $this->assertTrue($exception instanceof \OxidEsales\Eshop\Core\Exception\OutOfStockException);
             $this->assertEquals(5, $exception->getRemainingAmount());
 
             return;
@@ -2691,6 +2729,7 @@ class OrderTest extends \OxidTestCase
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstockflag = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
@@ -2698,8 +2737,10 @@ class OrderTest extends \OxidTestCase
         $oBasketItem = $this->getProxyClass("oxbasketitem");
         $oBasketItem->init('_testArticleId', 1);
         $oBasketItem->setNonPublicVar("_oArticle", null);
+
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", [$oBasketItem]);
+
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstockflag = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
@@ -2715,6 +2756,7 @@ class OrderTest extends \OxidTestCase
     {
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstockflag = new \OxidEsales\Eshop\Core\Field(3, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
@@ -2722,8 +2764,10 @@ class OrderTest extends \OxidTestCase
         $oBasketItem = $this->getProxyClass("oxbasketitem");
         $oBasketItem->init('_testArticleId', 1);
         $oBasketItem->setNonPublicVar("_oArticle", null);
+
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", [$oBasketItem]);
+
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
 
@@ -2739,6 +2783,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxuserid = new oxField('_testUserId', oxField::T_RAW);
         $oOrder->oxorder__oxtotalnetsum = new oxField('100', oxField::T_RAW);
 
@@ -2767,6 +2812,7 @@ class OrderTest extends \OxidTestCase
         $this->insertTestOrder();
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load("_testOrderId");
+
         $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field("2007/07/07 00:00:00", \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->update();
 
@@ -2781,6 +2827,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->save();
@@ -2807,6 +2854,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->save();
@@ -2817,6 +2865,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->load('_testOrderId');
+
         $oOrder->oxorder__oxpaymentid = new \OxidEsales\Eshop\Core\Field('_testPaymentId', \OxidEsales\Eshop\Core\Field::T_RAW);
 
         $this->assertTrue($oOrder->delete());
@@ -2833,18 +2882,21 @@ class OrderTest extends \OxidTestCase
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxactive = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('5', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId2');
+
         $oArticle->oxarticles__oxactive = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('5', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field('_testArticleId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2852,6 +2904,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle->save();
 
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field('_testArticleId2', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2882,18 +2935,21 @@ class OrderTest extends \OxidTestCase
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxactive = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('5', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId('_testArticleId2');
+
         $oArticle->oxarticles__oxactive = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field('5', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oArticle->save();
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field('_testArticleId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2901,6 +2957,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle->save();
 
         $oOrderArticle->setId('_testOrderArticleId2');
+
         $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field('_testArticleId2', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2931,6 +2988,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setId('_testOrderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field('_testOrderId', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field('2', \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrderArticle->save();
@@ -2960,6 +3018,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId');
+
         $oOrder->oxorder__oxinvoicenr = new \OxidEsales\Eshop\Core\Field(5, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
 
@@ -2974,11 +3033,13 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId');
+
         $oOrder->oxorder__oxbillnr = new \OxidEsales\Eshop\Core\Field(999, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId1');
+
         $oOrder->oxorder__oxbillnr = new \OxidEsales\Eshop\Core\Field(1000, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
 
@@ -3010,11 +3071,13 @@ class OrderTest extends \OxidTestCase
     {
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_testOrderId1');
+
         $oOrder->oxorder__oxtotalordersum = new \OxidEsales\Eshop\Core\Field(100, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxcurrate = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
 
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxtotalordersum = new \OxidEsales\Eshop\Core\Field(150, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxcurrate = new \OxidEsales\Eshop\Core\Field(0.5, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
@@ -3027,12 +3090,14 @@ class OrderTest extends \OxidTestCase
     {
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_testOrderId1');
+
         $oOrder->oxorder__oxtotalordersum = new \OxidEsales\Eshop\Core\Field(100, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxcurrate = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxstorno = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW); //canceled
         $oOrder->save();
 
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxtotalordersum = new \OxidEsales\Eshop\Core\Field(150, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxcurrate = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxstorno = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -3052,6 +3117,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxshopid = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxtotalordersum = new \OxidEsales\Eshop\Core\Field(150, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->oxorder__oxcurrate = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -3069,10 +3135,10 @@ class OrderTest extends \OxidTestCase
 
         $sCurrentDate = date("Y-m-d");
         $sShopId = $myConfig->getShopId();
-        $sSql = "insert into oxorder (oxid, oxshopid, oxtotalordersum, oxorderdate, oxcurrate) values('_testOrderId1', '$sShopId', '100', '$sCurrentDate', '1') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxtotalordersum, oxorderdate, oxcurrate) values(\'_testOrderId1\', \'%s\', \'100\', \'%s\', \'1\') ', $sShopId, $sCurrentDate);
         $oDB->execute($sSql);
 
-        $sSql = "insert into oxorder (oxid, oxshopid, oxtotalordersum, oxorderdate, oxcurrate) values('_testOrderId2', '$sShopId', '150', '2005-01-15', '1') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxtotalordersum, oxorderdate, oxcurrate) values(\'_testOrderId2\', \'%s\', \'150\', \'2005-01-15\', \'1\') ', $sShopId);
         $oDB->execute($sSql);
 
         $oOrder = oxNew('oxOrder');
@@ -3099,10 +3165,12 @@ class OrderTest extends \OxidTestCase
     {
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_testOrderId1');
+
         $oOrder->oxorder__oxstorno = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW); //canceled
         $oOrder->save();
 
         $oOrder->setId('_testOrderId2');
+
         $oOrder->oxorder__oxstorno = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oOrder->save();
 
@@ -3132,10 +3200,10 @@ class OrderTest extends \OxidTestCase
 
         $sCurrentDate = date("Y-m-d");
         $sShopId = $myConfig->getShopId();
-        $sSql = "insert into oxorder (oxid, oxshopid, oxorderdate) values('_testOrderId1', '$sShopId', '$sCurrentDate') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxorderdate) values(\'_testOrderId1\', \'%s\', \'%s\') ', $sShopId, $sCurrentDate);
         $oDB->execute($sSql);
 
-        $sSql = "insert into oxorder (oxid, oxshopid, oxorderdate) values('_testOrderId2', '$sShopId', '2005-01-15') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxorderdate) values(\'_testOrderId2\', \'%s\', \'2005-01-15\') ', $sShopId);
         $oDB->execute($sSql);
 
         $oOrder = oxNew('oxOrder');
@@ -3291,10 +3359,10 @@ class OrderTest extends \OxidTestCase
 
         $sCurrentDate = date("Y-m-d");
         $sShopId = $myConfig->getShopId();
-        $sSql = "insert into oxorder (oxid, oxshopid, oxpaymenttype, oxorderdate, oxuserid) values('_testOrderId1', '$sShopId', 'test1', '$sCurrentDate', 'test') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxpaymenttype, oxorderdate, oxuserid) values(\'_testOrderId1\', \'%s\', \'test1\', \'%s\', \'test\') ', $sShopId, $sCurrentDate);
         $oDB->execute($sSql);
 
-        $sSql = "insert into oxorder (oxid, oxshopid, oxpaymenttype, oxorderdate, oxuserid) values('_testOrderId2', '$sShopId', 'test2', '2005-01-15', 'test') ";
+        $sSql = sprintf('insert into oxorder (oxid, oxshopid, oxpaymenttype, oxorderdate, oxuserid) values(\'_testOrderId2\', \'%s\', \'test2\', \'2005-01-15\', \'test\') ', $sShopId);
         $oDB->execute($sSql);
 
         $oOrder = oxNew('oxOrder');
@@ -3345,8 +3413,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test case for #0002255: Item Discounts add multiple times when editing Orders
-     *
-     * @return null
      */
     public function testForBugEntry2255()
     {
@@ -3356,6 +3422,7 @@ class OrderTest extends \OxidTestCase
         $oDiscount = oxNew('oxDiscount');
         $oDiscount->setAdminMode(false);
         $oDiscount->setId("_testDiscountId");
+
         $oDiscount->oxdiscount__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
         $oDiscount->oxdiscount__oxactive = new \OxidEsales\Eshop\Core\Field(1);
         $oDiscount->oxdiscount__oxtitle = new \OxidEsales\Eshop\Core\Field("Test discount");
@@ -3374,6 +3441,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxOrder');
         $oOrder->setAdminMode(false);
         $oOrder->setId("_testOrderId");
+
         $oOrder->oxorder__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
         $oOrder->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field("oxdefaultadmin");
         $oOrder->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field("2011-01-17 14:04:49");
@@ -3414,6 +3482,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oOrderArticle->setAdminMode(false);
         $oOrderArticle->setId("_testOrderArticleId");
+
         $oOrderArticle->oxorderarticles__oxorderid = new \OxidEsales\Eshop\Core\Field("_testOrderId");
         $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field(2);
         $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field("2275-01");
@@ -3443,8 +3512,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted total net sum getter
-     *
-     * @return null
      */
     public function testGetFormattedTotalNetSum()
     {
@@ -3457,8 +3524,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted total brut sum getter
-     *
-     * @return null
      */
     public function testGetFormattedTotalBrutSum()
     {
@@ -3471,8 +3536,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted Delivery cost sum getter
-     *
-     * @return null
      */
     public function testGetFormattedDeliveryCost()
     {
@@ -3485,8 +3548,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted pay cost sum getter
-     *
-     * @return null
      */
     public function testGetFormattedPayCost()
     {
@@ -3499,8 +3560,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted wrap cost sum getter
-     *
-     * @return null
      */
     public function testGetFormattedWrapCost()
     {
@@ -3513,8 +3572,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted gift card cost getter
-     *
-     * @return null
      */
     public function testGetFormattedGiftCardCost()
     {
@@ -3527,8 +3584,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted total vouchers getter
-     *
-     * @return null
      */
     public function testGetFormattedTotalVouchers()
     {
@@ -3541,8 +3596,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted Discount getter
-     *
-     * @return null
      */
     public function testGetFormattedDiscount()
     {
@@ -3555,8 +3608,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing formatted total sum from last order getter
-     *
-     * @return null
      */
     public function testGetFormattedTotalOrderSum()
     {
@@ -3569,8 +3620,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxORder::getShipmentTrackingUrl()
-     *
-     * @return null
      */
     public function testGetShipmentTrackingUrl()
     {
@@ -3583,8 +3632,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxORder::getShipmentTrackingUrl()
-     *
-     * @return null
      */
     public function testGetShipmentTrackingUrlCodeNotAdded()
     {
@@ -3595,8 +3642,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxORder::getShipmentTrackingUrl()
-     *
-     * @return null
      */
     public function testGetShipmentTrackingUrlNotSet()
     {
@@ -3609,8 +3654,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxORder::getShipmentTrackingUrl()
-     *
-     * @return null
      */
     public function testGetShipmentTrackingUrlWrongPlaceHolder()
     {
@@ -3641,7 +3684,7 @@ class OrderTest extends \OxidTestCase
     {
         $defaultTrackingUrl = 'http://DEFAULT.com';
         $deliverySetTrackingUrl = '';
-        $this->setConfigParam('sParcelService', "$defaultTrackingUrl&id=##ID##");
+        $this->setConfigParam('sParcelService', $defaultTrackingUrl . '&id=##ID##');
         $order = oxNew(Order::class);
         $order->oxorder__oxtrackcode = new Field(123);
         $deliverySet = oxNew(DeliverySet::class);
@@ -3661,7 +3704,7 @@ class OrderTest extends \OxidTestCase
         $order = oxNew(Order::class);
         $order->oxorder__oxtrackcode = new Field(123);
         $deliverySet = oxNew(DeliverySet::class);
-        $deliverySet->oxdeliveryset__oxtrackingurl = new Field("$deliverySetTrackingUrl&id=##ID##");
+        $deliverySet->oxdeliveryset__oxtrackingurl = new Field($deliverySetTrackingUrl . '&id=##ID##');
         $order->_oDelSet = $deliverySet;
 
         $url = $order->getShipmentTrackingUrl();
@@ -3672,8 +3715,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxOrder::_convertVat( $sVat )
-     *
-     * @return null
      */
     public function testconvertVat()
     {
@@ -3688,8 +3729,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing oxOrder DB table changes for field OXIP adding ipv6 support
-     *
-     * @return null
      */
     public function testOrderIpAddress()
     {
@@ -3700,6 +3739,7 @@ class OrderTest extends \OxidTestCase
         //set order
         $this->_oOrder = oxNew("oxOrder");
         $this->_oOrder->setId($sId);
+
         $this->_oOrder->oxorder__oxshopid = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->_oOrder->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field("_testUserId", \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->_oOrder->oxorder__oxbillcountryid = new \OxidEsales\Eshop\Core\Field("a7c40f6320aeb2ec2.72885259");
@@ -3753,7 +3793,6 @@ class OrderTest extends \OxidTestCase
      */
     public function testFinalizeOrderDoNotHandleNoticelistWhenThereIsNoNoticelist()
     {
-        /** @var oxUser $oUser */
         $user = oxNew('oxUser');
         $user->setId('_testUserId');
         $user->setPassword('foobar');
@@ -3786,7 +3825,6 @@ class OrderTest extends \OxidTestCase
         $query = 'insert into oxuserbaskets (oxid, oxtitle) values ("_test", "noticelist")';
         oxDb::getDb()->execute($query);
 
-        /** @var oxUser $oUser */
         $user = oxNew('oxUser');
         $user->setId('_testUserId');
         $user->setPassword('foobar');

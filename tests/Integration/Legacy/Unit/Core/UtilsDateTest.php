@@ -214,13 +214,10 @@ class UtilsDateTest extends \OxidTestCase
             $oConvObject->fldmax_length = strlen((string) $sInput);
             $oConvObject->fldtype = "datetime";
         }
+
         Registry::getUtilsDate()->convertDBDateTime($oConvObject, $blMysql, $blFormatDate);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
-        if ($oConvObject->value == $sExpected) {
-            return true;
-        }
-
-        return false;
+        return $oConvObject->value == $sExpected;
     }
 
     /**
@@ -287,6 +284,7 @@ class UtilsDateTest extends \OxidTestCase
         if (($iTimeStamp = mktime(10, 55, 12, 1, 30, 1871)) === false) {
             $iTimeStamp = 0;
         }
+
         $sZeroDateTime = date("Y-m-d H:i:s", $iTimeStamp);
         $this->assertTrue($this->convertDBTimestampTest($sZeroTimeStamp, $sZeroDateTime));
     }
@@ -308,11 +306,7 @@ class UtilsDateTest extends \OxidTestCase
         }
 
         Registry::getUtilsDate()->convertDBTimestamp($oConvObject, $blToTimeStamp);
-        if ($oConvObject->value == $sExpected) {
-            return true;
-        }
-
-        return false;
+        return $oConvObject->value == $sExpected;
     }
 
     public function testConvertDBDate()
@@ -376,13 +370,10 @@ class UtilsDateTest extends \OxidTestCase
         if (!empty($sInput)) {
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
+
         Registry::getUtilsDate()->convertDBDate($oConvObject, $blToTimeStamp);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
-        if ($oConvObject->value == $sExpected) {
-            return true;
-        }
-
-        return false;
+        return $oConvObject->value == $sExpected;
     }
 
     /**
@@ -470,6 +461,7 @@ class UtilsDateTest extends \OxidTestCase
 
         $oDateTime = new DateTime('tomorrow');
         $oDateTime->setTime(17, 10, 15);
+
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
         $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
@@ -495,6 +487,7 @@ class UtilsDateTest extends \OxidTestCase
 
         $oDateTime = new DateTime('tomorrow');
         $oDateTime->setTime(17, 10, 15);
+
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
         $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);

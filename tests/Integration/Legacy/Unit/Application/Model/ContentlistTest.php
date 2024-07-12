@@ -11,13 +11,12 @@ use \oxField;
 
 class ContentlistTest extends \OxidTestCase
 {
-    protected $_oContent = null;
-    protected $_sShopId = null;
+    protected $_oContent;
+
+    protected $_sShopId;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +36,6 @@ class ContentlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {

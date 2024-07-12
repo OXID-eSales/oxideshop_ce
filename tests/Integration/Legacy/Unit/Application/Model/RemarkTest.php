@@ -12,14 +12,12 @@ use \oxRegistry;
 
 class RemarkTest extends \OxidTestCase
 {
-    private $_oRemark = null;
+    private $_oRemark;
 
-    protected $_iNow = null;
+    protected $_iNow;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -36,8 +34,6 @@ class RemarkTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {

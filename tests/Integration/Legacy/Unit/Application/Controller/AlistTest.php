@@ -23,8 +23,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -36,8 +34,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get added url parameters.
-     *
-     * @return null
      */
     public function testGetAddUrlParams()
     {
@@ -55,8 +51,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get added seo url parameters.
-     *
-     * @return null
      */
     public function testGetAddSeoUrlParams()
     {
@@ -66,8 +60,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get page title sufix.
-     *
-     * @return null
      */
     public function testGetTitlePageSuffix()
     {
@@ -84,8 +76,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get page meta description sufix.
-     *
-     * @return null
      */
     public function testGetMetaDescription()
     {
@@ -106,8 +96,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get category path.
-     *
-     * @return null
      */
     public function testGetTreePath()
     {
@@ -122,8 +110,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get canonical url with seo on.
-     *
-     * @return null
      */
     public function testGetCanonicalUrlSeoOn()
     {
@@ -143,8 +129,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get canonical url with seo off.
-     *
-     * @return null
      */
     public function testGetCanonicalUrlSeoOff()
     {
@@ -164,8 +148,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get noIndex property.
-     *
-     * @return null
      */
     public function testNoIndex()
     {
@@ -176,8 +158,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test list article url processing.
-     *
-     * @return null
      */
     public function testProcessListArticles()
     {
@@ -204,8 +184,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get product link type.
-     *
-     * @return null
      */
     public function testGetProductLinkType()
     {
@@ -227,8 +205,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test render more categoty list page.
-     *
-     * @return null
      */
     public function testRenderForMoreCategory()
     {
@@ -244,8 +220,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test load price category articles.
-     *
-     * @return null
      */
     public function testLoadArticlesForPriceCategory()
     {
@@ -260,18 +234,17 @@ class AlistTest extends \OxidTestCase
         try {
             $oListView = oxNew('aList');
             $oListView->loadArticles($oCategory);
-        } catch (Exception $oExcp) {
-            $this->assertEquals('10100', $oExcp->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('10100', $exception->getMessage());
 
             return;
         }
+
         $this->fail('failed testLoadArticlesForPriceCategory');
     }
 
     /**
      * Test render inactive category page.
-     *
-     * @return null
      */
     public function testRenderInactiveCategory()
     {
@@ -285,8 +258,8 @@ class AlistTest extends \OxidTestCase
 
         try {
             $oListView->render();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('OK', $oExcp->getMessage(), 'failed redirect on inactive category');
+        } catch (Exception $exception) {
+            $this->assertEquals('OK', $exception->getMessage(), 'failed redirect on inactive category');
 
             return;
         }
@@ -296,8 +269,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test render actual page count exceeds real page count
-     *
-     * @return null
      */
     public function testRender_pageCountIsIncorrect()
     {
@@ -315,8 +286,8 @@ class AlistTest extends \OxidTestCase
 
         try {
             $oListView->render();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('OK', $oExcp->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('OK', $exception->getMessage());
 
             return;
         }
@@ -326,8 +297,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test render actual page count is 0
-     *
-     * @return null
      */
     public function testRender_pageCountIsZero()
     {
@@ -350,8 +319,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test execute article filter.
-     *
-     * @return null
      */
     public function testExecutefilter()
     {
@@ -385,8 +352,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get category subject.
-     *
-     * @return null
      */
     public function testGetSubject()
     {
@@ -398,8 +363,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get list title sufix.
-     *
-     * @return null
      */
     public function testGetTitleSuffix()
     {
@@ -424,8 +387,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is not set
-     *
-     * @return null
      */
     public function testGetDefaultSortingUndefinedSorting()
     {
@@ -440,8 +401,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is set
-     *
-     * @return null
      */
     public function testGetDefaultSortingDefinedSorting()
     {
@@ -458,8 +417,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is undefined
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsUndefined()
     {
@@ -478,8 +435,6 @@ class AlistTest extends \OxidTestCase
     /**
      * Test getDefaultSorting when sorting mode is set to 'asc'
      * This might be a little too much, but it's a case
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsAsc()
     {
@@ -498,8 +453,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsDesc()
     {
@@ -518,8 +471,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test list page navigation and seo url generation.
-     *
-     * @return null
      */
     public function testGeneratePageNavigationUrlForCategoryPlusSeo()
     {
@@ -536,8 +487,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test list page navigation url generation.
-     *
-     * @return null
      */
     public function testGeneratePageNavigationUrl()
     {
@@ -550,8 +499,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test PE view id getter.
-     *
-     * @return null
      */
     public function testGetViewIdPE()
     {
@@ -579,6 +526,7 @@ class AlistTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $this->setRequestParameter('cnid', 'xxx');
         $this->setSessionParam('_artperpage', '100');
         $this->setSessionParam('session_attrfilter', ['xxx' => ['0' => ['100']]]);
@@ -595,8 +543,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get category path as string.
-     *
-     * @return null
      */
     public function testGetCatPathString()
     {
@@ -614,8 +560,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test prepare list meta description info.
-     *
-     * @return null
      */
     public function testCollectMetaDescription()
     {
@@ -646,8 +590,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test prapare list meta keyword info.
-     *
-     * @return null
      */
     public function testCollectMetaKeyword()
     {
@@ -671,8 +613,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test prepare list meta keyword info longer then 60 symbols.
-     *
-     * @return null
      */
     public function testCollectMetaKeywordLongerThen60()
     {
@@ -695,8 +635,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test list view template name getter
-     *
-     * @return null
      */
     public function testGetTemplateName()
     {
@@ -721,8 +659,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test do not add page nr to list seo url for first page.
-     *
-     * @return null
      */
     public function testAddPageNrParamSeoOnFirstPage()
     {
@@ -730,6 +666,7 @@ class AlistTest extends \OxidTestCase
 
         $oCategory = oxNew('oxcategory');
         $oCategory->load('6b6b64bdcf7c25e92191b1120974af4e');
+
         $sUrl = $oCategory->getLink();
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, ['getActiveCategory']);
@@ -739,8 +676,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test add page nr to list seo url for second page.
-     *
-     * @return null
      */
     public function testAddPageNrParamSeoOnSecondPage()
     {
@@ -758,13 +693,12 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test add page nr to list url when seo is off.
-     *
-     * @return null
      */
     public function testAddPageNrParamSeoOff()
     {
         $oCategory = oxNew('oxcategory');
         $oCategory->load('6b6b64bdcf7c25e92191b1120974af4e');
+
         $sUrl = $oCategory->getStdLink();
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, ['getActiveCategory']);
@@ -775,8 +709,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test prepare meta keywords.
-     *
-     * @return null
      */
     public function testPrepareMetaKeyword()
     {
@@ -811,8 +743,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test prepare meta description.
-     *
-     * @return null
      */
     public function testPrepareMetaDescription()
     {
@@ -838,8 +768,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get category attributes.
-     *
-     * @return null
      */
     public function testGetAttributes()
     {
@@ -858,8 +786,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get ids for simmilar recommendation list.
-     *
-     * @return null
      */
     public function testGetSimilarRecommListIds()
     {
@@ -875,8 +801,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get list page navigation.
-     *
-     * @return null
      */
     public function testGetPageNavigation()
     {
@@ -887,8 +811,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testGetArticleList()
     {
@@ -902,8 +824,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get categoty path.
-     *
-     * @return null
      */
     public function testGetCatTreePath()
     {
@@ -916,8 +836,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test if active category has visible subcategories.
-     *
-     * @return null
      */
     public function testHasVisibleSubCats()
     {
@@ -932,8 +850,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test if subcategory list of active category.
-     *
-     * @return null
      */
     public function testGetSubCatList()
     {
@@ -948,8 +864,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get list title.
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -977,8 +891,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get bargain article list.
-     *
-     * @return null
      */
     public function testGetBargainArticleList()
     {
@@ -992,8 +904,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test meta keywords getter.
-     *
-     * @return null
      */
     public function testMetaKeywordsGetter()
     {
@@ -1008,14 +918,13 @@ class AlistTest extends \OxidTestCase
         $oSubj->render();
 
         $oSubj->render();
+
         $sMetaKeywords = $oSubj->getMetaKeywords();
         $this->assertEquals("aaa", $sMetaKeywords);
     }
 
     /**
      * Test meta keywords set to view data.
-     *
-     * @return null
      */
     public function testViewMetaKeywords()
     {
@@ -1037,8 +946,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get active category getter.
-     *
-     * @return null
      */
     public function testGetActiveCategory()
     {
@@ -1050,8 +957,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Testing allist::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -1074,8 +979,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Testing allist::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumbForMorePage()
     {
@@ -1093,8 +996,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test can display type selector getter
-     *
-     * @return null
      */
     public function testCanSelectDisplayType()
     {
@@ -1109,8 +1010,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get active page nr
-     *
-     * @return null
      */
     public function testGetActPage()
     {
@@ -1122,8 +1021,6 @@ class AlistTest extends \OxidTestCase
 
     /**
      * Test get list pages count
-     *
-     * @return null
      */
     public function testGetPageCount()
     {

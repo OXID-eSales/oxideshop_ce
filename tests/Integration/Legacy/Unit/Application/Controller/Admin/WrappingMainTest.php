@@ -20,8 +20,6 @@ class WrappingMainTest extends \OxidTestCase
 
     /**
      * Wrapping_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,8 +37,6 @@ class WrappingMainTest extends \OxidTestCase
 
     /**
      * Wrapping_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -57,8 +53,6 @@ class WrappingMainTest extends \OxidTestCase
 
     /**
      * Wrapping_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -68,18 +62,17 @@ class WrappingMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Wrapping_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }
+
         $this->fail("error in Wrapping_Main::save()");
     }
 
     /**
      * Wrapping_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -89,11 +82,12 @@ class WrappingMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Wrapping_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }
+
         $this->fail("error in Wrapping_Main::save()");
     }
 }

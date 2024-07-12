@@ -86,8 +86,6 @@ class _oxBase extends oxBase
      * Force isDerived property.
      *
      * @param bool $blIsDerived is derived
-     *
-     * @return null
      */
     public function setIsDerived($blIsDerived)
     {
@@ -96,8 +94,6 @@ class _oxBase extends oxBase
 
     /**
      * Force enable lazy loading.
-     *
-     * @return null
      */
     public function enableLazyLoading()
     {
@@ -151,8 +147,6 @@ class _oxBase extends oxBase
 
     /**
      * Force _blUseAccessProp to true thus enabling access property usage.
-     *
-     * @return null
      */
     public function enableAccessPropUsage()
     {
@@ -231,20 +225,16 @@ class BaseTest extends \OxidTestCase
 
     public function getUpdateShopId()
     {
-        $shopId = 1;
-        return $shopId;
+        return 1;
     }
 
     public function getArticlesViewName()
     {
-        $articlesViewName = (new Facts())->getEdition() === 'EE' ? 'oxv_oxarticles_1' : 'oxv_oxarticles';
-        return $articlesViewName;
+        return (new Facts())->getEdition() === 'EE' ? 'oxv_oxarticles_1' : 'oxv_oxarticles';
     }
 
     /**
      * Test is loaded.
-     *
-     * @return null
      */
     public function testIsLoaded()
     {
@@ -262,8 +252,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test is derived when both shop ids are null.
-     *
-     * @return null
      */
     public function testIsDerivedBothShopIdsAreNull()
     {
@@ -279,8 +267,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test is derived when shop ids match.
-     *
-     * @return null
      */
     public function testIsDerivedShopIdsMatch()
     {
@@ -298,8 +284,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test is derived when shop ids does not match.
-     *
-     * @return null
      */
     public function testIsDerivedShopIdsDeosNotMatch()
     {
@@ -317,8 +301,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test allow derived update.
-     *
-     * @return null
      */
     public function testAllowDerivedUpdate()
     {
@@ -329,8 +311,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test allow derived delete.
-     *
-     * @return null
      */
     public function testAllowDerivedDelete()
     {
@@ -341,8 +321,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test converting fields.
-     *
-     * @return null
      */
     public function testConvertingFields()
     {
@@ -373,8 +351,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Constructor test
-     *
-     * @return null
      */
     public function testOxBase()
     {
@@ -386,15 +362,14 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing object cloning (actually properties copying) function.
-     *
-     * @return null
      */
     public function testOxClone()
     {
         $o = oxNew('oxBase');
         $u = oxNew('oxBase');
         $u->aa = 'a';
-        $handle = $u->ab = new stdClass();
+        $handle = new stdClass();
+        $u->ab = $handle;
         $handle->z = 'z';
         $o->oxClone($u);
         $handle->z = 'x';
@@ -404,8 +379,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing blIsDerived magic getter.
-     *
-     * @return null
      */
     public function testMagicGetIsDerived()
     {
@@ -418,8 +391,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing blIsDerived magic getter.
-     *
-     * @return null
      */
     public function testMagicGetOXID()
     {
@@ -432,21 +403,17 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing isReadOnly magic getter.
-     *
-     * @return null
      */
     public function testIsReadOnly()
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_blReadOnly", true);
-        $this->assertFalse(isset($oBase->blReadOnly));
+        $this->assertFalse(property_exists($oBase, 'blReadOnly') && $oBase->blReadOnly !== null);
         $this->assertTrue($oBase->blReadOnly);
     }
 
     /**
      * Testing simple lazy loading .
-     *
-     * @return null
      */
     public function testMagicGetLazyLoading()
     {
@@ -454,14 +421,13 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
+
         $sTitle = $oBase->oxarticles__oxtitle->value;
         $this->assertEquals("Wanduhr ROBOT", $sTitle);
     }
 
     /**
      * Simple lazy loading test, if loaded object do not exists.
-     *
-     * @return null
      */
     public function testMagicGetLazyLoadingNoObjectFound()
     {
@@ -474,8 +440,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Simple lazy loading test, if loaded non existing field with debug.
-     *
-     * @return null
      */
     public function testMagicGetLazyLoadingNonExistingFieldWithDebug()
     {
@@ -484,14 +448,13 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
+
         $sNonExistentTitle = $oBase->oxarticles__oxtitle_nonexistent;
         $this->assertNull($sNonExistentTitle);
     }
 
     /**
      * Simple lazy loading test, if loaded non existing field without debug.
-     *
-     * @return null
      */
     public function testMagicGetLazyLoadingNonExistingFieldWithoutDebug()
     {
@@ -500,14 +463,13 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
+
         $sNonExistentTitle = $oBase->oxarticles__oxtitle_nonexistent;
         $this->assertNull($sNonExistentTitle);
     }
 
     /**
      * Simple lazy loading id is always set.
-     *
-     * @return null
      */
     public function testLazyLoadingIdIsAlwaysSet()
     {
@@ -528,8 +490,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Tests whether lazy loading really works
-     *
-     * @return null
      */
     public function testLazyLoading()
     {
@@ -545,10 +505,6 @@ class BaseTest extends \OxidTestCase
 
         $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxtitle'));
         $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
-
-        //making sure 2 fields are used
-        $sVal = $oBase->oxarticles__oxtitle->value;
-        $sVal = $oBase->oxarticles__oxshortdesc->value;
 
         $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxtitle'));
         $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
@@ -566,8 +522,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Tests whether lazy loading really works from cache
-     *
-     * @return null
      */
     public function testLazyLoadingFromCache()
     {
@@ -602,8 +556,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing init without table name.
-     *
-     * @return null
      */
     public function testInitWithoutTableName()
     {
@@ -615,8 +567,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing init.
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -629,8 +579,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing init data partial structure.
-     *
-     * @return null
      */
     public function testInitDataPartialStructure()
     {
@@ -649,8 +597,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Testing init data full structure.
-     *
-     * @return null
      */
     public function testInitDataFullStructure()
     {
@@ -658,15 +604,13 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_sCoreTable", "oxarticles");
         $oBase->setClassVar("_blUseLazyLoading", "true");
         $oBase->initDataStructure(true);
-        $this->assertTrue(isset($oBase->oxarticles__oxtitle));
+        $this->assertTrue(property_exists($oBase, 'oxarticles__oxtitle') && $oBase->oxarticles__oxtitle !== null);
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
         $this->assertTrue(isset($aFieldNames['oxtitle']));
     }
 
     /**
      * Test get field longname.
-     *
-     * @return null
      */
     public function testGetFieldLongName()
     {
@@ -677,8 +621,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get class name.
-     *
-     * @return null
      */
     public function testGetClassName()
     {
@@ -691,6 +633,7 @@ class BaseTest extends \OxidTestCase
     {
         $base = new _oxBase();
         $base->init("oxactions");
+
         $base->oxactions__oxid = new oxField("test1", oxField::T_RAW);
         $base->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
 
@@ -702,13 +645,14 @@ class BaseTest extends \OxidTestCase
     {
         $base = new _oxBase();
         $base->init('oxactions');
+
         $base->oxactions__oxid = new oxField('test1', oxField::T_RAW);
         $base->oxactions__oxtitle = new oxField('title1', oxField::T_RAW);
         $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
 
         $shopId = $this->getUpdateShopId();
 
-        $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1'";
+        $expectedOxid = sprintf('oxid = \'test1\',oxshopid = \'%s\',oxtype = \'\',oxtitle = \'title1\'', $shopId);
         $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields(false));
     }
 
@@ -716,20 +660,19 @@ class BaseTest extends \OxidTestCase
     {
         $base = new _oxBase();
         $base->init('oxactions');
+
         $base->oxactions__oxid = new oxField('test1', oxField::T_RAW);
         $base->oxactions__oxtitle = new oxField('title1', oxField::T_RAW);
 
         $shopId = $this->getUpdateShopId();
 
         $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
-        $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = ''";
+        $expectedOxid = sprintf('oxid = \'test1\',oxshopid = \'%s\',oxtype = \'\',oxtitle_1 = \'\'', $shopId);
         $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields());
     }
 
     /**
      * Test get core table name.
-     *
-     * @return null
      */
     public function testGetCoreTableName()
     {
@@ -740,8 +683,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get seo id.
-     *
-     * @return null
      */
     public function testSetId()
     {
@@ -754,8 +695,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get id.
-     *
-     * @return null
      */
     public function testGetId()
     {
@@ -766,8 +705,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set shop id with numeric value.
-     *
-     * @return null
      */
     public function testSetShopIdNumeric()
     {
@@ -778,8 +715,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get shop id.
-     *
-     * @return null
      */
     public function testGetShopId()
     {
@@ -790,21 +725,18 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get view name.
-     *
-     * @return null
      */
     public function testGetViewName()
     {
         $oBase = oxNew('oxBase');
         $oBase->init('oxarticles');
+
         $articlesViewNameExpected = $this->getArticlesViewName();
         $this->assertEquals($articlesViewNameExpected, $oBase->getViewName());
     }
 
     /**
      * Test get view name as core table.
-     *
-     * @return null
      */
     public function testGetViewNameSameAsCore()
     {
@@ -818,8 +750,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test disable lazy loading.
-     *
-     * @return null
      */
     public function testDisableLazyLoading()
     {
@@ -836,8 +766,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test modify cache key.
-     *
-     * @return null
      */
     public function testModifyCacheKey()
     {
@@ -852,8 +780,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set is multilang.
-     *
-     * @return null
      */
     public function testIsMultilang()
     {
@@ -863,8 +789,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set is derived.
-     *
-     * @return null
      */
     public function testIsDerived()
     {
@@ -882,6 +806,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $select = "select * from oxactions where oxid = 'oxtopstart'";
         $oDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
         $rs = $oDB->select($select);
@@ -891,14 +816,13 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test assign without shop id.
-     *
-     * @return null
      */
     public function testAssignWithoutShopId()
     {
         $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $oBase->oxactions__oxid = new oxField("oxtopstart", oxField::T_RAW);
         $select = "select * from oxactions where oxid = 'oxtopstart'";
         $rs = $oDB->select($select);
@@ -908,13 +832,12 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test assign with empty data.
-     *
-     * @return null
      */
     public function testAssignWithEmptyData()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $oBase->oxactions__oxid = new oxField("oxtopstart", oxField::T_RAW);
         $oBase->assign("aaa");
         $this->assertEquals($oBase->getId(), null);
@@ -922,8 +845,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test assign record.
-     *
-     * @return null
      */
     public function testAssignRecord()
     {
@@ -933,6 +854,7 @@ class BaseTest extends \OxidTestCase
 
         $oBase = new _oxBase();
         $oBase->init('oxactions');
+
         $sQ = "select * from oxactions where oxid = '_test'";
         $oBase->assignRecord($sQ);
 
@@ -941,52 +863,52 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set field data.
-     *
-     * @return null
      */
     public function testSetFieldData()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $rs = ["oxid" => "oxtopstart", "oxtitle" => "Startseite unten"];
         foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
+
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
         $this->assertEquals($oBase->oxactions__oxtitle->value, "Startseite unten");
     }
 
     /**
      * Test set field data long name.
-     *
-     * @return null
      */
     public function testSetFieldDataLongName()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $rs = ["oxid" => "oxtopstart", "oxactions__oxtitle" => "Startseite unten"];
         foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
+
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
         $this->assertEquals($oBase->oxactions__oxtitle->value, "Startseite unten");
     }
 
     /**
      * Test set field data for non existing field with lazy loading enabled.
-     *
-     * @return null
      */
     public function testSetFieldDataNonExistingLazyLoading()
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxactions");
+
         $rs = ["oxid" => "oxtopstart", "oxactions__oxtestval" => "Startseite unten", "oxtestval2" => "TestVal2"];
         foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
+
         //standard field
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
         //was not set before
@@ -999,20 +921,20 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set field data for non existing field with lazy loading disabled.
-     *
-     * @return null
      */
     public function testSetFieldDataNonExistingNonLazyLoading()
     {
         $oBase = $this->getProxyClass("oxbase");
         $oBase->setNonPublicVar("_blUseLazyLoading", false);
         $oBase->setNonPublicVar("_sCoreTable", "oxactions");
+
         $aFieldNames = $oBase->getNonPublicVar('_aFieldNames');
         $this->assertFalse(isset($aFieldNames['oxtitle']));
         $rs = ["oxid" => "oxtopstart", "oxtitle" => "Startseite unten"];
         foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
+
         //standard field
         $this->assertEquals($oBase->oxactions__oxid->value, "oxtopstart");
         //was not set before
@@ -1030,6 +952,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $oBase->oxactions__oxid = new Field($value, $type);
         $this->assertEquals($expected, $oBase->getFieldData("oxid"));
     }
@@ -1047,8 +970,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get empty field data.
-     *
-     * @return null
      */
     public function testGetFieldDataEmpty()
     {
@@ -1066,6 +987,7 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $oBase->oxactions__oxid = new Field($value, $type);
         $this->assertEquals($expected, $oBase->getRawFieldData("oxid"));
     }
@@ -1082,8 +1004,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get empty field data.
-     *
-     * @return null
      */
     public function testGetRawFieldDataEmpty()
     {
@@ -1094,8 +1014,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test load.
-     *
-     * @return null
      */
     public function testLoad()
     {
@@ -1104,13 +1022,11 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxactions");
         $oBase->load("oxtopstart");
         $this->assertEquals($oBase->getId(), "oxtopstart");
-        $this->assertTrue(isset($oBase->oxactions__oxtitle));
+        $this->assertTrue(property_exists($oBase, 'oxactions__oxtitle') && $oBase->oxactions__oxtitle !== null);
     }
 
     /**
      * Test load in language 1.
-     *
-     * @return null
      */
     public function testLoadInLang0()
     {
@@ -1119,9 +1035,9 @@ class BaseTest extends \OxidTestCase
         $oObj->modifyCacheKey(null, true);
 
         if ((new Facts())->getEdition() === 'EE') {
-            $expectedTranslation = "Champagne Pliers {$this->encode('&')} Bottle Opener PROFI";
+            $expectedTranslation = sprintf('Champagne Pliers %s Bottle Opener PROFI', $this->encode('&'));
         } else {
-            $expectedTranslation = "Champagne Pliers {$this->encode('&')} Bottle Opener";
+            $expectedTranslation = sprintf('Champagne Pliers %s Bottle Opener', $this->encode('&'));
         }
 
         $oObj->load(2080);
@@ -1133,8 +1049,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test load with lazy loading 1.
-     *
-     * @return null
      */
     public function testLoadLazy1()
     {
@@ -1150,8 +1064,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test load with lazy loading case 2.
-     *
-     * @return null
      */
     public function testLoadLazy2()
     {
@@ -1167,8 +1079,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test load non existin field with lazy loading.
-     *
-     * @return null
      */
     public function testLoadLazyNonExistingField()
     {
@@ -1178,32 +1088,28 @@ class BaseTest extends \OxidTestCase
         $oBase->load("2000");
 
         $this->assertEquals("2000", $oBase->getId());
-        $sFakeValue = $oBase->oxarticles__oxnonexistingfield;
         $aFieldList = $oBase->getClassVar("_aFieldNames");
         $this->assertFalse(isset($aFieldList["oxnonexistingfield"]));
     }
 
     /**
      * Test build select string.
-     *
-     * @return null
      */
     public function testBuildSelectString()
     {
         $oBase = oxNew('oxBase');
         $oBase->init("oxactions");
+
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName("oxactions", -1);
-        $sSelect = $oBase->buildSelectString(["$sView.oxid" => "oxtopstart"]);
+        $sSelect = $oBase->buildSelectString([$sView . '.oxid' => "oxtopstart"]);
         $sSelect = str_replace("  ", " ", $sSelect);
 
-        $this->assertEquals("select `$sView`.`oxid`, `$sView`.`oxshopid`, `$sView`.`oxtype`, `$sView`.`oxtitle`, `$sView`.`oxtitle_1`, `$sView`.`oxtitle_2`, `$sView`.`oxtitle_3`, `$sView`.`oxlongdesc`, `$sView`.`oxlongdesc_1`, `$sView`.`oxlongdesc_2`, `$sView`.`oxlongdesc_3`, `$sView`.`oxactive`, `$sView`.`oxactivefrom`, `$sView`.`oxactiveto`, `$sView`.`oxpic`, `$sView`.`oxpic_1`, `$sView`.`oxpic_2`, `$sView`.`oxpic_3`, `$sView`.`oxlink`, `$sView`.`oxlink_1`, `$sView`.`oxlink_2`, `$sView`.`oxlink_3`, `$sView`.`oxsort`, `$sView`.`oxtimestamp` from $sView where 1 and $sView.oxid = 'oxtopstart'", $sSelect);
+        $this->assertEquals(sprintf('select `%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp` from %s where 1 and %s.oxid = \'oxtopstart\'', $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $sSelect);
     }
 
     /**
      * Test build select string without shop id.
-     *
-     * @return null
      */
     public function testBuildSelectStringWithoutShopId()
     {
@@ -1213,6 +1119,7 @@ class BaseTest extends \OxidTestCase
 
         $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
+
         $sSelect = $oBase->buildSelectString(["oxid" => "111"]);
         $sSelect = str_replace("  ", " ", $sSelect);
         $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
@@ -1220,8 +1127,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test build select string without shop id.
-     *
-     * @return null
      */
     public function testBuildSelectStringWithShopId()
     {
@@ -1231,6 +1136,7 @@ class BaseTest extends \OxidTestCase
 
         $oBase = oxNew('oxBase');
         $oBase->init("oxattribute");
+
         $sSelect = $oBase->buildSelectString(["oxid" => "111"]);
         $sSelect = str_replace("  ", " ", $sSelect);
         $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
@@ -1238,13 +1144,12 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test build select string without where clause.
-     *
-     * @return null
      */
     public function testBuildSelectStringWithoutWhere()
     {
         $oBase = new _oxBase();
         $oBase->init('oxuser');
+
         $sSelect = $oBase->buildSelectString();
 
         $oDB = oxDb::getDb();
@@ -1256,8 +1161,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test select existing data.
-     *
-     * @return null
      */
     public function testSelectExistingData()
     {
@@ -1270,8 +1173,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test select non existing data.
-     *
-     * @return null
      */
     public function testSelectNonExistingData()
     {
@@ -1282,8 +1183,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test get select fields.
-     *
-     * @return null
      */
     public function testGetSelectFields()
     {
@@ -1292,13 +1191,11 @@ class BaseTest extends \OxidTestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions', -1);
-        $this->assertEquals("`$sView`.`oxid`, `$sView`.`oxshopid`, `$sView`.`oxtype`, `$sView`.`oxtitle`, `$sView`.`oxtitle_1`, `$sView`.`oxtitle_2`, `$sView`.`oxtitle_3`, `$sView`.`oxlongdesc`, `$sView`.`oxlongdesc_1`, `$sView`.`oxlongdesc_2`, `$sView`.`oxlongdesc_3`, `$sView`.`oxactive`, `$sView`.`oxactivefrom`, `$sView`.`oxactiveto`, `$sView`.`oxpic`, `$sView`.`oxpic_1`, `$sView`.`oxpic_2`, `$sView`.`oxpic_3`, `$sView`.`oxlink`, `$sView`.`oxlink_1`, `$sView`.`oxlink_2`, `$sView`.`oxlink_3`, `$sView`.`oxsort`, `$sView`.`oxtimestamp`", $oBase->getSelectFields());
+        $this->assertEquals(sprintf('`%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp`', $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $oBase->getSelectFields());
     }
 
     /**
      * Test get select fields without table specified.
-     *
-     * @return null
      */
     public function testGetSelectFieldsNoFields()
     {
@@ -1308,8 +1205,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      *  Test exists, positive.
-     *
-     * @return null
      */
     public function testExists()
     {
@@ -1321,8 +1216,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test exists, negative.
-     *
-     * @return null
      */
     public function testExistsNot()
     {
@@ -1334,8 +1227,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test exists with id, positive.
-     *
-     * @return null
      */
     public function testExistsWithId()
     {
@@ -1346,8 +1237,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test exists with id, negative.
-     *
-     * @return null
      */
     public function testExistsWithIdIfNotExists()
     {
@@ -1358,8 +1247,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test exists when not loaded.
-     *
-     * @return null
      */
     public function testExistsNotLoaded()
     {
@@ -1370,8 +1257,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test delete.
-     *
-     * @return null
      */
     public function testDelete()
     {
@@ -1390,8 +1275,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test delete with Is Derived.
-     *
-     * @return null
      */
     public function testDeleteIsDerived()
     {
@@ -1411,8 +1294,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test delete with set oxid.
-     *
-     * @return null
      */
     public function testDeleteWithSetOxid()
     {
@@ -1431,8 +1312,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test delete without oxid.
-     *
-     * @return null
      */
     public function testDeleteWithoutOxid()
     {
@@ -1450,8 +1329,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test delete with oxid, negative.
-     *
-     * @return null
      */
     public function testDeleteWithNonExistingOxid()
     {
@@ -1470,8 +1347,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test save if exists.
-     *
-     * @return null
      */
     public function testSaveIfExists()
     {
@@ -1482,14 +1357,13 @@ class BaseTest extends \OxidTestCase
             ->will($this->returnValue(true));
         $oBase->init('oxactions');
         $oBase->setId('oxtopstart');
+
         $sResult = $oBase->save();
         $this->assertEquals('oxtopstart', $sResult);
     }
 
     /**
      * Test save if fields not set.
-     *
-     * @return null
      */
     public function testSaveIfFieldsNotSet()
     {
@@ -1502,8 +1376,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test save if new.
-     *
-     * @return null
      */
     public function testSaveIfNew()
     {
@@ -1513,14 +1385,13 @@ class BaseTest extends \OxidTestCase
             ->will($this->returnValue(true));
         $oBase->init("oxactions");
         $oBase->setId("_test");
+
         $sResult = $oBase->save();
         $this->assertEquals("_test", $sResult);
     }
 
     /**
      * Test save if can not insert.
-     *
-     * @return null
      */
     public function testSaveIfCannotInsert()
     {
@@ -1530,14 +1401,13 @@ class BaseTest extends \OxidTestCase
             ->will($this->returnValue(false));
         $oBase->init("oxactions");
         $oBase->setId("_test");
+
         $sResult = $oBase->save();
         $this->assertFalse($sResult);
     }
 
     /**
      * Test save if is derived.
-     *
-     * @return null
      */
     public function testSaveIsDerived()
     {
@@ -1548,6 +1418,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxactions");
         $oBase->setId("oxtopstart");
         $oBase->setIsDerived(true);
+
         $sResult = $oBase->save();
         $this->assertFalse($sResult);
     }
@@ -1560,6 +1431,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init('oxuserbaskets');
         $oBase->load("_test");
+
         $oBase->oxuserbaskets__oxupdate = new oxField("2007.07.07", oxField::T_RAW);
         $sResult = $oBase->save();
 
@@ -1574,6 +1446,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init('oxdiscount');
         $oBase->setId('_test');
+
         $oBase->oxdiscount__oxtitle = new oxField("test", oxField::T_RAW);
         $oBase->oxdiscount__oxactivefrom = new oxField("2007.07.07", oxField::T_RAW);
         $sResult = $oBase->save();
@@ -1589,8 +1462,8 @@ class BaseTest extends \OxidTestCase
         $table = 'oxarticles';
         $col1 = 'oxtitle';
         $col2 = 'oxdelivery'; /** any DB column with type Date */
-        $field1 = "{$table}__{$col1}";
-        $field2 = "{$table}__{$col2}";
+        $field1 = sprintf('%s__%s', $table, $col1);
+        $field2 = sprintf('%s__%s', $table, $col2);
         $val1 = 'test';
         $val2 = '2022-12-22';
         $base = new _oxBase();
@@ -1602,7 +1475,7 @@ class BaseTest extends \OxidTestCase
         $return = $base->save();
 
         $res = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->select(
-            "select `$col2` from `$table` where `$col1` = '$val1'"
+            sprintf('select `%s` from `%s` where `%s` = \'%s\'', $col2, $table, $col1, $val1)
         );
         $this->assertNotNull($return);
         $this->assertSame($val2, $res->fields[$col2]);
@@ -1610,8 +1483,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test update without oxid.
-     *
-     * @return null
      */
     public function testUpdateWithoutOXID()
     {
@@ -1619,27 +1490,26 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxarticles");
         try {
             $oBase->update();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
         }
 
-        $this->assertTrue($e instanceof \OxidEsales\EshopCommunity\Core\Exception\ObjectException);
+        $this->assertTrue($exception instanceof \OxidEsales\EshopCommunity\Core\Exception\ObjectException);
     }
 
     /**
      * Test update with oxid.
-     *
-     * @return null
      */
     public function testUpdateWithOXID()
     {
         $myDB = oxDb::getDb();
         $shopId = $this->getUpdateShopId();
-        $sInsert = "Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values ('_test','{$shopId}','test')";
+        $sInsert = sprintf('Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values (\'_test\',\'%s\',\'test\')', $shopId);
         $myDB->Execute($sInsert);
 
         $oBase = new _oxBase();
         $oBase->init("oxarticles");
         $oBase->setId("_test");
+
         $oBase->oxarticles__oxtitle = new oxField('changed title', oxField::T_RAW);
         $sResult = $oBase->update();
         $this->assertNotNull($sResult);
@@ -1650,8 +1520,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test update with oxid and is derived.
-     *
-     * @return null
      */
     public function testUpdateWithOXIDIsDerived()
     {
@@ -1663,6 +1531,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxarticles");
         $oBase->setId("_test");
         $oBase->setIsDerived(true);
+
         $sResult = $oBase->update();
         $this->assertFalse($sResult);
     }
@@ -1702,9 +1571,9 @@ class BaseTest extends \OxidTestCase
         $col1 = 'oxtitle';
         $colId = 'oxid';
         $colShopId = 'oxshopid';
-        $field1 = "{$table}__{$col1}";
-        $fieldId = "{$table}__{$colId}";
-        $fieldShopId = "{$table}__{$colShopId}";
+        $field1 = sprintf('%s__%s', $table, $col1);
+        $fieldId = sprintf('%s__%s', $table, $colId);
+        $fieldShopId = sprintf('%s__%s', $table, $colShopId);
         $val1 = 'test';
         $base = oxNew('oxBase');
         $base->init($table);
@@ -1713,7 +1582,7 @@ class BaseTest extends \OxidTestCase
         $return = $base->insert();
 
         $count = (int) oxDb::getDb()->getOne(
-            "select count(*) from `$table` where $col1 = '$val1'"
+            sprintf('select count(*) from `%s` where %s = \'%s\'', $table, $col1, $val1)
         );
         $this->assertSame(1, $count);
         $this->assertNotNull($return);
@@ -1723,8 +1592,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test insert with set oxid id.
-     *
-     * @return null
      */
     public function testInsertWithSetOxid()
     {
@@ -1732,6 +1599,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init('oxactions');
         $oBase->setId("_test");
+
         $sResult = $oBase->insert();
         $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertNotNull($sResult);
@@ -1740,14 +1608,13 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test insert without oxid.
-     *
-     * @return null
      */
     public function testInsertWithoutOxid()
     {
         $myDB = oxDb::getDb();
         $oBase = new _oxBase();
         $oBase->init('oxactions');
+
         $oBase->oxactions__oxtitle = new oxField('test1', oxField::T_RAW);
         $sResult = $oBase->insert();
 
@@ -1789,24 +1656,24 @@ class BaseTest extends \OxidTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped('Test for Community and Professional editions only');
         }
+
         $shopId = '1';
         $table = 'oxactions';
         $base = oxNew('oxBase');
 
         $sResult = $base->getObjectViewName($table, $shopId);
 
-        $this->assertSame("oxv_$table", $sResult);
+        $this->assertSame('oxv_' . $table, $sResult);
     }
 
     /**
      * Test get all fields, full.
-     *
-     * @return null
      */
     public function testGetAllFieldsFull()
     {
         $oBase = new _oxBase();
         $oBase->init('oxactions');
+
         $aExpectedFields = ['oxid' => 0, 'oxshopid' => 0, 'oxtype' => 0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive' => 0, 'oxactivefrom' => 0, 'oxactiveto' => 0, 'oxpic' => 0, 'oxpic_1' => 0, 'oxpic_2' => 0, 'oxpic_3' => 0, 'oxlink' => 0, 'oxlink_1' => 0, 'oxlink_2' => 0, 'oxlink_3' => 0, 'oxsort' => 0, 'oxtimestamp' => 0];
 
         $this->assertEquals($aExpectedFields, $oBase->getAllFields(true));
@@ -1814,8 +1681,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * A test for #1831 case
-     *
-     * @return null
      */
     public function testGetAllFieldEmpty()
     {
@@ -1826,8 +1691,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test add field.
-     *
-     * @return null
      */
     public function testAddField()
     {
@@ -1838,13 +1701,11 @@ class BaseTest extends \OxidTestCase
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
         $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
-        $this->assertTrue(isset($oBase->oxtesttable__oxtestfield));
+        $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
     }
 
     /**
      * Test add field with specified length.
-     *
-     * @return null
      */
     public function testAddFieldIfLenghtSet()
     {
@@ -1855,15 +1716,13 @@ class BaseTest extends \OxidTestCase
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
         $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
-        $this->assertTrue(isset($oBase->oxtesttable__oxtestfield));
+        $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
         $this->assertEquals(20, $oBase->oxtesttable__oxtestfield->fldmax_length);
         $this->assertFalse($oBase->getClassVar("_blIsSimplyClonable"));
     }
 
     /**
      * Test add field with specified type.
-     *
-     * @return null
      */
     public function testAddFieldIfTypeSet()
     {
@@ -1874,15 +1733,13 @@ class BaseTest extends \OxidTestCase
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
         $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
-        $this->assertTrue(isset($oBase->oxtesttable__oxtestfield));
+        $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
         $this->assertEquals('datetime', $oBase->oxtesttable__oxtestfield->fldtype);
         $this->assertFalse($oBase->getClassVar("_blIsSimplyClonable"));
     }
 
     /**
      * Testinc active snippet getter.
-     *
-     * @return null
      */
     public function testGetSqlActiveSnippet()
     {
@@ -1890,7 +1747,6 @@ class BaseTest extends \OxidTestCase
 
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, ['getRequestTime']);
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
-        /** @var oxUtilsDate $oUtils */
         Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $aFields = ['oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1];
@@ -1900,15 +1756,13 @@ class BaseTest extends \OxidTestCase
         $oBase->setNonPublicVar('_aFieldNames', $aFields);
         $oBase->setNonPublicVar('_sCoreTable', 'oxbase');
 
-        $sPattern = " (   oxbase.oxactive = 1  or  ( oxbase.oxactivefrom < '$sDate' and oxbase.oxactiveto > '$sDate' ) ) ";
+        $sPattern = sprintf(' (   oxbase.oxactive = 1  or  ( oxbase.oxactivefrom < \'%s\' and oxbase.oxactiveto > \'%s\' ) ) ', $sDate, $sDate);
 
         $this->assertEquals($sPattern, $oBase->getSqlActiveSnippet());
     }
 
     /**
      * Test get update field value.
-     *
-     * @return null
      */
     public function test_getUpdateFieldValue()
     {
@@ -1917,7 +1771,7 @@ class BaseTest extends \OxidTestCase
         $oBase->setId('test');
         $this->assertSame("'aaa'", $oBase->getUpdateFieldValue('oxid', new oxField('aaa')));
         $this->assertSame("'aaa\\\"'", $oBase->getUpdateFieldValue('oxid', new oxField('aaa"')));
-        $this->assertSame("'aaa\''", $oBase->getUpdateFieldValue('oxid', new oxField('aaa\'')));
+        $this->assertSame("'aaa\''", $oBase->getUpdateFieldValue('oxid', new oxField("aaa'")));
 
         $this->assertSame("''", $oBase->getUpdateFieldValue('oxid', new oxField(null)));
         $this->assertSame('null', $oBase->getUpdateFieldValue('oxvat', new oxField(null)));
@@ -1925,13 +1779,12 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set field data with bad parameters.
-     *
-     * @return null
      */
     public function test_setFieldData_withBadParam()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
+
         $aFlds = $oBase->getProperty('_aFieldNames');
         $oBase->setFieldData('oxid', 'aaa');
         $this->assertEquals($aFlds, $oBase->getProperty('_aFieldNames'));
@@ -1941,13 +1794,11 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test lazy loading and multilang field problem.
-     *
-     * @return null
      */
     public function testTestingLazyLoadAndMultilangFieldProblem()
     {
         $sId = oxDb::getDb()->getOne("select oxid from oxarticles where oxtitle_1 != '' and oxtitle != oxtitle_1");
-        $sTitle = oxDb::getDb()->getOne("select oxtitle_1 from oxarticles where oxid='$sId'");
+        $sTitle = oxDb::getDb()->getOne(sprintf('select oxtitle_1 from oxarticles where oxid=\'%s\'', $sId));
         $oArticle = oxNew('oxArticle');
         $oArticle->loadInLang(1, $sId);
 
@@ -1956,8 +1807,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test non existing field is never registered.
-     *
-     * @return null
      */
     public function testNonExistantFieldIsNeverRegistered()
     {
@@ -1966,8 +1815,6 @@ class BaseTest extends \OxidTestCase
         $oTest->enableLazyLoading();
         $this->cleanTmpDir();
         $oTest->init('oxarticles');
-        //trying to access the field
-        $sTestValue = $oTest->oxarticles__oxnonexistantfield;
 
         //checking, should NOT be cached
         $sCacheKey = 'fieldnames_oxarticles_nonExistantFieldTest';
@@ -1978,8 +1825,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set is derived.
-     *
-     * @return null
      */
     public function testSetIsDerived()
     {
@@ -1992,8 +1837,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test is ox.
-     *
-     * @return null
      */
     public function testIsOx()
     {
@@ -2006,8 +1849,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set get readonly.
-     *
-     * @return null
      */
     public function testSetGetReadOnly()
     {
@@ -2019,8 +1860,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test set in list.
-     *
-     * @return null
      */
     public function testSetInList()
     {
@@ -2032,8 +1871,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Test in in list.
-     *
-     * @return null
      */
     public function testIsInList()
     {
@@ -2045,8 +1882,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Field names getter test
-     *
-     * @return null
      */
     public function testGetFieldNamesOnBase()
     {
@@ -2059,8 +1894,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Field names getter test
-     *
-     * @return null
      */
     public function testGetFieldNamesNoLazyLoading()
     {
@@ -2069,7 +1902,7 @@ class BaseTest extends \OxidTestCase
 
         $aFieldNames = $oBase->getFieldNames();
 
-        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
         $this->assertTrue(
             in_array("oxtitle", $aFieldNames),
             "oxtitle expected to be in array:  " . serialize($aFieldNames)
@@ -2078,8 +1911,6 @@ class BaseTest extends \OxidTestCase
 
     /**
      * Field names getter test
-     *
-     * @return null
      */
     public function testGetFieldNamesWithLazyLoading()
     {
@@ -2087,16 +1918,15 @@ class BaseTest extends \OxidTestCase
         $oBase = oxNew('oxArticle');
 
         $oBase->init("oxarticles");
+
         $aFieldNames = $oBase->getFieldNames();
 
-        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
         $this->assertTrue(in_array("oxtitle", $aFieldNames));
     }
 
     /**
      * Field names getter test
-     *
-     * @return null
      */
     public function testGetFieldNamesWithLazyLoadingOnAdmin()
     {
@@ -2107,9 +1937,10 @@ class BaseTest extends \OxidTestCase
 
         $oBase->init("oxarticles");
         $oBase->setEnableMultilang(false);
+
         $aFieldNames = $oBase->getFieldNames();
 
-        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
         $this->assertTrue(in_array("oxtitle", $aFieldNames));
     }
 
@@ -2125,6 +1956,7 @@ class BaseTest extends \OxidTestCase
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = 'someValue';
 
         $this->assertTrue($model->isPropertyLoaded('propertyName'));
@@ -2134,6 +1966,7 @@ class BaseTest extends \OxidTestCase
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = null;
 
         $this->assertFalse($model->isPropertyLoaded('propertyName'));
@@ -2143,6 +1976,7 @@ class BaseTest extends \OxidTestCase
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = false;
 
         $this->assertTrue($model->isPropertyLoaded('propertyName'));
@@ -2152,6 +1986,7 @@ class BaseTest extends \OxidTestCase
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = '';
 
         $this->assertTrue($model->isPropertyLoaded('propertyName'));
@@ -2163,42 +1998,46 @@ class BaseTest extends \OxidTestCase
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
 
-        $this->assertFalse(isset($model->propertyName));
+        $this->assertFalse(property_exists($model, 'propertyName') && $model->propertyName !== null);
     }
 
     public function testLazyLoadingMagicIssetReturnsFalseWhenPropertyIsNull()
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = null;
 
-        $this->assertFalse(isset($model->propertyName));
+        $this->assertFalse(property_exists($model, 'propertyName') && $model->propertyName !== null);
     }
 
     public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsFalse()
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = false;
 
-        $this->assertTrue(isset($model->propertyName));
+        $this->assertTrue(property_exists($model, 'propertyName') && $model->propertyName !== null);
     }
 
     public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsEmptyString()
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = '';
 
-        $this->assertTrue(isset($model->propertyName));
+        $this->assertTrue(property_exists($model, 'propertyName') && $model->propertyName !== null);
     }
 
     public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsLoaded()
     {
         $model = new _oxBase();
         $model->setClassVar("_blUseLazyLoading", true);
+
         $model->propertyName = 'someValue';
 
-        $this->assertTrue(isset($model->propertyName));
+        $this->assertTrue(property_exists($model, 'propertyName') && $model->propertyName !== null);
     }
 }

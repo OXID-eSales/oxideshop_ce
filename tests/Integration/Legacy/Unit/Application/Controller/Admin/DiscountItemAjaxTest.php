@@ -21,15 +21,15 @@ final class DiscountItemAjaxTest extends UnitTestCase
     {
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
-        $expected = "from $discountView left join $productView on $productView.oxid=$discountView.oxitmartid ";
-        $expected .= " where $discountView.oxid = '_testOxid' and $discountView.oxitmartid != ''";
+        $expected = sprintf('from %s left join %s on %s.oxid=%s.oxitmartid ', $discountView, $productView, $productView, $discountView);
+        $expected .= sprintf(' where %s.oxid = \'_testOxid\' and %s.oxitmartid != \'\'', $discountView, $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testOxid';
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryOxid(): void
@@ -37,11 +37,11 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
         $objectToCategoryView = oxNew(TableViewNameGenerator::class)->getViewName('oxobject2category');
-        $expected = "from $objectToCategoryView left join $productView on  $productView.oxid=$objectToCategoryView.oxobjectid ";
-        $expected .= " where $objectToCategoryView.oxcatnid = '_testOxid' and $productView.oxid is not null  and ";
-        $expected .= "$productView.oxvarcount = 0 and ";
-        $expected .= " $productView.oxid not in (  select $productView.oxid from $discountView, $productView where $productView.oxid=$discountView.oxitmartid ";
-        $expected .= " and $discountView.oxid = '_testSynchoxid' )";
+        $expected = sprintf('from %s left join %s on  %s.oxid=%s.oxobjectid ', $objectToCategoryView, $productView, $productView, $objectToCategoryView);
+        $expected .= sprintf(' where %s.oxcatnid = \'_testOxid\' and %s.oxid is not null  and ', $objectToCategoryView, $productView);
+        $expected .= $productView . '.oxvarcount = 0 and ';
+        $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
+        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testSynchoxid';
@@ -49,7 +49,7 @@ final class DiscountItemAjaxTest extends UnitTestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryOxidParentIsBuyable(): void
@@ -57,10 +57,10 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
         $objectToCategoryView = oxNew(TableViewNameGenerator::class)->getViewName('oxobject2category');
-        $expected = "from $objectToCategoryView left join $productView on  $productView.oxid=$objectToCategoryView.oxobjectid ";
-        $expected .= " where $objectToCategoryView.oxcatnid = '_testOxid' and $productView.oxid is not null  and ";
-        $expected .= " $productView.oxid not in (  select $productView.oxid from $discountView, $productView where $productView.oxid=$discountView.oxitmartid ";
-        $expected .= " and $discountView.oxid = '_testSynchoxid' )";
+        $expected = sprintf('from %s left join %s on  %s.oxid=%s.oxobjectid ', $objectToCategoryView, $productView, $productView, $objectToCategoryView);
+        $expected .= sprintf(' where %s.oxcatnid = \'_testOxid\' and %s.oxid is not null  and ', $objectToCategoryView, $productView);
+        $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
+        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testSynchoxid';
@@ -68,38 +68,38 @@ final class DiscountItemAjaxTest extends UnitTestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQuerySynchoxid(): void
     {
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
-        $expected = "from $productView where 1 and $productView.oxparentid = '' and $productView.oxvarcount = 0 and ";
-        $expected .= " $productView.oxid not in (  select $productView.oxid from $discountView, $productView where $productView.oxid=$discountView.oxitmartid ";
-        $expected .= " and $discountView.oxid = '_testSynchoxid' )";
+        $expected = sprintf('from %s where 1 and %s.oxparentid = \'\' and %s.oxvarcount = 0 and ', $productView, $productView, $productView);
+        $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
+        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
 
         $_POST['synchoxid'] = '_testSynchoxid';
         Registry::getConfig()->setConfigParam('blVariantParentBuyable', false);
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQuerySynchoxidParentIsBuyable(): void
     {
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
-        $expected = "from $productView where 1 and $productView.oxparentid = ''  and ";
-        $expected .= " $productView.oxid not in (  select $productView.oxid from $discountView, $productView where $productView.oxid=$discountView.oxitmartid ";
-        $expected .= " and $discountView.oxid = '_testSynchoxid' )";
+        $expected = sprintf('from %s where 1 and %s.oxparentid = \'\'  and ', $productView, $productView);
+        $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
+        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
         $_POST['synchoxid'] = '_testSynchoxid';
         Registry::getConfig()->setConfigParam('blVariantParentBuyable', true);
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryCols(): void
@@ -115,7 +115,7 @@ final class DiscountItemAjaxTest extends UnitTestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithMultipleIdentifiers(): void
@@ -131,6 +131,7 @@ final class DiscountItemAjaxTest extends UnitTestCase
         ];
         $component = oxNew(DiscountItemAjax::class);
         $component->setColumns($columns);
+
         $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $expected = sprintf(
             '%1$s.oxtitle as _1, %1$s.oxean as _2, %1$s.oxmpn as _3, %1$s.oxprice as _4, %1$s.oxstock as _5, %1$s.oxartnum as _0, %1$s.oxid as _6',
@@ -142,7 +143,7 @@ final class DiscountItemAjaxTest extends UnitTestCase
 
         $query = $component->getQueryCols();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithVariants(): void
@@ -158,7 +159,7 @@ final class DiscountItemAjaxTest extends UnitTestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
-        $this->assertEquals(" $expected ", $query);
+        $this->assertEquals(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithDbViewsWillContainJustColumnName(): void
@@ -169,12 +170,12 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $this->switchToALanguageWithNonZeroTag();
         $languageTag = Registry::getLang()->getLanguageTag();
         $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
-        $columnName = "$view.oxvarselect";
+        $columnName = $view . '.oxvarselect';
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
         $this->assertStringContainsString($columnName, $query);
-        $this->assertStringNotContainsString("$columnName$languageTag", $query);
+        $this->assertStringNotContainsString($columnName . $languageTag, $query);
     }
 
     public function testGetQueryColsWithNoDbViewsWillContainColumnNameAndLanguageTag(): void
@@ -185,11 +186,11 @@ final class DiscountItemAjaxTest extends UnitTestCase
         $this->switchToALanguageWithNonZeroTag();
         $languageTag = Registry::getLang()->getLanguageTag();
         $view = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
-        $columnName = "$view.oxvarselect";
+        $columnName = $view . '.oxvarselect';
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
-        $this->assertStringContainsString("$columnName$languageTag", $query);
+        $this->assertStringContainsString($columnName . $languageTag, $query);
     }
 
     private function getContainerIdForUnassignedItemsList(): string

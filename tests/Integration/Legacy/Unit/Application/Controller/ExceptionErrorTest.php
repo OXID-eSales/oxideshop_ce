@@ -17,8 +17,6 @@ class ExceptionErrorTest extends \OxidTestCase
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -28,8 +26,6 @@ class ExceptionErrorTest extends \OxidTestCase
 
     /**
      * Test setting errors to view
-     *
-     * @return null
      */
     public function testDisplayExceptionError()
     {
@@ -49,8 +45,6 @@ class ExceptionErrorTest extends \OxidTestCase
 
     /**
      * Test setting errors to view resets errors in session
-     *
-     * @return null
      */
     public function testDisplayExceptionError_resetsErrorsInSession()
     {
@@ -68,8 +62,6 @@ class ExceptionErrorTest extends \OxidTestCase
 
     /**
      * Test getting errors array
-     *
-     * @return null
      */
     public function testGetErrors()
     {

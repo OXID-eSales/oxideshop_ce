@@ -610,8 +610,6 @@ final class PictureHandlerTest extends \OxidTestCase
 
     /**
      * Picture url getter test
-     *
-     * @return null
      */
     public function testGetPicUrl()
     {
@@ -643,8 +641,6 @@ final class PictureHandlerTest extends \OxidTestCase
 
     /**
      * Picture url getter test
-     *
-     * @return null
      */
     public function testGetPicUrlNoSizeInfo()
     {
@@ -660,8 +656,6 @@ final class PictureHandlerTest extends \OxidTestCase
 
     /**
      * Picture url getter test
-     *
-     * @return null
      */
     public function testGetPicUrlNoPathInfo()
     {
@@ -678,6 +672,7 @@ final class PictureHandlerTest extends \OxidTestCase
     public function testGetProductPicUrl(string $filename, string $expectedFilename, bool $convertToWebP):void {
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blConvertImagesToWebP', $convertToWebP);
+
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/' . $expectedFilename;
 
@@ -702,6 +697,7 @@ final class PictureHandlerTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blConvertImagesToWebP', $convertToWebP);
+
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
         $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/' . $filename;
 

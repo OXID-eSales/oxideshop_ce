@@ -18,15 +18,13 @@ class ActionsListTest extends \OxidTestCase
 
     /**
      * Actions_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
         // testing..
         $oView = $this->getProxyClass("Actions_List");
         $sTplName = $oView->render();
-        $aViewData = $oView->getViewData();
+        $oView->getViewData();
 
         $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
         $this->assertEquals(['oxactions' => ['oxtitle' => 'asc']], $oView->getListSorting());
@@ -35,8 +33,6 @@ class ActionsListTest extends \OxidTestCase
 
     /**
      * Actions_List::Render() test case
-     *
-     * @return null
      */
     public function testPromotionsRender()
     {
@@ -60,6 +56,7 @@ class ActionsListTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $iTime = time();
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{ return ' . $iTime . '; }');
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -68,15 +65,15 @@ class ActionsListTest extends \OxidTestCase
 
         $oView = oxNew('Actions_List');
 
-        $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' ";
+        $sQ = sprintf(' and %s.oxactivefrom < \'%s\' and %s.oxactiveto > \'%s\' ', $sTable, $sNow, $sTable, $sNow);
         $this->setRequestParameter('displaytype', 1);
         $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
 
-        $sQ = " and $sTable.oxactivefrom > '$sNow' ";
+        $sQ = sprintf(' and %s.oxactivefrom > \'%s\' ', $sTable, $sNow);
         $this->setRequestParameter('displaytype', 2);
         $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
 
-        $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' ";
+        $sQ = sprintf(' and %s.oxactiveto < \'%s\' and %s.oxactiveto != \'0000-00-00 00:00:00\' ', $sTable, $sNow, $sTable);
         $this->setRequestParameter('displaytype', 3);
         $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
     }

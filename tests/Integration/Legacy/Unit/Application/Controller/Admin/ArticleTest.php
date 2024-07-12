@@ -15,8 +15,6 @@ class ArticleTest extends \OxidTestCase
 
     /**
      * Article::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

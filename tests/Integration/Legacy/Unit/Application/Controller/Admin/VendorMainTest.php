@@ -19,8 +19,6 @@ class VendorMainTest extends \OxidTestCase
 
     /**
      * Vendor_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -37,8 +35,6 @@ class VendorMainTest extends \OxidTestCase
 
     /**
      * Vendor_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -55,8 +51,6 @@ class VendorMainTest extends \OxidTestCase
 
     /**
      * Vendor_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -71,18 +65,17 @@ class VendorMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Vendor_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Main::save()");
 
             return;
         }
+
         $this->fail("Error in Vendor_Main::save()");
     }
 
     /**
      * Vendor_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -97,11 +90,12 @@ class VendorMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Vendor_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Vendor_Main::saveinnlang()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Main::saveinnlang()");
 
             return;
         }
+
         $this->fail("Error in Vendor_Main::saveinnlang()");
     }
 }

@@ -18,8 +18,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::getSubscriptionStatus()
-     *
-     * @return null
      */
     public function testGetSubscriptionStatus()
     {
@@ -30,8 +28,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::subscribe()
-     *
-     * @return null
      */
     public function testSubscribeNoSessionUser()
     {
@@ -50,8 +46,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::subscribe()
-     *
-     * @return null
      */
     public function testSubscribeNoStatusDefined()
     {
@@ -81,8 +75,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::subscribe()
-     *
-     * @return null
      */
     public function testSubscribeCustomStatus()
     {
@@ -106,8 +98,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::isNewsletter()
-     *
-     * @return null
      */
     public function testIsNewsletterNoSessionUser()
     {
@@ -118,8 +108,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::isNewsletter()
-     *
-     * @return null
      */
     public function testIsNewsletter()
     {
@@ -136,8 +124,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -148,8 +134,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -163,8 +147,6 @@ class AccountNewsletterTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

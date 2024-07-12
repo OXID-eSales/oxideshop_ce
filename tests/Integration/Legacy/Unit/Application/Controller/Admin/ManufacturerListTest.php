@@ -15,8 +15,6 @@ class ManufacturerListTest extends \OxidTestCase
 
     /**
      * Manufacturer_List::init() test case
-     *
-     * @return null
      */
     public function testInit()
     {

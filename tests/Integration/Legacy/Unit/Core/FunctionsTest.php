@@ -20,10 +20,10 @@ use \oxTestModules;
 class FunctionsTest extends \OxidTestCase
 {
     /** @var string */
-    protected $requestMethod = null;
+    protected $requestMethod;
 
     /** @var string */
-    protected $requestUri = null;
+    protected $requestUri;
 
     /**
      * Initialize the fixture.

@@ -25,6 +25,7 @@ class SystemComponentExceptionTest extends \OxidTestCase
         $sComponent = "a Component";
         $oTestObject = oxNew('oxSystemComponentException', $sMsg);
         $oTestObject->setComponent($sComponent);
+
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertStringContainsString($sMsg, $sStringOut);
         $this->assertStringContainsString('SystemComponentException', $sStringOut);

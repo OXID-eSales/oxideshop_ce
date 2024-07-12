@@ -17,8 +17,6 @@ class AccountUserTest extends \OxidTestCase
 
     /**
      * Testing Account_User::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -29,8 +27,6 @@ class AccountUserTest extends \OxidTestCase
 
     /**
      * Testing Account_User::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -44,8 +40,6 @@ class AccountUserTest extends \OxidTestCase
 
     /**
      * Testing Account_User::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -56,8 +50,6 @@ class AccountUserTest extends \OxidTestCase
 
     /**
      * Testing Account_User::showShipAddress()
-     *
-     * @return null
      */
     public function testShowShipAddress()
     {

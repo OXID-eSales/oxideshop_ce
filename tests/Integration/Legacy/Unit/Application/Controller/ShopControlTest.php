@@ -33,8 +33,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
-     * @return null
      */
     public function testStart()
     {
@@ -56,8 +54,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
-     * @return null
      */
     public function testStartIsAdmin()
     {
@@ -82,8 +78,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
-     * @return null
      */
     public function testStartWithLoggedInAdminAndNoControllerSpecified()
     {
@@ -101,7 +95,6 @@ class ShopControlTest extends \OxidTestCase
     /**
      * Testing oxShopControl::start()
      * @dataProvider unknownControllerClass
-     * @return null
      */
     public function testStartUnknownController_Redirect404($controllerName)
     {
@@ -135,8 +128,6 @@ class ShopControlTest extends \OxidTestCase
     /**
      * Testing oxShopControl::start()
      * oxUtilsView::addErrorToDispla() should not be called in not debug mode
-     *
-     * @return null
      */
     public function testStartSystemComponentExceptionHandled_onlyInDebugMode()
     {
@@ -167,8 +158,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
-     * @return null
      */
     public function testStartCookieExceptionHandled()
     {
@@ -202,8 +191,6 @@ class ShopControlTest extends \OxidTestCase
     /**
      * Testing oxShopControl::start()
      * oxUtilsView::addErrorToDispla() should not be called in not debug mode
-     *
-     * @return null
      */
     public function testStartCookieExceptionHandled_onlyInDebugMode()
     {
@@ -270,6 +257,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+
         ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
@@ -299,6 +287,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+
         ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
@@ -331,6 +320,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+
         ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
@@ -389,8 +379,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::_startMonitor() & oxShopControl::stopMonitoring()
-     *
-     * @return null
      */
     public function testStartMonitorAndStopMonitoring()
     {
@@ -483,8 +471,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Test case for oxShopControl::_executeMaintenanceTasks();
-     *
-     * @return null
      */
     public function testExecuteMaintenanceTasks()
     {
@@ -513,7 +499,7 @@ class ShopControlTest extends \OxidTestCase
         Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
         $className = $oView::class;
         Registry::getLogger()->expects($this->once())->method('error')
-            ->with("Non public method cannot be accessed: {$className}::{$sFNC}");
+            ->with(sprintf('Non public method cannot be accessed: %s::%s', $className, $sFNC));
 
         Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());
         Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->will($this->returnCallback(function (): never {
@@ -531,8 +517,6 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Test case that requested controller id matches known class.
-     *
-     * @return null
      */
     public function testStartWithMatchedRequestControllerIdDebugModeOn()
     {

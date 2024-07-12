@@ -15,8 +15,6 @@ class ThemeTest extends \OxidTestCase
 
     /**
      * Theme::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

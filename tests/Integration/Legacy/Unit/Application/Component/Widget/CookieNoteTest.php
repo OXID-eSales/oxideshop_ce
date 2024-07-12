@@ -15,8 +15,6 @@ class CookieNoteTest extends \OxidTestCase
 
     /**
      * Testing oxwCookieNote::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -26,8 +24,6 @@ class CookieNoteTest extends \OxidTestCase
 
     /**
      * Testing oxwCookieNote::isEnabled()
-     *
-     * @return null
      */
     public function testIsEnabled()
     {
@@ -38,8 +34,6 @@ class CookieNoteTest extends \OxidTestCase
 
     /**
      * Testing oxwCookieNote::isEnabled()
-     *
-     * @return null
      */
     public function testIsNotEnabled()
     {

@@ -19,8 +19,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -55,8 +53,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -66,8 +62,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -80,8 +74,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -94,8 +86,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -110,8 +100,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::removeFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveFromSet()
     {
@@ -126,8 +114,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::removeFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveFromSetAll()
     {
@@ -145,15 +131,13 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::addToSet() test case
-     *
-     * @return null
      */
     public function testAddToset()
     {
         $sSynchoxid = '_testActionAddMain';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxdel2delset where oxdelsetid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, ["getActionIds"]);
@@ -165,8 +149,6 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetMainAjax::addToSet() test case
-     *
-     * @return null
      */
     public function testAddToSetAll()
     {
@@ -177,7 +159,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getDeliveryViewTable() . ".oxid) from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )");
 
-        $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxdel2delset where oxdelsetid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, ["getActionIds"]);

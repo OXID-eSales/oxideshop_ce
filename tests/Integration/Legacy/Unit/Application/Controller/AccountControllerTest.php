@@ -23,8 +23,6 @@ class AccountControllerTest extends UnitTestCase
 {
     /**
      * Test view render().
-     *
-     * @return null
      */
     public function testRenderConfirmTerms()
     {
@@ -38,8 +36,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test view render().
-     *
-     * @return null
      */
     public function testRenderNoTerms()
     {
@@ -55,8 +51,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test confirmTerms().
-     *
-     * @return null
      */
     public function testConfirmTerms()
     {
@@ -67,8 +61,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test confirmTerms().
-     *
-     * @return null
      */
     public function testConfirmTermsForPrivateSales()
     {
@@ -86,8 +78,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test get list type.
-     *
-     * @return null
      */
     public function testGetListType()
     {
@@ -104,8 +94,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test get search parameter.
-     *
-     * @return null
      */
     public function testGetSearchParam()
     {
@@ -124,8 +112,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test get article id.
-     *
-     * @return null
      */
     public function testGetArticleId()
     {
@@ -142,8 +128,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test get order count.
-     *
-     * @return null
      */
     public function testGetOrderCnt()
     {
@@ -161,8 +145,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test redirect after login.
-     *
-     * @return null
      */
     public function testRedirectAfterLoginShouldNotRedirect()
     {
@@ -178,8 +160,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test redirect after login.
-     *
-     * @return null
      */
     public function testRedirectAfterLogin()
     {
@@ -201,14 +181,13 @@ class AccountControllerTest extends UnitTestCase
                 $sParams .= '&' . rawurlencode((string) $sName) . "=" . rawurlencode((string) $sValue);
             }
         }
+
         $sUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=testsource' . $sParams;
         $this->assertEquals($sUrl, $oView->redirectAfterLogin());
     }
 
     /**
      * Test get navigation parameters.
-     *
-     * @return null
      */
     public function testGetNavigationParams()
     {
@@ -224,8 +203,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -248,8 +225,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -273,8 +248,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test Account::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -299,8 +272,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Test Account::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumbNoUser()
     {
@@ -316,8 +287,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Testing account::getCompareItemsCnt()
-     *
-     * @return null
      */
     public function testGetCompareItemsCnt()
     {
@@ -329,8 +298,6 @@ class AccountControllerTest extends UnitTestCase
 
     /**
      * Testing account::getCompareItemsCnt()
-     *
-     * @return null
      */
     public function testGetTitle()
     {

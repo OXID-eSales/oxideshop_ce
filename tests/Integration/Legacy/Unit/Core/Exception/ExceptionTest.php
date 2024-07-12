@@ -58,6 +58,7 @@ class ExceptionTest extends UnitTestCase
         $this->assertEquals(StandardException::class, $testObject::class);
         $testObject->setRenderer();
         $testObject->setNotCaught();
+
         $out = $testObject->getString();
         $this->assertStringContainsString($message, $out);
         $this->assertStringContainsString(__FUNCTION__, $out);

@@ -18,8 +18,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -36,8 +34,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -49,8 +45,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DiscountCategoriesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -58,14 +52,12 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $sCategoryTable = $tableViewNameGenerator->getViewName("oxcategories");
 
         $oView = oxNew('discount_categories_ajax');
-        $sQuery = "from $sCategoryTable";
+        $sQuery = 'from ' . $sCategoryTable;
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountCategoriesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -77,17 +69,15 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $sCategoryTable = $tableViewNameGenerator->getViewName("oxcategories");
 
         $oView = oxNew('discount_categories_ajax');
-        $sQuery = "from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery = sprintf('from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sCategoryTable, $sCategoryTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcategories'  and ";
-        $sQuery .= " $sCategoryTable.oxid not in (  select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery .= sprintf(' %s.oxid not in (  select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sCategoryTable, $sCategoryTable, $sCategoryTable, $sCategoryTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountCategoriesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -97,16 +87,14 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
         $sCategoryTable = $tableViewNameGenerator->getViewName("oxcategories");
 
         $oView = oxNew('discount_categories_ajax');
-        $sQuery = "from $sCategoryTable where ";
-        $sQuery .= " $sCategoryTable.oxid not in (  select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery = sprintf('from %s where ', $sCategoryTable);
+        $sQuery .= sprintf(' %s.oxid not in (  select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sCategoryTable, $sCategoryTable, $sCategoryTable, $sCategoryTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountArticlesAjax::removeDiscCat() test case
-     *
-     * @return null
      */
     public function testRemoveDiscCat()
     {
@@ -120,8 +108,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DiscountArticlesAjax::removeDiscArt() test case
-     *
-     * @return null
      */
     public function testRemoveDiscCatAll()
     {
@@ -138,8 +124,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DiscountArticlesAjax::addDiscCat() test case
-     *
-     * @return null
      */
     public function testAddDiscCat()
     {
@@ -155,8 +139,6 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DiscountArticlesAjax::addDiscCat() test case
-     *
-     * @return null
      */
     public function testAddDiscCatAll()
     {
@@ -169,9 +151,9 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_categories_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
 
         $oView->addDiscCat();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
     }
 }

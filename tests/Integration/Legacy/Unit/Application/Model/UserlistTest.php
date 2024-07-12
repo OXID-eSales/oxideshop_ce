@@ -17,14 +17,13 @@ class UserlistTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     public function setup(): void
     {
         parent::setUp();
         $oUser = oxNew('oxuser');
         $oUser->setId('user1');
+
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('user1@gmail.com', oxField::T_RAW);
@@ -33,6 +32,7 @@ class UserlistTest extends \OxidTestCase
 
         $oUser = oxNew('oxuser');
         $oUser->setId('user2');
+
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField(2, oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('user2@yahoo.com', oxField::T_RAW);
@@ -40,6 +40,7 @@ class UserlistTest extends \OxidTestCase
 
         $oBasket = oxNew('OxUserBasket');
         $oBasket->setId("testUserBasket");
+
         $oBasket->oxuserbaskets__oxuserid = new oxField('user2', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxtitle = new oxField('wishlist', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxpublic = new oxField(1, oxField::T_RAW);
@@ -47,6 +48,7 @@ class UserlistTest extends \OxidTestCase
 
         $oBasketItem = oxNew('OxUserBasketItem');
         $oBasketItem->setId("testUserBasketItem");
+
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField('testUserBasket', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField(1, oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('test', oxField::T_RAW);
@@ -54,6 +56,7 @@ class UserlistTest extends \OxidTestCase
 
         $oBasket = oxNew('OxUserBasket');
         $oBasket->setId("testUserBasket2");
+
         $oBasket->oxuserbaskets__oxuserid = new oxField('user1', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxtitle = new oxField('wishlist', oxField::T_RAW);
         $oBasket->oxuserbaskets__oxpublic = new oxField(1, oxField::T_RAW);
@@ -61,6 +64,7 @@ class UserlistTest extends \OxidTestCase
 
         $oBasketItem = oxNew('OxUserBasketItem');
         $oBasketItem->setId("testUserBasketItem2");
+
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField('testUserBasket2', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField(1, oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('test', oxField::T_RAW);
@@ -69,14 +73,13 @@ class UserlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     public function tearDown(): void
     {
         $oUser = oxNew('oxuser');
         $oUser->delete('user1');
         $oUser->delete('user2');
+
         $oUserBasket = oxNew('oxUserBasket');
         $oUserBasket->delete("testUserBasket");
         $oUserBasket->delete("testUserBasket2");

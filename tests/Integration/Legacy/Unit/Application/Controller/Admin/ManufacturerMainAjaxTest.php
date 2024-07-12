@@ -17,8 +17,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -57,44 +53,36 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and 1  and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != ''", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != ''", trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryVariantsSelectionTrue()
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and 1", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and 1  and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidVariantsSelectionTrue()
     {
@@ -102,13 +90,11 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and 1", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -120,8 +106,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -131,13 +115,11 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxidVariantsSelection()
     {
@@ -148,13 +130,11 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  ( " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticleViewTable() . ".oxparentid = " . $this->getObject2CategoryViewTable() . ".oxobjectid )where " . $this->getArticleViewTable() . ".oxshopid=\"" . $this->getShopIdTest() . "\" and " . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  ( " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticleViewTable() . ".oxparentid = " . $this->getObject2CategoryViewTable() . ".oxobjectid )where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
     }
 
     /**
      * ManufacturerMainAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilter()
     {
@@ -164,8 +144,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilterVariantsSelection()
     {
@@ -176,8 +154,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilterVariantsSelection2()
     {
@@ -188,8 +164,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::removeManufacturer() test case
-     *
-     * @return null
      */
     public function testRemoveManufacturer()
     {
@@ -203,8 +177,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::removeManufacturer() test case
-     *
-     * @return null
      */
     public function testRemoveManufacturerAll()
     {
@@ -222,8 +194,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::addManufacturer() test case
-     *
-     * @return null
      */
     public function testAddManufacturer()
     {
@@ -241,8 +211,6 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
     /**
      * ManufacturerMainAjax::addManufacturer() test case
-     *
-     * @return null
      */
     public function testAddManufacturerAll()
     {

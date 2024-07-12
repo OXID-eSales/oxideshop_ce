@@ -15,8 +15,6 @@ class AdminWrappingTest extends \OxidTestCase
 
     /**
      * Admin_Wrapping::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

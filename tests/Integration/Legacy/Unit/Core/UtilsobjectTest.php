@@ -32,20 +32,6 @@ class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
  */
 class _oxutils_test
 {
-    /**
-     * Does nothing
-     *
-     * @param bool $a [optional]
-     * @param bool $b [optional]
-     * @param bool $c [optional]
-     * @param bool $d [optional]
-     * @param bool $e [optional]
-     *
-     * @return null
-     */
-    public function __construct($a = false, $b = false, $c = false, $d = false, $e = false)
-    {
-    }
 }
 
 class oxModuleUtilsObject extends \oxUtilsObject
@@ -81,8 +67,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Testing oxUtilsObject object creation.
-     *
-     * @return null
      */
     public function testGetObject()
     {

@@ -15,8 +15,6 @@ class ManufacturerListTest extends \OxidTestCase
 
     /**
      * Testing oxwManufacturerList::render()
-     *
-     * @return null
      */
     public function testRender()
     {

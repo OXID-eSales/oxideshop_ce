@@ -18,8 +18,6 @@ class AddressTest extends \OxidTestCase
 
     /**
      * Test address object to string generator.
-     *
-     * @return null
      */
     public function testToString()
     {
@@ -35,8 +33,6 @@ class AddressTest extends \OxidTestCase
 
     /**
      * Test address object without name to string generator.
-     *
-     * @return null
      */
     public function testToStringNoName()
     {
@@ -50,8 +46,6 @@ class AddressTest extends \OxidTestCase
 
     /**
      * Test address object without first name to string generator.
-     *
-     * @return null
      */
     public function testToStringNoFirstName()
     {
@@ -66,8 +60,6 @@ class AddressTest extends \OxidTestCase
 
     /**
      * Test address object string generator using magic getter.
-     *
-     * @return null
      */
     public function testToStringMagic()
     {
@@ -83,22 +75,17 @@ class AddressTest extends \OxidTestCase
 
     /**
      * Test if address object string generator using magic getter was called.
-     *
-     * @return null
      */
     public function testToStringMagicMocked()
     {
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, ["toString"]);
         $oSubj->expects($this->once())->method('toString')->will($this->returnValue("teststr"));
-        (string) $oSubj;
     }
 
     /**
      * Testing encoding of delivery address.
      * Checks whether it generates different hashes for different data and
      * eqal hashes for eqal data.
-     *
-     * @return null
      */
     public function testGetEncodedDeliveryAddress()
     {
@@ -149,7 +136,6 @@ class AddressTest extends \OxidTestCase
                 'Alaska'
             );
 
-        /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
         $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, ['getStateObject', 'getStateId']);
 
         $oAddressMock->expects($this->any())

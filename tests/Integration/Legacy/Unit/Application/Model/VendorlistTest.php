@@ -28,7 +28,7 @@ class VendorlistTest extends \OxidTestCase
      */
     public function test_loadVendorListByLanguage()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myConfig = $this->getConfig();
         $myDB = oxDb::getDB();
 
@@ -60,7 +60,7 @@ class VendorlistTest extends \OxidTestCase
      */
     public function test_loadVendorListAndCountVendorArticles()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
@@ -121,6 +121,7 @@ class VendorlistTest extends \OxidTestCase
 
         $oVendorlist = oxNew('oxvendorlist');
         $oVendorlist->loadVendorList();
+
         $oVendor = $oVendorlist->current();
 
         $oVendorlist->addCategoryFields($oVendor);
@@ -130,7 +131,7 @@ class VendorlistTest extends \OxidTestCase
         $this->assertEquals($oVendor->oxvendor__oxicon, $oVendor->oxcategories__oxicon);
         $this->assertEquals($oVendor->oxvendor__oxtitle, $oVendor->oxcategories__oxtitle);
         $this->assertEquals($oVendor->oxvendor__oxshortdesc, $oVendor->oxcategories__oxdesc);
-        $this->assertEquals($myConfig->getShopHomeURL() . "cl=vendorlist&amp;cnid={$oVendor->oxcategories__oxid->value}", $oVendor->getLink());
+        $this->assertEquals($myConfig->getShopHomeURL() . ('cl=vendorlist&amp;cnid=' . $oVendor->oxcategories__oxid->value), $oVendor->getLink());
 
         $this->assertTrue($oVendor->getIsVisible());
         $this->assertFalse($oVendor->getHasVisibleSubCats());
@@ -153,7 +154,7 @@ class VendorlistTest extends \OxidTestCase
         foreach ($oVendorlist as $sVndId => $value) {
             $sVendorLink = $oVendorlist[$sVndId]->getLink();
             if (!$sVendorLink || str_contains((string) $sVendorLink, 'index.php')) {
-                $this->fail("SEO link was not added to vendor object ({$sVendorLink})");
+                $this->fail(sprintf('SEO link was not added to vendor object (%s)', $sVendorLink));
             }
         }
     }

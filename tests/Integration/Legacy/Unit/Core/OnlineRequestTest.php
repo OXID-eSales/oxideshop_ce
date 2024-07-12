@@ -36,6 +36,7 @@ class OnlineRequestTest extends \OxidTestCase
         $config = $this->getConfig();
 
         $config->setConfigParam('sClusterId', 'generated_unique_cluster_id');
+
         $request = oxNew('oxOnlineRequest');
 
         $this->assertSame('generated_unique_cluster_id', $request->clusterId);

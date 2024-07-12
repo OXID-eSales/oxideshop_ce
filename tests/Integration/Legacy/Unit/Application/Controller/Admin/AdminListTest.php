@@ -37,8 +37,6 @@ class AdminListTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -58,8 +56,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Tear get user default list size.
-     *
-     * @return null
      */
     public function testGetUserDefListSize()
     {
@@ -73,8 +69,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * List size getter test
-     *
-     * @return null
      */
     public function testGetViewListSize()
     {
@@ -91,8 +85,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Filter process builder helper
-     *
-     * @return null
      */
     public function testProcessFilter()
     {
@@ -102,8 +94,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Filter sql builder helper
-     *
-     * @return null
      */
     public function testBuildFilter()
     {
@@ -114,8 +104,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test is search value.
-     *
-     * @return null
      */
     public function testIsSearchValue()
     {
@@ -126,8 +114,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test delete entry.
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
@@ -148,8 +134,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Testing if list item calculation counter
-     *
-     * @return null
      */
     public function testcalcListItemsCount()
     {
@@ -166,8 +150,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test current list position
-     *
-     * @return null
      */
     public function testSetCurrentListPosition()
     {
@@ -207,8 +189,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test builing sql oder by query
-     *
-     * @return null
      */
     public function testPrepareOrderByQuery()
     {
@@ -227,13 +207,11 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`", trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertEquals(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
      * Test builing sql oder by query - multiple sort
-     *
-     * @return null
      */
     public function testPrepareOrderByQueryMultipleSort()
     {
@@ -249,14 +227,12 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`, `$sTable`.`oxactive` desc , `$sTable`.`sort`", trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertEquals(sprintf('order by `%s`.`oxtitle`, `%s`.`oxactive` desc , `%s`.`sort`', $sTable, $sTable, $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
      * Test builing sql oder by query - setting order by internal param _sDefSort
      *  when order fields are not posted
-     *
-     * @return null
      */
     public function testPrepareOrderByQueryByInternalParam()
     {
@@ -274,15 +250,14 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oList);
         $oAdminList->setNonPublicVar('_sDefSortField', 'oxactive');
+
         $sResultSql = $oAdminList->prepareOrderByQuery('');
 
-        $this->assertEquals("order by `$sTable`.`oxactive` desc", trim((string) $sResultSql));
+        $this->assertEquals(sprintf('order by `%s`.`oxactive` desc', $sTable), trim((string) $sResultSql));
     }
 
     /**
      * Test builing sql oder by query - when order fields are not posted
-     *
-     * @return null
      */
     public function testPrepareOrderWithoutAnyParam()
     {
@@ -291,6 +266,7 @@ class AdminListTest extends \OxidTestCase
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oLinks);
+
         $sResultSql = $oAdminList->prepareOrderByQuery('');
 
         $this->assertEquals('', trim((string) $sResultSql));
@@ -298,8 +274,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test builing sql oder by query - adding ASC/DESC order to query
-     *
-     * @return null
      */
     public function testPrepareOrderWithOrderType()
     {
@@ -315,13 +289,11 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle` desc", trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertEquals(sprintf('order by `%s`.`oxtitle` desc', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
      * Test builing sql oder by query - handling multilanguage fields
-     *
-     * @return null
      */
     public function testPrepareOrderMultilanguageField()
     {
@@ -337,13 +309,11 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxurldesc`", trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertEquals(sprintf('order by `%s`.`oxurldesc`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
      * Test builing sql oder by query - when order table is defined
-     *
-     * @return null
      */
     public function testPrepareOrderByWithDefinedOrderTable()
     {
@@ -359,19 +329,17 @@ class AdminListTest extends \OxidTestCase
         $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
         $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
 
-        $this->assertEquals("order by `$sTable`.`oxtitle`", trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertEquals(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
      * Test builing sql query - sql must return selecting all fields without "where" query
-     *
-     * @return null
      */
     public function testBuildSelectString()
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxactions');
-        $sSql = "select `{$sTable}`.`oxid`, `{$sTable}`.`oxshopid`, `{$sTable}`.`oxtype`, `{$sTable}`.`oxtitle`, `{$sTable}`.`oxlongdesc`, `{$sTable}`.`oxactive`, `{$sTable}`.`oxactivefrom`, `{$sTable}`.`oxactiveto`, `{$sTable}`.`oxpic`, `{$sTable}`.`oxlink`, `{$sTable}`.`oxsort`, `{$sTable}`.`oxtimestamp` from {$sTable} where 1 ";
+        $sSql = sprintf('select `%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxlongdesc`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxlink`, `%s`.`oxsort`, `%s`.`oxtimestamp` from %s where 1 ', $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable);
 
         $oAdminList = oxNew('oxAdminList');
         $this->assertEquals($sSql, $oAdminList->buildSelectString(new oxActions()));
@@ -379,8 +347,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test builing sql query withoug passing list object
-     *
-     * @return null
      */
     public function testBuildSelectStringWithoutParams()
     {
@@ -392,8 +358,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test prepearing sql query from $aWhere array
-     *
-     * @return null
      */
     public function testPrepareWhereQuery()
     {
@@ -414,8 +378,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test prepearing sql query from $aWhere array with multiple search in one field
-     *
-     * @return null
      */
     public function testPrepareWhereQueryWithMulipleSearchInOneField()
     {
@@ -436,8 +398,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test prepearing sql query with german umluats in search string
-     *
-     * @return null
      */
     public function testPrepareWhereQueryWithGermanUmlauts()
     {
@@ -460,8 +420,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test prepearing sql query from $aWhere array with empty search
-     *
-     * @return null
      */
     public function testPrepareWhereQueryWithEmptySearch()
     {
@@ -481,8 +439,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test prepearing sql query from $aWhere array with zero value
-     *
-     * @return null
      */
     public function testPrepareWhereQueryWithZeroSearch()
     {
@@ -504,14 +460,13 @@ class AdminListTest extends \OxidTestCase
      * Test building sql where with specified "folder" param for table oxorders
      *  If table is oxorder and folder name not specified, takes first member of
      *  orders folders array
-     *
-     * @return null
      */
     public function testPrepareWhereQueryWithOrderWhenFolderNotSpecified()
     {
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
+
         $this->getConfig()->setConfigParam('aOrderfolder', ['Neu' => 1, 'Old' => 2]);
         $this->setRequestParameter('folder', '');
 
@@ -525,8 +480,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test change select.
-     *
-     * @return null
      */
     public function testChangeselect()
     {
@@ -536,8 +489,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test building sql where array adds multilang fields is array
-     *
-     * @return null
      */
     public function testBuildWhereMultiLang()
     {
@@ -545,7 +496,7 @@ class AdminListTest extends \OxidTestCase
         $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
         $aWhere['oxlinks']['oxurldesc'] = 'oxurldesc';
 
-        $aResultWhere["{$sTable}.oxurldesc"] = '%oxurldesc%';
+        $aResultWhere[$sTable . '.oxurldesc'] = '%oxurldesc%';
 
         $this->setRequestParameter('where', $aWhere);
         oxRegistry::getLang()->setBaseLanguage(1);
@@ -561,8 +512,6 @@ class AdminListTest extends \OxidTestCase
     /**
      * Test building sql where with specified "folder" param for table oxcontents
      *  when folder name contains 'CMSFOLDER_NONE'
-     *
-     * @return null
      */
     public function testBuildWhereWhenFolderParamSpecifiesNoUsageOfFolderName()
     {
@@ -573,14 +522,13 @@ class AdminListTest extends \OxidTestCase
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oListItem);
+
         $aBuildWhere = $oAdminList->buildWhere();
         $this->assertEquals('', $aBuildWhere['oxcontents.oxfolder']);
     }
 
     /**
      * Test building sql where array when no params are setted
-     *
-     * @return null
      */
     public function testBuildWhereWithoutListObject()
     {
@@ -590,8 +538,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test building sql where array
-     *
-     * @return null
      */
     public function testBuildWhereWithoutParams()
     {
@@ -605,8 +551,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test building sql where array
-     *
-     * @return null
      */
     public function testBuildWhereWithParams()
     {
@@ -633,8 +577,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test building sql where array when searching in differnet tables
-     *
-     * @return null
      */
     public function testBuildWhereWithParamsFromDifferentTables()
     {
@@ -658,8 +600,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      *  Selected Data scheme is not applied for Search fields (#1260)
-     *
-     * @return null
      */
     public function testBuildWhereWithDate()
     {
@@ -695,8 +635,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test set list navigation parameters.
-     *
-     * @return null
      */
     public function testSetListNavigationParams()
     {
@@ -729,8 +667,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test setup navigation.
-     *
-     * @return null
      */
     public function testSetupNavigation()
     {
@@ -750,8 +686,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test set list navigation resets active tab id on creating new item.
-     *
-     * @return null
      */
     public function testSetupNavigationResetsActiveTabIdOnCreatingNewItem()
     {
@@ -772,8 +706,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test render getting search where parameters.
-     *
-     * @return null
      */
     public function testRenderGettingSearchWhereParams()
     {
@@ -798,8 +730,6 @@ class AdminListTest extends \OxidTestCase
      * Test convert to db date.
      *
      * Selected Data scheme is not applied for Search fields (#1260)
-     *
-     * @return null
      */
     public function testConvertToDBDate()
     {
@@ -831,8 +761,6 @@ class AdminListTest extends \OxidTestCase
      * Test convert date.
      *
      * Selected Data scheme is not applied for Search fields (#1260)
-     *
-     * @return null
      */
     public function testConvertDate()
     {
@@ -851,8 +779,6 @@ class AdminListTest extends \OxidTestCase
      * Test convert to time.
      *
      * Selected Data scheme is not applied for Search fields (#1260)
-     *
-     * @return null
      */
     public function testConvertTime()
     {
@@ -870,8 +796,6 @@ class AdminListTest extends \OxidTestCase
 
     /**
      * Test item list clear (set to null)
-     *
-     * @return null
      */
     public function testClearItemList()
     {

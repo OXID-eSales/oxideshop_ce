@@ -15,8 +15,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Category::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -25,8 +25,6 @@ class OrderArticleHelper extends oxOrder
      * @param array $aNewOrderArticles article list of new order
      * @param bool  $blChangeDelivery  change deliveryr
      * @param bool  $blChangeDiscount  change discount
-     *
-     * @return null
      */
     public function recalculateOrder($aNewOrderArticles = [], $blChangeDelivery = false, $blChangeDiscount = false)
     {
@@ -60,6 +58,7 @@ class OrderArticleTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
+
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
 
@@ -68,6 +67,7 @@ class OrderArticleTest extends \OxidTestCase
         $oArticle->init('oxarticles');
         $oArticle->load('1126');
         $oArticle->setId('_testArticle');
+
         $oArticle->oxarticles__oxartnum = new oxField('_testArticle');
         $oArticle->oxarticles__oxstock = new oxField(100);
         $oArticle->save();
@@ -75,6 +75,7 @@ class OrderArticleTest extends \OxidTestCase
         //set order
         $oOrder = oxNew("oxOrder");
         $oOrder->setId('_testOrderId1');
+
         $oOrder->oxorder__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
         $oOrder->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
@@ -102,8 +103,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test add article.
-     *
-     * @return null
      */
     public function testAddThisArticle()
     {
@@ -118,6 +117,7 @@ class OrderArticleTest extends \OxidTestCase
         // now reading order articles table
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(1, $oOrderArticles->count());
@@ -127,8 +127,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test add another article.
-     *
-     * @return null
      */
     public function testAddThisArticle2()
     {
@@ -149,8 +147,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test delete article.
-     *
-     * @return null
      */
     public function testDeleteThisArticle()
     {
@@ -165,6 +161,7 @@ class OrderArticleTest extends \OxidTestCase
         // now reading order articles table
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(1, $oOrderArticles->count());
@@ -178,6 +175,7 @@ class OrderArticleTest extends \OxidTestCase
         // now reading order articles table
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(0, $oOrderArticles->count());
@@ -185,8 +183,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test cancel article.
-     *
-     * @return null
      */
     public function testStorno()
     {
@@ -200,6 +196,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(1, $oOrderArticles->count());
@@ -213,6 +210,7 @@ class OrderArticleTest extends \OxidTestCase
         $oObj->storno();
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(1, $oOrderArticles->count());
@@ -224,6 +222,7 @@ class OrderArticleTest extends \OxidTestCase
         $oObj->storno();
         $oOrder = oxNew('oxorder');
         $oOrder->load('_testOrder');
+
         $oOrderArticles = $oOrder->getOrderArticles();
 
         $this->assertEquals(1, $oOrderArticles->count());
@@ -233,8 +232,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test get edit object.
-     *
-     * @return null
      */
     public function testGetEditObject()
     {
@@ -252,8 +249,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test get search protuct article number.
-     *
-     * @return null
      */
     public function testGetSearchProductArtNr()
     {
@@ -268,8 +263,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test get search protuct.
-     *
-     * @return null
      */
     public function testGetSearchProduct()
     {
@@ -286,8 +279,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test get main protuct.
-     *
-     * @return null
      */
     public function testGetMainProduct()
     {
@@ -313,8 +304,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test get protuct list.
-     *
-     * @return null
      */
     public function testGetProductList()
     {
@@ -331,6 +320,7 @@ class OrderArticleTest extends \OxidTestCase
             $iCnt = 3;
             $searchArticleNumber = "1661";
         }
+
         $this->setRequestParameter("sSearchArtNum", $searchArticleNumber);
 
         $oView = oxNew('Order_Article');
@@ -340,8 +330,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test add non existing artiicle.
-     *
-     * @return null
      */
     public function testAddThisArticleWrongArticle()
     {
@@ -361,8 +349,6 @@ class OrderArticleTest extends \OxidTestCase
 
     /**
      * Test add artiicle with wrong ammount.
-     *
-     * @return null
      */
     public function testAddThisArticleWrongAmount()
     {

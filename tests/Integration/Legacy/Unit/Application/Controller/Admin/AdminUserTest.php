@@ -15,8 +15,6 @@ class AdminUserTest extends \OxidTestCase
 
     /**
      * Admin_User::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

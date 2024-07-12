@@ -16,8 +16,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -28,8 +26,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -41,8 +37,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::removeActionArticle() test case
-     *
-     * @return null
      */
     public function testRemoveActionArticle()
     {
@@ -56,8 +50,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::setActionArticle() test case
-     *
-     * @return null
      */
     public function testSetActionArticle()
     {
@@ -71,8 +63,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -82,8 +72,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryVariantSelectionTrue()
     {
@@ -94,8 +82,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidTrue()
     {
@@ -107,8 +93,6 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilter()
     {
@@ -119,15 +103,13 @@ class ActionsArticleAjaxTest extends \OxidTestCase
 
     /**
      * ActionsArticleAjax::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilterVariantSelectionTrue()
     {
         $sParam = 'param';
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('actions_article_ajax');
-        $this->assertEquals("$sParam group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter($sParam)));
+        $this->assertEquals($sParam . ' group by ' . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter($sParam)));
     }
 
     private function getArticleViewTable()

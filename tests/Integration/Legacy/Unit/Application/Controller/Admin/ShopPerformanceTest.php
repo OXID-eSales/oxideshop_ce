@@ -15,8 +15,6 @@ class ShopPerformanceTest extends \OxidTestCase
 
     /**
      * Shop_Performance::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

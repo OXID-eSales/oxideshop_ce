@@ -18,8 +18,6 @@ class ListReviewTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -39,8 +37,6 @@ class ListReviewTest extends \OxidTestCase
 
     /**
      * List_Review::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -54,8 +50,6 @@ class ListReviewTest extends \OxidTestCase
 
     /**
      * Testing if methods removes parent id checking from sql
-     *
-     * @return null
      */
     public function testPrepareWhereQuery()
     {
@@ -79,8 +73,6 @@ class ListReviewTest extends \OxidTestCase
 
     /**
      * Testing if methods removes parent id checking from sql
-     *
-     * @return null
      */
     public function testPrepareWhereQueryCase2()
     {

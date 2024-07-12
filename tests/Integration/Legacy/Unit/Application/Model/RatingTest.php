@@ -15,8 +15,6 @@ class RatingTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -25,19 +23,17 @@ class RatingTest extends \OxidTestCase
         $myConfig = $this->getConfig();
         $sDate = date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - 5 * 24 * 60 * 60);
         $sInsert = "INSERT INTO `oxratings` (`OXID` ,`OXSHOPID` ,`OXUSERID` ,`OXOBJECTID` ,`OXRATING` ,`OXTIMESTAMP` ,
-                    `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . "', 'oxdefaultadmin', '1651', '5', '$sDate', 'oxarticle')";
+                    `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . sprintf('\', \'oxdefaultadmin\', \'1651\', \'5\', \'%s\', \'oxarticle\')', $sDate);
         $oDB->Execute($sInsert);
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $this->getConfig();
         $sInsert = "DELETE from `oxratings` where OXID='test'";
         $oDB->Execute($sInsert);
 
@@ -65,6 +61,7 @@ class RatingTest extends \OxidTestCase
         // inserting few test records
         $oRev = oxNew('oxreview');
         $oRev->setId('_testrev1');
+
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
         $oRev->oxreviews__oxrating = new oxField(3);
@@ -72,6 +69,7 @@ class RatingTest extends \OxidTestCase
 
         $oRev = oxNew('oxreview');
         $oRev->setId('_testrev2');
+
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
         $oRev->oxreviews__oxrating = new oxField(1);
@@ -79,6 +77,7 @@ class RatingTest extends \OxidTestCase
 
         $oRev = oxNew('oxreview');
         $oRev->setId('_testrev3');
+
         $oRev->oxreviews__oxobjectid = new oxField('yyy');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
         $oRev->oxreviews__oxrating = new oxField(5);
@@ -96,6 +95,7 @@ class RatingTest extends \OxidTestCase
         // inserting few test records
         $oRat = oxNew('oxRating');
         $oRat->setId('id1');
+
         $oRat->oxratings__oxobjectid = new oxField('xx1');
         $oRat->oxratings__oxtype = new oxField('oxarticle');
         $oRat->oxratings__oxrating = new oxField(1);
@@ -103,6 +103,7 @@ class RatingTest extends \OxidTestCase
 
         $oRat = oxNew('oxRating');
         $oRat->setId('id2');
+
         $oRat->oxratings__oxobjectid = new oxField('xx2');
         $oRat->oxratings__oxtype = new oxField('oxrecommlist');
         $oRat->oxratings__oxrating = new oxField(2);

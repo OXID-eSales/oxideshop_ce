@@ -113,8 +113,8 @@ class UtilsFileTest extends \OxidTestCase
         try {
             $oUF->processFiles();
             $this->fail();
-        } catch (Exception $e) {
-            $this->assertEquals('this is ok', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('this is ok', $exception->getMessage());
         }
     }
 
@@ -185,6 +185,7 @@ class UtilsFileTest extends \OxidTestCase
             $this->cleanupDeleteDir(null, $sDir, $sFileName, $sSubDir);
             $this->fail('Failed to set up test dirs');
         }
+
         $this->cleanupDeleteDir($hFileHandle, $sDir, $sFileName, $sSubDir);
     }
 
@@ -332,21 +333,19 @@ class UtilsFileTest extends \OxidTestCase
                 $hHandle = fopen($sSourceFilePath, 'w');
                 if ($hHandle) {
                     if (!fclose($hHandle)) {
-                        $this->fail("could not close file: $sSourceFilePath ");
+                        $this->fail(sprintf('could not close file: %s ', $sSourceFilePath));
                     }
                 } else {
-                    $this->fail("could not open file: $sSourceFilePath ");
+                    $this->fail(sprintf('could not open file: %s ', $sSourceFilePath));
                 }
             } else {
-                $this->fail("could not create directory: $sSourceDir ");
+                $this->fail(sprintf('could not create directory: %s ', $sSourceDir));
             }
         }
 
         //try to create target dir
-        if (!is_dir($sTargetDir)) {
-            if (!mkdir($sTargetDir)) {
-                $this->fail("could not create directory: $sTargetDir ");
-            }
+        if (!is_dir($sTargetDir) && !mkdir($sTargetDir)) {
+            $this->fail(sprintf('could not create directory: %s ', $sTargetDir));
         }
 
         return true;
@@ -359,20 +358,20 @@ class UtilsFileTest extends \OxidTestCase
             //$dirTargetHandle = opendir($sTargetDir);
             //closedir($dirTargetHandle);
             if (!rmDir($sTargetDir)) {
-                $this->fail("could not remove $sTargetDir ");
+                $this->fail(sprintf('could not remove %s ', $sTargetDir));
             }
         } else {
-            $this->fail("could not delete $sTargetFilePath ");
+            $this->fail(sprintf('could not delete %s ', $sTargetFilePath));
         }
 
         if (file_exists($sSourceFilePath) && unlink($sSourceFilePath)) {
             //$dirSourceHandle = opendir($sSourceDir);
             //closedir($dirSourceHandle);
             if (!rmDir($sSourceDir)) {
-                $this->fail("after remove not remove $sSourceDir ");
+                $this->fail(sprintf('after remove not remove %s ', $sSourceDir));
             }
         } else {
-            $this->fail("could not delete $sSourceFilePath ");
+            $this->fail(sprintf('could not delete %s ', $sSourceFilePath));
         }
     }
 
@@ -384,8 +383,7 @@ class UtilsFileTest extends \OxidTestCase
     private function getDirectoryPathToCreateFiles()
     {
         $vfsStream = $this->getVfsStreamWrapper();
-        $pathToRoot = $vfsStream->createStructure([]);
 
-        return $pathToRoot;
+        return $vfsStream->createStructure([]);
     }
 }

@@ -43,8 +43,6 @@ class UserListTest extends \OxidTestCase
 
     /**
      * User_List::DeleteEntry() test case
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
@@ -58,11 +56,12 @@ class UserListTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["allowAdminEdit"]);
             $oView->expects($this->any())->method('allowAdminEdit')->will($this->returnValue(true));
             $oView->deleteEntry();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
 
             return;
         }
+
         $this->fail("Error in User_List::deleteEntry()");
     }
 
@@ -80,11 +79,12 @@ class UserListTest extends \OxidTestCase
             $oView->expects($this->once())->method('buildWhere')->will($this->returnValue([]));
             $oView->getItemList();
             $oView->deleteEntry();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
 
             return;
         }
+
         $this->fail("Error in User_List::deleteEntry()");
     }
 
@@ -102,8 +102,8 @@ class UserListTest extends \OxidTestCase
             $oView->expects($this->once())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
             $oView->getItemList();
             $oView->deleteEntry();
-        } catch (Exception $oNewExcp) {
-            $this->assertEquals("list was empty", $oNewExcp->getMessage(), "Error in User_List::deleteEntry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("list was empty", $exception->getMessage(), "Error in User_List::deleteEntry()");
             return;
         }
         
@@ -112,8 +112,6 @@ class UserListTest extends \OxidTestCase
 
     /**
      * User_List::PrepareWhereQuery() test case
-     *
-     * @return null
      */
     public function testPrepareWhereQuery()
     {
@@ -138,8 +136,6 @@ class UserListTest extends \OxidTestCase
 
     /**
      * User_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

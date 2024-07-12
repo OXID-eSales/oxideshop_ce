@@ -29,10 +29,13 @@ final class EmailTest extends \OxidTestCase
 {
     use ProphecyTrait;
 
-    protected $email = null;
-    protected $user = null;
-    protected $shop = null;
-    protected $article = null;
+    protected $email;
+
+    protected $user;
+
+    protected $shop;
+
+    protected $article;
 
     protected function setUp(): void
     {
@@ -48,6 +51,7 @@ final class EmailTest extends \OxidTestCase
         //set default user
         $this->user = oxNew("oxuser");
         $this->user->setId('_testUserId');
+
         $this->user->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->user->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
         $this->user->oxuser__oxcustnr = new oxField('998', oxField::T_RAW);
@@ -60,6 +64,7 @@ final class EmailTest extends \OxidTestCase
         // set shop params for testing
         $this->shop = oxNew("oxshop");
         $this->shop->load($this->getConfig()->getShopId());
+
         $this->shop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->shop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
         $this->shop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
@@ -76,6 +81,7 @@ final class EmailTest extends \OxidTestCase
         // insert test article
         $this->article = oxNew("oxArticle");
         $this->article->setId('_testArticleId');
+
         $this->article->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->article->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
         $this->article->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
@@ -108,11 +114,8 @@ final class EmailTest extends \OxidTestCase
     }
 
     /*-------------------------------------------------------------*/
-
     /**
      * oxEmail::sendRegisterConfirmEmail() test case
-     *
-     * @return null
      */
     public function testSendRegisterConfirmEmail()
     {
@@ -134,8 +137,8 @@ final class EmailTest extends \OxidTestCase
 
         $article = oxNew('oxArticle');
         $article->load('1351');
+
         $imageUrl = $article->getThumbnailUrl();
-        $imageFile = basename((string) $imageUrl);
         $title = $article->oxarticles__oxtitle->value;
         $imageDirectory = $config->getImageDir();
 
@@ -367,6 +370,7 @@ final class EmailTest extends \OxidTestCase
         $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertFalse($blRet, 'No need to send stock remind mail');
     }
+
     public function testSendStockReminderWhenRemindIsOff()
     {
         //set params for stock reminder
@@ -395,7 +399,7 @@ final class EmailTest extends \OxidTestCase
         $sImageDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
 
         $email = oxNew('oxEmail');
-        $email->setBody("<img src='{$sImageDir}/test.png'> --- <img src='{$sImageDir}/test.jpg'>");
+        $email->setBody(sprintf('<img src=\'%s/test.png\'> --- <img src=\'%s/test.jpg\'>', $sImageDir, $sImageDir));
 
         $email->includeImages(
             $sImageDir,
@@ -634,6 +638,7 @@ final class EmailTest extends \OxidTestCase
     {
         $this->assertEquals($this->shop, $this->email->addForgotPwdEmail($this->shop));
     }
+
     public function testAddNewsletterDBOptInMail()
     {
         $this->assertEquals($this->user, $this->email->addNewsletterDbOptInMail($this->user));
@@ -643,6 +648,7 @@ final class EmailTest extends \OxidTestCase
     {
         $this->email->setRecipient('testuser@testuser.com', 'testUser');
         $this->email->setReplyTo('testuser@testuser.com', 'testUser');
+
         $this->email->ErrorInfo = 'testErrorMessage';
 
         $this->email->clearMailer();
@@ -842,9 +848,6 @@ final class EmailTest extends \OxidTestCase
     }
 
     /**
-     * @param bool   $configParameterLoadReviewsValue
-     * @param bool   $isReviewLinkExpectedToBeIncluded
-     * @param string $message
      *
      * @dataProvider dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration
      */
@@ -895,10 +898,6 @@ final class EmailTest extends \OxidTestCase
     }
 
     /**
-     * @param bool   $configParameterLoadReviews
-     * @param bool   $configParameterIncludeProductReviewLinksInEmail
-     * @param bool   $isReviewLinkExpectedToBeIncluded
-     * @param string $message
      *
      * @dataProvider dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration
      */
@@ -975,6 +974,7 @@ final class EmailTest extends \OxidTestCase
         $article = oxNew("oxArticle");
         $article->setId('_testArticleId');
         $article->setId('_testArticleId');
+
         $article->oxarticles__oxtitle = new oxField();
 
         $priceStub->setPrice(0);
@@ -992,6 +992,7 @@ final class EmailTest extends \OxidTestCase
 
         $user = oxNew("oxuser");
         $user->setId('_testUserId');
+
         $user->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
         $user->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
         $user->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
@@ -1036,30 +1037,7 @@ final class EmailTest extends \OxidTestCase
     }
 
     /**
-     * @return string
-     */
-    private function getTemporaryFilePath(): string
-    {
-        $temporaryFileHandle = tmpfile();
-
-        return  stream_get_meta_data($temporaryFileHandle)['uri'];
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getFileToAttach()
-    {
-        $fileToAttach = $this->getTemporaryFilePath();
-        file_put_contents($fileToAttach, 'test');
-
-        return $fileToAttach;
-    }
-
-    /**
      * @param $body
-     *
-     * @return bool
      */
     private function isReviewLinkIncluded($body): bool
     {

@@ -21,12 +21,10 @@ class UtilsTest extends \OxidTestCase
 {
     use ContainerTrait;
 
-    protected $_sTestLogFileName = null;
+    protected $_sTestLogFileName;
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -46,6 +44,7 @@ class UtilsTest extends \OxidTestCase
             unlink($this->_sTestLogFileName);
             $this->_sTestLogFileName = null;
         }
+
         if (file_exists('tmp_testCacheName')) {
             unlink('tmp_testCacheName');
         }
@@ -188,7 +187,7 @@ class UtilsTest extends \OxidTestCase
         $oObject->price = '12.41';
         $oObject->fprice = '12,41';
         $oObject->priceUnit = 'abs';
-        $oObject->name = "two +$dPrice " . $oCurrency->sign;
+        $oObject->name = sprintf('two +%s ', $dPrice) . $oCurrency->sign;
         $oObject->value = 'twoValue';
         $aShouldBe[] = $oObject;
 
@@ -198,7 +197,7 @@ class UtilsTest extends \OxidTestCase
         $oObject->price = '-5.99';
         $oObject->fprice = '-5,99';
         $oObject->priceUnit = 'abs';
-        $oObject->name = "three -$dPrice " . $oCurrency->sign;
+        $oObject->name = sprintf('three -%s ', $dPrice) . $oCurrency->sign;
         $oObject->value = 'threeValue';
         $aShouldBe[] = $oObject;
 
@@ -656,17 +655,18 @@ class UtilsTest extends \OxidTestCase
         for ($iMax = 0; $iMax < 10; $iMax++) {
             $oUtils->toFileCache($sName . "_" . $iMax, $sInput . "_" . $iMax);
         }
+
         $oUtils->commitFileCache();
 
         //checking if test files were written to temp dir
-        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . sprintf('/%s_testFileCache*.txt', $sCacheFilePrefix);
         $aPaths = glob($sFilePath);
         $this->assertEquals(10, count($aPaths), "Error writing test files to cache dir");
 
         //actual test
         $this->assertNull($oUtils->oxResetFileCache());
 
-        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . sprintf('/%s_testFileCache*.txt', $sCacheFilePrefix);
         $aPaths = glob($sFilePath);
         $this->assertTrue($aPaths == null);
     }
@@ -688,24 +688,25 @@ class UtilsTest extends \OxidTestCase
         $oUtils->commitFileCache();
 
         //checking if test file were written to temp dir
-        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . sprintf('/%s_fieldnames_testTest.txt', $sCacheFilePrefix);
         clearstatcache();
         $this->assertTrue(file_exists($sFilePath), "Error writing test files to cache dir");
 
         for ($iMax = 0; $iMax < 10; $iMax++) {
             $oUtils->toFileCache($sName . "_" . $iMax, $sInput . "_" . $iMax);
         }
+
         $oUtils->commitFileCache();
 
         //checking if test files were written to temp dir
-        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_testFileCache*.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . sprintf('/%s_testFileCache*.txt', $sCacheFilePrefix);
         $aPaths = glob($sFilePath);
         $this->assertEquals(10, count($aPaths), "Error writing test files to cache dir: " . count($aPaths));
 
         //actual test
         $this->assertNull($oUtils->oxResetFileCache());
 
-        $sFilePath = $myConfig->getConfigParam('sCompileDir') . "/{$sCacheFilePrefix}_fieldnames_testTest.txt";
+        $sFilePath = $myConfig->getConfigParam('sCompileDir') . sprintf('/%s_fieldnames_testTest.txt', $sCacheFilePrefix);
         $aPaths = glob($sFilePath);
 
         @unlink($aPaths[0]); //deleting test cache file
@@ -802,7 +803,7 @@ class UtilsTest extends \OxidTestCase
 
         $session->setVariable("auth", $backUpAuth);
 
-        if ($exception) {
+        if ($exception instanceof \Exception) {
             throw $exception;
         }
     }
@@ -936,6 +937,7 @@ class UtilsTest extends \OxidTestCase
         @unlink($sFileName);
         $oUtils->toFileCache('testCache2', 'teststs');
         $oUtils->commitFileCache();
+
         $sFileContents = file_get_contents($sFileName);
         $this->assertEquals(serialize(['content' => 'teststs']), $sFileContents);
         unlink($sFileName);
@@ -1084,7 +1086,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction(
             'oxUBase',
             'render',
-            '{throw new Exception(\'Some rendering exception\');}'
+            "{throw new Exception('Some rendering exception');}"
         );
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
@@ -1137,8 +1139,6 @@ class UtilsTest extends \OxidTestCase
 
     /**
      * oxUtils::getCacheMeta() & oxUtils::setCacheMeta() test case
-     *
-     * @return null
      */
     public function testGetCacheMetaSetCacheMeta()
     {
@@ -1151,8 +1151,6 @@ class UtilsTest extends \OxidTestCase
 
     /**
      * oxUtils::_readFile() test case
-     *
-     * @return null
      */
     public function testReadFile()
     {
@@ -1167,13 +1165,11 @@ class UtilsTest extends \OxidTestCase
             return;
         }
 
-        $this->markTestSkipped("Unable to create file {$sFilePath}");
+        $this->markTestSkipped('Unable to create file ' . $sFilePath);
     }
 
     /**
      * oxUtils::_includeFile() test case
-     *
-     * @return null
      */
     public function testIncludeFile()
     {
@@ -1188,13 +1184,11 @@ class UtilsTest extends \OxidTestCase
             return;
         }
 
-        $this->markTestSkipped("Unable to create file {$sFilePath}");
+        $this->markTestSkipped('Unable to create file ' . $sFilePath);
     }
 
     /**
      * oxUtils::_processCache() test case
-     *
-     * @return null
      */
     public function testProcessCache()
     {

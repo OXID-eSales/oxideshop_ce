@@ -89,7 +89,8 @@ class ShopViewValidatorTest extends \OxidTestCase
         $aAllShopViews = $this->getShopViews();
 
         $aAllViews = $aAllShopViews['baseshop'];
-        $aAllShopLanguageIds = $aLanguageIds = [0 => 'de', 1 => 'en'];
+        $aAllShopLanguageIds = [0 => 'de', 1 => 'en'];
+        $aLanguageIds = [0 => 'de', 1 => 'en'];
 
         $oValidator = $this->getMock(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class, ['getAllViews']);
         $oValidator->expects($this->once())->method('getAllViews')->will($this->returnValue($aAllViews));

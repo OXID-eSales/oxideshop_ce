@@ -9,15 +9,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    private $testObject = null;
+    private $testObject;
+
     private $message = 'Erik was here..';
+
     private $amount = 13;
+
     private $basketIndex = "05848170643ab0deb9914566391c0c63";
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {

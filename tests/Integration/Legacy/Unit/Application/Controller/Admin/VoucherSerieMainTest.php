@@ -19,8 +19,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * Cleanup
-     *
-     * @return null
      */
     public function tearDown(): void
     {
@@ -33,8 +31,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -51,8 +47,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -69,8 +63,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -80,18 +72,17 @@ class VoucherSerieMainTest extends \OxidTestCase
         try {
             $oView = oxNew('VoucherSerie_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Wrapping_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }
+
         $this->fail("error in VoucherSerie_Main::save()");
     }
 
     /**
      * VoucherSerie_Main::prepareExport() test case
-     *
-     * @return null
      */
     public function testPrepareExport()
     {
@@ -101,8 +92,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::getStatus() test case
-     *
-     * @return null
      */
     public function testGetStatus()
     {
@@ -122,8 +111,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::prepareExport() test case
-     *
-     * @return null
      */
     public function testStart()
     {
@@ -168,8 +155,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::prepareExport() test case
-     *
-     * @return null
      */
     public function testGetVoucherSerie()
     {
@@ -189,8 +174,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Main::getViewId() test case
-     *
-     * @return null
      */
     public function testGetViewId()
     {

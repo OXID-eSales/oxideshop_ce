@@ -17,8 +17,6 @@ class DeliverySetListTest extends \OxidTestCase
 
     /**
      * DeliverySet_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

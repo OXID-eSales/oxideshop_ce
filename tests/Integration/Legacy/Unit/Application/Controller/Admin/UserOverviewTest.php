@@ -17,8 +17,6 @@ class UserOverviewTest extends \OxidTestCase
 
     /**
      * User_Overview::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

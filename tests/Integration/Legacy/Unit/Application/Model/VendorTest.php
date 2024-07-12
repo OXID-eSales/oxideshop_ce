@@ -160,6 +160,7 @@ class VendorTest extends \OxidTestCase
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');
+
         $article->oxarticles__oxvendorid = new oxField($this->testVendorId, oxField::T_RAW);
         $article->save();
 
@@ -319,6 +320,7 @@ class VendorTest extends \OxidTestCase
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');
+
         $article->oxarticles__oxvendorid = new oxField($this->testVendorId, oxField::T_RAW);
         $article->save();
 
@@ -384,6 +386,7 @@ class VendorTest extends \OxidTestCase
         $vendor = oxNew(Vendor::class);
         $config = Registry::getConfig();
         $config->setConfigParam('sManufacturerIconsize', '100*100');
+
         $vendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = $config->getOutUrl() . basename($config->getPicturePath(''));
@@ -454,6 +457,7 @@ class VendorTest extends \OxidTestCase
 
         $product = oxNew(Article::class);
         $product->setId('_test');
+
         $product->oxarticles__oxparentid = new oxField('', oxField::T_RAW);
         $product->oxarticles__oxvendorid = new oxField($this->testVendorId, oxField::T_RAW);
         $product->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
@@ -463,6 +467,7 @@ class VendorTest extends \OxidTestCase
 
         $vendor->setLanguage(1);
         $vendor->load($this->testVendorId);
+
         $vendor->oxvendor__oxtitle = new oxField($this->testVendorTitle_1, oxField::T_RAW);
         $vendor->save();
     }

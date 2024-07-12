@@ -24,8 +24,6 @@ class WidgetControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
-     * @return null
      */
     public function testStart()
     {
@@ -38,8 +36,6 @@ class WidgetControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::_runLast()
-     *
-     * @return null
      */
     public function testRunLast()
     {
@@ -66,8 +62,6 @@ class WidgetControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::_initializeViewObject()
-     *
-     * @return null
      */
     public function testInitializeViewObject()
     {
@@ -86,8 +80,6 @@ class WidgetControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::_initializeViewObject()
-     *
-     * @return null
      */
     public function testInitializeViewObject_hasViewChain()
     {

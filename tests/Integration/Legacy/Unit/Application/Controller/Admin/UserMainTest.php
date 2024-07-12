@@ -20,8 +20,6 @@ class UserMainTest extends \OxidTestCase
 
     /**
      * User_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -41,8 +39,6 @@ class UserMainTest extends \OxidTestCase
 
     /**
      * UserGroup_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -60,8 +56,6 @@ class UserMainTest extends \OxidTestCase
 
     /**
      * User_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -86,8 +80,6 @@ class UserMainTest extends \OxidTestCase
 
     /**
      * User_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveExceptionDuringSave()
     {
@@ -113,8 +105,6 @@ class UserMainTest extends \OxidTestCase
 
     /**
      * User_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveDuplicatedLogin()
     {
@@ -140,8 +130,6 @@ class UserMainTest extends \OxidTestCase
     /**
      * Test User_Main::Save() - try to set new password with spec. chars.
      * #0003680
-     *
-     * @return null
      */
     public function testSave_passwordSpecChars()
     {

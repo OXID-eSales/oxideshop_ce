@@ -18,8 +18,6 @@ class CmpUtilsTest extends \OxidTestCase
 {
     /**
      * Testing oxcmp_utils::toCompareList()
-     *
-     * @return null
      */
     public function testToCompareListAdding()
     {
@@ -47,8 +45,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::toCompareList()
-     *
-     * @return null
      */
     public function testToCompareListRemoving()
     {
@@ -77,8 +73,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::toNoticeList()
-     *
-     * @return null
      */
     public function testToNoticeList()
     {
@@ -95,8 +89,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::toWishList()
-     *
-     * @return null
      */
     public function testToWishList()
     {
@@ -122,8 +114,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::_toList()
-     *
-     * @return null
      */
     public function testToList()
     {
@@ -143,8 +133,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::render()
-     *
-     * @return null
      */
     public function testRenderCompareIsOff()
     {
@@ -162,8 +150,6 @@ class CmpUtilsTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_utils::render()
-     *
-     * @return null
      */
     public function testRender()
     {

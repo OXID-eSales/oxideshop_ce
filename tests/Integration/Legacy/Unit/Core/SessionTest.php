@@ -135,8 +135,6 @@ class testSession extends oxSession
 
     /**
      * Initialize session data (calls php::session_start())
-     *
-     * @return null
      */
     protected function sessionStart()
     {
@@ -145,8 +143,6 @@ class testSession extends oxSession
 
     /**
      * Ends the current session and store session data.
-     *
-     * @return null
      */
     public function freeze()
     {
@@ -165,14 +161,14 @@ class SessionTest extends \OxidTestCase
      * Internal oxSession instance
      *
      */
-    public $oSession = null;
+    public $oSession;
 
     /**
      * Original oxConfig instance
      *
      * @var object
      */
-    protected $_oOriginalConfig = null;
+    protected $_oOriginalConfig;
 
     protected function setUp(): void
     {
@@ -188,12 +184,10 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Test case for oxSession::regenerateSessionId()
-     *
-     * @return null
      */
     public function testRegenerateSessionId()
     {
-        $myConfig = $this->getConfig();
+        $this->getConfig();
 
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, ["getNewSessionId"]);
         $oSession->expects($this->any())->method('getNewSessionId')->will($this->returnValue("newSessionId"));
@@ -228,8 +222,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Test for oxSession::start()
-     *
-     * @return null
      */
     public function testStartWhenDebugisOnAndErrorMessageExpected()
     {
@@ -707,8 +699,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * oxSession::_checkCookies() test case
-     *
-     * @return null
      */
     public function testCheckCookiesSsl()
     {
@@ -723,8 +713,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * oxSession::_checkCookies() test case
-     *
-     * @return null
      */
     public function testCheckCookiesNoSsl()
     {
@@ -743,7 +731,7 @@ class SessionTest extends \OxidTestCase
      */
     public function testInitNewSession()
     {
-        $myConfig = $this->getConfig();
+        $this->getConfig();
 
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, ["getNewSessionId"]);
         $oSession->expects($this->any())->method('getNewSessionId')->will($this->returnValue("newSessionId"));
@@ -788,7 +776,7 @@ class SessionTest extends \OxidTestCase
      */
     public function testInitNewSessionWithPersParams()
     {
-        $myConfig = $this->getConfig();
+        $this->getConfig();
 
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, ["getNewSessionId"]);
         $oSession->expects($this->any())->method('getNewSessionId')->will($this->returnValue("newSessionId"));
@@ -1274,8 +1262,9 @@ class SessionTest extends \OxidTestCase
             $this->assertEquals(false, $oSess->isSessionRequiredAction());
             $_SERVER['REQUEST_METHOD'] = 'POST';
             $this->assertEquals(true, $oSess->isSessionRequiredAction());
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
         }
+
         $_SERVER['REQUEST_METHOD'] = $sInitial;
         if ($e) {
             throw $e;
@@ -1293,6 +1282,7 @@ class SessionTest extends \OxidTestCase
     {
         $oSubj = oxNew('oxSession');
         $oSubj->deleteVariable('_rtoken');
+
         $sTestToken = $oSubj->getRemoteAccessToken(false);
 
         $this->assertNull($sTestToken);
@@ -1307,6 +1297,7 @@ class SessionTest extends \OxidTestCase
     {
         $oSubj = oxNew('oxSession');
         $oSubj->deleteVariable('_rtoken');
+
         $sToken1 = $oSubj->getRemoteAccessToken();
         $sToken2 = $oSubj->getRemoteAccessToken();
 

@@ -14,8 +14,6 @@ class CountryListTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class CountryListTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -55,7 +51,7 @@ class CountryListTest extends \OxidTestCase
         /** @var \oxCountryList $countryList */
         $countryList = oxNew('oxCountryList');
         $viewName = $countryList->getBaseObject()->getViewName();
-        $query = "SELECT oxid FROM $viewName WHERE oxid LIKE '\_CountryListTestId\_%'";
+        $query = sprintf('SELECT oxid FROM %s WHERE oxid LIKE \'\_CountryListTestId\_%%\'', $viewName);
         $countryList->selectString($query);
 
         $this->assertEquals(8, $countryList->count(), 'A total of 8 records is retrieved');
@@ -81,6 +77,7 @@ class CountryListTest extends \OxidTestCase
         /** @var \oxCountry $country */
         $country = oxNew('oxCountry');
         $country->load('_CountryListTestId_0');
+
         $country->oxcountry__oxorder = new oxField('999', oxField::T_RAW);
         $country->save();
 

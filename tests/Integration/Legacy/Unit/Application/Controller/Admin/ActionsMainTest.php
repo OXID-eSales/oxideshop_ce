@@ -20,8 +20,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,8 +37,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderWithExistingAction()
     {
@@ -59,8 +55,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderForCategory()
     {
@@ -81,8 +75,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderForArticlePromotions()
     {
@@ -116,8 +108,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderForGroupPromotions()
     {
@@ -146,8 +136,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderForPromotionsEditor()
     {
@@ -174,8 +162,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -196,8 +182,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -208,8 +192,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Render() test case
-     *
-     * @return null
      */
     public function testPromotionsRender()
     {
@@ -234,8 +216,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Save() test case
-     *
-     * @return null
      */
     public function testPromotionsSave()
     {
@@ -257,8 +237,6 @@ class ActionsMainTest extends \OxidTestCase
 
     /**
      * Actions_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveInsertingNewPromo()
     {

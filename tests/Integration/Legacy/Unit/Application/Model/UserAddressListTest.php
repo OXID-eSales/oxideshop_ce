@@ -22,8 +22,6 @@ class UserAddressListTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -69,8 +67,8 @@ class UserAddressListTest extends \OxidTestCase
     public function testLoadCheckSeveralAddress()
     {
         $sUserId = 'oxdefaultadmin';
-        $sAustriaAddressId = $this->createAddress($sUserId, self::AUSTRIA_ID);
-        $sGermanyAddressId = $this->createAddress($sUserId, self::GERMANY_ID);
+        $this->createAddress($sUserId, self::AUSTRIA_ID);
+        $this->createAddress($sUserId, self::GERMANY_ID);
 
         $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
@@ -93,6 +91,7 @@ class UserAddressListTest extends \OxidTestCase
 
         $oSubj = oxNew('oxAddress');
         $oSubj->setId($sOXID);
+
         $oSubj->oxaddress__oxuserid = new oxField($sUserId);
         // Set country Austria as this country has different name in english and germany.
         $oSubj->oxaddress__oxcountryid = new oxField($sCountryId);

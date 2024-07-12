@@ -15,8 +15,6 @@ class AdminOrderTest extends \OxidTestCase
 
     /**
      * Admin_Order::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

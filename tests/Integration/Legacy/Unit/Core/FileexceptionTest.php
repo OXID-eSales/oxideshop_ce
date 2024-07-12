@@ -9,15 +9,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class FileexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    private $testObject = null;
+    private $testObject;
+
     private $message = 'Erik was here..';
+
     private $fileName = 'a file name';
+
     private $fileError = 'a error text';
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {

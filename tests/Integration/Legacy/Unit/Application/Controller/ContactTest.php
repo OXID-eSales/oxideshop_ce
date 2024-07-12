@@ -19,8 +19,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -33,8 +31,6 @@ class ContactTest extends \OxidTestCase
      * and warning message is displayed
      *
      * M#1001
-     *
-     * @return null
      */
     public function testSave_withIncorectEmail()
     {
@@ -57,8 +53,6 @@ class ContactTest extends \OxidTestCase
     /**
      * Test if send mail is not executed if user data is not entered
      * and warning message is displayed
-     *
-     * @return null
      */
     public function testSave_withoutUserData()
     {
@@ -77,8 +71,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test send mail
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -97,8 +89,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test getting user data.
-     *
-     * @return null
      */
     public function testGetUserData()
     {
@@ -109,8 +99,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test getting subject.
-     *
-     * @return null
      */
     public function testGetContactSubject()
     {
@@ -121,8 +109,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test getting message.
-     *
-     * @return null
      */
     public function testGetContactMessage()
     {
@@ -133,8 +119,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test contact send status.
-     *
-     * @return null
      */
     public function testGetContactSendStatus()
     {
@@ -145,8 +129,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Testing Contact::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -157,8 +139,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Test case for bug #0002065: Contact-Mail shows MR or MRS instead of localized salutation
-     *
-     * @return null
      */
     public function testSendForBugtrackEntry0002065()
     {
@@ -193,8 +173,6 @@ class ContactTest extends \OxidTestCase
 
     /**
      * Testing method send()
-     *
-     * @return null
      */
     public function testSendEmailNotSend()
     {

@@ -79,7 +79,7 @@ class OutputTest extends \OxidTestCase
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($test, $result);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Shopping Cart System (c) OXID eSales AG 2003 - $currentYear - https://www.oxid-esales.com -->bar<head>test2</head>", $result);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar<head>test2</head>', $currentYear), $result);
     }
 
     /**
@@ -95,7 +95,7 @@ class OutputTest extends \OxidTestCase
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - https://www.oxid-esales.com -->bar", $sRes);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar', $sCurYear), $sRes);
     }
 
     /**

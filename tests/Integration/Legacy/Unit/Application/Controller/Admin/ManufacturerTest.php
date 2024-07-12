@@ -15,8 +15,6 @@ class ManufacturerTest extends \OxidTestCase
 
     /**
      * Manufacturer::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -15,8 +15,6 @@ class UserGroupTest extends \OxidTestCase
 
     /**
      * UserGroup::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

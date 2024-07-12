@@ -14,8 +14,6 @@ class ReviewTest extends \OxidTestCase
 {
     /**
      * Testing oxwReview::getReviewType()
-     *
-     * @return null
      */
     public function testGetReviewTypeLowerCase()
     {
@@ -26,8 +24,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::getReviewType()
-     *
-     * @return null
      */
     public function testGetReviewTypeUpperCase()
     {
@@ -38,8 +34,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::getArticleId()
-     *
-     * @return null
      */
     public function testGetArticleId()
     {
@@ -50,8 +44,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::getArticleId()
-     *
-     * @return null
      */
     public function testGetArticleNId()
     {
@@ -62,8 +54,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::getRecommListId()
-     *
-     * @return null
      */
     public function testGetRecommListId()
     {
@@ -74,8 +64,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::canRate()
-     *
-     * @return null
      */
     public function testCanRate()
     {
@@ -86,8 +74,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Testing oxwReview::getReviewUserHash()
-     *
-     * @return null
      */
     public function testGetReviewUserHash()
     {

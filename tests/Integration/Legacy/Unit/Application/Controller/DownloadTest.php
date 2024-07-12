@@ -19,8 +19,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -44,8 +42,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRenderWrongLink()
     {
@@ -54,8 +50,8 @@ class DownloadTest extends \OxidTestCase
         try {
             $oDownloads = oxNew('Download');
             $oDownloads->render();
-        } catch (Exception $oEx) {
-            $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
+        } catch (Exception $exception) {
+            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -65,8 +61,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRenderDownloadFailed()
     {
@@ -85,8 +79,8 @@ class DownloadTest extends \OxidTestCase
             $oDownloads = oxNew('Download');
             ;
             $oDownloads->render();
-        } catch (Exception $oEx) {
-            $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
+        } catch (Exception $exception) {
+            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -96,8 +90,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRenderFileDoesnotExists()
     {
@@ -111,8 +103,8 @@ class DownloadTest extends \OxidTestCase
         try {
             $oDownloads = oxNew('Download');
             $oDownloads->render();
-        } catch (Exception $oEx) {
-            $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
+        } catch (Exception $exception) {
+            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -122,8 +114,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRenderFailedDownloadingFile()
     {
@@ -144,6 +134,7 @@ class DownloadTest extends \OxidTestCase
 
         $oException = oxNew('oxExceptionToDisplay');
         $oException->setMessage("ERROR_MESSAGE_FILE_DOWNLOAD_FAILED");
+
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['addErrorToDisplay']);
         $oUtilsView->expects($this->once())->method('addErrorToDisplay')->with($oException, false);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
@@ -151,8 +142,8 @@ class DownloadTest extends \OxidTestCase
         try {
             $oDownloads = oxNew('Download');
             $oDownloads->render();
-        } catch (Exception $oEx) {
-            $this->assertEquals(123, $oEx->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test');
+        } catch (Exception $exception) {
+            $this->assertEquals(123, $exception->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test');
 
             return;
         }
@@ -162,8 +153,6 @@ class DownloadTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testRenderDownloadExpired()
     {
@@ -185,6 +174,7 @@ class DownloadTest extends \OxidTestCase
 
         $oException = oxNew('oxExceptionToDisplay');
         $oException->setMessage("ERROR_MESSAGE_FILE_DOESNOT_EXIST");
+
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['addErrorToDisplay']);
         $oUtilsView->expects($this->once())->method('addErrorToDisplay')->with($oException, false);
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);

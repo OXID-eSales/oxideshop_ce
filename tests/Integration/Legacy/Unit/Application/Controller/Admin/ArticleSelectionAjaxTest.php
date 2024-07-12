@@ -16,8 +16,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -43,8 +41,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 
     /**
      * ArticleSelectionAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -54,8 +50,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 
     /**
      * ArticleSelectionAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -63,13 +57,11 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sSynchoxid'  )", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\'  )', $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ArticleSelectionAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidParent()
     {
@@ -77,13 +69,11 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\' or oxobject2selectlist.oxobjectid = \'_testArticlePArent\'', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ArticleSelectionAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidOxid()
     {
@@ -93,13 +83,11 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid'  )", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\'  )', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ArticleSelectionAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidOxidparent()
     {
@@ -109,13 +97,11 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '$sOxid' or oxobject2selectlist.oxobjectid = '_testArticlePArent'  )", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\' or oxobject2selectlist.oxobjectid = \'_testArticlePArent\'  )', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ArticleSelectionAjax::removeSel() test case
-     *
-     * @return null
      */
     public function testRemoveSel()
     {
@@ -131,8 +117,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 
     /**
      * ArticleSelectionAjax::removeSel() test case
-     *
-     * @return null
      */
     public function testRemoveSelAll()
     {
@@ -149,8 +133,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 
     /**
      * ArticleSelectionAjax::addSel() test case
-     *
-     * @return null
      */
     public function testAddSel()
     {
@@ -169,8 +151,6 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
 
     /**
      * ArticleSelectionAjax::addSel() test case
-     *
-     * @return null
      */
     public function testAddSelAll()
     {

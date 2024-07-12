@@ -18,12 +18,10 @@ class VoucherlistTest extends \OxidTestCase
 {
     public const MAX_LOOP_AMOUNT = 4;
 
-    protected $_sOxid = null;
+    protected $_sOxid;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -45,8 +43,6 @@ class VoucherlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -61,7 +57,7 @@ class VoucherlistTest extends \OxidTestCase
 
     public function testLoadVoucherList()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $oVouchers = oxNew('oxvoucherlist');
         $oVouchers->selectString('select * from oxvouchers where oxvouchers.oxvoucherserieid = "' . $this->_sOxid . '"');

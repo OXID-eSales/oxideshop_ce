@@ -11,12 +11,10 @@ use \oxField;
 
 class CountryTest extends \OxidTestCase
 {
-    public $oObj = null;
+    public $oObj;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -24,6 +22,7 @@ class CountryTest extends \OxidTestCase
 
         $oObj = oxNew('oxbase');
         $oObj->init('oxcountry');
+
         $oObj->oxcountry__oxtitle = new oxField('oxCountryTestDE', oxField::T_RAW);
         $oObj->oxcountry__oxtitle_1 = new oxField('oxCountryTestENG', oxField::T_RAW);
         $oObj->save();
@@ -34,8 +33,6 @@ class CountryTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -87,6 +84,7 @@ class CountryTest extends \OxidTestCase
     {
         $oObj = oxNew('oxCountry');
         $oObj->setId('test');
+
         $oObj->oxcountry__oxvatstatus = new oxField(1, oxField::T_RAW);
         $this->assertTrue($oObj->isInEU());
 
@@ -104,6 +102,7 @@ class CountryTest extends \OxidTestCase
     {
         $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11095649d18.02676059');
+
         $aStates = $oSubj->getStates();
         $this->assertEquals(13, count($aStates));
     }
@@ -117,6 +116,7 @@ class CountryTest extends \OxidTestCase
     {
         $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11096877ac0.98748826');
+
         $aStates = $oSubj->getStates();
         $aKeys = $aStates->arrayKeys();
         $this->assertEquals('AL', $aKeys[0]);
@@ -134,6 +134,7 @@ class CountryTest extends \OxidTestCase
     {
         $oSubj = oxNew('oxCountry');
         $oSubj->load('8f241f11095649d18.02676059');
+
         $aStates = $oSubj->getStates();
         $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
     }

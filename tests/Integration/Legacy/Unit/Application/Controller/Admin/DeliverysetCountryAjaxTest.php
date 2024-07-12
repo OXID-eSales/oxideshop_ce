@@ -16,12 +16,11 @@ use OxidEsales\Facts\Facts;
 class DeliverysetCountryAjaxTest extends \OxidTestCase
 {
     protected $_sShopId = '1';
+
     protected $_sCountryView = 'oxv_oxcountry_de';
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -43,8 +42,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -85,8 +82,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -96,8 +91,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -110,8 +103,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -124,8 +115,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -140,8 +129,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::removeCountryFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveCountryFromSet()
     {
@@ -156,8 +143,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::removeCountryFromSet() test case
-     *
-     * @return null
      */
     public function testRemoveCountryFromSetAll()
     {
@@ -174,15 +159,13 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::addCountryToSet() test case
-     *
-     * @return null
      */
     public function testAddCountryToset()
     {
         $sSynchoxid = '_testActionAddCountry';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetCountryAjax::class, ["getActionIds"]);
@@ -194,8 +177,6 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetCountryAjax::addCountryToSet() test case
-     *
-     * @return null
      */
     public function testAddCountryToSetAll()
     {
@@ -206,7 +187,7 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getCountryViewTable() . ".oxid) from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1' and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery, " . $this->getCountryViewTable() . " where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "'and oxobject2delivery.oxobjectid = " . $this->getCountryViewTable() . ".oxid and oxobject2delivery.oxtype = 'oxdelset' )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetCountryAjax::class, ["getActionIds"]);

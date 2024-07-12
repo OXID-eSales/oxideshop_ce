@@ -17,7 +17,7 @@ use \oxTestModules;
 
 class PaymentHelper2 extends oxPayment
 {
-    public static $dBasketPrice = null;
+    public static $dBasketPrice;
 
     public function isValidPayment($aDynvalue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
     {
@@ -38,8 +38,6 @@ class PaymentTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     public function tearDown(): void
     {
@@ -82,6 +80,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->setUser($oUser);
+
         $oPaymentList = $oPayment->getPaymentList();
 
         $this->assertEquals(3, count($oPaymentList));
@@ -117,6 +116,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->setUser($oUser);
+
         $iCnt = $oPayment->getPaymentCnt();
 
         $this->assertEquals(3, $iCnt);
@@ -146,6 +146,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->setUser($oUser);
+
         $aAllSets = $oPayment->getAllSets();
         $aResultSets = array_keys($aAllSets);
         $aSetsIds = ['oxidstandard'];
@@ -177,6 +178,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->setUser($oUser);
+
         $iCnt = $oPayment->getAllSetsCnt();
 
         $this->assertEquals(1, $iCnt);
@@ -189,6 +191,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->setDefaultEmptyPayment();
+
         $oEmptyPayment = $oPayment->getEmptyPayment();
 
         $this->assertEquals('oxempty', $oEmptyPayment->getId());
@@ -211,7 +214,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->unsetPaymentErrors();
-        $oEmptyPayment = $oPayment->getPaymentError();
+        $oPayment->getPaymentError();
 
         $this->assertEquals('test', $oPayment->getPaymentError());
     }
@@ -222,7 +225,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->unsetPaymentErrors();
-        $oEmptyPayment = $oPayment->getPaymentErrorText();
+        $oPayment->getPaymentErrorText();
 
         $this->assertEquals('test', $oPayment->getPaymentErrorText());
     }
@@ -233,7 +236,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->unsetPaymentErrors();
-        $oEmptyPayment = $oPayment->getPaymentError();
+        $oPayment->getPaymentError();
 
         $this->assertEquals('test', $oPayment->getPaymentError());
     }
@@ -244,7 +247,7 @@ class PaymentTest extends \OxidTestCase
 
         $oPayment = oxNew('Payment');
         $oPayment->unsetPaymentErrors();
-        $oEmptyPayment = $oPayment->getPaymentErrorText();
+        $oPayment->getPaymentErrorText();
 
         $this->assertEquals('test', $oPayment->getPaymentErrorText());
     }
@@ -304,7 +307,7 @@ class PaymentTest extends \OxidTestCase
         $sShopId = $this->getConfig()->GetBaseShopId();
         foreach ($aUserPaymentId as $iCnt => $sUserPaymentId) {
             $sOrderId = "_test" . (time() + $iCnt);
-            $sOrderDate = "2011-03-1{$iCnt} 10:55:13";
+            $sOrderDate = sprintf('2011-03-1%s 10:55:13', $iCnt);
 
             $oDb->execute($sQ, [$sOrderId, $sShopId, $sUserId, $sOrderDate, $iCnt + 1, $sUserPaymentId]);
         }
@@ -320,6 +323,7 @@ class PaymentTest extends \OxidTestCase
 
         $oUpay = oxNew('oxuserpayment');
         $oUpay->setId('_testOxId');
+
         $oUpay->oxuserpayments__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $oUpay->oxuserpayments__oxvalue = new oxField('lsbankname__test@@', oxField::T_RAW);
         $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxiddebitnote', oxField::T_RAW);
@@ -367,6 +371,7 @@ class PaymentTest extends \OxidTestCase
         oxTestModules::addFunction('oxorder', 'getLastUserPaymentType', '{return "testId3";}');
         $oPayment = $this->getProxyClass("payment");
         $oPayment->setUser($oUser);
+
         $oPaymentList = [];
         $oPaymentList['testId3'] = true;
         $oPayment->setNonPublicVar("_oPaymentList", $oPaymentList);
@@ -457,15 +462,7 @@ class PaymentTest extends \OxidTestCase
 
     protected function checkInArrayRecursive($needle, $haystack)
     {
-        foreach ($haystack as $v) {
-            if ($needle == $v) {
-                return true;
-            } elseif (is_array($v)) {
-                return $this->checkInArrayRecursive($needle, $v);
-            }
-        }
-
-        return false;
+        return in_array($needle, $haystack);
     }
 
     public function testRenderDoesNotCleanReservationsIfOff()
@@ -480,8 +477,8 @@ class PaymentTest extends \OxidTestCase
 
         try {
             $oP->render();
-        } catch (Exception $e) {
-            $this->assertEquals("REDIRECT", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("REDIRECT", $exception->getMessage());
         }
     }
 
@@ -501,8 +498,8 @@ class PaymentTest extends \OxidTestCase
 
         try {
             $oP->render();
-        } catch (Exception $e) {
-            $this->assertEquals("REDIRECT", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("REDIRECT", $exception->getMessage());
         }
     }
 
@@ -527,11 +524,12 @@ class PaymentTest extends \OxidTestCase
 
         try {
             $oO->render();
-        } catch (Exception $e) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $exception->getMessage());
 
             return;
         }
+
         $this->fail("no Exception thrown in redirect");
     }
 
@@ -583,8 +581,6 @@ class PaymentTest extends \OxidTestCase
 
     /**
      * Testing Payment::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -595,8 +591,6 @@ class PaymentTest extends \OxidTestCase
 
     /**
      * Testing Payment::_CheckArrValuesEmpty() when checked array is empty
-     *
-     * @return null
      */
     public function test_CheckArrValuesEmptyWithoutData()
     {
@@ -609,8 +603,6 @@ class PaymentTest extends \OxidTestCase
 
     /**
      * Testing Payment::_CheckArrValuesEmpty() when checked array is populated with good data
-     *
-     * @return null
      */
     public function test_CheckArrValuesEmptyWithData()
     {
@@ -623,8 +615,6 @@ class PaymentTest extends \OxidTestCase
 
     /**
      * Testing Payment::_CheckArrValuesEmpty() when checked array is populated with bad data
-     *
-     * @return null
      */
     public function test_CheckArrValuesEmptyWithBadData()
     {

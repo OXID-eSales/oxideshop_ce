@@ -15,8 +15,6 @@ class CountryTest extends \OxidTestCase
 
     /**
      * Country::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

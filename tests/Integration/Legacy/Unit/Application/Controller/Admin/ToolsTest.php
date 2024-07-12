@@ -17,8 +17,6 @@ class ToolsTest extends \OxidTestCase
 
     /**
      * Tools::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -29,8 +27,6 @@ class ToolsTest extends \OxidTestCase
 
     /**
      * Tools::Render() test case
-     *
-     * @return null
      */
     public function testRenderDemoshop()
     {

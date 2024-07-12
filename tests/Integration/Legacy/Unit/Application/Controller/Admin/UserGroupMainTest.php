@@ -19,8 +19,6 @@ class UserGroupMainTest extends \OxidTestCase
 
     /**
      * UserGroup_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class UserGroupMainTest extends \OxidTestCase
 
     /**
      * UserGroup_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -54,8 +50,6 @@ class UserGroupMainTest extends \OxidTestCase
 
     /**
      * UserGroup_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -70,11 +64,12 @@ class UserGroupMainTest extends \OxidTestCase
         try {
             $oView = oxNew('UserGroup_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in UserGroup_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in UserGroup_Main::save()");
 
             return;
         }
+
         $this->fail("Error in UserGroup_Main::save()");
     }
 }

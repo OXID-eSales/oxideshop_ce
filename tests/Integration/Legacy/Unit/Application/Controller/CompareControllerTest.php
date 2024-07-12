@@ -161,6 +161,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oCompare = $this->getProxyClass("compare");
         $oArticle = oxNew("oxArticle");
         $oArticle->load('1672');
+
         $oCompare->setNonPublicVar("_aCompItems", ['1672' => $oArticle]);
         $aArtList = $oCompare->getCompArtList();
         $this->assertEquals(['1672'], array_keys($aArtList));
@@ -189,8 +190,6 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test get attribute list.
-     *
-     * @return null
      */
     public function testGetAttributeList()
     {

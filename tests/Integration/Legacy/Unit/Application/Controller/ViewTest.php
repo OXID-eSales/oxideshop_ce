@@ -36,7 +36,7 @@ class modOxView extends oxView
 
 class ViewTest extends \OxidTestCase
 {
-    protected $_oView = null;
+    protected $_oView;
 
     protected function setUp(): void
     {
@@ -291,7 +291,7 @@ class ViewTest extends \OxidTestCase
 
         //Act
         $this->expectException(\OxidEsales\Eshop\Core\Exception\RoutingException::class);
-        $this->expectExceptionMessage('Controller method is not accessible: OxidEsales\EshopCommunity\Core\Controller\BaseController::unkownFunction');
+        $this->expectExceptionMessage('Controller method is not accessible: ' . \OxidEsales\EshopCommunity\Core\Controller\BaseController::class . '::unkownFunction');
 
         $oView->executeFunction('unkownFunction');
     }
@@ -323,7 +323,7 @@ class ViewTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $this->expectException('oxSystemComponentException');
-        $this->expectExceptionMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
+        $this->expectExceptionMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND testAction');
         $view->executeNewAction("testAction");
     }
 
@@ -366,7 +366,7 @@ class ViewTest extends \OxidTestCase
 
         $oView = $this->getMock(BaseController::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $sUrl = $oView->executeNewAction("details?someparam=12");
+        $oView->executeNewAction("details?someparam=12");
         $this->assertEquals("shopurl/index.php?cl=details&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
@@ -389,7 +389,7 @@ class ViewTest extends \OxidTestCase
 
         $oView = $this->getMock(BaseController::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $sUrl = $oView->executeNewAction("details?fnc=somefnc&anid=someanid");
+        $oView->executeNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
 
@@ -589,10 +589,7 @@ class ViewTest extends \OxidTestCase
 
     /**
      * oxView::getBelboonParam() test case
-     *
-     * @return null
      */
-
     public function testGetBelboonParam()
     {
         $sTest = "testValue";
@@ -653,25 +650,11 @@ class ViewTest extends \OxidTestCase
 
         try {
             $view->executeFunction('doSomething');
-        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $exception) {
-            $this->assertEquals('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND viewtestmodulecontroller', $exception->getMessage());
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $systemComponentException) {
+            $this->assertEquals('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND viewtestmodulecontroller', $systemComponentException->getMessage());
             return;
         }
 
         $this->fail('No exception thrown by executeFunction');
-    }
-
-    /**
-     * Test helper, easiest way be able to use ModuleVariableLocator::setModuleVariable()
-     *
-     * @return object \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
-     */
-    private function getModuleVariableLocator()
-    {
-        $cache = $this->getMock(\OxidEsales\Eshop\Core\FileCache::class);
-        $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, ['getShopId'], [], '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
-
-        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, $cache, $shopIdCalculator);
     }
 }

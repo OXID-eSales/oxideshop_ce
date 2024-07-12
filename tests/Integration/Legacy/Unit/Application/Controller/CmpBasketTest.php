@@ -559,8 +559,6 @@ class CmpBasketTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::isRootCatChanged() test case used for bascet exclude
-     *
-     * @return null
      */
     public function testIsRootCatChanged_clean()
     {
@@ -572,8 +570,6 @@ class CmpBasketTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::isRootCatChanged() test case used for bascet exclude
-     *
-     * @return null
      */
     public function testIsRootCatChanged_unchanged_session()
     {
@@ -585,8 +581,6 @@ class CmpBasketTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::isRootCatChanged() test case used for bascet exclude
-     *
-     * @return null
      */
     public function testIsRootCatChanged_ShowCatChangeWarning()
     {

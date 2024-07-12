@@ -83,6 +83,7 @@ class ExceptionToDisplayTest extends \OxidTestCase
         $oTestObject->setStackTrace('testStackTrace');
         $oTestObject->setValues([1 => 'test1', 2 => 'test2']);
         $oTestObject->setMessage("TEST_EXCEPTION");
+
         $sRet = "testType (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): TEST_EXCEPTION \n Stack Trace: testStackTrace\n";
         $sRet .= "1 => test1\n";
         $sRet .= "2 => test2\n";

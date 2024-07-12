@@ -17,8 +17,6 @@ final class CountryListTest extends \OxidTestCase
 
     /**
      * Country_List::DeleteEntry() test case
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
@@ -30,18 +28,17 @@ final class CountryListTest extends \OxidTestCase
         try {
             $oView = oxNew('Country_List');
             $oView->deleteEntry();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("delete", $oExcp->getMessage(), "Error in Country_List::DeleteEntry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("delete", $exception->getMessage(), "Error in Country_List::DeleteEntry()");
 
             return;
         }
+
         $this->fail("Error in Country_List::DeleteEntry()");
     }
 
     /**
      * Country_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -86,7 +83,7 @@ final class CountryListTest extends \OxidTestCase
     private function getTitleIfUnset($countryTitle, $country, $process)
     {
         if (is_null($countryTitle) && $process) {
-            $countryTitle = $country->oxcountry__oxtitle->value;
+            return $country->oxcountry__oxtitle->value;
         }
 
         return $countryTitle;

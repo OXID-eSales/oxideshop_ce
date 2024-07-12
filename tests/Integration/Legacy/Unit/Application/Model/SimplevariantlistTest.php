@@ -51,6 +51,7 @@ class SimplevariantlistTest extends \OxidTestCase
         $oParent = $this->getProxyClass("oxArticle");
         $oParent->setInList();
         $oParent->load($sArtId);
+
         $oVariantList = $oParent->getVariants();
 
         $this->assertTrue($oVariantList instanceof ListModel);

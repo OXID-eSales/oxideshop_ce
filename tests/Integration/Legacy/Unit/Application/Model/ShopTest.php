@@ -25,6 +25,7 @@ class ShopTest extends \OxidTestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->setId(10);
+
         $oShop->oxshops__oxproductive = new oxField(true);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
@@ -40,6 +41,7 @@ class ShopTest extends \OxidTestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->setId(12);
+
         $oShop->oxshops__oxproductive = new oxField(false);
         $oShop->oxshops__oxactive = new oxField(1);
         $oShop->oxshops__oxname = new oxField('Test shop');
@@ -80,6 +82,7 @@ class ShopTest extends \OxidTestCase
         foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
             $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));
         }
+
         $oShop->createViewQuery($sTable, [0 => $sLang]);
         $aQueries = $oShop->getQueries();
         $this->assertEquals(rtrim((string) $sQuery), rtrim((string) $aQueries[0]));
@@ -124,6 +127,7 @@ class ShopTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
+
         $oShop = oxNew('oxShop');
         $this->assertEquals([], $oShop->getMultiShopTables());
     }

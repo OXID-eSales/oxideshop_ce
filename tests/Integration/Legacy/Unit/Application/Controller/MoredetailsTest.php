@@ -17,8 +17,6 @@ class MoredetailsTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -28,8 +26,6 @@ class MoredetailsTest extends \OxidTestCase
 
     /**
      * Test get product id's.
-     *
-     * @return null
      */
     public function testGetProductId()
     {
@@ -42,8 +38,6 @@ class MoredetailsTest extends \OxidTestCase
 
     /**
      * Test get product.
-     *
-     * @return null
      */
     public function testGetProduct()
     {
@@ -56,8 +50,6 @@ class MoredetailsTest extends \OxidTestCase
 
     /**
      * Test get active picture id.
-     *
-     * @return null
      */
     public function testGetActPictureId()
     {
@@ -70,8 +62,6 @@ class MoredetailsTest extends \OxidTestCase
 
     /**
      * Test get product zoom pictures.
-     *
-     * @return null
      */
     public function testGetArtZoomPics()
     {

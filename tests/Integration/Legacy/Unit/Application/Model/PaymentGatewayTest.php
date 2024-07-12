@@ -35,8 +35,6 @@ class PaymentGatewayTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -55,6 +53,7 @@ class PaymentGatewayTest extends \OxidTestCase
         $oUserpayment->Save();
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setPaymentParams($oUserpayment);
+
         $oUP = $oPaymentGateway->getPaymentInfo();
         $this->assertEquals($oUP->oxuserpayments__oxvalue->value, $oUserpayment->oxuserpayments__oxvalue->value);
     }
@@ -73,6 +72,7 @@ class PaymentGatewayTest extends \OxidTestCase
         $oOrder = oxNew(Order::class);
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setActive();
+
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
         $this->assertEquals($blResult, false);
     }
@@ -88,6 +88,7 @@ class PaymentGatewayTest extends \OxidTestCase
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setActive();
         $oPaymentGateway->setPaymentParams($oUserpayment);
+
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
         $this->assertEquals($blResult, false);
     }
@@ -103,6 +104,7 @@ class PaymentGatewayTest extends \OxidTestCase
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setActive();
         $oPaymentGateway->setPaymentParams($oUserpayment);
+
         $blResult = $oPaymentGateway->executePayment(2, $oOrder);
         $this->assertEquals($blResult, true);
     }
@@ -111,6 +113,7 @@ class PaymentGatewayTest extends \OxidTestCase
     {
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setError(null, null);
+
         $blResult = $oPaymentGateway->getLastErrorNo();
         $this->assertEquals($blResult, null);
     }
@@ -119,6 +122,7 @@ class PaymentGatewayTest extends \OxidTestCase
     {
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setError(22, "Test Error");
+
         $blResult = $oPaymentGateway->getLastErrorNo();
         $this->assertEquals($blResult, 22);
     }
@@ -127,6 +131,7 @@ class PaymentGatewayTest extends \OxidTestCase
     {
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setError(null, null);
+
         $blResult = $oPaymentGateway->getLastError();
         $this->assertEquals($blResult, null);
     }
@@ -135,6 +140,7 @@ class PaymentGatewayTest extends \OxidTestCase
     {
         $oPaymentGateway = new mod_oxpaymentgateway();
         $oPaymentGateway->setError(22, "Test Error");
+
         $blResult = $oPaymentGateway->getLastError();
         $this->assertEquals($blResult, "Test Error");
     }

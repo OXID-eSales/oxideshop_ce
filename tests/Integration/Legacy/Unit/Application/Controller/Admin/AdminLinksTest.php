@@ -15,8 +15,6 @@ class AdminLinksTest extends \OxidTestCase
 
     /**
      * Admin_Links::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

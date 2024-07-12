@@ -15,7 +15,7 @@ use \oxTestModules;
 
 class CmpCategoriesTest extends \OxidTestCase
 {
-    public static $oCL = null;
+    public static $oCL;
 
     public function tearDown(): void
     {
@@ -54,11 +54,12 @@ class CmpCategoriesTest extends \OxidTestCase
 
         try {
             $o->init();
-        } catch (Exception $e) {
-            $this->assertEquals("passed: OK", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("passed: OK", $exception->getMessage());
 
             return;
         }
+
         $this->fail("no exception is thrown");
     }
 
@@ -78,11 +79,12 @@ class CmpCategoriesTest extends \OxidTestCase
 
         try {
             $o->init();
-        } catch (Exception $e) {
-            $this->assertEquals("passed: OK", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("passed: OK", $exception->getMessage());
 
             return;
         }
+
         $this->fail("no exception is thrown");
     }
 
@@ -107,11 +109,12 @@ class CmpCategoriesTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'manid');
         try {
             $o->init();
-        } catch (Exception $e) {
-            $this->assertEquals("passed: OK", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("passed: OK", $exception->getMessage());
 
             return;
         }
+
         $this->fail("no exception is thrown");
     }
 
@@ -137,11 +140,12 @@ class CmpCategoriesTest extends \OxidTestCase
 
         try {
             $o->init();
-        } catch (Exception $e) {
-            $this->assertEquals("passed: OK", $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals("passed: OK", $exception->getMessage());
 
             return;
         }
+
         $this->fail("no exception is thrown");
     }
 
@@ -441,8 +445,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsSearch()
     {
@@ -463,8 +465,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsManufacturer()
     {
@@ -490,8 +490,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsVendor()
     {
@@ -516,8 +514,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsDefaultCat()
     {
@@ -541,8 +537,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsDefaultManufacturer()
     {
@@ -567,8 +561,6 @@ class CmpCategoriesTest extends \OxidTestCase
 
     /**
      * Testing oxcmp_categories::_addAdditionalParams()
-     *
-     * @return null
      */
     public function testAddAdditionalParamsDefaultVendor()
     {

@@ -372,10 +372,11 @@ class ArticleSeoTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
-        $sQ = "select oxobject2category.oxcatnid as oxid from {$sO2CView} as oxobject2category where oxobject2category.oxobjectid="
+        $sQ = sprintf('select oxobject2category.oxcatnid as oxid from %s as oxobject2category where oxobject2category.oxobjectid=', $sO2CView)
               . $oDb->quote($oProduct->getId()) . " union " . $oProduct->getSqlForPriceCategories('oxid');
 
-        $sQ = "select count(*) from ( $sQ ) as _tmp";
+        $sQ = sprintf('select count(*) from ( %s ) as _tmp', $sQ);
+
         $iCount = $oDb->getOne($sQ);
 
         $oView = oxNew('Article_Seo');

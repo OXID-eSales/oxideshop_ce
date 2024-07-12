@@ -33,13 +33,9 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertLoggedException(SystemComponentException::class);
     }
 
-    /**
-     *
-     * @return ModuleChainsGenerator
-     */
+    
     private function generateModuleChainsGeneratorWithNonExistingFileConfiguration(): ModuleChainsGenerator
     {
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocatorMock = $this->getMock(
             \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class,
             ['getModuleVariable'],

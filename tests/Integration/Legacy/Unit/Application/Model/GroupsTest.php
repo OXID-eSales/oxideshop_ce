@@ -20,14 +20,13 @@ class GroupsTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
         parent::setUp();
         $group = oxNew('oxgroups');
         $group->setId('testgroup');
+
         $group->oxgroups__oxtitle = new oxfield('testgroup');
         $group->oxgroups__oxactive = new oxfield(1);
         $group->save();
@@ -35,8 +34,6 @@ class GroupsTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -48,8 +45,8 @@ class GroupsTest extends \OxidTestCase
 
     public function testDelete()
     {
-        $myUtils = oxRegistry::getUtils();
-        $myConfig = $this->getConfig();
+        oxRegistry::getUtils();
+        $this->getConfig();
         $myDB = oxDb::getDb();
 
         // selecting count from DB
@@ -59,7 +56,7 @@ class GroupsTest extends \OxidTestCase
 
         // checking of group is deleted from DB
         $groupId = $group->getId();
-        $sQ = "select count(*) from oxgroups where oxid = '$groupId' ";
+        $sQ = sprintf('select count(*) from oxgroups where oxid = \'%s\' ', $groupId);
         if ($myDB->getOne($sQ)) {
             $this->fail('item from oxgroups are not deleted');
         }
@@ -68,7 +65,7 @@ class GroupsTest extends \OxidTestCase
         foreach ($this->_aAdd as $sTable => $aField) {
             $sField = $aField[0];
 
-            $sQ = "select count(*) from $sTable where $sTable.$sField = '$groupId' ";
+            $sQ = sprintf('select count(*) from %s where %s.%s = \'%s\' ', $sTable, $sTable, $sField, $groupId);
             if ($myDB->getOne($sQ)) {
                 $this->fail('records from ' . $sTable . ' are not deleted');
             }

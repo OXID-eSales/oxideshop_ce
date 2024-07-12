@@ -23,8 +23,6 @@ class ArticleDetailsTest extends \OxidTestCase
 {
     /**
      * Test get active zoom picture.
-     *
-     * @return null
      */
     public function testGetActZoomPic()
     {
@@ -34,8 +32,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is not set
-     *
-     * @return null
      */
     public function testGetDefaultSortingUndefinedSorting()
     {
@@ -50,8 +46,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is set
-     *
-     * @return null
      */
     public function testGetDefaultSortingDefinedSorting()
     {
@@ -66,8 +60,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is undefined
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsUndefined()
     {
@@ -84,8 +76,6 @@ class ArticleDetailsTest extends \OxidTestCase
     /**
      * Test getDefaultSorting when sorting mode is set to 'asc'
      * This might be a little too much, but it's a case
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsAsc()
     {
@@ -102,8 +92,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsDesc()
     {
@@ -120,8 +108,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get parent product.
-     *
-     * @return null
      */
     public function testGetParentProduct()
     {
@@ -138,8 +124,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test if ratings are activated.
-     *
-     * @return null
      */
     public function testRatingIsActive()
     {
@@ -167,19 +151,19 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get attributes.
-     *
-     * @return null
      */
     public function testGetAttributes()
     {
         $sArtID = '1672';
         $oArticle = oxNew('oxArticle');
         $oArticle->load($sArtID);
+
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
-        $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
+
+        $sSelect = sprintf('select oxattrid from oxobject2attribute where oxobjectid = \'%s\'', $sArtID);
         $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = "select oxvalue from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '$sArtID'";
+        $sSelect = sprintf('select oxvalue from oxobject2attribute where oxattrid = \'%s\' and oxobjectid = \'%s\'', $sID, $sArtID);
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $aAttrList = $oDetails->getAttributes();
         $sAttribValue = $aAttrList[$sID]->value;
@@ -188,8 +172,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get link type.
-     *
-     * @return null
      */
     public function testGetLinkType()
     {
@@ -224,8 +206,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get variant list.
-     *
-     * @return null
      */
     public function testGetVariantListExceptCurrent()
     {
@@ -262,8 +242,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test load variant information.
-     *
-     * @return null
      */
     public function testLoadVariantInformation()
     {
@@ -274,6 +252,7 @@ class ArticleDetailsTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $edition = 'Enterprise';
         }
+
         if ($this->getTestConfig()->getShopEdition() == 'PE') {
             $edition = 'Professional';
         }
@@ -323,8 +302,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get variant list.
-     *
-     * @return null
      */
     public function testGetVariantList()
     {
@@ -339,8 +316,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get media files.
-     *
-     * @return null
      */
     public function testGetMediaFiles()
     {
@@ -349,8 +324,10 @@ class ArticleDetailsTest extends \OxidTestCase
 
         $oArt = oxNew('oxArticle');
         $oArt->load('2000');
+
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_oProduct", $oArt);
+
         $oMediaUrls = $oDetails->getMediaFiles();
 
         $this->assertEquals(1, count($oMediaUrls));
@@ -360,8 +337,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get last seen product list.
-     *
-     * @return null
      */
     public function testGetLastProducts()
     {
@@ -382,8 +357,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get manufacturer.
-     *
-     * @return null
      */
     public function testGetManufacturer()
     {
@@ -391,6 +364,7 @@ class ArticleDetailsTest extends \OxidTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $sManId = '88a996f859f94176da943f38ee067984';
         }
+
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getManufacturerId']);
         $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
 
@@ -406,8 +380,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get vendor.
-     *
-     * @return null
      */
     public function testGetVendor()
     {
@@ -424,21 +396,22 @@ class ArticleDetailsTest extends \OxidTestCase
 
         $oExpVendor = oxNew('oxVendor');
         $oExpVendor->load($sVendId);
+
         $oVendor = $oDetails->getVendor();
         $this->assertEquals($oExpVendor->oxvendors__oxtitle->value, $oVendor->oxvendors__oxtitle->value);
     }
 
     /**
      * Test get category.
-     *
-     * @return null
      */
     public function testGetCategory()
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
+
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
+
         $oCategory = $oDetails->getCategory();
 
         $sCatId = "8a142c3e49b5a80c1.23676990";
@@ -452,8 +425,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get picture gallery.
-     *
-     * @return null
      */
     public function testGetPictureGallery()
     {
@@ -461,6 +432,7 @@ class ArticleDetailsTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load($sArtID);
+
         $sActPic = $this->getConfig()->getPictureUrl(null) . "generated/product/1/250_200_75/" . basename($oArticle->oxarticles__oxpic1->value);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getPicturesProduct"]);
@@ -472,8 +444,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get active picture.
-     *
-     * @return null
      */
     public function testGetActPicture()
     {
@@ -485,8 +455,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get more pictures.
-     *
-     * @return null
      */
     public function testMorePics()
     {
@@ -498,8 +466,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get icons.
-     *
-     * @return null
      */
     public function testGetIcons()
     {
@@ -511,8 +477,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test show zoom pictures.
-     *
-     * @return null
      */
     public function testShowZoomPics()
     {
@@ -524,8 +488,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get zoom pictures.
-     *
-     * @return null
      */
     public function testGetZoomPics()
     {
@@ -537,8 +499,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get reviews.
-     *
-     * @return null
      */
     public function testGetReviews()
     {
@@ -553,14 +513,13 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get crossselling.
-     *
-     * @return null
      */
     public function testGetCrossSelling()
     {
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
+
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
         $this->assertTrue($oList instanceof ArticleList);
@@ -575,8 +534,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Testing Account_Noticelist::getSimilarProducts()
-     *
-     * @return null
      */
     public function testGetSimilarProductsEmptyProductList()
     {
@@ -587,8 +544,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Testing Account_Noticelist::getSimilarProducts()
-     *
-     * @return null
      */
     public function testGetSimilarProducts()
     {
@@ -602,10 +557,7 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get ids for similar recomendation list.
-     *
-     * @return null
      */
-
     public function testGetSimilarRecommListIds()
     {
         $articleId = "articleId";
@@ -620,8 +572,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get accessories.
-     *
-     * @return null
      */
     public function testGetAccessoires()
     {
@@ -636,8 +586,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get also bought these products.
-     *
-     * @return null
      */
     public function testGetAlsoBoughtTheseProducts()
     {
@@ -652,8 +600,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test is product added to price alarm.
-     *
-     * @return null
      */
     public function testIsPriceAlarm()
     {
@@ -668,8 +614,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test is product added to price alarm - true test.
-     *
-     * @return null
      */
     public function testIsPriceAlarm_true()
     {
@@ -684,8 +628,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test search title setter/getter.
-     *
-     * @return null
      */
     public function testSetGetSearchTitle()
     {
@@ -697,8 +639,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test category path setter/getter.
-     *
-     * @return null
      */
     public function testSetGetCatTreePath()
     {
@@ -710,8 +650,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test is persistent parameter.
-     *
-     * @return null
      */
     public function testIsPersParam()
     {
@@ -725,8 +663,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test is persistent parameter navigative.
-     *
-     * @return null
      */
     public function testIsPersParamNegative()
     {
@@ -827,8 +763,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * details::getVariantSelections() test case
-     *
-     * @return null
      */
     public function testGetVariantSelections()
     {
@@ -860,8 +794,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * details::getPicturesProduct() test case
-     *
-     * @return null
      */
     public function testGetPicturesProductNoVariantInfo()
     {
@@ -903,8 +835,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test get invisible product.
-     *
-     * @return null
      */
     public function testGetProductInvisibleProduct()
     {
@@ -918,18 +848,17 @@ class ArticleDetailsTest extends \OxidTestCase
             $oDetailsView = $this->getProxyClass('oxwArticleDetails');
             $oDetailsView->setNonPublicVar('_oProduct', $oProduct);
             $oDetailsView->getProduct();
-        } catch (Exception $oExcp) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $exception->getMessage(), 'result does not match');
 
             return;
         }
+
         $this->fail('product should not be returned');
     }
 
     /**
      * Test is multidimensionall variants enabled.
-     *
-     * @return null
      */
     public function testIsMdVariantView()
     {
@@ -946,8 +875,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test is multidimensionall variants disabled.
-     *
-     * @return null
      */
     public function testIsMdVariantViewNotActive()
     {
@@ -958,8 +885,6 @@ class ArticleDetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
-     *
-     * @return null
      */
     public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
     {

@@ -15,8 +15,6 @@ class AdminPaymentTest extends \OxidTestCase
 
     /**
      * Admin_Payment::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

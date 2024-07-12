@@ -15,8 +15,6 @@ class SelectListListTest extends \OxidTestCase
 
     /**
      * SelectList_List::Init() test case
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -30,8 +28,6 @@ class SelectListListTest extends \OxidTestCase
 
     /**
      * SelectList_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

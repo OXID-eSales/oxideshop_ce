@@ -24,19 +24,17 @@ class ActionsTest extends \OxidTestCase
      *
      * @var object
      */
-    protected $_oAction = null;
+    protected $_oAction;
 
     /**
      * Contains a object of oxactions()
      *
      * @var object
      */
-    public $_oPromo = null;
+    public $_oPromo;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -57,8 +55,6 @@ class ActionsTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -71,15 +67,13 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::addArticle() test case
      * Testing action article adding.
-     *
-     * @return null
      */
     public function testAddArticle()
     {
         $sArtOxid = 'xxx';
         $this->_oAction->addArticle($sArtOxid);
 
-        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . "' and oxartid = '$sArtOxid' ");
+        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf('\' and oxartid = \'%s\' ', $sArtOxid));
         if (!$sCheckOxid) {
             $this->fail("fail adding article");
         }
@@ -88,8 +82,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::removeArticle() test case
      * Testing action article removal.
-     *
-     * @return null
      */
     public function testRemoveArticle()
     {
@@ -97,7 +89,7 @@ class ActionsTest extends \OxidTestCase
         $this->_oAction->addArticle($sArtOxid);
         $this->assertTrue($this->_oAction->removeArticle($sArtOxid));
 
-        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . "' and oxartid = '$sArtOxid' ");
+        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf('\' and oxartid = \'%s\' ', $sArtOxid));
         if ($sCheckOxid) {
             $this->fail("fail removing article");
         }
@@ -106,8 +98,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::removeArticle() test case
      * Testing non existing action article removal.
-     *
-     * @return null
      */
     public function testRemoveArticleNotExisting()
     {
@@ -118,12 +108,9 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::removeArticle() test case
      * Trying to delete not existing action, deletion must return false
-     *
-     * @return null
      */
     public function testDeleteNotExistingAction()
     {
-        $sArtOxid = 'xxx';
         $oAction = oxNew('oxActions');
         $this->assertFalse($oAction->delete());
     }
@@ -131,8 +118,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::delete() test case
      * Deleting existing action, everything must go fine
-     *
-     * @return null
      */
     public function testDelete()
     {
@@ -150,8 +135,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::getTimeLeft() test case
      * Test if the setted timeleft in database equals what we expect
-     *
-     * @return null
      */
     public function testGetTimeLeft()
     {
@@ -163,8 +146,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::getTimeUntilStart() test case
      * Test if promo starts at the setted time we expect
-     *
-     * @return null
      */
     public function testGetTimeUntilStart()
     {
@@ -177,8 +158,6 @@ class ActionsTest extends \OxidTestCase
      * oxActions::start() test case
      * Create a new promo action and check if they are active until our setted date.
      * Save the date into the db and read it with the id of the promo out.
-     *
-     * @return null
      */
     public function testStart()
     {
@@ -225,8 +204,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::stop() test case
      * stops the current promo action and test if oxactiveto equals the current date.
-     *
-     * @return null
      */
     public function testStop()
     {
@@ -246,8 +223,6 @@ class ActionsTest extends \OxidTestCase
     /**
      * oxActions::isRunning() test case
      * check if actions are active or not
-     *
-     * @return null
      */
     public function testIsTestRunning()
     {
@@ -357,7 +332,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetBannerPictureUrl_noPicture()
     {
         $oPromo = oxNew('oxActions');
-        $oConfig = $this->getConfig();
+        $this->getConfig();
 
         $this->assertNull($oPromo->getBannerPictureUrl());
     }

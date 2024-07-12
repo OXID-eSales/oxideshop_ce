@@ -20,8 +20,6 @@ class DiscountMainTest extends \OxidTestCase
 
     /**
      * Test tear down
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -32,8 +30,6 @@ class DiscountMainTest extends \OxidTestCase
 
     /**
      * Discount_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -50,8 +46,6 @@ class DiscountMainTest extends \OxidTestCase
 
     /**
      * Discount_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -67,8 +61,6 @@ class DiscountMainTest extends \OxidTestCase
 
     /**
      * Discount_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -80,18 +72,17 @@ class DiscountMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Discount_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Discount_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Discount_Main::save()");
 
             return;
         }
+
         $this->fail("error in Discount_Main::save()");
     }
 
     /**
      * Discount_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -103,18 +94,17 @@ class DiscountMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Discount_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Discount_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Discount_Main::save()");
 
             return;
         }
+
         $this->fail("error in Discount_Main::save()");
     }
 
     /**
      * Discount_Main::getItemDiscountProductTitle() test case
-     *
-     * @return null
      */
     public function testgetItemDiscountProductTitle()
     {
@@ -124,6 +114,7 @@ class DiscountMainTest extends \OxidTestCase
 
         $oTestDiscount = oxNew('oxDiscount');
         $oTestDiscount->setId("_testDiscountId");
+
         $oTestDiscount->oxdiscount__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oTestDiscount->oxdiscount__oxactive = new oxField(1);
         $oTestDiscount->oxdiscount__oxtitle = new oxField("Test");
@@ -143,10 +134,10 @@ class DiscountMainTest extends \OxidTestCase
 
         $oView->setNonPublicVar("_iEditLang", 0);
         $this->setRequestParameter("oxid", "_testDiscountId");
-        $this->assertEquals("$sId $sTitleDe", $oView->getItemDiscountProductTitle());
+        $this->assertEquals(sprintf('%s %s', $sId, $sTitleDe), $oView->getItemDiscountProductTitle());
 
         $oView->setNonPublicVar("_iEditLang", 1);
         $this->setRequestParameter("oxid", "_testDiscountId");
-        $this->assertEquals("$sId $sTitleEn", $oView->getItemDiscountProductTitle());
+        $this->assertEquals(sprintf('%s %s', $sId, $sTitleEn), $oView->getItemDiscountProductTitle());
     }
 }

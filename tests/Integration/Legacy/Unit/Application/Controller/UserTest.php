@@ -23,8 +23,6 @@ class UserTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -36,8 +34,6 @@ class UserTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -169,8 +165,6 @@ class UserTest extends \OxidTestCase
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -206,11 +200,12 @@ class UserTest extends \OxidTestCase
 
         try {
             $oU->render();
-        } catch (Exception $e) {
-            $this->assertEquals('call is ok', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('call is ok', $exception->getMessage());
 
             return;
         }
+
         $this->fail("exception should have been thrown");
     }
 
@@ -236,11 +231,12 @@ class UserTest extends \OxidTestCase
 
         try {
             $oO->render();
-        } catch (Exception $e) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $exception->getMessage());
 
             return;
         }
+
         $this->fail("no Exception thrown in redirect");
     }
 
@@ -290,8 +286,6 @@ class UserTest extends \OxidTestCase
 
     /**
      * Testing user::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -309,8 +303,6 @@ class UserTest extends \OxidTestCase
 
     /**
      * Testing user::modifyBillAddress()
-     *
-     * @return null
      */
     public function testModifyBillAddress()
     {

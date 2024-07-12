@@ -19,8 +19,6 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -31,8 +29,6 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
     /**
      * DeliverySet_RDFa::save() delete old records test case
-     *
-     * @return null
      */
     public function testSave_deleteOldRecords()
     {
@@ -41,6 +37,7 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
         $oMapping = oxNew('oxBase');
         $oMapping->init('oxobject2delivery');
+
         $oMapping->oxobject2delivery__oxdeliveryid = new oxField($sTestID);
         $oMapping->oxobject2delivery__oxobjectid = new oxField('test_del_objID');
         $oMapping->oxobject2delivery__oxtype = new oxField('rdfadeliveryset');
@@ -66,8 +63,6 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
     /**
      * DeliverySet_RDFa::save() create records test case
-     *
-     * @return null
      */
     public function testSave_createRecords()
     {
@@ -96,13 +91,10 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
     /**
      * DeliverySet_RDFa::getAllRDFaDeliveries() test case
-     *
-     * @return null
      */
     public function testGetAllRDFaDeliveries()
     {
         $aAssignedRDFaDeliveries = ['DeliveryModeOwnFleet'];
-        $aExpResp = [];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetRdfa::class, ['getAssignedRDFaDeliveries']);
         $oView->expects($this->once())->method('getAssignedRDFaDeliveries')->will($this->returnValue($aAssignedRDFaDeliveries));
@@ -111,18 +103,14 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $this->assertTrue(is_array($aCurrResp), 'Array should be returned');
         $this->assertTrue(count($aCurrResp) > 0, 'Empty array returned');
         $this->assertTrue(current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass');
-
-        $blFound = false;
         foreach ($aCurrResp as $oItem) {
             foreach ($aAssignedRDFaDeliveries as $sAssignedName) {
                 if (strcasecmp($oItem->name, $sAssignedName) === 0) {
                     if ($oItem->checked !== true) {
                         $this->fail('Item "' . $sAssignedName . '" should be set as active');
                     }
-                } else {
-                    if ($oItem->checked === true) {
-                        $this->fail('Item "' . $sAssignedName . '" should not be set as active');
-                    }
+                } elseif ($oItem->checked === true) {
+                    $this->fail('Item "' . $sAssignedName . '" should not be set as active');
                 }
             }
         }
@@ -130,8 +118,6 @@ class DeliverySetRDFaTest extends \OxidTestCase
 
     /**
      * DeliverySet_RDFa::getAssignedRDFaDeliveries() test case
-     *
-     * @return null
      */
     public function testGetAssignedRDFaDeliveries()
     {

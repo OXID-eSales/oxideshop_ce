@@ -14,8 +14,6 @@ class RatingTest extends \OxidTestCase
 {
     /**
      * Testing oxwRating::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -25,8 +23,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::getRatingValue()
-     *
-     * @return null
      */
     public function testGetRatingValue()
     {
@@ -37,8 +33,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::getRatingCount()
-     *
-     * @return null
      */
     public function testGetRatingCount()
     {
@@ -49,8 +43,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::canRate()
-     *
-     * @return null
      */
     public function testCanRate()
     {
@@ -61,8 +53,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::getArticleId()
-     *
-     * @return null
      */
     public function testGetArticleNId()
     {
@@ -73,8 +63,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::getRateUrl()
-     *
-     * @return null
      */
     public function testGetRateUrl_RateUrlParamSet_RateUrlValue()
     {
@@ -85,8 +73,6 @@ class RatingTest extends \OxidTestCase
 
     /**
      * Testing oxwRating::getRateUrl()
-     *
-     * @return null
      */
     public function testGetRateUrl_NoRateUrlParam_Null()
     {

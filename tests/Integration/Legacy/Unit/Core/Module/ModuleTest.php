@@ -36,8 +36,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::load() test case
-     *
-     * @return null
      */
     public function testLoadWhenModuleDoesNotExists()
     {
@@ -47,8 +45,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::getInfo() test case
-     *
-     * @return null
      */
     public function testGetInfo()
     {
@@ -63,8 +59,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::getInfo() test case - selecting multi language value
-     *
-     * @return null
      */
     public function testGetInfo_usingLanguage()
     {
@@ -130,8 +124,6 @@ class ModuleTest extends \OxidTestCase
      */
     public function testGetControllersWithExistingControllers($metaDataControllers, $expectedResult, $message)
     {
-        $expectedControllers = ['controller_id' => 'ControllerName'];
-
         $metaData = ['id' => 'testModuleId', 'controllers' => $metaDataControllers];
 
         $module = oxNew(Module::class);
@@ -217,8 +209,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::hasMetadata() test case
-     *
-     * @return null
      */
     public function testHasMetadata()
     {
@@ -232,8 +222,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::isRegistered() test case
-     *
-     * @return null
      */
     public function testIsRegistered()
     {
@@ -248,8 +236,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::getTitle() test case
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -262,8 +248,6 @@ class ModuleTest extends \OxidTestCase
 
     /**
      * oxModule::getDescription() test case
-     *
-     * @return null
      */
     public function testGetDescription()
     {

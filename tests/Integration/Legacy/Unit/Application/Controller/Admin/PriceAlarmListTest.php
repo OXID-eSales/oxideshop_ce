@@ -18,8 +18,6 @@ class PriceAlarmListTest extends \OxidTestCase
 
     /**
      * PriceAlarm_List::BuildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectString()
     {
@@ -27,11 +25,11 @@ class PriceAlarmListTest extends \OxidTestCase
         $sViewName = $tableViewNameGenerator->getViewName("oxpricealarm");
         $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
-        $sSql = "select {$sViewName}.*, {$sArtViewName}.oxtitle AS articletitle, ";
+        $sSql = sprintf('select %s.*, %s.oxtitle AS articletitle, ', $sViewName, $sArtViewName);
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
-        $sSql .= "from {$sViewName} ";
-        $sSql .= "left join {$sArtViewName} on {$sArtViewName}.oxid = {$sViewName}.oxartid ";
-        $sSql .= "left join oxuser on oxuser.oxid = {$sViewName}.oxuserid WHERE 1 ";
+        $sSql .= sprintf('from %s ', $sViewName);
+        $sSql .= sprintf('left join %s on %s.oxid = %s.oxartid ', $sArtViewName, $sArtViewName, $sViewName);
+        $sSql .= sprintf('left join oxuser on oxuser.oxid = %s.oxuserid WHERE 1 ', $sViewName);
 
         // testing..
         $oView = oxNew('PriceAlarm_List');
@@ -40,8 +38,6 @@ class PriceAlarmListTest extends \OxidTestCase
 
     /**
      * PriceAlarm_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -51,8 +47,6 @@ class PriceAlarmListTest extends \OxidTestCase
 
     /**
      * PriceAlarm_List::BuildWhere() test case
-     *
-     * @return null
      */
     public function testBuildWhere()
     {

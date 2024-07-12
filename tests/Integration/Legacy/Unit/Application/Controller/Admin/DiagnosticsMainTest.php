@@ -15,8 +15,6 @@ class DiagnosticsMainTest extends \OxidTestCase
 
     /**
      * sysreq_main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

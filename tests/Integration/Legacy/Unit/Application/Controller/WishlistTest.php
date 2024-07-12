@@ -16,8 +16,6 @@ class WishlistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -26,6 +24,7 @@ class WishlistTest extends \OxidTestCase
 
         $this->_oUser = oxNew('oxuser');
         $this->_oUser->setId('_testId');
+
         $this->_oUser->oxuser__oxusername = new oxField('testUserName', oxField::T_RAW);
         $this->_oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $this->_oUser->save();
@@ -33,8 +32,6 @@ class WishlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -160,8 +157,6 @@ class WishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_RecommList::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

@@ -24,8 +24,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::chshp() test case
-     *
-     * @return null
      */
     public function testChshpPE()
     {
@@ -48,8 +46,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -63,8 +59,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::Render() test case
-     *
-     * @return null
      */
     public function testRenderPassingTemplateName()
     {
@@ -104,8 +98,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::Render() test case
-     *
-     * @return null
      */
     public function testRenderForceRequirementsCheckingNextTime()
     {
@@ -145,8 +137,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::Logout() test case
-     *
-     * @return null
      */
     public function testLogout()
     {
@@ -178,8 +168,6 @@ class NavigationTest extends \OxidTestCase
 
     /**
      * Navigation::Exturl() test case
-     *
-     * @return null
      */
     public function testExturl()
     {
@@ -190,18 +178,17 @@ class NavigationTest extends \OxidTestCase
             // testing..
             $oView = oxNew('Navigation');
             $oView->exturl();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("showMessageAndExit", $oExcp->getMessage(), "Error in Navigation::exturl()");
+        } catch (Exception $exception) {
+            $this->assertEquals("showMessageAndExit", $exception->getMessage(), "Error in Navigation::exturl()");
 
             return;
         }
+
         $this->fail("Error in Navigation::exturl()");
     }
 
     /**
      * Navigation::DoStartUpChecks() test case
-     *
-     * @return null
      */
     public function testDoStartUpChecks()
     {
@@ -219,7 +206,7 @@ class NavigationTest extends \OxidTestCase
     public function testCheckVersion(): void
     {
         $latestVersion = '987';
-        oxTestModules::addFunction('oxUtilsFile', 'readRemoteFileAsString', "{ return $latestVersion; }");
+        oxTestModules::addFunction('oxUtilsFile', 'readRemoteFileAsString', sprintf('{ return %s; }', $latestVersion));
         oxTestModules::addFunction('oxLang', 'translateString', '{ return "current ver.: %s new ver.: %s"; }');
         $controllerMock = new NavigationController();
 

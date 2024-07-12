@@ -15,8 +15,6 @@ class ToolsMainTest extends \OxidTestCase
 
     /**
      * Tools_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

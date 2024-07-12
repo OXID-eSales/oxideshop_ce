@@ -15,8 +15,6 @@ class LanguageListTest extends \OxidTestCase
 
     /**
      * Testing oxwLanguageList::render()
-     *
-     * @return null
      */
     public function testRender()
     {

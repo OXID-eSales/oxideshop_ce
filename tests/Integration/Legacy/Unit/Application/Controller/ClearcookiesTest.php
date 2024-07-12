@@ -14,12 +14,10 @@ use \oxRegistry;
  */
 class ClearcookiesTest extends \OxidTestCase
 {
-    protected $_oObj = null;
+    protected $_oObj;
 
     /**
      * Test view render.
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -43,8 +41,6 @@ class ClearcookiesTest extends \OxidTestCase
 
     /**
      * Testing Contact::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

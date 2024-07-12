@@ -14,9 +14,6 @@ use DateTime;
  */
 class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    /**
-     * @return null|void
-     */
     public function setup(): void
     {
         parent::setUp();
@@ -171,6 +168,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
         $systemEventHandler->onShopEnd();
+
         $checkTime1 = $this->getConfigParam('sOnlineLicenseCheckTime');
 
         $systemEventHandler->onShopEnd();
@@ -193,6 +191,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $nextCheckTime = new DateTime('tomorrow');
         $nextCheckTime->setTime($checkHours, $checkMinutes, $checkSeconds);
+
         $expectedNextCheckTime = $nextCheckTime->getTimestamp();
 
         $onlineLicenseCheckMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class)
@@ -259,6 +258,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
+
         $this->prepareCurrentTime(1400000000);
         $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
 

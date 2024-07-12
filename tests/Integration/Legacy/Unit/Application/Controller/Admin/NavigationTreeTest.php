@@ -25,8 +25,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getDomXml() test case
-     *
-     * @return null
      */
     public function testGetDomXml()
     {
@@ -45,8 +43,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_hasGroup() test case
-     *
-     * @return null
      */
     public function testHasGroup()
     {
@@ -60,8 +56,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_hasRights() test case
-     *
-     * @return null
      */
     public function testHasRights()
     {
@@ -75,8 +69,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getEditUrl() test case
-     *
-     * @return null
      */
     public function testGetEditUrl()
     {
@@ -96,8 +88,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * check if the external url read out correct
-     *
-     * @return null
      */
     public function testGetEditUrlExternal()
     {
@@ -117,8 +107,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getListUrl() test case
-     *
-     * @return null
      */
     public function testGetListUrl()
     {
@@ -136,8 +124,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getListNodes() test case
-     *
-     * @return null
      */
     public function testGetListNodes()
     {
@@ -166,8 +152,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::markNodeActive() test case
-     *
-     * @return null
      */
     public function testMarkNodeActive()
     {
@@ -212,8 +196,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getBtn() test case
-     *
-     * @return null
      */
     public function testGetBtn()
     {
@@ -241,8 +223,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::getActiveTab() test case
-     *
-     * @return null
      */
     public function testGetActiveTab()
     {
@@ -262,8 +242,6 @@ class NavigationTreeTest extends \OxidTestCase
     /**
      * OxNavigationTree::getTabs() test case
      * test if the returned value of tabs equals the expected amount.
-     *
-     * @return null
      */
     public function testGetTabs()
     {
@@ -294,8 +272,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_copyAttributes() test case
-     *
-     * @return null
      */
     public function testCopyAttributes()
     {
@@ -321,8 +297,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_checkGroups() test case
-     *
-     * @return null
      */
     public function testCheckGroups()
     {
@@ -336,7 +310,7 @@ class NavigationTreeTest extends \OxidTestCase
                      </SUBMENU>
                    </MAINMENU>';
 
-        $sResXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MAINMENU>   </MAINMENU>";
+        $sResXml = '<?xml version="1.0" encoding="UTF-8"?><MAINMENU>   </MAINMENU>';
 
         $oDom = new DOMDocument();
         $oDom->formatOutput = true;
@@ -357,8 +331,6 @@ class NavigationTreeTest extends \OxidTestCase
     /**
      * OxNavigationTree::removeInvisibleMenuNodes() test case when menu is marked as invisible,
      * also if it marked as visible and default behaviour, if attribute visible is not present.
-     *
-     * @return null
      */
     public function testRemoveInvisibleMenuNodes()
     {
@@ -393,8 +365,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::removeInvisibleMenuNodes() test case wen main menu is marked as invisible.
-     *
-     * @return null
      */
     public function testRemoveInvisibleMainMenuNodes()
     {
@@ -433,8 +403,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::removeInvisibleMenuNodes() test case when tab is marked as not visible.
-     *
-     * @return null
      */
     public function testRemoveInvisibleTabs()
     {
@@ -469,8 +437,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_checkRights() test case
-     *
-     * @return null
      */
     public function testCheckRights()
     {
@@ -484,7 +450,7 @@ class NavigationTreeTest extends \OxidTestCase
                      </SUBMENU>
                    </MAINMENU>';
 
-        $sResXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MAINMENU>   </MAINMENU>";
+        $sResXml = '<?xml version="1.0" encoding="UTF-8"?><MAINMENU>   </MAINMENU>';
 
         $oDom = new DOMDocument();
         $oDom->formatOutput = true;
@@ -506,8 +472,6 @@ class NavigationTreeTest extends \OxidTestCase
      *
      * @param object $oDom     XML Dom Object
      * @param int    $iNeedCnt amount of 'to remove links'
-     *
-     * @return null
      */
     protected function checkDemoShopDenialsInMenuXml($oDom, $iNeedCnt)
     {
@@ -526,12 +490,10 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * call the test method Unit_Admin_oxNavigationTreeTest::_checkDemoShopDenialsInMenuXml()
-     *
-     * @return null
      */
     public function testcheckDemoShopDenialsDefaultMenuXml()
     {
-        $oNavTree = oxNew('oxNavigationTree');
+        oxNew('oxNavigationTree');
         $oDom = $this->getDomXml();
 
         $this->checkDemoShopDenialsInMenuXml($oDom, 4);
@@ -539,8 +501,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if not all denial links removed when it isn't a demoshop
-     *
-     * @return null
      */
     public function testcheckDemoShopDenialsDefaultNormal()
     {
@@ -566,8 +526,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if not all denial links are removed when it is a demoshop
-     *
-     * @return null
      */
     public function testcheckDemoShopDenialsDefaultDemo()
     {
@@ -578,6 +536,7 @@ class NavigationTreeTest extends \OxidTestCase
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '1');
         }
+
         // not changed
         $this->checkDemoShopDenialsInMenuXml($oDom, 4);
 
@@ -592,8 +551,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if no link is removed when it isn't a demoshop
-     *
-     * @return null
      */
     public function testcheckDemoShopDenialsInverseNormal()
     {
@@ -604,6 +561,7 @@ class NavigationTreeTest extends \OxidTestCase
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '0');
         }
+
         // not changed
         $this->checkDemoShopDenialsInMenuXml($oDom, 0);
 
@@ -618,8 +576,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if no link is removed when it is a demoshop
-     *
-     * @return null
      */
     public function testcheckDemoShopDenialsInverseDemo()
     {
@@ -630,6 +586,7 @@ class NavigationTreeTest extends \OxidTestCase
         foreach ($oXPath->query("//*[@disableForDemoShop]") as $oNode) {
             $oNode->setAttribute('disableForDemoShop', '0');
         }
+
         // not changed
         $this->checkDemoShopDenialsInMenuXml($oDom, 0);
 
@@ -655,7 +612,7 @@ class NavigationTreeTest extends \OxidTestCase
             $this->get(AdminThemeBridgeInterface::class)->getActiveTheme();
 
         $edition = strtolower((string) $this->getTestConfig()->getShopEdition());
-        $menuFile = "/menu_$edition.xml";
+        $menuFile = sprintf('/menu_%s.xml', $edition);
 
         $sFile = $adminViewsDirectory . $menuFile;
         if (!file_exists($sFile)) {
@@ -676,13 +633,13 @@ class NavigationTreeTest extends \OxidTestCase
 
             return $oDom;
         }
+
         $this->fail("menu.xml not found bad");
+        return null;
     }
 
     /**
      * test if empty node can removed.
-     *
-     * @return null
      */
     public function testCleanEmptyParents()
     {
@@ -734,8 +691,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if the admin URL will read out correct from config
-     *
-     * @return null
      */
     public function testGetAdminUrl1()
     {
@@ -747,8 +702,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if the admin URL will read out correct from session
-     *
-     * @return null
      */
     public function testGetAdminUrl()
     {
@@ -765,8 +718,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_processCachedFile() test case
-     *
-     * @return null
      */
     public function testProcessCachedFile()
     {
@@ -780,8 +731,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * test if parameter add correct to URL
-     *
-     * @return null
      */
     public function testSessionizeLocalUrls()
     {
@@ -806,7 +755,7 @@ class NavigationTreeTest extends \OxidTestCase
         $o->sessionizeLocalUrls($oCDom);
 
         $oXPath = new DomXPath($oDom);
-        $oNodeList = $oXPath->query("//*[@url=\"index.php?loaa\"]");
+        $oNodeList = $oXPath->query('//*[@url="index.php?loaa"]');
         $this->assertEquals(1, $oNodeList->length);
         $oNodeList->item(0)->setAttribute('url', 'http://url/lala?stoken=TOKEN111454&loaa');
         $this->assertEquals($oDom, $oCDom);
@@ -814,8 +763,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::_mergeNodes() test case
-     *
-     * @return null
      */
     public function testMergeNodes()
     {
@@ -865,8 +812,6 @@ class NavigationTreeTest extends \OxidTestCase
 
     /**
      * OxNavigationTree::init() test case
-     *
-     * @return null
      */
     public function testInit()
     {

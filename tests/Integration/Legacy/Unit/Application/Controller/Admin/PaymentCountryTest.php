@@ -19,8 +19,6 @@ class PaymentCountryTest extends \OxidTestCase
 
     /**
      * Payment_Country::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class PaymentCountryTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -53,8 +49,6 @@ class PaymentCountryTest extends \OxidTestCase
 
     /**
      * Payment_Country::Addcountry() test case
-     *
-     * @return null
      */
     public function testAddcountry()
     {
@@ -66,18 +60,17 @@ class PaymentCountryTest extends \OxidTestCase
         try {
             $oView = oxNew('Payment_Country');
             $oView->addcountry();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Payment_Country::addcountry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Payment_Country::addcountry()");
 
             return;
         }
+
         $this->fail("Error in Payment_Country::addcountry()");
     }
 
     /**
      * Payment_Country::Removecountry() test case
-     *
-     * @return null
      */
     public function testRemovecountry()
     {
@@ -89,11 +82,12 @@ class PaymentCountryTest extends \OxidTestCase
         try {
             $oView = oxNew('Payment_Country');
             $oView->removecountry();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("delete", $oExcp->getMessage(), "Error in Payment_Country::removecountry()");
+        } catch (Exception $exception) {
+            $this->assertEquals("delete", $exception->getMessage(), "Error in Payment_Country::removecountry()");
 
             return;
         }
+
         $this->fail("Error in Payment_Country::removecountry()");
     }
 }

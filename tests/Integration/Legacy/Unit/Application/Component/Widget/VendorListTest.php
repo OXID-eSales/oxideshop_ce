@@ -17,8 +17,6 @@ class VendorListTest extends \OxidTestCase
 
     /**
      * Testing oxwVendorList::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -28,8 +26,6 @@ class VendorListTest extends \OxidTestCase
 
     /**
      * Testing oxwVendorList::getVendorlist()
-     *
-     * @return null
      */
     public function testGetVendorlistNoVendors()
     {

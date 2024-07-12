@@ -27,8 +27,6 @@ class ListTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -39,8 +37,6 @@ class ListTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -71,7 +67,7 @@ class ListTest extends \OxidTestCase
         $this->_oList[] = $oTest;
 
         $sTest = '';
-        foreach ($this->_oList as $key => $oObject) {
+        foreach ($this->_oList as $oObject) {
             $sTest .= $oObject->sTest;
         }
 
@@ -95,6 +91,7 @@ class ListTest extends \OxidTestCase
             ++$i;
             $this->assertEquals($value, $aTest[$key]);
         }
+
         $this->assertEquals($i, 3);
     }
 
@@ -170,17 +167,20 @@ class ListTest extends \OxidTestCase
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test1');
+
         $oAction->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
         $oAction->save();
 
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test2');
+
         $oAction->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
         $oAction->save();
 
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
+
         $oAction->blIsClonedAndKeptProperty = true;
 
         $oList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, ['getBaseObject']);
@@ -204,12 +204,14 @@ class ListTest extends \OxidTestCase
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test1');
+
         $oAction->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
         $oAction->save();
 
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test2');
+
         $oAction->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
         $oAction->save();
 
@@ -228,12 +230,14 @@ class ListTest extends \OxidTestCase
         $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $action->init('oxactions');
         $action->setId('_test1');
+
         $action->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
         $action->save();
 
         $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $action->init('oxactions');
         $action->setId('_test2');
+
         $action->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
         $action->save();
 
@@ -351,8 +355,6 @@ class ListTest extends \OxidTestCase
 
     /**
      * Testing oxList::getFieldLongName()
-     *
-     * @return null
      */
     public function testGetFieldLongName()
     {
@@ -389,8 +391,6 @@ class ListTest extends \OxidTestCase
 
     /**
      * Testing oxList::unset() before foreach loop
-     *
-     * @return null
      */
     public function testUnsetBeforeForeach()
     {
@@ -401,12 +401,14 @@ class ListTest extends \OxidTestCase
         $oList->offsetSet('k4', 'cnt1');
 
         $oList->offsetUnset('k1');
+
         $iTotal = $oList->count();
         $iCount = 0;
 
         foreach ($oList as $sVal) {
             $iCount++;
         }
+
         $this->assertEquals($iTotal, $iCount);
     }
 
@@ -432,8 +434,6 @@ class ListTest extends \OxidTestCase
 
     /**
      * Testing oxList::unset() before while loop
-     *
-     * @return null
      */
     public function testUnsetBeforeWhile()
     {
@@ -444,6 +444,7 @@ class ListTest extends \OxidTestCase
         $oList->offsetSet('k4', 'cnt1');
 
         $oList->offsetUnset('k1');
+
         $iTotal = $oList->count();
         $iCount = 0;
 
@@ -452,13 +453,12 @@ class ListTest extends \OxidTestCase
             $iCount++;
             $oList->next();
         }
+
         $this->assertEquals($iTotal, $iCount);
     }
 
     /**
      * Testing oxList::rewind()
-     *
-     * @return null
      */
     public function testRewind()
     {
@@ -471,6 +471,7 @@ class ListTest extends \OxidTestCase
                 break;
             }
         }
+
         $this->assertEquals(3, $oList->current());
         $oList->rewind();
         $this->assertEquals(1, $oList->current());

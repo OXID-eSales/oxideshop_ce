@@ -16,8 +16,6 @@ class SysreqmainTest extends \OxidTestCase
 
     /**
      * sysreq_main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -28,8 +26,6 @@ class SysreqmainTest extends \OxidTestCase
 
     /**
      * sysreq_main::GetModuleClass() test case
-     *
-     * @return null
      */
     public function testGetModuleClass()
     {

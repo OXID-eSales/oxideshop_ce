@@ -18,8 +18,6 @@ class DeliveryArticlesTest extends \OxidTestCase
 
     /**
      * Delivery_Articles::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

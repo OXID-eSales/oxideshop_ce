@@ -18,8 +18,6 @@ class CounterTest extends \OxidTestCase
 
     /**
      * oxCounter:::getNext() test case
-     *
-     * @return null
      */
     public function testGetNext()
     {
@@ -39,8 +37,6 @@ class CounterTest extends \OxidTestCase
 
     /**
      * oxCounter:::update() test case
-     *
-     * @return null
      */
     public function testUpdate()
     {

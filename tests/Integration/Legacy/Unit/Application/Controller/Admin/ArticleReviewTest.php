@@ -20,8 +20,6 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Article_Review test setup
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -48,8 +44,6 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Article_Review::render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -70,13 +64,12 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Article_Review::delete() test case
-     *
-     * @return null
      */
     public function testSave()
     {
         $oReview = oxNew("oxreview");
         $oReview->setId("_testReviewId");
+
         $oReview->oxreviews__oxactive = new oxField(1);
         $oReview->oxreviews__oxobjectid = new oxField("_testObjectId");
         $oReview->oxreviews__oxtype = new oxField("oxarticle");
@@ -99,13 +92,12 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Article_Review::delete() test case
-     *
-     * @return null
      */
     public function testDelete()
     {
         $oReview = oxNew("oxreview");
         $oReview->setId("testReviewId");
+
         $oReview->oxreviews__oxactive = new oxField(1);
         $oReview->oxreviews__oxobjectid = new oxField("testObjectId");
         $oReview->oxreviews__oxtype = new oxField("oxarticle");
@@ -126,8 +118,6 @@ class ArticleReviewTest extends \OxidTestCase
 
     /**
      * Article_Review::getReviewList() test case
-     *
-     * @return null
      */
     public function testGetReviewList()
     {

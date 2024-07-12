@@ -16,8 +16,6 @@ class ModuleListTest extends \OxidTestCase
 
     /**
      * test setup
-     *
-     * @return null
      */
     public function setup(): void
     {
@@ -26,8 +24,6 @@ class ModuleListTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -53,8 +49,6 @@ class ModuleListTest extends \OxidTestCase
 
     /**
      * ModuleList::parseModuleChains() test case, empty
-     *
-     * @return null
      */
     public function testParseModuleChainsEmpty()
     {
@@ -66,8 +60,6 @@ class ModuleListTest extends \OxidTestCase
 
     /**
      * ModuleList::parseModuleChains() test case, single
-     *
-     * @return null
      */
     public function testParseModuleChainsSingle()
     {
@@ -79,8 +71,6 @@ class ModuleListTest extends \OxidTestCase
 
     /**
      * ModuleList::parseModuleChains() test case
-     *
-     * @return null
      */
     public function testParseModuleChains()
     {

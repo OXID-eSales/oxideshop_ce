@@ -30,14 +30,14 @@ class testOxWrapping extends oxWrapping
  */
 class RappingTest extends \OxidTestCase
 {
-    protected $_sCardOxid = null;
-    protected $_sWrapOxid = null;
+    protected $_sCardOxid;
+
+    protected $_sWrapOxid;
+
     protected $_dDefaultVAT;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -50,6 +50,7 @@ class RappingTest extends \OxidTestCase
         $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard');
+
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
         $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
         $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
@@ -62,6 +63,7 @@ class RappingTest extends \OxidTestCase
         $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard2');
+
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
         $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
         $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
@@ -75,6 +77,7 @@ class RappingTest extends \OxidTestCase
         $oCard = oxNew('oxBase');
         $oCard->init('oxwrapping');
         $oCard->setId('_testCard3');
+
         $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
         $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
         $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
@@ -87,6 +90,7 @@ class RappingTest extends \OxidTestCase
         $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap');
+
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
         $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
         $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
@@ -99,6 +103,7 @@ class RappingTest extends \OxidTestCase
         $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap2');
+
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
         $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
         $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
@@ -113,6 +118,7 @@ class RappingTest extends \OxidTestCase
         $oWrapping = oxNew('oxBase');
         $oWrapping->init('oxwrapping');
         $oWrapping->setId('_testWrap3');
+
         $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
         $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
         $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
@@ -125,12 +131,10 @@ class RappingTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
-        $myConfig = $this->getConfig();
+        $this->getConfig();
         $this->getConfig()->setConfigParam('blEnterNetPrice', false);
 
         // card
@@ -200,7 +204,7 @@ class RappingTest extends \OxidTestCase
 
     public function testGetCardPrice()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $oCard = oxNew('oxwrapping');
         if (!$oCard->Load($this->_sCardOxid)) {
             $this->fail('can not load wrapping');
@@ -216,7 +220,7 @@ class RappingTest extends \OxidTestCase
 
     public function testGetWrapPrice()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $oWrap = oxNew('oxwrapping');
         if (!$oWrap->Load($this->_sWrapOxid)) {
@@ -255,7 +259,7 @@ class RappingTest extends \OxidTestCase
      */
     public function testCalcDPriceInEUR()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $oWrapping = oxNew('oxwrapping');
         if (!$oWrapping->Load($this->_sWrapOxid)) {
@@ -269,10 +273,10 @@ class RappingTest extends \OxidTestCase
 
     public function testCalcFPriceInEUR()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myConfig = $this->getConfig();
 
-        $iTempCur = $myConfig->getActShopCurrencyObject()->id;
+        $myConfig->getActShopCurrencyObject()->id;
 
         // setting active currency to EUR
         $myConfig->setActShopCurrency(0);
@@ -297,6 +301,7 @@ class RappingTest extends \OxidTestCase
         $oWrapping = oxNew('oxwrapping');
         $oWrapping->Load($this->_sWrapOxid);
         $oWrapping->setWrappingVat($this->_dDefaultVAT);
+
         $sPrice = oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice());
 
         // validating
@@ -306,9 +311,9 @@ class RappingTest extends \OxidTestCase
     public function testCalcFPriceInCHF()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
-        $iTempCur = $myConfig->getActShopCurrencyObject()->id;
+        $myConfig->getActShopCurrencyObject()->id;
 
         // setting active currency to GHF
         $myConfig->setActShopCurrency(2);
@@ -327,7 +332,7 @@ class RappingTest extends \OxidTestCase
 
     public function testGetWrappingListIfNotAllActive()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $oWrap = oxNew('oxwrapping');
         $oWrapList = $oWrap->getWrappingList('WRAP');
@@ -358,10 +363,11 @@ class RappingTest extends \OxidTestCase
 
     public function testGetWrappingList()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $oWrap = oxNew('oxwrapping');
         $oWrap->load($this->_sWrapOxid);
+
         $oWrap->oxwrapping__oxactive = new oxField(1, oxField::T_RAW);
         $oWrap->save();
 

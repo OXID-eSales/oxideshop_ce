@@ -52,7 +52,7 @@ class UtilsXmlTest extends \OxidTestCase
     {
         $oUtilsXml = oxNew('oxUtilsXml');
         $oDom = new DOMDocument();
-        $sValidXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><ocl><message>ACK</message></ocl>";
+        $sValidXml = '<?xml version="1.0" encoding="utf-8"?><ocl><message>ACK</message></ocl>';
         $this->assertEquals(true, $oUtilsXml->loadXml($sValidXml, $oDom) != false);
     }
 }

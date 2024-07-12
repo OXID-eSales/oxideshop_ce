@@ -100,8 +100,8 @@ class DatabaseTest extends UnitTestCase
                 $metaColumnOne = oxDb::getInstance()->getTableDescription($tableName);
                 $metaColumnOneCached = oxDb::getInstance()->getTableDescription($tableName);
 
-                $this->assertEquals($metaColumns, $metaColumnOne, "not cached return is bad [shouldn't be] of $tableName.");
-                $this->assertEquals($metaColumns, $metaColumnOneCached, "cached [simple] return is bad of $tableName.");
+                $this->assertEquals($metaColumns, $metaColumnOne, sprintf('not cached return is bad [shouldn\'t be] of %s.', $tableName));
+                $this->assertEquals($metaColumns, $metaColumnOneCached, sprintf('cached [simple] return is bad of %s.', $tableName));
 
                 $resultSet->fetchRow();
             }

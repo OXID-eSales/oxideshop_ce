@@ -17,13 +17,12 @@ class ContentTest extends \OxidTestCase
 {
     use FieldTestingTrait;
 
-    protected $_oContent = null;
-    protected $_sShopId = null;
+    protected $_oContent;
+
+    protected $_sShopId;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,6 +36,7 @@ class ContentTest extends \OxidTestCase
         $oContent->save();
 
         $oContent->setLanguage(1);
+
         $oContent->oxcontents__oxcontent = new oxField('testcontentENG&, &, !@#$%^&*%$$&@\'.,;p"ss', oxField::T_RAW);
         $oContent->save();
 
@@ -48,8 +48,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -62,19 +60,18 @@ class ContentTest extends \OxidTestCase
 
     /**
      * oxContent::save() test case
-     *
-     * @return null
      */
     public function testSaveAgb()
     {
         $sShopId = $this->getConfig()->getShopId();
 
         $oDb = oxDb::getDb();
-        $oDb->execute("insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ('testuser', '{$sShopId}', '0')");
+        $oDb->execute(sprintf('insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values (\'testuser\', \'%s\', \'0\')', $sShopId));
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxacceptedterms"));
 
         $oContent = oxNew('oxContent');
         $oContent->loadByIdent("oxagb");
+
         $oContent->oxcontents__oxtermversion = new oxField("testVersion");
         $oContent->save();
 
@@ -83,8 +80,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * oxContent::getTermsVersion() test case
-     *
-     * @return null
      */
     public function testGetTermsVersion()
     {
@@ -157,6 +152,7 @@ class ContentTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcontent');
         $oObj->disableLazyLoading();
+
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("oxcOntent", $string);
@@ -170,6 +166,7 @@ class ContentTest extends \OxidTestCase
 
         $oContent = oxNew('oxContent');
         $oContent->setId('testts');
+
         $oContent->oxcontents__oxloadid = new oxField('testLoadId');
         $oContent->save();
 
@@ -210,10 +207,11 @@ class ContentTest extends \OxidTestCase
             $o->oxcontents__oxtitle = new oxField('aaFaa');
 
             $this->assertEquals("seolinkaaFaa", $o->getLink());
-        } catch (Ecxeption $e) {
+        } catch (Ecxeption $ecxeption) {
         }
-        if ($e) {
-            throw $e;
+
+        if ($ecxeption) {
+            throw $ecxeption;
         }
     }
 
@@ -222,6 +220,7 @@ class ContentTest extends \OxidTestCase
         $sUrl = $this->getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
         $oContent = oxNew('oxContent');
         $oContent->setId('testts');
+
         $oContent->oxcontents__oxloadid = new oxField('testLoadId');
         $oContent->save();
 
@@ -271,10 +270,11 @@ class ContentTest extends \OxidTestCase
             $o->oxcontents__oxtitle = new oxField('aaFaa');
 
             $this->assertEquals("seolinkaaFaa1", $o->getLink(1));
-        } catch (Ecxeption $e) {
+        } catch (Ecxeption $ecxeption) {
         }
-        if ($e) {
-            throw $e;
+
+        if ($ecxeption) {
+            throw $ecxeption;
         }
     }
 
@@ -318,8 +318,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test case for oxContent::loadCredits()
-     *
-     * @return null
      */
     public function testloadCredits()
     {

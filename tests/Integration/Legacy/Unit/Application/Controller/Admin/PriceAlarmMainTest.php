@@ -20,8 +20,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -33,8 +31,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -46,8 +42,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender__()
     {
@@ -69,13 +63,11 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case - counting arlarm articles
-     *
-     * @return null
      */
     public function testRender_countinPriceAlarmArticles()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId1','" . $myConfig->getShopId() . "','testArticleTitle','2','20','11')";
@@ -109,8 +101,6 @@ class PriceAlarmMainTest extends \OxidTestCase
     /**
      * PriceAlarm_Main::Render() test case - checking if editable mail body is
      * taken from post variable
-     *
-     * @return null
      */
     public function testRender_checkingMailBody()
     {
@@ -131,8 +121,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() - checking counting articles with prise alarm
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -148,8 +136,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Main::Send() test case
-     *
-     * @return null
      */
     public function testSendNoOxidSet()
     {
@@ -164,8 +150,6 @@ class PriceAlarmMainTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Main::Send() test case
-     *
-     * @return null
      */
     public function testSend()
     {

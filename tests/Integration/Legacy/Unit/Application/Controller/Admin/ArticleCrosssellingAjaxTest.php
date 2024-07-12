@@ -16,7 +16,9 @@ use OxidEsales\Facts\Facts;
 class ArticleCrosssellingAjaxTest extends \OxidTestCase
 {
     protected $_sArticleView = 'oxv_oxarticles_1_de';
+
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
+
     protected $_sShopId = '1';
 
     /**
@@ -30,6 +32,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2CategoryViewTable('oxobject2category');
         }
+
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrossselling', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrossselling'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAdd', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrosssellingAdd'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticleCrosssellingAddAll', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticleCrosssellingAddAll'", 'oxarticles');
@@ -94,7 +97,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('article_crossselling_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid where oxobject2article.oxarticlenid = '$sSynchoxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . sprintf('.oxid where oxobject2article.oxarticlenid = \'%s\'  and ', $sSynchoxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -108,7 +111,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_crossselling_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid where oxobject2article.oxarticlenid = '$sSynchoxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " as oxobject2category left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . sprintf('.oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = \'%s\'  and ', $sOxid) . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . sprintf('.oxid where oxobject2article.oxarticlenid = \'%s\'  and ', $sSynchoxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -121,7 +124,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blBidirectCross", true);
 
         $oView = oxNew('article_crossselling_ajax');
-        $this->assertEquals("from oxobject2article  inner join " . $this->getArticleViewTable() . " on ( oxobject2article.oxobjectid = " . $this->getArticleViewTable() . ".oxid  or oxobject2article.oxarticlenid = " . $this->getArticleViewTable() . ".oxid )  where ( oxobject2article.oxarticlenid = '$sOxid' or oxobject2article.oxobjectid = '$sOxid' )  and " . $this->getArticleViewTable() . ".oxid != '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sOxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from oxobject2article  inner join " . $this->getArticleViewTable() . " on ( oxobject2article.oxobjectid = " . $this->getArticleViewTable() . ".oxid  or oxobject2article.oxarticlenid = " . $this->getArticleViewTable() . sprintf('.oxid )  where ( oxobject2article.oxarticlenid = \'%s\' or oxobject2article.oxobjectid = \'%s\' )  and ', $sOxid, $sOxid) . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'  and ', $sOxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -133,7 +136,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_crossselling_ajax');
-        $this->assertEquals("from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid  where oxobject2article.oxarticlenid = '$sOxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sOxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . sprintf('.oxid  where oxobject2article.oxarticlenid = \'%s\'  and ', $sOxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -146,7 +149,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blBidirectCross", true);
 
         $oView = oxNew('article_crossselling_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on (oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid or oxobject2article.oxarticlenid=" . $this->getArticleViewTable() . ".oxid) where (oxobject2article.oxarticlenid = '$sSynchoxid' or oxobject2article.oxobjectid = '$sSynchoxid' ) and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on (oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid or oxobject2article.oxarticlenid=" . $this->getArticleViewTable() . sprintf('.oxid) where (oxobject2article.oxarticlenid = \'%s\' or oxobject2article.oxobjectid = \'%s\' ) and ', $sSynchoxid, $sSynchoxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -187,13 +190,13 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testArticleCrosssellingAdd';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxarticlenid='$sSynchoxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2article where oxarticlenid=\'%s\'', $sSynchoxid)));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class, ["getActionIds"]);
         $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testObjectId1', '_testObjectId2']));
 
         $oView->addArticleCross();
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxarticlenid='$sSynchoxid'"));
+        $this->assertEquals(2, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2article where oxarticlenid=\'%s\'', $sSynchoxid)));
     }
 
     /**
@@ -206,12 +209,12 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
         $this->setRequestParameter("all", true);
 
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne("select count(" . $this->getArticleViewTable() . ".oxid)  from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . ".oxid where oxobject2article.oxarticlenid = '$sSynchoxid'  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . ".oxid != '$sSynchoxid'");
+        $iCount = oxDb::getDb()->getOne("select count(" . $this->getArticleViewTable() . ".oxid)  from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getArticleViewTable() . ".oxid from oxobject2article left join " . $this->getArticleViewTable() . " on oxobject2article.oxobjectid=" . $this->getArticleViewTable() . sprintf('.oxid where oxobject2article.oxarticlenid = \'%s\'  and ', $sSynchoxid) . $this->getArticleViewTable() . ".oxid IS NOT NULL  )  and " . $this->getArticleViewTable() . ".oxid IS NOT NULL  and " . $this->getArticleViewTable() . sprintf('.oxid != \'%s\'', $sSynchoxid));
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxarticlenid='$sSynchoxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2article where oxarticlenid=\'%s\'', $sSynchoxid)));
 
         $oView = oxNew('article_crossselling_ajax');
         $oView->addArticleCross();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxarticlenid='$sSynchoxid'"));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2article where oxarticlenid=\'%s\'', $sSynchoxid)));
     }
 }

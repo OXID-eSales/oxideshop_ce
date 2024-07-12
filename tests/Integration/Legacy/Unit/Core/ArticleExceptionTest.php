@@ -18,7 +18,7 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @var object
      */
-    private $_oTestObject = null;
+    private $_oTestObject;
 
     /**
      * a mock message
@@ -36,8 +36,6 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -49,8 +47,6 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test set/get product id.
-     *
-     * @return null
      */
     public function testSetProductIdGetProductId()
     {
@@ -71,8 +67,6 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test set/get article nr.
-     *
-     * @return null
      */
     public function testSetGetArticleNr()
     {
@@ -83,8 +77,6 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * Test set string.
      *
      * We check on class name and message only - rest is not checked yet.
-     *
-     * @return null
      */
     public function testSetString()
     {
@@ -96,8 +88,6 @@ class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test get Values.
-     *
-     * @return null
      */
     public function testGetValues()
     {

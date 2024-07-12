@@ -19,8 +19,6 @@ class AttributeMainTest extends \OxidTestCase
 
     /**
      * Attribute_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -37,8 +35,6 @@ class AttributeMainTest extends \OxidTestCase
 
     /**
      * Attribute_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -54,8 +50,6 @@ class AttributeMainTest extends \OxidTestCase
 
     /**
      * Attribute_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -65,18 +59,17 @@ class AttributeMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Attribute_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Attribute_Main::save()");
 
             return;
         }
+
         $this->fail("error in Attribute_Main::save()");
     }
 
     /**
      * Attribute_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveDefaultOxid()
     {
@@ -92,8 +85,6 @@ class AttributeMainTest extends \OxidTestCase
 
     /**
      * Attribute_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -103,18 +94,17 @@ class AttributeMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Attribute_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Attribute_Main::Saveinnlang()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Attribute_Main::Saveinnlang()");
 
             return;
         }
+
         $this->fail("error in Attribute_Main::Saveinnlang()");
     }
 
     /**
      * Attribute_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlangDefaultOxid()
     {

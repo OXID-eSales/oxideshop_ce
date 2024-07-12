@@ -18,8 +18,6 @@ class ListUserTest extends \OxidTestCase
 
     /**
      * List_User::GetViewListSize() test case
-     *
-     * @return null
      */
     public function testGetViewListSize()
     {
@@ -31,8 +29,6 @@ class ListUserTest extends \OxidTestCase
 
     /**
      * List_User::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

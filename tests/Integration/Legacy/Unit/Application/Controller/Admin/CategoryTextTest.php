@@ -19,8 +19,6 @@ class CategoryTextTest extends \OxidTestCase
 
     /**
      * Category_Text::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,8 +37,6 @@ class CategoryTextTest extends \OxidTestCase
 
     /**
      * Category_Text::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -56,8 +52,6 @@ class CategoryTextTest extends \OxidTestCase
 
     /**
      * Category_Text::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -67,11 +61,12 @@ class CategoryTextTest extends \OxidTestCase
         try {
             $oView = oxNew('Category_Text');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Category_Text::Save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Category_Text::Save()");
 
             return;
         }
+
         $this->fail("Error in Category_Text::Save()");
     }
 }

@@ -19,7 +19,7 @@ class MdvariantTest extends \OxidTestCase
      *
      * @var OxMdVariant
      */
-    protected $_oSubj = null;
+    protected $_oSubj;
 
     /**
      * Setup()
@@ -51,8 +51,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * test Id setter and getter
-     *
-     * @return null
      */
     public function testSetGetId()
     {
@@ -62,8 +60,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests SetGetParentId method
-     *
-     * @return null
      */
     public function testSetGetParentId()
     {
@@ -73,8 +69,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests addNames method
-     *
-     * @return null
      */
     public function testAddNames1()
     {
@@ -86,21 +80,17 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests addNames method (secondary test)
-     *
-     * @return null
      */
     public function testAddNames2()
     {
         $oSubVariant = $this->_oSubj->getMdSubvariantByName("Blue")->getMdSubvariantByName("M");
-        $oNewSubVariant = $this->_oSubj->addNames("testId", ["Blue", "M", "Test"], 5, "testLink");
+        $this->_oSubj->addNames("testId", ["Blue", "M", "Test"], 5, "testLink");
         $this->assertEquals($this->_oSubj->getMdSubvariantByName("Blue")->getMdSubvariantByName("M")->getMdSubvariantByName("Test")->getParentId(), $oSubVariant->getId());
         $this->assertTrue((bool) $oSubVariant->getId());
     }
 
     /**
      * tests _setGetMdSubvariants method
-     *
-     * @return null
      */
     public function testSetGetMdSubvariants()
     {
@@ -116,8 +106,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests _addMdSubvariant method
-     *
-     * @return null
      */
     public function testAddMdSubvariant()
     {
@@ -132,8 +120,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getFirstMdSubvariant method
-     *
-     * @return null
      */
     public function testGetFirstMdSubvariant()
     {
@@ -149,8 +135,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getMdSubvariantByName method
-     *
-     * @return null
      */
     public function testGetMdSubvariantByName()
     {
@@ -159,8 +143,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getMdSubvariantByName method (By creating non existing subvariant)
-     *
-     * @return null
      */
     public function testGetMdSubvariantByNameCreatesNew()
     {
@@ -173,8 +155,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getArticleId method
-     *
-     * @return null
      */
     public function testGetArticleId()
     {
@@ -186,8 +166,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests hasArticleId method
-     *
-     * @return null
      */
     public function testHasArticleId()
     {
@@ -197,8 +175,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests hasArticleId method (Negative test)
-     *
-     * @return null
      */
     public function testHasArticleIdNot()
     {
@@ -207,8 +183,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getLink method
-     *
-     * @return null
      */
     public function testGetLink()
     {
@@ -220,8 +194,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests name setter and getter method
-     *
-     * @return null
      */
     public function testSetGetName()
     {
@@ -231,8 +203,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getDPrice method
-     *
-     * @return null
      */
     public function testGetDPrice()
     {
@@ -246,8 +216,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests _isFixedPrice method
-     *
-     * @return null
      */
     public function testIsFixedPrice()
     {
@@ -263,8 +231,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getMinDPrice method
-     *
-     * @return null
      */
     public function testGetMinDPrice()
     {
@@ -277,8 +243,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getMaxDepth method
-     *
-     * @return null
      */
     public function testGetMaxDepth()
     {
@@ -291,8 +255,6 @@ class MdvariantTest extends \OxidTestCase
 
     /**
      * tests getFPrice method
-     *
-     * @return null
      */
     public function testGetFPrice()
     {

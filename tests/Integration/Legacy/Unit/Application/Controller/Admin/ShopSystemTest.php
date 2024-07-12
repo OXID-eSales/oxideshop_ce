@@ -15,8 +15,6 @@ class ShopSystemTest extends \OxidTestCase
 
     /**
      * Shop_System::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

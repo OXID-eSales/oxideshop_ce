@@ -20,8 +20,6 @@ class UserAddressTest extends \OxidTestCase
 
     /**
      * User_Address::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -45,8 +43,6 @@ class UserAddressTest extends \OxidTestCase
 
     /**
      * User_Address::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -62,18 +58,17 @@ class UserAddressTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, ["allowAdminEdit"]);
             $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in User_Address::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in User_Address::save()");
 
             return;
         }
+
         $this->fail("Error in User_Address::save()");
     }
 
     /**
      * User_Address::DelAddress() test case
-     *
-     * @return null
      */
     public function testDelAddress()
     {

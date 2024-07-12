@@ -15,8 +15,6 @@ class AdminlinksListTest extends \OxidTestCase
 
     /**
      * Adminlinks_List::Init() test case
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -28,8 +26,6 @@ class AdminlinksListTest extends \OxidTestCase
 
     /**
      * Adminlinks_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -15,7 +15,9 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 class DiscountlistTest extends \OxidTestCase
 {
     public $aDiscountIds = [];
+
     public $aDiscountArtIds = [];
+
     public $aTransparentDiscountArtIds = [];
 
     protected function tearDown(): void
@@ -48,6 +50,7 @@ class DiscountlistTest extends \OxidTestCase
 
         $oDiscountList = oxNew('oxDiscountList');
         $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
+
         $iListCOunt = count($oDiscountList);
 
         // list must contain at least one item
@@ -59,6 +62,7 @@ class DiscountlistTest extends \OxidTestCase
         $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount1");
+
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
         $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2discount__oxtype = new oxField("oxcountry");
@@ -67,6 +71,7 @@ class DiscountlistTest extends \OxidTestCase
         $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount2");
+
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
         $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2discount__oxtype = new oxField("oxuser");
@@ -75,6 +80,7 @@ class DiscountlistTest extends \OxidTestCase
         $oGarbage = oxNew('oxbase');
         $oGarbage->init("oxobject2discount");
         $oGarbage->setId("_testoxobject2discount3");
+
         $oGarbage->oxobject2discount__oxdiscountid = new oxField($oDiscount->getId());
         $oGarbage->oxobject2discount__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2discount__oxtype = new oxField("oxgroups");
@@ -82,6 +88,7 @@ class DiscountlistTest extends \OxidTestCase
 
         $oDiscountList = oxNew('oxDiscountList');
         $oDiscountList = $oDiscountList->getBasketItemDiscounts($oArticle, $oBasket, $oUser);
+
         $iNewListCount = count($oDiscountList);
 
         // list must contain at least one item
@@ -95,6 +102,7 @@ class DiscountlistTest extends \OxidTestCase
                 break;
             }
         }
+
         $this->assertTrue($blFound, "Error, delivery set not found");
     }
 
@@ -185,18 +193,18 @@ class DiscountlistTest extends \OxidTestCase
 
         // default oxConfig country check.
         $sTable = $tableViewNameGenerator->getViewName('oxdiscount');
-        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where ( ( $sTable.oxactive = 1 or ( $sTable.oxactivefrom < '" . date('Y-m-d H:i:s', $iCurrTime) . "' and $sTable.oxactiveto > '" . date('Y-m-d H:i:s', $iCurrTime) . "')) ) and (
-                if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
+        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . sprintf(' from %s where ( ( %s.oxactive = 1 or ( %s.oxactivefrom < \'', $sTable, $sTable, $sTable) . date('Y-m-d H:i:s', $iCurrTime) . sprintf('\' and %s.oxactiveto > \'', $sTable) . date('Y-m-d H:i:s', $iCurrTime) . "')) ) and (
+                if(EXISTS(select 1 from oxobject2discount, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
                         0,
                         1) &&
-                if(EXISTS(select 1 from oxobject2discount, $sUserTable where $sUserTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2discount, {$sUserTable} where {$sUserTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxuser' LIMIT 1),
                         0,
                         1) &&
-                if(EXISTS(select 1 from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxgroups' LIMIT 1),
                         0,
                         1)
             )";
-        $sQ .= " order by $sTable.oxsort ";
+        $sQ .= sprintf(' order by %s.oxsort ', $sTable);
 
         $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->getFilterSelect(null)));
     }
@@ -215,9 +223,10 @@ class DiscountlistTest extends \OxidTestCase
 
         $sGroupIds = '';
         foreach ($oUser->getUserGroups() as $oGroup) {
-            if ($sGroupIds) {
+            if ($sGroupIds !== '' && $sGroupIds !== '0') {
                 $sGroupIds .= ', ';
             }
+
             $sGroupIds .= "'" . $oGroup->getId() . "'";
         }
 
@@ -225,18 +234,18 @@ class DiscountlistTest extends \OxidTestCase
 
         // default oxConfig country check.
         $sTable = $tableViewNameGenerator->getViewName('oxdiscount');
-        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . " from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
-                if(EXISTS(select 1 from oxobject2discount, $sCountryTable where $sCountryTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
-                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID='a7c40f631fc920687.20179984'),
+        $sQ = "select " . $oList->getBaseObject()->getSelectFields() . sprintf(' from %s where ', $sTable) . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
+                if(EXISTS(select 1 from oxobject2discount, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxcountry' LIMIT 1),
+                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxcountry' and oxobject2discount.OXOBJECTID='a7c40f631fc920687.20179984'),
                         1) &&
-                if(EXISTS(select 1 from oxobject2discount, $sUserTable where $sUserTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' LIMIT 1),
-                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxuser' and oxobject2discount.OXOBJECTID='oxdefaultadmin'),
+                if(EXISTS(select 1 from oxobject2discount, {$sUserTable} where {$sUserTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxuser' LIMIT 1),
+                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxuser' and oxobject2discount.OXOBJECTID='oxdefaultadmin'),
                         1) &&
-                if(EXISTS(select 1 from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' LIMIT 1),
-                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID=$sTable.OXID and oxobject2discount.oxtype='oxgroups' and oxobject2discount.OXOBJECTID in ($sGroupIds) ),
+                if(EXISTS(select 1 from oxobject2discount, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2discount.oxobjectid and oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxgroups' LIMIT 1),
+                        EXISTS(select oxobject2discount.oxid from oxobject2discount where oxobject2discount.OXDISCOUNTID={$sTable}.OXID and oxobject2discount.oxtype='oxgroups' and oxobject2discount.OXOBJECTID in ({$sGroupIds}) ),
                         1)
             )";
-        $sQ .= " order by $sTable.oxsort ";
+        $sQ .= sprintf(' order by %s.oxsort ', $sTable);
 
         $this->assertEquals($this->cleanSQL($sQ), $this->cleanSQL($oList->getFilterSelect($oUser)));
     }
@@ -444,6 +453,7 @@ class DiscountlistTest extends \OxidTestCase
         // making category
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCat');
+
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);

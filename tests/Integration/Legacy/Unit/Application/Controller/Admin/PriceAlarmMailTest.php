@@ -15,8 +15,6 @@ class PriceAlarmMailTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Mail::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

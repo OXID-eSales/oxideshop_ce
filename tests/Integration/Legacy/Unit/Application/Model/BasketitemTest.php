@@ -64,7 +64,7 @@ class modForTestSetAsDiscountArticle extends oxBasketItem
      */
     public function __get($sName)
     {
-        return $this->{"_$sName"};
+        return $this->{'_' . $sName};
     }
 
     /**
@@ -101,8 +101,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Checking for stock control - stock in DB is positive.
-     *
-     * @return null
      */
     public function testInitProductIsNotBuyable()
     {
@@ -114,13 +112,12 @@ class BasketitemTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException) {
             return;
         }
+
         $this->fail("product should not be orderable");
     }
 
     /**
      * Checking for stock control - stock in DB is positive.
-     *
-     * @return null
      */
     public function testSetAmountStockIsCritical()
     {
@@ -138,13 +135,12 @@ class BasketitemTest extends \OxidTestCase
 
             return;
         }
+
         $this->fail("failed stock related check");
     }
 
     /**
      * Test init from order article.
-     *
-     * @return null
      */
     public function testInitFromOrderArticle()
     {
@@ -166,8 +162,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Test set from order article.
-     *
-     * @return null
      */
     public function testSetFromOrderArticle()
     {
@@ -189,8 +183,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Stock status getter check.
-     *
-     * @return null
      */
     public function testStockStatusGetterCheck()
     {
@@ -205,8 +197,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Stock status setter check.
-     *
-     * @return null
      */
     public function testStockStatusSetterCheck()
     {
@@ -220,8 +210,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing init call
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -243,8 +231,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing discount marker
-     *
-     * @return null
      */
     public function testSetAsDiscountArticle()
     {
@@ -256,8 +242,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing amount setter
-     *
-     * @return null
      */
     public function testSetAmount()
     {
@@ -287,13 +271,12 @@ class BasketitemTest extends \OxidTestCase
 
             return;
         }
+
         $this->fail("failed stock related check");
     }
 
     /**
      * Testing amount setter with added bundle
-     *
-     * @return null
      */
     public function testSetAmountIfBundleIsAdded()
     {
@@ -319,13 +302,12 @@ class BasketitemTest extends \OxidTestCase
 
             return;
         }
+
         $this->fail("failed stock related check");
     }
 
     /**
      * Testing amount setter with bad input
-     *
-     * @return null
      */
     public function testSetAmountBadInput()
     {
@@ -335,18 +317,17 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem->init($article->getId(), 1);
         try {
             $oBasketItem->setAmount('jhvjh');
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
-            if ($oEx->getArticleNr() == $article->getId()) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $articleInputException) {
+            if ($articleInputException->getArticleNr() == $article->getId()) {
                 return;
             }
         }
+
         $this->fail('Error executing test: testSetAmountBadInput');
     }
 
     /**
      * Testing amount setter with checking for stock control - stock in DB is positive
-     *
-     * @return null
      */
     public function testSetAmountStockIsMoreThanZero()
     {
@@ -363,13 +344,12 @@ class BasketitemTest extends \OxidTestCase
 
             return;
         }
+
         $this->fail("failed stock related check");
     }
 
     /**
      * Testing price setter
-     *
-     * @return null
      */
     public function testSetPrice()
     {
@@ -393,8 +373,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing basket item article getter
      *
      * if no product id is set - exception must be thrown
-     *
-     * @return null
      */
     public function testGetArticleNoArticleSet()
     {
@@ -404,6 +382,7 @@ class BasketitemTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException) {
             return;
         }
+
         $this->fail('failed testing getArticle');
     }
 
@@ -411,8 +390,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing basket item article getter
      *
      * if article is set during init
-     *
-     * @return null
      */
     public function testGetArticleArticleIsSetDuringInit()
     {
@@ -420,6 +397,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 1);
+
         $oArticle = $oBasketItem->getArticle();
         $this->assertTrue($oArticle instanceof article);
         //checking getter
@@ -431,8 +409,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing basket item article getter
      *
      * #M773 Do not use article lazy loading on order save
-     *
-     * @return null
      */
     public function testGetArticleForSavingOrder()
     {
@@ -453,8 +429,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing if method throws an exeption such article does not exists
-     *
-     * @return null
      */
     public function testGetArticle_noSuchArticle()
     {
@@ -471,8 +445,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing if method throws an exception if article is not buyable
-     *
-     * @return null
      */
     public function testGetArticle_notBuyableArticle()
     {
@@ -492,8 +464,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * #1115: Usability Problem during checkout with products without stock
-     *
-     * @return null
      */
     public function testGetArticle_notVisibleArticle_doNotCheck()
     {
@@ -504,8 +474,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing if method throws an exception if article is not visible (M:1286)
-     *
-     * @return null
      */
     public function testGetArticle_notVisibleArticle()
     {
@@ -526,8 +494,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing bundle amount getter
      *
      * article is not bundle - returns 0
-     *
-     * @return null
      */
     public function testGetBundledAmountArticleIsNotBundled()
     {
@@ -542,8 +508,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing bundle amount getter
      *
      * article is bundled - return 6
-     *
-     * @return null
      */
     public function testGetdBundledAmountArticleIsBundled()
     {
@@ -557,8 +521,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing price getter
-     *
-     * @return null
      */
     public function testGetPrice()
     {
@@ -574,8 +536,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing price getter
-     *
-     * @return null
      */
     public function testGetUnitPrice()
     {
@@ -598,8 +558,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing amount getter
-     *
-     * @return null
      */
     public function testGetAmount()
     {
@@ -612,8 +570,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing weight getter
-     *
-     * @return null
      */
     public function testGetWeight()
     {
@@ -626,8 +582,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing title getter
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -638,6 +592,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 6);
+
         $sTitle = $article->oxarticles__oxtitle->value . ', ' . $article->oxarticles__oxvarselect->value;
         $this->assertEquals($sTitle, $oBasketItem->getTitle());
 
@@ -657,8 +612,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing icon url getter
-     *
-     * @return null
      */
     public function testGetIconUrl()
     {
@@ -675,8 +628,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing icon url getter
-     *
-     * @return null
      */
     public function testGetIconUrlAfterSslSwitch()
     {
@@ -703,8 +654,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing details link getter
-     *
-     * @return null
      */
     public function testGetLink()
     {
@@ -712,6 +661,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 6);
+
         $oArticle = oxNew('oxArticle');
         $oArticle->load($article->getId());
         $this->assertEquals($oArticle->getLink(), $oBasketItem->getLink());
@@ -719,8 +669,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Returns original product shop id
-     *
-     * @return null
      */
     public function testGetShopId()
     {
@@ -732,8 +680,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing select list gerrer
-     *
-     * @return null
      */
     public function testGetSelList()
     {
@@ -747,8 +693,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing select list gerrer
-     *
-     * @return null
      */
     public function testGetChosenSelList()
     {
@@ -767,8 +711,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing bundle status getter
-     *
-     * @return null
      */
     public function testIsBundle()
     {
@@ -780,8 +722,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing discount article status getter
-     *
-     * @return null
      */
     public function testIsDiscountArticle()
     {
@@ -795,8 +735,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing skip discounts marker getter
-     *
-     * @return null
      */
     public function testIsSkipDiscount()
     {
@@ -812,8 +750,6 @@ class BasketitemTest extends \OxidTestCase
      * Testing article setter
      *
      * setting not existing article, expecting exception
-     *
-     * @return null
      */
     public function testSetArticleSettingNotExisting()
     {
@@ -829,8 +765,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing article setter
-     *
-     * @return null
      */
     public function testSetArticleSettingExisting()
     {
@@ -857,8 +791,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing select lists setter
-     *
-     * @return null
      */
     public function testSetSelectList()
     {
@@ -871,8 +803,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing select lists setter passing as param empty array
-     *
-     * @return null
      */
     public function testSetSelectListWithEmptyArrayAsParam()
     {
@@ -885,8 +815,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing persistent params getters
-     *
-     * @return null
      */
     public function testSetPersParams()
     {
@@ -897,8 +825,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing bundle marker setter
-     *
-     * @return null
      */
     public function testSetBundle()
     {
@@ -909,8 +835,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing skip discounts marker setter
-     *
-     * @return null
      */
     public function testSetSkipDiscounts()
     {
@@ -921,8 +845,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing product id getter
-     *
-     * @return null
      */
     public function testGetProductId()
     {
@@ -934,8 +856,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing wich article info setter/getter
-     *
-     * @return null
      */
     public function testSetWishArticleIdAndgetWishArticleId()
     {
@@ -946,8 +866,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing user wishinfo setter/getter
-     *
-     * @return null
      */
     public function testSetWishIdAndgetWishId()
     {
@@ -958,14 +876,13 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing wrap object getter
-     *
-     * @return null
      */
     public function testGetWrappingAndSetWrappingAndGetWrappingId()
     {
         // creating wrap paper
         $wrapping = oxNew('oxWrapping');
         $wrapping->setId("_testwrap");
+
         $wrapping->oxwrapping__oxtype = new oxField("WRAP", oxField::T_RAW);
         $wrapping->oxwrapping__oxname = new oxField("Test card", oxField::T_RAW);
         $wrapping->oxwrapping__oxprice = new oxField(5, oxField::T_RAW);
@@ -985,8 +902,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing unit price getter
-     *
-     * @return null
      */
     public function testGetFUnitPrice()
     {
@@ -999,8 +914,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing unit price getter
-     *
-     * @return null
      */
     public function testGetFTotalPrice()
     {
@@ -1013,8 +926,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing set article and #M1141
-     *
-     * @return null
      */
     public function testSetArticle()
     {
@@ -1050,8 +961,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Test set languade id value.
-     *
-     * @return null
      */
     public function testSetLanguageId()
     {
@@ -1064,8 +973,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Test change language id value.
-     *
-     * @return null
      */
     public function testSetLanguageId_change()
     {
@@ -1081,13 +988,12 @@ class BasketitemTest extends \OxidTestCase
     /**
      * Test change language id value and the article is not available anymore.
      * 5910: When out of stock articles exists in basket and language is changed, shop for that session goes offline
-     *
-     * @return null
      */
     public function testSetLanguageId_change_noArticle()
     {
         $oBasketItem = $this->getMock('oxbasketitem', ['setArticle']);
         $oBasketItem->setLanguageId('15');
+
         $oEx = oxNew("oxNoArticleException");
         $oBasketItem->expects($this->once())->method('setArticle')->will($this->throwException($oEx));
         $oBasketItem->setLanguageId('17');
@@ -1104,13 +1010,12 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Test change language id value and the article is sold out.
-     *
-     * @return null
      */
     public function testSetLanguageId_change_wrongArticleInput()
     {
         $oBasketItem = $this->getMock('oxbasketitem', ['setArticle']);
         $oBasketItem->setLanguageId('15');
+
         $oEx = oxNew("oxArticleInputException");
         $oBasketItem->expects($this->once())->method('setArticle')->will($this->throwException($oEx));
         $oBasketItem->setLanguageId('17');
@@ -1127,8 +1032,6 @@ class BasketitemTest extends \OxidTestCase
 
     /**
      * Testing set article and #M1141
-     *
-     * @return null
      */
     public function testGetVarSelect()
     {
@@ -1139,6 +1042,7 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 6);
+
         $sTitle = $article->oxarticles__oxvarselect->value;
         $this->assertEquals($sTitle, $oBasketItem->GetVarSelect());
 
@@ -1172,6 +1076,7 @@ class BasketitemTest extends \OxidTestCase
 
         // making copy
         $article->setId($newArticleId);
+
         $article->oxarticles__oxweight = new oxField(10, oxField::T_RAW);
         $article->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $article->oxarticles__oxstock = new oxField(100, oxField::T_RAW);
@@ -1189,6 +1094,7 @@ class BasketitemTest extends \OxidTestCase
         // assigning select list
         $newGroup = oxNew("oxBase");
         $newGroup->init("oxobject2selectlist");
+
         $newGroup->oxobject2selectlist__oxobjectid = new oxField($article->getId(), oxField::T_RAW);
         $newGroup->oxobject2selectlist__oxselnid = new oxField($selectionList->getId(), oxField::T_RAW);
         $newGroup->oxobject2selectlist__oxsort = new oxField(0, oxField::T_RAW);

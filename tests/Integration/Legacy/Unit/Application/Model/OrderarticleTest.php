@@ -42,12 +42,14 @@ class OrderarticleTest extends \OxidTestCase
 
         $this->_oOrderArticle = oxNew('oxorderarticle');
         $this->_oOrderArticle->setId('_testOrderArticleId');
+
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
         $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField($this->order->getId(), oxField::T_RAW);
         $this->_oOrderArticle->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxtitle = new oxField('testArticleTitle', oxField::T_RAW);
         $oArticle->oxarticles__oxactive = new oxField('1', oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
@@ -315,6 +317,7 @@ class OrderarticleTest extends \OxidTestCase
         // preparing test env.
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
+
         $oArticle->oxarticles__oxstockflag = new oxField(3);
         $oArticle->save();
 
@@ -336,6 +339,7 @@ class OrderarticleTest extends \OxidTestCase
         // preparing test env.
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
+
         $oArticle->oxarticles__oxstockflag = new oxField(3);
         $oArticle->save();
 
@@ -357,6 +361,7 @@ class OrderarticleTest extends \OxidTestCase
         // preparing test env.
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
+
         $oArticle->oxarticles__oxstockflag = new oxField(3);
         $oArticle->save();
 
@@ -378,6 +383,7 @@ class OrderarticleTest extends \OxidTestCase
         // preparing test env.
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId');
+
         $oArticle->oxarticles__oxstockflag = new oxField(3);
         $oArticle->save();
 
@@ -400,11 +406,13 @@ class OrderarticleTest extends \OxidTestCase
 
         $oSelList = oxNew('oxselectlist');
         $oSelList->setId('_testSelListId1');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Color', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('red!P!10__@@blue!P!10__@@green!P!10__@@', oxField::T_RAW);
         $oSelList->save();
 
         $oSelList->setId('_testSelListId2');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Size', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!10__@@', oxField::T_RAW);
         $oSelList->save();
@@ -446,11 +454,13 @@ class OrderarticleTest extends \OxidTestCase
 
         $oSelList = oxNew('oxselectlist');
         $oSelList->setId('_testSelListId1on');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Color', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('red!P!10__@@blue!P!10__@@green!P!10__@@', oxField::T_RAW);
         $oSelList->save();
 
         $oSelList->setId('_testSelListId2on');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Size', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!12,03__@@', oxField::T_RAW);
         $oSelList->save();
@@ -477,11 +487,13 @@ class OrderarticleTest extends \OxidTestCase
 
         $oSelList = oxNew('oxselectlist');
         $oSelList->setId('_testSelListId3');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Color', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('red!P!10__@@blue!P!10__@@green!P!10__@@', oxField::T_RAW);
         $oSelList->save();
 
         $oSelList->setId('_testSelListId4');
+
         $oSelList->oxselectlist__oxtitle = new oxField('Size', oxField::T_RAW);
         $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!10__@@', oxField::T_RAW);
         $oSelList->save();
@@ -528,11 +540,9 @@ class OrderarticleTest extends \OxidTestCase
 
         $this->assertEquals('_testArticleId', $oOrderArticle->oxorderarticles__oxid->value);
 
-        $aObjectVars = get_object_vars($oArticle);
-
         foreach ($oArticle as $name => $value) {
             $sFieldName = preg_replace('/oxarticles__/', 'oxorderarticles__', $name);
-            if (isset($oArticle->$name->value) && !in_array($name, ["oxarticles__oxtimestamp"])) {
+            if (isset($oArticle->$name->value) && $name != "oxarticles__oxtimestamp") {
                 $this->assertEquals($oArticle->$name->value, $oOrderArticle->$sFieldName->value, 'oxArticle object was not coppied correctly');
             }
         }
@@ -554,6 +564,7 @@ class OrderarticleTest extends \OxidTestCase
     {
         $oDB = oxDb::getDB();
         $oDB->execute("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArticleId'");
+
         $this->_oOrderArticle->updateArticleStock(-3, false);
 
         $oArticle = oxNew("oxArticle");
@@ -675,7 +686,7 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testSerializingValues()
     {
-        $aTestArr = ["te\"st", "test2"];
+        $aTestArr = ['te"st', "test2"];
         $sParams = serialize($aTestArr);
 
         $this->_oOrderArticle->oxorderarticles__oxpersparam = new oxField($sParams, oxField::T_RAW);
@@ -710,8 +721,6 @@ class OrderarticleTest extends \OxidTestCase
 
     /**
      * Wrapping info getter test
-     *
-     * @return null
      */
     public function testGetWrapping()
     {
@@ -778,8 +787,6 @@ class OrderarticleTest extends \OxidTestCase
 
     /**
      * Test article insert.
-     *
-     * @return null
      */
     public function testInsert()
     {
@@ -787,6 +794,7 @@ class OrderarticleTest extends \OxidTestCase
         $oOrderArticle = $this->getProxyClass('oxOrderArticle');
         $oOrderArticle->setId('_testOrderArticleId2');
         $oOrderArticle->insert();
+
         $sOxid = oxDb::getDb()->getOne("Select oxid from oxorderarticles where oxid = '_testOrderArticleId2'");
         $this->assertEquals('_testOrderArticleId2', $sOxid);
         $this->assertTrue($oOrderArticle->oxorderarticles__oxtimestamp->value >= $now);
@@ -806,9 +814,6 @@ class OrderarticleTest extends \OxidTestCase
         $this->assertEquals($oArticle, $oOrderArticle->getArticle());
     }
 
-    /**
-     * @param string $id
-     */
     private function makeOrder(string $id)
     {
         $originalOrder = oxNew(Order::class);

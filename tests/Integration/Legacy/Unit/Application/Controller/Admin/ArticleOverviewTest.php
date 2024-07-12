@@ -19,8 +19,6 @@ class ArticleOverviewTest extends \OxidTestCase
 
     /**
      * Tear down
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -32,8 +30,6 @@ class ArticleOverviewTest extends \OxidTestCase
 
     /**
      * Article_Overview::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -43,6 +39,7 @@ class ArticleOverviewTest extends \OxidTestCase
         $oBase = oxNew('oxbase');
         $oBase->init("oxorderarticles");
         $oBase->setId("_testOrderArticleId");
+
         $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
         $oBase->oxorderarticles__oxamount = new oxField(1);
         $oBase->oxorderarticles__oxartid = new oxField("1126");
@@ -64,8 +61,6 @@ class ArticleOverviewTest extends \OxidTestCase
 
     /**
      * Article_Overview::Render() test case
-     *
-     * @return null
      */
     public function testRenderPArentBuyable()
     {

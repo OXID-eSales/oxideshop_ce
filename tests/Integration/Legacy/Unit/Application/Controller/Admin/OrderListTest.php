@@ -20,8 +20,6 @@ class OrderListTest extends \OxidTestCase
 
     /**
      * order_list::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -38,8 +36,6 @@ class OrderListTest extends \OxidTestCase
 
     /**
      * order_list::buildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectStringForOrderList()
     {
@@ -62,8 +58,6 @@ class OrderListTest extends \OxidTestCase
 
     /**
      * Test prepare where query.
-     *
-     * @return null
      */
     public function testPrepareWhereQuery()
     {
@@ -72,6 +66,7 @@ class OrderListTest extends \OxidTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
+
         $oOrderList = oxNew('order_list');
         $sQ = $oOrderList->prepareWhereQuery([], "");
         $this->assertEquals($sExpQ, $sQ);
@@ -79,8 +74,6 @@ class OrderListTest extends \OxidTestCase
 
     /**
      * Test prepare where query if folder is selected.
-     *
-     * @return null
      */
     public function testPrepareWhereQueryIfFolderSelected()
     {
@@ -90,6 +83,7 @@ class OrderListTest extends \OxidTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
+
         $oOrderList = oxNew('order_list');
         $sQ = $oOrderList->prepareWhereQuery([], "");
         $this->assertEquals($sExpQ, $sQ);

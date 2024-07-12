@@ -19,8 +19,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -32,6 +30,7 @@ class AttributeTest extends \OxidTestCase
         // article attribute
         $oNewGroup = oxNew('oxbase');
         $oNewGroup->Init('oxobject2attribute');
+
         $oNewGroup->oxobject2attribute__oxobjectid = new oxField("test_oxid", oxField::T_RAW);
         $oNewGroup->oxobject2attribute__oxattrid = new oxField($this->_oAttr->getId(), oxField::T_RAW);
         $oNewGroup->oxobject2attribute__oxvalue = new oxField("testvalue", oxField::T_RAW);
@@ -40,6 +39,7 @@ class AttributeTest extends \OxidTestCase
         // category attribute
         $oNewGroup = oxNew('oxbase');
         $oNewGroup->Init('oxcategory2attribute');
+
         $oNewGroup->oxcategory2attribute__oxobjectid = new oxField("test_oxid", oxField::T_RAW);
         $oNewGroup->oxcategory2attribute__oxattrid = new oxField($this->_oAttr->getId(), oxField::T_RAW);
         $oNewGroup->Save();
@@ -47,8 +47,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -58,8 +56,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test delete non existing attribute.
-     *
-     * @return null
      */
     public function testDeleteNonExisting()
     {
@@ -69,15 +65,13 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test delete existing attribute.
-     *
-     * @return null
      */
     public function testDeleteExisting()
     {
         $this->_oAttr->delete();
 
-        $sCheckOxid1 = oxDb::getDb()->GetOne("select oxid from oxobject2attribute where oxattrid = '{$this->sOxid}'");
-        $sCheckOxid2 = oxDb::getDb()->GetOne("select oxid from oxcategory2attribute where oxattrid = '{$this->sOxid}'");
+        $sCheckOxid1 = oxDb::getDb()->GetOne(sprintf('select oxid from oxobject2attribute where oxattrid = \'%s\'', $this->sOxid));
+        $sCheckOxid2 = oxDb::getDb()->GetOne(sprintf('select oxid from oxcategory2attribute where oxattrid = \'%s\'', $this->sOxid));
         $oAttr = oxNew('oxAttribute');
         if ($sCheckOxid1 || $sCheckOxid2 || $oAttr->Load($this->_oAttr->getId())) {
             $this->fail("fail deleting");
@@ -86,8 +80,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test assign variables to attribute.
-     *
-     * @return null
      */
     public function testAssignVarToAttribute()
     {
@@ -119,8 +111,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test get attribute id.
-     *
-     * @return null
      */
     public function testGetAttrId()
     {
@@ -131,22 +121,18 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test create attribute.
-     *
-     * @return null
      */
     public function testCreateAttribute()
     {
         $oAttr = $this->getProxyClass("oxAttribute");
         $aSellTitle = [0 => '_testAttr', 1 => '_testAttr_1'];
         $sId = $oAttr->createAttribute($aSellTitle);
-        $this->assertEquals('_testAttr', oxDb::getDB()->getOne("select oxtitle from oxattribute where oxid = '$sId'"));
-        $this->assertEquals('_testAttr_1', oxDb::getDB()->getOne("select oxtitle_1 from oxattribute where oxid = '$sId'"));
+        $this->assertEquals('_testAttr', oxDb::getDB()->getOne(sprintf('select oxtitle from oxattribute where oxid = \'%s\'', $sId)));
+        $this->assertEquals('_testAttr_1', oxDb::getDB()->getOne(sprintf('select oxtitle_1 from oxattribute where oxid = \'%s\'', $sId)));
     }
 
     /**
      * Test get attribute assigns.
-     *
-     * @return null
      */
     public function testGetAttributeAssigns()
     {
@@ -158,8 +144,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test set attribute title.
-     *
-     * @return null
      */
     public function testSetTitle()
     {
@@ -170,8 +154,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test set attribute active value.
-     *
-     * @return null
      */
     public function testSetActiveValue()
     {
@@ -182,8 +164,6 @@ class AttributeTest extends \OxidTestCase
 
     /**
      * Test add attribute value.
-     *
-     * @return null
      */
     public function testAddValue()
     {

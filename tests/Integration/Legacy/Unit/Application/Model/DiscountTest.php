@@ -16,7 +16,7 @@ use \oxDb;
 
 class modoxprice extends oxprice
 {
-    protected $_dPrice = null;
+    protected $_dPrice;
 
     public function getBruttoPrice()
     {
@@ -31,59 +31,57 @@ class modoxprice extends oxprice
 
 class oxBasket_Extended extends oxbasket
 {
-    public $oBasketSummaryCache = null;
+    public $oBasketSummaryCache;
 
     public function getBasketSummary()
     {
         if ($this->oBasketSummaryCache) {
             return $this->oBasketSummaryCache;
-        } else {
-            return parent::getBasketSummary();
         }
+        return parent::getBasketSummary();
     }
 }
 
 class oxArticle_Extended extends oxArticle
 {
-    public $aCategoryIdsCache = null;
-    public $oBasketSummaryCache = null;
-    public $dBasePriceCache = null;
-    public $oPriceCache = null;
+    public $aCategoryIdsCache;
+
+    public $oBasketSummaryCache;
+
+    public $dBasePriceCache;
+
+    public $oPriceCache;
 
     public function getCategoryIds($blActCats = false, $blSkipCache = false)
     {
         if ($this->aCategoryIdsCache) {
             return $this->aCategoryIdsCache;
-        } else {
-            return parent::GetCategoryIds();
         }
+        return parent::GetCategoryIds();
     }
 
     public function getBasketSummary()
     {
         if ($this->oBasketSummaryCache) {
             return $this->oBasketSummaryCache;
-        } else {
-            return parent::getBasketSummary();
         }
+        return parent::getBasketSummary();
     }
 
     public function getBasePrice($dAmount = 1)
     {
         if ($this->dBasePriceCache) {
             return $this->dBasePriceCache;
-        } else {
-            return parent::getBasePrice();
         }
+        return parent::getBasePrice();
     }
 
     public function getPrice($dAmount = 1)
     {
         if ($this->oPriceCache) {
             return $this->oPriceCache;
-        } else {
-            return parent::getPrice();
         }
+        return parent::getPrice();
     }
 }
 
@@ -163,6 +161,7 @@ class DiscountTest extends \OxidTestCase
 
         $discount = oxNew('oxDiscount');
         $discount->setId($id);
+
         $discount->oxdiscount__oxtitle = new oxField($id);
         $discount->oxdiscount__oxsort = null;
         $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
@@ -185,6 +184,7 @@ class DiscountTest extends \OxidTestCase
 
         $discount = oxNew('oxDiscount');
         $discount->setId($id);
+
         $discount->oxdiscount__oxtitle = new oxField($id);
         $discount->oxdiscount__oxsort = new oxField('NotNumeric');
         $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
@@ -207,6 +207,7 @@ class DiscountTest extends \OxidTestCase
 
         $discount = oxNew('oxDiscount');
         $discount->setId($id_1);
+
         $discount->oxdiscount__oxtitle = new oxField($id_1);
         $discount->oxdiscount__oxsort = new oxField($oxSort, oxField::T_RAW);
         $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
@@ -221,6 +222,7 @@ class DiscountTest extends \OxidTestCase
 
         $discount = oxNew('oxDiscount');
         $discount->setId($id_2);
+
         $discount->oxdiscount__oxtitle = new oxField($id_2);
         $discount->oxdiscount__oxsort = new oxField($oxSort, oxField::T_RAW);
         $discount->oxdiscount__oxshopid = new oxField($shopId, oxField::T_RAW);
@@ -330,6 +332,7 @@ class DiscountTest extends \OxidTestCase
         $testDiscId = 'testdid';
         $oDiscount->setId($testDiscId);
         $oDiscount->save();
+
         $oArticle = new oxArticle_Extended();
         $testCatId = 'testcatid';
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES('testIsForArticle','" . $testDiscId . "','" . $testCatId . "','oxcategories')");
@@ -428,7 +431,6 @@ class DiscountTest extends \OxidTestCase
 
         //no article discount for fitting category
         $oArticle = new oxArticle_Extended();
-        $testCatId = 'testcatid';
         $oArticle->dBasePriceCache = 15;
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES('testIsForArticle','" . $testDiscId . "','" . $oArticle->getId() . "','oxarticles')");
         $this->assertTrue($oDiscount->isForArticle($oArticle));
@@ -451,7 +453,6 @@ class DiscountTest extends \OxidTestCase
 
         //no article discount for fitting category
         $oArticle = new oxArticle_Extended();
-        $testCatId = 'testcatid';
         $oArticle->dBasePriceCache = 15;
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES('testIsForArticle','" . $testDiscId . "','" . $oArticle->getId() . "','oxarticles')");
         $this->assertTrue($oDiscount->isForArticle($oArticle));
@@ -477,6 +478,7 @@ class DiscountTest extends \OxidTestCase
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
                    values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'abs', '10' )";
         }
+
         $this->addToDatabase($sQ, 'oxdiscount');
 
         // inserting test discount
@@ -484,7 +486,7 @@ class DiscountTest extends \OxidTestCase
                values
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1126', 'oxarticles' ),
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1127', 'oxarticles' ),
-               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1131', 'oxarticles' ) ";
+               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . sprintf('.\', \'%s\', \'1131\', \'oxarticles\' ) ', $sDiscountId);
         oxDb::getDb()->Execute($sQ);
 
         $oBasket = oxNew('oxBasket');
@@ -529,7 +531,7 @@ class DiscountTest extends \OxidTestCase
                values
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1126', 'oxarticles' ),
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1127', 'oxarticles' ),
-               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', '1131', 'oxarticles' ) ";
+               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . sprintf('.\', \'%s\', \'1131\', \'oxarticles\' ) ', $sDiscountId);
         oxDb::getDb()->Execute($query);
 
         $oBasket = oxNew('oxBasket');
@@ -581,7 +583,7 @@ class DiscountTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxparentid = new oxField($testAid);
 
-        oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
+        oxDb::getDb()->Execute(sprintf('insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( \'testIsForArticle\', \'testdid\', \'%s\', \'oxarticles\' )', $testAid));
 
         $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, ['checkForArticleCategories']);
         $oDiscount->expects($this->never())->method('checkForArticleCategories');
@@ -602,7 +604,7 @@ class DiscountTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
 
-        oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
+        oxDb::getDb()->Execute(sprintf('insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( \'testIsForArticle\', \'testdid\', \'%s\', \'oxarticles\' )', $testAid));
 
         $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, ['checkForArticleCategories']);
         $oDiscount->expects($this->never())->method('checkForArticleCategories');
@@ -827,12 +829,13 @@ class DiscountTest extends \OxidTestCase
         $myDB = oxDb::getDb();
         $sQ = 'insert into oxdiscount ';
         $sQ .= '(oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxprice, oxpriceto, oxaddsumtype, oxaddsum) values ';
-        $sQ .= "('testdid', '$sShopId', '1', 'test for shop $sShopId', '0', '9999', '0', '9999', 'abs', '10') ";
+        $sQ .= sprintf('(\'testdid\', \'%s\', \'1\', \'test for shop %s\', \'0\', \'9999\', \'0\', \'9999\', \'abs\', \'10\') ', $sShopId, $sShopId);
         $myDB->Execute($sQ);
         // EE version changes
 
         $oDiscount = oxNew('oxDiscount');
         $oDiscount->load('testdid');
+
         $oDiscount->oxdiscount__oxactive = new oxField('1', oxField::T_RAW);
 
         $oSimpleDiscount = new stdClass();
@@ -970,8 +973,6 @@ class DiscountTest extends \OxidTestCase
 
     /**
      * Testing oxDiscount::_getProductCheckQuery()
-     *
-     * @return null
      */
     public function testGetProductCheckQuery()
     {
@@ -1001,8 +1002,6 @@ class DiscountTest extends \OxidTestCase
      * are not valuated in this case, and discount is applied strictly for Parent-product only.
      * This discount should be applied for Variant-products, when only Parent product is
      * assigned to discount.
-     *
-     * @return null
      */
     public function testForCase2599()
     {
@@ -1020,7 +1019,7 @@ class DiscountTest extends \OxidTestCase
                values
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', 'product1', 'oxarticles' ),
                ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', 'product2', 'oxarticles' ),
-               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . ".', '{$sDiscountId}', 'product3', 'oxarticles' ) ";
+               ( '_test" . uniqid(random_int(0, mt_getrandmax()), true) . sprintf('.\', \'%s\', \'product3\', \'oxarticles\' ) ', $sDiscountId);
         oxDb::getDb()->Execute($query);
 
         $oParentProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getParentId", "getProductId"]);

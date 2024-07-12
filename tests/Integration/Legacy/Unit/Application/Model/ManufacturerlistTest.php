@@ -60,7 +60,7 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testLoadManufacturerListAndCountManufacturerArticles()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
@@ -121,6 +121,7 @@ class ManufacturerlistTest extends \OxidTestCase
 
         $oManufacturerlist = oxNew('oxManufacturerlist');
         $oManufacturerlist->loadManufacturerList();
+
         $oManufacturer = $oManufacturerlist->current();
 
         $oManufacturerlist->addCategoryFields($oManufacturer);
@@ -130,7 +131,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $this->assertEquals($oManufacturer->oxmanufacturers__oxicon, $oManufacturer->oxcategories__oxicon);
         $this->assertEquals($oManufacturer->oxmanufacturers__oxtitle, $oManufacturer->oxcategories__oxtitle);
         $this->assertEquals($oManufacturer->oxmanufacturers__oxshortdesc, $oManufacturer->oxcategories__oxdesc);
-        $this->assertEquals($myConfig->getShopHomeURL() . "cl=manufacturerlist&amp;mnid={$oManufacturer->oxcategories__oxid->value}", $oManufacturer->getLink());
+        $this->assertEquals($myConfig->getShopHomeURL() . ('cl=manufacturerlist&amp;mnid=' . $oManufacturer->oxcategories__oxid->value), $oManufacturer->getLink());
 
         $this->assertTrue($oManufacturer->getIsVisible());
         $this->assertFalse($oManufacturer->hasVisibleSubCats);
@@ -150,7 +151,7 @@ class ManufacturerlistTest extends \OxidTestCase
         foreach ($oManufacturerlist as $sVndId => $value) {
             $sManufacturerLink = $oManufacturerlist[$sVndId]->link;
             if (!$sManufacturerLink || str_contains($sManufacturerLink, 'index.php')) {
-                $this->fail("SEO link was not added to Manufacturer object ({$sManufacturerLink})");
+                $this->fail(sprintf('SEO link was not added to Manufacturer object (%s)', $sManufacturerLink));
             }
         }
     }

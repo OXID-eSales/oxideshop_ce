@@ -50,6 +50,7 @@ class ActionsTest extends \OxidTestCase
 
         $action = oxNew('oxwActions');
         $action->setViewParameters(['action' => 'oxtop5']);
+
         $aList = $action->getAction();
         $this->assertTrue($aList instanceof ArticleList);
         $this->assertSame($topProductCount, $aList->count());

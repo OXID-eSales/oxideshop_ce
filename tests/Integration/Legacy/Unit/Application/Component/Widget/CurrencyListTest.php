@@ -15,8 +15,6 @@ class CurrencyListTest extends \OxidTestCase
 
     /**
      * Testing oxwCurrencyList::render()
-     *
-     * @return null
      */
     public function testRender()
     {

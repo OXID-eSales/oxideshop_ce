@@ -17,8 +17,6 @@ class PriceAlarmSendTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Send::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -30,8 +28,6 @@ class PriceAlarmSendTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Send::SetupNavigation() test case
-     *
-     * @return null
      */
     public function testSetupNavigation()
     {
@@ -56,8 +52,6 @@ class PriceAlarmSendTest extends \OxidTestCase
 
     /**
      * PriceAlarm_Send::SendeMail() test case
-     *
-     * @return null
      */
     public function testSendeMail()
     {

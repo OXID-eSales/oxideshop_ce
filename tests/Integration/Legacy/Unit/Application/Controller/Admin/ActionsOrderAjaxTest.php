@@ -14,8 +14,6 @@ class ActionsOrderAjaxTest extends \OxidTestCase
 {
     /**
      * ActionsOrderAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -25,13 +23,11 @@ class ActionsOrderAjaxTest extends \OxidTestCase
 
         $sViewTable = $this->getSelectListViewTable();
 
-        $this->assertEquals("from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals(sprintf('from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'', $sViewTable, $sViewTable, $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ActionsOrderAjax::_getSorting() test case
-     *
-     * @return null
      */
     public function testGetSorting()
     {
@@ -41,15 +37,13 @@ class ActionsOrderAjaxTest extends \OxidTestCase
 
     /**
      * ActionsOrderAjax::setSorting() test case
-     *
-     * @return null
      */
     public function testSetSorting()
     {
         $this->getConfig()->setConfigParam("iDebug", 1);
 
         $sViewTable = $this->getSelectListViewTable();
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'  ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, ["output"]);
         $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
@@ -58,8 +52,6 @@ class ActionsOrderAjaxTest extends \OxidTestCase
 
     /**
      * ActionsOrderAjax::setSorting() test case
-     *
-     * @return null
      */
     public function testSetSortingOxid()
     {
@@ -68,7 +60,7 @@ class ActionsOrderAjaxTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("iDebug", 1);
 
         $sViewTable = $this->getSelectListViewTable();
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sViewTable.oxid where oxobjectid = '$sOxid'  ", 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'  ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, ["output"]);
         $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));

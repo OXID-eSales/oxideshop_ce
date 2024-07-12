@@ -22,10 +22,8 @@ use OxidEsales\Eshop\Application\Model\User;
 class TypeHintTestOrder extends \OxidEsales\Eshop\Application\Model\Order
 {
     /**
-     * @param oxBasket $basket
      * @param User     $user
      * @param bool     $recalculatingOrder
-     *
      * @return integer
      */
     public function finalizeOrder(oxBasket $basket, $user, $recalculatingOrder = false)

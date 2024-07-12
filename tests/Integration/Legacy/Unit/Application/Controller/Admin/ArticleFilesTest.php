@@ -21,8 +21,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -34,8 +32,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::Save() test case
-     *
-     * @return null
      */
     public function testSaveWithDefaultValues()
     {
@@ -106,8 +102,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::getArticle() test case
-     *
-     * @return null
      */
     public function testGetArticle()
     {
@@ -119,8 +113,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::getArticle() test case
-     *
-     * @return null
      */
     public function testGetArticleAlreadySet()
     {
@@ -132,8 +124,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::deletefile() test case
-     *
-     * @return null
      */
     public function testDeletefile()
     {
@@ -149,8 +139,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::deletefile() test case when demoShop = true
-     *
-     * @return null
      */
     public function testDeletefileDemoShop()
     {
@@ -174,8 +162,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::deletefile() test case
-     *
-     * @return null
      */
     public function testDeletefileDifferentArticle()
     {
@@ -190,8 +176,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::deletefile() test case
-     *
-     * @return null
      */
     public function testDeleteUsedFile()
     {
@@ -201,6 +185,7 @@ class ArticleFilesTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
@@ -224,14 +209,12 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::upload() test case
-     *
-     * @return null
      */
     public function testUpload()
     {
         oxTestModules::addFunction('oxfile', 'processFile', '{ return true; }');
         oxTestModules::addFunction('oxfile', 'isUnderDownloadFolder', '{ return true; }');
-        $oDb = oxDb::getDb();
+        oxDb::getDb();
         $this->setRequestParameter("oxid", '2000');
         $this->setRequestParameter("newfile", ["oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1]);
 
@@ -252,8 +235,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::upload() test case when demoShop is true
-     *
-     * @return null
      */
     public function testUploadDemoShop()
     {
@@ -271,16 +252,15 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::upload() test case
-     *
-     * @return null
      */
     public function testUploadNoFile()
     {
-        $oDb = oxDb::getDb();
+        oxDb::getDb();
         $this->setRequestParameter("oxid", '2000');
         $this->setRequestParameter("newfile", ["oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1]);
         $oView = $this->getProxyClass("Article_Files");
         $oView->upload();
+
         $aErr = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals('Keine Dateien hochgeladen', $oErr->getOxMessage());
@@ -288,8 +268,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Article_Files::upload() test case
-     *
-     * @return null
      */
     public function testUploadNotProcessedFile()
     {
@@ -329,8 +307,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Test for Article_Files::processOptions()
-     *
-     * @return null
      */
     public function testProcessOptions()
     {
@@ -348,8 +324,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     /**
      * Test for Article_Files::getConfigOptionValue()
-     *
-     * @return null
      */
     public function testGetConfigOptionValue()
     {

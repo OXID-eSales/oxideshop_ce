@@ -19,8 +19,6 @@ class PaymentMainTest extends \OxidTestCase
 
     /**
      * Payment_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class PaymentMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -53,8 +49,6 @@ class PaymentMainTest extends \OxidTestCase
 
     /**
      * Payment_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -66,18 +60,17 @@ class PaymentMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Payment_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Payment_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Payment_Main::save()");
 
             return;
         }
+
         $this->fail("error in Payment_Main::save()");
     }
 
     /**
      * Payment_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -89,18 +82,17 @@ class PaymentMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Payment_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Payment_Main::saveinnlang()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Payment_Main::saveinnlang()");
 
             return;
         }
+
         $this->fail("error in Payment_Main::saveinnlang()");
     }
 
     /**
      * Payment_Main::DelFields() test case
-     *
-     * @return null
      */
     public function testDelFields()
     {

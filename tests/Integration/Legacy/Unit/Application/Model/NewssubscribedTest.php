@@ -13,19 +13,19 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
 
 class NewssubscribedTest extends \OxidTestCase
 {
-    private $_oNewsSub = null;
-    private $_oUser = null;
+    private $_oNewsSub;
+
+    private $_oUser;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
         parent::setUp();
         $this->_oNewsSub = oxNew("oxnewssubscribed");
         $this->_oNewsSub->setId('_testNewsSubscrId');
+
         $this->_oNewsSub->oxnewssubscribed__oxuserid = new oxField('_testUserId', oxField::T_RAW);
         $this->_oNewsSub->oxnewssubscribed__oxemail = new oxField('useremail@useremail.nl', oxField::T_RAW);
         $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField('1', oxField::T_RAW);
@@ -35,6 +35,7 @@ class NewssubscribedTest extends \OxidTestCase
         //set default user
         $this->_oUser = oxNew("oxuser");
         $this->_oUser->setId('_testUserId');
+
         $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->_oUser->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
         $this->_oUser->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
@@ -45,13 +46,12 @@ class NewssubscribedTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
         $this->_oNewsSub->delete('_testNewsSubscrId');
         $this->_oNewsSub->delete('_testNewsSubscr2Id');
+
         $this->_oUser->delete();
 
         $this->cleanUpTable('oxuser');
@@ -128,6 +128,7 @@ class NewssubscribedTest extends \OxidTestCase
         $sNow = date('Y-m-d H:i:s');
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->setId('_testNewsSubscr2Id');
+
         $oNewsSubscribed->oxnewssubscribed__oxuserid = new oxField('_testUser2Id', oxField::T_RAW);
         $oNewsSubscribed->save();
 
@@ -146,6 +147,7 @@ class NewssubscribedTest extends \OxidTestCase
 
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
+
         $oNewsSubscribed->oxnewssubscribed__oxdboptin = new oxField(0, oxField::T_RAW);
         $oNewsSubscribed->save();
 

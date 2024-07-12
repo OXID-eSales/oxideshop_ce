@@ -132,8 +132,6 @@ final class SystemRequirementsTest extends UnitTestCase
 
     /**
      * Testing SystemRequirements::getShopHostInfoFromConfig()
-     *
-     * @return null
      */
     public function testGetShopHostInfoFromConfig()
     {
@@ -162,8 +160,6 @@ final class SystemRequirementsTest extends UnitTestCase
 
     /**
      * Testing SystemRequirements::_getShopSSLHostInfoFromConfig()
-     *
-     * @return null
      */
     public function testGetShopSSLHostInfoFromConfig()
     {
@@ -192,8 +188,6 @@ final class SystemRequirementsTest extends UnitTestCase
 
     /**
      * Testing SystemRequirements::getShopHostInfoFromServerVars()
-     *
-     * @return null
      */
     public function testGetShopHostInfoFromServerVars()
     {
@@ -243,9 +237,7 @@ final class SystemRequirementsTest extends UnitTestCase
      */
     public function providerCheckMemoryLimit()
     {
-        $memoryLimitsWithExpectedSystemHealth = [['8M', 0], ['31M', 0], ['32M', 1], ['59M', 1], ['60M', 2], ['61M', 2], ['-1', 2]];
-
-        return $memoryLimitsWithExpectedSystemHealth;
+        return [['8M', 0], ['31M', 0], ['32M', 1], ['59M', 1], ['60M', 2], ['61M', 2], ['-1', 2]];
     }
 
     /**
@@ -256,8 +248,6 @@ final class SystemRequirementsTest extends UnitTestCase
      * @param int    $expectedResult if fits system requirements.
      *
      * @dataProvider providerCheckMemoryLimit
-     *
-     * @return null
      */
     public function testCheckMemoryLimit($memoryLimit, $expectedResult)
     {
@@ -296,11 +286,13 @@ final class SystemRequirementsTest extends UnitTestCase
             if (($groupId === 'group_a') && ($moduleId === 'module_a')) {
                 $status = SystemRequirements::MODULE_STATUS_OK;
             }
+
             if (($groupId === 'group_a') && ($moduleId === 'module_b')) {
                 $status = SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
             }
+
             if (($groupId === 'group_b') && ($moduleId === 'module_c')) {
-                $status = SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
+                return SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
             }
 
             return $status;

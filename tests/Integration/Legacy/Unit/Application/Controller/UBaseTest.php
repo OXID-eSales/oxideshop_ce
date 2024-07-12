@@ -32,13 +32,12 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
  */
 class UBaseTest extends \OxidTestCase
 {
-    protected $_sRequestMethod = null;
-    protected $_sRequestUri = null;
+    protected $_sRequestMethod;
+
+    protected $_sRequestUri;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -57,8 +56,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -82,13 +79,11 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * Test case for oxUBase::getComponentNames()
-     *
-     * @return null
      */
     public function testGetComponentNames()
     {
         $sCmpName = "testCmp" . time();
-        eval("class {$sCmpName} extends oxUbase {}");
+        eval(sprintf('class %s extends oxUbase {}', $sCmpName));
 
         $this->setConfigParam('aUserComponentNames', [$sCmpName => 1]);
 
@@ -851,6 +846,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'testid');
         $oView = oxNew('oxubase');
         $oView->setClassKey('testClass');
+
         $myConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getActiveView']);
         $myConfig->expects($this->once())
             ->method('getActiveView')
@@ -862,6 +858,7 @@ class UBaseTest extends \OxidTestCase
         if (($sLang = oxRegistry::getLang()->getUrlLang())) {
             $sAdditionalParams = $sLang . "&amp;";
         }
+
         $sAdditionalParams .= "cl=testClass&amp;searchparam=aa&amp;searchcnid=testcat&amp;searchvendor=testvendor&amp;searchmanufacturer=testmanufact&amp;cnid=testCnId&amp;mnid=testid";
         $this->assertEquals($sAdditionalParams, $oView->getAdditionalParams());
     }
@@ -1040,6 +1037,7 @@ class UBaseTest extends \OxidTestCase
             $sExp = "Spiele/Brettspiele/Bierspiel-OANS-ZWOA-GSUFFA.html";
             $sExpEng = "en/Games/Boardgames/Beergame-OANS-ZWOA-GSUFFA.html";
         }
+
         $oArt = oxNew('oxArticle');
         $oArt->loadInLang(1, $articleId);
 
@@ -1342,8 +1340,8 @@ class UBaseTest extends \OxidTestCase
 
         try {
             $oUBase->processRequest();
-        } catch (Exception $oEx) {
-            $this->assertEquals($this->getConfig()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test');
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopURL() . 'mein-wunschzettel/', $exception->getMessage(), 'error executing "testProcessRequest" test');
 
             return;
         }
@@ -1384,7 +1382,7 @@ class UBaseTest extends \OxidTestCase
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . $sShopId . $sLangId);
 
         // testing if request was written in seo log table
-        $this->assertTrue((bool) oxDb::getDb()->getOne("select 1 from oxseologs where oxident='$sIdent'"));
+        $this->assertTrue((bool) oxDb::getDb()->getOne(sprintf('select 1 from oxseologs where oxident=\'%s\'', $sIdent)));
     }
 
     public function testProcessRequestCantRedirectNoIndex()
@@ -1412,7 +1410,7 @@ class UBaseTest extends \OxidTestCase
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . $sShopId . $sLangId);
 
         // testing if request was written in seo log table
-        $this->assertfalse((bool) oxDb::getDb()->getOne("select 1 from oxseologs where oxident='$sIdent'"));
+        $this->assertfalse((bool) oxDb::getDb()->getOne(sprintf('select 1 from oxseologs where oxident=\'%s\'', $sIdent)));
     }
 
     public function testProcessRequestCantRedirectNoLogging()
@@ -1440,7 +1438,7 @@ class UBaseTest extends \OxidTestCase
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . '1' . $sLangId);
 
         // testing if request was written in seo log table
-        $this->assertfalse((bool) oxDb::getDb()->getOne("select 1 from oxseologs where oxident='$sIdent'"));
+        $this->assertfalse((bool) oxDb::getDb()->getOne(sprintf('select 1 from oxseologs where oxident=\'%s\'', $sIdent)));
     }
 
     public function testProcessRequestCantRedirectLoggingByParam()
@@ -1470,7 +1468,7 @@ class UBaseTest extends \OxidTestCase
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . $shopId . $sLangId);
 
         // testing if request was written in seo log table
-        $this->assertTrue((bool) oxDb::getDb()->getOne("select 1 from oxseologs where oxident='$sIdent'"));
+        $this->assertTrue((bool) oxDb::getDb()->getOne(sprintf('select 1 from oxseologs where oxident=\'%s\'', $sIdent)));
     }
 
     // M71: Coupons should be considered in "Min order price" check
@@ -1505,6 +1503,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase = $this->getProxyClass('oxubase');
 
         $oUBase->setNonPublicVar("_blTop5Action", true);
+
         $aList = $oUBase->getTop5ArticleList();
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
@@ -1515,6 +1514,7 @@ class UBaseTest extends \OxidTestCase
     {
         $oUBase = $this->getProxyClass('oxubase');
         $oUBase->setNonPublicVar("_blTop5Action", true);
+
         $aList = $oUBase->getTop5ArticleList(2);
         $this->assertEquals(2, $aList->count());
     }
@@ -1524,6 +1524,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase = $this->getProxyClass('oxubase');
 
         $oUBase->setNonPublicVar("_blBargainAction", true);
+
         $aList = $oUBase->getBargainArticleList();
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 4;
@@ -1591,8 +1592,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getPromoFinishedList() test case
-     *
-     * @return null
      */
     public function testGetPromoFinishedList()
     {
@@ -1607,8 +1606,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getPromoCurrentList() test case
-     *
-     * @return null
      */
     public function testGetPromoCurrentList()
     {
@@ -1623,8 +1620,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getPromoFutureList() test case
-     *
-     * @return null
      */
     public function testGetPromoFutureList()
     {
@@ -1639,8 +1634,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getShowPromotionList() test case
-     *
-     * @return null
      */
     public function testGetShowPromotionList()
     {
@@ -1658,8 +1651,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getShowPromotionList() performance test case
-     *
-     * @return null
      */
     public function testGetShowPromotionListPerformanceIfNoPromotionsActive()
     {
@@ -1685,8 +1676,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * List display type getter test
-     *
-     * @return null
      */
     public function testGetListDisplayType_getVarFromRequest()
     {
@@ -1727,8 +1716,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * List display type getter test
-     *
-     * @return null
      */
     public function testGetListDisplayType_getVarFromSession()
     {
@@ -1768,8 +1755,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::isEnabledPrivateSales() test case
-     *
-     * @return null
      */
     public function testIsEnabledPrivateSales()
     {
@@ -1884,8 +1869,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::showCategoryArticlesCount() test case
-     *
-     * @return null
      */
     public function testShowCategoryArticlesCount()
     {
@@ -1902,8 +1885,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getNewBasketItemMsgType() test case
-     *
-     * @return null
      */
     public function testGetNewBasketItemMsgType()
     {
@@ -1913,8 +1894,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::isEnabledDownloadabaleFiles() test case
-     *
-     * @return null
      */
     public function testIsEnabledDownloadableFiles()
     {
@@ -1924,8 +1903,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::showRememberMe() test case
-     *
-     * @return null
      */
     public function testShowRememberMe()
     {
@@ -1935,8 +1912,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::isPriceCalculated() test case
-     *
-     * @return null
      */
     public function testIsPriceCalculated()
     {
@@ -2093,8 +2068,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * Tests if navigation parameters getter collects all needed values
-     *
-     * @return null
      */
     public function testGetNavigationParams()
     {
@@ -2102,10 +2075,12 @@ class UBaseTest extends \OxidTestCase
         foreach ($aParams as $sKey => $sValue) {
             $this->setRequestParameter($sKey, $sValue);
         }
+
         $aParams['actcontrol'] = "content";
 
         $oView = oxNew('oxUBase');
         $oView->setClassKey('content');
+
         $aParameters = $oView->getNavigationParams();
         $this->assertEquals(ksort($aParams), ksort($aParameters));
     }
@@ -2155,8 +2130,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getTopNavigationCatCnt() test case
-     *
-     * @return null
      */
     public function testGetTopNavigationCatCntDefault()
     {
@@ -2168,8 +2141,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * oxUBase::getTopNavigationCatCnt() test case
-     *
-     * @return null
      */
     public function testGetTopNavigationCatCnt()
     {
@@ -2181,8 +2152,6 @@ class UBaseTest extends \OxidTestCase
 
     /**
      * Testing oxUBase::getCompareItemCount()
-     *
-     * @return null
      */
     public function testGetCompareItemCount()
     {
@@ -2195,8 +2164,6 @@ class UBaseTest extends \OxidTestCase
     /**
      * Testing oxUBase::isVatIncluded()
      * b2b mode is activated
-     *
-     * @return null
      */
     public function testIsVatIncludedNettoUser()
     {
@@ -2209,8 +2176,6 @@ class UBaseTest extends \OxidTestCase
     /**
      * Testing oxUBase::isVatIncluded()
      * if shop is in netto mode
-     *
-     * @return null
      */
     public function testIsVatIncludedNettoShop()
     {
@@ -2223,8 +2188,6 @@ class UBaseTest extends \OxidTestCase
     /**
      * Testing oxUBase::isVatIncluded()
      * if vat will be calculated only in basket
-     *
-     * @return null
      */
     public function testIsVatIncludedVatOnlyInBasket()
     {
@@ -2341,9 +2304,9 @@ class UBaseTest extends \OxidTestCase
 
         try {
             $oUBase->processRequest();
-        } catch (Exception $oEx) {
+        } catch (Exception $exception) {
             // redirect must not be executed
-            $this->fail('error executing "testProcessRequestCantRedirect" test: ' . $oEx->getMessage());
+            $this->fail('error executing "testProcessRequestCantRedirect" test: ' . $exception->getMessage());
         }
 
         $sShopId = $this->getConfig()->getShopId();
@@ -2351,7 +2314,7 @@ class UBaseTest extends \OxidTestCase
         $sIdent = md5(strtolower(str_replace('&', '&amp;', $sUri)) . $sShopId . $sLangId);
 
         // testing if request was written in seo log table
-        $this->assertEquals($blExpected, (bool) oxDb::getDb()->getOne("select 1 from oxseologs where oxident='$sIdent'"), $sMsg);
+        $this->assertEquals($blExpected, (bool) oxDb::getDb()->getOne(sprintf('select 1 from oxseologs where oxident=\'%s\'', $sIdent)), $sMsg);
     }
 
     /**
@@ -2468,7 +2431,7 @@ class UBaseTest extends \OxidTestCase
      */
     public function testSetGetClassKey()
     {
-        $baseController = $baseController = oxNew('oxUBase');
+        $baseController = oxNew('oxUBase');
         $baseController->setClassKey('test_class_key');
         $this->assertEquals('test_class_key', $baseController->getClassKey());
     }

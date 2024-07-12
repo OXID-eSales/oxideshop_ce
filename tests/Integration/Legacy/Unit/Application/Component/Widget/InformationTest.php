@@ -40,8 +40,7 @@ class InformationTest extends \OxidTestCase
     protected function getServicesList()
     {
         $oInformation = oxNew('oxwInformation');
-        $aServicesList = $oInformation->getServicesList();
 
-        return $aServicesList;
+        return $oInformation->getServicesList();
     }
 }

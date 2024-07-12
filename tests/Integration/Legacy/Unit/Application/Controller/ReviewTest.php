@@ -20,8 +20,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -124,8 +120,8 @@ class ReviewTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load("1126");
 
-        $oProd1 = oxNew('oxArticle');
-        $oProd2 = oxNew('oxArticle');
+        oxNew('oxArticle');
+        oxNew('oxArticle');
 
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, ["getActiveRecommList", "getActiveRecommItems", "getReviewUser"]);
         $oReview->expects($this->once())->method('getReviewUser');
@@ -235,11 +231,12 @@ class ReviewTest extends \OxidTestCase
 
         try {
             $oReview->init();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('testInitNoRecommListException', $oExcp->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('testInitNoRecommListException', $exception->getMessage());
 
             return;
         }
+
         $this->fail("error in testInitNoRecommList");
     }
 
@@ -453,6 +450,7 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getProxyClass("review");
         $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
+
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oResult = $oReview->getReviews();
         $this->assertEquals("oxarticle", $oResult->args[0]);
@@ -472,6 +470,7 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getProxyClass("review");
         $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
+
         $oReview->setNonPublicVar("_oProduct", $oArticle);
 
         $this->assertEquals('2000', $oReview->getActiveObject()->getId());
@@ -493,6 +492,7 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getProxyClass("review");
         $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
+
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getCrossSelling();
         $this->assertTrue($oList instanceof ListModel);
@@ -505,6 +505,7 @@ class ReviewTest extends \OxidTestCase
         $oReview = $this->getProxyClass("review");
         $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
+
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getSimilarProducts();
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 5;
@@ -517,11 +518,12 @@ class ReviewTest extends \OxidTestCase
         $oRevew = $this->getProxyClass("review");
         $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
+
         $oRevew->setNonPublicVar("_oProduct", $oArticle);
         $aLists = $oRevew->getRecommList();
         $this->assertEquals(1, $aLists->count());
         $this->assertEquals('testlist', $aLists['testlist']->getId());
-        $this->assertTrue(in_array($aLists['testlist']->getFirstArticle()->getId(), ['2000']));
+        $this->assertTrue($aLists['testlist']->getFirstArticle()->getId() == '2000');
     }
 
     public function testGetAdditionalParams()
@@ -553,8 +555,6 @@ class ReviewTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testGetActiveRecommListIfOff()
     {

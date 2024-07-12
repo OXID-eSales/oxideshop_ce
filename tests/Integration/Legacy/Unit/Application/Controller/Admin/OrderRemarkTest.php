@@ -20,8 +20,6 @@ class OrderRemarkTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -32,8 +30,6 @@ class OrderRemarkTest extends \OxidTestCase
 
     /**
      * order_remark::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -49,8 +45,6 @@ class OrderRemarkTest extends \OxidTestCase
 
     /**
      * order_remark::save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -59,10 +53,12 @@ class OrderRemarkTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
+
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
         $oView = oxNew('order_remark');
         $oView->save();
+
         $oRemark = oxNew("oxRemark");
         $oRemark->load("_testRemark");
         $this->assertEquals('r', oxDb::getDB()->getOne('select oxtype from oxremark where oxtext = "test text"'));
@@ -71,8 +67,6 @@ class OrderRemarkTest extends \OxidTestCase
 
     /**
      * order_remark::Render() test case
-     *
-     * @return null
      */
     public function testDelete()
     {
@@ -82,11 +76,12 @@ class OrderRemarkTest extends \OxidTestCase
         try {
             $oView = oxNew('order_remark');
             $oView->delete();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("delete", $oExcp->getMessage(), "Error in order_remark::delete()");
+        } catch (Exception $exception) {
+            $this->assertEquals("delete", $exception->getMessage(), "Error in order_remark::delete()");
 
             return;
         }
+
         $this->fail("Error in order_remark::delete()");
     }
 }

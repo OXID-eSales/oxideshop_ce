@@ -136,8 +136,8 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetControllerClassNameResolver()
     {
         $object = Registry::getControllerClassNameResolver();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface::class));
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface);
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver);
     }
 
     /**
@@ -147,7 +147,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetForBcUtilsObjectClassName()
     {
         $object = Registry::get('oxUtilsObject');
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
     }
 
     /**
@@ -157,7 +157,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetForNamespaceUtilsObject()
     {
         $object = Registry::get(\OxidEsales\Eshop\Core\UtilsObject::class);
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
     }
 
     /**
@@ -166,7 +166,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsObject()
     {
         $object = Registry::getUtilsObject();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsObject::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
     }
 
     /**
@@ -283,7 +283,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetInputValidator()
     {
         $object = Registry::getInputValidator();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\InputValidator::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\InputValidator);
     }
 
     /**
@@ -292,7 +292,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetPictureHandler()
     {
         $object = Registry::getPictureHandler();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\PictureHandler::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\PictureHandler);
     }
 
     /**
@@ -301,7 +301,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetRequest()
     {
         $object = Registry::getRequest();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\Request::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Request);
     }
 
     /**
@@ -310,7 +310,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetSeoDecoder()
     {
         $object = Registry::getSeoDecoder();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\SeoDecoder::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\SeoDecoder);
     }
 
     /**
@@ -319,7 +319,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetSeoEncoder()
     {
         $object = Registry::getSeoEncoder();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\SeoEncoder::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\SeoEncoder);
     }
 
     /**
@@ -328,7 +328,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsCount()
     {
         $object = Registry::getUtilsCount();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsCount::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsCount);
     }
 
     /**
@@ -337,7 +337,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsDate()
     {
         $object = Registry::getUtilsDate();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsDate::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsDate);
     }
 
     /**
@@ -346,7 +346,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsFile()
     {
         $object = Registry::getUtilsFile();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsFile::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsFile);
     }
 
     /**
@@ -355,7 +355,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsPic()
     {
         $object = Registry::getUtilsPic();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsPic::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsPic);
     }
 
     /**
@@ -364,7 +364,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsServer()
     {
         $object = Registry::getUtilsServer();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsServer::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsServer);
     }
 
     /**
@@ -373,7 +373,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsString()
     {
         $object = Registry::getUtilsString();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsString::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsString);
     }
 
     /**
@@ -382,7 +382,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsUrl()
     {
         $object = Registry::getUtilsUrl();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsUrl::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsUrl);
     }
 
     /**
@@ -391,7 +391,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsView()
     {
         $object = Registry::getUtilsView();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsView::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsView);
     }
 
     /**
@@ -400,7 +400,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testRegistryGetUtilsXml()
     {
         $object = Registry::getUtilsXml();
-        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\UtilsXml::class));
+        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsXml);
     }
 
     /**

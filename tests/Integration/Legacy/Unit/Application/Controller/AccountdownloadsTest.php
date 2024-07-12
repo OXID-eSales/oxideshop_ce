@@ -20,8 +20,6 @@ class AccountdownloadsTest extends \OxidTestCase
 
     /**
      * Testing Account_Downloads::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -32,8 +30,6 @@ class AccountdownloadsTest extends \OxidTestCase
 
     /**
      * Testing Account_Downloads::getDownloadError()
-     *
-     * @return null
      */
     public function testGetDownloadError()
     {
@@ -46,8 +42,6 @@ class AccountdownloadsTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testGetArticleList()
     {
@@ -77,8 +71,6 @@ class AccountdownloadsTest extends \OxidTestCase
 
     /**
      * Test get article list.
-     *
-     * @return null
      */
     public function testGetArticleListIsSet()
     {

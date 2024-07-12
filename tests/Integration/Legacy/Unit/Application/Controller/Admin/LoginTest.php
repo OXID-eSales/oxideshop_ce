@@ -33,8 +33,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -49,8 +47,6 @@ class LoginTest extends \OxidTestCase
      *  passworod works fine
      *
      * M#1386
-     *
-     * @return null
      */
     public function testLogin()
     {
@@ -68,7 +64,7 @@ class LoginTest extends \OxidTestCase
         $oUser->save();
 
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }');
-        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', "{ return array('test'); }");
 
         $_SERVER['REQUEST_METHOD'] = "POST";
         $this->setRequestParameter("user", "&\"\'\\<>adminname");
@@ -84,8 +80,6 @@ class LoginTest extends \OxidTestCase
      *  passworod works fine
      *
      *  M#3680
-     *
-     * @return null
      */
     public function testLoginNotAdmin()
     {
@@ -94,13 +88,14 @@ class LoginTest extends \OxidTestCase
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");
+
         $oUser->oxuser__oxactive = new oxField("1");
         $oUser->oxuser__oxusername = new oxField("&\"\'\\<>adminname", oxField::T_RAW);
         $oUser->setPassword("&\"\'\\<>adminpsw");
         $oUser->save();
 
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ throw new oxException($aA[0]); }');
-        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }');
+        oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', "{ return array('test'); }");
 
         $_SERVER['REQUEST_METHOD'] = "POST";
         $this->setRequestParameter("user", "&\"\'\\<>adminname");
@@ -112,8 +107,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      *  Check getting browser language abbervation
-     *
-     * @return null
      */
     public function testGetBrowserLanguage()
     {
@@ -126,8 +119,6 @@ class LoginTest extends \OxidTestCase
      *  Check getting available admin interface languages
      *  when selected lang ID is not setted to cookie. Selected lang
      *  should be selected by detected lang in browser.
-     *
-     * @return null
      */
     public function testGetAvailableLanguages_withoutCookies_DE()
     {
@@ -165,8 +156,6 @@ class LoginTest extends \OxidTestCase
      *  Check getting available admin interface languages
      *  when selected lang ID is not setted to cookie. Selected lang
      *  should be selected by detected lang in browser.
-     *
-     * @return null
      */
     public function testGetAvailableLanguages_withoutCookies_EN()
     {
@@ -202,8 +191,6 @@ class LoginTest extends \OxidTestCase
      *  Check getting available admin interface languages
      *  when selected lang ID is setted to cookie. Selected lang
      *  should be selected by detected lang id in cookie.
-     *
-     * @return null
      */
     public function testGetAvailableLanguages_withCookies_DE()
     {
@@ -241,8 +228,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      * Testing login::getViewId()
-     *
-     * @return null
      */
     public function testGetViewId()
     {
@@ -252,8 +237,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      * Testing login::_authorize()
-     *
-     * @return null
      */
     public function testAuthorize()
     {
@@ -263,8 +246,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      * Testing login::checklogin()
-     *
-     * @return null
      */
     public function testCheckloginSettingProfile()
     {
@@ -330,8 +311,6 @@ class LoginTest extends \OxidTestCase
 
     /**
      * Testing login::render()
-     *
-     * @return null
      */
     public function testRender()
     {

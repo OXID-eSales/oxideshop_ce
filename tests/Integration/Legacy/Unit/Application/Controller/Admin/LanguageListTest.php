@@ -43,8 +43,6 @@ class LanguageListTest extends \OxidTestCase
 
     /**
      * Language_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -55,8 +53,6 @@ class LanguageListTest extends \OxidTestCase
 
     /**
      * Language_List::GetLanguagesList() test case
-     *
-     * @return null
      */
     public function testGetLanguagesList()
     {
@@ -86,8 +82,6 @@ class LanguageListTest extends \OxidTestCase
 
     /**
      * Language_List::SortLanguagesCallback() test case
-     *
-     * @return null
      */
     public function testSortLanguagesCallback()
     {
@@ -115,8 +109,6 @@ class LanguageListTest extends \OxidTestCase
 
     /**
      * Language_List::ResetMultiLangDbFields() test case
-     *
-     * @return null
      */
     public function testResetMultiLangDbFieldsExceptionThrownWhileResetting()
     {
@@ -126,18 +118,17 @@ class LanguageListTest extends \OxidTestCase
         try {
             $oView = oxNew('Language_List');
             $oView->resetMultiLangDbFields(3);
-        } catch (Exception $oExcp) {
-            $this->assertEquals("addErrorToDisplay", $oExcp->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
+        } catch (Exception $exception) {
+            $this->assertEquals("addErrorToDisplay", $exception->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
 
             return;
         }
+
         $this->fail("Error in Language_List::UNITresetMultiLangDbFields()");
     }
 
     /**
      * Language_List::ResetMultiLangDbFields() test case
-     *
-     * @return null
      */
     public function testResetMultiLangDbFields()
     {

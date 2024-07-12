@@ -16,12 +16,10 @@ use \oxRegistry;
  */
 class VoucherserieTest extends \OxidTestCase
 {
-    protected $_aIds = null;
+    protected $_aIds;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -63,8 +61,6 @@ class VoucherserieTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -85,7 +81,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     protected function addAdditionalInfo()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $aGroupsToAdd = ['oxidsmallcust', 'oxidmiddlecust', 'oxidgoodcust'];
 
         foreach ($this->_aIds as $sOxid) {
@@ -133,11 +129,11 @@ class VoucherserieTest extends \OxidTestCase
 
         foreach ($this->_aIds as $sOxid) {
             // removing groups assignment
-            $sQ = "delete from oxobject2group where oxobject2group.oxobjectid = '{$sOxid}'";
+            $sQ = sprintf('delete from oxobject2group where oxobject2group.oxobjectid = \'%s\'', $sOxid);
             $myDB->Execute($sQ);
 
             // removing vouchers
-            $sQ = "delete from oxvouchers where oxvouchers.oxvoucherserieid = '$sOxid'";
+            $sQ = sprintf('delete from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
             $myDB->Execute($sQ);
         }
     }
@@ -147,7 +143,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testDeleteRemovesUserGroups()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myDB = oxDb::getDb();
 
         foreach ($this->_aIds as $sOxid) {
@@ -170,7 +166,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testDeleteRemovesAssignedVouchers()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myDB = oxDb::getDb();
 
         $oSerie = oxNew('oxvoucherserie');
@@ -183,7 +179,7 @@ class VoucherserieTest extends \OxidTestCase
             // default deletion
             $oSerie->delete();
 
-            $sQ = "select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = '$sOxid'";
+            $sQ = sprintf('select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
             $this->assertEquals(0, (int) $myDB->GetOne($sQ), 'oxvouchers (voucherserie) was not removed');
         }
     }
@@ -193,7 +189,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testDeleteRemovesVoucherSerie()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myDB = oxDb::getDb();
 
         $oSerie = oxNew('oxvoucherserie');
@@ -206,7 +202,7 @@ class VoucherserieTest extends \OxidTestCase
             // default deletion
             $oSerie->delete();
 
-            $sQ = "select count(*) from oxvoucherseries where oxvoucherseries.oxid = '$sOxid'";
+            $sQ = sprintf('select count(*) from oxvoucherseries where oxvoucherseries.oxid = \'%s\'', $sOxid);
             $this->assertEquals(0, (int) $myDB->GetOne($sQ), 'voucherserie was not removed');
         }
     }
@@ -216,8 +212,8 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testSetUserGroups()
     {
-        $myUtils = oxRegistry::getUtils();
-        $myDB = oxDb::getDb();
+        oxRegistry::getUtils();
+        oxDb::getDb();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');
@@ -239,8 +235,8 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testSetUserGroupsReturnsCorrectGroups()
     {
-        $myUtils = oxRegistry::getUtils();
-        $myDB = oxDb::getDb();
+        oxRegistry::getUtils();
+        oxDb::getDb();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');
@@ -274,7 +270,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testUnsetUserGroups()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myDB = oxDb::getDb();
 
         foreach ($this->_aIds as $sOxid) {
@@ -286,7 +282,7 @@ class VoucherserieTest extends \OxidTestCase
             // unsetting groups
             $oSerie->unsetUserGroups();
 
-            $sQ = "select count(*) from oxobject2group where oxobject2group.oxobjectid = '$sOxid'";
+            $sQ = sprintf('select count(*) from oxobject2group where oxobject2group.oxobjectid = \'%s\'', $sOxid);
             $this->assertEquals(0, $myDB->GetOne($sQ), 'oxobject2group (voucherserie) was not removed');
         }
     }
@@ -296,7 +292,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testGetVoucherList()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');
@@ -314,7 +310,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testDeleteVoucherList()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
         $myDB = oxDb::getDb();
 
         foreach ($this->_aIds as $sOxid) {
@@ -325,7 +321,7 @@ class VoucherserieTest extends \OxidTestCase
 
             $oSerie->deleteVoucherList();
 
-            $sQ = "select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = '$sOxid'";
+            $sQ = sprintf('select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
             $this->assertEquals(0, $myDB->GetOne($sQ), 'Not all vouchers was removed by deleteVoucherList() function ');
         }
     }
@@ -335,7 +331,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testCountVouchers()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');
@@ -357,7 +353,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testCountVouchersUsedDateUsed()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');
@@ -386,7 +382,7 @@ class VoucherserieTest extends \OxidTestCase
      */
     public function testCountVouchersUsedOrderId()
     {
-        $myUtils = oxRegistry::getUtils();
+        oxRegistry::getUtils();
 
         foreach ($this->_aIds as $sOxid) {
             $oSerie = oxNew('oxvoucherserie');

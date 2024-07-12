@@ -20,8 +20,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -43,8 +41,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -75,8 +71,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -86,8 +80,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryMallUsers()
     {
@@ -98,8 +90,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -112,8 +102,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidMallUsers()
     {
@@ -127,8 +115,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -141,8 +127,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -157,8 +141,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxidMallUsers()
     {
@@ -174,8 +156,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::removeUserFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveUserFromDel()
     {
@@ -190,8 +170,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::removeUserFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveUserFromDelAll()
     {
@@ -208,15 +186,13 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::addUserToDel() test case
-     *
-     * @return null
      */
     public function testAddUserToDel()
     {
         $sSynchoxid = '_testActionAddUser';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryUsersAjax::class, ["getActionIds"]);
@@ -228,8 +204,6 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryUsersAjax::addUserToDel() test case
-     *
-     * @return null
      */
     public function testAddUserToDelAll()
     {
@@ -240,7 +214,7 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxuser.oxid) from oxuser where 1  and oxuser.oxshopid = '" . $this->getShopIdTest() . "'  and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery left join oxuser on oxuser.oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxuser' and oxuser.oxid IS NOT NULL )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryUsersAjax::class, ["getActionIds"]);

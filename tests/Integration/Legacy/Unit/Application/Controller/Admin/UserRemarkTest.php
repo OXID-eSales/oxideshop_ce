@@ -21,8 +21,6 @@ class UserRemarkTest extends \OxidTestCase
 
     /**
      * user_remark::render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -42,8 +40,6 @@ class UserRemarkTest extends \OxidTestCase
 
     /**
      * user_remark::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -57,8 +53,8 @@ class UserRemarkTest extends \OxidTestCase
         try {
             $oView = oxNew('user_remark');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in user_remark::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in user_remark::save()");
 
             return;
         }
@@ -68,8 +64,6 @@ class UserRemarkTest extends \OxidTestCase
 
     /**
      * user_remark::testDelete() test case
-     *
-     * @return null
      */
     public function testDelete()
     {
@@ -78,8 +72,8 @@ class UserRemarkTest extends \OxidTestCase
         try {
             $oView = oxNew('user_remark');
             $oView->delete();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("delete", $oExcp->getMessage(), "Error in user_remark::delete()");
+        } catch (Exception $exception) {
+            $this->assertEquals("delete", $exception->getMessage(), "Error in user_remark::delete()");
 
             return;
         }

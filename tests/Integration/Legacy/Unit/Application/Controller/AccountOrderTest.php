@@ -19,8 +19,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Account_Order::getPageNavigation() test case
-     *
-     * @return  null
      */
     public function testGetPageNavigation()
     {
@@ -31,8 +29,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Order::getOrderArticleList()
-     *
-     * @return null
      */
     public function testGetOrderArticleListEmptyOrderList()
     {
@@ -43,8 +39,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Order::getOrderArticleList()
-     *
-     * @return null
      */
     public function testGetOrderArticleList()
     {
@@ -60,8 +54,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Order::getOrderList()
-     *
-     * @return null
      */
     public function testGetOrderListNoSessionUser()
     {
@@ -72,8 +64,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Order::getOrderList()
-     *
-     * @return null
      */
     public function testGetOrderList()
     {
@@ -88,8 +78,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -100,8 +88,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -115,8 +101,6 @@ class AccountOrderTest extends \OxidTestCase
 
     /**
      * Testing Account_Orders::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

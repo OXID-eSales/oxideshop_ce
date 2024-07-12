@@ -14,8 +14,6 @@ class EmailUtf8Test extends \OxidTestCase
 {
     /**
      * Testing email charset
-     *
-     * @return null
      */
     public function testGetCharset()
     {
@@ -25,8 +23,6 @@ class EmailUtf8Test extends \OxidTestCase
 
     /**
      * Testing email charset
-     *
-     * @return null
      */
     public function testGetCurrency()
     {
@@ -53,6 +49,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oArticle = oxNew("oxArticle");
         $oArticle->setId('_testArticleId');
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxtitle = new oxField();
 
         $aBasketContents[] = $oBasketItem;
@@ -71,6 +68,7 @@ class EmailUtf8Test extends \OxidTestCase
 
         $oUser = oxNew("oxuser");
         $oUser->setId('_testUserId');
+
         $oUser->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);

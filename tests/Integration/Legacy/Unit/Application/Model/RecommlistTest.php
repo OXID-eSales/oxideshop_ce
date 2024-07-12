@@ -20,8 +20,6 @@ class RecommlistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -40,8 +38,6 @@ class RecommlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -131,6 +127,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oRecomm->delete();
+
         $myDB = oxDb::getDB();
         $this->assertFalse($myDB->getOne('select oxid from oxrecommlists where oxid = "testlist" '));
         $this->assertFalse($myDB->getOne('select oxid from oxobject2list where oxlistid = "testlist" '));
@@ -149,6 +146,7 @@ class RecommlistTest extends \OxidTestCase
     {
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
+
         $oArtList = $oRecomm->getArticles();
         $oArt = $oArtList->current();
         $this->assertEquals('test', $oRecomm->getArtDescription($oArt->getId()));
@@ -168,6 +166,7 @@ class RecommlistTest extends \OxidTestCase
 
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
+
         $oArtList = $oRecomm->getArticles();
         $oArt = $oArtList->current();
         $oRecomm->removeArticle($oArt->getId());
@@ -190,6 +189,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
         $oRecomm->addArticle('2000', 'new Art');
+
         $myDB = oxDb::getDB();
         $this->assertEquals("new Art", $myDB->getOne('select oxdesc from oxobject2list where oxobjectid = "2000" '));
     }
@@ -249,8 +249,8 @@ class RecommlistTest extends \OxidTestCase
 
         $i = 0;
         foreach ($aLists as $key => $oList) {
-            $this->assertEquals($aExpectListOrder[$i], $key, "testing $key");
-            $this->assertEquals($key, $oList->getId(), "testing $key");
+            $this->assertEquals($aExpectListOrder[$i], $key, 'testing ' . $key);
+            $this->assertEquals($key, $oList->getId(), 'testing ' . $key);
             $i++;
         }
 
@@ -259,25 +259,29 @@ class RecommlistTest extends \OxidTestCase
         foreach ($aExpectFirstArticleCases as $aExpectFirstArticles) {
             try {
                 foreach ($aLists as $key => $oList) {
-                    $this->assertEquals($aExpectFirstArticles[$key], $oList->getFirstArticle()->getId(), "testing $key");
+                    $this->assertEquals($aExpectFirstArticles[$key], $oList->getFirstArticle()->getId(), 'testing ' . $key);
                 }
+
                 // we succeeded, so exception is null, break case testing
                 $oException = null;
                 $sError = '';
                 break;
             } catch (Exception $oException) {
                 $sGot = '[';
-                foreach ($aLists as $key => $oList) {
-                    if ($sGot != '[') {
+                foreach ($aLists as $oList) {
+                    if ($sGot !== '[') {
                         $sGot .= ', ';
                     }
+
                     $sGot .= $oList->getFirstArticle()->getId();
                 }
+
                 $sGot .= ']';
                 $sError = $oException->getMessage() . " -->" . $sGot;
             }
         }
-        if ($sError) {
+
+        if ($sError !== '' && $sError !== '0') {
             $this->fail($sError);
         }
     }
@@ -329,16 +333,18 @@ class RecommlistTest extends \OxidTestCase
     {
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId('testid');
+
         $oRecomm->oxrecommlists__oxtitle = new oxField("x", oxField::T_RAW);
         $oRecomm->oxrecommlists__oxrating = new oxField(3.5, oxField::T_RAW);
         $oRecomm->oxrecommlists__oxratingcnt = new oxField(2, oxField::T_RAW);
         $oRecomm->save();
         try {
             $oRecomm->addToRatingAverage(5);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $oRecomm->delete();
-            throw $e;
+            throw $exception;
         }
+
         $oRecomm->delete();
 
         $this->assertEquals(4, $oRecomm->oxrecommlists__oxrating->value);
@@ -350,6 +356,7 @@ class RecommlistTest extends \OxidTestCase
         oxTestModules::addFunction('oxreview', 'loadList', '{$o=new oxlist();$o->args=$aA;return $o;}');
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId('testid');
+
         $oResult = $oRecomm->getReviews();
         $this->assertEquals(null, $oResult);
         oxTestModules::addFunction('oxreview', 'loadList', '{$o=new oxlist();$o[0]="asd";$o->args=$aA;return $o;}');
@@ -386,11 +393,12 @@ class RecommlistTest extends \OxidTestCase
         $oRecomm->setId('_testX');
         try {
             $oRecomm->save();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $e) {
-            $this->assertEquals('EXCEPTION_RECOMMLIST_NOTITLE', $e->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ObjectException $objectException) {
+            $this->assertEquals('EXCEPTION_RECOMMLIST_NOTITLE', $objectException->getMessage());
 
             return;
         }
+
         $this->fail("exception is not thrown");
     }
 }

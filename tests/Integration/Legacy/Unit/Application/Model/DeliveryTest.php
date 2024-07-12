@@ -58,11 +58,13 @@ class modOxDelivery extends oxDelivery
 
 class DeliveryTest extends \OxidTestCase
 {
-    protected $_sOxId = null;
+    protected $_sOxId;
 
     /** @var oxBasketItem $_oBasketItem */
-    protected $_oBasketItem = null;
+    protected $_oBasketItem;
+
     public $aArticleIds = [];
+
     public $aCategoryIds = [];
 
     protected function setUp(): void
@@ -78,6 +80,7 @@ class DeliveryTest extends \OxidTestCase
 
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testDeliveryId');
+
         $oDelivery->oxdelivery__oxtitle = new oxField('test_oxDelivery', oxField::T_RAW);
         $oDelivery->save();
         $this->_sOxId = $oDelivery->getId();
@@ -125,6 +128,7 @@ class DeliveryTest extends \OxidTestCase
 
         $oPrice = oxNew('oxprice');
         $oPrice->setPrice(256, 0);
+
         $this->_oBasketItem->setPrice($oPrice);
 
         oxArticleHelper::cleanup();
@@ -162,6 +166,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -175,6 +180,7 @@ class DeliveryTest extends \OxidTestCase
         $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
+
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxobjectid = new oxField('1126', oxField::T_RAW);
         $oO2D->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
@@ -201,6 +207,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -215,6 +222,7 @@ class DeliveryTest extends \OxidTestCase
         $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
+
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxobjectid = new oxField('1126', oxField::T_RAW);
         $oO2D->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
@@ -238,10 +246,12 @@ class DeliveryTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
+
         $aCategoryIds = $oArticle->getCategoryIds();
 
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -255,6 +265,7 @@ class DeliveryTest extends \OxidTestCase
         $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
+
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxobjectid = new oxField(current($aCategoryIds), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
@@ -283,10 +294,12 @@ class DeliveryTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->load('1126');
+
         $aCategoryIds = $oArticle->getCategoryIds();
 
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -301,6 +314,7 @@ class DeliveryTest extends \OxidTestCase
         $oO2D = oxNew('oxBase');
         $oO2D->init('oxobject2delivery');
         $oO2D->setId('_testoxobject2delivery');
+
         $oO2D->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId(), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxobjectid = new oxField(current($aCategoryIds), oxField::T_RAW);
         $oO2D->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
@@ -324,6 +338,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -353,6 +368,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -377,6 +393,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -407,6 +424,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = new modOxDelivery();
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -444,13 +462,16 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId');
+
         $oDelivery->oxdelivery__oxparam = new oxField(0.01, oxField::T_RAW);
         $oDelivery->oxdelivery__oxparamend = new oxField(99999999, oxField::T_RAW);
         $oDelivery->save();
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId');
+
         $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId1");
+
         $oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $oArticle->save();
         $oBasket = oxNew('oxBasket');
@@ -468,14 +489,17 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId');
+
         $oBasketItem = $this->getProxyClass("oxbasketitem");
         $oBasketItem->init('_testArticleId1', 1);
         $oBasketItem->setNonPublicVar("_oArticle", null);
+
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", [$oBasketItem]);
 
         $oArticle = oxNew("oxArticle");
         $oArticle->load("_testArticleId1");
+
         $oArticle->oxarticles__oxfreeshipping = new oxField(true, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
@@ -806,11 +830,13 @@ class DeliveryTest extends \OxidTestCase
         $oBasketItem1 = oxNew("oxBasketItem");
         $oBasketItem1->init('_testArticleId2', 2);
         $oBasketItem1->setPrice($oPrice);
+
         $oBasketItem1->getArticle()->oxarticles__oxfreeshipping = new oxField(true);
 
         $oBasketItem2 = oxNew("oxBasketItem");
         $oBasketItem2->init('_testArticleId2', 2);
         $oBasketItem2->setPrice($oPrice);
+
         $oBasketItem2->getArticle()->oxarticles__oxfreeshipping = new oxField(false);
 
         // 2 basket items
@@ -1007,6 +1033,7 @@ class DeliveryTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testDeliveryId');
+
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
         $oDelivery->oxdelivery__oxparam = new oxField(80);
         $oDelivery->oxdelivery__oxparamend = new oxField(100);
@@ -1017,6 +1044,7 @@ class DeliveryTest extends \OxidTestCase
         $this->getConfig()->setActShopCurrency(2);
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testDeliveryId');
+
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
         $oDelivery->oxdelivery__oxparam = new oxField(80); // eur
         $oDelivery->oxdelivery__oxparamend = new oxField(100); // eur
@@ -1033,6 +1061,7 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));
         $oDelivery->load('_testDeliveryId');
         $oDelivery->setblFreeShipping(false);
+
         $blReturn = $oDelivery->isDeliveryRuleFitByArticle(2);
 
         $this->assertTrue($blReturn);
@@ -1043,6 +1072,7 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery = $this->getProxyClass("oxdelivery");
         $oDelivery->setNonPublicVar("_blFreeShipping", true);
         $oDelivery->load('_testDeliveryId');
+
         $blReturn = $oDelivery->isDeliveryRuleFitByArticle(2);
         $this->assertFalse($blReturn);
     }
@@ -1061,6 +1091,7 @@ class DeliveryTest extends \OxidTestCase
         $oD = oxNew('oxDelivery');
         //standard delivery id for rest EU
         $oD->load('1b842e7352422a708.01472527');
+
         $aCountries = $oD->getCountriesISO();
         $this->assertEquals(2, count($aCountries), "Failed getting countries code");
         $this->assertEquals(["AT", "CH"], $aCountries);

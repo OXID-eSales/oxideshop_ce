@@ -14,8 +14,6 @@ class WrappingTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -25,8 +23,6 @@ class WrappingTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::getBasketItems()
-     *
-     * @return null
      */
     public function testGetBasketItems()
     {
@@ -43,8 +39,6 @@ class WrappingTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::getWrappingList()
-     *
-     * @return null
      */
     public function testGetWrappingList()
     {
@@ -60,8 +54,6 @@ class WrappingTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::getCardList()
-     *
-     * @return null
      */
     public function testGetCardList()
     {
@@ -77,8 +69,6 @@ class WrappingTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::changeWrapping()
-     *
-     * @return null
      */
     public function testChangeWrapping()
     {

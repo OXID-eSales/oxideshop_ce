@@ -20,6 +20,7 @@ class CurlTest extends \OxidTestCase
 
         $oCurl = oxNew('oxCurl');
         $oCurl->setUrl($sEndpointUrl);
+
         $sUrlToCall = $oCurl->getUrl();
 
         $this->assertEquals($sEndpointUrl, $sUrlToCall, 'Url should be same as provided from config.');
@@ -203,6 +204,7 @@ class CurlTest extends \OxidTestCase
     {
         $oCurl = oxNew('oxCurl');
         $oCurl->setOption('CURLOPT_VERBOSE', 0);
+
         $aOptions = $oCurl->getOptions();
         $this->assertEquals(2, count($aOptions));
         $this->assertEquals(0, $aOptions['CURLOPT_VERBOSE']);

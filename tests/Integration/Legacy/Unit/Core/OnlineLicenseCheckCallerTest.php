@@ -30,8 +30,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute']);
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
-        /** @var oxCurl $oCurl */
-
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->atLeastOnce())->method('objectToXml')->with($oRequest, 'olcRequest');
         /** @var oxSimpleXml $oSimpleXml */
@@ -80,12 +78,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute', 'getStatusCode']);
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
-        /** @var oxCurl $oCurl */
-
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, ['build']);
         $oEmailBuilder->expects($this->any())->method('build');
-        /** @var OnlineServerEmailBuilder $oEmailBuilder */
-
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
 
@@ -102,11 +96,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute']);
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
-        /** @var oxCurl $oCurl */
-
         $oSimpleXml = $this->getMock('oxSimpleXml');
-        /** @var oxSimpleXml $oSimpleXml */
-
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, ['build']);
         $oEmailBuilder->expects($this->any())->method('build');
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
@@ -150,8 +140,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
         try {
             $oOnlineLicenseCaller->doRequest($oRequest);
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            $this->assertSame('OLC_ERROR_RESPONSE_NOT_VALID', $exception->getMessage());
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $standardException) {
+            $this->assertSame('OLC_ERROR_RESPONSE_NOT_VALID', $standardException->getMessage());
         }
 
         /**
@@ -170,8 +160,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $sResponse .= '<olc>';
         $sResponse .= '<code>0</code>';
         $sResponse .= '<message>ACK</message>';
-        $sResponse .= '</olc>' . PHP_EOL;
 
-        return $sResponse;
+        return $sResponse . ('</olc>' . PHP_EOL);
     }
 }

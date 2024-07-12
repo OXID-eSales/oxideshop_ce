@@ -18,8 +18,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -31,8 +29,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Content_Seo::GetType() test case
-     *
-     * @return null
      */
     public function testGetType()
     {
@@ -43,8 +39,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Content_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -54,8 +48,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Content_Seo::getEntryUri() test case
-     *
-     * @return null
      */
     public function testGetEntryUri()
     {
@@ -74,8 +66,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Content_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetStdUrl()
     {
@@ -91,8 +81,6 @@ class ContentSeoTest extends \OxidTestCase
 
     /**
      * Content_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

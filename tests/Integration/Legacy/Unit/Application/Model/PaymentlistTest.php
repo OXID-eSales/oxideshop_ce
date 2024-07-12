@@ -14,7 +14,8 @@ use oxRegistry;
 class PaymentlistTest extends \OxidTestCase
 {
     protected $_aPayList = [];
-    protected $_oDefPaymentList = null;
+
+    protected $_oDefPaymentList;
 
     /**
      * Returns Unique Id with underscore as prefix
@@ -31,8 +32,6 @@ class PaymentlistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -96,12 +95,14 @@ class PaymentlistTest extends \OxidTestCase
         // for groups
         $oO2Group = oxNew('oxObject2Group');
         $oO2Group->setId($this->getUId());
+
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
 
         $oO2Group = oxNew('oxObject2Group');
         $oO2Group->setId($this->getUId());
+
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[1]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
@@ -109,6 +110,7 @@ class PaymentlistTest extends \OxidTestCase
         // for country
         $oO2Pay = oxNew('oxBase');
         $oO2Pay->Init('oxobject2payment');
+
         $oO2Group->setId($this->getUId());
         $oO2Pay->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
         $oO2Pay->oxobject2payment__oxobjectid = new oxField($this->oUser->oxuser__oxcountryid->value, oxField::T_RAW);
@@ -117,6 +119,7 @@ class PaymentlistTest extends \OxidTestCase
 
         $oO2Group = oxNew('oxObject2Group');
         $oO2Group->setId($this->getUId());
+
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
@@ -124,6 +127,7 @@ class PaymentlistTest extends \OxidTestCase
         // delivery set
         $this->oDelSet = oxNew('oxDeliverySet');
         $this->oDelSet->setId($this->getUId());
+
         $this->oDelSet->oxdeliveryset__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxtitle = new oxField("Test delivery set", oxField::T_RAW);
@@ -131,6 +135,7 @@ class PaymentlistTest extends \OxidTestCase
 
         $oO2Group = oxNew('oxObject2Group');
         $oO2Group->setId($this->getUId());
+
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[3]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
@@ -140,6 +145,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
         $oObject->setId($this->getUId());
+
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
         $oObject->oxobject2payment__oxobjectid = new oxField($this->oDelSet->getId(), oxField::T_RAW);
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset", oxField::T_RAW);
@@ -148,6 +154,7 @@ class PaymentlistTest extends \OxidTestCase
         // group
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
+
         $oO2Group->setId($this->getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[1]->getId(), oxField::T_RAW);
         $oObject->oxobject2payment__oxobjectid = new oxField($this->oDelSet->getId(), oxField::T_RAW);
@@ -157,6 +164,7 @@ class PaymentlistTest extends \OxidTestCase
         // country
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
+
         $oO2Group->setId($this->getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
         $oObject->oxobject2payment__oxobjectid = new oxField($this->oDelSet->getId(), oxField::T_RAW);
@@ -166,6 +174,7 @@ class PaymentlistTest extends \OxidTestCase
         // default
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
+
         $oO2Group->setId($this->getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[3]->getId(), oxField::T_RAW);
         $oObject->oxobject2payment__oxobjectid = new oxField($this->oDelSet->getId(), oxField::T_RAW);
@@ -175,8 +184,6 @@ class PaymentlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -192,6 +199,7 @@ class PaymentlistTest extends \OxidTestCase
                 $oPayment->delete();
             }
         }
+
         $this->cleanUpTable('oxobject2group', 'oxgroupsid');
         $this->cleanUpTable('oxobject2payment');
         $this->cleanUpTable('oxobject2group');
@@ -214,6 +222,7 @@ class PaymentlistTest extends \OxidTestCase
 
         $oPaymentList = oxNew('oxPaymentList');
         $oPaymentList->getPaymentList($sShipSetId, 10, $oUser);
+
         $iListCount = $oPaymentList->count();
 
         // list must contain at least one item
@@ -225,6 +234,7 @@ class PaymentlistTest extends \OxidTestCase
         $oGarbage = oxNew('oxBase');
         $oGarbage->init("oxobject2payment");
         $oGarbage->setId("_testoxobject2payment1");
+
         $oGarbage->oxobject2payment__oxpaymentid = new oxField($oPayment->getId());
         $oGarbage->oxobject2payment__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2payment__oxtype = new oxField("oxcountry");
@@ -233,6 +243,7 @@ class PaymentlistTest extends \OxidTestCase
         $oGarbage = oxNew('oxBase');
         $oGarbage->init("oxobject2group");
         $oGarbage->setId("_testoxobject2group");
+
         $oGarbage->oxobject2payment__oxobjectid = new oxField($oPayment->getId());
         $oGarbage->oxobject2payment__oxgroupsid = new oxField("yyy");
         $oGarbage->oxobject2payment__oxshopid = new oxField($this->getConfig()->getShopId());
@@ -240,6 +251,7 @@ class PaymentlistTest extends \OxidTestCase
 
         $oPaymentList = oxNew('oxPaymentList');
         $oPaymentList->getPaymentList($sShipSetId, 10, $oUser);
+
         $iNewListCount = $oPaymentList->count();
 
         // list must contain at least one item
@@ -253,6 +265,7 @@ class PaymentlistTest extends \OxidTestCase
                 break;
             }
         }
+
         $this->assertTrue($blFound, "Error, delivery set not found");
     }
 
@@ -329,6 +342,7 @@ class PaymentlistTest extends \OxidTestCase
         // enabling and setupping Nachnahme payment
         $oPayment = oxNew('oxPayment');
         $oPayment->load('oxidcashondel');
+
         $oPayment->oxpayments__oxactive = new oxField(1);
         $oPayment->oxpayments__oxaddsum = new oxField(8.5);
         $oPayment->oxpayments__oxaddsumtype = new oxField("abs");
@@ -340,6 +354,7 @@ class PaymentlistTest extends \OxidTestCase
         // assigning groups
         $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->getUId());
+
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
         $oObjectToGroup->oxobject2group__oxgroupsid = new oxField('oxidadmin');
@@ -349,6 +364,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment = oxNew('oxBase');
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId($this->getUId());
+
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($oPayment->getId());
         $oObjectToPayment->oxobject2payment__oxobjectid = new oxField($sGermanyId);
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('oxcountry');
@@ -357,6 +373,7 @@ class PaymentlistTest extends \OxidTestCase
         // enabling and setupping Nachnahme (COD) payment
         $oPayment = oxNew('oxPayment');
         $oPayment->setId('_bf741c04bf63f17f5e998d41236d55e');
+
         $oPayment->oxpayments__oxdesc = new oxField("Nachnahme (COD)");
         $oPayment->oxpayments__oxactive = new oxField(1);
         $oPayment->oxpayments__oxaddsum = new oxField(25);
@@ -369,6 +386,7 @@ class PaymentlistTest extends \OxidTestCase
         // assigning groups
         $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->getUId());
+
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
         $oObjectToGroup->oxobject2group__oxgroupsid = new oxField('oxidadmin');
@@ -378,6 +396,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment = oxNew('oxBase');
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId($this->getUId());
+
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($oPayment->getId());
         $oObjectToPayment->oxobject2payment__oxobjectid = new oxField($sSchweizId);
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('oxcountry');
@@ -391,6 +410,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e734b62a4775.45738618");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -402,6 +422,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e73470578914.54719298");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -413,6 +434,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e7352422a708.01472527");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sSchweizId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -424,6 +446,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e738970d31e3.71258327");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -432,6 +455,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e738970d31e3.71258327");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sSchweizId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -443,6 +467,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e738970d31e3.71258328");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -451,6 +476,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToDelivery = oxNew('oxBase');
         $oObjectToDelivery->init('oxobject2delivery');
         $oObjectToDelivery->setId($this->getUId());
+
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField("1b842e738970d31e3.71258328");
         $oObjectToDelivery->oxobject2delivery__oxobjectid = new oxField($sSchweizId);
         $oObjectToDelivery->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -462,6 +488,7 @@ class PaymentlistTest extends \OxidTestCase
         //
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_' . md5(time()));
+
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);
         $oDelSet->oxdeliveryset__oxtitle = new oxField("UPS Standard (CH)");
@@ -473,6 +500,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId($this->getUId());
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($oDelSet->getId());
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sSchweizId);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxdelset");
@@ -482,6 +510,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
         $oObject->setId($this->getUId());
+
         $oObject->oxobject2payment__oxpaymentid = new oxField("_bf741c04bf63f17f5e998d41236d55e");
         $oObject->oxobject2payment__oxobjectid = new oxField($oDelSet->getId());
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
@@ -491,6 +520,7 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset = oxNew('oxBase');
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->getUId());
+
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e738970d31e3.71258327");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
@@ -498,6 +528,7 @@ class PaymentlistTest extends \OxidTestCase
         //
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId($this->getUId());
+
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);
         $oDelSet->oxdeliveryset__oxtitle = new oxField("deutschland_test");
@@ -509,6 +540,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId($this->getUId());
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($oDelSet->getId());
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxdelset");
@@ -518,6 +550,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
         $oObject->setId($this->getUId());
+
         $oObject->oxobject2payment__oxpaymentid = new oxField('dbf741c04bf63f17f5e998d41236d55e');
         $oObject->oxobject2payment__oxobjectid = new oxField($oDelSet->getId());
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
@@ -526,6 +559,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
         $oObject->setId($this->getUId());
+
         $oObject->oxobject2payment__oxpaymentid = new oxField('oxidcashondel');
         $oObject->oxobject2payment__oxobjectid = new oxField($oDelSet->getId());
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
@@ -535,6 +569,7 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset = oxNew('oxBase');
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->getUId());
+
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e738970d31e3.71258328");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
@@ -542,6 +577,7 @@ class PaymentlistTest extends \OxidTestCase
         //
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->load('oxidstandard');
+
         $oDelSet->oxdeliveryset__oxshopid = new oxField($iShopId);
         $oDelSet->oxdeliveryset__oxactive = new oxField(1);
         $oDelSet->oxdeliveryset__oxtitle = new oxField("UPS Standard (Inland)");
@@ -552,6 +588,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId($this->getUId());
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($oDelSet->getId());
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sGermanyId);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxdelset");
@@ -561,6 +598,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObject = oxNew('oxBase');
         $oObject->init('oxobject2payment');
         $oObject->setId($this->getUId());
+
         $oObject->oxobject2payment__oxpaymentid = new oxField($oDelSet->getId());
         $oObject->oxobject2payment__oxobjectid = new oxField('oxidcashondel');
         $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
@@ -570,6 +608,7 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset = oxNew('oxBase');
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->getUId());
+
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e73470578914.54719298");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
@@ -577,6 +616,7 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset = oxNew('oxBase');
         $oDel2delset->init('oxdel2delset');
         $oDel2delset->setId($this->getUId());
+
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e734b62a4775.45738618");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
@@ -604,13 +644,13 @@ class PaymentlistTest extends \OxidTestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
         $sPaymentsTable = $tableViewNameGenerator->getViewName('oxpayments');
 
-        $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
-        $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
-        $sTestQ .= "where $sTable.oxactive='1' "; // and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= "and $sPaymentsTable.oxfromboni <= '0' and $sPaymentsTable.oxfromamount <= '666' and $sPaymentsTable.oxtoamount >= '666' ";
-        $sTestQ .= " order by {$sTable}.oxsort asc ) as $sTable where ( if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
-                    exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1 ), 1) &&
-                    if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1), 0, 1) ) ) order by $sTable.oxsort asc ";
+        $sTestQ = sprintf('select %s.* from( select distinct %s.* from %s ', $sTable, $sTable, $sTable);
+        $sTestQ .= sprintf('inner join oxobject2payment ON oxobject2payment.oxobjectid = \'xxx\' and oxobject2payment.oxpaymentid = %s.oxid ', $sTable);
+        $sTestQ .= sprintf('where %s.oxactive=\'1\' ', $sTable); // and oxobject2group.oxobjectid = $sTable.oxid
+        $sTestQ .= sprintf('and %s.oxfromboni <= \'0\' and %s.oxfromamount <= \'666\' and %s.oxtoamount >= \'666\' ', $sPaymentsTable, $sPaymentsTable, $sPaymentsTable);
+        $sTestQ .= " order by {$sTable}.oxsort asc ) as {$sTable} where ( if( exists( select 1 from oxobject2payment as ss1, {$sCountryTable} where {$sCountryTable}.oxid=ss1.oxobjectid and ss1.oxpaymentid={$sTable}.OXID and ss1.oxtype='oxcountry' limit 1),
+                    exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1 ), 1) &&
+                    if( exists( select 1 from oxobject2group as ss3, {$sGroupTable} where {$sGroupTable}.oxid=ss3.oxgroupsid and ss3.OXOBJECTID={$sTable}.OXID limit 1), 0, 1) ) ) order by {$sTable}.oxsort asc ";
 
         $oList = oxNew('oxPaymentList');
         $sQ = $oList->getFilterSelect('xxx', 666, null);
@@ -626,9 +666,10 @@ class PaymentlistTest extends \OxidTestCase
         $this->oUser->addToGroup('_testGroupId');
         $sGroupIds = '';
         foreach ($this->oUser->getUserGroups() as $oGroup) {
-            if ($sGroupIds) {
+            if ($sGroupIds !== '' && $sGroupIds !== '0') {
                 $sGroupIds .= ', ';
             }
+
             $sGroupIds .= "'" . $oGroup->getId() . "'";
         }
 
@@ -637,14 +678,14 @@ class PaymentlistTest extends \OxidTestCase
         $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
-        $sTestQ = "select $sTable.* from( select distinct $sTable.* from $sTable ";
-        $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
-        $sTestQ .= "where $sTable.oxactive='1' "; //  and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= "and $sTable.oxfromboni <= '1000' and $sTable.oxfromamount <= '666' and $sTable.oxtoamount >= '666' ";
-        $sTestQ .= " order by {$sTable}.oxsort asc ) as $sTable where ( if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
-                    exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1), 1) &&
-                    if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1),
-                    exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID=$sTable.OXID and s3.OXGROUPSID in ( $sGroupIds ) limit 1), 1) ) ) order by $sTable.oxsort asc ";
+        $sTestQ = sprintf('select %s.* from( select distinct %s.* from %s ', $sTable, $sTable, $sTable);
+        $sTestQ .= sprintf('inner join oxobject2payment ON oxobject2payment.oxobjectid = \'xxx\' and oxobject2payment.oxpaymentid = %s.oxid ', $sTable);
+        $sTestQ .= sprintf('where %s.oxactive=\'1\' ', $sTable); //  and oxobject2group.oxobjectid = $sTable.oxid
+        $sTestQ .= sprintf('and %s.oxfromboni <= \'1000\' and %s.oxfromamount <= \'666\' and %s.oxtoamount >= \'666\' ', $sTable, $sTable, $sTable);
+        $sTestQ .= " order by {$sTable}.oxsort asc ) as {$sTable} where ( if( exists( select 1 from oxobject2payment as ss1, {$sCountryTable} where {$sCountryTable}.oxid=ss1.oxobjectid and ss1.oxpaymentid={$sTable}.OXID and ss1.oxtype='oxcountry' limit 1),
+                    exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1), 1) &&
+                    if( exists( select 1 from oxobject2group as ss3, {$sGroupTable} where {$sGroupTable}.oxid=ss3.oxgroupsid and ss3.OXOBJECTID={$sTable}.OXID limit 1),
+                    exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID={$sTable}.OXID and s3.OXGROUPSID in ( {$sGroupIds} ) limit 1), 1) ) ) order by {$sTable}.oxsort asc ";
 
         $oList = oxNew('oxPaymentList');
         $sQ = $oList->getFilterSelect('xxx', 666, $this->oUser);
@@ -784,6 +825,7 @@ class PaymentlistTest extends \OxidTestCase
         //assigning payment for group
         $oO2Group = oxNew('oxObject2Group');
         $oO2Group->setId($this->getUId());
+
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidcustomer', oxField::T_RAW);
         $oO2Group->save();
@@ -807,6 +849,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment = oxNew('oxBase');
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId('_testoxobject2payment');
+
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId());
         $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('CASH');
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('rdfapayment');
@@ -831,6 +874,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment = oxNew('oxBase');
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId('_testoxobject2payment');
+
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId());
         $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('CASH');
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('rdfapayment');

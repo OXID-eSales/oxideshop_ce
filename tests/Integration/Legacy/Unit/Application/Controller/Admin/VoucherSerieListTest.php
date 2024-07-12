@@ -17,8 +17,6 @@ class VoucherSerieListTest extends \OxidTestCase
 
     /**
      * VoucherSerie_List::DeleteEntry() test case
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
@@ -37,8 +35,6 @@ class VoucherSerieListTest extends \OxidTestCase
 
     /**
      * VoucherSerie_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

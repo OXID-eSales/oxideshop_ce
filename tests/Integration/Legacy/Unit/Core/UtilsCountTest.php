@@ -81,6 +81,7 @@ class UtilsCountTest extends \OxidTestCase
 
         $article = oxNew('oxArticle');
         $article->setId("_testArticle");
+
         $article->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $article->oxarticles__oxactive = new oxField(1);
         $article->oxarticles__oxvarminprice = new oxField(0);
@@ -103,7 +104,7 @@ class UtilsCountTest extends \OxidTestCase
         $this->assertEquals('0', \OxidEsales\Eshop\Core\Registry::getUtilsCount()->GetCatArticleCount(''));
 
         $sCatID = '8a142c3e60a535f16.78077188';
-        $sResult = oxDb::getDb()->getOne("SELECT count(*) FROM `oxobject2category` WHERE OXCATNID = '$sCatID'");
+        $sResult = oxDb::getDb()->getOne(sprintf('SELECT count(*) FROM `oxobject2category` WHERE OXCATNID = \'%s\'', $sCatID));
         $this->assertEquals($sResult, \OxidEsales\Eshop\Core\Registry::getUtilsCount()->GetCatArticleCount($sCatID));
     }
 
@@ -260,12 +261,14 @@ class UtilsCountTest extends \OxidTestCase
         //adding articles
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtId_1');
+
         $oArticle->oxarticles__oxstock = new oxField(1);
         $oArticle->oxarticles__oxvendorid = new oxField('_testVendorId');
         $oArticle->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtId_2');
+
         $oArticle->oxarticles__oxstock = new oxField(0);
         $oArticle->oxarticles__oxstockflag = new oxField(2);
         $oArticle->oxarticles__oxvarstock = new oxField(5);
@@ -276,6 +279,7 @@ class UtilsCountTest extends \OxidTestCase
         //adding variants
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtVarId_1');
+
         $oArticle->oxarticles__oxstock = new oxField(2);
         $oArticle->oxarticles__oxparentid = new oxField('_testArtId_2');
         $oArticle->oxarticles__oxvendorid = new oxField('_testVendorId');
@@ -283,6 +287,7 @@ class UtilsCountTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtVarId_2');
+
         $oArticle->oxarticles__oxstock = new oxField(3);
         $oArticle->oxarticles__oxparentid = new oxField('_testArtId_2');
         $oArticle->oxarticles__oxvendorid = new oxField('_testVendorId');
@@ -308,12 +313,14 @@ class UtilsCountTest extends \OxidTestCase
         //adding articles
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtId_1');
+
         $oArticle->oxarticles__oxstock = new oxField(1);
         $oArticle->oxarticles__oxmanufacturerid = new oxField('_testManufacturerId');
         $oArticle->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtId_2');
+
         $oArticle->oxarticles__oxstock = new oxField(0);
         $oArticle->oxarticles__oxstockflag = new oxField(2);
         $oArticle->oxarticles__oxvarstock = new oxField(5);
@@ -324,6 +331,7 @@ class UtilsCountTest extends \OxidTestCase
         //adding variants
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtVarId_1');
+
         $oArticle->oxarticles__oxstock = new oxField(2);
         $oArticle->oxarticles__oxparentid = new oxField('_testArtId_2');
         $oArticle->oxarticles__oxmanufacturerid = new oxField('_testManufacturerId');
@@ -331,6 +339,7 @@ class UtilsCountTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtVarId_2');
+
         $oArticle->oxarticles__oxstock = new oxField(3);
         $oArticle->oxarticles__oxparentid = new oxField('_testArtId_2');
         $oArticle->oxarticles__oxmanufacturerid = new oxField('_testManufacturerId');

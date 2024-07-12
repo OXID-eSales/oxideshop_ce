@@ -17,8 +17,6 @@ class LinksTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -26,14 +24,13 @@ class LinksTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $this->_oxLinks = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $this->_oxLinks->setId('testlink');
+
         $this->_oxLinks->oxlinks__oxurl = new oxField('http://www.oxid-esales.com', oxField::T_RAW);
         $this->_oxLinks->Save();
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -61,6 +58,7 @@ class LinksTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $oLink = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
+
         $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
         $this->_oxLinks->Save();
         $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', $oLink->oxlinks__oxurldesc->value);

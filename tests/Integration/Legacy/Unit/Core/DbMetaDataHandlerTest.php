@@ -13,8 +13,6 @@ class DbMetaDataHandlerTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -73,11 +71,11 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     public function testGetFields()
     {
         $sTable = 'oxreviews';
-        $aTestFields = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("show columns from {$sTable}");
+        $aTestFields = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll('show columns from ' . $sTable);
         $aFields = [];
 
         foreach ($aTestFields as $aField) {
-            $aFields[$aField['Field']] = "{$sTable}.{$aField['Field']}";
+            $aFields[$aField['Field']] = sprintf('%s.%s', $sTable, $aField['Field']);
         }
 
         $oDbMeta = oxNew("oxDbMetaDataHandler");
@@ -216,6 +214,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
+
         $aTables = oxDb::getDb()->getAll("show tables");
 
         foreach ($aTables as $aTableInfo) {
@@ -489,6 +488,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
+
         $aTables = oxDb::getDb()->getAll("show tables");
 
         $aTablesList = [];
@@ -544,7 +544,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         $this->createTestTable();
 
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
         // inserting test data
@@ -574,7 +574,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         $this->createTestTable();
 
-        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
         // inserting test data

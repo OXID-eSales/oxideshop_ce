@@ -17,8 +17,6 @@ class DiscountUsersTest extends \OxidTestCase
 
     /**
      * Discount_Users::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -18,8 +18,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -32,8 +30,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Resting if magic getter returns "aSelectlist" value
-     *
-     * @return null
      */
     public function testGetASelectlist()
     {
@@ -83,8 +79,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Test get A group price.
-     *
-     * @return null
      */
     public function testGetGroupPricePriceA()
     {
@@ -100,8 +94,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Test get B group price.
-     *
-     * @return null
      */
     public function testGetGroupPricePriceB()
     {
@@ -117,8 +109,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Test get C group price.
-     *
-     * @return null
      */
     public function testGetGroupPricePriceC()
     {
@@ -136,8 +126,6 @@ class SimpleVariantTest extends \OxidTestCase
 
     /**
      * Test if zero group prices are set generic price depending on config option.
-     *
-     * @return null
      */
     public function testModifyGroupPricePriceAZero()
     {
@@ -272,6 +260,7 @@ class SimpleVariantTest extends \OxidTestCase
 
         $oDiscount = oxNew('oxDiscount');
         $oDiscount->setId("_testDiscount");
+
         $oDiscount->oxdiscount__oxactive = new oxField(1, oxField::T_RAW);
         $oDiscount->oxdiscount__oxaddsum = new oxField(10, oxField::T_RAW);
         $oDiscount->oxdiscount__oxprice = new oxField(0, oxField::T_RAW);
@@ -329,6 +318,7 @@ class SimpleVariantTest extends \OxidTestCase
         $this->getConfig()->setActShopCurrency(2);
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);
+
         $oSubj->applyCurrency($oPrice);
         $this->assertEquals(143.26, $oPrice->getBruttoPrice());
         $this->getConfig()->setActShopCurrency(0);
@@ -341,6 +331,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oCur->rate = 0.68;
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);
+
         $oSubj->applyCurrency($oPrice, $oCur);
         $this->assertEquals(68, $oPrice->getBruttoPrice());
     }
@@ -390,6 +381,7 @@ class SimpleVariantTest extends \OxidTestCase
 
         $oSubj = oxNew('oxSimpleVariant');
         $oSubj->setPrice(10);
+
         $iPrice = $oSubj->getPrice();
         $this->assertTrue(empty($iPrice));
     }

@@ -15,8 +15,6 @@ class ActionsTest extends \OxidTestCase
 
     /**
      * Actions::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

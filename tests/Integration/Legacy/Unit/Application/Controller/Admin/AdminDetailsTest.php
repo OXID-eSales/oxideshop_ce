@@ -58,6 +58,7 @@ class AdminDetailsTest extends \OxidTestCase
     {
         $oListItem = oxNew('oxContent');
         $oListItem->setId('_testId');
+
         $oListItem->oxcontents__oxloadid = new oxField("_testLoadId");
         $oListItem->save();
 
@@ -80,6 +81,7 @@ class AdminDetailsTest extends \OxidTestCase
     {
         $oListItem = oxNew('oxContent');
         $oListItem->setId('_testId');
+
         $oListItem->oxcontents__oxloadid = new oxField("_testLoadId");
         $oListItem->oxcontents__oxfolder = new oxField('neu', oxField::T_RAW);
         $oListItem->save();
@@ -136,7 +138,7 @@ class AdminDetailsTest extends \OxidTestCase
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sCatTable = $tableViewNameGenerator->getViewName('oxcategories');
-        $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
+        $sCat = oxDb::getDb()->getOne(sprintf('select oxid from %s where oxactive = 1', $sCatTable));
 
         $oAdminDetails = oxNew('oxadmindetails');
         $oList = $oAdminDetails->getViewDataElement('xxx');
@@ -155,10 +157,11 @@ class AdminDetailsTest extends \OxidTestCase
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sCatTable = $tableViewNameGenerator->getViewName('oxcategories');
-        $sCat = oxDb::getDb()->getOne("select oxid from $sCatTable where oxactive = 1");
+        $sCat = oxDb::getDb()->getOne(sprintf('select oxid from %s where oxactive = 1', $sCatTable));
 
         $oAdminDetails = oxNew('oxadmindetails');
         $oAdminDetails->getCategoryTree('xxx', $sCat);
+
         $oList = $oAdminDetails->getViewDataElement('xxx');
 
         foreach ($oList as $oCat) {

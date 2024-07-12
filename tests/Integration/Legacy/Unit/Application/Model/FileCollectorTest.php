@@ -21,6 +21,7 @@ class FileCollectorTest extends \OxidTestCase
         $oDirReader->setBaseDirectory($this->getConfig()->getConfigParam("sShopDir"));
 
         $oDirReader->addDirectoryFiles('bin/', ['php', 'tpl']);
+
         $aResultExistingPHP = $oDirReader->getFiles();
 
         $this->assertEquals(1, count($aResultExistingPHP));
@@ -36,6 +37,7 @@ class FileCollectorTest extends \OxidTestCase
         $oDirReader->setBaseDirectory($this->getConfig()->getConfigParam("sShopDir"));
 
         $oDirReader->addDirectoryFiles('bin/');
+
         $aResultExistingAll = $oDirReader->getFiles();
 
         $this->assertEquals(3, count($aResultExistingAll));
@@ -55,6 +57,7 @@ class FileCollectorTest extends \OxidTestCase
         $oDirReader->addFile('index.php');
         $oDirReader->addFile('bin/nofile.php');
         $oDirReader->addFile('bin/cron.php');
+
         $aResult = $oDirReader->getFiles();
 
         $this->assertEquals(2, count($aResult));

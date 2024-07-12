@@ -100,8 +100,8 @@ class ManufacturerlistTest extends \OxidTestCase
 
         try {
             $oView->render();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('OK', $oExcp->getMessage(), 'failed redirect on inactive category');
+        } catch (Exception $exception) {
+            $this->assertEquals('OK', $exception->getMessage(), 'failed redirect on inactive category');
 
             return;
         }
@@ -250,7 +250,7 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testProcessListArticles()
     {
-        $oArticle = oxNew('oxArticle');
+        oxNew('oxArticle');
 
         $oListView = oxNew('manufacturerlist');
         $this->assertEquals(2, $oListView->getProductLinkType());
@@ -267,6 +267,7 @@ class ManufacturerlistTest extends \OxidTestCase
 
         $oManufacturer = oxNew('Manufacturerlist');
         $oManufacturer->setManufacturerTree($oManufacturerTree);
+
         $oTree = $oManufacturer->getSubCatList();
 
         $this->assertEquals($oManufacturerTree, $oTree);
@@ -308,6 +309,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $oManufacturerList = $this->getProxyClass("Manufacturerlist");
         $oManufacturerList->setManufacturerTree($oManufacturerTree);
         $oManufacturerList->setNonPublicVar("_oActManufacturer", $oManufacturer);
+
         $oArtList = $oManufacturerList->getArticleList();
 
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), count($oArtList));
@@ -388,6 +390,7 @@ class ManufacturerlistTest extends \OxidTestCase
         $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
+
         $oManufacturer->oxManufacturer__oxshowsuffix = new oxField(1);
 
         $oManufacturerList = $this->getProxyClass("Manufacturerlist");

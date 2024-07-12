@@ -23,12 +23,10 @@ class CategoryMainTest extends \OxidTestCase
     /**
      * @var oxCategory
      */
-    private $_oCategory = null;
+    private $_oCategory;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,6 +35,7 @@ class CategoryMainTest extends \OxidTestCase
         /** @var oxCategory $oCategory */
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCatId');
+
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid');
         $oCategory->save();
 
@@ -45,8 +44,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -58,8 +55,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -76,8 +71,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Content_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -93,8 +86,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Save() test case when oxactive = 0
-     *
-     * @return null
      */
     public function testSaveActiveSet0()
     {
@@ -112,8 +103,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -129,8 +118,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveDefaultOxid()
     {
@@ -146,8 +133,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -163,8 +148,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlangDefaultOxid()
     {
@@ -180,8 +163,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Test get sortable fields.
-     *
-     * @return null
      */
     public function testGetSortableFields()
     {
@@ -194,8 +175,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::deleteCatPicture() test case - deleting invalid field
-     *
-     * @return null
      */
     public function testDeletePicture_deletingInvalidField()
     {
@@ -213,8 +192,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::deleteCatPicture() test case - deleting thumb
-     *
-     * @return null
      */
     public function testDeletePicture_deletingPromoIcon()
     {
@@ -232,8 +209,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::deleteCatPicture() test case - deleting thumb
-     *
-     * @return null
      */
     public function testDeletePicture_deletingThumb()
     {
@@ -251,8 +226,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::deleteCatPicture() test case - deleting icon
-     *
-     * @return null
      */
     public function testDeletePicture_deletingIcon()
     {
@@ -270,8 +243,6 @@ class CategoryMainTest extends \OxidTestCase
 
     /**
      * Category_Main::deletePicture() - in demo shop mode
-     *
-     * @return null
      */
     public function testDeletePicture_demoShopMode()
     {

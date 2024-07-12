@@ -35,6 +35,7 @@ class UserbasketitemTest extends \OxidTestCase
         parent::setUp();
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('xxx');
+
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
         $oArticle->oxarticles__oxvarselect = new oxField('yyy', oxField::T_RAW);
@@ -44,17 +45,20 @@ class UserbasketitemTest extends \OxidTestCase
         $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->setId('xxx');
+
         $oSel->oxselectlist__oxvaldesc = new oxField('S, 10!P!10__@@M, 20!P!20__@@L, 30!P!30__@@', oxField::T_RAW);
         $oSel->save();
 
         $oSel = oxNew('oxbase');
         $oSel->init('oxselectlist');
         $oSel->setId('yyy');
+
         $oSel->oxselectlist__oxvaldesc = new oxField('R, 10!P!10%__@@G, 20!P!20%__@@B, 30!P!30%__@@', oxField::T_RAW);
         $oSel->save();
 
         $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
+
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxsort = new oxField(20, oxField::T_RAW);
@@ -62,6 +66,7 @@ class UserbasketitemTest extends \OxidTestCase
 
         $oO2Sel = oxNew('oxbase');
         $oO2Sel->init('oxobject2selectlist');
+
         $oO2Sel->oxobject2selectlist__oxobjectid = new oxField('xxx', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxselnid = new oxField('yyy', oxField::T_RAW);
         $oO2Sel->oxobject2selectlist__oxsort = new oxField(10, oxField::T_RAW);
@@ -165,11 +170,12 @@ class UserbasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxuserbasketitem');
         try {
             $oBasketItem->getArticle("");
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
-            $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $articleException) {
+            $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $articleException->getMessage());
 
             return;
         }
+
         $this->fail('failed testing article getter');
     }
 
@@ -188,6 +194,7 @@ class UserbasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxuserbasketitem');
         $oBasketItem->setVariantParentBuyable(true);
+
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
         $oArticle = $oBasketItem->getArticle("123");
@@ -201,6 +208,7 @@ class UserbasketitemTest extends \OxidTestCase
         $oArticle = oxNew('oxi18n');
         $oArticle->init('oxarticles');
         $oArticle->load('xxx');
+
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
         $oArticle->save();
 

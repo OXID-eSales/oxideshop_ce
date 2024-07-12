@@ -38,8 +38,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::init() test case
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -97,7 +95,7 @@ class VarianthandlerTest extends \OxidTestCase
         $oArticle->load('2000');
 
         $oVariantHandler = oxNew("oxVariantHandler");
-        $aVar = $oVariantHandler->assignValues($aValues, oxNew('oxArticleList'), $oArticle, ['en', 'de']);
+        $oVariantHandler->assignValues($aValues, oxNew('oxArticleList'), $oArticle, ['en', 'de']);
         $oRez = $myDB->select("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
@@ -115,11 +113,12 @@ class VarianthandlerTest extends \OxidTestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
+        $sSql = sprintf('insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values (\'_testSell\', \'%d\', \'oxsellisttest\', \'oxsellisttest\', \'%s\')', $sShopId, $sVal);
         $this->addToDatabase($sSql, 'oxselectlist');
 
         $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
+
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->genVariantFromSell(['_testSell'], $oArticle);
         $this->assertEquals(3, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
@@ -141,11 +140,12 @@ class VarianthandlerTest extends \OxidTestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
+        $sSql = sprintf('insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values (\'_testSell\', \'%d\', \'oxsellisttest\', \'oxsellisttest\', \'%s\')', $sShopId, $sVal);
         $this->addToDatabase($sSql, 'oxselectlist');
 
         $oArticle = oxNew("oxArticle");
         $oArticle->load('2000');
+
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->genVariantFromSell(['_testSell'], $oArticle);
 
@@ -184,8 +184,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::isMdVariant() test case
-     *
-     * @return null
      */
     public function testIsMdVariant()
     {
@@ -200,8 +198,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::buildMdVariants() test case
-     *
-     * @return null
      */
     public function testBuildMdVariants()
     {
@@ -228,8 +224,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::_fillVariantSelections() test case
-     *
-     * @return null
      */
     public function testFillVariantSelections()
     {
@@ -242,14 +236,17 @@ class VarianthandlerTest extends \OxidTestCase
         // filled variant list
         $oVariant1 = oxNew('oxbase');
         $oVariant1->setId("test1");
+
         $oVariant1->oxarticles__oxvarselect = new oxField("a | b | c");
 
         $oVariant2 = oxNew('oxbase');
         $oVariant2->setId("test2");
+
         $oVariant2->oxarticles__oxvarselect = new oxField("a | b");
 
         $oVariant3 = oxNew('oxbase');
         $oVariant3->setId("test3");
+
         $oVariant3->oxarticles__oxvarselect = new oxField("a");
 
         $aArray[$oVariant1->getId()][] = ['name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5('a')];
@@ -269,8 +266,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::_applyVariantSelectionsFilter() test case
-     *
-     * @return null
      */
     public function testApplyVariantSelectionsFilter()
     {
@@ -413,8 +408,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::buildVariantSelections() test case
-     *
-     * @return null
      */
     public function testBuildVariantSelectionsList()
     {
@@ -459,8 +452,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::buildVariantSelections() test case
-     *
-     * @return null
      */
     public function testBuildVariantSelectionsNoLimit()
     {
@@ -493,8 +484,6 @@ class VarianthandlerTest extends \OxidTestCase
 
     /**
      * oxVariantHandler::buildVariantSelections() test case
-     *
-     * @return null
      */
     public function testBuildVariantSelectionsWithLimit()
     {

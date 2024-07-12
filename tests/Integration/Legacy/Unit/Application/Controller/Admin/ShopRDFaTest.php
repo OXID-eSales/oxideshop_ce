@@ -19,8 +19,6 @@ class ShopRDFaTest extends \OxidTestCase
 
     /**
      * Shop_RDFa::getContentList() test case
-     *
-     * @return null
      */
     public function testGetContentList()
     {
@@ -32,8 +30,6 @@ class ShopRDFaTest extends \OxidTestCase
 
     /**
      * Shop_RDFa::getCustomers() test case
-     *
-     * @return null
      */
     public function testGetCustomers()
     {
@@ -49,8 +45,6 @@ class ShopRDFaTest extends \OxidTestCase
 
     /**
      * Shop_RDFa::getCustomers() no params test case
-     *
-     * @return null
      */
     public function testGetCustomers_noparams()
     {

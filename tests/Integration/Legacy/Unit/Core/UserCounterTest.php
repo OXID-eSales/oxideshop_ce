@@ -94,7 +94,7 @@ class UserCounterTest extends \OxidTestCase
      */
     protected function createUserWithRights($sId, $sActive, $sRights)
     {
-        $sQ = "insert into `oxuser` (oxid, oxusername, oxactive, oxrights) values ('$sId', '$sId', '$sActive', '$sRights')";
+        $sQ = sprintf('insert into `oxuser` (oxid, oxusername, oxactive, oxrights) values (\'%s\', \'%s\', \'%s\', \'%s\')', $sId, $sId, $sActive, $sRights);
         $this->getDb()->execute($sQ);
     }
 }

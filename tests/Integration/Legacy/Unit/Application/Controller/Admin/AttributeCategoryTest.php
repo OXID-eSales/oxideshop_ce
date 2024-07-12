@@ -17,8 +17,6 @@ class AttributeCategoryTest extends \OxidTestCase
 
     /**
      * Attribute_Category::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

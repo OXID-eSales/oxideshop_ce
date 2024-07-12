@@ -24,7 +24,7 @@ use OxidEsales\Eshop\Application\Model\User;
 
 class InputValidatorTest extends UnitTestCase
 {
-    private $_validator = null;
+    private $_validator;
 
     protected function setUp(): void
     {
@@ -283,6 +283,7 @@ class InputValidatorTest extends UnitTestCase
     {
         $user = oxNew("oxUser");
         $user->setId('testx');
+
         $validator = oxNew("oxinputvalidator");
         $validator->checkCountries(
             $user, 
@@ -448,6 +449,7 @@ class InputValidatorTest extends UnitTestCase
 
         $validator = oxNew(InputValidator::class);
         $validator->checkPassword($user, $password, $passwordCheck, $blCheckLength);
+
         $fieldError = $validator->getFirstValidationError();
 
         $expected = oxNew($exception);
@@ -479,6 +481,7 @@ class InputValidatorTest extends UnitTestCase
     {
         $user = oxNew('oxuser');
         $user->setId("testlalaa_");
+
         $validator = oxNew(InputValidator::class);
         $validator->checkEmail($user, $email);
 
@@ -813,14 +816,12 @@ class InputValidatorTest extends UnitTestCase
 
     private function getBankData($sBankCode, $sAccountNumber): array
     {
-        $dynvalue = [
+        return [
             'lsbankname'   => 'Bank name',
             'lsblz'        => $sBankCode,
             'lsktonr'      => $sAccountNumber,
             'lsktoinhaber' => 'Hans Mustermann'
         ];
-
-        return $dynvalue;
     }
 
     private function getAccountNumberErrorNo(): int

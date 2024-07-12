@@ -25,8 +25,6 @@ class PaymentTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     public function tearDown(): void
     {
@@ -99,6 +97,7 @@ class PaymentTest extends \OxidTestCase
         $payment = oxNew(Payment::class);
 
         $payment->load('oxidpayadvance');
+
         $basePrice = 100.0;
         $this->assertEquals(0, $payment->getPaymentValue($basePrice));
 
@@ -115,6 +114,7 @@ class PaymentTest extends \OxidTestCase
         $payment = oxNew(Payment::class);
 
         $payment->load('oxidpayadvance');
+
         $basePrice = 100.0;
         $this->assertEquals(0, $payment->getPaymentValue($basePrice));
 
@@ -320,6 +320,7 @@ class PaymentTest extends \OxidTestCase
 
         $user = oxNew('oxuser');
         $user->Load('oxdefaultadmin');
+
         $user->oxuser__oxboni = new oxField($payment->oxpayments__oxfromboni->value + 1, oxField::T_RAW);
 
         $isValidPayment = $payment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $user, 5.0, 'oxidstandard');
@@ -340,7 +341,7 @@ class PaymentTest extends \OxidTestCase
         $isValidPayment = $payment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $user, 1000001, null);
         $this->assertEquals(-2, $payment->getNonPublicVar('_iPaymentError'));
 
-        $isValidPayment = $payment->isValidPayment(null, $this->getConfig()->getBaseShopId(), $user, 1000001, null);
+        $payment->isValidPayment(null, $this->getConfig()->getBaseShopId(), $user, 1000001, null);
         $this->assertEquals(1, $payment->getNonPublicVar('_iPaymentError'));
     }
 

@@ -19,7 +19,9 @@ use Symfony\Component\Filesystem\Path;
 final class UtilsPicTest extends \OxidTestCase
 {
     private $testPicture = 'test.jpg';
+
     private $testPicturePlaceholder = 'nopic.jpg';
+
     private $testPicturePlaceholderIco = 'nopic_ico.jpg';
 
     protected function setUp(): void
@@ -80,6 +82,7 @@ final class UtilsPicTest extends \OxidTestCase
             $sMsg = "Failed to find the image file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);
         }
+
         //actual test
         $resizeResult = Registry::getUtilsPic()
             ->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight);
@@ -99,6 +102,7 @@ final class UtilsPicTest extends \OxidTestCase
 
             return true;
         }
+
         unlink($sDir . $sTestImageFileResized);
 
         return false;
@@ -302,6 +306,7 @@ final class UtilsPicTest extends \OxidTestCase
             $sMsg = "Failed to find the GIF file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);
         }
+
         $aImageSizeOriginal = getImageSize($sDir . $sTestImageFile);
         $iImageOriginalWidth = $aImageSizeOriginal[0];
         $iImageOriginalHeight = $aImageSizeOriginal[1];
@@ -309,9 +314,11 @@ final class UtilsPicTest extends \OxidTestCase
         if (!($myUtils->resizeGif($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $iImageOriginalWidth, $iImageOriginalHeight, $gdver, false))) {
             $this->fail("Failed to call resizeGIF()");
         }
+
         if (!is_file($sDir . $sTestImageFileResized)) {
             $this->fail("Failed to find the resized image file.");
         }
+
         $aImageSizeResized = getImageSize($sDir . $sTestImageFileResized);
         $iImageResizedWidth = $aImageSizeResized[0];
         $iImageResizedHeight = $aImageSizeResized[1];
@@ -320,6 +327,7 @@ final class UtilsPicTest extends \OxidTestCase
 
             return true;
         }
+
         unlink($sDir . $sTestImageFileResized);
 
         return false;

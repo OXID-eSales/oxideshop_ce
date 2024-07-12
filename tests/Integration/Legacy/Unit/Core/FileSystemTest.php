@@ -64,6 +64,7 @@ class FileSystemTest extends UnitTestCase
 
         $vfsStreamWrapper = $this->getVfsStreamWrapper();
         $vfsStreamWrapper->createFile('somedir/somefile.txt', '');
+
         $testDir = $vfsStreamWrapper->getRootPath();
 
         $fileSystem = oxNew(FileSystem::class);

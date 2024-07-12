@@ -13,8 +13,6 @@ class PricelistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -95,11 +93,13 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 10);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(20, 20);
+
         $oList->addToPriceList($oPrice);
 
         $this->assertEqualsWithDelta(35, $oList->getSum(false), 0.0000001);
@@ -149,11 +149,13 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(118, 18);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(121, 21);
+
         $oList->addToPriceList($oPrice);
         $this->assertEquals(19.5, $oList->getProportionalVatPercent());
 
@@ -162,21 +164,25 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(590, 18);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(121, 21);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(0, 19);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(0, 0);
+
         $oList->addToPriceList($oPrice);
 
         $this->assertEquals(18.5, $oList->getProportionalVatPercent());
@@ -185,6 +191,7 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(0, 10);
+
         $oList->addToPriceList($oPrice);
 
         $this->assertEquals(0, $oList->getProportionalVatPercent());
@@ -193,6 +200,7 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(0, 0);
+
         $oList->addToPriceList($oPrice);
 
         $this->assertEquals(0, $oList->getProportionalVatPercent());
@@ -201,6 +209,7 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(1, 0);
+
         $oList->addToPriceList($oPrice);
 
         $this->assertEquals(0, $oList->getProportionalVatPercent());
@@ -216,12 +225,14 @@ class PricelistTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(118, 18);
+
         $oList->addToPriceList($oPrice);
 
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(121, 21);
+
         $oList->addToPriceList($oPrice);
 
         $oPrice = $oList->calculateToPrice();

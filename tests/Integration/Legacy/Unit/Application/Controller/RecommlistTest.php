@@ -69,8 +69,6 @@ final class RecommlistTest extends \OxidTestCase
 
     /**
      * Tests if navigation parameters getter collects all needed values
-     *
-     * @return null
      */
     public function testGetNavigationParams()
     {
@@ -84,8 +82,6 @@ final class RecommlistTest extends \OxidTestCase
 
     /**
      * Tests if recommlist rating is saved even there are no session user
-     *
-     * @return null
      */
     public function testSaveReviewNoSessionUser()
     {
@@ -259,6 +255,7 @@ final class RecommlistTest extends \OxidTestCase
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecomm->setNonPublicVar("_oActiveRecommItems", $oRecommtList);
         $this->assertEquals(1, count($oRecomm->getArticleList()));
     }
@@ -284,7 +281,7 @@ final class RecommlistTest extends \OxidTestCase
         $this->assertNotNull($aLists);
         $this->assertEquals(1, $aLists->count());
         $this->assertEquals('testlist2', $aLists['testlist2']->getId());
-        $this->assertTrue(in_array($aLists['testlist2']->getFirstArticle()->getId(), [$sArticleID]));
+        $this->assertTrue($aLists['testlist2']->getFirstArticle()->getId() == $sArticleID);
     }
 
     public function testGetReviews()
@@ -293,6 +290,7 @@ final class RecommlistTest extends \OxidTestCase
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->setId('testid');
+
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
         $oResult = $oRecomm->getReviews();
         $this->assertEquals("oxrecommlist", $oResult->args[0]);
@@ -311,6 +309,7 @@ final class RecommlistTest extends \OxidTestCase
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
         $this->assertTrue($oRecomm->canRate());
     }
@@ -319,6 +318,7 @@ final class RecommlistTest extends \OxidTestCase
     {
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecommtList->oxrecommlists__oxrating = new oxField(3.5, oxField::T_RAW);
         $oRecommtList->oxrecommlists__oxratingcnt = new oxField(2, oxField::T_RAW);
         $oRecommtList->save();
@@ -341,6 +341,7 @@ final class RecommlistTest extends \OxidTestCase
     {
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecommtList->oxrecommlists__oxrating = new oxField(3.5, oxField::T_RAW);
         $oRecommtList->oxrecommlists__oxratingcnt = new oxField(2, oxField::T_RAW);
         $oRecommtList->save();
@@ -419,6 +420,7 @@ final class RecommlistTest extends \OxidTestCase
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
         $this->assertEquals('oxtest', $oRecomm->getSearchForHtml());
     }
@@ -451,8 +453,6 @@ final class RecommlistTest extends \OxidTestCase
 
     /**
      * Testing Account_RecommList::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

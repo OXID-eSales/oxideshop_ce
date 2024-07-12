@@ -62,6 +62,7 @@ class OrderFileTest extends \OxidTestCase
     {
         $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('_orderId');
+
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField("2");
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField('10');
         $oOrderFileNew->oxorderfiles__oxvaliduntil = new oxField("2050-10-20 12:12:00");
@@ -76,6 +77,7 @@ class OrderFileTest extends \OxidTestCase
     {
         $oOrderFileNew = oxNew('oxOrderFile');
         $oOrderFileNew->setOrderId('_orderId');
+
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField("10");
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField('10');
         $oOrderFileNew->oxorderfiles__oxvaliduntil = new oxField("2050-10-20 12:12:00");
@@ -92,6 +94,7 @@ class OrderFileTest extends \OxidTestCase
         $oOrderFileNew->setOrderId('orderId');
         $oOrderFileNew->setOrderArticleId('orderArticleId');
         $oOrderFileNew->setShopId('1');
+
         $oOrderFileNew->oxorderfiles__oxfileid = new oxField('fileId');
         $oOrderFileNew->oxorderfiles__oxmaxdownloadcount = new oxField('10');
         $oOrderFileNew->oxorderfiles__oxlinkexpirationtime = new oxField('24');
@@ -206,6 +209,7 @@ class OrderFileTest extends \OxidTestCase
 
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load('_orderFileId');
+
         $sFileId = $oOrderFile->processOrderFile();
 
         $this->assertEquals('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);
@@ -232,6 +236,7 @@ class OrderFileTest extends \OxidTestCase
         $oOrderFileNew->setOrderArticleId('orderArticleId');
         $oOrderFileNew->setShopId('1');
         $oOrderFileNew->setFile('fileName', 'fileId', '10', '24', '12');
+
         $oOrderFileNew->oxorderfiles__oxdownloadcount = new oxField("2");
         $oOrderFileNew->oxorderfiles__oxfirstdownload = new oxField("2011-10-10");
         $oOrderFileNew->oxorderfiles__oxlastdownload = new oxField("2011-10-20");
@@ -240,6 +245,7 @@ class OrderFileTest extends \OxidTestCase
         $sLastDate = date('Y-m-d H:i:s');
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load('_orderFileId');
+
         $sFileId = $oOrderFile->processOrderFile();
 
         $this->assertEquals('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);

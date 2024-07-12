@@ -24,8 +24,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -75,8 +73,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -87,8 +83,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::ArrayToMultiline() test case
-     *
-     * @return null
      */
     public function testArrayToMultiline()
     {
@@ -102,8 +96,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::MultilineToArray() test case
-     *
-     * @return null
      */
     public function testMultilineToArray()
     {
@@ -117,8 +109,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::AarrayToMultiline() test case
-     *
-     * @return null
      */
     public function testAarrayToMultiline()
     {
@@ -132,8 +122,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * Shop_Config::MultilineToAarray() test case
-     *
-     * @return null
      */
     public function testMultilineToAarray()
     {
@@ -147,8 +135,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * _parseConstraint test
-     *
-     * @return null
      */
     public function testParseConstraint()
     {
@@ -161,8 +147,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * _serializeConstraint test
-     *
-     * @return null
      */
     public function testSerializeConstraint()
     {
@@ -175,8 +159,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * _serializeConfVar test
-     *
-     * @return null
      */
     public function testSerializeConfVar()
     {
@@ -187,8 +169,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * _unserializeConfVar test
-     *
-     * @return null
      */
     public function testUnserializeConfVar()
     {
@@ -200,8 +180,6 @@ class ShopConfigTest extends \OxidTestCase
 
     /**
      * loadConfVars test
-     *
-     * @return null
      */
     public function testLoadConfVars()
     {

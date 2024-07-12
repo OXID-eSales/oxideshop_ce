@@ -19,8 +19,6 @@ class AjaxListComponentTest extends \OxidTestCase
 {
     /**
      * ajaxListComponent::_getActionIds() test case
-     *
-     * @return null
      */
     public function testGetActionIds()
     {
@@ -43,8 +41,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::setName() test case
-     *
-     * @return null
      */
     public function testSetName()
     {
@@ -55,8 +51,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -66,8 +60,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getDataQuery() test case
-     *
-     * @return null
      */
     public function testGetDataQuery()
     {
@@ -75,26 +67,22 @@ class AjaxListComponentTest extends \OxidTestCase
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, ["getQueryCols"]);
         $oComponent->expects($this->once())->method('getQueryCols')->will($this->returnValue("testColumns"));
-        $this->assertEquals("select testColumns{$sQ}", $oComponent->getDataQuery($sQ));
+        $this->assertEquals('select testColumns' . $sQ, $oComponent->getDataQuery($sQ));
     }
 
     /**
      * ajaxListComponent::_getCountQuery() test case
-     *
-     * @return null
      */
     public function testGetCountQuery()
     {
         $sQ = "testQ";
 
         $oComponent = oxNew('ajaxListComponent');
-        $this->assertEquals("select count( * ) {$sQ}", $oComponent->getCountQuery($sQ));
+        $this->assertEquals('select count( * ) ' . $sQ, $oComponent->getCountQuery($sQ));
     }
 
     /**
      * ajaxListComponent::processRequest() test case
-     *
-     * @return null
      */
     public function testProcessRequestFunctionDefined()
     {
@@ -110,8 +98,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::processRequest() test case
-     *
-     * @return null
      */
     public function testProcessRequest()
     {
@@ -127,8 +113,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getSortCol() test case
-     *
-     * @return null
      */
     public function testGetSortCol()
     {
@@ -141,8 +125,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getColNames() test case
-     *
-     * @return null
      */
     public function testGetColNamesNoComponentIdDefined()
     {
@@ -155,8 +137,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getColNames() test case
-     *
-     * @return null
      */
     public function testGetColNames()
     {
@@ -169,8 +149,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getIdentColNames() test case
-     *
-     * @return null
      */
     public function testGetIdentColNames()
     {
@@ -193,8 +171,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getVisibleColNames() test case
-     *
-     * @return null
      */
     public function testGetVisibleColNamesUserDefined()
     {
@@ -218,8 +194,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getVisibleColNames() test case
-     *
-     * @return null
      */
     public function testGetVisibleColNames()
     {
@@ -245,8 +219,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getQueryCols() test case
-     *
-     * @return null
      */
     public function testGetQueryCols()
     {
@@ -265,7 +237,7 @@ class AjaxListComponentTest extends \OxidTestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
-        $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
+        $sQ = sprintf(' %s.oxartnum as _0, %s.oxtitle as _1, %s.oxean as _2, %s.oxmpn as _3, %s.oxprice as _4, %s.oxstock as _5, %s.oxid as _6 ', $sTableName, $sTableName, $sTableName, $sTableName, $sTableName, $sTableName, $sTableName);
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, ["getColNames"]);
         $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
@@ -274,8 +246,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getSorting() test case
-     *
-     * @return null
      */
     public function testGetSorting()
     {
@@ -287,8 +257,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getLimit() test case
-     *
-     * @return null
      */
     public function testGetLimit()
     {
@@ -298,8 +266,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getFilter() test case
-     *
-     * @return null
      */
     public function testGetFilter()
     {
@@ -321,7 +287,7 @@ class AjaxListComponentTest extends \OxidTestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTableName = $tableViewNameGenerator->getViewName("oxarticles");
-        $sQ = "$sTableName.oxartnum like '%a%'  and $sTableName.oxtitle like '%b%'  and $sTableName.oxmpn like '%0%' ";
+        $sQ = sprintf('%s.oxartnum like \'%%a%%\'  and %s.oxtitle like \'%%b%%\'  and %s.oxmpn like \'%%0%%\' ', $sTableName, $sTableName, $sTableName);
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, ["getColNames"]);
         $oComponent->expects($this->any())->method('getColNames')->will($this->returnValue($aColNames));
@@ -330,8 +296,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_addFilter() test case
-     *
-     * @return null
      */
     public function testAddFilter()
     {
@@ -342,8 +306,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getAll() test case
-     *
-     * @return null
      */
     public function testGetAll()
     {
@@ -363,8 +325,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getSortDir() test case
-     *
-     * @return null
      */
     public function testGetSortDir()
     {
@@ -376,8 +336,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getStartIndex() test case
-     *
-     * @return null
      */
     public function testGetStartIndex()
     {
@@ -389,8 +347,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getTotalCount() test case
-     *
-     * @return null
      */
     public function testGetTotalCount()
     {
@@ -401,8 +357,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getDataFields() test case
-     *
-     * @return null
      */
     public function testGetDataFields()
     {
@@ -413,8 +367,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_outputResponse() test case
-     *
-     * @return null
      */
     public function testOutputResponse()
     {
@@ -429,8 +381,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::_getData() test case
-     *
-     * @return null
      */
     public function testGetData()
     {
@@ -462,8 +412,6 @@ class AjaxListComponentTest extends \OxidTestCase
 
     /**
      * ajaxListComponent::resetArtSeoUrl() test case
-     *
-     * @return null
      */
     public function testResetArtSeoUrl()
     {
@@ -473,18 +421,17 @@ class AjaxListComponentTest extends \OxidTestCase
         try {
             $oComponent = oxNew('ajaxListComponent');
             $oComponent->resetArtSeoUrl("testArtId");
-        } catch (Exception $oExcp) {
-            $this->assertEquals("markAsExpired", $oExcp->getMessage(), "error in ajaxListComponent::resetArtSeoUrl()");
+        } catch (Exception $exception) {
+            $this->assertEquals("markAsExpired", $exception->getMessage(), "error in ajaxListComponent::resetArtSeoUrl()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetArtSeoUrl()");
     }
 
     /**
      * ajaxListComponent::resetContentCache() test case
-     *
-     * @return null
      */
     public function testResetContentCache()
     {
@@ -502,18 +449,17 @@ class AjaxListComponentTest extends \OxidTestCase
         // testing..
         try {
             $oComponent->resetContentCache();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("oxResetFileCache", $oExcp->getMessage(), "error in ajaxListComponent::resetContentCache()");
+        } catch (Exception $exception) {
+            $this->assertEquals("oxResetFileCache", $exception->getMessage(), "error in ajaxListComponent::resetContentCache()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetContentCache()");
     }
 
     /**
      * ajaxListComponent::resetCounter() test case
-     *
-     * @return null
      */
     public function testResetCounterResetPriceCatArticleCount()
     {
@@ -527,18 +473,17 @@ class AjaxListComponentTest extends \OxidTestCase
 
         try {
             $oComponent->resetCounter('priceCatArticle');
-        } catch (Exception $oExcp) {
-            $this->assertEquals("resetPriceCatArticleCount", $oExcp->getMessage(), "error in ajaxListComponent::resetCounter()");
+        } catch (Exception $exception) {
+            $this->assertEquals("resetPriceCatArticleCount", $exception->getMessage(), "error in ajaxListComponent::resetCounter()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetCounter()");
     }
 
     /**
      * ajaxListComponent::resetCounter() test case
-     *
-     * @return null
      */
     public function testResetCounterResetCatArticleCount()
     {
@@ -552,18 +497,17 @@ class AjaxListComponentTest extends \OxidTestCase
 
         try {
             $oComponent->resetCounter('catArticle');
-        } catch (Exception $oExcp) {
-            $this->assertEquals("resetCatArticleCount", $oExcp->getMessage(), "error in ajaxListComponent::resetCounter()");
+        } catch (Exception $exception) {
+            $this->assertEquals("resetCatArticleCount", $exception->getMessage(), "error in ajaxListComponent::resetCounter()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetCounter()");
     }
 
     /**
      * ajaxListComponent::resetCounter() test case
-     *
-     * @return null
      */
     public function testResetCounterResetVendorArticleCount()
     {
@@ -577,18 +521,17 @@ class AjaxListComponentTest extends \OxidTestCase
 
         try {
             $oComponent->resetCounter('vendorArticle');
-        } catch (Exception $oExcp) {
-            $this->assertEquals("resetVendorArticleCount", $oExcp->getMessage(), "error in ajaxListComponent::resetCounter()");
+        } catch (Exception $exception) {
+            $this->assertEquals("resetVendorArticleCount", $exception->getMessage(), "error in ajaxListComponent::resetCounter()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetCounter()");
     }
 
     /**
      * ajaxListComponent::resetCounter() test case
-     *
-     * @return null
      */
     public function testResetCounterResetManufacturerArticleCount()
     {
@@ -602,11 +545,12 @@ class AjaxListComponentTest extends \OxidTestCase
 
         try {
             $oComponent->resetCounter('manufacturerArticle');
-        } catch (Exception $oExcp) {
-            $this->assertEquals("resetManufacturerArticleCount", $oExcp->getMessage(), "error in ajaxListComponent::resetCounter()");
+        } catch (Exception $exception) {
+            $this->assertEquals("resetManufacturerArticleCount", $exception->getMessage(), "error in ajaxListComponent::resetCounter()");
 
             return;
         }
+
         $this->fail("error in ajaxListComponent::resetCounter()");
     }
 }

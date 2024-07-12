@@ -19,8 +19,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -44,8 +42,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -76,8 +72,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -87,8 +81,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -101,8 +93,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -115,8 +105,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -131,8 +119,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::removeCatFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveCatFromDel()
     {
@@ -147,8 +133,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::removeCatFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveCatFromDelAll()
     {
@@ -165,15 +149,13 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::addCatToDel() test case
-     *
-     * @return null
      */
     public function testAddCatToDel()
     {
         $sSynchoxid = '_testActionAddCat';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryCategoriesAjax::class, ["getActionIds"]);
@@ -185,8 +167,6 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryCategoriessAjax::addCatToDel() test case
-     *
-     * @return null
      */
     public function testAddCatToDelAll()
     {
@@ -197,7 +177,7 @@ class DeliveryCategoriesAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getCategoriesViewTable() . ".oxid) from " . $this->getCategoriesViewTable() . "  where  " . $this->getCategoriesViewTable() . ".oxid not in (  select " . $this->getCategoriesViewTable() . ".oxid from oxobject2delivery left join " . $this->getCategoriesViewTable() . " on " . $this->getCategoriesViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcategories'  )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryCategoriesAjax::class, ["getActionIds"]);

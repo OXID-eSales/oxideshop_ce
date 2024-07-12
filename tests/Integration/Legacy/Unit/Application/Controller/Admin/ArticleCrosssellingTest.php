@@ -18,8 +18,6 @@ class ArticleCrosssellingTest extends \OxidTestCase
 
     /**
      * Article_Crossselling::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

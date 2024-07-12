@@ -49,10 +49,12 @@ class OnlineVatIdCheckTest extends \OxidTestCase
             ini_set('default_socket_timeout', $iTime);
             $this->markTestSkipped('member state is unavailable');
         }
+
         if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->getError()) {
             ini_set('default_socket_timeout', $iTime);
             $this->markTestSkipped('The SOAP service is unavailable, try again later');
         }
+
         $this->assertTrue($blRet, 'Got error: ' . $oOnlineVatCheck->getError());
         ini_set('default_socket_timeout', $iTime);
     }
@@ -100,12 +102,15 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         if (!$oOnlineVatCheck->isServiceAvailable()) {
             $this->markTestSkipped('VAT check service is not available');
         }
+
         if ('MS_UNAVAILABLE' == $oOnlineVatCheck->getError()) {
             $this->markTestSkipped('member state is unavailable');
         }
+
         if ('SERVICE_UNAVAILABLE' == $oOnlineVatCheck->getError()) {
             $this->markTestSkipped('The SOAP service is unavailable, try again later');
         }
+
         $this->assertFalse($oOnlineVatCheck->checkOnline($oCheckVat));
         if ('SERVER_BUSY' !== $oOnlineVatCheck->getNonPublicVar('_sError')) {
             $this->assertNull($oOnlineVatCheck->getNonPublicVar('_sError'));

@@ -78,6 +78,7 @@ class UtilsViewTest extends \OxidTestCase
 
         $oxUtilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
+
         $aErrors = Registry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
@@ -94,6 +95,7 @@ class UtilsViewTest extends \OxidTestCase
 
         $oxUtilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
+
         $aErrors = Registry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['default'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());

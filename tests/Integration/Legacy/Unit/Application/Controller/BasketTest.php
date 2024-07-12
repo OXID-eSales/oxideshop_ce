@@ -21,8 +21,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test error destination.
-     *
-     * @return null
      */
     public function testGetErrorDestination()
     {
@@ -32,8 +30,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowVouchers() affection
-     *
-     * @return null
      */
     public function testAddVoucherChecksGetShowVouchers()
     {
@@ -52,8 +48,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowVouchers() affection
-     *
-     * @return null
      */
     public function testRemoveVoucherChecksGetShowVouchers()
     {
@@ -72,8 +66,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * test render
-     *
-     * @return null
      */
     public function testRenderNoSE()
     {
@@ -191,8 +183,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test get ids for similar recommendation list.
-     *
-     * @return null
      */
     public function testGetSimilarRecommListIds()
     {
@@ -236,8 +226,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Testing Basket::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -248,8 +236,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Testing Basket::getWrappingList()
-     *
-     * @return null
      */
     public function testGetWrappingList()
     {
@@ -261,8 +247,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Testing Basket::getCardList()
-     *
-     * @return null
      */
     public function testGetCardList()
     {
@@ -274,8 +258,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Testing Wrapping::changeWrapping()
-     *
-     * @return null
      */
     public function testChangeWrapping()
     {
@@ -314,8 +296,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test is Wrapping
-     *
-     * @return null
      */
     public function testIsWrapping()
     {
@@ -325,8 +305,6 @@ class BasketTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowGiftWrapping() affection
-     *
-     * @return null
      */
     public function testIsWrappingIfWrappingIsOff()
     {

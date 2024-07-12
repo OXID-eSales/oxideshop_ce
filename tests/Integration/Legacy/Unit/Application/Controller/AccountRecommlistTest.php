@@ -23,8 +23,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -44,8 +42,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -57,8 +53,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test remove article from list without article id
-     *
-     * @return null
      */
     public function testRemoveArticleNoArticleIdSet()
     {
@@ -77,8 +71,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test remove article from list
-     *
-     * @return null
      */
     public function testRemoveArticle()
     {
@@ -101,8 +93,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test edit list without performing any action
-     *
-     * @return null
      */
     public function testEditListNoAction()
     {
@@ -122,8 +112,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test edit list
-     *
-     * @return null
      */
     public function testEditList()
     {
@@ -147,8 +135,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test save list without user
-     *
-     * @return null
      */
     public function testSaveRecommListNoUser()
     {
@@ -167,8 +153,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test save list for different user
-     *
-     * @return null
      */
     public function testSaveRecommListTryingToSaveForDifferentUser()
     {
@@ -190,8 +174,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test save list
-     *
-     * @return null
      */
     public function testSaveRecommList()
     {
@@ -219,8 +201,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test update list
-     *
-     * @return null
      */
     public function testSaveRecommListUpdating()
     {
@@ -288,8 +268,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test save list adding caught exception as error
-     *
-     * @return null
      */
     public function testSaveRecommListAddsErrorOnException()
     {
@@ -314,19 +292,18 @@ class AccountRecommlistTest extends \OxidTestCase
         $oRecomm->expects($this->once())->method('getActiveRecommList');
         try {
             $oRecomm->saveRecommList();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             // this excp should be thrown at oxUtilsView::addErrorToDisplay check it:
-            $this->assertEquals('lalala01user', $e->getMessage());
+            $this->assertEquals('lalala01user', $exception->getMessage());
 
             return;
         }
+
         $this->fail('oxUtilsView::addErrorToDisplay was not called');
     }
 
     /**
      * Test get list view values
-     *
-     * @return null
      */
     public function testGetRecommLists()
     {
@@ -335,14 +312,12 @@ class AccountRecommlistTest extends \OxidTestCase
 
         $oRecomm = oxNew('account_recommlist');
         $oRecomm->setUser($oUser);
-        $aLists = $oRecomm->getRecommLists('test');
+        $oRecomm->getRecommLists('test');
         $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
     }
 
     /**
      * Test get active list items
-     *
-     * @return null
      */
     public function testGetArticleList()
     {
@@ -350,14 +325,13 @@ class AccountRecommlistTest extends \OxidTestCase
         $oRecomm = $this->getProxyClass("account_recommlist");
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->load('testlist');
+
         $oRecomm->setNonPublicVar("_oActRecommList", $oRecommtList);
         $this->assertEquals(1, count($oRecomm->getArticleList()));
     }
 
     /**
      * Test get active list
-     *
-     * @return null
      */
     public function testGetActiveRecommList()
     {
@@ -368,6 +342,7 @@ class AccountRecommlistTest extends \OxidTestCase
 
         $oRecList = oxNew('oxRecommList');
         $oRecList->setId('testlist');
+
         $oRecList->oxrecommlists__oxuserid = new oxField($oUser->getId());
         $oRecList->oxrecommlists__oxshopid = new oxField($this->getConfig()->getShopId());
         $oRecList->oxrecommlists__oxtitle = new oxField("xxx");
@@ -384,8 +359,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testGetActiveRecommListIfOff()
     {
@@ -400,8 +373,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testSaveRecommListIfOff()
     {
@@ -423,8 +394,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testEditListIfOff()
     {
@@ -448,8 +417,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testRemoveArticleIfOff()
     {
@@ -473,8 +440,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Test get list page navigation
-     *
-     * @return null
      */
     public function testGetPageNavigation()
     {
@@ -486,8 +451,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Testing account_recommlist::setActiveRecommList()
-     *
-     * @return null
      */
     public function testSetActiveRecommList()
     {
@@ -500,8 +463,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Testing account_recommlist::getNavigationParams()
-     *
-     * @return null
      */
     public function testGetNavigationParams()
     {
@@ -517,8 +478,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Testing account_recommlist::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -529,8 +488,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Testing account_recommlist::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -550,8 +507,6 @@ class AccountRecommlistTest extends \OxidTestCase
 
     /**
      * Testing Account_RecommList::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

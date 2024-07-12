@@ -19,8 +19,6 @@ class ShopLicenseTest extends \OxidTestCase
 {
     /**
      * Sets malladmin parameter
-     *
-     * @return null|void
      */
     public function setup(): void
     {
@@ -41,8 +39,6 @@ class ShopLicenseTest extends \OxidTestCase
 
     /**
      * Shop_License::Render() test case
-     *
-     * @return null
      */
     public function testRenderDemoShop()
     {
@@ -58,8 +54,6 @@ class ShopLicenseTest extends \OxidTestCase
 
     /**
      * Shop_License::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -76,8 +70,6 @@ class ShopLicenseTest extends \OxidTestCase
 
     /**
      * UserGroup_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -102,7 +94,7 @@ class ShopLicenseTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"]);
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, ["getConfig"], [], '', false);
+        $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertTrue($oSubj->canUpdate());
@@ -119,7 +111,7 @@ class ShopLicenseTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop", "getConfigParam", "setConfigParam", "saveShopConfVar", "getBaseShopId"]);
         $oConfig->expects($this->any())->method('isDemoShop')->will($this->returnValue(false));
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, ["getConfig"], [], '', false);
+        $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertFalse($oSubj->canUpdate());
@@ -130,7 +122,7 @@ class ShopLicenseTest extends \OxidTestCase
      */
     public function testCanUpdateForDemoVersion()
     {
-        $oSubj = $this->getProxyClass("Shop_License");
+        $this->getProxyClass("Shop_License");
 
         $this->getSession()->setVariable("malladmin", true);
 

@@ -73,8 +73,8 @@ class VendorListTest extends \OxidTestCase
 
         try {
             $oView->render();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('OK', $oExcp->getMessage(), 'failed redirect on inactive category');
+        } catch (Exception $exception) {
+            $this->assertEquals('OK', $exception->getMessage(), 'failed redirect on inactive category');
 
             return;
         }
@@ -162,6 +162,7 @@ class VendorListTest extends \OxidTestCase
 
         $oVendor = oxNew('VendorList');
         $oVendor->setVendorTree($oVendorTree);
+
         $oTree = $oVendor->getSubCatList();
 
 
@@ -198,6 +199,7 @@ class VendorListTest extends \OxidTestCase
 
         $oVendorList = oxNew('VendorList');
         $oVendorList->setActVendor($oVendor);
+
         $oArtList = $oVendorList->getArticleList();
 
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($sVendorId), $oArtList->count());
@@ -285,6 +287,7 @@ class VendorListTest extends \OxidTestCase
         $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
+
         $oVendor->oxvendor__oxshowsuffix = new oxField(1);
 
         $oVendorList = $this->getProxyClass("vendorlist");
@@ -308,6 +311,7 @@ class VendorListTest extends \OxidTestCase
 
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
+
         $oVendorList = $this->getProxyClass("VendorList");
         $oVendorList->setNonPublicVar("_oActVendor", $oVendor);
         $this->assertEquals($sRez, $oVendorList->addPageNrParam('aa', 2));
@@ -327,6 +331,7 @@ class VendorListTest extends \OxidTestCase
     {
         $oVendorList = $this->getProxyClass("vendorlist");
         $oVendorList->setItemSorting('v_aaa', 'oxprice', 'desc');
+
         $aSort = ["sortby" => "oxprice", "sortdir" => "desc"];
         $this->assertEquals($aSort, $oVendorList->getSorting('v_aaa'));
     }

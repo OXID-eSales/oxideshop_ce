@@ -20,8 +20,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -33,8 +31,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -45,8 +41,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::GetType() test case
-     *
-     * @return null
      */
     public function testGetType()
     {
@@ -57,8 +51,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -71,18 +63,17 @@ class CategorySeoTest extends \OxidTestCase
         try {
             $oView = oxNew('Category_Seo');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("markRelatedAsExpired", $oExcp->getMessage(), "Error in Category_Seo::Save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("markRelatedAsExpired", $exception->getMessage(), "Error in Category_Seo::Save()");
 
             return;
         }
+
         $this->fail("Error in Category_Seo::Save()");
     }
 
     /**
      * Category_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -92,8 +83,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::isSuffixSupported() test case
-     *
-     * @return null
      */
     public function testIsSuffixSupported()
     {
@@ -103,8 +92,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::isEntrySuffixed() test case
-     *
-     * @return null
      */
     public function testIsEntrySuffixed()
     {
@@ -132,8 +119,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Category_Seo::getEntryUri() test case
-     *
-     * @return null
      */
     public function testGetEntryUri()
     {
@@ -153,8 +138,6 @@ class CategorySeoTest extends \OxidTestCase
 
     /**
      * Vendor_Seo::_getStdUrl() test case
-     *
-     * @return null
      */
     public function testGetStdUrl()
     {

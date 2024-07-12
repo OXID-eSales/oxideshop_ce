@@ -15,8 +15,6 @@ class WrappingListTest extends \OxidTestCase
 
     /**
      * Wrapping_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

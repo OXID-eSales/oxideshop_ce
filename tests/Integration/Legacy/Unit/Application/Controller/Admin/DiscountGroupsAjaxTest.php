@@ -18,8 +18,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -32,8 +30,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -44,8 +40,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DiscountGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -53,14 +47,12 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
         $sGroupTable = $tableViewNameGenerator->getViewName("oxgroups");
 
         $oView = oxNew('discount_groups_ajax');
-        $sQuery = "from $sGroupTable where 1";
+        $sQuery = sprintf('from %s where 1', $sGroupTable);
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -72,17 +64,15 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
         $sGroupTable = $tableViewNameGenerator->getViewName("oxgroups");
 
         $oView = oxNew('discount_groups_ajax');
-        $sQuery = "from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery = sprintf('from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sGroupTable, $sGroupTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxgroups'  and";
-        $sQuery .= " $sGroupTable.oxid not in ( select $sGroupTable.oxid from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery .= sprintf(' %s.oxid not in ( select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sGroupTable, $sGroupTable, $sGroupTable, $sGroupTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxgroups' )";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountGroupsAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -92,16 +82,14 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
         $sGroupTable = $tableViewNameGenerator->getViewName("oxgroups");
 
         $oView = oxNew('discount_groups_ajax');
-        $sQuery = "from $sGroupTable where 1  and";
-        $sQuery .= " $sGroupTable.oxid not in ( select $sGroupTable.oxid from oxobject2discount, $sGroupTable where $sGroupTable.oxid=oxobject2discount.oxobjectid ";
+        $sQuery = sprintf('from %s where 1  and', $sGroupTable);
+        $sQuery .= sprintf(' %s.oxid not in ( select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sGroupTable, $sGroupTable, $sGroupTable, $sGroupTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxgroups' )";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountGroupsAjax::removeDiscGroup() test case
-     *
-     * @return null
      */
     public function testRemoveDiscGroup()
     {
@@ -115,8 +103,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DiscountGroupsAjax::removeDiscGroup() test case
-     *
-     * @return null
      */
     public function testRemoveDiscGroupAll()
     {
@@ -133,8 +119,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DiscountGroupsAjax::addDiscGroup() test case
-     *
-     * @return null
      */
     public function testAddDiscGroup()
     {
@@ -150,8 +134,6 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
     /**
      * DiscountGroupsAjax::addDiscGroup() test case
-     *
-     * @return null
      */
     public function testAddDiscGroupAll()
     {
@@ -163,9 +145,9 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_groups_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
 
         $oView->addDiscGroup();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
     }
 }

@@ -20,8 +20,6 @@ class ArticleVariantTest extends \OxidTestCase
 {
     /**
      * Article_Variant::render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -39,8 +37,6 @@ class ArticleVariantTest extends \OxidTestCase
 
     /**
      * Article_Variant::render() test case
-     *
-     * @return null
      */
     public function testRenderVariant()
     {
@@ -61,8 +57,6 @@ class ArticleVariantTest extends \OxidTestCase
 
     /**
      * Article_Variant::savevariant() test case
-     *
-     * @return null
      */
     public function testSavevariant()
     {
@@ -73,18 +67,17 @@ class ArticleVariantTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Variant');
             $oView->savevariant();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
 
             return;
         }
+
         $this->fail("error in Article_Variant::savevariant()");
     }
 
     /**
      * Article_Variant::savevariant() test case
-     *
-     * @return null
      */
     public function testSavevariantDefaultId()
     {
@@ -94,18 +87,17 @@ class ArticleVariantTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Variant');
             $oView->savevariant();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::savevariant()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
 
             return;
         }
+
         $this->fail("error in Article_Variant::savevariant()");
     }
 
     /**
      * Article_Variant::savevariants() test case
-     *
-     * @return null
      */
     public function testSavevariants()
     {
@@ -126,8 +118,6 @@ class ArticleVariantTest extends \OxidTestCase
 
     /**
      * Article_Variant::deleteVariant() test case
-     *
-     * @return null
      */
     public function testDeleteVariant()
     {
@@ -137,18 +127,17 @@ class ArticleVariantTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Variant');
             $oView->deleteVariant();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("delete", $oExcp->getMessage(), "error in Article_Variant::deleteVariant()");
+        } catch (Exception $exception) {
+            $this->assertEquals("delete", $exception->getMessage(), "error in Article_Variant::deleteVariant()");
 
             return;
         }
+
         $this->fail("error in Article_Variant::deleteVariant()");
     }
 
     /**
      * Article_Variant::changename() test case
-     *
-     * @return null
      */
     public function testChangename()
     {
@@ -158,18 +147,17 @@ class ArticleVariantTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Variant');
             $oView->changename();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Variant::changename()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::changename()");
 
             return;
         }
+
         $this->fail("error in Article_Variant::changename()");
     }
 
     /**
      * Article_Variant::addsel() test case
-     *
-     * @return null
      */
     public function testAddsel()
     {
@@ -182,11 +170,12 @@ class ArticleVariantTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Variant');
             $oView->addsel();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("genVariantFromSell", $oExcp->getMessage(), "error in Article_Variant::addsel()");
+        } catch (Exception $exception) {
+            $this->assertEquals("genVariantFromSell", $exception->getMessage(), "error in Article_Variant::addsel()");
 
             return;
         }
+
         $this->fail("error in Article_Variant::addsel()");
     }
 }

@@ -14,8 +14,6 @@ class MiniBasketTest extends \OxidTestCase
 {
     /**
      * Testing oxwMiniBasket::render()
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -22,8 +22,6 @@ class OrderOverviewTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -34,8 +32,6 @@ class OrderOverviewTest extends \OxidTestCase
 
     /**
      * Order_Overview::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -51,8 +47,6 @@ class OrderOverviewTest extends \OxidTestCase
 
     /**
      * Order_Overview::GetPaymentType() test case
-     *
-     * @return null
      */
     public function testGetPaymentType()
     {
@@ -71,8 +65,6 @@ class OrderOverviewTest extends \OxidTestCase
 
     /**
      * Order_Overview::Resetorder() test case
-     *
-     * @return null
      */
     public function testResetorder()
     {
@@ -83,18 +75,17 @@ class OrderOverviewTest extends \OxidTestCase
         try {
             $oView = oxNew('Order_Overview');
             $oView->resetorder();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("0000-00-00 00:00:00", $oExcp->getMessage(), "Error in Order_Overview::resetorder()");
+        } catch (Exception $exception) {
+            $this->assertEquals("0000-00-00 00:00:00", $exception->getMessage(), "Error in Order_Overview::resetorder()");
 
             return;
         }
+
         $this->fail("Error in Order_Overview::resetorder()");
     }
 
     /**
      * Order shipping date reset test case
-     *
-     * @return null
      */
     public function testCanReset()
     {
@@ -102,6 +93,7 @@ class OrderOverviewTest extends \OxidTestCase
         // writing test order
         $oOrder = oxNew("oxorder");
         $oOrder->setId($soxId);
+
         $oOrder->oxorder__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oOrder->oxorder__oxuserid = new oxField("oxdefaultadmin");
         $oOrder->oxorder__oxbillcompany = new oxField("Ihr Firmenname");
@@ -152,8 +144,6 @@ class OrderOverviewTest extends \OxidTestCase
      *
      * @param $sName
      * @param $sExpectedValidaName
-     *
-     * @return null
      */
     public function testMakeValidFileName($sName, $sExpectedValidaName)
     {

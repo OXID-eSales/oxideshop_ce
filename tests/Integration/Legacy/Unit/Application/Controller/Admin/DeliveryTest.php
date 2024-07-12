@@ -15,8 +15,6 @@ class DeliveryTest extends \OxidTestCase
 
     /**
      * Delivery::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

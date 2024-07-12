@@ -28,8 +28,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -46,8 +44,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get canonical url with seo on.
-     *
-     * @return null
      */
     public function testGetCanonicalUrlSeoOn()
     {
@@ -65,8 +61,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get canonical url with seo off.
-     *
-     * @return null
      */
     public function testGetCanonicalUrlSeoOff()
     {
@@ -84,8 +78,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test draw parent url when active product is a variant and only one is buyable.
-     *
-     * @return null
      */
     public function testDrawParentUrlWhenActiveProductIsVariantAndOnlyOneIsBuyable()
     {
@@ -97,6 +89,7 @@ class DetailsTest extends \OxidTestCase
         $oVariant = oxNew('oxArticle');
         $oVariant->load("1126");
         $oVariant->setId("_testVariant");
+
         $oVariant->oxarticles__oxparentid = new oxField($oParent->getId());
         $oVariant->save();
 
@@ -134,8 +127,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get additionall url parameters.
-     *
-     * @return null
      */
     public function testgetAddDynUrlParams()
     {
@@ -152,8 +143,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test process product urls.
-     *
-     * @return null
      */
     public function testProcessProduct()
     {
@@ -170,8 +159,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get link type.
-     *
-     * @return null
      */
     public function testGetLinkType()
     {
@@ -206,8 +193,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get parent product.
-     *
-     * @return null
      */
     public function testGetParentProduct()
     {
@@ -224,8 +209,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get parent of non existing product.
-     *
-     * @return null
      */
     public function testGetProductNotExistingProduct()
     {
@@ -236,18 +219,17 @@ class DetailsTest extends \OxidTestCase
         try {
             $oDetailsView = oxNew('Details');
             $oDetailsView->getProduct();
-        } catch (Exception $oExcp) {
-            $this->assertEquals($_SERVER['REQUEST_URI'], $oExcp->getMessage(), 'result does not match');
+        } catch (Exception $exception) {
+            $this->assertEquals($_SERVER['REQUEST_URI'], $exception->getMessage(), 'result does not match');
 
             return;
         }
+
         $this->fail('product should not be returned');
     }
 
     /**
      * Test case for #0002223: variant page works even if parent article is inactive
-     *
-     * @return null
      */
     public function testForBugEntry0002223()
     {
@@ -262,18 +244,17 @@ class DetailsTest extends \OxidTestCase
             $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, ["getParentProduct"]);
             $oDetailsView->expects($this->once())->method('getParentProduct')->will($this->returnValue($oParentProduct));
             $oDetailsView->getProduct();
-        } catch (Exception $oExcp) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $exception->getMessage(), 'result does not match');
 
             return;
         }
+
         $this->fail('product should not be returned');
     }
 
     /**
      * Test get invisible product.
-     *
-     * @return null
      */
     public function testGetProductInvisibleProduct()
     {
@@ -287,18 +268,17 @@ class DetailsTest extends \OxidTestCase
             $oDetailsView = $this->getProxyClass('details');
             $oDetailsView->setNonPublicVar('_oProduct', $oProduct);
             $oDetailsView->getProduct();
-        } catch (Exception $oExcp) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match');
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $exception->getMessage(), 'result does not match');
 
             return;
         }
+
         $this->fail('product should not be returned');
     }
 
     /**
      * Test noIndex property getter.
-     *
-     * @return null
      */
     public function testNoIndex()
     {
@@ -310,8 +290,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test noIndex property getter.
-     *
-     * @return null
      */
     public function testNoIndex_unknowntype()
     {
@@ -323,8 +301,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get product.
-     *
-     * @return null
      */
     public function testGetProduct()
     {
@@ -337,8 +313,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get product.
-     *
-     * @return null
      */
     public function testGetProductWithDirectVariant()
     {
@@ -361,8 +335,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get product.
-     *
-     * @return null
      */
     public function testGetProductWithIndirectVariant()
     {
@@ -385,8 +357,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test draw parent url.
-     *
-     * @return null
      */
     public function testDrawParentUrl()
     {
@@ -401,8 +371,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get picture gallery.
-     *
-     * @return null
      */
     public function testGetPictureGallery()
     {
@@ -410,6 +378,7 @@ class DetailsTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load($sArtID);
+
         $sActPic = $this->getConfig()->getPictureUrl(null) . "generated/product/1/250_200_75/" . basename($oArticle->oxarticles__oxpic1->value);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, ["getPicturesProduct"]);
@@ -421,8 +390,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get active picture id.
-     *
-     * @return null
      */
     public function testGetActPictureId()
     {
@@ -435,8 +402,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get active picture.
-     *
-     * @return null
      */
     public function testGetActPicture()
     {
@@ -448,8 +413,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get pictures.
-     *
-     * @return null
      */
     public function testGetPictures()
     {
@@ -461,8 +424,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test show zoom pictures.
-     *
-     * @return null
      */
     public function testShowZoomPics()
     {
@@ -474,8 +435,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get select lists.
-     *
-     * @return null
      */
     public function testGetSelectLists()
     {
@@ -491,8 +450,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get reviews.
-     *
-     * @return null
      */
     public function testGetReviews()
     {
@@ -507,14 +464,13 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get similar products.
-     *
-     * @return null
      */
     public function testGetSimilarProducts()
     {
         $oDetails = $this->getProxyClass('Details');
         $oArticle = oxNew("oxArticle");
         $oArticle->load("2000");
+
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getSimilarProducts();
         $this->assertTrue($oList instanceof articlelist);
@@ -525,14 +481,13 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get crossselling.
-     *
-     * @return null
      */
     public function testGetCrossSelling()
     {
         $oDetails = $this->getProxyClass('details');
         $oArticle = oxNew("oxArticle");
         $oArticle->load("1849");
+
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
         $this->assertTrue($oList instanceof articlelist);
@@ -544,10 +499,7 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get ids for similar recomendation list.
-     *
-     * @return null
      */
-
     public function testGetSimilarRecommListIds()
     {
         $articleId = "articleId";
@@ -562,8 +514,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get accessories.
-     *
-     * @return null
      */
     public function testGetAccessoires()
     {
@@ -578,8 +528,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test get also bought these products.
-     *
-     * @return null
      */
     public function testGetAlsoBoughtTheseProducts()
     {
@@ -594,8 +542,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test is product added to price allarm.
-     *
-     * @return null
      */
     public function testIsPriceAlarm()
     {
@@ -610,8 +556,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test is product added to price allarm - true test.
-     *
-     * @return null
      */
     public function testIsPriceAlarm_true()
     {
@@ -632,8 +576,10 @@ class DetailsTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $oProduct = oxNew("oxArticle");
         $oProduct->load("1849");
+
         $oProduct->oxarticles__oxsearchkeys->value = 'testValue1 testValue2   testValue3 <br> ';
 
         //building category tree for category "Bar-eqipment"
@@ -659,8 +605,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test meta meta description generation
-     *
-     * @return null
      */
     public function testMetaDescriptionWithLongDesc()
     {
@@ -677,8 +621,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test search title setter/getter.
-     *
-     * @return null
      */
     public function testSetGetSearchTitle()
     {
@@ -690,8 +632,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test category path setter/getter.
-     *
-     * @return null
      */
     public function testSetGetCatTreePath()
     {
@@ -703,8 +643,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test article picture getter.
-     *
-     * @return null
      */
     public function testGetArtPic()
     {
@@ -716,13 +654,9 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test base view class title getter.
-     *
-     * @return null
      */
     public function testGetTitle()
     {
-        $this->_oProduct->oxarticles__oxtitle->value . ($this->_oProduct->oxarticles__oxvarselect->value ? ' ' . $this->_oProduct->oxarticles__oxvarselect->value : '');
-
         $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxtitle = new oxField('product title');
         $oProduct->oxarticles__oxvarselect = new oxField('and varselect');
@@ -735,8 +669,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test base view class title getter - no product.
-     *
-     * @return null
      */
     public function testGetTitle_noproduct()
     {
@@ -747,8 +679,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test cannonical URL getter - no product.
-     *
-     * @return null
      */
     public function testGetCanonicalUrl_noproduct()
     {
@@ -759,8 +689,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test review saving.
-     *
-     * @return null
      */
     public function testSaveReview()
     {
@@ -791,8 +719,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test review saving without user.
-     *
-     * @return null
      */
     public function testSaveReviewIfUserNotSet()
     {
@@ -822,8 +748,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test review saving without rating.
-     *
-     * @return null
      */
     public function testSaveReviewIfOnlyReviewIsSet()
     {
@@ -857,8 +781,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test review saving with wrong rating.
-     *
-     * @return null
      */
     public function testSaveReviewIfWrongRating()
     {
@@ -892,8 +814,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test only review rating saving.
-     *
-     * @return null
      */
     public function testSaveReviewIfOnlyRatingIsSet()
     {
@@ -924,8 +844,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testAddToRecommIfOff()
     {
@@ -950,8 +868,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
      */
     public function testAddToRecommIfOn()
     {
@@ -987,8 +903,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Testing Details::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -1023,8 +937,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * details::getVariantSelections() test case
-     *
-     * @return null
      */
     public function testGetVariantSelections()
     {
@@ -1056,8 +968,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * details::getPicturesProduct() test case
-     *
-     * @return null
      */
     public function testGetPicturesProductNoVariantInfo()
     {
@@ -1118,6 +1028,7 @@ class DetailsTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $oView = $this->getProxyClass('Details');
 
         $oBaseView = oxNew('oxUBase');
@@ -1273,8 +1184,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Testing Rdfa
-     *
-     * @return null
      */
     public function testShowRdfa()
     {
@@ -1289,6 +1198,7 @@ class DetailsTest extends \OxidTestCase
         $this->setConfigParam('iRDFaMaxRating', 5);
         $oArt = oxNew('oxArticle');
         $oArt->load('2000');
+
         $oArt->oxarticles__oxratingcnt = new oxField(0);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, ['getProduct']);
@@ -1303,6 +1213,7 @@ class DetailsTest extends \OxidTestCase
         $this->setConfigParam('iRDFaMaxRating', 5);
         $oArt = oxNew('oxArticle');
         $oArt->load('2000');
+
         $oArt->oxarticles__oxratingcnt = new oxField('5');
         $oArt->oxarticles__oxrating = new oxField('10');
 
@@ -1416,8 +1327,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is not set
-     *
-     * @return null
      */
     public function testGetDefaultSortingUndefinedSorting()
     {
@@ -1432,8 +1341,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when default sorting is set
-     *
-     * @return null
      */
     public function testGetDefaultSortingDefinedSorting()
     {
@@ -1448,8 +1355,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is undefined
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsUndefined()
     {
@@ -1466,8 +1371,6 @@ class DetailsTest extends \OxidTestCase
     /**
      * Test getDefaultSorting when sorting mode is set to 'asc'
      * This might be a little too much, but it's a case
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsAsc()
     {
@@ -1484,8 +1387,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
-     *
-     * @return null
      */
     public function testDefaultSortingWhenSortingModeIsDesc()
     {
@@ -1502,8 +1403,6 @@ class DetailsTest extends \OxidTestCase
 
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
-     *
-     * @return null
      */
     public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
     {

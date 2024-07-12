@@ -35,8 +35,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewConfig::getHelpPageLink() test case
-     *
-     * @return void
      */
     public function testGetHelpPageLink(): void
     {
@@ -100,7 +98,7 @@ class ViewConfigTest extends \OxidTestCase
         // - default shop language
         // - default browser language
         // - expected URL
-        return [[$iLangDE, $iLangDE, $sShopUrl], [$iLangDE, $iLangEN, $sShopUrl . "index.php?lang=$iLangDE&amp;"], [$iLangEN, $iLangDE, $sShopUrl . "index.php?lang=1&amp;"], [$iLangEN, $iLangEN, $sShopUrl]];
+        return [[$iLangDE, $iLangDE, $sShopUrl], [$iLangDE, $iLangEN, $sShopUrl . sprintf('index.php?lang=%d&amp;', $iLangDE)], [$iLangEN, $iLangDE, $sShopUrl . "index.php?lang=1&amp;"], [$iLangEN, $iLangEN, $sShopUrl]];
     }
 
     /**
@@ -133,8 +131,8 @@ class ViewConfigTest extends \OxidTestCase
             $sExpectedUrl,
             $oViewConfig->getHomeLink(),
             "URL is correct
-            when default shop language is $iDefaultShopLanguage
-            and default browser language is $iDefaultBrowserLanguage"
+            when default shop language is {$iDefaultShopLanguage}
+            and default browser language is {$iDefaultBrowserLanguage}"
         );
     }
 
@@ -267,8 +265,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Tests forming of logout link when in ssl page
-     *
-     * @return null
      */
     public function testGetLogoutLinkSsl()
     {
@@ -335,8 +331,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewConfig::getTopActionClassName() test case
-     *
-     * @return null
      */
     public function testGetTopActionClassName()
     {
@@ -454,8 +448,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Testing oxViewConfig::getCountryList()
-     *
-     * @return null
      */
     public function testGetCountryList()
     {
@@ -497,7 +489,7 @@ class ViewConfigTest extends \OxidTestCase
         $config = Registry::getConfig();
         $config->setConfigParam('iDebug', -1);
 
-        $fakeShopDirectory = $config->getConfigParam('sShopDir');
+        $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module testModule";
         $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\FileException::class);
         $this->expectExceptionMessage($message);
@@ -535,17 +527,17 @@ class ViewConfigTest extends \OxidTestCase
         $config = Registry::getConfig();
 
         $baseUrl = $config->getCurrentShopUrl();
-        $this->assertEquals("{$baseUrl}out/modules/testModule/out", $viewConfig->getModuleUrl('testModule', 'out'));
-        $this->assertEquals("{$baseUrl}out/modules/testModule/out/", $viewConfig->getModuleUrl('testModule', '/out/'));
+        $this->assertEquals($baseUrl . 'out/modules/testModule/out', $viewConfig->getModuleUrl('testModule', 'out'));
+        $this->assertEquals($baseUrl . 'out/modules/testModule/out/', $viewConfig->getModuleUrl('testModule', '/out/'));
         $this->assertEquals(
-            "{$baseUrl}out/modules/testModule/some.css",
+            $baseUrl . 'out/modules/testModule/some.css',
             $viewConfig->getModuleUrl('testModule', 'some.css')
         );
         $this->assertEquals(
-            "{$baseUrl}out/modules/testModule/some.css",
+            $baseUrl . 'out/modules/testModule/some.css',
             $viewConfig->getModuleUrl('testModule', '/some.css')
         );
-        $this->assertEquals("{$baseUrl}out/modules/testModule/", $viewConfig->getModuleUrl('testModule'));
+        $this->assertEquals($baseUrl . 'out/modules/testModule/', $viewConfig->getModuleUrl('testModule'));
 
         //test if the subject under test still generates a valid module url in admin mode
         $config->setAdminMode(true);
@@ -557,7 +549,7 @@ class ViewConfigTest extends \OxidTestCase
         //because of browser security restrictions take effect when loading resources from differt domains
         $adminUrlWithoutAdminPath = $baseUrl;
         $this->assertEquals(
-            "{$adminUrlWithoutAdminPath}out/modules/testModule/some.css",
+            $adminUrlWithoutAdminPath . 'out/modules/testModule/some.css',
             $viewConfig->getModuleUrl('testModule', 'some.css')
         );
 
@@ -611,8 +603,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Test case for oxViewConfig::showSelectLists()
-     *
-     * @return null
      */
     public function testShowSelectLists()
     {
@@ -623,8 +613,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Test case for oxViewConfig::showSelectListsInList()
-     *
-     * @return null
      */
     public function testShowSelectListsInList()
     {
@@ -637,8 +625,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Test case for oxViewConfig::showSelectListsInList()
-     *
-     * @return null
      */
     public function testShowSelectListsInListFalse()
     {
@@ -649,8 +635,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * Test case for oxViewConfig::showSelectListsInList()
-     *
-     * @return null
      */
     public function testShowSelectListsInListDifferent()
     {
@@ -663,8 +647,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getImageUrl() test case
-     *
-     * @return null
      */
     public function testGetImageUrl()
     {
@@ -799,8 +781,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewConfig::getTopActiveClassName() test case
-     *
-     * @return null
      */
     public function testGetTopActiveClassName()
     {
@@ -829,8 +809,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActTplName() test case
-     *
-     * @return null
      */
     public function testGetActTplName()
     {
@@ -842,8 +820,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActCurrency() test case
-     *
-     * @return null
      */
     public function testGetActCurrency()
     {
@@ -855,8 +831,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActContentLoadId() test case
-     *
-     * @return null
      */
     public function testGetActContentLoadId()
     {
@@ -872,8 +846,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActContentLoadId() test case
-     *
-     * @return null
      */
     public function testGetActContentLoadIdFromActView()
     {
@@ -892,8 +864,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActRecommendationId() test case
-     *
-     * @return null
      */
     public function testGetActRecommendationId()
     {
@@ -905,10 +875,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActCatId() test case
-     *
-     * @return null
      */
-
     public function testGetActCatId()
     {
         $iCat = 12345;
@@ -920,10 +887,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActArticleId() test case
-     *
-     * @return null
      */
-
     public function testGetActArticleId()
     {
         $sArt = "12345";
@@ -935,10 +899,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActSearchParam() test case
-     *
-     * @return null
      */
-
     public function testGetActSearchParam()
     {
         $sParam = "test=john";
@@ -950,10 +911,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActListType() test case
-     *
-     * @return null
      */
-
     public function testGetActListType()
     {
         $sType = "testType";
@@ -965,10 +923,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getContentId() test case
-     *
-     * @return null
      */
-
     public function testGetContentId()
     {
         $sOxcid = "testCID";
@@ -980,10 +935,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getViewConfigParam() test case
-     *
-     * @return null
      */
-
     public function testGetViewConfigParamFromOShop()
     {
         $sFieldName = "nameFromObject";
@@ -998,10 +950,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getViewConfigParam() test case
-     *
-     * @return null
      */
-
     public function testGetViewConfigParamFromAViewData()
     {
         $sFieldName = "nameFromArray";
@@ -1016,10 +965,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getHiddenSid() test case
-     *
-     * @return null
      */
-
     public function testGetHiddenSidFromSession()
     {
         $sSid = "newSid";
@@ -1032,10 +978,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getHiddenSid() test case
-     *
-     * @return null
      */
-
     public function testGetHiddenSidFromSessionNull()
     {
         $sSid = "newSid";
@@ -1059,10 +1002,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getBaseDir() test case
-     *
-     * @return null
      */
-
     public function testGetBaseDirForSsl()
     {
         $sSslLink = "sslsitelink";
@@ -1080,10 +1020,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getCoreUtilsDir() test case
-     *
-     * @return null
      */
-
     public function testGetCoreUtilsDir()
     {
         $sDir = "testingDir";
@@ -1096,10 +1033,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getCoreUtilsDir() test case
-     *
-     * @return null
      */
-
     public function testGetCoreUtilsDirWhenNull()
     {
         $sDir = "testingDir";
@@ -1117,10 +1051,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getSelfActionLink() test case
-     *
-     * @return null
      */
-
     public function testGetSelfActionLink()
     {
         $sLink = "testingLink";
@@ -1133,10 +1064,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getSelfActionLink() test case
-     *
-     * @return null
      */
-
     public function testGetSelfActionLinkWhenNull()
     {
         $sLink = "testingLink";
@@ -1154,10 +1082,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getCurrentHomeDir() test case
-     *
-     * @return null
      */
-
     public function testGetCurrentHomeDir()
     {
         $sLink = "testingLink";
@@ -1170,10 +1095,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getCurrentHomeDir() test case
-     *
-     * @return null
      */
-
     public function testGetCurrentHomeDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1191,10 +1113,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getBasketLink() test case
-     *
-     * @return null
      */
-
     public function testGetBasketLink()
     {
         $sLink = "testingLink";
@@ -1207,14 +1126,11 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getBasketLink() test case
-     *
-     * @return null
      */
-
     public function testGetBasketLinkWhenNull()
     {
         $sLink = "testingLink";
-        $sLinkNew = "testingLink" . "cl=basket";
+        $sLinkNew = 'testingLinkcl=basket';
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getShopHomeURL"]);
         $oConfig->expects($this->once())->method("getShopHomeURL")->will($this->returnValue($sLink));
 
@@ -1229,10 +1145,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getOrderLink() test case
-     *
-     * @return null
      */
-
     public function testGetOrderLink()
     {
         $sLink = "testingLink";
@@ -1245,14 +1158,11 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getOrderLink() test case
-     *
-     * @return null
      */
-
     public function testGetOrderLinkWhenNull()
     {
         $sLink = "testingLink";
-        $sLinkNew = "testingLink" . "cl=user";
+        $sLinkNew = 'testingLinkcl=user';
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getShopSecureHomeUrl"]);
         $oConfig->expects($this->once())->method("getShopSecureHomeUrl")->will($this->returnValue($sLink));
 
@@ -1267,10 +1177,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPaymentLink() test case
-     *
-     * @return null
      */
-
     public function testGetPaymentLink()
     {
         $sLink = "testingLink";
@@ -1283,14 +1190,11 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPaymentLink() test case
-     *
-     * @return null
      */
-
     public function testGetPaymentLinkWhenNull()
     {
         $sLink = "testingLink";
-        $sLinkNew = "testingLink" . "cl=payment";
+        $sLinkNew = 'testingLinkcl=payment';
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getShopSecureHomeUrl"]);
         $oConfig->expects($this->once())->method("getShopSecureHomeUrl")->will($this->returnValue($sLink));
 
@@ -1305,10 +1209,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getExeOrderLink() test case
-     *
-     * @return null
      */
-
     public function testGetExeOrderLink()
     {
         $sLink = "testingLink";
@@ -1321,14 +1222,11 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getExeOrderLink() test case
-     *
-     * @return null
      */
-
     public function testGetExeOrderLinkWhenNull()
     {
         $sLink = "testingLink";
-        $sLinkNew = "testingLink" . "cl=order&amp;fnc=execute";
+        $sLinkNew = 'testingLinkcl=order&amp;fnc=execute';
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getShopSecureHomeUrl"]);
         $oConfig->expects($this->once())->method("getShopSecureHomeUrl")->will($this->returnValue($sLink));
 
@@ -1343,10 +1241,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getOrderConfirmLink() test case
-     *
-     * @return null
      */
-
     public function testGetOrderConfirmLink()
     {
         $sLink = "testingLink";
@@ -1359,14 +1254,11 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getOrderConfirmLink() test case
-     *
-     * @return null
      */
-
     public function testGetOrderConfirmLinkWhenNull()
     {
         $sLink = "testingLink";
-        $sLinkNew = "testingLink" . "cl=order";
+        $sLinkNew = 'testingLinkcl=order';
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getShopSecureHomeUrl"]);
         $oConfig->expects($this->once())->method("getShopSecureHomeUrl")->will($this->returnValue($sLink));
 
@@ -1381,10 +1273,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getResourceUrl() test case
-     *
-     * @return null
      */
-
     public function testGetResourceUrl()
     {
         $sLink = "testingLink";
@@ -1397,10 +1286,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getResourceUrl() test case
-     *
-     * @return null
      */
-
     public function testGetResourceUrlWhenNull()
     {
         $sLink = "testingLink";
@@ -1418,10 +1304,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getResourceUrl() test case
-     *
-     * @return null
      */
-
     public function testGetResourceUrlWithFile()
     {
         $sLink = "testingLink";
@@ -1438,10 +1321,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getTemplateDir() test case
-     *
-     * @return null
      */
-
     public function testGetTemplateDir()
     {
         $sLink = "testingLink";
@@ -1454,10 +1334,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getTemplateDir() test case
-     *
-     * @return null
      */
-
     public function testGetTemplateDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1475,10 +1352,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getUrlTemplateDir() test case
-     *
-     * @return null
      */
-
     public function testGetUrlTemplateDir()
     {
         $sLink = "testingLink";
@@ -1491,10 +1365,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getTemplateDir() test case
-     *
-     * @return null
      */
-
     public function testGetUrlTemplateDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1512,10 +1383,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getNoSslImageDir() test case
-     *
-     * @return null
      */
-
     public function testGetNoSslImageDir()
     {
         $sLink = "testingLink";
@@ -1528,10 +1396,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getNoSslImageDir() test case
-     *
-     * @return null
      */
-
     public function testGetNoSslImageDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1549,10 +1414,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPictureDir() test case
-     *
-     * @return null
      */
-
     public function testGetPictureDir()
     {
         $sLink = "testingLink";
@@ -1565,10 +1427,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPictureDir() test case
-     *
-     * @return null
      */
-
     public function testGetPictureDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1586,10 +1445,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getAdminDir() test case
-     *
-     * @return null
      */
-
     public function testGetAdminDir()
     {
         $sLink = "testingLink";
@@ -1602,10 +1458,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getAdminDir() test case
-     *
-     * @return null
      */
-
     public function testGetAdminDirWhenNull()
     {
         $sLink = "testingLink";
@@ -1620,10 +1473,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActiveShopId() test case
-     *
-     * @return null
      */
-
     public function testGetActiveShopId()
     {
         $sId = "testShopId";
@@ -1636,10 +1486,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActiveShopId() test case
-     *
-     * @return null
      */
-
     public function testGetActiveShopIdWhenNull()
     {
         $sId = "testShopId";
@@ -1657,10 +1504,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::isSsl() test case
-     *
-     * @return null
      */
-
     public function testIsSsl()
     {
         $sTest = "isSsl";
@@ -1673,10 +1517,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::isSsl() test case
-     *
-     * @return null
      */
-
     public function testIsSslWhenNull()
     {
         $sTest = "isSsl";
@@ -1694,10 +1535,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getRemoteAddress() test case
-     *
-     * @return null
      */
-
     public function testGetRemoteAddress()
     {
         $sTest = "testAddress";
@@ -1710,10 +1548,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getRemoteAddress() test case
-     *
-     * @return null
      */
-
     public function testGetRemoteAddressWhenNull()
     {
         $sTest = "testAddress";
@@ -1732,10 +1567,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPopupIdent() test case
-     *
-     * @return null
      */
-
     public function testGetPopupIdent()
     {
         $sTest = "testIdent";
@@ -1748,10 +1580,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPopupIdent() test case
-     *
-     * @return null
      */
-
     public function testGetPopupIdentWhenNull()
     {
         $sTest = "testIdent";
@@ -1770,10 +1599,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPopupIdentRand() test case
-     *
-     * @return null
      */
-
     public function testGetPopupIdentRand()
     {
         $sTest = "testIdent";
@@ -1786,10 +1612,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPopupIdentRand() test case
-     *
-     * @return null
      */
-
     public function testGetPopupIdentRandWhenNull()
     {
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, ["getViewConfigParam", "setViewConfigParam"]);
@@ -1801,10 +1624,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getArtPerPageForm() test case
-     *
-     * @return null
      */
-
     public function testGetArtPerPageForm()
     {
         $sTest = "testUrl";
@@ -1817,10 +1637,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getArtPerPageForm() test case
-     *
-     * @return null
      */
-
     public function testGetArtPerPageFormWhenNull()
     {
         $sTest = "testUrl";
@@ -1838,8 +1655,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::isBuyableParent() test case
-     *
-     * @return null
      */
     public function testIsBuyableParent()
     {
@@ -1854,8 +1669,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::showBirthdayFields() test case
-     *
-     * @return null
      */
     public function testShowBirthdayFields()
     {
@@ -1870,8 +1683,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActLanguageAbbr() test case
-     *
-     * @return null
      */
     public function testGetActLanguageAbbr()
     {
@@ -1888,8 +1699,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getActiveClassName() test case
-     *
-     * @return null
      */
     public function testGetActiveClassName()
     {
@@ -1910,8 +1719,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getArtPerPageCount() test case
-     *
-     * @return null
      */
     public function testGetArtPerPageCount()
     {
@@ -1924,8 +1731,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getNavUrlParams() test case
-     *
-     * @return null
      */
     public function testGetNavUrlParams()
     {
@@ -1940,8 +1745,6 @@ class ViewConfigTest extends \OxidTestCase
      * oxViewconfig::getNavUrlParams() test case
      *
      * @dataProvider providerGetNavUrlParamsNavigation
-     *
-     * @return null
      */
     public function testGetNavUrlParamsNavigation($paramsArray, $paramsString)
     {
@@ -1983,8 +1786,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getNavFormParams() test case
-     *
-     * @return null
      */
     public function getNavFormParams()
     {
@@ -1999,8 +1800,6 @@ class ViewConfigTest extends \OxidTestCase
      * oxViewconfig::getNavFormParams() test case
      *
      * @dataProvider providerGetNavFormParams
-     *
-     * @return null
      */
     public function testGetNavFormParams($paramsArray, $paramsFormControls)
     {
@@ -2043,8 +1842,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getStockOnDefaultMessage() test case
-     *
-     * @return null
      */
     public function testGetStockOnDefaultMessage()
     {
@@ -2057,8 +1854,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getStockOffDefaultMessage() test case
-     *
-     * @return null
      */
     public function testGetStockOffDefaultMessage()
     {
@@ -2071,8 +1866,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getShopVersion() test case
-     *
-     * @return null
      */
     public function testGetShopVersion()
     {
@@ -2085,8 +1878,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::isMultiShop() test case
-     *
-     * @return null
      */
     public function testIsMultiShop()
     {
@@ -2107,8 +1898,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::isMultiShop() test case
-     *
-     * @return null
      */
     public function testIsMultiShopNotSet()
     {
@@ -2126,8 +1915,6 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewconfig::getPasswordLength() test case
-     *
-     * @return null
      */
     public function testGetPasswordLength()
     {
@@ -2178,7 +1965,7 @@ class ViewConfigTest extends \OxidTestCase
         $oView = oxNew('oxViewConfig');
 
         $edition = strtolower((string) $this->getTestConfig()->getShopEdition());
-        $sLogo = "logo_$edition.png";
+        $sLogo = sprintf('logo_%s.png', $edition);
 
         $this->assertEquals($sLogo, $oView->getShopLogo());
     }
@@ -2251,9 +2038,6 @@ class ViewConfigTest extends \OxidTestCase
         $this->getFilesystem()->remove($this->getTestModuleAssetsDirectory());
     }
 
-    /**
-     * @return string
-     */
     private function getTestModuleAssetsDirectory(): string
     {
         return ContainerFactory::getInstance()

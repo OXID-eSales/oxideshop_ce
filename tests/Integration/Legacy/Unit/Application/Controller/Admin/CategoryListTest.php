@@ -18,8 +18,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Category_List::Init() test case
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -37,8 +35,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Category_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

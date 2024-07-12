@@ -20,8 +20,6 @@ class OrderDownloadsTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -34,6 +32,7 @@ class OrderDownloadsTest extends \OxidTestCase
         $oOrder = oxNew('oxbase');
         $oOrder->init('oxorder');
         $oOrder->setId('_testOrder');
+
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin');
         $oOrder->save();
 
@@ -42,6 +41,7 @@ class OrderDownloadsTest extends \OxidTestCase
         $oArticle->init('oxarticles');
         $oArticle->load('1126');
         $oArticle->setId('_testArticle');
+
         $oArticle->oxarticles__oxartnum = new oxField('_testArticle');
         $oArticle->oxarticles__oxstock = new oxField(100);
         $oArticle->save();
@@ -49,6 +49,7 @@ class OrderDownloadsTest extends \OxidTestCase
         //set order
         $oOrder = oxNew("oxOrder");
         $oOrder->setId('_testOrderId1');
+
         $oOrder->oxorder__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
         $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
         $oOrder->oxorder__oxbillcountryid = new oxField('10', oxField::T_RAW);
@@ -63,8 +64,6 @@ class OrderDownloadsTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -75,8 +74,6 @@ class OrderDownloadsTest extends \OxidTestCase
 
     /**
      * Test get edit object.
-     *
-     * @return null
      */
     public function testGetEditObject()
     {
@@ -94,8 +91,6 @@ class OrderDownloadsTest extends \OxidTestCase
 
     /**
      * Test get protuct list.
-     *
-     * @return null
      */
     public function testGetProductList()
     {

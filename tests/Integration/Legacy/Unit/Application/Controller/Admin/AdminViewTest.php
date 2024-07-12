@@ -21,8 +21,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -40,8 +38,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test get service protocol.
-     *
-     * @return null
      */
     public function testGetServiceProtocol()
     {
@@ -66,8 +62,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test get preview id.
-     *
-     * @return null
      */
     public function testGetPreviewId()
     {
@@ -78,8 +72,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test init.
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -96,8 +88,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test setup navigation.
-     *
-     * @return null
      */
     public function testSetupNavigation()
     {
@@ -115,8 +105,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test allow admin edit pe.
-     *
-     * @return null
      */
     public function testAllowAdminEditPE()
     {
@@ -130,8 +118,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test get view id.
-     *
-     * @return null
      */
     public function testGetViewIdMocked()
     {
@@ -146,8 +132,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test get view id without mock.
-     *
-     * @return null
      */
     public function testGetViewId()
     {
@@ -158,8 +142,6 @@ class AdminViewTest extends \OxidTestCase
     /**
      * Test get view id.
      * We simulate module chain extension case here.
-     *
-     * @return null
      */
     public function testGetViewIdExtended()
     {
@@ -171,8 +153,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test get view id for class that should have no view id.
-     *
-     * @return null
      */
     public function testGetViewIdNoneExists()
     {
@@ -184,8 +164,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Test reset cached content .
-     *
-     * @return null
      */
     public function testResetContentCached()
     {
@@ -199,8 +177,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Checking reset when reset on logout is enabled and passing param
-     *
-     * @return null
      */
     public function testResetContentCachedWhenResetOnLogoutEnabled()
     {
@@ -217,8 +193,6 @@ class AdminViewTest extends \OxidTestCase
     /**
      * Checking reset when reset on logout is enabled and passing param
      * to force reset
-     *
-     * @return null
      */
     public function testResetContentCachedWhenResetOnLogoutEnabledAndForceResetIsOn()
     {
@@ -234,8 +208,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Checking reseting counters cache
-     *
-     * @return null
      */
     public function testResetCounter()
     {
@@ -259,8 +231,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Checking reseting counters cache when reset on logout is enabled
-     *
-     * @return null
      */
     public function testResetCounterWhenResetOnLogoutEnabled()
     {
@@ -291,6 +261,7 @@ class AdminViewTest extends \OxidTestCase
 
         $oAView = oxNew('oxAdminView');
         $oAView->addGlobalParams();
+
         $oViewCfg = $oAView->getViewConfig();
 
         $this->assertEquals('sess:url', $oViewCfg->getSelfLink());
@@ -318,8 +289,6 @@ class AdminViewTest extends \OxidTestCase
 
     /**
      * Tests oxAdminView::_getCountryByCode()
-     *
-     * @return null
      */
     public function testGetCountryByCode()
     {
@@ -331,8 +300,6 @@ class AdminViewTest extends \OxidTestCase
     /**
      * Tests oxAdminView::_getCountryByCode()
      * when english language is deleted (bug #0001979)
-     *
-     * @return null
      */
     public function testGetCountryByCodeNoEng()
     {

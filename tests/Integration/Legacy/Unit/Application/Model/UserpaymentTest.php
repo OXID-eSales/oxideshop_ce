@@ -17,12 +17,10 @@ use \oxRegistry;
  */
 class UserpaymentTest extends \OxidTestCase
 {
-    protected $_oUpay = null;
+    protected $_oUpay;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -30,6 +28,7 @@ class UserpaymentTest extends \OxidTestCase
 
         $this->_oUpay = oxNew('oxuserpayment');
         $this->_oUpay->setId('_testOxId');
+
         $this->_oUpay->oxuserpayments__oxuserid = new oxField('_testUserId', oxField::T_RAW);
         $this->_oUpay->oxuserpayments__oxvalue = new oxField('_testValue', oxField::T_RAW);
         $this->_oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidcashondel', oxField::T_RAW);
@@ -38,8 +37,6 @@ class UserpaymentTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -151,6 +148,7 @@ class UserpaymentTest extends \OxidTestCase
     {
         $oUpay = oxNew('oxuserpayment');
         $oUpay->setId('_testOxId2');
+
         $oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
         $oUpay->save();
 
@@ -172,7 +170,7 @@ class UserpaymentTest extends \OxidTestCase
         $sShopId = $this->getConfig()->GetBaseShopId();
         foreach ($aUserPaymentId as $iCnt => $sUserPaymentId) {
             $sOrderId = "_test" . (time() + $iCnt);
-            $sOrderDate = "2011-03-1{$iCnt} 10:55:13";
+            $sOrderDate = sprintf('2011-03-1%s 10:55:13', $iCnt);
 
             $oDb->execute($sQ, [$sOrderId, $sShopId, $sUserId, $sOrderDate, $iCnt + 1, $sUserPaymentId]);
         }

@@ -13,8 +13,6 @@ class UtilsServerTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -24,8 +22,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::setOxCookie() test case
-     *
-     * @return null
      */
     public function testSetOxCookieForSaveSessionCookie()
     {
@@ -40,8 +36,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::_mustSaveToSession() test case
-     *
-     * @return null
      */
     public function testMustSaveToSessionNoSslUrl()
     {
@@ -55,8 +49,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::_mustSaveToSession() test case
-     *
-     * @return null
      */
     public function testMustSaveToSession()
     {
@@ -71,8 +63,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::_mustSaveToSession() test case
-     *
-     * @return null
      */
     public function testGetSessionCookieKey()
     {
@@ -96,8 +86,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::_saveSessionCookie() test case
-     *
-     * @return null
      */
     public function testSaveSessionCookie()
     {
@@ -113,8 +101,6 @@ class UtilsServerTest extends \OxidTestCase
 
     /**
      * oxUtilsServer::loadSessionCookies() test case
-     *
-     * @return null
      */
     public function testLoadSessionCookies()
     {
@@ -180,19 +166,18 @@ class UtilsServerTest extends \OxidTestCase
     public function testGetCookie()
     {
         $aC = $_COOKIE;
-        $e = null;
         try {
             $_COOKIE['test'] = "asd'\"\000aa";
             $this->assertEquals("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
         }
 
         // restore data
         $_COOKIE = $aC;
 
         // check if exception has beed thrown
-        if ($e) {
-            throw $e;
+        if ($exception) {
+            throw $exception;
         }
     }
 
@@ -244,19 +229,15 @@ class UtilsServerTest extends \OxidTestCase
     public function testProcessUserAgentInfo()
     {
         $aServerInfo = ["Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)"                                           =>
-                                 "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)"                                           =>
             "Mozilla/4.0 (compatible; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0C)"                                                                               =>
             "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0C)", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"                                                                        =>
-            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"                                                                        =>
             "Mozilla/4.0 (compatible; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 (.NET CLR 3.5.30729)"                                                                                          =>
             "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 (.NET CLR 3.5.30729)", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C)"                               =>
             "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C)", "Mozilla/4.0 (compatible; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C)"                                         =>
             "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C)", "Mozilla/5.0 (Windows; U; Windows NT 6.1; lt; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8"                                                                                                                  =>
             "Mozilla/5.0 (Windows; U; Windows NT 6.1; lt; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8"                                                                                                               =>
             "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; Creative AutoUpdate v1.40.01)" =>
-            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; Creative AutoUpdate v1.40.01)", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; Creative AutoUpdate v1.40.01)" =>
             "Mozilla/4.0 (compatible; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; Creative AutoUpdate v1.40.01)", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; GTB6.5; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"                                                                =>
-            "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; GTB6.5; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; GTB6.5; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)"                                                                =>
             "Mozilla/4.0 (compatible; Windows NT 5.1; Trident/4.0; GTB6.5; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)", "Mozilla/5.0 (Windows; U; Windows NT 5.1; lt; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2 ( .NET CLR 3.5.30729)"                                                                                            =>
             "Mozilla/5.0 (Windows; U; Windows NT 5.1; lt; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2 ( .NET CLR 3.5.30729)", "Opera/9.80 (Windows NT 5.1; U; en) Presto/2.6.30 Version/10.60"                                                                                                                                         =>
             "Opera/9.80 (Windows NT 5.1; U; en) Presto/2.6.30 Version/10.60", "Mozilla/4.0 (compatible; MSIE 8.0; AOL 9.1; AOLBuild 4334.34; Windows NT 5.1; SV1; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 1.1.4322)"                                        =>
@@ -379,6 +360,7 @@ class UtilsServerTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
+
         $sUrl = $oConfig->getConfigParam('sShopURL') . '/example.php';
         $this->assertFalse($oConfig->isCurrentUrl($sUrl));
     }
@@ -387,6 +369,7 @@ class UtilsServerTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
+
         $sUrl = 'www.example.com';
         $this->assertTrue($oConfig->isCurrentUrl($sUrl));
     }
@@ -395,6 +378,7 @@ class UtilsServerTest extends \OxidTestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
+
         $sUrl = 'ftp://www.example.com';
         $this->assertTrue($oConfig->isCurrentUrl($sUrl));
     }

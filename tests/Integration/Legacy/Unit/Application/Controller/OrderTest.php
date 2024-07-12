@@ -34,8 +34,6 @@ class UtilsHelper extends oxUtils
      * @param integer $iHeaderCode header code
      *
      * @throws Exception
-     *
-     * @return null
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 301)
     {
@@ -96,7 +94,7 @@ class OrderHelper extends oxOrder
  */
 class PaymentHelper extends oxPayment
 {
-    public static $dBasketPrice = null;
+    public static $dBasketPrice;
 
     /**
      * Skip isValidPayment and change $dBasketPrice.
@@ -124,8 +122,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -142,8 +138,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -157,8 +151,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test is Wrapping
-     *
-     * @return null
      */
     public function testIsWrapping()
     {
@@ -168,8 +160,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing init() method
-     *
-     * @return null
      */
     public function testInit()
     {
@@ -193,8 +183,6 @@ class OrderTest extends \OxidTestCase
     /**
      * Testing init() method - check if init forces basket recalculation
      * by calling basket onUpdate() method
-     *
-     * @return null
      */
     public function testInitForcesBasketRecalculation()
     {
@@ -222,8 +210,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing render() - if basket is not set, visitor shoud be redirected to shop home url
-     *
-     * @return null
      */
     public function testRenderWhenNoBasketExist()
     {
@@ -242,16 +228,14 @@ class OrderTest extends \OxidTestCase
 
         try {
             $oOrder->render();
-        } catch (Exception $e) {
-            $this->assertEquals($oConfig->getShopHomeURL(), $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($oConfig->getShopHomeURL(), $exception->getMessage());
         }
     }
 
     /**
      * Testing render() - if active user not set and basket not empty,
      * visitor shoud be redirected to basket step
-     *
-     * @return null
      */
     public function testRenderWhenNoActiveUserExistWithBasket()
     {
@@ -277,8 +261,6 @@ class OrderTest extends \OxidTestCase
     /**
      * Testing render() - if active user not set and basket is empty,
      * visitor shoud be redirected to basket step
-     *
-     * @return null
      */
     public function testRenderWhenNoActiveUserExistNoBasket()
     {
@@ -304,8 +286,6 @@ class OrderTest extends \OxidTestCase
     /**
      * Testing render() - if user and basket are set, but basket is empty,
      * visitor shoud be redirected to shop home url
-     *
-     * @return null
      */
     public function testRenderWhenBasketIsEmpty()
     {
@@ -324,16 +304,14 @@ class OrderTest extends \OxidTestCase
 
         try {
             $oOrder->render();
-        } catch (Exception $e) {
-            $this->assertEquals($oConfig->getShopHomeURL(), $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($oConfig->getShopHomeURL(), $exception->getMessage());
         }
     }
 
     /**
      * Testing render() - if user and basket are set, basket not empty,
      * but payment is not set, visitor shoud be redirected to payment select page
-     *
-     * @return null
      */
     public function testRenderWhenPaymentIsEmpty()
     {
@@ -354,15 +332,13 @@ class OrderTest extends \OxidTestCase
 
         try {
             $oOrder->render();
-        } catch (Exception $e) {
-            $this->assertEquals($oConfig->getShopHomeURL() . '&cl=payment', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($oConfig->getShopHomeURL() . '&cl=payment', $exception->getMessage());
         }
     }
 
     /**
      * Testing render() - view data values
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -418,8 +394,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing execute() -  without order rules confirmation "ord_agb"
-     *
-     * @return null
      */
     public function testExecuteWithoutAGB()
     {
@@ -448,8 +422,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing execute() - without needed information to create proper user.
-     *
-     * @return null
      */
     public function testExecuteWithoutCustInfo()
     {
@@ -481,8 +453,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing execute()
-     *
-     * @return null
      */
     public function testExecute()
     {
@@ -518,8 +488,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing execute() when order validating stock fails
-     *
-     * @return null
      */
     public function testExecuteWithWrongStockThrowsException()
     {
@@ -549,8 +517,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing execute() when order validating stock fails
-     *
-     * @return null
      */
     public function testExecuteWithWrongStockCallsMethodsInRightOrder()
     {
@@ -584,8 +550,6 @@ class OrderTest extends \OxidTestCase
     /**
      * Testing execute() - on success user must be marked as shop customer
      * by calling oxuser::onOrderExecute()
-     *
-     * @return null
      */
     public function testExecuteOnSuccessMarksUser()
     {
@@ -621,8 +585,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing getNextStep()
-     *
-     * @return null
      */
     public function testGetNextStep()
     {
@@ -667,8 +629,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing getters and setters
-     *
-     * @return null
      */
     public function testGetBasket()
     {
@@ -684,8 +644,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get payment.
-     *
-     * @return null
      */
     public function testGetPayment()
     {
@@ -712,8 +670,6 @@ class OrderTest extends \OxidTestCase
     /**
      * Test if method for validating payment uses basket price
      * getted from \OxidEsales\Eshop\Application\Model\Basket::getPriceForPayment()
-     *
-     * @return null
      */
     public function testGetPayment_userBasketPriceForPayment()
     {
@@ -738,8 +694,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get execute function.
-     *
-     * @return null
      */
     public function testGetExecuteFnc()
     {
@@ -749,8 +703,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get order remark.
-     *
-     * @return null
      */
     public function testGetOrderRemark()
     {
@@ -761,8 +713,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get basket article.
-     *
-     * @return null
      */
     public function testGetBasketArticles()
     {
@@ -785,8 +735,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get delivery address.
-     *
-     * @return null
      */
     public function testGetDelAddress()
     {
@@ -795,6 +743,7 @@ class OrderTest extends \OxidTestCase
         $oDelAdress = oxNew('oxBase');
         $oDelAdress->init('oxaddress');
         $oDelAdress->setId('_testDelAddrId');
+
         $oDelAdress->oxaddress__oxuserid = new oxField('_testUserId', oxField::T_RAW);
         $oDelAdress->oxaddress__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
         $oDelAdress->save();
@@ -809,8 +758,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test get shipping set.
-     *
-     * @return null
      */
     public function testGetShipSet()
     {
@@ -831,8 +778,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test is confirm AGB active.
-     *
-     * @return null
      */
     public function testIsConfirmAGBActive()
     {
@@ -844,8 +789,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test is confirm AGB error.
-     *
-     * @return null
      */
     public function testIsConfirmAGBError()
     {
@@ -872,8 +815,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test is confirm AGB error.
-     *
-     * @return null
      */
     public function testIsConfirmAGBErrorWhenBasketHasIntangibleProducts()
     {
@@ -903,8 +844,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test is confirm AGB error.
-     *
-     * @return null
      */
     public function testIsConfirmAGBErrorWhenBasketHasDownloadableProducts()
     {
@@ -934,8 +873,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test show order button on top.
-     *
-     * @return null
      */
     public function testShowOrderButtonOnTop()
     {
@@ -963,8 +900,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Test oxViewConfig::getShowGiftWrapping() affection
-     *
-     * @return null
      */
     public function testIsWrappingIfWrappingIsOff()
     {
@@ -991,8 +926,8 @@ class OrderTest extends \OxidTestCase
 
         try {
             $oO->render();
-        } catch (Exception $e) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL(), $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL(), $exception->getMessage());
         }
     }
 
@@ -1011,15 +946,13 @@ class OrderTest extends \OxidTestCase
 
         try {
             $oO->render();
-        } catch (Exception $e) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $exception->getMessage());
         }
     }
 
     /**
      * Testing Order::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -1030,8 +963,6 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing address error getters
-     *
-     * @return null
      */
     public function testGetAddressError()
     {
@@ -1042,14 +973,13 @@ class OrderTest extends \OxidTestCase
 
     /**
      * Testing address encoding
-     *
-     * @return null
      */
     public function testGetDeliveryAddressMD5()
     {
         $oDelAddress = oxNew('oxAddress');
         $oDelAddress->init('oxaddress');
         $oDelAddress->setId('_testDelAddrId');
+
         $oDelAddress->oxaddress__oxcompany = new oxField("company");
         $oDelAddress->save();
 

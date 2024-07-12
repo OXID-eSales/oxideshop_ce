@@ -14,8 +14,6 @@ class UtilsUrlTest extends \OxidTestCase
 {
     /**
      * oxUtilsUrl::prepareCanonicalUrl() test case
-     *
-     * @return null
      */
     public function testPrepareCanonicalUrl()
     {
@@ -28,7 +26,7 @@ class UtilsUrlTest extends \OxidTestCase
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $sExpUrl = "shop.com/index.php?param1=value1&amp;bonusid=111";
-        $sExpUrl .= "&amp;lang={$iLang}";
+        $sExpUrl .= '&amp;lang=' . $iLang;
 
         $oUtils = oxNew('oxUtilsUrl');
         $this->assertEquals($sExpUrl, $oUtils->prepareCanonicalUrl("shop.com/index.php?param1=value1&amp;bonusid=111&amp;sid=1234"));
@@ -36,8 +34,6 @@ class UtilsUrlTest extends \OxidTestCase
 
     /**
      * oxUtilsUrl::cleanUrl() test case
-     *
-     * @return null
      */
     public function testCleanUrl()
     {
@@ -232,7 +228,7 @@ class UtilsUrlTest extends \OxidTestCase
         $oUtils = oxNew('oxUtilsUrl');
 
         $sShopUrl = $this->getConfig()->getShopUrl();
-        $this->assertEquals("$sShopUrl/anyUrl?lang=1", $oUtils->processUrl("$sShopUrl/anyUrl"));
+        $this->assertEquals($sShopUrl . '/anyUrl?lang=1', $oUtils->processUrl($sShopUrl . '/anyUrl'));
     }
 
     public function testProcessUrlWithLocalUrlSIDShouldBeAdded()
@@ -246,7 +242,7 @@ class UtilsUrlTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
         $sShopUrl = $this->getConfig()->getShopUrl();
 
-        $this->assertEquals("$sShopUrl/anyUrl?force_sid=SID", $oUtils->processUrl("$sShopUrl/anyUrl"));
+        $this->assertEquals($sShopUrl . '/anyUrl?force_sid=SID', $oUtils->processUrl($sShopUrl . '/anyUrl'));
     }
 
     public function testProcessUrlWithRelativeUrlShouldActLikeLocal()
@@ -309,8 +305,6 @@ class UtilsUrlTest extends \OxidTestCase
     /**
      * Test cases for oxUtilsUrl::cleanUrlParams()
      * URL cleanup check, remove duplicate GET parameters and clean &amp; and duplicate &
-     *
-     * @return null
      */
     public function testCleanUrlParams()
     {
@@ -323,8 +317,6 @@ class UtilsUrlTest extends \OxidTestCase
 
     /**
      * Test cases for oxUtilsUrl::processSeoUrl()
-     *
-     * @return null
      */
     // admin - should stay plain seo url - no session ids, no security tokens and shop parameter
     // - current SHOP host url
@@ -353,17 +345,13 @@ class UtilsUrlTest extends \OxidTestCase
 
     public function testGetCurrentUrl_dataProvider()
     {
-        $aData = [['', '', 'www.testshop.com', '', 'http://www.testshop.com'], ['', '', 'www.testshop.com:8080', '', 'http://www.testshop.com:8080'], ['', '', 'www.testshop.com', '/testFolder/index.php', 'http://www.testshop.com/testFolder/index.php'], ['', '', 'www.testshop.com', '/testFolder/index.php?lang=1', 'http://www.testshop.com/testFolder/index.php?lang=1'], ['1', '', 'www.testshop.com', '/testFolder/', 'https://www.testshop.com/testFolder/'], ['on', '', 'www.testshop.com', '/testFolder/index.php', 'https://www.testshop.com/testFolder/index.php'], ['', 'https', 'www.testshop.com', '/testFolder/index.php?lang=1', 'https://www.testshop.com/testFolder/index.php?lang=1']];
-
-        return $aData;
+        return [['', '', 'www.testshop.com', '', 'http://www.testshop.com'], ['', '', 'www.testshop.com:8080', '', 'http://www.testshop.com:8080'], ['', '', 'www.testshop.com', '/testFolder/index.php', 'http://www.testshop.com/testFolder/index.php'], ['', '', 'www.testshop.com', '/testFolder/index.php?lang=1', 'http://www.testshop.com/testFolder/index.php?lang=1'], ['1', '', 'www.testshop.com', '/testFolder/', 'https://www.testshop.com/testFolder/'], ['on', '', 'www.testshop.com', '/testFolder/index.php', 'https://www.testshop.com/testFolder/index.php'], ['', 'https', 'www.testshop.com', '/testFolder/index.php?lang=1', 'https://www.testshop.com/testFolder/index.php?lang=1']];
     }
 
     /**
      * oxUtilsUrl::getCurrentUrl() test case
      *
      * @dataProvider testGetCurrentUrl_dataProvider
-     *
-     * @return null
      */
     public function testGetCurrentUrl($sHttps, $sHttpXForwarded, $sHttpHost, $sRequestUri, $sResult)
     {

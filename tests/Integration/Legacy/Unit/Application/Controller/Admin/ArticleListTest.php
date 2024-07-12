@@ -24,8 +24,6 @@ class ArticleListTest extends \OxidTestCase
     /**
      * Test building sql where with specified "folder" param
      *  for oxarticles, oxorder, oxcontents tables
-     *
-     * @return null
      */
     public function testBuildWhereWithSpecifiedFolderParam()
     {
@@ -45,8 +43,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::Render() test case
-     *
-     * @return null
      */
     public function testRenderSelectingProductCategory()
     {
@@ -71,8 +67,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::Render() test case
-     *
-     * @return null
      */
     public function testRenderSelectingProductManufacturer()
     {
@@ -95,8 +89,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::Render() test case
-     *
-     * @return null
      */
     public function testRenderSelectingProductVendor()
     {
@@ -137,8 +129,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::buildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectStringCategory()
     {
@@ -149,7 +139,7 @@ class ArticleListTest extends \OxidTestCase
 
         $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
-        $sQ = str_replace(" from $sTable where 1 ", " from $sTable left join $sO2CView on $sTable.oxid = $sO2CView.oxobjectid where $sO2CView.oxcatnid = 'testCategory' and  1  and $sTable.oxparentid = '' ", $sQ);
+        $sQ = str_replace(sprintf(' from %s where 1 ', $sTable), sprintf(' from %s left join %s on %s.oxid = %s.oxobjectid where %s.oxcatnid = \'testCategory\' and  1  and %s.oxparentid = \'\' ', $sTable, $sO2CView, $sTable, $sO2CView, $sO2CView, $sTable), $sQ);
 
         $oView = oxNew('Article_List');
         $this->assertEquals($sQ, $oView->buildSelectString($oProduct));
@@ -157,8 +147,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::buildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectStringManufacturer()
     {
@@ -170,13 +158,11 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxmanufacturerid = 'testManufacturer'", $oView->buildSelectString($oProduct));
+        $this->assertEquals($sQ . sprintf(' and %s.oxparentid = \'\'  and %s.oxmanufacturerid = \'testManufacturer\'', $sTable, $sTable), $oView->buildSelectString($oProduct));
     }
 
     /**
      * Article_List::buildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectStringVendor()
     {
@@ -188,13 +174,11 @@ class ArticleListTest extends \OxidTestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . " and $sTable.oxparentid = ''  and $sTable.oxvendorid = 'testVendor'", $oView->buildSelectString($oProduct));
+        $this->assertEquals($sQ . sprintf(' and %s.oxparentid = \'\'  and %s.oxvendorid = \'testVendor\'', $sTable, $sTable), $oView->buildSelectString($oProduct));
     }
 
     /**
      * Article_List::BuildWhere() test case
-     *
-     * @return null
      */
     public function testBuildWhere()
     {
@@ -203,13 +187,11 @@ class ArticleListTest extends \OxidTestCase
         $sViewName = $tableViewNameGenerator->getViewName('oxarticles');
 
         $oView = oxNew('Article_List');
-        $this->assertEquals(["$sViewName.oxfolder" => "testFolder"], $oView->buildWhere());
+        $this->assertEquals([$sViewName . '.oxfolder' => "testFolder"], $oView->buildWhere());
     }
 
     /**
      * Article_List::buildSelectString() test case
-     *
-     * @return null
      */
     public function testBuildSelectString()
     {
@@ -226,8 +208,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Article_List::DeleteEntry() test case
-     *
-     * @return null
      */
     public function testDeleteEntry()
     {
@@ -249,8 +229,6 @@ class ArticleListTest extends \OxidTestCase
 
     /**
      * Test case for Article_List::getSearchFields()() getter
-     *
-     * @return null
      */
     public function testGetSearchFields()
     {

@@ -18,8 +18,6 @@ class SeoDecoderTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -45,8 +43,6 @@ class SeoDecoderTest extends \OxidTestCase
 
     /**
      * Test case for oxSeoDecoder::_addQueryString()
-     *
-     * @return null
      */
     public function testAddQueryString()
     {
@@ -103,11 +99,12 @@ class SeoDecoderTest extends \OxidTestCase
             $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, ['decodeSimpleUrl']);
             $oDecoder->expects($this->once())->method('decodeSimpleUrl')->with($this->equalTo('Cocktail-Shaker-ROCKET.html'))->will($this->returnValue('true'));
             $oDecoder->processSeoCall($sRequest, $sPath);
-        } catch (Exception $oEx) {
-            $this->assertEquals(123, $oEx->getCode(), 'Error executing "testProcessSeoCallTypeIUrl"" test');
+        } catch (Exception $exception) {
+            $this->assertEquals(123, $exception->getCode(), 'Error executing "testProcessSeoCallTypeIUrl"" test');
 
             return;
         }
+
         $this->fail('Error executing "testProcessSeoCallTypeIUrl"" test');
     }
 
@@ -277,14 +274,14 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb = oxDb::getDb();
 
         // inserting seo data
-        $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype ) values ( '{$sObjectId}', '" . md5(strtolower("de/$sNewSeoUrl")) . "', '{$iShopId}', '0', '{$sNewSeoUrl}', 'oxarticle' )");
-        $oDb->Execute("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( '{$sObjectId}', '" . md5(strtolower("$sOldSeoUrl")) . "', '{$iShopId}', '0' )");
+        $oDb->Execute(sprintf('insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype ) values ( \'%s\', \'', $sObjectId) . md5(strtolower('de/' . $sNewSeoUrl)) . sprintf('\', \'%s\', \'0\', \'%s\', \'oxarticle\' )', $iShopId, $sNewSeoUrl));
+        $oDb->Execute(sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( \'%s\', \'', $sObjectId) . md5(strtolower($sOldSeoUrl)) . sprintf('\', \'%s\', \'0\' )', $iShopId));
 
         $oDecoder = oxNew('oxSeoDecoder');
-        $this->assertEquals($sNewSeoUrl, $oDecoder->decodeOldUrl($this->getConfig()->getShopURL() . "$sOldSeoUrl"));
+        $this->assertEquals($sNewSeoUrl, $oDecoder->decodeOldUrl($this->getConfig()->getShopURL() . $sOldSeoUrl));
 
         // checking if oxhits value was incremented
-        $this->assertEquals(1, $oDb->getOne("select oxhits from oxseohistory where oxobjectid = '{$sObjectId}'"));
+        $this->assertEquals(1, $oDb->getOne(sprintf('select oxhits from oxseohistory where oxobjectid = \'%s\'', $sObjectId)));
     }
 
     public function testGetParams()
@@ -296,14 +293,15 @@ class SeoDecoderTest extends \OxidTestCase
         try {
             // this forces redirect to "/oxideshop/eshop/source/asd" + "/"
             $this->assertEquals("asd/", $oD->getParams("/oxideshop/eshop/source/asd", "/oxideshop/eshop/source/"));
-        } catch (Exception $oE) {
-            if ($oE->getCode() === 123) {
+        } catch (Exception $exception) {
+            if ($exception->getCode() === 123) {
                 $this->assertEquals("Admin-oxid/", $oD->getParams("/oxideshop/eshop/source/Admin-oxid/?pgNr=1", "/oxideshop/eshop/source/"));
                 $this->assertEquals("Admin-oxid/", $oD->getParams("/oxideshop/eshop/source/Admin-oxid/", "/oxideshop/eshop/source/"));
 
                 return;
             }
         }
+
         $this->fail('first assert should throw an exception');
     }
 
@@ -398,6 +396,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl1")) . "', 'iShopId', '0', 'seourl1', 'NOToxarticle', 'asd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'NOToxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'NOToxarticle', 'csd' )");
+
         $oDec = oxNew('oxSeoDecoder');
         $this->assertEquals('seourl1', $oDec->getSeoUrl('obid', 0, 'iShopId'));
     }
@@ -409,6 +408,7 @@ class SeoDecoderTest extends \OxidTestCase
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl1")) . "', 'iShopId', '0', 'seourl1', 'oxarticle', 'asd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl2")) . "', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )");
         $oDb->Execute("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '" . md5(strtolower("seourl3")) . "', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )");
+
         $oDec = oxNew('oxSeoDecoder');
         $this->assertEquals('seourl1', $oDec->getSeoUrl('obid', 0, 'iShopId'));
     }

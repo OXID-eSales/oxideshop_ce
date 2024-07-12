@@ -37,8 +37,6 @@ class SeoEncoderCategoryTest extends \OxidTestCase
 
     /**
      * oxSeoEncoderArticle::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriTag()
     {
@@ -59,6 +57,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
 
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testcategory');
+
         $oCategory->oxcategories__oxextlink = new oxField('http://www.delfi.lt/', oxField::T_RAW);
         $oCategory->oxcategories__oxtitle = new oxField('parent category', oxField::T_RAW);
         $oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
@@ -69,6 +68,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
 
         $oSubCategory = oxNew('oxCategory');
         $oSubCategory->setId('_testsubcategory');
+
         $oSubCategory->oxcategories__oxparentid = new oxField($oCategory->getId(), oxField::T_RAW);
         $oSubCategory->oxcategories__oxtitle = new oxField('sub category', oxField::T_RAW);
         $oSubCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
@@ -114,6 +114,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $categoryTree->buildTree(null);
         $categoryTree->rewind();
         $categoryTree->next();
+
         $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Fuer-Sie/' : 'Geschenke/';
         $this->assertEquals($this->getConfig()->getShopUrl() . $link, $categoryTree->current()->getLink());
     }
@@ -127,6 +128,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
 
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testcat');
+
         $oCategory->oxcategories__oxtitle = new oxField('Admin', oxField::T_RAW);
         $oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
@@ -273,28 +275,30 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         $object2Category->oxobject2category__oxobjectid = new oxField($articleId);
         $object2Category->oxobject2category__oxcatnid = new oxField($categoryId);
         $object2Category->save();
-        oxDb::getDb()->execute("insert into oxseo (oxobjectid, oxident, oxtype, oxexpired, oxparams) value ('{$articleId}', 'testArt', 'oxarticle', '0', '{$categoryId}')");
-        oxDb::getDb()->execute("insert into oxseo (oxobjectid, oxident, oxtype, oxexpired) value ('{$subCategoryId}', 'testCat', 'oxcategory', '0' )");
+        oxDb::getDb()->execute(sprintf('insert into oxseo (oxobjectid, oxident, oxtype, oxexpired, oxparams) value (\'%s\', \'testArt\', \'oxarticle\', \'0\', \'%s\')', $articleId, $categoryId));
+        oxDb::getDb()->execute(sprintf('insert into oxseo (oxobjectid, oxident, oxtype, oxexpired) value (\'%s\', \'testCat\', \'oxcategory\', \'0\' )', $subCategoryId));
 
-        $subCategoryArticleId = oxDb::getDb()->getOne("select oxobjectid from oxobject2category where OXCATNID = '$subCategoryId'");
+        $subCategoryArticleId = oxDb::getDb()->getOne(sprintf('select oxobjectid from oxobject2category where OXCATNID = \'%s\'', $subCategoryId));
         $article = oxNew('oxArticle');
         $article->load($subCategoryArticleId);
         $article->getLink();
 
-        $isExpired = oxDb::getDb()->getOne("select oxexpired from oxseo where oxtype = 'oxarticle' and oxparams = '{$categoryId}' and oxobjectid = '{$articleId}'");
+        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxparams = \'%s\' and oxobjectid = \'%s\'', $categoryId, $articleId));
         $this->assertEquals(0, (int) $isExpired);
         $category = oxNew('oxCategory');
         $category->load($categoryId);
+
         $encoder = oxNew('oxSeoEncoderCategory');
         $encoder->markRelatedAsExpired($category);
-        $isExpired = oxDb::getDb()->getOne("select oxexpired from oxseo where oxtype = 'oxarticle' and oxobjectid = '{$articleId}'");
+
+        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxobjectid = \'%s\'', $articleId));
         $this->assertEquals(1, (int) $isExpired);
-        $isExpired = oxDb::getDb()->getOne("select oxexpired from oxseo where oxtype = 'oxcategory' and oxobjectid = '{$subCategoryId}'");
+        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxcategory\' and oxobjectid = \'%s\'', $subCategoryId));
         $this->assertEquals(1, (int) $isExpired);
 
-        $isExpired = oxDb::getDb()->getOne("select oxexpired from oxseo where oxtype = 'oxarticle' and oxobjectid='$subCategoryArticleId'");
+        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxobjectid=\'%s\'', $subCategoryArticleId));
         $this->assertEquals(1, (int) $isExpired);
-        $count = oxDb::getDb()->getOne("select count(*) from oxseo where oxexpired=0 and oxtype = 'oxarticle' and oxobjectid='$subCategoryArticleId'");
+        $count = oxDb::getDb()->getOne(sprintf('select count(*) from oxseo where oxexpired=0 and oxtype = \'oxarticle\' and oxobjectid=\'%s\'', $subCategoryArticleId));
         $this->assertEquals(0, (int) $count);
     }
 
@@ -312,9 +316,9 @@ class SeoEncoderCategoryTest extends \OxidTestCase
                values
                    ( 'obj_art', '321', '{$sShopId}', '0', '', '', 'oxarticle', '0', '0', 'obj_id' )";
         $oDb->execute($sQ);
-        $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'obj_id', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( \'obj_id\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
-        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'obj_id', '132', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( \'obj_id\', \'132\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'obj_id'"));

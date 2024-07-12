@@ -18,8 +18,6 @@ class VoucherSerieGroupsTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Groups::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

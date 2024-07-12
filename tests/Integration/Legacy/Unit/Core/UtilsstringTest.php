@@ -14,10 +14,10 @@ class UtilsstringTest extends \OxidTestCase
     public function testPrepareCSVField()
     {
         $this->assertEquals('"blafoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("blafoo;wurst;suppe"));
-        $this->assertEquals('"bl""afoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("bl\"afoo;wurst;suppe"));
-        $this->assertEquals('"blafoo;wu"";rst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("blafoo;wu\";rst;suppe"));
+        $this->assertEquals('"bl""afoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField('bl"afoo;wurst;suppe'));
+        $this->assertEquals('"blafoo;wu"";rst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField('blafoo;wu";rst;suppe'));
         $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField(""));
-        $this->assertEquals('""""', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("\""));
+        $this->assertEquals('""""', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField('"'));
         $this->assertEquals('";"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField(";"));
     }
 

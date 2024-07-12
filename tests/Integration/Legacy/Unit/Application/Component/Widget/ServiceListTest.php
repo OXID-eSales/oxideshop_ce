@@ -15,8 +15,6 @@ class ServiceListTest extends \OxidTestCase
 
     /**
      * Testing oxwServiceList::render()
-     *
-     * @return null
      */
     public function testRender()
     {

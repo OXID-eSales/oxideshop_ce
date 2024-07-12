@@ -126,7 +126,6 @@ class ControllerClassNameResolverTest extends UnitTestCase
      */
     private function getResolver()
     {
-        $resolver = oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerMapProviderMock(), $this->getActiveModulesDataProviderBridgeMock());
-        return $resolver;
+        return oxNew(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $this->getShopControllerMapProviderMock(), $this->getActiveModulesDataProviderBridgeMock());
     }
 }

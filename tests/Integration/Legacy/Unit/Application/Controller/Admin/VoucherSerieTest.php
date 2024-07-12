@@ -15,8 +15,6 @@ class VoucherSerieTest extends \OxidTestCase
 
     /**
      * VoucherSerie::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

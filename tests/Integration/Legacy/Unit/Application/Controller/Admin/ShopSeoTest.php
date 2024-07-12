@@ -21,8 +21,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -32,8 +30,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Shop_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -41,6 +37,7 @@ class ShopSeoTest extends \OxidTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $shopId = 1;
         }
+
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sEditObjectId", $shopId);
         $this->assertEquals('shop_seo', $oView->render());
@@ -48,8 +45,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Shop_Seo::LoadActiveUrl() test case
-     *
-     * @return null
      */
     public function testLoadActiveUrl()
     {
@@ -67,6 +62,7 @@ class ShopSeoTest extends \OxidTestCase
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sActSeoObject", $sObjectId);
         $oView->loadActiveUrl($iShopId);
+
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -77,6 +73,7 @@ class ShopSeoTest extends \OxidTestCase
         //
         $oView->setNonPublicVar("_sActSeoObject", null);
         $oView->loadActiveUrl($iShopId);
+
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
@@ -87,8 +84,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Shop_Seo::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -109,19 +104,19 @@ class ShopSeoTest extends \OxidTestCase
             foreach ($aTasks as $sMethodName) {
                 $oView->expects($this->any())->method($sMethodName);
             }
+
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("encodeStaticUrls", $oExcp->getMessage(), "Error in Shop_Seo::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("encodeStaticUrls", $exception->getMessage(), "Error in Shop_Seo::save()");
 
             return;
         }
+
         $this->fail("Error in Shop_Seo::save()");
     }
 
     /**
      * Shop_Seo::ProcessUrls() test case
-     *
-     * @return null
      */
     public function testProcessUrls()
     {
@@ -143,8 +138,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Shop_Seo::CleanupUrl() test case
-     *
-     * @return null
      */
     public function testCleanupUrl()
     {
@@ -155,8 +148,6 @@ class ShopSeoTest extends \OxidTestCase
 
     /**
      * Shop_Seo::DropSeoIds() test case
-     *
-     * @return null
      */
     public function testDropSeoIds()
     {
@@ -167,18 +158,17 @@ class ShopSeoTest extends \OxidTestCase
         try {
             $oView = oxNew('Shop_Seo');
             $oView->dropSeoIds();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("markAsExpired", $oExcp->getMessage(), "error in Shop_Seo::dropSeoIds()");
+        } catch (Exception $exception) {
+            $this->assertEquals("markAsExpired", $exception->getMessage(), "error in Shop_Seo::dropSeoIds()");
 
             return;
         }
+
         $this->fail("error in Shop_Seo::dropSeoIds()");
     }
 
     /**
      * Shop_Seo::DeleteStaticUrl() test case
-     *
-     * @return null
      */
     public function testDeleteStaticUrl()
     {

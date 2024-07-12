@@ -38,14 +38,6 @@ class LangIntegrityTest extends \OxidTestCase
     protected $_sTheme = 'azure';
 
     /**
-     * @return string theme name
-     */
-    private function getThemeName()
-    {
-        return $this->_sTheme;
-    }
-
-    /**
      * @return string admin theme name
      */
     private function getAdminThemeName()
@@ -70,7 +62,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function providerTheme()
     {
-        return [[''], [$this->getThemeName()], [$this->getAdminThemeName()]];
+        return [[''], [$this->_sTheme], [$this->getAdminThemeName()]];
     }
 
     /**
@@ -80,7 +72,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function providerLangTheme()
     {
-        return [['de', ''], ['en', ''], ['de', $this->getThemeName()], ['en', $this->getThemeName()]];
+        return [['de', ''], ['en', ''], ['de', $this->_sTheme], ['en', $this->_sTheme]];
     }
 
     /**
@@ -90,7 +82,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function providerLangThemeFilename()
     {
-        return [['de', '', 'lang.php'], ['en', '', 'lang.php'], ['de', $this->getThemeName(), 'lang.php'], ['en', $this->getThemeName(), 'lang.php'], ['de', $this->getThemeName(), 'map.php'], ['en', $this->getThemeName(), 'map.php'], ['de', $this->getAdminThemeName(), 'lang.php'], ['en', $this->getAdminThemeName(), 'lang.php']];
+        return [['de', '', 'lang.php'], ['en', '', 'lang.php'], ['de', $this->_sTheme, 'lang.php'], ['en', $this->_sTheme, 'lang.php'], ['de', $this->_sTheme, 'map.php'], ['en', $this->_sTheme, 'map.php'], ['de', $this->getAdminThemeName(), 'lang.php'], ['en', $this->getAdminThemeName(), 'lang.php']];
     }
 
     /**
@@ -106,7 +98,7 @@ class LangIntegrityTest extends \OxidTestCase
         //charset. Because for our unittest it is important to know if a string is valid utf-8.
         array_unshift($aDetectOrder, 'UTF-8');
 
-        $sThemeName = $this->getThemeName();
+        $sThemeName = $this->_sTheme;
 
         return [['de', '', $aDetectOrder], ['en', '', $aDetectOrder], ['de', $sThemeName, $aDetectOrder], ['en', $sThemeName, $aDetectOrder], ['de', $this->getAdminThemeName(), $aDetectOrder], ['en', $this->getAdminThemeName(), $aDetectOrder]];
     }
@@ -122,7 +114,7 @@ class LangIntegrityTest extends \OxidTestCase
 
         //oxid lang encoding should stay on utf-8 because all language files are utf-8 encoded,
         //or at least converted to utf8
-        $this->assertEquals('UTF-8', $aLang['charset'], "non utf8 for language $sLanguage in theme $sTheme");
+        $this->assertEquals('UTF-8', $aLang['charset'], sprintf('non utf8 for language %s in theme %s', $sLanguage, $sTheme));
 
         $aFileContent = $this->getLangFileContents($sTheme, $sLanguage, '*.php');
 
@@ -134,33 +126,33 @@ class LangIntegrityTest extends \OxidTestCase
         $posOfIlligalChar = strpos((string) $sFileContent, "�");
         $this->assertTrue(
             $posOfIlligalChar === false,
-            "there is an unicode replacement character in file $sFileName in Line at $posOfIlligalChar"
+            sprintf('there is an unicode replacement character in file %s in Line at %s', $sFileName, $posOfIlligalChar)
         );
 
         //converting from utf-8 into utf-8 will fail if there is anything wrong with that string
         $this->assertEquals(
             iconv('UTF-8', 'UTF-8', (string) $sFileContent),
             $sFileContent,
-            "there is an invalid unicode character in file $sFileName "
+            sprintf('there is an invalid unicode character in file %s ', $sFileName)
         );
 
         $this->assertEquals(
             $aLang['charset'],
             mb_detect_encoding((string) $sFileContent, $aDetectOrder, true),
-            "File encoding does not equal charset specified inside the file $sFileName."
+            sprintf('File encoding does not equal charset specified inside the file %s.', $sFileName)
         );
 
         //converting utf8 to ISO-8859-1 to check if there are double encodings in the next step
         $sISO88591 = utf8_decode((string) $sFileContent);
         $this->assertFalse(
             mb_detect_encoding($sISO88591) === 'UTF-8',
-            "There are double UTF-8 encoding in file $sFileName."
+            sprintf('There are double UTF-8 encoding in file %s.', $sFileName)
         );
 
         $this->assertEquals(
             mb_ereg_replace("\t", "", (string) $sFileContent),
             $sFileContent,
-            "There are tab characters in file $sFileName."
+            sprintf('There are tab characters in file %s.', $sFileName)
         );
     }
 
@@ -170,8 +162,8 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testMapIdentsMatch()
     {
-        $aMapIdentsDE = $this->getMap($this->getThemeName(), 'de');
-        $aMapIdentsEN = $this->getMap($this->getThemeName(), 'en');
+        $aMapIdentsDE = $this->getMap($this->_sTheme, 'de');
+        $aMapIdentsEN = $this->getMap($this->_sTheme, 'en');
 
         if (($aMapIdentsDE == []) || ($aMapIdentsEN == [])) {
             $this->fail(' Map array is empty');
@@ -206,6 +198,7 @@ class LangIntegrityTest extends \OxidTestCase
         $aLangIndents = $this->getLanguageFileContents($sTheme, $sLang, '*.php');
 
         $aLangIndents = str_replace('&amp;', '(amp)', $aLangIndents);
+
         $aIncorrectIndents = [];
 
         foreach ($aLangIndents as $sValue) {
@@ -213,7 +206,8 @@ class LangIntegrityTest extends \OxidTestCase
                 $aIncorrectIndents[] = $sValue;
             }
         }
-        $this->assertEquals([], $aIncorrectIndents, "html entities found. Params: lang - $sLang, theme - $sTheme ");
+
+        $this->assertEquals([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s, theme - %s ', $sLang, $sTheme));
     }
 
     /**
@@ -223,8 +217,8 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testMapEquality()
     {
-        $aMapIdentsDE = $this->getMap($this->getThemeName(), 'de');
-        $aMapIdentsEN = $this->getMap($this->getThemeName(), 'en');
+        $aMapIdentsDE = $this->getMap($this->_sTheme, 'de');
+        $aMapIdentsEN = $this->getMap($this->_sTheme, 'en');
 
         if (($aMapIdentsDE == []) || ($aMapIdentsEN == [])) {
             $this->fail('array is empty');
@@ -235,6 +229,7 @@ class LangIntegrityTest extends \OxidTestCase
                 unset($aMapIdentsDE[$sKey]);
             }
         }
+
         $this->assertEquals([], $aMapIdentsDE, 'Maps are bound differently');
     }
 
@@ -245,7 +240,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testMapNoFrontendHtmlEntitiesAllowed($sLang)
     {
-        $aMapIndents = $this->getMap($this->getThemeName(), 'de');
+        $aMapIndents = $this->getMap($this->_sTheme, 'de');
 
         if ($aMapIndents == []) {
             $this->fail(' Map array is empty');
@@ -259,7 +254,8 @@ class LangIntegrityTest extends \OxidTestCase
                 $aIncorrectIndents[] = $sValue;
             }
         }
-        $this->assertEquals([], $aIncorrectIndents, "html entities found. Params: lang - $sLang ");
+
+        $this->assertEquals([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s ', $sLang));
     }
 
     /**
@@ -270,7 +266,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testMapConstantsInGeneric($sLang)
     {
-        $aMapIdents = $this->getMap($this->getThemeName(), $sLang);
+        $aMapIdents = $this->getMap($this->_sTheme, $sLang);
         if ([] == $aMapIdents) {
             $this->fail(' Map array is empty');
         }
@@ -279,6 +275,7 @@ class LangIntegrityTest extends \OxidTestCase
         if ([] == $aLangIdents) {
             $this->fail('Language array is empty');
         }
+
         $aIncorrectMap = [];
 
         foreach ($aMapIdents as $sIdent => $sValue) {
@@ -286,7 +283,8 @@ class LangIntegrityTest extends \OxidTestCase
                 $aIncorrectMap[$sIdent] = $sValue;
             }
         }
-        $this->assertEquals([], $aIncorrectMap, "missing translations in generic $sLang file");
+
+        $this->assertEquals([], $aIncorrectMap, sprintf('missing translations in generic %s file', $sLang));
     }
 
     /**
@@ -299,7 +297,7 @@ class LangIntegrityTest extends \OxidTestCase
     {
         $aIdents = $this->getLanguageFileContents($sTheme, $sLang);
 
-        $this->assertEquals([], $this->getConstantsWithColons($aIdents), "$sLang has colons. Theme - $sTheme");
+        $this->assertEquals([], $this->getConstantsWithColons($aIdents), sprintf('%s has colons. Theme - %s', $sLang, $sTheme));
     }
 
     /**
@@ -310,10 +308,10 @@ class LangIntegrityTest extends \OxidTestCase
     public function testThemeTranslationsNotEqualsGenericTranslations($sLang)
     {
         $aGenericTranslations = $this->getLanguageFileContents('', $sLang);
-        $aThemeTranslations = $this->getLanguageFileContents($this->getThemeName(), $sLang);
+        $aThemeTranslations = $this->getLanguageFileContents($this->_sTheme, $sLang);
         $aIntersectionsDE = array_intersect_key($aThemeTranslations, $aGenericTranslations);
 
-        $this->assertEquals(['charset' => 'UTF-8'], $aIntersectionsDE, "some $sLang translations in theme overrides generic translations");
+        $this->assertEquals(['charset' => 'UTF-8'], $aIntersectionsDE, sprintf('some %s translations in theme overrides generic translations', $sLang));
     }
 
     /**
@@ -322,11 +320,11 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function testDuplicates()
     {
-        $aThemeTranslationsDE = $this->getLanguageFileContents($this->getThemeName(), 'de');
+        $aThemeTranslationsDE = $this->getLanguageFileContents($this->_sTheme, 'de');
         $aRTranslationsDE = array_merge($aThemeTranslationsDE, $this->getLanguageFileContents('', 'de'));
         $aTranslationsDE = $this->stripLangParts($aRTranslationsDE);
 
-        $aThemeTranslationsEN = $this->getLanguageFileContents($this->getThemeName(), 'en');
+        $aThemeTranslationsEN = $this->getLanguageFileContents($this->_sTheme, 'en');
         $aRTranslationsEN = array_merge($aThemeTranslationsEN, $this->getLanguageFileContents('', 'en'));
         $aTranslationsEN = $this->stripLangParts($aRTranslationsEN);
 
@@ -347,11 +345,13 @@ class LangIntegrityTest extends \OxidTestCase
                 $aDuplicatesDE[$sKey] = $sTranslation;
             }
         }
+
         foreach ($aTranslationsEN as $sKey => $sTranslation) {
             if (in_array($sTranslation, $aDifferentKeysEN)) {
                 $aDuplicatesEN[$sKey] = $sTranslation;
             }
         }
+
         $aDuplicatesDE = $this->excludeByPattern($aDuplicatesDE);
         $aDuplicatesEN = $this->excludeByPattern($aDuplicatesEN);
         asort($aDuplicatesDE);
@@ -375,12 +375,13 @@ class LangIntegrityTest extends \OxidTestCase
                         if ($iCounter > 1) {
                             $sDuplicates .= "\r\n";
                         }
+
                         $iCounter = 0;
                         $sLineToPrint = '';
                     }
 
                     $iCounter++;
-                    $sLineToPrint .= "$sKey => " . $aRTranslationsDE[$sKey] . " | " . $aRTranslationsEN[$sKey] . "\r\n";
+                    $sLineToPrint .= $sKey . ' => ' . $aRTranslationsDE[$sKey] . " | " . $aRTranslationsEN[$sKey] . "\r\n";
                     if ($iCounter > 1) {
                         $sDuplicates .= $sLineToPrint;
                         $sLineToPrint = ''; // clearing line
@@ -414,9 +415,10 @@ class LangIntegrityTest extends \OxidTestCase
             $aExclusionPatterns[] = '\bPAGE_TITLE_[A-Z0-9_]*\b';
             $aExclusionPatterns[] = '\bDELIVERYTIME[A-Z0-9_]*\b';
         }
+
         $sSearch = '/' . implode("|", $aExclusionPatterns) . '/';
         $aExcludedConstants = [];
-        foreach ($aData as $sKey => $sValue) {
+        foreach (array_keys($aData) as $sKey) {
             preg_match($sSearch, $sKey, $match);
             if ($match[0]) {
                 $aExcludedConstants[] = $aData[$sKey];
@@ -438,9 +440,8 @@ class LangIntegrityTest extends \OxidTestCase
     private function stripLangParts($aTranslations)
     {
         $aLangParts = [':'];
-        $aStrippedTranslations = str_replace($aLangParts, '', $aTranslations);
 
-        return $aStrippedTranslations;
+        return str_replace($aLangParts, '', $aTranslations);
     }
 
     /**
@@ -496,7 +497,7 @@ class LangIntegrityTest extends \OxidTestCase
     private function getMap($sTheme, $sLang)
     {
         $aMap = [];
-        $sFile = $this->getConfig()->getAppDir() . "views/$sTheme/$sLang/map.php";
+        $sFile = $this->getConfig()->getAppDir() . sprintf('views/%s/%s/map.php', $sTheme, $sLang);
         if (is_readable($sFile)) {
             include $sFile;
         }
@@ -510,8 +511,6 @@ class LangIntegrityTest extends \OxidTestCase
      * @param string $sTheme    theme name
      * @param string $sLang     language abbreviation
      * @param string $sFileName lang file name
-     *
-     * @return array
      */
     private function getLanguageFileContents($sTheme, $sLang, $sFileName = "lang.php"): array
     {
@@ -531,9 +530,8 @@ class LangIntegrityTest extends \OxidTestCase
                 $aAllLang = array_merge($aAllLang, $aLang);
             }
         }
-        if ([] == $aAllLang) {
-            echo $sFile . ' cannot be read' . PHP_EOL;
-        }
+
+        echo $sFile . ' cannot be read' . PHP_EOL;
 
         return $aAllLang;
     }
@@ -560,78 +558,7 @@ class LangIntegrityTest extends \OxidTestCase
             $pathItems = [$applicationDirectory, 'views', $type, $languageCode, $fileName];
         }
 
-        $filePath = implode(DIRECTORY_SEPARATOR, $pathItems);
-
-        return $filePath;
-    }
-
-    /**
-     * Get theme templates.
-     *
-     * @param string $sTheme theme name
-     *
-     * @return array template file array
-     */
-    private function getTemplates($sTheme)
-    {
-        $sDir = $this->getConfig()->getAppDir() . "views/$sTheme/tpl";
-        $aTemplates = [];
-
-        if (is_dir($sDir)) {
-            $aDirs = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($sDir),
-                RecursiveIteratorIterator::SELF_FIRST
-            );
-
-            foreach ($aDirs as $oTplDir) {
-                if ($oTplDir->isDir()) {
-                    $aTemplates = array_merge($aTemplates, glob($oTplDir->getRealpath() . DIRECTORY_SEPARATOR . "*.tpl"));
-                }
-            }
-        }
-
-        return $aTemplates;
-    }
-
-    /**
-     * Get used language constants in given template set (parsing *.tpl files).
-     *
-     * @param string $sTheme theme name
-     *
-     * @return array
-     */
-    private function getTemplateConstants($sTheme = 'azure')
-    {
-        $aLang = [];
-
-        $aTemplates = $this->getTemplates($sTheme);
-
-        if (count($aTemplates) == 0) {
-            echo '_getTemplateConstants: Didn\'t find any templates.';
-        }
-
-        foreach ($aTemplates as $tpl) {
-            $sTpl = file_get_contents($tpl);
-            $sReg = '/oxmultilang +ident="([A-Z\_0-9]+)"/i';
-            preg_match_all($sReg, $sTpl, $aMatches);
-
-            foreach ($aMatches[1] as $sConst) {
-                $aLang[] = $sConst;
-            }
-
-            $sReg = '/"([A-Z\_0-9]+)"\|oxmultilangassign/i';
-            preg_match_all($sReg, $sTpl, $aMatches);
-
-            foreach ($aMatches[1] as $sConst) {
-                $aLang[] = $sConst;
-            }
-        }
-
-        if (count($aLang) == 0) {
-            echo '_getTemplateConstants: array is empty, check if directories are correctly set in the method.';
-        }
-
-        return array_unique($aLang);
+        return implode(DIRECTORY_SEPARATOR, $pathItems);
     }
 
     /**
@@ -641,7 +568,7 @@ class LangIntegrityTest extends \OxidTestCase
      */
     public function providerLanguageFilesForInvalidEncoding()
     {
-        return [['de', '', '*.php'], ['en', '', '*.php'], ['de', $this->getThemeName(), '*.php'], ['en', $this->getThemeName(), '*.php'], ['de', $this->getAdminThemeName(), '*.php'], ['en', $this->getAdminThemeName(), '*.php'], ['De', 'Setup', 'lang.php'], ['En', 'Setup', 'lang.php']];
+        return [['de', '', '*.php'], ['en', '', '*.php'], ['de', $this->_sTheme, '*.php'], ['en', $this->_sTheme, '*.php'], ['de', $this->getAdminThemeName(), '*.php'], ['en', $this->getAdminThemeName(), '*.php'], ['De', 'Setup', 'lang.php'], ['En', 'Setup', 'lang.php']];
     }
 
     /**
@@ -669,7 +596,7 @@ class LangIntegrityTest extends \OxidTestCase
                 //http://stackoverflow.com/questions/6723562/how-to-detect-malformed-utf-8-string-in-php
                 //http://unicode.org/faq/utf_bom.html
                 $isValidEncoding = mb_check_encoding($fileContent, 'UTF-8');
-                $errorMessage = "invalid utf8 encoding detected in $filePath";
+                $errorMessage = 'invalid utf8 encoding detected in ' . $filePath;
             } else {
                 $isInvalidEncoding = static::isUTF8CharacterPresentInContent($fileContent);
                 $isValidEncoding = !$isInvalidEncoding;
@@ -706,8 +633,8 @@ class LangIntegrityTest extends \OxidTestCase
     {
         $invalidFilePath = realpath($invalidFilePath);
 
-        $msg = <<<EOD
-UTF-8 characters were detected in "$invalidFilePath" which has "$declaredEncoding" encoding declared.
+        return <<<EOD
+UTF-8 characters were detected in "{$invalidFilePath}" which has "{$declaredEncoding}" encoding declared.
 This could be due to the following reasons:
 
 * The declared encoding within the `charset` key is wrong;
@@ -716,8 +643,6 @@ This could be due to the following reasons:
 
 Assert message:
 EOD;
-
-        return $msg;
     }
 
     /**
@@ -733,13 +658,13 @@ EOD;
     {
         $languageFiles = $this->getLangFileContents($type, $languageCode, $filePattern);
 
-        foreach ($languageFiles as $filePath => $fileContent) {
+        foreach (array_keys($languageFiles) as $filePath) {
             $languageTranslation = $this->getLanguageFileContents($type, $languageCode, $filePattern);
 
-            $isEncodingDeclared = $languageTranslation['charset'] ? true : false;
+            $isEncodingDeclared = (bool) $languageTranslation['charset'];
 
             $errorMessage = <<<EOD
-Language file "$filePath" has an undeclared `charset` value, this could be due to:
+Language file "{$filePath}" has an undeclared `charset` value, this could be due to:
 
 * The charset value being empty;
 * The charset value being missing.
@@ -771,7 +696,7 @@ EOD;
     {
         $languageFiles = $this->getLangFileContents($type, $languageCode, $filePattern);
 
-        foreach ($languageFiles as $filePath => $fileContent) {
+        foreach (array_keys($languageFiles) as $filePath) {
             $languageTranslation = $this->getLanguageFileContents($type, $languageCode, $filePattern);
 
             $declaredEncoding = strtolower((string) $languageTranslation['charset']);
@@ -779,7 +704,7 @@ EOD;
             $isValidEncoding = in_array($declaredEncoding, $validEncodings);
 
             $errorMessage = <<<EOD
-Language file "$filePath" has declared an invalid `charset` value: "$declaredEncoding".
+Language file "{$filePath}" has declared an invalid `charset` value: "{$declaredEncoding}".
 
 Language file with an invalid `charset` value is considered as invalid!
 
@@ -802,7 +727,7 @@ EOD;
      */
     public function providerAllLanguageFilesForExistence()
     {
-        $themeName = $this->getThemeName();
+        $themeName = $this->_sTheme;
 
         return [
             // LanguageCode, Type, FileName
@@ -869,8 +794,8 @@ EOD;
 
         $missingFilePath = realpath($missingFilePath);
 
-        $errorMessage = <<<EOD
-The file "$missingFilePath" was not found. This could be due to the following reasons:
+        return <<<EOD
+The file "{$missingFilePath}" was not found. This could be due to the following reasons:
 
 * The file was renamed;
 * The file was removed;
@@ -885,12 +810,10 @@ If the change of file move/rename was intentional, don't forget to:
 * Double check the lower and UPPER case differences in path elements.
 
 The whole list of files that are being checked:
-$filePathsMessage
+{$filePathsMessage}
 
 Assert message:
 EOD;
-
-        return $errorMessage;
     }
 
     /**
@@ -919,23 +842,19 @@ EOD;
         $pathGlobItems = array_map(function ($pathItem) {
             $firstLetter = substr($pathItem, 0, 1);
 
-            if ($firstLetter) {
+            if ($firstLetter !== '' && $firstLetter !== '0') {
                 // Convert 'word' to '[Ww]ord'
                 $begin = '[' . strtoupper($firstLetter) . strtolower($firstLetter) . ']';
                 $end = substr($pathItem, 1);
-                $result = $begin . $end;
-            } else {
-                $result = '';
+                return $begin . $end;
             }
 
-            return $result;
+            return '';
         }, $pathItems);
 
         $globPath = implode(DIRECTORY_SEPARATOR, $pathGlobItems);
         $searchResultItems = glob($globPath);
 
-        $isPathMatch = ($searchResultItems !== false) && ($searchResultItems[0] === $filePath);
-
-        return $isPathMatch;
+        return ($searchResultItems !== false) && ($searchResultItems[0] === $filePath);
     }
 }

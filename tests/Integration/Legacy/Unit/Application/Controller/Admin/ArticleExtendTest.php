@@ -23,8 +23,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -34,8 +32,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -57,8 +53,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -70,18 +64,17 @@ class ArticleExtendTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Extend');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Extend::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Extend::save()");
 
             return;
         }
+
         $this->fail("error in Article_Extend::save()");
     }
 
     /**
      * Article_Extend::Save() test case
-     *
-     * @return null
      */
     public function testSaveMissingMediaDescription()
     {
@@ -98,8 +91,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::Save() test case
-     *
-     * @return null
      */
     public function testSaveMissingMediaUrlAndFile()
     {
@@ -118,8 +109,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::Save() test case
-     *
-     * @return null
      */
     public function testSaveUnableToMoveUploadedFile()
     {
@@ -144,8 +133,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::Save() test case
-     *
-     * @return null
      */
     public function testSaveMediaFileUpload()
     {
@@ -170,18 +157,17 @@ class ArticleExtendTest extends \OxidTestCase
         // testing..
         try {
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("oxmediaurl.save", $oExcp->getMessage(), "error in Article_Extend::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("oxmediaurl.save", $exception->getMessage(), "error in Article_Extend::save()");
 
             return;
         }
+
         $this->fail("error in Article_Extend::save()");
     }
 
     /**
      * Article_Extend::Save() test case when demoShop = true and upload file
-     *
-     * @return null
      */
     public function testSaveDemoShopFileUpload()
     {
@@ -206,8 +192,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::DeleteMedia() test case
-     *
-     * @return null
      */
     public function testDeleteMedia()
     {
@@ -229,8 +213,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::AddDefaultValues() test case
-     *
-     * @return null
      */
     public function testAddDefaultValues()
     {
@@ -243,8 +225,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Article_Extend::UpdateMedia() test case
-     *
-     * @return null
      */
     public function testUpdateMedia()
     {
@@ -263,8 +243,6 @@ class ArticleExtendTest extends \OxidTestCase
 
     /**
      * Test case for Article_Extend::getUnitsArray()
-     *
-     * @return null
      */
     public function testGetUnitsArray()
     {

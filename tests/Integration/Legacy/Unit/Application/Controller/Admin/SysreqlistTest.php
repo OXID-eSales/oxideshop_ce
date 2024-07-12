@@ -15,8 +15,6 @@ class SysreqlistTest extends \OxidTestCase
 
     /**
      * sysreq_list::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

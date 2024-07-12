@@ -44,8 +44,11 @@ class oxDeliveryListTestClass extends oxdeliverylist
 class oxdeliverylistTest_forGetList extends oxdeliverylist
 {
     public $sFilterUser;
+
     public $sFilterCountryId;
+
     public $sFilterDeliverySet;
+
     public $sUserId;
 
     public function getActiveDeliveryList($oUser = null, $sCountryId = null, $sDelSet = null)
@@ -99,6 +102,7 @@ class DeliverylistTest extends \OxidTestCase
         //set default user
         $this->_oUser = oxNew("oxUser");
         $this->_oUser->setId('_testUserId');
+
         $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
         $this->_oUser->save();
 
@@ -106,6 +110,7 @@ class DeliverylistTest extends \OxidTestCase
         $oAdress = oxNew('oxBase');
         $oAdress->init('oxaddress');
         $oAdress->setId('_testAddressId');
+
         $oAdress->oxaddress__oxuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
         $oAdress->oxaddress__oxaddressuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
         $oAdress->oxaddress__oxcountryid = new oxField('a7c40f6323c4bfb36.59919433', oxField::T_RAW); //italien
@@ -116,6 +121,7 @@ class DeliverylistTest extends \OxidTestCase
         $oO2Group = oxNew('oxBase');
         $oO2Group->init('oxobject2group');
         $oO2Group->setId('_testO2GId');
+
         $oO2Group->oxobject2group__oxobjectid = new oxField('_testUserId', oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
@@ -123,6 +129,7 @@ class DeliverylistTest extends \OxidTestCase
         // delivery set
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId('_testDeliverySetId');
+
         $oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet->save();
         $this->_aDeliverySets[] = $oDelSet;
@@ -130,6 +137,7 @@ class DeliverylistTest extends \OxidTestCase
         // 1. creating category for test
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('_testCategoryId');
+
         $oCategory->oxcategories__oxtitle = new oxField('_testCategoryTitle', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
         $oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
@@ -234,6 +242,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oDelList = oxNew('oxDeliveryList');
         $oDelList = $oDelList->getDeliveryList($oBasket, $oUser);
+
         $iListCOunt = count($oDelList);
 
         // list must contain at least one item
@@ -245,6 +254,7 @@ class DeliverylistTest extends \OxidTestCase
         $oGarbage = oxNew('oxBase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery1");
+
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId());
         $oGarbage->oxobject2delivery__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxcountry");
@@ -253,6 +263,7 @@ class DeliverylistTest extends \OxidTestCase
         $oGarbage = oxNew('oxBase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery2");
+
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId());
         $oGarbage->oxobject2delivery__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxuser");
@@ -261,6 +272,7 @@ class DeliverylistTest extends \OxidTestCase
         $oGarbage = oxNew('oxBase');
         $oGarbage->init("oxobject2delivery");
         $oGarbage->setId("_testoxobject2delivery3");
+
         $oGarbage->oxobject2delivery__oxdeliveryid = new oxField($oDelivery->getId());
         $oGarbage->oxobject2delivery__oxobjectid = new oxField("yyy");
         $oGarbage->oxobject2delivery__oxtype = new oxField("oxgroups");
@@ -268,6 +280,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oDelList = oxNew('oxDeliveryList');
         $oDelList = $oDelList->getDeliveryList($oBasket, $oUser);
+
         $iNewListCount = count($oDelList);
 
         // list must contain at least one item
@@ -282,6 +295,7 @@ class DeliverylistTest extends \OxidTestCase
                 break;
             }
         }
+
         $this->assertTrue($blFound, "Error, delivery not found");
     }
 
@@ -290,6 +304,7 @@ class DeliverylistTest extends \OxidTestCase
         // test delivery
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testdelivery');
+
         $oDelivery->oxdelivery__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -373,6 +388,7 @@ class DeliverylistTest extends \OxidTestCase
         $oAddress = oxNew('oxBase');
         $oAddress->init('oxaddress');
         $oAddress->load('_testAddressId');
+
         $oAddress->oxaddress__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW); //germany
         $oAddress->save();
         $oList = $this->getProxyClass('oxDeliveryList');
@@ -489,17 +505,17 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = $tableViewNameGenerator->getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
-                if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
+        $sQ = sprintf('select %s.* from ( select distinct %s.* from %s left join oxdel2delset on oxdel2delset.oxdelid=%s.oxid where ', $sTable, $sTable, $sTable, $sTable) . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by {$sTable}.oxsort asc ) as {$sTable} where (
+                if(EXISTS(select 1 from oxobject2delivery, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     0,
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sUserTable where $sUserTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2delivery, {$sUserTable} where {$sUserTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
                     0,
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2delivery, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort asc ";
+            ) order by {$sTable}.oxsort asc ";
 
         $sTestSQ = $oDList->getFilterSelect(null, null, null);
 
@@ -525,17 +541,17 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = $tableViewNameGenerator->getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
-                if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
+        $sQ = sprintf('select %s.* from ( select distinct %s.* from %s left join oxdel2delset on oxdel2delset.oxdelid=%s.oxid where ', $sTable, $sTable, $sTable, $sTable) . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by {$sTable}.oxsort asc ) as {$sTable} where (
+                if(EXISTS(select 1 from oxobject2delivery, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sUserTable where $sUserTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2delivery, {$sUserTable} where {$sUserTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
                     0,
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2delivery, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort asc ";
+            ) order by {$sTable}.oxsort asc ";
 
         $sTestSQ = $oDList->getFilterSelect(null, '_testCountryId', null);
 
@@ -563,17 +579,17 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = $tableViewNameGenerator->getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
-                if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
+        $sQ = sprintf('select %s.* from ( select distinct %s.* from %s left join oxdel2delset on oxdel2delset.oxdelid=%s.oxid where ', $sTable, $sTable, $sTable, $sTable) . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by {$sTable}.oxsort asc ) as {$sTable} where (
+                if(EXISTS(select 1 from oxobject2delivery, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sUserTable where $sUserTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID='_testUserId'),
+                if(EXISTS(select 1 from oxobject2delivery, {$sUserTable} where {$sUserTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID='_testUserId'),
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in ('oxidadmin') ),
+                if(EXISTS(select 1 from oxobject2delivery, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in ('oxidadmin') ),
                     1)
-            ) order by $sTable.oxsort asc ";
+            ) order by {$sTable}.oxsort asc ";
 
         $sTestSQ = $oDList->getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
@@ -603,17 +619,17 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = $tableViewNameGenerator->getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
-                if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
+        $sQ = sprintf('select %s.* from ( select distinct %s.* from %s left join oxdel2delset on oxdel2delset.oxdelid=%s.oxid where ', $sTable, $sTable, $sTable, $sTable) . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by {$sTable}.oxsort asc ) as {$sTable} where (
+                if(EXISTS(select 1 from oxobject2delivery, {$sCountryTable} where {$sCountryTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sUserTable where $sUserTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
-                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID='_testUserId'),
+                if(EXISTS(select 1 from oxobject2delivery, {$sUserTable} where {$sUserTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' LIMIT 1),
+                    EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID='_testUserId'),
                     1) &&
-                if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
+                if(EXISTS(select 1 from oxobject2delivery, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid={$sTable}.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort asc ";
+            ) order by {$sTable}.oxsort asc ";
 
         $sTestSQ = $oDList->getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
@@ -636,6 +652,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -661,6 +678,7 @@ class DeliverylistTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId2');
+
         $oDelivery->oxdelivery__oxfinalize = new oxField(1, oxField::T_RAW);
         $oDelivery->save();
 
@@ -669,6 +687,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -697,6 +716,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -710,6 +730,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(true);
+
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
         $this->assertEquals(4, count($aList));
@@ -735,6 +756,7 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testArticleId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
@@ -746,6 +768,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -776,6 +799,7 @@ class DeliverylistTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testArticleId1');
+
         $oArticle->oxarticles__oxparentid = new oxField('_testArticleId2', oxField::T_RAW);
         $oArticle->save();
 
@@ -783,6 +807,7 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testArticleId2', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
@@ -794,6 +819,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -825,6 +851,7 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testArticleId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
@@ -836,6 +863,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -867,6 +895,7 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testCategoryId', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
@@ -878,6 +907,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -891,6 +921,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(false);
+
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
         $this->assertEquals(3, count($aList));
@@ -911,16 +942,19 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testCategoryId', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
         $oObject2Delivery->save();
         $oObject2Delivery->setId('_testO2DelId2');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId2', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('1126', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxarticles', oxField::T_RAW);
         $oObject2Delivery->save();
         $oObject2Delivery->setId('_testO2DelId3');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId3', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('112asd6', oxField::T_RAW);
         $oObject2Delivery->save();
@@ -934,6 +968,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
         $_oBasketItem2->setPrice($oPrice);
 
@@ -947,6 +982,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(false);
+
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
         $this->assertEquals(2, count($aList));
@@ -969,6 +1005,7 @@ class DeliverylistTest extends \OxidTestCase
         $oObject2Delivery = oxNew('oxBase');
         $oObject2Delivery->init('oxobject2delivery');
         $oObject2Delivery->setId('_testO2DelId1');
+
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField('_testDeliveryId1', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField('_testCategoryId', oxField::T_RAW);
         $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxcategories', oxField::T_RAW);
@@ -980,6 +1017,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;
@@ -1008,6 +1046,7 @@ class DeliverylistTest extends \OxidTestCase
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load('_testDeliveryId1');
+
         $oDelivery->oxdelivery__oxparamend = new oxField(1024, oxField::T_RAW);
         $oDelivery->save();
 
@@ -1020,6 +1059,7 @@ class DeliverylistTest extends \OxidTestCase
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
+
         $basketItem->setPrice($oPrice);
 
         $aBasketContents[] = $basketItem;

@@ -54,8 +54,9 @@ class SimpleXmlTest extends \OxidTestCase
         $oTestObject->modules = oxNew('StdClass');
         $oTestObject->modules->module = [$oModule1, $oModule2, $oModule3];
 
-        $oExpectedXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><testXml/>");
+        $oExpectedXml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><testXml/>');
         $oExpectedXml->addChild("title", "TestTitle");
+
         $modules = $oExpectedXml->addChild("modules");
 
         $module = $modules->addChild("module");

@@ -18,8 +18,6 @@ class AdminLinksMainTest extends \OxidTestCase
 
     /**
      * Adminlinks_Main::render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -38,8 +36,6 @@ class AdminLinksMainTest extends \OxidTestCase
 
     /**
      * Adminlinks_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderWithExistingLink()
     {
@@ -57,8 +53,6 @@ class AdminLinksMainTest extends \OxidTestCase
 
     /**
      * Adminlinks_Main::save() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -67,6 +61,7 @@ class AdminLinksMainTest extends \OxidTestCase
         // testing..
         $oView = oxNew('Adminlinks_main');
         $oView->saveinnlang();
+
         $aViewData = $oView->getViewData();
 
         $this->assertNotNull($aViewData["updatelist"]);
@@ -75,8 +70,6 @@ class AdminLinksMainTest extends \OxidTestCase
 
     /**
      * Adminlinks_Main::save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -85,6 +78,7 @@ class AdminLinksMainTest extends \OxidTestCase
         // testing..
         $oView = oxNew('Adminlinks_main');
         $oView->save();
+
         $aViewData = $oView->getViewData();
 
         $this->assertNotNull($aViewData["updatelist"]);

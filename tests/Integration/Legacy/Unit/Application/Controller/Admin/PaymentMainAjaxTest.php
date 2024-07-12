@@ -17,8 +17,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -38,8 +36,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -54,8 +50,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -65,8 +59,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -79,8 +71,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -93,8 +83,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -109,8 +97,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::removePayGroup() test case
-     *
-     * @return null
      */
     public function testRemovePayGroup()
     {
@@ -125,8 +111,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::removePayGroup() test case
-     *
-     * @return null
      */
     public function testRemovePayGroupAll()
     {
@@ -143,15 +127,13 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::addPayGroup() test case
-     *
-     * @return null
      */
     public function testAddPayGroup()
     {
         $sSynchoxid = '_testPayAdd';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2group where oxobjectid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, ["getActionIds"]);
@@ -163,8 +145,6 @@ class PaymentMainAjaxTest extends \OxidTestCase
 
     /**
      * PaymentMainAjax::addPayGroup() test case
-     *
-     * @return null
      */
     public function testAddPayGroupAll()
     {
@@ -175,7 +155,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxgroups_de.oxid) from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )");
 
-        $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2group where oxobjectid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, ["getActionIds"]);

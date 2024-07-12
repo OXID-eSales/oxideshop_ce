@@ -19,8 +19,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -153,31 +151,31 @@ class VoucherExcludeTest extends \OxidTestCase
         INSERT INTO `oxvoucherseries`
         (`OXID`, {$sShopFields}, `OXSERIENR`, `OXSERIEDESCRIPTION`, `OXDISCOUNT`, `OXDISCOUNTTYPE`, `OXMINIMUMVALUE`, `OXCALCULATEONCE`)
         VALUES ";
-        $sValuesPart = "('test_s0',$sShopValues,'s0','$$$ A','50','absolute','0',0);";
+        $sValuesPart = sprintf('(\'test_s0\',%d,\'s0\',\'$$$ A\',\'50\',\'absolute\',\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_x1',$sShopValues,'x1','$$$ A @@','1000','absolute','0',0);";
+        $sValuesPart = sprintf('(\'test_x1\',%d,\'x1\',\'$$$ A @@\',\'1000\',\'absolute\',\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_x2',$sShopValues,'x2','$$$ C @@','1000','absolute','0',0);";
+        $sValuesPart = sprintf('(\'test_x2\',%d,\'x2\',\'$$$ C @@\',\'1000\',\'absolute\',\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_x3',$sShopValues,'x3','$$$ A ##','1000','absolute','0',1);";
-        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-
-        $sValuesPart = "('test_s1',$sShopValues,'s1','$$$ A @@','10','absolute','0',0);";
-        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s2',$sShopValues,'s2','$$$ A ##','20','absolute','0',1);";
-        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s3',$sShopValues,'s3','$$$ C @@','30','absolute','0',0);";
-        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s4',$sShopValues,'s4','$$$ C @@','40','absolute','0',0);";
+        $sValuesPart = sprintf('(\'test_x3\',%d,\'x3\',\'$$$ A ##\',\'1000\',\'absolute\',\'0\',1);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
 
-        $sValuesPart = "('test_s5',$sShopValues,'s5','%%% A @@','10','percent' ,'0',0);";
+        $sValuesPart = sprintf('(\'test_s1\',%d,\'s1\',\'$$$ A @@\',\'10\',\'absolute\',\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s6',$sShopValues,'s6','%%% A ##','20','percent' ,'0',1);";
+        $sValuesPart = sprintf('(\'test_s2\',%d,\'s2\',\'$$$ A ##\',\'20\',\'absolute\',\'0\',1);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s7',$sShopValues,'s7','%%% C @@','30','percent' ,'0',0);";
+        $sValuesPart = sprintf('(\'test_s3\',%d,\'s3\',\'$$$ C @@\',\'30\',\'absolute\',\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
-        $sValuesPart = "('test_s8',$sShopValues,'s8','%%% C @@','40','percent' ,'0',0);";
+        $sValuesPart = sprintf('(\'test_s4\',%d,\'s4\',\'$$$ C @@\',\'40\',\'absolute\',\'0\',0);', $sShopValues);
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+
+        $sValuesPart = sprintf('(\'test_s5\',%d,\'s5\',\'%%%%%% A @@\',\'10\',\'percent\' ,\'0\',0);', $sShopValues);
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = sprintf('(\'test_s6\',%d,\'s6\',\'%%%%%% A ##\',\'20\',\'percent\' ,\'0\',1);', $sShopValues);
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = sprintf('(\'test_s7\',%d,\'s7\',\'%%%%%% C @@\',\'30\',\'percent\' ,\'0\',0);', $sShopValues);
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = sprintf('(\'test_s8\',%d,\'s8\',\'%%%%%% C @@\',\'40\',\'percent\' ,\'0\',0);', $sShopValues);
         $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
 
         $sInsertVouchers = "
@@ -204,28 +202,28 @@ class VoucherExcludeTest extends \OxidTestCase
         INSERT INTO `oxarticles`
         (`OXID`, {$sShopFields}, `OXACTIVE`, `OXTITLE`, `OXPRICE`, `OXSTOCK`)
         VALUES ";
-        $sValuesPart = "('test_a0',$sShopValues,'1','a0','1' ,100);";
+        $sValuesPart = sprintf('(\'test_a0\',%d,\'1\',\'a0\',\'1\' ,100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
-        $sValuesPart = "('test_a1',$sShopValues,'1','a1','10',100);";
+        $sValuesPart = sprintf('(\'test_a1\',%d,\'1\',\'a1\',\'10\',100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
-        $sValuesPart = "('test_a2',$sShopValues,'1','a2','20',100);";
+        $sValuesPart = sprintf('(\'test_a2\',%d,\'1\',\'a2\',\'20\',100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
-        $sValuesPart = "('test_a3',$sShopValues,'1','a3','30',100);";
+        $sValuesPart = sprintf('(\'test_a3\',%d,\'1\',\'a3\',\'30\',100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
-        $sValuesPart = "('test_a4',$sShopValues,'1','a4','40',100);";
+        $sValuesPart = sprintf('(\'test_a4\',%d,\'1\',\'a4\',\'40\',100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
-        $sValuesPart = "('test_a5',$sShopValues,'1','a5','50',100);";
+        $sValuesPart = sprintf('(\'test_a5\',%d,\'1\',\'a5\',\'50\',100);', $sShopValues);
         $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
 
         $sInsertCategoriesPart = "
         INSERT INTO `oxcategories`
         (`OXID`, {$sShopFields}, `OXACTIVE`, `OXTITLE`)
         VALUES ";
-        $sValuesPart = "('test_c0',$sShopValues,'1','c0');";
+        $sValuesPart = sprintf('(\'test_c0\',%d,\'1\',\'c0\');', $sShopValues);
         $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
-        $sValuesPart = "('test_c1',$sShopValues,'1','c1');";
+        $sValuesPart = sprintf('(\'test_c1\',%d,\'1\',\'c1\');', $sShopValues);
         $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
-        $sValuesPart = "('test_c2',$sShopValues,'1','c2');";
+        $sValuesPart = sprintf('(\'test_c2\',%d,\'1\',\'c2\');', $sShopValues);
         $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
 
         $sInsertCategoryRelationsPart = "
@@ -275,70 +273,70 @@ class VoucherExcludeTest extends \OxidTestCase
         INSERT INTO `oxorder`
         (`OXID`, `OXSHOPID`, `OXUSERID`, `OXORDERDATE`,`OXORDERNR`, `OXTOTALNETSUM`,`OXTOTALBRUTSUM`,`OXVOUCHERDISCOUNT`,`OXTOTALORDERSUM`, `OXCURRENCY`, `OXCURRATE`, `OXLANG`)
         VALUES
-        ('test_o1',$sShopId,'oxdefaultadmin',NOW(),1001,'751','751','100','651','EUR','1', '0'),
-        ('test_o2',$sShopId,'oxdefaultadmin',NOW(),1002,'751','751','30' ,'721','EUR','1', '0'),
-        ('test_o3',$sShopId,'oxdefaultadmin',NOW(),1003,'551','551','30' ,'521','EUR','1', '0'),
-        ('test_o4',$sShopId,'oxdefaultadmin',NOW(),1004,'501','501','40' ,'461','EUR','1', '0'),
-        ('test_o5',$sShopId,'oxdefaultadmin',NOW(),1005,'751','751','15' ,'736','EUR','1', '0'),
-        ('test_o6',$sShopId,'oxdefaultadmin',NOW(),1006,'751','751','6'  ,'745','EUR','1', '0'),
-        ('test_o7',$sShopId,'oxdefaultadmin',NOW(),1007,'551','551','24' ,'527','EUR','1', '0'),
-        ('test_o8',$sShopId,'oxdefaultadmin',NOW(),1008,'501','501','28' ,'473','EUR','1', '0');";
+        ('test_o1',{$sShopId},'oxdefaultadmin',NOW(),1001,'751','751','100','651','EUR','1', '0'),
+        ('test_o2',{$sShopId},'oxdefaultadmin',NOW(),1002,'751','751','30' ,'721','EUR','1', '0'),
+        ('test_o3',{$sShopId},'oxdefaultadmin',NOW(),1003,'551','551','30' ,'521','EUR','1', '0'),
+        ('test_o4',{$sShopId},'oxdefaultadmin',NOW(),1004,'501','501','40' ,'461','EUR','1', '0'),
+        ('test_o5',{$sShopId},'oxdefaultadmin',NOW(),1005,'751','751','15' ,'736','EUR','1', '0'),
+        ('test_o6',{$sShopId},'oxdefaultadmin',NOW(),1006,'751','751','6'  ,'745','EUR','1', '0'),
+        ('test_o7',{$sShopId},'oxdefaultadmin',NOW(),1007,'551','551','24' ,'527','EUR','1', '0'),
+        ('test_o8',{$sShopId},'oxdefaultadmin',NOW(),1008,'501','501','28' ,'473','EUR','1', '0');";
 
         $sInsertOrderArticles = "
         INSERT INTO `oxorderarticles`
         (`OXID`, `OXORDERID`,`OXARTID`,`OXAMOUNT`, `OXNETPRICE`,`OXBRUTPRICE`, `OXVATPRICE`, `OXVAT`, `OXPRICE`,`OXBPRICE`,`OXNPRICE`, `OXORDERSHOPID`)
         VALUES
-        ('test_i10','test_o1','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i11','test_o1','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i12','test_o1','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i13','test_o1','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i14','test_o1','test_a4','5','200','200','0','0','40','40','40',$sShopId),
-        ('test_i15','test_o1','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i10','test_o1','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i11','test_o1','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i12','test_o1','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i13','test_o1','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i14','test_o1','test_a4','5','200','200','0','0','40','40','40',{$sShopId}),
+        ('test_i15','test_o1','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i20','test_o2','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i21','test_o2','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i22','test_o2','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i23','test_o2','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i24','test_o2','test_a4','5','200','200','0','0','40','40','40',$sShopId),
-        ('test_i25','test_o2','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i20','test_o2','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i21','test_o2','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i22','test_o2','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i23','test_o2','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i24','test_o2','test_a4','5','200','200','0','0','40','40','40',{$sShopId}),
+        ('test_i25','test_o2','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i30','test_o3','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i31','test_o3','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i32','test_o3','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i33','test_o3','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i35','test_o3','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i30','test_o3','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i31','test_o3','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i32','test_o3','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i33','test_o3','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i35','test_o3','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i40','test_o4','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i41','test_o4','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i42','test_o4','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i43','test_o4','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i44','test_o4','test_a4','5','200','200','0','0','40','40','40',$sShopId),
+        ('test_i40','test_o4','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i41','test_o4','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i42','test_o4','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i43','test_o4','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i44','test_o4','test_a4','5','200','200','0','0','40','40','40',{$sShopId}),
 
-        ('test_i50','test_o5','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i51','test_o5','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i52','test_o5','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i53','test_o5','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i54','test_o5','test_a4','5','200','200','0','0','40','40','40',$sShopId),
-        ('test_i55','test_o5','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i50','test_o5','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i51','test_o5','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i52','test_o5','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i53','test_o5','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i54','test_o5','test_a4','5','200','200','0','0','40','40','40',{$sShopId}),
+        ('test_i55','test_o5','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i60','test_o6','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i61','test_o6','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i62','test_o6','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i63','test_o6','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i64','test_o6','test_a4','5','200','200','0','0','40','40','40',$sShopId),
-        ('test_i65','test_o6','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i60','test_o6','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i61','test_o6','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i62','test_o6','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i63','test_o6','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i64','test_o6','test_a4','5','200','200','0','0','40','40','40',{$sShopId}),
+        ('test_i65','test_o6','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i70','test_o7','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i71','test_o7','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i72','test_o7','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i73','test_o7','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i75','test_o7','test_a5','5','250','250','0','0','50','50','50',$sShopId),
+        ('test_i70','test_o7','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i71','test_o7','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i72','test_o7','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i73','test_o7','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i75','test_o7','test_a5','5','250','250','0','0','50','50','50',{$sShopId}),
 
-        ('test_i80','test_o8','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,$sShopId),
-        ('test_i81','test_o8','test_a1','5','50' ,'50' ,'0','0','10','10','10',$sShopId),
-        ('test_i82','test_o8','test_a2','5','100','100','0','0','20','20','20',$sShopId),
-        ('test_i83','test_o8','test_a3','5','150','150','0','0','30','30','30',$sShopId),
-        ('test_i84','test_o8','test_a4','5','200','200','0','0','40','40','40',$sShopId);";
+        ('test_i80','test_o8','test_a0','1','1'  ,'1'  ,'0','0','1' ,'1' ,'1' ,{$sShopId}),
+        ('test_i81','test_o8','test_a1','5','50' ,'50' ,'0','0','10','10','10',{$sShopId}),
+        ('test_i82','test_o8','test_a2','5','100','100','0','0','20','20','20',{$sShopId}),
+        ('test_i83','test_o8','test_a3','5','150','150','0','0','30','30','30',{$sShopId}),
+        ('test_i84','test_o8','test_a4','5','200','200','0','0','40','40','40',{$sShopId});";
 
 
         $this->addToDatabase($sInsertVouchers, 'oxvouchers');
@@ -349,8 +347,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -375,8 +371,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test is product voucher.
-     *
-     * @return null
      */
     public function testIsProductVoucher()
     {
@@ -406,8 +400,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test is category voucher.
-     *
-     * @return null
      */
     public function testIsCategoryVoucher()
     {
@@ -437,8 +429,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get regular voucher discount value.
-     *
-     * @return null
      */
     public function testGetDiscountValue_Regular()
     {
@@ -452,8 +442,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get product voucher discount value with no assigned articles.
-     *
-     * @return null
      */
     public function testGetProductDiscountValue_ThrowNoArticleException()
     {
@@ -469,8 +457,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get category voucher discount value with no assigned articles.
-     *
-     * @return null
      */
     public function testGetCategoryDiscountValue_ThrowNoArticleException()
     {
@@ -486,8 +472,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get product voucher discount value.
-     *
-     * @return null
      */
     public function testGetProductDiscountValue_DoNotThrowNoArticleException()
     {
@@ -506,8 +490,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get category voucher discount value.
-     *
-     * @return null
      */
     public function testGetCategoryDiscountValue_DoNotThrowNoArticleException()
     {
@@ -527,8 +509,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test get series discount.
-     *
-     * @return null
      */
     public function testGetSeriesDiscount()
     {
@@ -561,8 +541,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S1.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s1()
     {
@@ -598,8 +576,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S2.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s2()
     {
@@ -635,8 +611,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S3.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s3()
     {
@@ -672,8 +646,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S4.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s4()
     {
@@ -709,8 +681,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S5.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s5()
     {
@@ -746,8 +716,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S6.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s6()
     {
@@ -783,8 +751,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S7.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s7()
     {
@@ -820,8 +786,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case S8.
-     *
-     * @return null
      */
     public function testSessionBasketCase_s8()
     {
@@ -857,8 +821,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case X1.
-     *
-     * @return null
      */
     public function testSessionBasketCase_x1()
     {
@@ -889,8 +851,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case X2.
-     *
-     * @return null
      */
     public function testSessionBasketCase_x2()
     {
@@ -921,8 +881,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test session basket case X3.
-     *
-     * @return null
      */
     public function testSessionBasketCase_x3()
     {
@@ -953,8 +911,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S1.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s1()
     {
@@ -975,8 +931,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S2.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s2()
     {
@@ -997,8 +951,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S3.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s3()
     {
@@ -1019,8 +971,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S4.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s4()
     {
@@ -1041,8 +991,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S5.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s5()
     {
@@ -1063,8 +1011,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S6.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s6()
     {
@@ -1085,8 +1031,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S7.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s7()
     {
@@ -1107,8 +1051,6 @@ class VoucherExcludeTest extends \OxidTestCase
 
     /**
      * Test order basket case S8.
-     *
-     * @return null
      */
     public function testOrderBasketCase_s8()
     {

@@ -18,8 +18,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -32,8 +30,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -44,8 +40,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * DiscountMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -53,14 +47,12 @@ class DiscountMainAjaxTest extends \OxidTestCase
         $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
-        $sQuery = "from $sTable where $sTable.oxactive = '1'";
+        $sQuery = sprintf('from %s where %s.oxactive = \'1\'', $sTable, $sTable);
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -70,15 +62,13 @@ class DiscountMainAjaxTest extends \OxidTestCase
         $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
-        $sQuery = "from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
+        $sQuery = sprintf('from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid', $sTable, $sTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcountry'";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -88,16 +78,14 @@ class DiscountMainAjaxTest extends \OxidTestCase
         $sTable = $tableViewNameGenerator->getViewName("oxcountry");
 
         $oView = oxNew('discount_main_ajax');
-        $sQuery = "from $sTable where $sTable.oxactive = '1' and";
-        $sQuery .= " $sTable.oxid not in ( select $sTable.oxid from oxobject2discount, $sTable where $sTable.oxid=oxobject2discount.oxobjectid";
+        $sQuery = sprintf('from %s where %s.oxactive = \'1\' and', $sTable, $sTable);
+        $sQuery .= sprintf(' %s.oxid not in ( select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid', $sTable, $sTable, $sTable, $sTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcountry' )";
         $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
      * DiscountMainAjax::removeDiscCountry() test case
-     *
-     * @return null
      */
     public function testRemoveDiscCountry()
     {
@@ -111,8 +99,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * DiscountMainAjax::removeDiscCountry() test case
-     *
-     * @return null
      */
     public function testRemoveDiscCountryAll()
     {
@@ -129,8 +115,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * DiscountMainAjax::addDiscCountry() test case
-     *
-     * @return null
      */
     public function testAddDiscCountry()
     {
@@ -146,8 +130,6 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
     /**
      * DiscountMainAjax::addDiscCountry() test case
-     *
-     * @return null
      */
     public function testAddDiscCountryAll()
     {
@@ -159,9 +141,9 @@ class DiscountMainAjaxTest extends \OxidTestCase
 
         $oView = oxNew('discount_main_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
 
         $oView->addDiscCountry();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
     }
 }

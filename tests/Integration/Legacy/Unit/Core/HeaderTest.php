@@ -16,8 +16,6 @@ class HeaderTest extends \OxidTestCase
     /**
      * oxHeader::getHeader() test case.
      * test if default value is empty
-     *
-     * @return null
      */
     public function testGetHeader_default()
     {
@@ -28,27 +26,25 @@ class HeaderTest extends \OxidTestCase
     /**
      * oxHeader::setHeader() oxHeader::getHeader() test case.
      * test if returns set value.
-     *
-     * @return null
      */
     public function testSetGetHeader()
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header");
-        $this->assertEquals(["Some header" . "\r\n"], $oHeader->getHeader(), 'Set header check.');
+        $this->assertEquals(['Some header
+'], $oHeader->getHeader(), 'Set header check.');
     }
 
     /**
      * oxReverseProxyHeader::setNonCacheable() test case.
      * test if no cache header formated correctly.
-     *
-     * @return null
      */
     public function testSetNonCacheable()
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setNonCacheable();
-        $this->assertEquals(["Cache-Control: no-cache;" . "\r\n"], $oHeader->getHeader(), 'Cache header was NOT formated correctly.');
+        $this->assertEquals(['Cache-Control: no-cache;
+'], $oHeader->getHeader(), 'Cache header was NOT formated correctly.');
     }
 
     /**
@@ -66,13 +62,12 @@ class HeaderTest extends \OxidTestCase
      * @dataProvider providerSetGetHeader_withNewLine_newLineRemoved
      *
      * @param $sNewLine
-     *
-     * @return null
      */
     public function testSetGetHeader_withNewLine_newLineRemoved($sNewLine)
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header" . $sNewLine . "2");
-        $this->assertEquals(["Some header2" . "\r\n"], $oHeader->getHeader(), 'Set header check.');
+        $this->assertEquals(['Some header2
+'], $oHeader->getHeader(), 'Set header check.');
     }
 }

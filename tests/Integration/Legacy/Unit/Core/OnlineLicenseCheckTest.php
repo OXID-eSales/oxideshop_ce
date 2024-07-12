@@ -40,15 +40,11 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ->getMock();
         $caller->expects($this->once())->method('doRequest')->with($request);
 
-        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
-
         $userCounter = $this->getMockBuilder(\OxidEsales\Eshop\Core\UserCounter::class)
             ->setMethods(['getAdminCount', 'getActiveAdminCount'])
             ->getMock();
         $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
         $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
-        /** @var \OxidEsales\Eshop\Core\UserCounter $userCounter */
-
         $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
         $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
@@ -150,15 +146,11 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ->setMethods(['doRequest'])
             ->getMock();
         $caller->expects($this->once())->method('doRequest')->with($request);
-        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
-
         $userCounter = $this->getMockBuilder(\OxidEsales\Eshop\Core\UserCounter::class)
             ->setMethods(['getAdminCount', 'getActiveAdminCount'])
             ->getMock();
         $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
         $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
-        /** @var \OxidEsales\Eshop\Core\UserCounter $userCounter */
-
         $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
         $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);

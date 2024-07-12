@@ -16,13 +16,13 @@ use OxidEsales\Facts\Facts;
 class DeliveryArticlesAjaxTest extends \OxidTestCase
 {
     protected $_sArticlesView = 'oxv_oxarticles_1_de';
+
     protected $_sCategoriesView = 'oxv_oxcategories_1_de';
+
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -48,8 +48,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -101,8 +99,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -112,8 +108,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryVariantsSelectionTrue()
     {
@@ -125,8 +119,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -139,8 +131,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxidSelectionTrue()
     {
@@ -155,8 +145,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -169,8 +157,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -185,8 +171,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxidVariantsSelection()
     {
@@ -202,8 +186,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::removeArtFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveArtFromDel()
     {
@@ -218,8 +200,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::removeArtFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveArtFromDelAll()
     {
@@ -236,15 +216,13 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::addArtToDel() test case
-     *
-     * @return null
      */
     public function testAddArtToDel()
     {
         $sSynchoxid = '_testActionAddArt';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class, ["getActionIds"]);
@@ -256,8 +234,6 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryArticlesAjax::addArtToDel() test case
-     *
-     * @return null
      */
     public function testAddArtToDelAll()
     {
@@ -268,7 +244,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getArticlesViewTable() . ".oxid) from " . $this->getArticlesViewTable() . " where 1 and " . $this->getArticlesViewTable() . ".oxparentid = '' and " . $this->getArticlesViewTable() . ".oxid not in ( select oxobject2delivery.oxobjectid from oxobject2delivery where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxarticles' )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class, ["getActionIds"]);

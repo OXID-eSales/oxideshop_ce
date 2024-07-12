@@ -15,8 +15,6 @@ class VoucherSerieGenerateTest extends \OxidTestCase
 
     /**
      * Cleanup
-     *
-     * @return null
      */
     public function tearDown(): void
     {
@@ -29,8 +27,6 @@ class VoucherSerieGenerateTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Generate::nextTick() test case
-     *
-     * @return null
      */
     public function testNextTick()
     {
@@ -47,8 +43,6 @@ class VoucherSerieGenerateTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Generate::generateVoucher() test case
-     *
-     * @return null
      */
     public function testGenerateVoucher()
     {
@@ -65,8 +59,6 @@ class VoucherSerieGenerateTest extends \OxidTestCase
 
     /**
      * VoucherSerie_Generate::run() test case
-     *
-     * @return null
      */
     public function testRun()
     {

@@ -62,9 +62,8 @@ class FormFieldsCleanerTest extends UnitTestCase
     private function getUpdatableFields()
     {
         $userUpdatableFieldsList = ['oxuser__username', 'oxuser__userpassword', 'username', 'userpassword'];
-        $userUpdatableFields = oxNew(FormFields::class, $userUpdatableFieldsList);
 
-        return $userUpdatableFields;
+        return oxNew(FormFields::class, $userUpdatableFieldsList);
     }
 
     /**
@@ -75,7 +74,6 @@ class FormFieldsCleanerTest extends UnitTestCase
     private function getCleanList($updatableFields, $fields)
     {
         $cleaner = oxNew(FormFieldsCleaner::class, $updatableFields);
-        $cleanedFieldsList = $cleaner->filterByUpdatableFields($fields);
-        return $cleanedFieldsList;
+        return $cleaner->filterByUpdatableFields($fields);
     }
 }

@@ -18,8 +18,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -69,8 +65,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -80,8 +74,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -94,8 +86,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -108,8 +98,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -124,8 +112,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::removePayFromSet() test case
-     *
-     * @return null
      */
     public function testRemovePayFromSet()
     {
@@ -140,8 +126,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::removePayFromSet() test case
-     *
-     * @return null
      */
     public function testRemovePayFromSetAll()
     {
@@ -158,15 +142,13 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::addPayToSet() test case
-     *
-     * @return null
      */
     public function testAddPayToset()
     {
         $sSynchoxid = '_testActionAddPayment';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2payment where oxobjectid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2payment where oxobjectid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, ["getActionIds"]);
@@ -178,8 +160,6 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
 
     /**
      * DeliverysetPaymentAjax::addPayToSet() test case
-     *
-     * @return null
      */
     public function testAddPayToSetAll()
     {
@@ -190,7 +170,7 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxpayments_de.oxid) from oxv_oxpayments_de where 1 and oxv_oxpayments_de.oxid not in ( select oxv_oxpayments_de.oxid from oxobject2payment, oxv_oxpayments_de where oxobject2payment.oxobjectid = '" . $sSynchoxid . "'and oxobject2payment.oxpaymentid = oxv_oxpayments_de.oxid and oxobject2payment.oxtype = 'oxdelset' )");
 
-        $sSql = "select count(oxid) from oxobject2payment where oxobjectid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2payment where oxobjectid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class, ["getActionIds"]);

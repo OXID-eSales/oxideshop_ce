@@ -111,6 +111,7 @@ class StartControllerTest extends \OxidTestCase
 
         $oStart = $this->getProxyClass('start');
         $oStart->render();
+
         $aMetaKeywords = $oStart->getMetaKeywords();
 
         $this->assertTrue(strlen((string) $aMetaKeywords) > 0);
@@ -136,6 +137,7 @@ class StartControllerTest extends \OxidTestCase
 
         $oStart = $this->getProxyClass('start');
         $oStart->render();
+
         $aMetaKeywords = $oStart->getMetaDescription();
 
         $this->assertTrue(strlen((string) $aMetaKeywords) > 0);

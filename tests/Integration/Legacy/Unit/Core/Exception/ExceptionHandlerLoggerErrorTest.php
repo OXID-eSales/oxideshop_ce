@@ -89,12 +89,13 @@ final class ExceptionHandlerLoggerErrorTest extends UnitTestCase
         $exceptionThrown = false;
         try {
             $exceptionHandler->handleUncaughtException($exception);
-        } catch (\Throwable $t) {
+        } catch (\Throwable $throwable) {
             $exceptionThrown = true;
-            $this->assertEquals('My test exception', $t->getMessage());
+            $this->assertEquals('My test exception', $throwable->getMessage());
             $log = file_get_contents($this->logFileName);
             $this->assertTrue(str_contains($log, 'My test exception'));
         }
+
         $this->assertTrue($exceptionThrown);
     }
 }

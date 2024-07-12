@@ -30,8 +30,6 @@ class SearchTest extends UnitTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -46,8 +44,6 @@ class SearchTest extends UnitTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -85,7 +81,7 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles('', $sID);
         $iAllArtCnt = $oSearch->getSearchArticleCount('', $sID);
 
-        $aAll = oxDb::getDb()->getAll("select oxobjectid from oxobject2category where oxcatnid='$sID'");
+        $aAll = oxDb::getDb()->getAll(sprintf('select oxobjectid from oxobject2category where oxcatnid=\'%s\'', $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $this->assertEquals(10, $oSearchList->count());
@@ -96,7 +92,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -127,13 +123,14 @@ class SearchTest extends UnitTestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, $sID);
 
-        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID'");
+        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxvendorid=\'%s\'', $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
         if ($edition === 'EE') {
             $count = 10;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -142,7 +139,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -162,13 +159,14 @@ class SearchTest extends UnitTestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, false, $sID);
 
-        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID'");
+        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxmanufacturerid=\'%s\'', $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
         if ($edition === 'EE') {
             $count = 10;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -177,7 +175,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -213,6 +211,7 @@ class SearchTest extends UnitTestCase
         if ($edition === 'EE') {
             $sID = "d2e44d9b31fcce448.08890330";
         }
+
         $sSortBy = "oxprice asc";
 
         /** @var Search $oSearch */
@@ -220,13 +219,14 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles("", false, $sID, false, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, $sID, false);
 
-        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxvendorid='$sID' order by $sSortBy ");
+        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxvendorid=\'%s\' order by %s ', $sID, $sSortBy));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
         if ($edition === 'EE') {
             $count = 10;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -235,7 +235,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -252,6 +252,7 @@ class SearchTest extends UnitTestCase
         if ($edition === 'EE') {
             $sID = "88a996f859f94176da943f38ee067984";
         }
+
         $sSortBy = "oxprice asc";
 
         /** @var Search $oSearch */
@@ -259,13 +260,14 @@ class SearchTest extends UnitTestCase
         $oSearchList = $oSearch->getSearchArticles("", false, false, $sID, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, false, $sID);
 
-        $aAll = oxDb::getDb()->getAll("select oxid from oxarticles where oxmanufacturerid='$sID' order by $sSortBy ");
+        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxmanufacturerid=\'%s\' order by %s ', $sID, $sSortBy));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
         if ($edition === 'EE') {
             $count = 10;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -274,7 +276,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -292,13 +294,13 @@ class SearchTest extends UnitTestCase
         $articleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
         $datetime = date('Y-m-d H:i:s');
 
-        $query = "SELECT $articleTable.oxid FROM $articleTable, oxartextends " .
-                 "WHERE  oxartextends.oxid=$articleTable.oxid AND" .
-                 "( ( $articleTable.oxactive = 1  OR ( $articleTable.oxactivefrom < '$datetime' AND
-        $articleTable.oxactiveto > '$datetime' ) ) AND ( $articleTable.oxstockflag != 2 OR ( $articleTable.oxstock +
-        $articleTable.oxvarstock ) > 0 ) ) AND $articleTable.oxparentid = '' AND $articleTable.oxissearch = 1
-        AND ( ( $articleTable.oxtitle like '%bar%' or  $articleTable.oxshortdesc LIKE '%bar%' or $articleTable.oxsearchkeys LIKE '%bar%' OR
-        $articleTable.oxartnum LIKE '%bar%') )";
+        $query = sprintf('SELECT %s.oxid FROM %s, oxartextends ', $articleTable, $articleTable) .
+                 sprintf('WHERE  oxartextends.oxid=%s.oxid AND', $articleTable) .
+                 "( ( {$articleTable}.oxactive = 1  OR ( {$articleTable}.oxactivefrom < '{$datetime}' AND
+        {$articleTable}.oxactiveto > '{$datetime}' ) ) AND ( {$articleTable}.oxstockflag != 2 OR ( {$articleTable}.oxstock +
+        {$articleTable}.oxvarstock ) > 0 ) ) AND {$articleTable}.oxparentid = '' AND {$articleTable}.oxissearch = 1
+        AND ( ( {$articleTable}.oxtitle like '%bar%' or  {$articleTable}.oxshortdesc LIKE '%bar%' or {$articleTable}.oxsearchkeys LIKE '%bar%' OR
+        {$articleTable}.oxartnum LIKE '%bar%') )";
 
         $all = oxDb::getDb()->getAll($query);
 
@@ -307,6 +309,7 @@ class SearchTest extends UnitTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $count = 4;
         }
+
         $this->assertEquals($count, $searchList->count());
         $this->assertEquals(count($all), $allArticlesCount);
 
@@ -315,7 +318,7 @@ class SearchTest extends UnitTestCase
 
         $all = array_slice($all, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($all as $row) {
-            if (($key = array_search($row[0], $foundIds)) !== false) {
+            if (($key = array_search($row[0], $foundIds, true)) !== false) {
                 unset($foundIds[$key]);
             }
         }
@@ -349,11 +352,11 @@ class SearchTest extends UnitTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a");
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = "select oxid from $sArticleTable where ( ( $sArticleTable.oxactive = 1  or ( $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and
-        $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
-        $sArticleTable.oxvarstock ) > 0 ) ) and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1
-        and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
-        $sArticleTable.oxartnum like '%a%' ) )";
+        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
+        {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1
+        and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
+        {$sArticleTable}.oxartnum like '%a%' ) )";
 
         $aAll = oxDb::getDb()->getAll($sQ . " limit 10, 10 ");
 
@@ -367,7 +370,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -390,11 +393,11 @@ class SearchTest extends UnitTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, $sID);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = "select oxid from $sArticleTable where ( ( $sArticleTable.oxactive = 1  or ( $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and
-        $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
-        $sArticleTable.oxvarstock ) > 0 ) ) and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = '$sID'
-        and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
-        $sArticleTable.oxartnum like '%a%' ) )";
+        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
+        {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sID}'
+        and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
+        {$sArticleTable}.oxartnum like '%a%' ) )";
 
         $aAll = oxDb::getDb()->getAll($sQ);
 
@@ -412,7 +415,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -436,11 +439,11 @@ class SearchTest extends UnitTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, false, $sID);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = "select oxid from $sArticleTable where ( ( $sArticleTable.oxactive = 1  or ( $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and
-        $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
-        $sArticleTable.oxvarstock ) > 0 ) ) and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and $sArticleTable.oxmanufacturerid = '$sID'
-        and ( ( $sArticleTable.oxtitle like '%a%' or  $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys like '%a%' or
-        $sArticleTable.oxartnum like '%a%' ) )";
+        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
+        {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxmanufacturerid = '{$sID}'
+        and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
+        {$sArticleTable}.oxartnum like '%a%' ) )";
 
         $aAll = oxDb::getDb()->getAll($sQ);
 
@@ -449,6 +452,7 @@ class SearchTest extends UnitTestCase
         if ($edition === 'EE') {
             $count = 10;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -457,7 +461,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -475,6 +479,7 @@ class SearchTest extends UnitTestCase
             $sIDMan = "88a996f859f94176da943f38ee067984";
             $sIDCat = "30e44ab8593023055.23928895";
         }
+
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
 
@@ -482,14 +487,14 @@ class SearchTest extends UnitTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", $sIDCat, $sIDVend, $sIDMan);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = "select $sArticleTable.* from $sArticleTable, oxobject2category as
-        oxobject2category where oxobject2category.oxcatnid='$sIDCat' and
-        oxobject2category.oxobjectid=$sArticleTable.oxid and ( ( $sArticleTable.oxactive = 1  or (
-        $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) )
-        and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock + $sArticleTable.oxvarstock ) > 0  )  ) and
-        $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = '$sIDVend' and $sArticleTable.oxmanufacturerid = '$sIDMan'
-        and ( (  $sArticleTable.oxtitle like '%a%' or $sArticleTable.oxshortdesc like '%a%' or  $sArticleTable.oxsearchkeys like '%a%' or
-        $sArticleTable.oxartnum like '%a%' )  )";
+        $sQ = "select {$sArticleTable}.* from {$sArticleTable}, oxobject2category as
+        oxobject2category where oxobject2category.oxcatnid='{$sIDCat}' and
+        oxobject2category.oxobjectid={$sArticleTable}.oxid and ( ( {$sArticleTable}.oxactive = 1  or (
+        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf('\' and %s.oxactiveto > \'', $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
+        and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock + {$sArticleTable}.oxvarstock ) > 0  )  ) and
+        {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sIDVend}' and {$sArticleTable}.oxmanufacturerid = '{$sIDMan}'
+        and ( (  {$sArticleTable}.oxtitle like '%a%' or {$sArticleTable}.oxshortdesc like '%a%' or  {$sArticleTable}.oxsearchkeys like '%a%' or
+        {$sArticleTable}.oxartnum like '%a%' )  )";
 
         $aAll = oxDb::getDb()->getAll($sQ);
 
@@ -498,6 +503,7 @@ class SearchTest extends UnitTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $count = 8;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -506,7 +512,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -595,14 +601,14 @@ class SearchTest extends UnitTestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("", $sIDCat, $sIDVend);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = "select $sArticleTable.* from $sArticleTable, oxobject2category as
-        oxobject2category where oxobject2category.oxcatnid='$sIDCat' and
-        oxobject2category.oxobjectid=$sArticleTable.oxid and ( ( $sArticleTable.oxactive = 1  or (
-        $sArticleTable.oxactivefrom < '" . date('Y-m-d H:i:s') . "' and $sArticleTable.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) )
-        and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock + $sArticleTable.oxvarstock ) > 0  )  ) and
-        $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = '$sIDVend'
-        and ( (  $sArticleTable.oxtitle like '%%' or $sArticleTable.oxshortdesc like '%%' or  $sArticleTable.oxsearchkeys like '%%' or
-        $sArticleTable.oxartnum like '%%' )  )";
+        $sQ = "select {$sArticleTable}.* from {$sArticleTable}, oxobject2category as
+        oxobject2category where oxobject2category.oxcatnid='{$sIDCat}' and
+        oxobject2category.oxobjectid={$sArticleTable}.oxid and ( ( {$sArticleTable}.oxactive = 1  or (
+        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf('\' and %s.oxactiveto > \'', $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
+        and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock + {$sArticleTable}.oxvarstock ) > 0  )  ) and
+        {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sIDVend}'
+        and ( (  {$sArticleTable}.oxtitle like '%%' or {$sArticleTable}.oxshortdesc like '%%' or  {$sArticleTable}.oxsearchkeys like '%%' or
+        {$sArticleTable}.oxartnum like '%%' )  )";
 
         $aAll = oxDb::getDb()->getAll($sQ);
 
@@ -611,6 +617,7 @@ class SearchTest extends UnitTestCase
         if ($edition === 'EE') {
             $count = 8;
         }
+
         $this->assertEquals($count, $oSearchList->count());
         $this->assertEquals(count($aAll), $iAllArtCnt);
 
@@ -619,7 +626,7 @@ class SearchTest extends UnitTestCase
 
         $aAll = array_slice($aAll, 0, 10); // if this tests fails here - you must add spec sorting for an upper SQL
         foreach ($aAll as $aData) {
-            if (($sKey = array_search($aData[0], $aFoundIds)) !== false) {
+            if (($sKey = array_search($aData[0], $aFoundIds, true)) !== false) {
                 unset($aFoundIds[$sKey]);
             }
         }
@@ -653,11 +660,12 @@ class SearchTest extends UnitTestCase
         $this->cleanTmpDir();
 
         $articleTable = $this->tableViewNameGenerator->getViewName('oxarticles', 1);
-        $expectedWhere = " and ( (  $articleTable.oxtitle like '%a%' or  $articleTable.oxshortdesc like '%a%' or  $articleTable.oxsearchkeys like '%a%' or  $articleTable.oxartnum like '%a%' )  ) ";
+        $expectedWhere = sprintf(' and ( (  %s.oxtitle like \'%%a%%\' or  %s.oxshortdesc like \'%%a%%\' or  %s.oxsearchkeys like \'%%a%%\' or  %s.oxartnum like \'%%a%%\' )  ) ', $articleTable, $articleTable, $articleTable, $articleTable);
 
         /** @var Search $search */
         $search = oxNew('oxSearch');
         $search->setLanguage(1);
+
         $where = $search->getWhere('a');
 
         $this->assertEquals($expectedWhere, $where);
@@ -724,21 +732,21 @@ class SearchTest extends UnitTestCase
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
         $sO2Cat = $this->tableViewNameGenerator->getViewName('oxobject2category');
 
-        $sFix = "select `$sArticleTable`.`oxid` from $sO2Cat as oxobject2category, $sArticleTable where
-                 oxobject2category.oxcatnid='$sIDCat' and oxobject2category.oxobjectid=$sArticleTable.oxid and
-                 " . $oArticle->getSqlActiveSnippet() . "  and $sArticleTable.oxparentid = ''
-                 and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = '$sIDVend' and $sArticleTable.oxmanufacturerid = '$sIDMan'
-                 and ( (  $sArticleTable.oxtitle like '%ü%' or $sArticleTable.oxtitle like '%&uuml;%' or
-                 $sArticleTable.oxshortdesc like '%ü%' or $sArticleTable.oxshortdesc like '%&uuml;%' or
-                 $sArticleTable.oxsearchkeys like '%ü%' or $sArticleTable.oxsearchkeys like '%&uuml;%' or
-                 $sArticleTable.oxartnum like '%ü%' or $sArticleTable.oxartnum like '%&uuml;%' )
-                 or ( $sArticleTable.oxtitle like '%a%' or $sArticleTable.oxshortdesc like '%a%' or $sArticleTable.oxsearchkeys
-                 like '%a%' or $sArticleTable.oxartnum like '%a%' ) )
-                 order by $sArticleTable.oxtitle";
+        $sFix = "select `{$sArticleTable}`.`oxid` from {$sO2Cat} as oxobject2category, {$sArticleTable} where
+                 oxobject2category.oxcatnid='{$sIDCat}' and oxobject2category.oxobjectid={$sArticleTable}.oxid and
+                 " . $oArticle->getSqlActiveSnippet() . "  and {$sArticleTable}.oxparentid = ''
+                 and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sIDVend}' and {$sArticleTable}.oxmanufacturerid = '{$sIDMan}'
+                 and ( (  {$sArticleTable}.oxtitle like '%ü%' or {$sArticleTable}.oxtitle like '%&uuml;%' or
+                 {$sArticleTable}.oxshortdesc like '%ü%' or {$sArticleTable}.oxshortdesc like '%&uuml;%' or
+                 {$sArticleTable}.oxsearchkeys like '%ü%' or {$sArticleTable}.oxsearchkeys like '%&uuml;%' or
+                 {$sArticleTable}.oxartnum like '%ü%' or {$sArticleTable}.oxartnum like '%&uuml;%' )
+                 or ( {$sArticleTable}.oxtitle like '%a%' or {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys
+                 like '%a%' or {$sArticleTable}.oxartnum like '%a%' ) )
+                 order by {$sArticleTable}.oxtitle";
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->getSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->getSearchSelect('ü a', $sIDCat, $sIDVend, $sIDMan, $sArticleTable . '.oxtitle');
 
         //cleaning spaces, tabs and so on...
         $aSearch = ["/\s+/", "/\t+/", "/\r+/", "/\n+/"];
@@ -772,20 +780,20 @@ class SearchTest extends UnitTestCase
         $sO2Cat = $this->tableViewNameGenerator->getViewName('oxobject2category');
         $sCatView = $this->tableViewNameGenerator->getViewName('oxcategories');
 
-        $sFix = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from {$sArticleTable} " .
-                "where {$sArticleTable}.oxid in ( select {$sArticleTable}.oxid as id from {$sArticleTable}, " .
-                "{$sO2Cat} as oxobject2category, {$sCatView} as oxcategories " .
-                "where (oxobject2category.oxcatnid='_testCat' and oxobject2category.oxobjectid={$sArticleTable}.oxid) " .
-                "or (oxcategories.oxid='_testCat' and {$sArticleTable}.oxprice >= oxcategories.oxpricefrom and " .
-                "{$sArticleTable}.oxprice <= oxcategories.oxpriceto )) and
-                 " . $oArticle->getSqlActiveSnippet() . "  and $sArticleTable.oxparentid = ''
-                 and $sArticleTable.oxissearch = 1
-                 and ( (  $sArticleTable.oxtitle like '%a%' ) )
-                 order by $sArticleTable.oxtitle";
+        $sFix = sprintf('select `%s`.`oxid`, %s.oxtimestamp from %s ', $sArticleTable, $sArticleTable, $sArticleTable) .
+                sprintf('where %s.oxid in ( select %s.oxid as id from %s, ', $sArticleTable, $sArticleTable, $sArticleTable) .
+                sprintf('%s as oxobject2category, %s as oxcategories ', $sO2Cat, $sCatView) .
+                sprintf('where (oxobject2category.oxcatnid=\'_testCat\' and oxobject2category.oxobjectid=%s.oxid) ', $sArticleTable) .
+                sprintf('or (oxcategories.oxid=\'_testCat\' and %s.oxprice >= oxcategories.oxpricefrom and ', $sArticleTable) .
+                ($sArticleTable . '.oxprice <= oxcategories.oxpriceto )) and
+                 ') . $oArticle->getSqlActiveSnippet() . "  and {$sArticleTable}.oxparentid = ''
+                 and {$sArticleTable}.oxissearch = 1
+                 and ( (  {$sArticleTable}.oxtitle like '%a%' ) )
+                 order by {$sArticleTable}.oxtitle";
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $sQ = $oSearch->getSearchSelect('a', '_testCat', null, null, "$sArticleTable.oxtitle");
+        $sQ = $oSearch->getSearchSelect('a', '_testCat', null, null, $sArticleTable . '.oxtitle');
 
         //cleaning spaces, tabs and so on...
         $aSearch = ["/\s+/", "/\t+/", "/\r+/", "/\n+/"];
@@ -799,9 +807,9 @@ class SearchTest extends UnitTestCase
     {
         // forcing config
         $this->getConfig()->setConfigParam('aSearchCols', ['oxlongdesc']);
-        $sAETable = $sTable = $this->tableViewNameGenerator->getViewName('oxartextends', 1);
+        $sAETable = $this->tableViewNameGenerator->getViewName('oxartextends', 1);
 
-        $sQ = " and ( (  $sAETable.oxlongdesc like '%xxx%' )  ) ";
+        $sQ = sprintf(' and ( (  %s.oxlongdesc like \'%%xxx%%\' )  ) ', $sAETable);
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
@@ -827,6 +835,7 @@ class SearchTest extends UnitTestCase
         if ((new Facts())->getEdition() === 'EE') {
             $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxshopid, oxtitle) VALUES ('_testArt1', 1, 1, 1, 'searchTestVal')";
         }
+
         $this->addToDatabase($sQ, 'oxarticles');
         $aResults = $this->_oSearchHandler->getSearchArticles('searchTestVal');
         $this->assertEquals(1, count($aResults));

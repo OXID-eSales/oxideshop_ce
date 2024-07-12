@@ -14,8 +14,6 @@ class DisplayerrorTest extends \OxidTestCase
 
     /**
      * Initialize default display error object.
-     *
-     * @return null
      */
     protected function setUp(): void
     {

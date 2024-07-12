@@ -18,8 +18,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -37,8 +35,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -69,8 +65,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -80,8 +74,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuerySynchoxid()
     {
@@ -94,8 +86,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
@@ -108,8 +98,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxidSynchoxid()
     {
@@ -124,8 +112,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::removeCountryFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveCountryFromDel()
     {
@@ -140,8 +126,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::removeGroupFromDel() test case
-     *
-     * @return null
      */
     public function testRemoveGroupFromDelAll()
     {
@@ -158,15 +142,13 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::addGroupToDel() test case
-     *
-     * @return null
      */
     public function testAddCountryToDel()
     {
         $sSynchoxid = '_testActionAddCountry';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryMainAjax::class, ["getActionIds"]);
@@ -178,8 +160,6 @@ class DeliveryMainAjaxTest extends \OxidTestCase
 
     /**
      * DeliveryMainAjax::addGroupToDel() test case
-     *
-     * @return null
      */
     public function testAddCountryToDelAll()
     {
@@ -190,7 +170,7 @@ class DeliveryMainAjaxTest extends \OxidTestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getCountryViewTable() . ".oxid) from " . $this->getCountryViewTable() . " where " . $this->getCountryViewTable() . ".oxactive = '1'  and " . $this->getCountryViewTable() . ".oxid not in ( select " . $this->getCountryViewTable() . ".oxid from oxobject2delivery left join " . $this->getCountryViewTable() . " on " . $this->getCountryViewTable() . ".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '" . $sSynchoxid . "' and oxobject2delivery.oxtype = 'oxcountry' )");
 
-        $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
+        $sSql = sprintf('select count(oxid) from oxobject2delivery where oxdeliveryid=\'%s\'', $sSynchoxid);
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryMainAjax::class, ["getActionIds"]);

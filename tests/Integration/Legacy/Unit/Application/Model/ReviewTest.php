@@ -13,8 +13,10 @@ use oxRegistry;
 
 class ReviewTest extends \OxidTestCase
 {
-    protected $_oReview = null;
-    protected $_iNow = null;
+    protected $_oReview;
+
+    protected $_iNow;
+
     protected $_iReviewTime = 0;
 
     protected function setUp(): void
@@ -25,6 +27,7 @@ class ReviewTest extends \OxidTestCase
 
         $this->_oReview = oxNew('oxReview');
         $this->_oReview->setId('_testId');
+
         $this->_oReview->oxreviews__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
         $this->_oReview->oxreviews__oxlang = new oxField(0, oxField::T_RAW);
@@ -100,6 +103,7 @@ class ReviewTest extends \OxidTestCase
 
         $oReview = oxNew('oxReview');
         $oReview->setId('_testId2');
+
         $oReview->oxreviews__oxtext = new oxField('deValue', oxField::T_RAW);
         $oReview->save();
 
@@ -125,6 +129,7 @@ class ReviewTest extends \OxidTestCase
         // inserting few test records
         $oRev = oxNew('oxReview');
         $oRev->setId('_testrev1');
+
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
@@ -133,6 +138,7 @@ class ReviewTest extends \OxidTestCase
 
         $oRev = oxNew('oxReview');
         $oRev->setId('_testrev2');
+
         $oRev->oxreviews__oxactive = new oxField(0);
         $oRev->oxreviews__oxobjectid = new oxField('xxx');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
@@ -154,6 +160,7 @@ class ReviewTest extends \OxidTestCase
         // inserting few test records
         $oRev = oxNew('oxReview');
         $oRev->setId('id1');
+
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xx1');
         $oRev->oxreviews__oxtype = new oxField('oxarticle');
@@ -162,6 +169,7 @@ class ReviewTest extends \OxidTestCase
 
         $oRev = oxNew('oxReview');
         $oRev->setId('id2');
+
         $oRev->oxreviews__oxactive = new oxField(1);
         $oRev->oxreviews__oxobjectid = new oxField('xx2');
         $oRev->oxreviews__oxtype = new oxField('oxrecommlist');

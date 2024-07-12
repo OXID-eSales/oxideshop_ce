@@ -19,8 +19,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -36,8 +34,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -53,8 +49,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -65,18 +59,17 @@ class ContentMainTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, ["checkIdent"]);
             $oView->expects($this->once())->method('checkIdent')->will($this->returnValue(false));
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Content_Main::Save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Content_Main::Save()");
 
             return;
         }
+
         $this->fail("Error in Content_Main::Save()");
     }
 
     /**
      * Content_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -86,18 +79,17 @@ class ContentMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Content_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "Error in Content_Main::Save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "Error in Content_Main::Save()");
 
             return;
         }
+
         $this->fail("Error in Content_Main::Save()");
     }
 
     /**
      * Content_Main::PrepareIdent() test case
-     *
-     * @return null
      */
     public function testPrepareIdentEmptyIdent()
     {
@@ -108,8 +100,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::PrepareIdent() test case
-     *
-     * @return null
      */
     public function testPrepareIdent()
     {
@@ -120,8 +110,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::CheckIdent() test case
-     *
-     * @return null
      */
     public function testCheckIdentEmptyIdent()
     {
@@ -132,8 +120,6 @@ class ContentMainTest extends \OxidTestCase
 
     /**
      * Content_Main::CheckIdent() test case
-     *
-     * @return null
      */
     public function testCheckIdent()
     {

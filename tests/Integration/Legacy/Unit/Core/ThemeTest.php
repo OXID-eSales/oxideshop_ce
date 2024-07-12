@@ -25,6 +25,7 @@ class ThemeTest extends \OxidTestCase
         foreach (['id', 'title', 'description', 'thumbnail', 'version', 'author', 'active', 'settings'] as $key) {
             $this->assertNotNull($oTheme->getInfo($key));
         }
+
         $this->assertNull($oTheme->getInfo('asdasdasd'));
         $this->assertEquals('azure', $oTheme->getInfo('id'));
     }
@@ -35,9 +36,7 @@ class ThemeTest extends \OxidTestCase
 
         $this->assertGreaterThan(0, count($themeList));
 
-        foreach ($themeList as $theme) {
-            $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Theme::class, $theme);
-        }
+        $this->assertContainsOnlyInstancesOf(\OxidEsales\EshopCommunity\Core\Theme::class, $themeList);
     }
 
     public function testActivateError()

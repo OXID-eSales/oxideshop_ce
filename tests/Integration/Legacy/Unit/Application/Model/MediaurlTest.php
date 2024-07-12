@@ -16,8 +16,6 @@ class MediaurlTest extends \OxidTestCase
     use FieldTestingTrait;
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -40,8 +38,6 @@ class MediaurlTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -82,7 +78,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
-        $sExpt = "<a href=\"http://www.site.com/watch?v=ZN239G6aJZo\" target=\"_blank\">test4</a>";
+        $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
         $this->assertEquals($sExpt, $oMediaUrl->getHtml());
 
         // -- SSL ----------
@@ -113,7 +109,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
-        $sExpt = "<a href=\"http://www.site.com/watch?v=ZN239G6aJZo\" target=\"_blank\">test4</a>";
+        $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
         $this->assertEquals($sExpt, $oMediaUrl->getHtml());
     }
 
@@ -145,7 +141,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
-        $sExpt = "<a href=\"http://www.site.com/watch?v=ZN239G6aJZo\" target=\"_blank\">test4</a>";
+        $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
         $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
 
         // -- SSL -------------------
@@ -176,7 +172,7 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
-        $sExpt = "<a href=\"http://www.site.com/watch?v=ZN239G6aJZo\" target=\"_blank\">test4</a>";
+        $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
         $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
     }
 
@@ -265,6 +261,7 @@ class MediaurlTest extends \OxidTestCase
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
+
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(false, oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
         $oMediaUrl->delete();
@@ -277,6 +274,7 @@ class MediaurlTest extends \OxidTestCase
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
+
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
         $oMediaUrl->delete();
@@ -289,6 +287,7 @@ class MediaurlTest extends \OxidTestCase
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = oxNew('oxMediaUrl');
         $oMediaUrl->load('_test3');
+
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxurl = new oxField($this->getConfig()->getShopUrl() . '/out/media/test.jpg', oxField::T_RAW);
         $this->assertTrue(file_exists($sFilePath));
@@ -300,6 +299,7 @@ class MediaurlTest extends \OxidTestCase
     {
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test2');
+
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
         $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
     }
@@ -308,8 +308,9 @@ class MediaurlTest extends \OxidTestCase
     {
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test5');
+
         $url = $this->encode("http://www.youtube.com/embed/GQ3AcPEPbH0?loop=1&rel=0");
-        $sExpt = "test5<br><iframe width=\"425\" height=\"344\" src=\"$url\" frameborder=\"0\" allowfullscreen></iframe>";
+        $sExpt = sprintf('test5<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>', $url);
         $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
     }
 
@@ -317,6 +318,7 @@ class MediaurlTest extends \OxidTestCase
     {
         $oMediaUrl = $this->getProxyClass('oxMediaUrl');
         $oMediaUrl->load('_test6');
+
         $sExpt = 'test6<br><iframe width="425" height="344" src="http://www.youtube.com/embed/tRCwo6pSHnk" frameborder="0" allowfullscreen></iframe>';
         $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
     }

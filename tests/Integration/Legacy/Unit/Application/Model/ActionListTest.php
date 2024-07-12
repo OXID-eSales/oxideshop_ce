@@ -23,8 +23,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::loadFinishedByCount() test case
      * test if the actions will load in right sequence.
-     *
-     * @return null
      */
     public function testLoadFinishedByCount()
     {
@@ -38,7 +36,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
-            "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and oxactiveto>0 and oxactiveto < '$sNow'
+            sprintf('select * from %s where oxtype=2 and oxactive=1 and oxshopid=\'', $sView) . $sShopId . "' and oxactiveto>0 and oxactiveto < '{$sNow}'
                (user group filter)
                order by oxactiveto desc, oxactivefrom desc limit 5"
         )->will($this->evalFunction('{$invocation->getObject()->assign(array("asd", "dsa", "aaa"));}'));
@@ -50,8 +48,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::loadFinishedByTimespan() test case
      * test the load of last finished promotions after given timespan
-     *
-     * @return null
      */
     public function testLoadFinishedByTimespan()
     {
@@ -66,7 +62,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
-            "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and oxactiveto < '$sNow' and oxactiveto > '$sDateFrom'
+            sprintf('select * from %s where oxtype=2 and oxactive=1 and oxshopid=\'', $sView) . $sShopId . "' and oxactiveto < '{$sNow}' and oxactiveto > '{$sDateFrom}'
                (user group filter)
                order by oxactiveto, oxactivefrom"
         );
@@ -76,8 +72,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::loadCurrent() test case
      * test the load of current promotions
-     *
-     * @return null
      */
     public function testLoadCurrent()
     {
@@ -91,7 +85,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
-            "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom != 0 and oxactivefrom < '$sNow'
+            sprintf('select * from %s where oxtype=2 and oxactive=1 and oxshopid=\'', $sView) . $sShopId . "' and (oxactiveto > '{$sNow}' or oxactiveto=0) and oxactivefrom != 0 and oxactivefrom < '{$sNow}'
                (user group filter)
                order by oxactiveto, oxactivefrom"
         );
@@ -101,8 +95,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::loadFutureByCount() test case
      * test the loads of next not yet started promotions by count
-     *
-     * @return null
      */
     public function testLoadFutureByCount()
     {
@@ -116,7 +108,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
-            "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom > '$sNow'
+            sprintf('select * from %s where oxtype=2 and oxactive=1 and oxshopid=\'', $sView) . $sShopId . "' and (oxactiveto > '{$sNow}' or oxactiveto=0) and oxactivefrom > '{$sNow}'
                (user group filter)
                order by oxactiveto, oxactivefrom limit 50"
         );
@@ -126,8 +118,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::loadFutureByTimespan() test case
      * test the loads of next not yet started promotions before the given timespan
-     *
-     * @return null
      */
     public function testLoadFutureByTimespan()
     {
@@ -142,7 +132,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')->with(
-            "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and (oxactiveto > '$sNow' or oxactiveto=0) and oxactivefrom > '$sNow' and oxactivefrom < '$sFut'
+            sprintf('select * from %s where oxtype=2 and oxactive=1 and oxshopid=\'', $sView) . $sShopId . "' and (oxactiveto > '{$sNow}' or oxactiveto=0) and oxactivefrom > '{$sNow}' and oxactivefrom < '{$sFut}'
                (user group filter)
                order by oxactiveto, oxactivefrom"
         );
@@ -152,8 +142,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::getUserGroupFilter() test case
      * test if part of user group filter query returns correctly.
-     *
-     * @return null
      */
     public function testGetUserGroupFilter()
     {
@@ -161,10 +149,10 @@ class ActionListTest extends \OxidTestCase
         $sTable = $tableViewNameGenerator->getViewName('oxactions');
         $sGroupTable = $tableViewNameGenerator->getViewName('oxgroups');
 
-        $sGroupSql = "EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' and oxobject2action.OXOBJECTID in (" . implode(', ', ["'id1'", "'id2'", "'id3'"]) . ") )";
+        $sGroupSql = sprintf('EXISTS(select oxobject2action.oxid from oxobject2action where oxobject2action.oxactionid=%s.OXID and oxobject2action.oxclass=\'oxgroups\' and oxobject2action.OXOBJECTID in (', $sTable) . implode(', ', ["'id1'", "'id2'", "'id3'"]) . ") )";
         $sQ .= " and (
-                if(EXISTS(select 1 from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
-                    $sGroupSql,
+                if(EXISTS(select 1 from oxobject2action, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid={$sTable}.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
+                    {$sGroupSql},
                     1)
             ) ";
 
@@ -189,8 +177,6 @@ class ActionListTest extends \OxidTestCase
     /**
      * oxActionList::getUserGroupFilter() test case
      * test if part of user group filter query returns correctly without user object.
-     *
-     * @return null
      */
     public function testGetUserGroupFilterNoUser()
     {
@@ -200,8 +186,8 @@ class ActionListTest extends \OxidTestCase
 
         $sGroupSql = '0';
         $sQ .= " and (
-                if(EXISTS(select 1 from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid=$sTable.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
-                    $sGroupSql,
+                if(EXISTS(select 1 from oxobject2action, {$sGroupTable} where {$sGroupTable}.oxid=oxobject2action.oxobjectid and oxobject2action.oxactionid={$sTable}.OXID and oxobject2action.oxclass='oxgroups' LIMIT 1),
+                    {$sGroupSql},
                     1)
             ) ";
 
@@ -237,8 +223,6 @@ class ActionListTest extends \OxidTestCase
 
     /**
      * general test
-     *
-     * @return null
      */
     public function testLoadBanners()
     {
@@ -251,7 +235,7 @@ class ActionListTest extends \OxidTestCase
         $oL = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, ['selectString', 'getUserGroupFilter']);
         $oL->expects($this->once())->method('getUserGroupFilter')->will($this->returnValue('(user group filter)'));
         $oL->expects($this->once())->method('selectString')
-            ->with("select * from $sView where oxtype=3 and  (   $sView.oxactive = 1  or  ( $sView.oxactivefrom < '$sNow' and $sView.oxactiveto > '$sNow' ) )  and oxshopid='$sShopId' (user group filter) order by oxsort");
+            ->with(sprintf('select * from %s where oxtype=3 and  (   %s.oxactive = 1  or  ( %s.oxactivefrom < \'%s\' and %s.oxactiveto > \'%s\' ) )  and oxshopid=\'%s\' (user group filter) order by oxsort', $sView, $sView, $sView, $sNow, $sView, $sNow, $sShopId));
 
         $oL->loadBanners();
     }

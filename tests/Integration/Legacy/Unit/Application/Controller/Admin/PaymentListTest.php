@@ -15,8 +15,6 @@ class PaymentListTest extends \OxidTestCase
 
     /**
      * Payment_List::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -15,8 +15,6 @@ class GenExportTest extends \OxidTestCase
 
     /**
      * GenExport::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

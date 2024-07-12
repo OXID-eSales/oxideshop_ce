@@ -23,15 +23,19 @@ class CategoryTest extends \OxidTestCase
 {
     use FieldTestingTrait;
 
-    protected $_oCategoryA = null;
-    protected $_oCategoryB = null;
+    protected $_oCategoryA;
+
+    protected $_oCategoryB;
 
     protected $_sAttributeA;
+
     protected $_sAttributeB;
+
     protected $_sAttributeC;
+
     protected $_sAttributeD;
 
-    protected $_sCategory = null;
+    protected $_sCategory;
 
     protected function setUp(): void
     {
@@ -73,7 +77,7 @@ class CategoryTest extends \OxidTestCase
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                   "values ('test','test','{$sShopId}','1','4','test','','','','','1','10','50')";
+                   sprintf('values (\'test\',\'test\',\'%d\',\'1\',\'4\',\'test\',\'\',\'\',\'\',\'\',\'1\',\'10\',\'50\')', $sShopId);
         $this->addToDatabase($sInsert, 'oxcategories');
 
         $this->_oCategory = oxNew('oxcategory');
@@ -105,6 +109,7 @@ class CategoryTest extends \OxidTestCase
             $oObj->load($this->_oCategory->getId());
             $this->_oCategory = $oObj;
         }
+
         if (@$this->_oCategoryB->getId()) {
             $oObj = oxRegistry::getUtilsObject()->oxNew("oxCategory", "core");
             $oObj->load($this->_oCategoryB->getId());
@@ -147,6 +152,7 @@ class CategoryTest extends \OxidTestCase
 
         $oCategory = oxNew('oxCategory');
         $oCategory->setId("testCategoryId");
+
         $oCategory->oxcategories__oxextlink = new oxField("trestssa");
 
         $this->assertEquals("trestssa", $oCategory->getBaseStdLink($iLang));
@@ -305,6 +311,7 @@ class CategoryTest extends \OxidTestCase
         oxRegistry::getLang()->setBaseLanguage(1);
         $oCat = oxNew("oxCategory");
         $oCat->loadInLang(0, $this->_sCategory);
+
         $oObj = oxNew("oxCategory");
         $oCatBaseLang = $oObj->getCatInLang($oCat);
         //$this->getConfig()->cleanup();
@@ -378,6 +385,7 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
+
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("oxlongdesC", $string);
@@ -389,6 +397,7 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
+
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("OXLONGDESC", $string);
@@ -400,6 +409,7 @@ class CategoryTest extends \OxidTestCase
     {
         $oObj = $this->getProxyClass('oxcategory');
         $oObj->disableLazyLoading();
+
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("oxcategories__oxlongdesc", $string);
@@ -757,6 +767,7 @@ class CategoryTest extends \OxidTestCase
     {
         $oCategory = oxNew('oxCategory');
         $oCategory->load('test2');
+
         $oParent = $oCategory->getParentCategory();
         $this->assertEquals($oCategory->oxcategories__oxparentid->value, $oParent->getId());
     }
@@ -819,8 +830,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Thumb url getter test
-     *
-     * @return null
      */
     public function testGetThumbUrl()
     {
@@ -848,8 +857,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Icon url getter test
-     *
-     * @return null
      */
     public function testGetIconUrl()
     {
@@ -877,8 +884,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Promo icon url getter test
-     *
-     * @return null
      */
     public function testGetPromotionIconUrl()
     {
@@ -941,8 +946,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Title getter test
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -954,8 +957,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Category::testGetDefaultSort() test case
-     *
-     * @return null
      */
     public function testGetDefaultSort()
     {
@@ -971,8 +972,6 @@ class CategoryTest extends \OxidTestCase
 
     /**
      * Category::testGetDefaultSortMode() test case
-     *
-     * @return null
      */
     public function testGetDefaultSortMode()
     {

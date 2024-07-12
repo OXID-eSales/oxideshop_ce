@@ -22,8 +22,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -35,8 +33,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test forgot email.
-     *
-     * @return null
      */
     public function testGetForgotEmail()
     {
@@ -48,8 +44,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test get update id.
-     *
-     * @return null
      */
     public function testGetUpdateId()
     {
@@ -62,8 +56,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test show update screen.
-     *
-     * @return null
      */
     public function testShowUpdateScreen()
     {
@@ -76,8 +68,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test update success.
-     *
-     * @return null
      */
     public function testUpdateSuccess()
     {
@@ -90,8 +80,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test update password using too short or unmaching passwords.
-     *
-     * @return null
      */
     public function testUpdatePasswordProblemsWithPass()
     {
@@ -106,9 +94,10 @@ class ForgotpwdTest extends \OxidTestCase
         try {
             $blExcp = false;
             $oView->updatePassword();
-        } catch (Exception $oExcp) {
-            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS');
+        } catch (Exception $exception) {
+            $blExcp = $exception->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS');
         }
+
         $this->assertTrue($blExcp);
 
         // pass does not match
@@ -117,9 +106,10 @@ class ForgotpwdTest extends \OxidTestCase
         try {
             $blExcp = false;
             $oView->updatePassword();
-        } catch (Exception $oExcp) {
-            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
+        } catch (Exception $exception) {
+            $blExcp = $exception->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
         }
+
         $this->assertTrue($blExcp);
 
         // pass too short
@@ -128,8 +118,8 @@ class ForgotpwdTest extends \OxidTestCase
         try {
             $blExcp = false;
             $oView->updatePassword();
-        } catch (Exception $oExcp) {
-            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
+        } catch (Exception $exception) {
+            $blExcp = $exception->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
         }
 
         $this->assertTrue($blExcp);
@@ -137,8 +127,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test update password with wrong/expired uid.
-     *
-     * @return null
      */
     public function testUpdatePasswordUnableToLoadUserByUid()
     {
@@ -153,8 +141,8 @@ class ForgotpwdTest extends \OxidTestCase
 
         try {
             $oView->updatePassword();
-        } catch (Exception $oExcp) {
-            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED';
+        } catch (Exception $exception) {
+            $blExcp = $exception->getMessage() === 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED';
         }
 
         $this->assertTrue($blExcp);
@@ -162,14 +150,13 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test update password.
-     *
-     * @return null
      */
     public function testUpdatePassword()
     {
         // adding test user
         $oUser = oxNew('oxuser');
         $oUser->setId('_testArt');
+
         $oUser->oxuser__oxshopid = new oxfield($this->getConfig()->getShopId());
         $oUser->setPassword('xxxxxx');
         $oUser->setUpdateKey();
@@ -185,8 +172,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -198,8 +183,6 @@ class ForgotpwdTest extends \OxidTestCase
     /**
      * Test ForgotPwd::updatePassword() - try to set password with spec. chars.
      * #0003680
-     *
-     * @return null
      */
     public function testUpdatePassword_passwordSpecChars()
     {
@@ -224,8 +207,6 @@ class ForgotpwdTest extends \OxidTestCase
 
     /**
      * Test if link is expired
-     *
-     * @return null
      */
     public function testIsExpiredLink()
     {

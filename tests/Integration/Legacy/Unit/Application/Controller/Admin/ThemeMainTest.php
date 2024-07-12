@@ -21,8 +21,6 @@ class ThemeMainTest extends \OxidTestCase
 
     /**
      * Theme_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -50,8 +48,8 @@ class ThemeMainTest extends \OxidTestCase
         try {
             $oTM->setTheme();
             $this->fail('should have called overriden activate');
-        } catch (Exception $e) {
-            $this->assertEquals('OK', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('OK', $exception->getMessage());
         }
     }
 

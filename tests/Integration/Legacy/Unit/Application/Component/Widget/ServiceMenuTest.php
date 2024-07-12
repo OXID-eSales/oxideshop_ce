@@ -16,8 +16,6 @@ class ServiceMenuTest extends \OxidTestCase
 {
     /**
      * Testing oxwServiceMenu::getCompareItemsCnt()
-     *
-     * @return null
      */
     public function testGetCompareItemsCnt()
     {
@@ -31,8 +29,6 @@ class ServiceMenuTest extends \OxidTestCase
 
     /**
      * Testing oxwServiceMenu::getCompareItems()
-     *
-     * @return null
      */
     public function testGetCompareItems()
     {
@@ -47,8 +43,6 @@ class ServiceMenuTest extends \OxidTestCase
 
     /**
      * Testing oxwServiceMenu::getCompareItems()
-     *
-     * @return null
      */
     public function testGetCompareItemsInJson()
     {

@@ -60,6 +60,7 @@ class NewsletterTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartArticle();
 
@@ -74,6 +75,7 @@ class NewsletterTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartActionArticles();
 
@@ -111,6 +113,7 @@ class NewsletterTest extends \OxidTestCase
     {
         $oUser = oxNew('oxuser');
         $oUser->setId('testAddMe');
+
         $oUser->oxuser__oxusername = new oxField('test@addme.com', oxField::T_RAW);
         $oUser->oxuser__oxpasssalt = new oxField('salt', oxField::T_RAW);
         $oUser->save();
@@ -126,6 +129,7 @@ class NewsletterTest extends \OxidTestCase
         $oTestNews->removeme();
         $oUser2 = oxNew('oxuser');
         $oUser2->load('testAddMe');
+
         $oUserGroups = $oUser2->getUserGroups();
         $this->assertFalse(isset($oUserGroups['oxidnewsletter']), 'user should be unsubscribed from newsletter group.');
     }
@@ -134,6 +138,7 @@ class NewsletterTest extends \OxidTestCase
     {
         $oUser = oxNew('oxuser');
         $oUser->setId('testAddMe');
+
         $oUser->oxuser__oxusername = new oxField('test@addme.com', oxField::T_RAW);
         $oUser->oxuser__oxpasssalt = new oxField('salt', oxField::T_RAW);
         $oUser->save();

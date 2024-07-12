@@ -15,8 +15,6 @@ class PricealarmTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -44,6 +42,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxartid = new oxField('1672', oxField::T_RAW);
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR', oxField::T_RAW);
         $oAlarm->save();
@@ -57,6 +56,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxartid = new oxField('1672', oxField::T_RAW);
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR', oxField::T_RAW);
         $oAlarm->save();
@@ -70,6 +70,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxartid = new oxField('1672', oxField::T_RAW);
         $oAlarm->save();
 
@@ -82,10 +83,12 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxartid = new oxField('1672', oxField::T_RAW);
         $oAlarm->save();
         $oProduct = oxNew("oxArticle");
         $oProduct->load('1672');
+
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
         $this->assertEquals($oProduct->oxarticles__oxtitle->value, $oAlarm->getTitle());
@@ -95,6 +98,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR', oxField::T_RAW);
         $oAlarm->save();
         $oThisCurr = $this->getConfig()->getCurrencyObject('EUR');
@@ -108,6 +112,7 @@ class PricealarmTest extends \OxidTestCase
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
         $oAlarm->save();
+
         $oDefCurr = $this->getConfig()->getActShopCurrencyObject();
         $oThisCurr = $this->getConfig()->getCurrencyObject($oDefCurr->name);
         $oAlarm = oxNew('oxpricealarm');
@@ -120,6 +125,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxprice = new oxField('12.36', oxField::T_RAW);
         $oAlarm->oxpricealarm__oxcurrency = new oxField('EUR', oxField::T_RAW);
         $oAlarm->save();
@@ -133,6 +139,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxprice = new oxField('13', oxField::T_RAW);
         $oAlarm->save();
 
@@ -146,6 +153,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxprice = new oxField('13', oxField::T_RAW);
         $oAlarm->oxpricealarm__oxsended = new oxField('2010-10-10 00:00:00', oxField::T_RAW);
         $oAlarm->save();
@@ -160,6 +168,7 @@ class PricealarmTest extends \OxidTestCase
     {
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
+
         $oAlarm->oxpricealarm__oxprice = new oxField('13', oxField::T_RAW);
         $oAlarm->save();
 

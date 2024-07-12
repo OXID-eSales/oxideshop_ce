@@ -14,8 +14,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * oxScLoginRegister::render() test case
-     *
-     * @return null
      */
     public function testRenderForLoginFeature()
     {
@@ -28,8 +26,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * oxScLoginRegister::confirmRegistration() test case
-     *
-     * @return null
      */
     public function testConfirmRegistrationBadUserUpdateId()
     {
@@ -43,8 +39,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * oxScLoginRegister::confirmRegistration() test case
-     *
-     * @return null
      */
     public function testConfirmRegistration()
     {
@@ -59,8 +53,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * oxScLoginRegister::getUpdateId() test case
-     *
-     * @return null
      */
     public function testGetUpdateId()
     {
@@ -72,8 +64,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * oxScLoginRegister::isConfirmed() test case
-     *
-     * @return null
      */
     public function testIsConfirmed()
     {
@@ -104,8 +94,6 @@ class RegisterTest extends \OxidTestCase
 
     /**
      * Testing if method returns correct value
-     *
-     * @return null
      */
     public function testIsFieldRequired()
     {

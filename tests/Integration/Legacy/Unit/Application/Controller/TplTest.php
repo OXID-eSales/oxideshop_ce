@@ -12,8 +12,6 @@ class TplTest extends \OxidTestCase
 
     /**
      * Testing Tpl::render()
-     *
-     * @return null
      */
     public function testRender()
     {

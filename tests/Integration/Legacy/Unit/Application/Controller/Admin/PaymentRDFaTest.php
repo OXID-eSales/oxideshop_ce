@@ -24,8 +24,6 @@ final class PaymentRDFaTest extends \OxidTestCase
 
     /**
      * Payment_RDFa::save() delete old records test case
-     *
-     * @return null
      */
     public function testSave_deleteOldRecords()
     {
@@ -34,6 +32,7 @@ final class PaymentRDFaTest extends \OxidTestCase
 
         $oMapping = oxNew('oxBase');
         $oMapping->init('oxobject2payment');
+
         $oMapping->oxobject2payment__oxpaymentid = new oxField($sTestID);
         $oMapping->oxobject2payment__oxobjectid = new oxField('test_del_objID');
         $oMapping->oxobject2payment__oxtype = new oxField('rdfapayment');
@@ -59,8 +58,6 @@ final class PaymentRDFaTest extends \OxidTestCase
 
     /**
      * Payment_RDFa::save() create records test case
-     *
-     * @return null
      */
     public function testSave_createRecords()
     {
@@ -89,13 +86,10 @@ final class PaymentRDFaTest extends \OxidTestCase
 
     /**
      * Payment_RDFa::getAllRDFaPayments() test case
-     *
-     * @return null
      */
     public function testGetAllRDFaPayments()
     {
         $aAssignedRDFaPayments = ['GoogleCheckout'];
-        $aExpResp = [];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa::class, ['getAssignedRDFaPayments']);
         $oView->expects($this->once())->method('getAssignedRDFaPayments')->will($this->returnValue($aAssignedRDFaPayments));
@@ -104,18 +98,14 @@ final class PaymentRDFaTest extends \OxidTestCase
         $this->assertTrue(is_array($aCurrResp), 'Array should be returned');
         $this->assertTrue(count($aCurrResp) > 0, 'Empty array returned');
         $this->assertTrue(current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass');
-
-        $blFound = false;
         foreach ($aCurrResp as $oItem) {
             foreach ($aAssignedRDFaPayments as $sAssignedName) {
                 if (strcasecmp($oItem->name, $sAssignedName) === 0) {
                     if ($oItem->checked !== true) {
                         $this->fail('Item "' . $sAssignedName . '" should be set as active');
                     }
-                } else {
-                    if ($oItem->checked === true) {
-                        $this->fail('Item "' . $sAssignedName . '" should not be set as active');
-                    }
+                } elseif ($oItem->checked === true) {
+                    $this->fail('Item "' . $sAssignedName . '" should not be set as active');
                 }
             }
         }
@@ -123,8 +113,6 @@ final class PaymentRDFaTest extends \OxidTestCase
 
     /**
      * Payment_RDFa::getAssignedRDFaPayments() test case
-     *
-     * @return null
      */
     public function testGetAssignedRDFaPayments()
     {

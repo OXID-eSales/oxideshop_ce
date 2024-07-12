@@ -288,6 +288,7 @@ class FileTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
+
         $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 

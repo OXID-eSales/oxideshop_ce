@@ -18,8 +18,6 @@ class CategoryOrderTest extends \OxidTestCase
 
     /**
      * Category_Order::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -17,8 +17,9 @@ use \oxTestModules;
 
 class testOxLocator extends oxLocator
 {
-    public $oBackProduct = null;
-    public $oNextProduct = null;
+    public $oBackProduct;
+
+    public $oNextProduct;
 
     public function setClickCat($oClickCat)
     {
@@ -48,12 +49,10 @@ class LocatorTest extends \OxidTestCase
      */
     public const SOURCE_ARTICLE_ID = 'f4f73033cf5045525644042325355732';
 
-    protected $_iSeoMode = null;
+    protected $_iSeoMode;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -70,8 +69,6 @@ class LocatorTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -177,7 +174,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oCategory->iCntOfProd);
 
         $iPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? 2 : 0;
-        $this->assertEquals($config->getShopHomeUrl() . "cl=alist&amp;cnid={$sActCat}" . (($iPgNr) ? "&amp;pgNr={$iPgNr}" : ""), $oCategory->toListLink);
+        $this->assertEquals($config->getShopHomeUrl() . ('cl=alist&amp;cnid=' . $sActCat) . (($iPgNr !== 0) ? '&amp;pgNr=' . $iPgNr : ""), $oCategory->toListLink);
         $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sNextId, $oCategory->nextProductLink);
         $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sPrevId, $oCategory->prevProductLink);
     }
@@ -219,6 +216,7 @@ class LocatorTest extends \OxidTestCase
             $sNextProdLink = $sShopUrl . 'Geschenke/Wohnen/Uhren/Wanduhr-PHOTOFRAME.html';
             $sPrevProdLink = $sShopUrl . 'Geschenke/Bar-Equipment/Champagnerverschluss-GOLF.html';
         }
+
         $expectedPosition = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 9;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
         $this->assertEquals($expectedPosition, $oCategory->iProductPos);
@@ -243,6 +241,7 @@ class LocatorTest extends \OxidTestCase
             $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
             $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
         }
+
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
@@ -267,7 +266,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oVendor->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=vendorlist&amp;cnid={$sActCat}{$sPgNr}", $oVendor->toListLink);
+        $this->assertEquals($myConfig->getShopHomeUrl() . sprintf('cl=vendorlist&amp;cnid=%s%s', $sActCat, $sPgNr), $oVendor->toListLink);
         $this->assertEquals($sNextLink, $oVendor->nextProductLink);
         $this->assertEquals($sPrevLink, $oVendor->prevProductLink);
     }
@@ -334,6 +333,7 @@ class LocatorTest extends \OxidTestCase
             $sPrevLink = '';
             $sNextLink = '';
         }
+
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
@@ -359,7 +359,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oManufacturer->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=manufacturerlist&amp;mnid={$sActCat}{$sPgNr}", $oManufacturer->toListLink);
+        $this->assertEquals($myConfig->getShopHomeUrl() . sprintf('cl=manufacturerlist&amp;mnid=%s%s', $sActCat, $sPgNr), $oManufacturer->toListLink);
         $this->assertEquals($sNextLink, $oManufacturer->nextProductLink);
         $this->assertEquals($sPrevLink, $oManufacturer->prevProductLink);
     }
@@ -450,7 +450,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($config->getShopHomeUrl() . "cl=search{$sPgNr}&amp;searchparam=Bier&amp;listtype=search", $oSearch->toListLink);
+        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=search%s&amp;searchparam=Bier&amp;listtype=search', $sPgNr), $oSearch->toListLink);
         $this->assertEquals($sNextLink, $oSearch->nextProductLink);
         $this->assertEquals($sPrevLink, $oSearch->prevProductLink);
     }
@@ -496,9 +496,9 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
         $iPgNr = 1;
-        $this->assertEquals($config->getShopHomeUrl() . "cl=search&amp;pgNr={$iPgNr}&amp;searchparam=a&amp;listtype=search&amp;searchvendor={$sSearchVendor}", $oSearch->toListLink);
-        $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid={$sNextId}&amp;searchparam=a&amp;listtype=search&amp;searchvendor={$sSearchVendor}", $oSearch->nextProductLink);
-        $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid={$sPrevId}&amp;searchparam=a&amp;listtype=search&amp;searchvendor={$sSearchVendor}", $oSearch->prevProductLink);
+        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=search&amp;pgNr=%d&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $iPgNr, $sSearchVendor), $oSearch->toListLink);
+        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sNextId, $sSearchVendor), $oSearch->nextProductLink);
+        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sPrevId, $sSearchVendor), $oSearch->prevProductLink);
     }
 
     public function testSetSearchLocatorDataFromCat()
@@ -522,7 +522,7 @@ class LocatorTest extends \OxidTestCase
         $sNextLink = '';
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $sSearchCat = '30e44ab841af13e46.42570689';
-            $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2357&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=$sSearchCat";
+            $sNextLink = $myConfig->getShopHomeUrl() . ('cl=details&amp;anid=2357&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=' . $sSearchCat);
         }
 
         $this->setRequestParameter("searchparam", 'Bier');
@@ -539,7 +539,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedPosition, $oSearch->iProductPos);
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=search&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=$sSearchCat", $oSearch->toListLink);
+        $this->assertEquals($myConfig->getShopHomeUrl() . ('cl=search&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=' . $sSearchCat), $oSearch->toListLink);
         $this->assertEquals($sNextLink, $oSearch->nextProductLink);
         $this->assertNull($oSearch->prevProductLink);
     }

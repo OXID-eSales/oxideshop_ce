@@ -17,8 +17,6 @@ class LinksTest extends \OxidTestCase
 
     /**
      * Test get link list.
-     *
-     * @return null
      */
     public function testGetLinksList()
     {
@@ -29,8 +27,6 @@ class LinksTest extends \OxidTestCase
 
     /**
      * Testing Links::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

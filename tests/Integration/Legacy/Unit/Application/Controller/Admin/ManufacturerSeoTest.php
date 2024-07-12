@@ -20,8 +20,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -33,8 +31,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -45,8 +41,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::GetType() test case
-     *
-     * @return null
      */
     public function testGetType()
     {
@@ -57,8 +51,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -75,8 +67,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -86,8 +76,6 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testIsSuffixSupported()
     {
@@ -97,18 +85,18 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testIsEntrySuffixed()
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
+
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(1);
         $oManufacturer->save();
 
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test2");
+
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();
 
@@ -126,13 +114,12 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::getEncoder() test case
-     *
-     * @return null
      */
     public function testGetEntryUri()
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
+
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();
 
@@ -147,13 +134,12 @@ class ManufacturerSeoTest extends \OxidTestCase
 
     /**
      * Manufacturer_Seo::_getStdUrl() test case
-     *
-     * @return null
      */
     public function testGetStdUrl()
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId("_test1");
+
         $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField(0);
         $oManufacturer->save();
 

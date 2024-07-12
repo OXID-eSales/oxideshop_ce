@@ -32,8 +32,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::Save() test case, testing upadating existing language
-     *
-     * @return null
      */
     public function testSave_update()
     {
@@ -82,8 +80,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::Save() test case, saveing new language
-     *
-     * @return null
      */
     public function testSave_addingNewMultilangFieldsToDb()
     {
@@ -120,8 +116,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::GetLanguageInfo() test case
-     *
-     * @return null
      */
     public function testGetLanguageInfo()
     {
@@ -148,8 +142,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::GetLanguages() test case
-     *
-     * @return null
      */
     public function testGetLanguages()
     {
@@ -166,8 +158,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::UpdateAbbervation() test case
-     *
-     * @return null
      */
     public function testUpdateAbbervation()
     {
@@ -189,8 +179,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::SortLangArraysByBaseId() test case
-     *
-     * @return null
      */
     public function testSortLangArraysByBaseId()
     {
@@ -215,8 +203,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::AssignDefaultLangParams() test case
-     *
-     * @return null
      */
     public function testAssignDefaultLangParams()
     {
@@ -233,8 +219,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::SetDefaultLang() test case
-     *
-     * @return null
      */
     public function testSetDefaultLang()
     {
@@ -254,8 +238,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::GetAvailableLangBaseId() test case
-     *
-     * @return null
      */
     public function testGetAvailableLangBaseId()
     {
@@ -270,8 +252,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::CheckLangTranslations() test case
-     *
-     * @return null
      */
     public function testCheckLangTranslations()
     {
@@ -295,8 +275,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::CheckLangTranslations() test case
-     *
-     * @return null
      */
     public function testCheckLangTranslations_withError()
     {
@@ -323,8 +301,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::CheckMultilangFieldsExistsInDb() test case
-     *
-     * @return null
      */
     public function testCheckMultilangFieldsExistsInDb()
     {
@@ -342,8 +318,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::AddNewMultilangFieldsToDb() test case
-     *
-     * @return null
      */
     public function testAddNewMultilangFieldsToDb()
     {
@@ -361,8 +335,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::AddNewMultilangFieldsToDb() test case
-     *
-     * @return null
      */
     public function testAddNewMultilangFieldsToDb_withError()
     {
@@ -382,8 +354,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::CheckLangExists() test case
-     *
-     * @return null
      */
     public function testCheckLangExists()
     {
@@ -399,8 +369,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::SortLangParamsByBaseIdCallback() test case
-     *
-     * @return null
      */
     public function testSortLangParamsByBaseIdCallback()
     {
@@ -416,8 +384,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Testing validation errors - language already exist
-     *
-     * @return null
      */
     public function testValidateInput_langExists()
     {
@@ -438,8 +404,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Testing validation errors - empty language name
-     *
-     * @return null
      */
     public function testValidateInput_emptyLangName()
     {
@@ -460,8 +424,6 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Testing validation errors - all values valid
-     *
-     * @return null
      */
     public function testValidateInput_validInput()
     {

@@ -24,13 +24,14 @@ use \oxTestModules;
 class ContentTest extends \OxidTestCase
 {
     /** @var oxContent  */
-    protected $_oObj = null;
+    protected $_oObj;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->_oObj = oxNew('oxbase');
         $this->_oObj->init('oxcontents');
+
         $this->_oObj->oxcontents__oxtitle = new oxField('test', oxField::T_RAW);
         $sShopId = $this->getConfig()->getShopId();
         $this->_oObj->oxcontents__oxshopid = new oxField($sShopId, oxField::T_RAW);
@@ -80,8 +81,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content id getter when content id passed with tpl param.
-     *
-     * @return null
      */
     public function testGetContentIdIfAgb()
     {
@@ -95,8 +94,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test get object seo id.
-     *
-     * @return null
      */
     public function testGetSeoObjectId()
     {
@@ -108,8 +105,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test get view id.
-     *
-     * @return null
      */
     public function testGetViewId()
     {
@@ -124,6 +119,7 @@ class ContentTest extends \OxidTestCase
     {
         $oContent = oxNew('oxContent');
         $oContent->setId('testContent');
+
         $oContent->oxcontents__oxloadid= new Field('testContent');
 
         $oContentView = $this->getMock(
@@ -139,8 +135,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content id getter
-     *
-     * @return null
      */
     public function testRenderPsOn()
     {
@@ -154,18 +148,17 @@ class ContentTest extends \OxidTestCase
             $oView = $this->getMock(ContentController::class, ["canShowContent"], [], '', false);
             $oView->expects($this->once())->method('canShowContent')->will($this->returnValue(false));
             $oView->render();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("redirect", $oExcp->getMessage(), "Error in oxsclogincontent::getContentId()");
+        } catch (Exception $exception) {
+            $this->assertEquals("redirect", $exception->getMessage(), "Error in oxsclogincontent::getContentId()");
 
             return;
         }
+
         $this->fail("Error in content::getContentId()");
     }
 
     /**
      * Test prepare meta keywords.
-     *
-     * @return null
      */
     public function testPrepareMetaKeyword()
     {
@@ -182,8 +175,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test prepare meta description.
-     *
-     * @return null
      */
     public function testPrepareMetaDescription()
     {
@@ -200,8 +191,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test get content category without any assigned category.
-     *
-     * @return null
      */
     public function testGetContentCategoryNoCategoryAssigned()
     {
@@ -213,8 +202,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test get content category with assigned category.
-     *
-     * @return null
      */
     public function testGetContentCategorySomeCategoryAssigned()
     {
@@ -229,8 +216,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test show plain template.
-     *
-     * @return null
      */
     public function testShowPlainTemplate()
     {
@@ -246,8 +231,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test show plain template.
-     *
-     * @return null
      */
     public function testShowPlainTemplatePsOn()
     {
@@ -278,8 +261,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content id getter Test active content id getter when content id passed with oxcid param.
-     *
-     * @return null
      */
     public function testGetContentIdWithOxcidParam()
     {
@@ -296,13 +277,12 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content id getter
-     *
-     * @return null
      */
     public function testGetContentIdIfNotActive()
     {
         $oContent = oxNew('oxContent');
         $oContent->setId('_testContent');
+
         $oContent->oxcontents__oxactive = new oxField('0');
         $oContent->save();
         $this->setRequestParameter('oxcid', $oContent->getId());
@@ -315,8 +295,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content id getter.
-     *
-     * @return null
      */
     public function testGetContentIdWhenNoIdSpecified()
     {
@@ -331,8 +309,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test active content getter.
-     *
-     * @return null
      */
     public function testGetContent()
     {
@@ -348,8 +324,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test getting template name.
-     *
-     * @return null
      */
     public function testGetTplName()
     {
@@ -360,8 +334,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test if render returns setted template name.
-     *
-     * @return null
      */
     public function testRenderReturnSettedTemplateName()
     {
@@ -388,18 +360,17 @@ class ContentTest extends \OxidTestCase
 
         try {
             $oView->render();
-        } catch (Exception $e) {
-            $this->assertEquals('404', $e->getMessage());
+        } catch (Exception $exception) {
+            $this->assertEquals('404', $exception->getMessage());
 
             return;
         }
+
         $this->fail("no exception");
     }
 
     /**
      * Testing Contact::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -410,8 +381,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Test get content title.
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -422,8 +391,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::showRdfa() Test case
-     *
-     * @return null
      */
     public function testShowRdfa()
     {
@@ -436,8 +403,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getContentPageTpl() Test Business case
-     *
-     * @return null
      */
     public function testGetContentPageTpl_Business()
     {
@@ -459,8 +424,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getContentPageTpl() Test Delivery case
-     *
-     * @return null
      */
     public function testGetContentPageTpl_Delivery()
     {
@@ -482,8 +445,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getContentPageTpl() Test Payment case
-     *
-     * @return null
      */
     public function testGetContentPageTpl_Payment()
     {
@@ -505,14 +466,13 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getBusinessEntityExtends() Test case
-     *
-     * @return null
      */
     public function testGetBusinessEntityExtends()
     {
         $oConf = $this->getConfig();
         $oConf->setConfigParam('_test1', '_value1');
         $oConf->setConfigParam('_test2', '_value2');
+
         $aInput = ['_test2', '_test1', '_testX'];
         $aExpResp = ['_test2' => '_value2', '_test1' => '_value1', '_testX' => null];
 
@@ -523,12 +483,10 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getNotMappedToRDFaPayments() Test case
-     *
-     * @return null
      */
     public function testGetNotMappedToRDFaPayments()
     {
-        oxTestModules::addFunction('oxPaymentList', 'getNonRDFaPaymentList', '{ return \'_call_getNonRDFaPaymentList\'; }');
+        oxTestModules::addFunction('oxPaymentList', 'getNonRDFaPaymentList', "{ return '_call_getNonRDFaPaymentList'; }");
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaPayments();
@@ -537,12 +495,10 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getNotMappedToRDFaDeliverySets() Test case
-     *
-     * @return null
      */
     public function testGetNotMappedToRDFaDeliverySets()
     {
-        oxTestModules::addFunction('oxdeliverysetlist', 'getNonRDFaDeliverySetList', '{ return \'_call_getNonRDFaDeliverySetList\'; }');
+        oxTestModules::addFunction('oxdeliverysetlist', 'getNonRDFaDeliverySetList', "{ return '_call_getNonRDFaDeliverySetList'; }");
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaDeliverySets();
@@ -551,13 +507,12 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getDeliveryChargeSpecs() Test case
-     *
-     * @return null
      */
     public function testGetDeliveryChargeSpecs()
     {
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setId('_testDeliveryId');
+
         $oDelivery->oxdelivery__oxtitle = new oxField('_testDelivertTitle' . $i, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
@@ -571,6 +526,7 @@ class ContentTest extends \OxidTestCase
         $oDel2Delset = oxNew('oxBase');
         $oDel2Delset->init('oxdel2delset');
         $oDel2Delset->setId('_testDel2DelSetId');
+
         $oDel2Delset->oxdel2delset__oxdelid = new oxField($oDelivery->getId(), oxField::T_RAW);
         $oDel2Delset->oxdel2delset__oxdelsetid = new oxField('oxidstandard', oxField::T_RAW);
         $oDel2Delset->save();
@@ -587,12 +543,10 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getDeliveryList() Test case
-     *
-     * @return null
      */
     public function testGetDeliveryList()
     {
-        oxTestModules::addFunction('oxdeliverylist', 'getList', '{ return \'_call_getList\'; }');
+        oxTestModules::addFunction('oxdeliverylist', 'getList', "{ return '_call_getList'; }");
 
         $oView = oxNew('Content');
         $oResp = $oView->getDeliveryList();
@@ -601,8 +555,6 @@ class ContentTest extends \OxidTestCase
 
     /**
      * Content::getRdfaVAT() Test case
-     *
-     * @return null
      */
     public function testGetRdfaVAT()
     {
@@ -650,6 +602,7 @@ class ContentTest extends \OxidTestCase
         // Check if second CMS page will be generated with different content.
         $oSecond = oxNew('oxcontent');
         $oSecond->setId('_test_testGetParsedContent');
+
         $oSecond->oxcontents__oxtitle = new oxField('test', oxField::T_RAW);
         $sShopId = $this->getConfig()->getShopId();
         $oSecond->oxcontents__oxshopid = new oxField($sShopId, oxField::T_RAW);

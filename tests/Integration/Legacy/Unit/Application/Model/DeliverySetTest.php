@@ -15,14 +15,13 @@ class DeliverySetTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
         parent::setUp();
         $oDelSet = oxNew('oxdeliveryset');
         $oDelSet->setId('_testDeliverySetId');
+
         $oDelSet->oxdeliveryset__oxtitle = new oxField('_testDeliverySetTitle');
         $oDelSet->save();
 
@@ -30,26 +29,27 @@ class DeliverySetTest extends \OxidTestCase
         $oDel = oxNew('oxBase');
         $oDel->init('oxobject2payment');
         $oDel->setId('_testO2PayId');
+
         $oDel->oxobject2payment__oxobjectid = new oxField($oDelSet->getId(), oxField::T_RAW);
         $oDel->save();
 
         $oDel = oxNew('oxBase');
         $oDel->Init('oxobject2delivery');
         $oDel->setId('_testO2DelId');
+
         $oDel->oxobject2delivery__oxdeliveryid = new oxField($oDelSet->getId(), oxField::T_RAW);
         $oDel->save();
 
         $oDel = oxNew('oxBase');
         $oDel->Init('oxdel2delset');
         $oDel->setId('_testO2DelSetId');
+
         $oDel->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId(), oxField::T_RAW);
         $oDel->save();
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {

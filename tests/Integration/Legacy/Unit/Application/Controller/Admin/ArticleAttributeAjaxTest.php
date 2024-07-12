@@ -16,8 +16,6 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -39,8 +37,6 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -75,8 +71,6 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 
     /**
      * ArticleAttributeAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQuery()
     {
@@ -86,21 +80,17 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 
     /**
      * ArticleAttributeAjax::getQuery() test case
-     *
-     * @return null
      */
     public function testGetQueryOxid()
     {
         $sOxid = '_testArticleAttributeOxid';
         $this->setRequestParameter("oxid", $sOxid);
         $oView = oxNew('article_attribute_ajax');
-        $this->assertEquals("from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . ".oxobjectid = '$sOxid'", trim((string) $oView->getQuery()));
+        $this->assertEquals("from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . sprintf('.oxobjectid = \'%s\'', $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
      * ArticleAttributeAjax::removeAttr() test case
-     *
-     * @return null
      */
     public function testRemoveAttr()
     {
@@ -114,8 +104,6 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 
     /**
      * ArticleAttributeAjax::removeAttr() test case
-     *
-     * @return null
      */
     public function testRemoveAttrAll()
     {
@@ -124,15 +112,13 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
         $this->setRequestParameter("all", true);
         $oView = oxNew('article_attribute_ajax');
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sOxid'"));
+        $this->assertEquals(3, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sOxid)));
         $oView->removeAttr();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sOxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sOxid)));
     }
 
     /**
      * ArticleAttributeAjax::addAttr() test case
-     *
-     * @return null
      */
     public function testAddAttr()
     {
@@ -142,15 +128,13 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
 
         $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testAttributeAdd1', '_testAttributeAdd2']));
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sSynchOxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sSynchOxid)));
         $oView->addAttr();
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sSynchOxid'"));
+        $this->assertEquals(2, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sSynchOxid)));
     }
 
     /**
      * ArticleAttributeAjax::addAttr() test case
-     *
-     * @return null
      */
     public function testAddAttrAll()
     {
@@ -158,18 +142,16 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", $sSynchOxid);
         $this->setRequestParameter("all", true);
 
-        $iCount = oxDb::getDb()->getOne("select count(oxid) from " . $this->getAttributeViewTable() . " where " . $this->getAttributeViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxattrid from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . ".oxobjectid = '$sSynchOxid' )");
+        $iCount = oxDb::getDb()->getOne("select count(oxid) from " . $this->getAttributeViewTable() . " where " . $this->getAttributeViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxattrid from " . $this->getObject2AttributeViewTable() . " left join " . $this->getAttributeViewTable() . " on " . $this->getAttributeViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxattrid  where " . $this->getObject2AttributeViewTable() . sprintf('.oxobjectid = \'%s\' )', $sSynchOxid));
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sSynchOxid'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sSynchOxid)));
         $oView = oxNew('article_attribute_ajax');
         $oView->addAttr();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='$sSynchOxid'"));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxobjectid=\'%s\'', $sSynchOxid)));
     }
 
     /**
      * ArticleAttributeAjax::saveAttributeValue() test case
-     *
-     * @return null
      */
     public function testSaveAttributeValue()
     {
@@ -181,10 +163,10 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
         $this->setRequestParameter("attr_oxid", $sAttrOxid);
         $this->setRequestParameter("attr_value", $sAttrValue);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxvalue='$sAttrValue'"));
+        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxvalue=\'%s\'', $sAttrValue)));
 
         $oView = oxNew('article_attribute_ajax');
         $oView->saveAttributeValue();
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxvalue='$sAttrValue'"));
+        $this->assertEquals(1, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxvalue=\'%s\'', $sAttrValue)));
     }
 }

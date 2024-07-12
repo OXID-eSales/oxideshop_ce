@@ -16,8 +16,6 @@ class CategoryTreeTest extends UnitTestCase
 {
     /**
      * Testing OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::getDeepLevel()
-     *
-     * @return null
      */
     public function testGetDeepLevel()
     {

@@ -19,8 +19,6 @@ class ManufacturerMainTest extends \OxidTestCase
 
     /**
      * Manufacturer_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -38,8 +36,6 @@ class ManufacturerMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -55,8 +51,6 @@ class ManufacturerMainTest extends \OxidTestCase
 
     /**
      * Manufacturer_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -68,18 +62,17 @@ class ManufacturerMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Manufacturer_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Manufacturer_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Manufacturer_Main::save()");
 
             return;
         }
+
         $this->fail("error in Manufacturer_Main::save()");
     }
 
     /**
      * Manufacturer_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -91,11 +84,12 @@ class ManufacturerMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Manufacturer_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Manufacturer_Main::saveinnlang()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Manufacturer_Main::saveinnlang()");
 
             return;
         }
+
         $this->fail("error in Manufacturer_Main::saveinnlang()");
     }
 }

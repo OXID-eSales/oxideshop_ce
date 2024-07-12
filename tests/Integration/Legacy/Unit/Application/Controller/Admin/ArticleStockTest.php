@@ -21,8 +21,6 @@ class ArticleStockTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -33,8 +31,6 @@ class ArticleStockTest extends \OxidTestCase
 
     /**
      * Article_Stock::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -52,8 +48,6 @@ class ArticleStockTest extends \OxidTestCase
 
     /**
      * Article_Stock::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -68,18 +62,17 @@ class ArticleStockTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Stock');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::save()");
 
             return;
         }
+
         $this->fail("error in Article_Stock::save()");
     }
 
     /**
      * Article_Stock::AddPrice() test case
-     *
-     * @return null
      */
     public function testAddPrice()
     {
@@ -93,18 +86,17 @@ class ArticleStockTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Stock');
             $oView->addprice();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::addprice()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::addprice()");
 
             return;
         }
+
         $this->fail("error in Article_Stock::save()");
     }
 
     /**
      * Article_Stock::AddPrice() test case with passed params
-     *
-     * @return null
      */
     public function testAddPriceParams()
     {
@@ -122,18 +114,17 @@ class ArticleStockTest extends \OxidTestCase
         try {
             $oView = oxNew('Article_Stock');
             $oView->addprice($sOXID, $aParams);
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Article_Stock::addprice()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::addprice()");
 
             return;
         }
+
         $this->fail("error in Article_Stock::save()");
     }
 
     /**
      * Article_Stock::AddPrice() test case with passed params and saving in DB
-     *
-     * @return null
      */
     public function testAddPriceSaveDb()
     {
@@ -164,8 +155,6 @@ class ArticleStockTest extends \OxidTestCase
 
     /**
      * Article_Stock::AddPrice() test case with passed params and saving in DB
-     *
-     * @return null
      */
     public function testUpdatePrices()
     {
@@ -191,8 +180,6 @@ class ArticleStockTest extends \OxidTestCase
 
     /**
      * Article_Stock::DeletePrice() test case
-     *
-     * @return null
      */
     public function testDeletePrice()
     {

@@ -42,8 +42,6 @@ class oxCategoryListHelperEE extends \OxidEsales\EshopEnterprise\Application\Mod
      *
      * @param string $sName  Field name
      * @param string $sValue Field value
-     *
-     * @return null
      */
     public function setVar($sName, $sValue)
     {
@@ -85,8 +83,6 @@ class oxCategoryListHelperCE extends \oxCategoryList
      *
      * @param string $sName  Field name
      * @param string $sValue Field value
-     *
-     * @return null
      */
     public function setVar($sName, $sValue)
     {
@@ -147,10 +143,14 @@ class oxCategoryListHelperLoadCategoryMenusPE extends \oxCategoryList
 class CategoryListTest extends \OxidTestCase
 {
     /** @var oxCategoryList  */
-    protected $_oList = null;
+    protected $_oList;
+
     protected $_sNoCat;
+
     protected $_sActCat;
+
     protected $_sActRoot;
+
     protected $_aActPath;
 
     protected $classForMock;
@@ -180,8 +180,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get Depth Sql Snippet expand level 0.
-     *
-     * @return null
      */
     public function test_getDepthSqlSnippet_level0()
     {
@@ -197,8 +195,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get Depth Sql Snippet expand level 1.
-     *
-     * @return null
      */
     public function test_getDepthSqlSnippet_level1()
     {
@@ -212,15 +208,13 @@ class CategoryListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
-        $sExpSnippet = " ( 0 or $sViewName.oxparentid = 'oxrootid' ) ";
+        $sExpSnippet = sprintf(' ( 0 or %s.oxparentid = \'oxrootid\' ) ', $sViewName);
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
     }
 
     /**
      * Test get Depth Sql Snippet expand level 2.
-     *
-     * @return null
      */
     public function test_getDepthSqlSnippet_level2()
     {
@@ -233,15 +227,13 @@ class CategoryListTest extends \OxidTestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
-        $sExpSnippet = " ( 0 or $sViewName.oxparentid = 'oxrootid' or $sViewName.oxrootid = $sViewName.oxparentid or $sViewName.oxid = $sViewName.oxrootid ) ";
+        $sExpSnippet = sprintf(' ( 0 or %s.oxparentid = \'oxrootid\' or %s.oxrootid = %s.oxparentid or %s.oxid = %s.oxrootid ) ', $sViewName, $sViewName, $sViewName, $sViewName, $sViewName);
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
     }
 
     /**
      * Test get Depth Sql Snippet expand actice category.
-     *
-     * @return null
      */
     public function test_getDepthSqlSnippet_actcat()
     {
@@ -252,21 +244,20 @@ class CategoryListTest extends \OxidTestCase
 
         $oCat = oxNew('oxCategory');
         $oCat->load($this->_sActCat);
+
         $sCurSnippet = $this->_oList->getDepthSqlSnippet($oCat);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
         $snippetOxid = $this->getTestConfig()->getShopEdition() === 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
-        $sExpSnippet = " ( 0 or ($sViewName.oxparentid = '" . $snippetOxid . "') ) ";
+        $sExpSnippet = sprintf(' ( 0 or (%s.oxparentid = \'', $sViewName) . $snippetOxid . "') ) ";
 
         $this->assertEquals($sExpSnippet, $sCurSnippet);
     }
 
     /**
      * Test get Depth Sql Snippet expand non existing actvice category.
-     *
-     * @return null
      */
     public function test_getDepthSqlSnippet_badactcat()
     {
@@ -282,8 +273,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select string sorting.
-     *
-     * @return null
      */
     public function test_getSelectString_order()
     {
@@ -302,8 +291,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select string hiding empty categories.
-     *
-     * @return null
      */
     public function test_getSelectString_hideempty()
     {
@@ -321,8 +308,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select string in admin.
-     *
-     * @return null
      */
     public function test_getSelectString_admin()
     {
@@ -342,8 +327,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select string with shop id.
-     *
-     * @return null
      */
     public function test_getSelectString_shopid()
     {
@@ -362,8 +345,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select string remove inactive.
-     *
-     * @return null
      */
     public function test_getSelectString_remove()
     {
@@ -378,15 +359,13 @@ class CategoryListTest extends \OxidTestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
-        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->getSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
+        $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? sprintf(',not (%s.oxactive ', $sViewName) . $this->_oList->getSqlRightsSnippet() . ") as oxppremove" : sprintf(',not %s.oxactive as oxppremove', $sViewName);
 
         $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**
      * Test get select fileds for tree.
-     *
-     * @return null
      */
     public function test_getSqlSelectFieldsForTree()
     {
@@ -394,9 +373,7 @@ class CategoryListTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
 
-        $sExpect = 'tablex.oxid as oxid,'
-                   . ' tablex.oxactive as oxactive,'
-                   . ' tablex.oxhidden as oxhidden,'
+        $sExpect = 'tablex.oxid as oxid, tablex.oxactive as oxactive, tablex.oxhidden as oxhidden,'
                    . ' tablex.oxparentid as oxparentid,'
                    . ' tablex.oxdefsort as oxdefsort,'
                    . ' tablex.oxdefsortmode as oxdefsortmode,'
@@ -418,8 +395,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select fields for tree in language 1.
-     *
-     * @return null
      */
     public function test_getSqlSelectFieldsForTree_lang1()
     {
@@ -428,9 +403,7 @@ class CategoryListTest extends \OxidTestCase
         }
 
         oxRegistry::getLang()->setBaseLanguage(1);
-        $sExpect = 'tablex.oxid as oxid,'
-                   . ' tablex.oxactive as oxactive,'
-                   . ' tablex.oxhidden as oxhidden,'
+        $sExpect = 'tablex.oxid as oxid, tablex.oxactive as oxactive, tablex.oxhidden as oxhidden,'
                    . ' tablex.oxparentid as oxparentid,'
                    . ' tablex.oxdefsort as oxdefsort,'
                    . ' tablex.oxdefsortmode as oxdefsortmode,'
@@ -454,8 +427,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get depth sql union.
-     *
-     * @return null
      */
     public function test_getDepthSqlUnion()
     {
@@ -471,14 +442,14 @@ class CategoryListTest extends \OxidTestCase
 
         $sViewName = $oCat->getViewName();
 
-        $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->getDepthSqlUnion($oCat));
+        $this->assertEquals(sprintf('UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = \'rootid\' AND subcats.oxleft <= 151 AND subcats.oxright >= 959', $sViewName), $oList->getDepthSqlUnion($oCat));
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, ['getSqlSelectFieldsForTree']);
         $oList->expects($this->once())->method('getSqlSelectFieldsForTree')
             ->with($this->equalTo('maincats'), $this->equalTo('lalala'))
             ->will($this->returnValue('qqqqq'));
 
-        $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->getDepthSqlUnion($oCat, 'lalala'));
+        $this->assertEquals(sprintf('UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = \'rootid\' AND subcats.oxleft <= 151 AND subcats.oxright >= 959', $sViewName), $oList->getDepthSqlUnion($oCat, 'lalala'));
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, ['getSqlSelectFieldsForTree']);
         $oList->expects($this->never())->method('getSqlSelectFieldsForTree');
@@ -488,8 +459,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test get select fields forcing full tree.
-     *
-     * @return null
      */
     public function test_getSelectString_Forcefull()
     {
@@ -508,8 +477,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, removing inactive categories.
-     *
-     * @return null
      */
     public function test_ppRemoveInactiveCategories()
     {
@@ -520,6 +487,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('iForceLevel', 0);
 
         $this->_oList->selectString($this->_oList->getSelectString());
+
         $iPreCnt = $this->_oList->count();
 
         $this->_oList[$this->_sActRoot]->oxcategories__oxppremove = new oxField(true, oxField::T_RAW);
@@ -532,8 +500,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, loading full category object.
-     *
-     * @return null
      */
     public function test_ppLoadFullCategory()
     {
@@ -553,8 +519,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, loading full category object with removed root category.
-     *
-     * @return null
      */
     public function test_ppLoadFullCategoryWithRemovedRoot()
     {
@@ -565,20 +529,20 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('iForceLevel', 0);
 
         $this->_oList->selectString($this->_oList->getSelectString());
+
         $this->_oList[$this->_sActRoot]->oxcategories__oxppremove = new oxField(true, oxField::T_RAW);
         $this->_oList[$this->_sActCat]->oxcategories__oxppremove = new oxField(true, oxField::T_RAW);
+
         $this->_oList->ppRemoveInactiveCategories();
 
         $this->_oList->ppLoadFullCategory($this->_sActCat);
 
-        $this->assertTrue(isset($this->_sActCat));
+        $this->assertTrue($this->_sActCat !== null);
         $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
     }
 
     /**
      * Test list post processing, adding active category path information.
-     *
-     * @return null
      */
     public function test_ppAddPathInfo()
     {
@@ -592,7 +556,6 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->ppAddPathInfo();
 
         $aPath = $this->_oList->getPath();
-        $aPathKeys = array_keys($aPath);
 
         $this->assertEquals(array_keys($aPath), $this->_aActPath);
 
@@ -603,8 +566,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, adding path information without active category.
-     *
-     * @return null
      */
     public function test_ppAddPathInfoIfActCatNotSet()
     {
@@ -620,8 +581,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, adding content categories to tree with no content categories.
-     *
-     * @return null
      */
     public function test_ppAddContentCategories()
     {
@@ -663,8 +622,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, build tree and check path.
-     *
-     * @return null
      */
     public function test_ppBuildTree_Path()
     {
@@ -688,8 +645,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, build tree and check if hidden categories were removed.
-     *
-     * @return null
      */
     public function test_ppBuildTree_Hidden()
     {
@@ -700,6 +655,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('iForceLevel', 0);
 
         $this->_oList->selectString($this->_oList->getSelectString());
+
         $this->_oList[$this->_sActCat]->oxcategories__oxhidden = new oxField(true, oxField::T_RAW);
         $this->_oList[$this->_sActCat]->setIsVisible(null);
         $this->_oList->ppBuildTree();
@@ -719,8 +675,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, build tree and check sorting.
-     *
-     * @return null
      */
     public function test_ppBuildTree_Sorting()
     {
@@ -733,18 +687,21 @@ class CategoryListTest extends \OxidTestCase
         $sParentId = $this->_sActRoot;
         $oCat1 = oxNew('oxCategory');
         $oCat1->setId("_test1");
+
         $oCat1->oxcategories__oxparentid = new oxField($sParentId);
         $oCat1->oxcategories__oxsort = new oxField(2);
         $oCat1->oxcategories__oxactive = new oxField(1);
         $oCat1->save();
         $oCat2 = oxNew('oxCategory');
         $oCat2->setId("_test2");
+
         $oCat2->oxcategories__oxparentid = new oxField($sParentId);
         $oCat2->oxcategories__oxsort = new oxField(3);
         $oCat2->oxcategories__oxactive = new oxField(1);
         $oCat2->save();
         $oCat3 = oxNew('oxCategory');
         $oCat3->setId("_test3");
+
         $oCat3->oxcategories__oxparentid = new oxField($sParentId);
         $oCat3->oxcategories__oxsort = new oxField(1);
         $oCat3->oxcategories__oxactive = new oxField(1);
@@ -754,18 +711,20 @@ class CategoryListTest extends \OxidTestCase
 
         //Check root order
         $aCurRootOrder = [];
-        foreach ($this->_oList as $sId => $oCat) {
+        foreach ($this->_oList as $oCat) {
             $aCurRootOrder[] = $oCat->oxcategories__oxsort->value;
         }
+
         $aExpRootOrder = $aCurRootOrder;
         asort($aExpRootOrder);
         $this->assertEquals(implode(',', $aExpRootOrder), implode(',', $aCurRootOrder));
 
         //Chect subcat order
         $aCurSubOrder = [];
-        foreach ($this->_oList[$this->_sActRoot]->getSubCats() as $sId => $oCat) {
+        foreach ($this->_oList[$this->_sActRoot]->getSubCats() as $oCat) {
             $aCurSubOrder[] = $oCat->oxcategories__oxsort->value;
         }
+
         $aExpSubOrder = $aCurSubOrder;
         asort($aExpSubOrder);
         $this->assertEquals(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
@@ -773,8 +732,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, add depth information.
-     *
-     * @return null
      */
     public function test_ppAddDepthInformation()
     {
@@ -800,14 +757,13 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test list post processing, add depth information.
-     *
-     * @return null
      */
     public function test_addDepthInfo()
     {
         $aTree = [];
         $oCat = oxNew('oxCategory');
         $oCat->setId("_test1");
+
         $oCat->oxcategories__oxparentid = new oxField("_test2");
         $oCat->oxcategories__oxsort = new oxField(2);
         $oCat->oxcategories__oxactive = new oxField(1);
@@ -832,8 +788,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test if build tree executes all required postprocessing methods.
-     *
-     * @return null
      */
     public function testBuildTree()
     {
@@ -852,8 +806,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test Load list.
-     *
-     * @return null
      */
     public function testLoadList()
     {
@@ -877,8 +829,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test set shop id.
-     *
-     * @return null
      */
     public function testSetShopId()
     {
@@ -889,8 +839,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test set get active/clicked category.
-     *
-     * @return null
      */
     public function testGetClickCat()
     {
@@ -901,8 +849,6 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test set get active root category.
-     *
-     * @return null
      */
     public function testGetClickRoot()
     {
@@ -913,28 +859,30 @@ class CategoryListTest extends \OxidTestCase
 
     /**
      * Test update category tree nodes
-     *
-     * @return null
      */
     public function testUpdateCategoryTreeUpdateNodes()
     {
         $oObj1 = oxNew("oxCategory");
         $oObj1->setId("_test1");
+
         $oObj1->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj1->oxcategories__oxtitle = new oxField("1-8|1-8", oxField::T_RAW);
         $oObj1->save(); // call insert
         $oObj2 = oxNew("oxCategory");
         $oObj2->setId("_test2");
+
         $oObj2->oxcategories__oxparentid = new oxField($oObj1->getId(), oxField::T_RAW);
         $oObj2->oxcategories__oxtitle = new oxField("2-5|4-7", oxField::T_RAW);
         $oObj2->save(); // call insert
         $oObj3 = oxNew("oxCategory");
         $oObj3->setId("_test3");
+
         $oObj3->oxcategories__oxparentid = new oxField($oObj1->getId(), oxField::T_RAW);
         $oObj3->oxcategories__oxtitle = new oxField("6-7|2-3", oxField::T_RAW);
         $oObj3->save(); // call insert
         $oObj4 = oxNew("oxCategory");
         $oObj4->setId("_test4");
+
         $oObj4->oxcategories__oxparentid = new oxField($oObj2->getId(), oxField::T_RAW);
         $oObj4->oxcategories__oxtitle = new oxField("3-4|5-6", oxField::T_RAW);
         $oObj4->save(); // call insert
@@ -949,10 +897,11 @@ class CategoryListTest extends \OxidTestCase
         $iTrue = 3;
         foreach ($aData as $aLine) {
             $r = $this->checkData($aLine[0], $aLine[1], $aLine[2]);
-            if (!($r & 1) && ($iTrue & 1)) {
+            if (($r & 1) === 0 && ($iTrue & 1)) {
                 $iTrue &= ~1;
             }
-            if (!($r & 2) && ($iTrue & 2)) {
+
+            if (($r & 2) === 0 && ($iTrue & 2)) {
                 $iTrue &= ~2;
             }
         }
@@ -1005,6 +954,7 @@ class CategoryListTest extends \OxidTestCase
             if ($alr[0] != $l || $alr[1] != $r) {
                 $g &= ~(1 << $i);
             }
+
             $i++;
         }
 

@@ -12,8 +12,10 @@ use \oxDb;
 
 class Object2groupTest extends \OxidTestCase
 {
-    private $_oGroup = null;
-    private $_sObjID = null;
+    private $_oGroup;
+
+    private $_sObjID;
+
     private $objectTable;
 
     protected function setUp(): void
@@ -36,7 +38,7 @@ class Object2groupTest extends \OxidTestCase
     protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
-        $sDelete = "delete from `{$this->objectTable}` where oxid='" . $this->_sObjID . "'";
+        $sDelete = sprintf('delete from `%s` where oxid=\'', $this->objectTable) . $this->_sObjID . "'";
         $oDB->Execute($sDelete);
 
         $sDelete = "delete from oxobject2group where oxobjectid='" . $this->_sObjID . "'";
@@ -50,7 +52,7 @@ class Object2groupTest extends \OxidTestCase
 
     public function testSave()
     {
-        $sSelect = "select 1 from oxobject2group where oxobjectid='{$this->_sObjID}'";
+        $sSelect = sprintf('select 1 from oxobject2group where oxobjectid=\'%s\'', $this->_sObjID);
 
         $this->assertEquals('1', oxDb::getDb()->getOne($sSelect));
     }
@@ -72,6 +74,7 @@ class Object2groupTest extends \OxidTestCase
         $oGroup->Save();
 
         $oGroup = oxNew('oxobject2group');
+
         $oGroup->oxobject2group__oxobjectid = new oxField($this->_sObjID, oxField::T_RAW);
         $oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
 

@@ -20,8 +20,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing AccountNoticeListController::getSimilarRecommLists()
-     *
-     * @return null
      */
     public function testGetSimilarRecommListIds()
     {
@@ -41,8 +39,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing AccountNoticeListController::getSimilarProducts()
-     *
-     * @return null
      */
     public function testGetSimilarProductsEmptyProductList()
     {
@@ -54,8 +50,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing AccountNoticeListController::getSimilarProducts()
-     *
-     * @return null
      */
     public function testGetSimilarProducts()
     {
@@ -70,8 +64,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing AccountNoticeListController::getNoticeProductList()
-     *
-     * @return null
      */
     public function testGetNoticeProductListNoSessionUser()
     {
@@ -83,8 +75,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing AccountNoticeListController::getNoticeProductList()
-     *
-     * @return null
      */
     public function testGetNoticeProductList()
     {
@@ -102,8 +92,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -115,8 +103,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -131,8 +117,6 @@ class AccountNoticeListControllerTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

@@ -17,8 +17,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -30,8 +28,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::isEntrySuffixed()
-     *
-     * @return null
      */
     public function testIsEntrySuffixed()
     {
@@ -41,8 +37,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::isSuffixSupported()
-     *
-     * @return null
      */
     public function isSuffixSupported()
     {
@@ -52,8 +46,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::showCatSelect()
-     *
-     * @return null
      */
     public function showCatSelect()
     {
@@ -63,8 +55,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::processParam( $sParam )
-     *
-     * @return null
      */
     public function testProcessParam()
     {
@@ -76,8 +66,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::getEncoder()
-     *
-     * @return null
      */
     public function testGetEncoder()
     {
@@ -87,8 +75,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::getEntryUri()
-     *
-     * @return null
      */
     public function testGetEntryUri()
     {
@@ -98,8 +84,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::getType()
-     *
-     * @return null
      */
     public function testGetType()
     {
@@ -109,8 +93,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::getStdUrl()
-     *
-     * @return null
      */
     public function testGetStdUrl()
     {
@@ -120,8 +102,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Object_Seo::GetEditLang() test case
-     *
-     * @return null
      */
     public function testGetEditLang()
     {
@@ -133,8 +113,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Testing Object_Seo::getAltSeoEntryId()
-     *
-     * @return null
      */
     public function testGetAltSeoEntryId()
     {
@@ -156,8 +134,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Object_Seo::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -168,8 +144,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Object_Seo::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -209,8 +183,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Object_Seo::getEntryMetaData() test case
-     *
-     * @return null
      */
     public function testGetEntryMetaData()
     {
@@ -230,8 +202,6 @@ class ObjectSeoTest extends \OxidTestCase
 
     /**
      * Object_Seo::getActCatType() test case
-     *
-     * @return null
      */
     public function testGetActCatType()
     {

@@ -23,14 +23,14 @@ class VoucherTest extends \OxidTestCase
 {
     public const MAX_LOOP_AMOUNT = 4;
 
-    protected $_aSerieOxid = null;
+    protected $_aSerieOxid;
+
     protected $_aVoucherOxid = [];
-    protected $_sTestUserId = null;
+
+    protected $_sTestUserId;
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -73,8 +73,6 @@ class VoucherTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -82,6 +80,7 @@ class VoucherTest extends \OxidTestCase
             $oUser = oxNew('oxuser');
             $oUser->delete($this->_sTestUserId);
         }
+
         $oSerie = oxNew('oxvoucherserie');
 
         foreach ($this->_aSerieOxid as $sOXID) {
@@ -90,6 +89,7 @@ class VoucherTest extends \OxidTestCase
                 $this->remAdditionalInfo($sOXID);
             }
         }
+
         $this->cleanUpTable('oxvouchers');
         $this->cleanUpTable('oxvoucherseries');
 
@@ -146,6 +146,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxallowsameseries = new oxField(1, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowotherseries = new oxField(1, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowuseanother = new oxField(1, oxField::T_RAW);
@@ -171,6 +172,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxallowsameseries = new oxField(0, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowotherseries = new oxField(1, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowuseanother = new oxField(1, oxField::T_RAW);
@@ -186,11 +188,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail('error in ' . $this->getName());
     }
 
@@ -199,6 +202,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxallowsameseries = new oxField(0, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowotherseries = new oxField(1, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowuseanother = new oxField(0, oxField::T_RAW);
@@ -216,11 +220,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail('error in ' . $this->getName());
     }
 
@@ -237,6 +242,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -263,7 +269,6 @@ class VoucherTest extends \OxidTestCase
     {
         // There is a seria with 1 in front of $this->_aSerieOxid[0] so if use only $this->getRandLTAmnt test will faile randomly.
         $ii = '_' . $this->getRandLTAmnt();
-        $sNr = $ii . $this->_aSerieOxid[0];
         $oNewVoucher = oxNew('oxvoucher');
 
         try {
@@ -271,6 +276,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -306,6 +312,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; // OK
         }
+
         $this->fail();
     }
 
@@ -335,6 +342,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; // OK
         }
+
         $this->fail();
     }
 
@@ -352,6 +360,7 @@ class VoucherTest extends \OxidTestCase
 
             return;
         }
+
         $oNewVoucher->markAsReserved();
 
         // checking ...
@@ -379,9 +388,6 @@ class VoucherTest extends \OxidTestCase
 
         // unmarking ...
         $oNewVoucher->unMarkAsReserved();
-
-        // checking ...
-        $iTime = time() - 3600 * 3;
         $sQ = 'select count(*) from oxvouchers where oxreserved != 0 and oxvouchernr = "' . $sOXID . '"';
         if ($myDB->GetOne($sQ) > 0) {
             $this->fail('voucherserie was not marked as unreserved');
@@ -449,6 +455,7 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->save();
@@ -472,6 +479,7 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() - 600), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() + 600), oxField::T_RAW);
         $oSerie->save();
@@ -495,6 +503,7 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 600), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() + 900), oxField::T_RAW);
         $oSerie->save();
@@ -504,11 +513,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $aErrors = $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $e) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $e->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -528,11 +538,12 @@ class VoucherTest extends \OxidTestCase
         $dInitPrice = 100;
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -552,11 +563,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -594,12 +606,11 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxdiscount = new oxField(100, oxField::T_RAW);
         $oSerie->save();
 
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($this->_aSerieOxid[0], oxField::T_RAW);
-
-        $iErrorMsgId = null;
         $dPrice = 99;
         //  discount is greater than price
         try {
@@ -616,27 +627,27 @@ class VoucherTest extends \OxidTestCase
      */
     public function testIsAvailablePriceWhenPriceIsBelowMinVal()
     {
-        $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
+        $this->getRandLTAmnt();
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getActShopCurrencyObject'], [], '', false);
         $myCurr = new stdclass();
         $myCurr->rate = 1000;
         $oConfig->expects($this->once())->method('getActShopCurrencyObject')->will($this->returnValue($myCurr));
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxminimumvalue = new oxField(0.01, oxField::T_RAW);
         $oSerie->oxvoucherseries__oxdiscounttype = new oxField(10, oxField::T_RAW);
         $oSerie->save();
 
         $oNewVoucher = oxNew('oxvoucher');
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($this->_aSerieOxid[0], oxField::T_RAW);
-        $iErrorMsgId = null;
         $dPrice = 9;
 
         try {
             Registry::set(Config::class, $oConfig);
             $aErrors = $oNewVoucher->isAvailablePrice($dPrice);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $sErrorMsg = $oEx->getMessage();
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $sErrorMsg = $voucherException->getMessage();
         }
 
         $this->assertEquals('ERROR_MESSAGE_VOUCHER_INCORRECTPRICE', $sErrorMsg);
@@ -682,6 +693,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -712,6 +724,7 @@ class VoucherTest extends \OxidTestCase
 
             return;
         }
+
         $oNewVoucher->oxvoucherseries__oxallowotherseries = new oxField(1);
         $oNewVoucher->save();
         $sOx1 = $this->_aVoucherOxid[$this->_aSerieOxid[0]][0];
@@ -724,6 +737,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -739,6 +753,7 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxallowotherseries = new oxField(true);
@@ -759,6 +774,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->save();
@@ -778,6 +794,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxenddate = new oxField(null, oxField::T_RAW);
         $oSerie->save();
 
@@ -811,6 +828,7 @@ class VoucherTest extends \OxidTestCase
         $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() + 8600), oxField::T_RAW);
         $oSerie->save();
@@ -832,6 +850,7 @@ class VoucherTest extends \OxidTestCase
         $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->save();
@@ -851,6 +870,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() - 8600), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() - 3600), oxField::T_RAW);
         $oSerie->save();
@@ -865,11 +885,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->isValidDate();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
-            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $oException->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail('Expected MESSAGE_COUPON_EXPIRED');
     }
 
@@ -877,6 +898,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() - 3600), oxField::T_RAW);
         $oSerie->save();
@@ -891,11 +913,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->isValidDate();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oException) {
-            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $oException->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail('Expected MESSAGE_COUPON_EXPIRED');
     }
 
@@ -903,6 +926,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() + 3700), oxField::T_RAW);
         $oSerie->save();
@@ -930,6 +954,7 @@ class VoucherTest extends \OxidTestCase
 
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() - 3700), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $oSerie->save();
@@ -941,6 +966,7 @@ class VoucherTest extends \OxidTestCase
     {
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[1]);
+
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() - 3700), oxField::T_RAW);
         $oSerie->oxvoucherseries__oxenddate = new oxField(date('Y-m-d H:i:s', time() + 3700), oxField::T_RAW);
         $oSerie->save();
@@ -976,11 +1002,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->isNotReserved();
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('EXCEPTION_VOUCHER_ISRESERVED', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('EXCEPTION_VOUCHER_ISRESERVED', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -1052,11 +1079,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkUserAvailability($oUser);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -1084,11 +1112,12 @@ class VoucherTest extends \OxidTestCase
 
         try {
             $oNewVoucher->checkUserAvailability($oUser);
-        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage());
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
+
         $this->fail();
     }
 
@@ -1156,6 +1185,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -1189,6 +1219,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -1221,6 +1252,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return; //OK
         }
+
         $this->fail();
     }
 
@@ -1256,6 +1288,7 @@ class VoucherTest extends \OxidTestCase
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException) {
             return;
         }
+
         $this->fail("failed testIsValidUserGroupNoUser test");
     }
 
@@ -1317,6 +1350,7 @@ class VoucherTest extends \OxidTestCase
         $sVoucherSerie = current($this->_aSerieOxid);
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($sVoucherSerie);
+
         $sVoucher = current($this->_aVoucherOxid[$sVoucherSerie]);
 
         $oVoucher = oxNew('oxvoucher');
@@ -1341,6 +1375,7 @@ class VoucherTest extends \OxidTestCase
 
             return;
         }
+
         $this->assertEquals($this->_aSerieOxid[0], $oNewVoucher->getSerie()->getId());
     }
 
@@ -1351,6 +1386,7 @@ class VoucherTest extends \OxidTestCase
         if (!$oNewVoucher->load($sOXID)) {
             $this->fail('can not load voucher');
         }
+
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField('aaa');
         $oNewVoucher->save();
         $this->expectException('oxObjectException');
@@ -1359,8 +1395,6 @@ class VoucherTest extends \OxidTestCase
 
     /**
      * Test case for #0002662: Wrong voucher calculation for articles selected by categorie
-     *
-     * @return null
      */
     public function testFor0002662()
     {

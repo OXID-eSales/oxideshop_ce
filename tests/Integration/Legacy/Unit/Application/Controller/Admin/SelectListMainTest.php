@@ -21,8 +21,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -38,8 +36,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * Statistic_Main::Render() test case
-     *
-     * @return null
      */
     public function testRenderNoRealObjectId()
     {
@@ -55,8 +51,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::Save() test case
-     *
-     * @return null
      */
     public function testSave()
     {
@@ -68,18 +62,17 @@ class SelectListMainTest extends \OxidTestCase
         try {
             $oView = oxNew('SelectList_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in SelectList_Main::save()");
 
             return;
         }
+
         $this->fail("error in SelectList_Main::save()");
     }
 
     /**
      * SelectList_Main::Saveinnlang() test case
-     *
-     * @return null
      */
     public function testSaveinnlang()
     {
@@ -91,18 +84,17 @@ class SelectListMainTest extends \OxidTestCase
         try {
             $oView = oxNew('SelectList_Main');
             $oView->saveinnlang();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in SelectList_Main::saveinnlang()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in SelectList_Main::saveinnlang()");
 
             return;
         }
+
         $this->fail("error in SelectList_Main::saveinnlang()");
     }
 
     /**
      * SelectList_Main::DelFields() test case
-     *
-     * @return null
      */
     public function testDelFields()
     {
@@ -126,8 +118,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::AddField() test case
-     *
-     * @return null
      */
     public function testAddFieldNothingToAdd()
     {
@@ -142,8 +132,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::AddField() test case
-     *
-     * @return null
      */
     public function testAddFieldRearangeFieldReturnsTrue()
     {
@@ -163,8 +151,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::AddField() test case
-     *
-     * @return null
      */
     public function testAddFieldRearangeField()
     {
@@ -184,8 +170,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::ChangeField() test case
-     *
-     * @return null
      */
     public function testChangeFieldNothingToChange()
     {
@@ -199,8 +183,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::ChangeField() test case
-     *
-     * @return null
      */
     public function testChangeFieldRearagneFieldsReturnsTrue()
     {
@@ -221,8 +203,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::ChangeField() test case
-     *
-     * @return null
      */
     public function testChangeField()
     {
@@ -243,8 +223,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsFieldArrayIsEmpty()
     {
@@ -256,8 +234,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsPosIsBelowZero()
     {
@@ -270,8 +246,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsUnknownField()
     {
@@ -284,8 +258,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsNoChangesWereMade()
     {
@@ -297,8 +269,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsCurrentPosIsLowerThatPassed()
     {
@@ -310,8 +280,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::RearrangeFields() test case
-     *
-     * @return null
      */
     public function testRearrangeFieldsCurrentPosIsHigherThatPassed()
     {
@@ -324,8 +292,6 @@ class SelectListMainTest extends \OxidTestCase
 
     /**
      * SelectList_Main::ParseFieldName() test case
-     *
-     * @return null
      */
     public function testParseFieldName()
     {

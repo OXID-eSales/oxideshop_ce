@@ -36,8 +36,6 @@ class SearchTest extends \OxidTestCase
 
     /**
      * search::processListArticles() when seo is off
-     *
-     * @return null
      */
     public function testProcessListArticlesSeoOff()
     {
@@ -62,8 +60,6 @@ class SearchTest extends \OxidTestCase
 
     /**
      * search::processListArticles() when seo is on
-     *
-     * @return null
      */
     public function testProcessListArticlesSeoOn()
     {
@@ -221,8 +217,6 @@ class SearchTest extends \OxidTestCase
 
     /**
      * Test can display type selector getter
-     *
-     * @return null
      */
     public function testCanSelectDisplayType()
     {

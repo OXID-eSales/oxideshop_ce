@@ -69,6 +69,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $oContent = oxNew('oxContent');
         $oContent->setLanguage(1);
         $oContent->setId('contentid');
+
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
@@ -79,7 +80,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
-               values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType')";
+               values ('{$sObjectId}', '{$sIdent}', '{$sShopId}', '{$iLang}', '{$sStdUrl}', '{$sSeoUrl}', '{$sType}')";
         oxDb::getDb()->execute($sQ);
 
         $oEncoder = oxNew('oxSeoEncoderContent');
@@ -100,6 +101,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $oContent = oxNew('oxContent');
         $oContent->setLanguage(0);
         $oContent->setId('contentid');
+
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
@@ -110,7 +112,7 @@ class SeoEncoderContentTest extends \OxidTestCase
         $sType = 'oxcontent';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
-               values ('$sObjectId', '$sIdent', '$sShopId', '$iLang', '$sStdUrl', '$sSeoUrl', '$sType')";
+               values ('{$sObjectId}', '{$sIdent}', '{$sShopId}', '{$iLang}', '{$sStdUrl}', '{$sSeoUrl}', '{$sType}')";
         oxDb::getDb()->execute($sQ);
 
         $oEncoder = oxNew('oxSeoEncoderContent');
@@ -247,10 +249,10 @@ class SeoEncoderContentTest extends \OxidTestCase
                    ( 'oid', '132', '{$sShopId}', '0', '', '', 'oxcontent', '0', '0', '' )";
         $oDb->execute($sQ);
 
-        $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'oid', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( \'oid\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
 
-        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'oid', '132', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( \'oid\', \'132\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));

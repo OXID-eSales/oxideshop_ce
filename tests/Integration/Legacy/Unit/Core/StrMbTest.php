@@ -26,7 +26,7 @@ class StrMbTest extends \OxidTestCase
     protected $_sStrHtmlEntities = "HÖ HÖ <b>bold</b>&amp;";
 
     /** @var oxStrMb */
-    protected $_oSubj = null;
+    protected $_oSubj;
 
     public function setup(): void
     {
@@ -183,8 +183,6 @@ class StrMbTest extends \OxidTestCase
 
     /**
      * oxStrMb::preg_match_all() test case
-     *
-     * @return null
      */
     public function testPregMatchAll()
     {
@@ -289,7 +287,7 @@ class StrMbTest extends \OxidTestCase
 
     public function testCleanStr()
     {
-        $this->assertEquals(" \" " . '\'' . " : ! ?            ", $this->_oSubj->cleanStr(" \" " . '\'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;"));
+        $this->assertEquals(' " \' : ! ?            ', $this->_oSubj->cleanStr(' " \'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;"));
     }
 
     public function testCleanStrLeavesDots()

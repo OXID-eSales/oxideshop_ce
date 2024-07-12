@@ -23,8 +23,6 @@ final class ArticlelistTest extends \OxidTestCase
     use FieldTestingTrait;
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -62,9 +60,7 @@ final class ArticlelistTest extends \OxidTestCase
      */
     protected function getO2CTable()
     {
-        $sO2CTable = $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
-
-        return $sO2CTable;
+        return $this->getTestConfig()->getShopEdition() == 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
     }
 
     /**
@@ -106,6 +102,7 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');
+
         $oArticle->oxarticles__oxremindactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(9, oxField::T_RAW);
         $oArticle->oxarticles__oxremindamount = new oxField(10, oxField::T_RAW);
@@ -143,9 +140,9 @@ final class ArticlelistTest extends \OxidTestCase
         $oDb = $this->getDb();
 
         $sExpQ = "select oc.oxobjectid as oxobjectid, count(*) as cnt from ";
-        $sExpQ .= "(SELECT * FROM {$sO2CView} WHERE {$sO2CView}.oxcatnid ";
-        $sExpQ .= "= 'testcatid' GROUP BY {$sO2CView}.oxobjectid, {$sO2CView}.oxcatnid)";
-        $sExpQ .= " as oc INNER JOIN {$sO2AView} as oa ON ( oa.oxobjectid = oc.oxobjectid ) ";
+        $sExpQ .= sprintf('(SELECT * FROM %s WHERE %s.oxcatnid ', $sO2CView, $sO2CView);
+        $sExpQ .= sprintf('= \'testcatid\' GROUP BY %s.oxobjectid, %s.oxcatnid)', $sO2CView, $sO2CView);
+        $sExpQ .= sprintf(' as oc INNER JOIN %s as oa ON ( oa.oxobjectid = oc.oxobjectid ) ', $sO2AView);
         $sExpQ .= "WHERE ( oa.oxattrid = " . $oDb->quote("'\"\"'") . " and oa.oxvalue = " . $oDb->quote("'\"\"'") . " )  GROUP BY oa.oxobjectid HAVING cnt = 1 ";
 
         $oArticleList = oxNew('oxArticleList');
@@ -161,6 +158,7 @@ final class ArticlelistTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->setId("_testArticle");
+
         $oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oArticle->oxarticles__oxactive = new oxField(1);
         $oArticle->oxarticles__oxprice = new oxField(0);
@@ -177,8 +175,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load aktion articles total amount.
-     *
-     * @return null
      */
     public function testLoadActionArticlesTotalAmount()
     {
@@ -186,8 +182,8 @@ final class ArticlelistTest extends \OxidTestCase
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
         $sSql = "SELECT oxactionid, count(*) as cnt FROM `oxactions2article`
-                 LEFT JOIN " . $sArticleTable . " ON $sArticleTable.oxid = oxactions2article.oxartid
-                 WHERE $sArticleTable.oxid is not null
+                 LEFT JOIN " . $sArticleTable . " ON {$sArticleTable}.oxid = oxactions2article.oxartid
+                 WHERE {$sArticleTable}.oxid is not null
                  GROUP BY oxactionid";
 
         $aTotalCnt = $this->getDb(2)->getAll($sSql);
@@ -206,19 +202,18 @@ final class ArticlelistTest extends \OxidTestCase
      * Test load aktion articles if all not active.
      *
      * #M379: Promotions cannot be de-activated
-     *
-     * @return null
      */
     public function testLoadActionArticlesIfAllNotActive()
     {
         $myDB = $this->getDb();
         $myDB->execute('update oxactions set oxactive=0');
+
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sArticleTable = $tableViewNameGenerator->getViewName('oxarticles');
 
         $sSql = "SELECT oxactionid, count(*) as cnt FROM `oxactions2article`
-                 LEFT JOIN " . $sArticleTable . " ON $sArticleTable.oxid = oxactions2article.oxartid
-                 WHERE $sArticleTable.oxid is not null
+                 LEFT JOIN " . $sArticleTable . " ON {$sArticleTable}.oxid = oxactions2article.oxartid
+                 WHERE {$sArticleTable}.oxid is not null
                  GROUP BY oxactionid";
 
         $aTotalCnt = $this->getDb(2)->getAll($sSql);
@@ -235,8 +230,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test set custom sorting.
-     *
-     * @return null
      */
     public function testSetCustomSorting()
     {
@@ -250,8 +243,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test set custom sorting if other lang.
-     *
-     * @return null
      */
     public function testSetCustomSortingIfOtherLang()
     {
@@ -266,14 +257,13 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load action articles pe.
-     *
-     * @return null
      */
     public function testLoadActionArticles()
     {
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community or Professional edition only.');
         }
+
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadActionArticles('oxtopstart');
         $this->assertEquals(1, count($oTest));
@@ -284,13 +274,12 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load article crosssell
-     *
-     * @return null
      */
     public function testLoadArticleCrossSell()
     {
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadArticleCrossSell("1849");
+
         $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
 
         $this->assertEquals($iCount, $oTest->count());
@@ -298,22 +287,19 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load article crosssell limit.
-     *
-     * @return null
      */
     public function testLoadArticleCrossSellLimit()
     {
         $this->setConfigParam('iNrofCrossellArticles', 1);
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadArticleCrossSell("1849");
+
         $iCount = 1;
         $this->assertEquals(count($oTest), $iCount);
     }
 
     /**
      * Test load article crosssell none.
-     *
-     * @return null
      */
     public function testLoadArticleCrossSellNone()
     {
@@ -325,8 +311,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load recomm articles.
-     *
-     * @return null
      */
     public function testLoadRecommArticles()
     {
@@ -345,8 +329,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load recomm article ids.
-     *
-     * @return null
      */
     public function testLoadRecommArticleIds()
     {
@@ -360,6 +342,7 @@ final class ArticlelistTest extends \OxidTestCase
         $myDB->Execute($sQ);
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->loadRecommArticleIds("testlist", null);
+
         $aExpt = ["1651" => "1651", "2000" => "2000", "1126" => "1126"];
         $this->assertEquals(3, count($oTest));
         $this->assertEquals($aExpt['1651'], $oTest['1651']);
@@ -367,8 +350,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load article bidirect cross
-     *
-     * @return null
      */
     public function testLoadArticleBidirectCross()
     {
@@ -389,13 +370,12 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load article accessoires.
-     *
-     * @return null
      */
     public function testLoadArticleAccessoires()
     {
         $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxaccessoire2article");
+
         $oNewGroup->oxaccessoire2article__oxobjectid = new oxField("1651", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField("test", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxsort = new oxField(0, oxField::T_RAW);
@@ -409,14 +389,13 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load article accessoires none.
-     *
-     * @return null
      */
     public function testLoadArticleAccessoiresNone()
     {
         $this->setConfigParam('bl_perfLoadAccessoires', 0);
         $oNewGroup = oxNew("oxBase");
         $oNewGroup->init("oxaccessoire2article");
+
         $oNewGroup->oxaccessoire2article__oxobjectid = new oxField("1651", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField("test", oxField::T_RAW);
         $oNewGroup->oxaccessoire2article__oxsort = new oxField(0, oxField::T_RAW);
@@ -430,8 +409,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test get category select.
-     *
-     * @return null
      */
     public function testGetCategorySelect()
     {
@@ -443,9 +420,9 @@ final class ArticlelistTest extends \OxidTestCase
         $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
-                  ON $sArticleTable.oxid = oc.oxobjectid WHERE
-                  " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid
+        $sExpt = "SELECT oxid, {$sArticleTable}.oxtimestamp FROM {$sO2CTable} as oc left join {$sArticleTable}
+                  ON {$sArticleTable}.oxid = oc.oxobjectid WHERE
+                  " . $oArticle->getSqlActiveSnippet() . " and {$sArticleTable}.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY  oc.oxpos,oc.oxobjectid";
 
         $sRes = $oTest->getCategorySelect('oxid', 'testCat', null);
@@ -457,8 +434,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test get category select session filter.
-     *
-     * @return null
      */
     public function testGetCategorySelectSessionFilter()
     {
@@ -472,10 +447,10 @@ final class ArticlelistTest extends \OxidTestCase
         $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable ON
-                  $sArticleTable.oxid = oc.oxobjectid WHERE
-                  " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''
-                  and oc.oxcatnid = '$sCatId' and false ORDER BY  oc.oxpos,oc.oxobjectid";
+        $sExpt = "SELECT oxid, {$sArticleTable}.oxtimestamp FROM {$sO2CTable} as oc left join {$sArticleTable} ON
+                  {$sArticleTable}.oxid = oc.oxobjectid WHERE
+                  " . $oArticle->getSqlActiveSnippet() . " and {$sArticleTable}.oxparentid = ''
+                  and oc.oxcatnid = '{$sCatId}' and false ORDER BY  oc.oxpos,oc.oxobjectid";
 
         $sRes = $oTest->getCategorySelect('oxid', $sCatId, [$sCatId => ['0' => ["8a142c3ee0edb75d4.80743302" => "Zeigar"]]]);
         $sExpt = str_replace(["\n", "\r", " ", "\t"], "", $sExpt);
@@ -485,8 +460,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test get category select show sorting.
-     *
-     * @return null
      */
     public function testGetCategorySelectShowSorting()
     {
@@ -499,9 +472,9 @@ final class ArticlelistTest extends \OxidTestCase
         $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "SELECT oxid, $sArticleTable.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
-                  ON $sArticleTable.oxid = oc.oxobjectid WHERE
-                  " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid
+        $sExpt = "SELECT oxid, {$sArticleTable}.oxtimestamp FROM {$sO2CTable} as oc left join {$sArticleTable}
+                  ON {$sArticleTable}.oxid = oc.oxobjectid WHERE
+                  " . $oArticle->getSqlActiveSnippet() . " and {$sArticleTable}.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY oxtitle desc, oc.oxpos,oc.oxobjectid";
 
         $sRes = $oTest->getCategorySelect('oxid', 'testCat', null);
@@ -513,8 +486,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test get filter sql.
-     *
-     * @return null
      */
     public function testGetFilterIdsSql()
     {
@@ -532,13 +503,14 @@ final class ArticlelistTest extends \OxidTestCase
         modDB::getInstance()->cleanup();
 
         $expected = "select oc.oxobjectid as oxobjectid, count(*)as cnt from
-            (SELECT * FROM $objectToCategoryView WHERE $objectToCategoryView.oxcatnid='$categoryId' GROUP BY $objectToCategoryView.oxobjectid, $objectToCategoryView.oxcatnid) as oc
+            (SELECT * FROM {$objectToCategoryView} WHERE {$objectToCategoryView}.oxcatnid='{$categoryId}' GROUP BY {$objectToCategoryView}.oxobjectid, {$objectToCategoryView}.oxcatnid) as oc
             INNER JOIN {$objectToAttributeView} as oa ON(oa.oxobjectid=oc.oxobjectid)
             WHERE (oa.oxattrid='8a142c3ee0edb75d4.80743302' and oa.oxvalue='Zeiger')
                 or (oa.oxattrid='8a142c3e9cd961518.80299776'andoa.oxvalue='originell')
             GROUPBY oa.oxobjectid
             HAVING cnt=2";
         $expected = str_replace(["\n", "\r", " ", "\t"], "", $expected);
+
         $result = str_replace(["\n", "\r", " ", "\t"], "", $result);
 
         $this->assertEquals($expected, $result);
@@ -546,8 +518,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load category ids.
-     *
-     * @return null
      */
     public function testLoadCategoryIds()
     {
@@ -556,7 +526,7 @@ final class ArticlelistTest extends \OxidTestCase
         //$oTest = $this->getProxyClass('oxArticleList');
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ['createIdListFromSql', 'getCategorySelect']);
         $oTest->expects($this->once())->method('getCategorySelect')
-            ->with($this->equalTo("$sArticleTable.oxid as oxid"), $this->equalTo('testCat'), $this->equalTo([1]))
+            ->with($this->equalTo($sArticleTable . '.oxid as oxid'), $this->equalTo('testCat'), $this->equalTo([1]))
             ->will($this->returnValue('testRes'));
 
         $oTest->expects($this->once())->method('createIdListFromSql')->with('testRes');
@@ -566,8 +536,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load category articles pe.
-     *
-     * @return null
      */
     public function testLoadCategoryArticlesPE()
     {
@@ -594,8 +562,6 @@ final class ArticlelistTest extends \OxidTestCase
      * Test load category articles with filters pe.
      *
      * FS#1970
-     *
-     * @return null
      */
     public function testLoadCategoryArticlesWithFilters()
     {
@@ -619,8 +585,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load category articles over mock.
-     *
-     * @return null
      */
     public function testLoadCategoryArticlesOverMock()
     {
@@ -629,7 +593,7 @@ final class ArticlelistTest extends \OxidTestCase
         $sArticleTable = $this->getArticleTable();
 
         $oTest->expects($this->once())->method('getCategorySelect')
-            ->with($this->equalTo("`$sArticleTable`.`oxid`"), $this->equalTo('testCat'), $this->equalTo([1]))
+            ->with($this->equalTo(sprintf('`%s`.`oxid`', $sArticleTable)), $this->equalTo('testCat'), $this->equalTo([1]))
             ->will($this->returnValue('select * from oxcategories'));
         $oTest->expects($this->once())->method('selectString')
             ->with($this->equalTo('select * from oxcategories'));
@@ -639,8 +603,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test load category articles with limit.
-     *
-     * @return null
      */
     public function testLoadCategoryArticlesWithLimit()
     {
@@ -649,7 +611,7 @@ final class ArticlelistTest extends \OxidTestCase
         $sArticleTable = $this->getArticleTable();
 
         $oTest->expects($this->once())->method('getCategorySelect')
-            ->with($this->equalTo("`$sArticleTable`.`oxid`"), $this->equalTo('testCat'), $this->equalTo([1]))
+            ->with($this->equalTo(sprintf('`%s`.`oxid`', $sArticleTable)), $this->equalTo('testCat'), $this->equalTo([1]))
             ->will($this->returnValue('select * from oxcategories'));
         $oTest->expects($this->once())->method('selectString')
             ->with($this->equalTo('select * from oxcategories LIMIT 2'));
@@ -659,8 +621,6 @@ final class ArticlelistTest extends \OxidTestCase
 
     /**
      * Test get search select use or.
-     *
-     * @return null
      */
     public function testGetSearchSelectUseOr()
     {
@@ -672,23 +632,23 @@ final class ArticlelistTest extends \OxidTestCase
             AND
             (
               (
-                $articleTable.oxtitle LIKE '%test%'
+                {$articleTable}.oxtitle LIKE '%test%'
                 OR
-                $articleTable.oxshortdesc LIKE '%test%'
+                {$articleTable}.oxshortdesc LIKE '%test%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%test%'
+                {$articleTable}.oxsearchkeys LIKE '%test%'
                 OR
-                $articleTable.oxartnum LIKE '%test%'
+                {$articleTable}.oxartnum LIKE '%test%'
               )
               OR
               (
-                $articleTable.oxtitle LIKE '%Search%'
+                {$articleTable}.oxtitle LIKE '%Search%'
                 OR
-                $articleTable.oxshortdesc LIKE '%Search%'
+                {$articleTable}.oxshortdesc LIKE '%Search%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%Search%'
+                {$articleTable}.oxsearchkeys LIKE '%Search%'
                 OR
-                $articleTable.oxartnum LIKE '%Search%'
+                {$articleTable}.oxartnum LIKE '%Search%'
               )
             )
 EOT;
@@ -705,8 +665,6 @@ EOT;
 
     /**
      * Test get search select no select string.
-     *
-     * @return null
      */
     public function testGetSearchSelectNoSelectString()
     {
@@ -718,8 +676,6 @@ EOT;
 
     /**
      * Test get search select use and.
-     *
-     * @return null
      */
     public function testGetSearchSelectUseAnd()
     {
@@ -732,23 +688,23 @@ EOT;
             AND
             (
               (
-                $articleTable.oxtitle LIKE '%test%'
+                {$articleTable}.oxtitle LIKE '%test%'
                 OR
-                $articleTable.oxshortdesc LIKE '%test%'
+                {$articleTable}.oxshortdesc LIKE '%test%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%test%'
+                {$articleTable}.oxsearchkeys LIKE '%test%'
                 OR
-                $articleTable.oxartnum LIKE '%test%'
+                {$articleTable}.oxartnum LIKE '%test%'
               )
               AND
               (
-                $articleTable.oxtitle LIKE '%Search%'
+                {$articleTable}.oxtitle LIKE '%Search%'
                 OR
-                $articleTable.oxshortdesc LIKE '%Search%'
+                {$articleTable}.oxshortdesc LIKE '%Search%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%Search%'
+                {$articleTable}.oxsearchkeys LIKE '%Search%'
                 OR
-                $articleTable.oxartnum LIKE '%Search%'
+                {$articleTable}.oxartnum LIKE '%Search%'
               )
             )
 EOT;
@@ -765,8 +721,6 @@ EOT;
 
     /**
      * Test get search select with german chars.
-     *
-     * @return null
      */
     public function testGetSearchSelectWithGermanChars()
     {
@@ -779,21 +733,21 @@ EOT;
             AND
             (
               (
-                $articleTable.oxtitle LIKE '%würfel%'
+                {$articleTable}.oxtitle LIKE '%würfel%'
                 OR
-                $articleTable.oxtitle LIKE '%w&uuml;rfel%'
+                {$articleTable}.oxtitle LIKE '%w&uuml;rfel%'
                 OR
-                $articleTable.oxshortdesc LIKE '%würfel%'
+                {$articleTable}.oxshortdesc LIKE '%würfel%'
                 OR
-                $articleTable.oxshortdesc LIKE '%w&uuml;rfel%'
+                {$articleTable}.oxshortdesc LIKE '%w&uuml;rfel%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%würfel%'
+                {$articleTable}.oxsearchkeys LIKE '%würfel%'
                 OR
-                $articleTable.oxsearchkeys LIKE '%w&uuml;rfel%'
+                {$articleTable}.oxsearchkeys LIKE '%w&uuml;rfel%'
                 OR
-                $articleTable.oxartnum LIKE '%würfel%'
+                {$articleTable}.oxartnum LIKE '%würfel%'
                 OR
-                $articleTable.oxartnum LIKE '%w&uuml;rfel%'
+                {$articleTable}.oxartnum LIKE '%w&uuml;rfel%'
               )
             )
 EOT;
@@ -810,8 +764,6 @@ EOT;
 
     /**
      * Test load search ids.
-     *
-     * @return null
      */
     public function testLoadSearchIds()
     {
@@ -821,11 +773,11 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like";
-        $sExpt .= " '%testSearch%'  or $sArticleTable.oxshortdesc like '%testSearch%'  or";
-        $sExpt .= " $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum";
+        $sExpt = sprintf('select %s.oxid, %s.oxtimestamp from %s  where', $sArticleTable, $sArticleTable, $sArticleTable);
+        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'', $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxissearch = 1  and ( ( %s.oxtitle like', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' \'%%testSearch%%\'  or %s.oxshortdesc like \'%%testSearch%%\'  or', $sArticleTable);
+        $sExpt .= sprintf(' %s.oxsearchkeys like \'%%testSearch%%\'  or %s.oxartnum', $sArticleTable, $sArticleTable);
         $sExpt .= " like '%testSearch%'  )  ) ";
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
@@ -837,8 +789,6 @@ EOT;
 
     /**
      * Test load search ids in eng lang with sort.
-     *
-     * @return null
      */
     public function testLoadSearchIdsInEngLangWithSort()
     {
@@ -848,11 +798,11 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like";
-        $sExpt .= " '%testSearch%'  or $sArticleTable.oxshortdesc like '%testSearch%'  or";
-        $sExpt .= " $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum";
+        $sExpt = sprintf('select %s.oxid, %s.oxtimestamp from %s  where', $sArticleTable, $sArticleTable, $sArticleTable);
+        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'', $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxissearch = 1  and ( ( %s.oxtitle like', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' \'%%testSearch%%\'  or %s.oxshortdesc like \'%%testSearch%%\'  or', $sArticleTable);
+        $sExpt .= sprintf(' %s.oxsearchkeys like \'%%testSearch%%\'  or %s.oxartnum', $sArticleTable, $sArticleTable);
         $sExpt .= " like '%testSearch%'  )  )  order by oxtitle desc ";
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
@@ -865,8 +815,6 @@ EOT;
 
     /**
      * Test load search ids category.
-     *
-     * @return null
      */
     public function testLoadSearchIdsCategory()
     {
@@ -877,12 +825,12 @@ EOT;
         $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
-        $sExpt .= " where oxobject2category.oxcatnid='cat1' and oxobject2category.oxobjectid=$sArticleTable.oxid";
-        $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = '' and";
-        $sExpt .= " $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like '%testSearch%' ";
-        $sExpt .= " or $sArticleTable.oxshortdesc like '%testSearch%'  or $sArticleTable.oxsearchkeys";
-        $sExpt .= " like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
+        $sExpt = sprintf('select %s.oxid from %s as oxobject2category, %s ', $sArticleTable, $sO2CTable, $sArticleTable);
+        $sExpt .= sprintf(' where oxobject2category.oxcatnid=\'cat1\' and oxobject2category.oxobjectid=%s.oxid', $sArticleTable);
+        $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\' and', $sArticleTable);
+        $sExpt .= sprintf(' %s.oxissearch = 1  and ( ( %s.oxtitle like \'%%testSearch%%\' ', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' or %s.oxshortdesc like \'%%testSearch%%\'  or %s.oxsearchkeys', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' like \'%%testSearch%%\'  or %s.oxartnum like \'%%testSearch%%\'  )  ) ', $sArticleTable);
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
         $oTest->expects($this->once())->method("createIdListFromSql")
@@ -893,8 +841,6 @@ EOT;
 
     /**
      * Test load search vendor ids.
-     *
-     * @return null
      */
     public function testLoadSearchIdsVendor()
     {
@@ -904,11 +850,11 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = 'vendor1' ";
-        $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
-        $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
+        $sExpt = sprintf('select %s.oxid, %s.oxtimestamp from %s  where', $sArticleTable, $sArticleTable, $sArticleTable);
+        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'', $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxissearch = 1  and %s.oxvendorid = \'vendor1\' ', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' and ( ( %s.oxtitle like \'%%testSearch%%\'  or %s.oxshortdesc', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' like \'%%testSearch%%\'  or %s.oxsearchkeys like \'%%testSearch%%\'  or %s.oxartnum like \'%%testSearch%%\'  )  ) ', $sArticleTable, $sArticleTable);
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
         $oTest->expects($this->once())->method("createIdListFromSql")
@@ -919,8 +865,6 @@ EOT;
 
     /**
      * Test load search  manufacturer ids.
-     *
-     * @return null
      */
     public function testLoadSearchIdsManufacturer()
     {
@@ -930,11 +874,11 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and $sArticleTable.oxmanufacturerid = 'manufacturer1' ";
-        $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
-        $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
+        $sExpt = sprintf('select %s.oxid, %s.oxtimestamp from %s  where', $sArticleTable, $sArticleTable, $sArticleTable);
+        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'', $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxissearch = 1  and %s.oxmanufacturerid = \'manufacturer1\' ', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' and ( ( %s.oxtitle like \'%%testSearch%%\'  or %s.oxshortdesc', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' like \'%%testSearch%%\'  or %s.oxsearchkeys like \'%%testSearch%%\'  or %s.oxartnum like \'%%testSearch%%\'  )  ) ', $sArticleTable, $sArticleTable);
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
         $oTest->expects($this->once())->method("createIdListFromSql")
@@ -945,8 +889,6 @@ EOT;
 
     /**
      * Test load search ids category vendor manufacturer.
-     *
-     * @return null
      */
     public function testLoadSearchIdsCategoryVendorManufacturer()
     {
@@ -957,13 +899,13 @@ EOT;
         $sO2CTable = $this->getO2CTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select $sArticleTable.oxid from $sO2CTable as oxobject2category, $sArticleTable ";
-        $sExpt .= " where oxobject2category.oxcatnid='cat1' and oxobject2category.oxobjectid=$sArticleTable.oxid";
-        $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = '' and";
-        $sExpt .= " $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = 'vendor1'  and $sArticleTable.oxmanufacturerid = 'manufacturer1'  and";
-        $sExpt .= " ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
-        $sExpt .= " like '%testSearch%'  or $sArticleTable.oxsearchkeys like '%testSearch%'  or";
-        $sExpt .= " $sArticleTable.oxartnum like '%testSearch%'  )  ) ";
+        $sExpt = sprintf('select %s.oxid from %s as oxobject2category, %s ', $sArticleTable, $sO2CTable, $sArticleTable);
+        $sExpt .= sprintf(' where oxobject2category.oxcatnid=\'cat1\' and oxobject2category.oxobjectid=%s.oxid', $sArticleTable);
+        $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\' and', $sArticleTable);
+        $sExpt .= sprintf(' %s.oxissearch = 1  and %s.oxvendorid = \'vendor1\'  and %s.oxmanufacturerid = \'manufacturer1\'  and', $sArticleTable, $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' ( ( %s.oxtitle like \'%%testSearch%%\'  or %s.oxshortdesc', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' like \'%%testSearch%%\'  or %s.oxsearchkeys like \'%%testSearch%%\'  or', $sArticleTable);
+        $sExpt .= sprintf(' %s.oxartnum like \'%%testSearch%%\'  )  ) ', $sArticleTable);
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
         $oTest->expects($this->once())->method("createIdListFromSql")
@@ -974,8 +916,6 @@ EOT;
 
     /**
      * Test load search ids with search in long desc.
-     *
-     * @return null
      */
     public function testLoadSearchIdsWithSearchInLongDesc()
     {
@@ -987,9 +927,9 @@ EOT;
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sAEV = $tableViewNameGenerator->getViewName('oxartextends');
-        $sExpt = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
-        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxlongdesc like";
+        $sExpt = sprintf('select %s.oxid, %s.oxtimestamp from %s  LEFT JOIN %s ON %s.oxid=%s.oxid  where', $sArticleTable, $sArticleTable, $sArticleTable, $sAEV, $sAEV, $sArticleTable);
+        $sExpt .= " " . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'', $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxissearch = 1  and ( ( %s.oxlongdesc like', $sArticleTable, $sAEV);
         $sExpt .= " '%testSearch%'  )  ) ";
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["createIdListFromSql"]);
@@ -1001,23 +941,19 @@ EOT;
 
     /**
      * Test create id list from sql.
-     *
-     * @return null
      */
     public function testCreateIdListFromSql()
     {
         $oTest = $this->getProxyClass('oxArticleList');
         $sQ = "select * from oxarticles where oxid in('1354', '2000', 'not existant')";
         $aExpt = ["1354" => "1354", "2000" => "2000"];
-        $aRes = $oTest->createIdListFromSQL($sQ);
+        $oTest->createIdListFromSQL($sQ);
         $this->assertEquals($aExpt[1354], $oTest[1354]);
         $this->assertEquals($aExpt[2000], $oTest[2000]);
     }
 
     /**
      * Test get price select.
-     *
-     * @return null
      */
     public function testGetPriceSelect()
     {
@@ -1031,9 +967,9 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
-        $sExpt .= $oArticle->getSqlActiveSnippet() . "and$sArticleTable.oxissearch=1orderby";
-        $sExpt .= "$sArticleTable.oxvarminpriceasc,$sArticleTable.oxid";
+        $sExpt = sprintf('select`%s`.`oxid`from%swhereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and', $sArticleTable, $sArticleTable);
+        $sExpt .= $oArticle->getSqlActiveSnippet() . sprintf('and%s.oxissearch=1orderby', $sArticleTable);
+        $sExpt .= sprintf('%s.oxvarminpriceasc,%s.oxid', $sArticleTable, $sArticleTable);
 
         $sRes = $oTest->getPriceSelect($iPrice1, $iPrice2);
         $sExpt = str_replace(["\n", "\r", " "], "", $sExpt);
@@ -1043,8 +979,6 @@ EOT;
 
     /**
      * Test get price select with sorting.
-     *
-     * @return null
      */
     public function testGetPriceSelectWithSorting()
     {
@@ -1059,9 +993,9 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select`$sArticleTable`.`oxid`from{$sArticleTable}whereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and";
-        $sExpt .= $oArticle->getSqlActiveSnippet() . "and$sArticleTable.oxissearch=1orderby";
-        $sExpt .= "oxtitledesc,$sArticleTable.oxid";
+        $sExpt = sprintf('select`%s`.`oxid`from%swhereoxvarminprice>=0andoxvarminprice<=15andoxvarminprice>=12and', $sArticleTable, $sArticleTable);
+        $sExpt .= $oArticle->getSqlActiveSnippet() . sprintf('and%s.oxissearch=1orderby', $sArticleTable);
+        $sExpt .= sprintf('oxtitledesc,%s.oxid', $sArticleTable);
 
 
         $sRes = $oTest->getPriceSelect($iPrice1, $iPrice2);
@@ -1072,8 +1006,6 @@ EOT;
 
     /**
      * Test load price ids.
-     *
-     * @return null
      */
     public function testLoadPriceIds()
     {
@@ -1092,15 +1024,13 @@ EOT;
 
     /**
      * Test load price articles.
-     *
-     * @return null
      */
     public function testLoadPriceArticles()
     {
         $iPrice1 = 5;
         $iPrice2 = 10;
-        $sQ = "select * from oxarticles where oxid in (select if(oxparentid='',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= $iPrice2 group by id having min(oxprice)>=$iPrice1)";
-        $sQCount = "select count(*) from oxarticles where oxid in (select if(oxparentid='',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= $iPrice2 group by id having min(oxprice)>=$iPrice1)";
+        $sQ = sprintf('select * from oxarticles where oxid in (select if(oxparentid=\'\',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= %d group by id having min(oxprice)>=%d)', $iPrice2, $iPrice1);
+        $sQCount = sprintf('select count(*) from oxarticles where oxid in (select if(oxparentid=\'\',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= %d group by id having min(oxprice)>=%d)', $iPrice2, $iPrice1);
         $sCount = $this->getDb()->getOne($sQCount);
 
         $oTest = oxNew('oxArticleList');
@@ -1121,16 +1051,14 @@ EOT;
 
     /**
      * Test load price articles from category.
-     *
-     * @return null
      */
     public function testLoadPriceArticlesFromCategory()
     {
         $iPrice1 = 12;
         $iPrice2 = 15;
 
-        $sQ = "select * from oxarticles where oxid in (select if(oxparentid='',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= $iPrice2 group by id having min(oxprice)>=$iPrice1)";
-        $sQCount = "select count(*) from oxarticles where oxid in (select if(oxparentid='',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= $iPrice2 group by id having min(oxprice)>=$iPrice1)";
+        $sQ = sprintf('select * from oxarticles where oxid in (select if(oxparentid=\'\',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= %d group by id having min(oxprice)>=%d)', $iPrice2, $iPrice1);
+        $sQCount = sprintf('select count(*) from oxarticles where oxid in (select if(oxparentid=\'\',oxid,oxparentid) as id from oxarticles where oxprice>0 and oxprice <= %d group by id having min(oxprice)>=%d)', $iPrice2, $iPrice1);
         $sCount = $this->getDb()->getOne($sQCount);
 
         $sCatId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e4143562a5.46426637';
@@ -1139,7 +1067,7 @@ EOT;
         $oCategory->load($sCatId);
 
         $oTest = oxNew('oxArticleList');
-        $iRes = $oTest->loadPriceArticles($iPrice1, $iPrice2, $oCategory);
+        $oTest->loadPriceArticles($iPrice1, $iPrice2, $oCategory);
 
         $oTest2 = oxNew('oxArticleList');
         $oTest2->selectString($sQ);
@@ -1157,8 +1085,6 @@ EOT;
 
     /**
      * Test counting price category articles
-     *
-     * @return null
      */
     public function testLoadPriceArticles_totalArticlesCount()
     {
@@ -1177,8 +1103,6 @@ EOT;
 
     /**
      * Test counting price category articles
-     *
-     * @return null
      */
     public function testLoadPriceArticles_totalArticlesCount_noCategory()
     {
@@ -1192,8 +1116,6 @@ EOT;
 
     /**
      * Test load newest articles none.
-     *
-     * @return null
      */
     public function testLoadNewestArticlesNone()
     {
@@ -1205,8 +1127,6 @@ EOT;
 
     /**
      * Test load newest articles none do not load price.
-     *
-     * @return null
      */
     public function testLoadNewestArticlesNoneDoNotLoadPrice()
     {
@@ -1222,8 +1142,6 @@ EOT;
 
     /**
      * Test load newest articles aktion.
-     *
-     * @return null
      */
     public function testLoadNewestArticlesAktion()
     {
@@ -1238,8 +1156,6 @@ EOT;
 
     /**
      * Test load newest articles select.
-     *
-     * @return null
      */
     public function testLoadNewestArticlesSelect()
     {
@@ -1251,7 +1167,7 @@ EOT;
         $this->setConfigParam('iNrofNewcomerArticles', 4);
         $this->setConfigParam('blNewArtByInsert', 0);
 
-        $sExpt = "select * from $sArticleTable where oxparentid = ''";
+        $sExpt = sprintf('select * from %s where oxparentid = \'\'', $sArticleTable);
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxtimestamp desc limit 4";
 
@@ -1262,7 +1178,7 @@ EOT;
         $this->setConfigParam('iNewestArticlesMode', 2);
         $oTest->loadNewestArticles();
 
-        $sExpt = "select * from $sArticleTable where oxparentid = ''";
+        $sExpt = sprintf('select * from %s where oxparentid = \'\'', $sArticleTable);
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxtimestamp desc limit 5";
 
@@ -1272,7 +1188,7 @@ EOT;
         $this->setConfigParam('iNewestArticlesMode', 2);
         $oTest->loadNewestArticles(5);
 
-        $sExpt = "select * from $sArticleTable where oxparentid = ''";
+        $sExpt = sprintf('select * from %s where oxparentid = \'\'', $sArticleTable);
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxtimestamp desc limit 4";
 
@@ -1285,8 +1201,6 @@ EOT;
 
     /**
      * Test load newest articles select by insert.
-     *
-     * @return null
      */
     public function testLoadNewestArticlesSelectByInsert()
     {
@@ -1298,7 +1212,7 @@ EOT;
         $this->setConfigParam('iNrofNewcomerArticles', 4);
         $this->setConfigParam('blNewArtByInsert', 1);
 
-        $sExpt = "select * from $sArticleTable where oxparentid = ''";
+        $sExpt = sprintf('select * from %s where oxparentid = \'\'', $sArticleTable);
         $sExpt .= " and " . $oArticle->getSqlActiveSnippet() . " and oxissearch = 1";
         $sExpt .= " order by oxinsert desc limit 4";
 
@@ -1312,8 +1226,6 @@ EOT;
 
     /**
      * Test load top5 articles none do not load price.
-     *
-     * @return null
      */
     public function testLoadTop5ArticlesNoneDoNotLoadPrice()
     {
@@ -1325,8 +1237,6 @@ EOT;
 
     /**
      * Test load top5 articles none.
-     *
-     * @return null
      */
     public function testLoadTop5ArticlesNone()
     {
@@ -1343,8 +1253,6 @@ EOT;
 
     /**
      * Test load top5 articles aktion.
-     *
-     * @return null
      */
     public function testLoadTop5ArticlesAktion()
     {
@@ -1359,8 +1267,6 @@ EOT;
 
     /**
      * Test load top5 articles select.
-     *
-     * @return null
      */
     public function testLoadTop5ArticlesSelect()
     {
@@ -1369,9 +1275,9 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
-        $sExpt .= " $sArticleTable where " . $oArticle->getSqlActiveSnippet() . " and";
-        $sExpt .= " $sArticleTable.oxissearch = 1 and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxsoldamount>0 order by $sArticleTable.oxsoldamount desc limit 5";
+        $sExpt .= sprintf(' %s where ', $sArticleTable) . $oArticle->getSqlActiveSnippet() . " and";
+        $sExpt .= sprintf(' %s.oxissearch = 1 and %s.oxparentid = \'\'', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxsoldamount>0 order by %s.oxsoldamount desc limit 5', $sArticleTable, $sArticleTable);
 
         //testing over mock
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ['selectString']);
@@ -1384,8 +1290,6 @@ EOT;
 
     /**
      * Test load top5 articles select.
-     *
-     * @return null
      */
     public function testLoadTop5ArticlesSelect10()
     {
@@ -1394,9 +1298,9 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $sExpt = "select * from";
-        $sExpt .= " $sArticleTable where " . $oArticle->getSqlActiveSnippet() . " and";
-        $sExpt .= " $sArticleTable.oxissearch = 1 and $sArticleTable.oxparentid = ''";
-        $sExpt .= " and $sArticleTable.oxsoldamount>0 order by $sArticleTable.oxsoldamount desc limit 10";
+        $sExpt .= sprintf(' %s where ', $sArticleTable) . $oArticle->getSqlActiveSnippet() . " and";
+        $sExpt .= sprintf(' %s.oxissearch = 1 and %s.oxparentid = \'\'', $sArticleTable, $sArticleTable);
+        $sExpt .= sprintf(' and %s.oxsoldamount>0 order by %s.oxsoldamount desc limit 10', $sArticleTable, $sArticleTable);
 
         //testing over mock
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ['selectString']);
@@ -1409,8 +1313,6 @@ EOT;
 
     /**
      * Test get vendor select.
-     *
-     * @return null
      */
     public function testGetVendorSelect()
     {
@@ -1419,7 +1321,7 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxvendorid = 'testVendor'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
+        $sExpt = sprintf('select `%s`.`oxid` from %s where %s.oxvendorid = \'testVendor\'  and ', $sArticleTable, $sArticleTable, $sArticleTable) . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'   ORDER BY customsort ', $sArticleTable);
 
 
         $sCustomSorting = 'customsort';
@@ -1427,14 +1329,13 @@ EOT;
         //test over proxi
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->setNonPublicVar('_sCustomSorting', $sCustomSorting);
+
         $sRes = $oTest->getVendorSelect('testVendor');
         $this->assertEquals($sExpt, $sRes);
     }
 
     /**
      * Test get manufacturer select.
-     *
-     * @return null
      */
     public function testGetManufacturerSelect()
     {
@@ -1443,7 +1344,7 @@ EOT;
         $sArticleTable = $this->getArticleTable();
         $oArticle = oxNew('oxArticle');
 
-        $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxmanufacturerid = 'testManufacturer'  and " . $oArticle->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''   ORDER BY customsort ";
+        $sExpt = sprintf('select `%s`.`oxid` from %s where %s.oxmanufacturerid = \'testManufacturer\'  and ', $sArticleTable, $sArticleTable, $sArticleTable) . $oArticle->getSqlActiveSnippet() . sprintf(' and %s.oxparentid = \'\'   ORDER BY customsort ', $sArticleTable);
 
 
         $sCustomSorting = 'customsort';
@@ -1451,14 +1352,13 @@ EOT;
         //test over proxi
         $oTest = $this->getProxyClass('oxArticleList');
         $oTest->setNonPublicVar('_sCustomSorting', $sCustomSorting);
+
         $sRes = $oTest->getManufacturerSelect('testManufacturer');
         $this->assertEquals($sExpt, $sRes);
     }
 
     /**
      * Test load vendor ids.
-     *
-     * @return null
      */
     public function testLoadVendorIDs()
     {
@@ -1476,8 +1376,6 @@ EOT;
 
     /**
      * Test load manufacturer ids.
-     *
-     * @return null
      */
     public function testLoadManufacturerIDs()
     {
@@ -1494,8 +1392,6 @@ EOT;
 
     /**
      * Test load vendor articles.
-     *
-     * @return null
      */
     public function testLoadVendorArticles()
     {
@@ -1517,8 +1413,6 @@ EOT;
 
     /**
      * Test load manufacturer articles.
-     *
-     * @return null
      */
     public function testLoadManufacturerArticles()
     {
@@ -1606,8 +1500,6 @@ EOT;
 
     /**
      * Test load ids.
-     *
-     * @return null
      */
     public function testLoadIds()
     {
@@ -1617,7 +1509,7 @@ EOT;
 
         $this->setTime(100);
 
-        $sExpt = "select `$sArticleTable`.`oxid` from $sArticleTable where $sArticleTable.oxid in ( '1','a','3','a\'a' ) and " . $oArticle->getSqlActiveSnippet();
+        $sExpt = sprintf('select `%s`.`oxid` from %s where %s.oxid in ( \'1\',\'a\',\'3\',\'a\\\'a\' ) and ', $sArticleTable, $sArticleTable, $sArticleTable) . $oArticle->getSqlActiveSnippet();
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ['selectString']);
         $oTest->expects($this->once())->method("selectString")->with($sExpt)->will($this->returnValue(true));
@@ -1626,8 +1518,6 @@ EOT;
 
     /**
      * Test load ids none.
-     *
-     * @return null
      */
     public function testLoadIdsNone()
     {
@@ -1640,8 +1530,6 @@ EOT;
 
     /**
      * Test sort by ids and sort by order map call back.
-     *
-     * @return null
      */
     public function testSortByIdsAndSortByOrderMapCallback()
     {
@@ -1672,8 +1560,6 @@ EOT;
 
     /**
      * Test select string do non load price.
-     *
-     * @return null
      */
     public function testSelectStringDoNonLoadPrice()
     {
@@ -1685,8 +1571,6 @@ EOT;
 
     /**
      * Test Lazy load fields 1.
-     *
-     * @return null
      */
     public function testLazyLoadFields1()
     {
@@ -1702,8 +1586,6 @@ EOT;
 
     /**
      * Test lazy load all objects 1.
-     *
-     * @return null
      */
     public function testLazyLoadAllObjects1()
     {
@@ -1722,8 +1604,6 @@ EOT;
 
     /**
      * Test lazy load all objects 2.
-     *
-     * @return null
      */
     public function testLazyLoadAllObjects2()
     {
@@ -1739,8 +1619,6 @@ EOT;
 
     /**
      * Test lazy load all objects in lang clean.
-     *
-     * @return null
      */
     public function testLazyLoadAllObjectsInLangClean()
     {
@@ -1757,8 +1635,6 @@ EOT;
 
     /**
      * Test lazy load all objects in lang cached.
-     *
-     * @return null
      */
     public function testLazyLoadAllObjectsInLangCached()
     {
@@ -1775,8 +1651,6 @@ EOT;
 
     /**
      * Test lazy load article pics.
-     *
-     * @return null
      */
     public function testLazyLoadArticlePics()
     {
@@ -1791,8 +1665,6 @@ EOT;
 
     /**
      * Test lazy load article thumb.
-     *
-     * @return null
      */
     public function testLazyLoadArticleThumb()
     {
@@ -1807,8 +1679,6 @@ EOT;
 
     /**
      * Test lazy load article icon.
-     *
-     * @return null
      */
     public function testLazyLoadArticleIcon()
     {
@@ -1823,8 +1693,6 @@ EOT;
 
     /**
      * Test multi lang loading 1.
-     *
-     * @return null
      */
     public function testMultiLangLoading1()
     {
@@ -1835,8 +1703,6 @@ EOT;
 
     /**
      * Test multi lang loading 2.
-     *
-     * @return null
      */
     public function testMultiLangLoading2()
     {
@@ -1844,7 +1710,7 @@ EOT;
         $this->setLanguage(1);
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxarticles', 1);
-        $oTest->selectString("select * from $sView where oxid = '2080'");
+        $oTest->selectString(sprintf('select * from %s where oxid = \'2080\'', $sView));
 
         $expectedArticleTitle = 'Champagne Pliers & Bottle Opener';
         if ($this->getTestConfig()->getShopEdition() === 'EE') {
@@ -1856,8 +1722,6 @@ EOT;
 
     /**
      * Test load order articles.
-     *
-     * @return null
      */
     public function testLoadOrderArticles()
     {
@@ -1870,12 +1734,14 @@ EOT;
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('2000', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId_1', oxField::T_RAW);
         $oOrderArticle->save();
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId2');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId_2', oxField::T_RAW);
         $oOrderArticle->save();
@@ -1891,8 +1757,6 @@ EOT;
 
     /**
      * Test load order articles when one of articles is not awailable any more.
-     *
-     * @return null
      */
     public function testLoadOrderArticlesWhenOneOfArticlesIsNotAwailableAnyMore()
     {
@@ -1905,12 +1769,14 @@ EOT;
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('9999', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId_1', oxField::T_RAW);
         $oOrderArticle->save();
 
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId2');
+
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651', oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId_2', oxField::T_RAW);
         $oOrderArticle->save();
@@ -1932,8 +1798,6 @@ EOT;
 
     /**
      * Test load order articles no orders.
-     *
-     * @return null
      */
     public function testLoadOrderArticlesNoOrders()
     {
@@ -1944,8 +1808,6 @@ EOT;
 
     /**
      * Test enable select lists.
-     *
-     * @return null
      */
     public function testEnableSelectLists()
     {
@@ -1957,8 +1819,6 @@ EOT;
 
     /**
      * Test case for oxArticleList::_canUpdatePrices()
-     *
-     * @return null
      */
     public function testCanUpdatePrices()
     {
@@ -1986,8 +1846,6 @@ EOT;
 
     /**
      * Test case for oxArticleList::_renewPriceUpdateTime()
-     *
-     * @return null
      */
     public function testRenewPriceUpdateTime()
     {
@@ -2019,8 +1877,6 @@ EOT;
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices() mocking test
-     *
-     * @return null
      */
     public function testupdateUpcomingPrices()
     {
@@ -2044,6 +1900,7 @@ EOT;
         // adding 7 test articles
         $oArticle1 = oxNew("oxArticle");
         $oArticle1->setId("_testProd1");
+
         $oArticle1->oxarticles__oxprice = new oxField(1);
         $oArticle1->oxarticles__oxpricea = new oxField(2);
         $oArticle1->oxarticles__oxpriceb = new oxField(3);
@@ -2057,18 +1914,21 @@ EOT;
 
         $oArticle11 = oxNew("oxArticle");
         $oArticle11->setId("_testProd1.1");
+
         $oArticle11->oxarticles__oxprice = new oxField(21);
         $oArticle11->oxarticles__oxparentid = new oxField("_testProd1");
         $this->assertTrue("_testProd1.1" === $oArticle11->save());
 
         $oArticle12 = oxNew("oxArticle");
         $oArticle12->setId("_testProd1.2");
+
         $oArticle12->oxarticles__oxprice = new oxField(30);
         $oArticle12->oxarticles__oxparentid = new oxField("_testProd1");
         $this->assertTrue("_testProd1.2" === $oArticle12->save());
 
         $oArticle2 = oxNew("oxArticle");
         $oArticle2->setId("_testProd2");
+
         $oArticle2->oxarticles__oxprice = new oxField(1);
         $oArticle2->oxarticles__oxpricea = new oxField(2);
         $oArticle2->oxarticles__oxpriceb = new oxField(3);
@@ -2082,18 +1942,21 @@ EOT;
 
         $oArticle21 = oxNew("oxArticle");
         $oArticle21->setId("_testProd2.1");
+
         $oArticle21->oxarticles__oxprice = new oxField(5);
         $oArticle21->oxarticles__oxparentid = new oxField("_testProd2");
         $this->assertTrue("_testProd2.1" === $oArticle21->save());
 
         $oArticle22 = oxNew("oxArticle");
         $oArticle22->setId("_testProd2.2");
+
         $oArticle22->oxarticles__oxprice = new oxField(15);
         $oArticle22->oxarticles__oxparentid = new oxField("_testProd2");
         $this->assertTrue("_testProd2.2" === $oArticle22->save());
 
         $oArticle3 = oxNew("oxArticle");
         $oArticle3->setId("_testProd3");
+
         $oArticle3->oxarticles__oxprice = new oxField(1);
         $oArticle3->oxarticles__oxpricea = new oxField(2);
         $oArticle3->oxarticles__oxpriceb = new oxField(3);
@@ -2161,8 +2024,6 @@ EOT;
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices() database level test
-     *
-     * @return null
      */
     public function testupdateUpcomingPricesDb()
     {
@@ -2208,8 +2069,6 @@ EOT;
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices() cron level test
-     *
-     * @return null
      */
     public function testupdateUpcomingPricesCron()
     {
@@ -2262,12 +2121,14 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
         $oArticle->save();
 
         $oArticle->setId('_testInactiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2275,6 +2136,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testArticleChildPriceInheritedFromParent');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2282,6 +2144,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testActiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2308,12 +2171,14 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
         $oArticle->save();
 
         $oArticle->setId('_testInactiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2321,6 +2186,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testArticleChildPriceInheritedFromParent');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2328,6 +2194,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testActiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2354,12 +2221,14 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
         $oArticle->save();
 
         $oArticle->setId('_testInactiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2367,6 +2236,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testArticleChildPriceInheritedFromParent');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2374,6 +2244,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testActiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2400,12 +2271,14 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
         $oArticle->save();
 
         $oArticle->setId('_testInactiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(0, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2413,6 +2286,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testArticleChildPriceInheritedFromParent');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2420,6 +2294,7 @@ EOT;
         $oArticle->save();
 
         $oArticle->setId('_testActiveArticleChild');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('_testParentArticle');
@@ -2446,6 +2321,7 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
@@ -2471,6 +2347,7 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);
@@ -2496,6 +2373,7 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(21, oxField::T_RAW);
@@ -2521,6 +2399,7 @@ EOT;
         $oArticle = oxNew('oxArticle');
 
         $oArticle->setId('_testParentArticle');
+
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxstock = new oxField(15, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(20, oxField::T_RAW);

@@ -19,8 +19,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_getReservationsId() test case
      * test if the new created id equals to our test id.
-     *
-     * @return null
      */
     public function testGetReservationsIdInitNew(): void
     {
@@ -44,8 +42,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_getReservationsId() test case
      * test if the getted id equals to our test id.
-     *
-     * @return null
      */
     public function testGetReservationsIdReturnInited(): void
     {
@@ -68,8 +64,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservations() test case
      * test on the basis of an id with cache if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservationsCache()
     {
@@ -84,8 +78,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservations() test case
      * test without an id if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservationsNoId()
     {
@@ -98,8 +90,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservations() test case
      * test with an id if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservationsLoad()
     {
@@ -113,8 +103,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservations() test case
      * test with an id and cache if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservedItemsCache()
     {
@@ -129,8 +117,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservations() test case
      * test without an id if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservedItemsLoadNull()
     {
@@ -143,8 +129,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_getReservedItems test case
      * test if currently reserved items are correctly returned
-     *
-     * @return null
      */
     public function testGetReservedItemsLoad()
     {
@@ -154,6 +138,7 @@ class BasketreservationTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem1');
+
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('2000', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('1.5', oxField::T_RAW);
@@ -161,6 +146,7 @@ class BasketreservationTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem2');
+
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('1126', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxamount = new oxField('3', oxField::T_RAW);
@@ -168,6 +154,7 @@ class BasketreservationTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxUserBasketItem');
         $oBasketItem->setId('testitem3');
+
         $oBasketItem->oxuserbasketitems__oxbasketid = new oxField($oBasket->getId(), oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('2000', oxField::T_RAW);
         $oBasketItem->oxuserbasketitems__oxsellist = new oxField(serialize(['asd']), oxField::T_RAW);
@@ -186,8 +173,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_getReservedItems() test case
      * test without an id if the getter return what we expect
-     *
-     * @return null
      */
     public function testGetReservedItemsSkipsArticleActiveCheck()
     {
@@ -203,8 +188,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::getReservedAmount() test case
      * test if the amount of an item will correctly returned
-     *
-     * @return null
      */
     public function testGetReservedAmount()
     {
@@ -218,8 +201,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_basketDifference() test case
      * test if different items can be handled apart
-     *
-     * @return null
      */
     public function testBasketDifference()
     {
@@ -227,10 +208,12 @@ class BasketreservationTest extends \OxidTestCase
         $oBasketItem1->setStockCheckStatus(false);
         $oBasketItem1->init('2000', 1);
         $oBasketItem1->setNonPublicVar("_oArticle", null);
+
         $oBasketItem2 = $this->getProxyClass("oxbasketitem");
         $oBasketItem2->setStockCheckStatus(false);
         $oBasketItem2->init('1126', 1);
         $oBasketItem2->setNonPublicVar("_oArticle", null);
+
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", [$oBasketItem1, $oBasketItem2]);
 
@@ -243,8 +226,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::_reserveArticles() test case
      * test if items will handled correctly.
-     *
-     * @return null
      */
     public function testReserveArticles()
     {
@@ -264,8 +245,6 @@ class BasketreservationTest extends \OxidTestCase
     /**
      * oxBasketReservation::reserveBasket() test case
      * test if the reserve of given basket items works correct.
-     *
-     * @return null
      */
     public function testReserveBasket()
     {
@@ -282,8 +261,6 @@ class BasketreservationTest extends \OxidTestCase
      * oxBasketReservation::commitArticleReservation() test case
      * test if an article added to basket of the reservation will be deleted and
      * the sold amount will updated.
-     *
-     * @return null
      */
     public function testCommitArticleReservation()
     {
@@ -305,8 +282,6 @@ class BasketreservationTest extends \OxidTestCase
      * oxBasketReservation::discardArticleReservation() test case
      * test the discard of one article reservation and return the reserved
      * stock to article
-     *
-     * @return null
      */
     public function testDiscardArticleReservation()
     {
@@ -328,8 +303,6 @@ class BasketreservationTest extends \OxidTestCase
      * oxBasketReservation::discardReservations() test case
      * test the discard of all article reservations and return the reserved
      * stock to articles
-     *
-     * @return null
      */
     public function testDiscardReservations()
     {
@@ -356,8 +329,6 @@ class BasketreservationTest extends \OxidTestCase
      * oxBasketReservation::discardUnusedReservations()
      * test the periodic cleanup: discards timed out reservations even if they are not
      * for the current user
-     *
-     * @return null
      */
     public function testDiscardUnusedReservations()
     {
@@ -365,6 +336,7 @@ class BasketreservationTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load('2000');
+
         $initial = $oArticle->oxarticles__oxstock->value;
 
         $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, ['getReservationsId']);
@@ -387,8 +359,6 @@ class BasketreservationTest extends \OxidTestCase
 
     /**
      * TEST IF return time left (in seconds) for basket before expiration
-     *
-     * @return null
      */
     public function testGetTimeLeft()
     {
@@ -416,8 +386,6 @@ class BasketreservationTest extends \OxidTestCase
 
     /**
      * TEST IF renews expiration timer to maximum value
-     *
-     * @return null
      */
     public function testRenewExpiration()
     {

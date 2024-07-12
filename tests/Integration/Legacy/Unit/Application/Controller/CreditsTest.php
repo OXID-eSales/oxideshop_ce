@@ -17,8 +17,6 @@ class CreditsTest extends \OxidTestCase
 
     /**
      * Test case for Credits::getSeoObjectId()
-     *
-     * @return null
      */
     public function testGetSeoObjectId()
     {
@@ -28,8 +26,6 @@ class CreditsTest extends \OxidTestCase
 
     /**
      * Test case for Credits::getContent()
-     *
-     * @return null
      */
     public function testGetContent()
     {

@@ -122,18 +122,17 @@ class SelectlistTest extends \OxidTestCase
 
         $oSelList = oxNew('oxselectlist');
         $oSelList->load('oxsellisttest');
+
         $aSelList = $oSelList->getFieldList();
 
         // checking loaded data
-        $this->assertEquals("{$this->encode('&amp;&test1, 10')} +14,33 CHF", $aSelList[0]->name);
+        $this->assertEquals($this->encode('&amp;&test1, 10') . ' +14,33 CHF', $aSelList[0]->name);
         $this->assertEquals("test2, 10 +14,33 CHF", $aSelList[1]->name);
         $this->assertEquals("test3, 10 +14,33 CHF", $aSelList[2]->name);
     }
 
     /**
      * oxSelectList::setActiveSelectionByIndex() test case
-     *
-     * @return null
      */
     public function testSetActiveSelectionByIndex()
     {
@@ -157,8 +156,6 @@ class SelectlistTest extends \OxidTestCase
 
     /**
      * oxSelectList::getActiveSelection() test case
-     *
-     * @return null
      */
     public function testGetActiveSelection()
     {
@@ -171,8 +168,6 @@ class SelectlistTest extends \OxidTestCase
 
     /**
      * oxSelectList::getSelections() test case
-     *
-     * @return null
      */
     public function testGetSelections()
     {
@@ -185,15 +180,13 @@ class SelectlistTest extends \OxidTestCase
 
         // valdesc is set
         $oSelectList = oxNew('oxselectlist');
-        $oSelectList->oxselectlist__oxvaldesc = new oxField('test1, 10!P!10__@@test2, 10!P!10__@@test3\', 10!P!10__@@');
+        $oSelectList->oxselectlist__oxvaldesc = new oxField("test1, 10!P!10__@@test2, 10!P!10__@@test3', 10!P!10__@@");
 
         $this->assertEquals($aSelections, $oSelectList->getSelections());
     }
 
     /**
      * oxSelectList::getLabel() test case
-     *
-     * @return null
      */
     public function testGetLabel()
     {
@@ -204,8 +197,6 @@ class SelectlistTest extends \OxidTestCase
 
     /**
      * oxSelectList::setVat() & oxSelectList::getVat() test case
-     *
-     * @return null
      */
     public function testSetVatAndGetVat()
     {

@@ -253,8 +253,6 @@ class ArticlePicturesTest extends \OxidTestCase
 
     /**
      * Article_Pictures::cleanupCustomFields()
-     *
-     * @return null
      */
     public function testCleanupCustomFields()
     {
@@ -274,8 +272,6 @@ class ArticlePicturesTest extends \OxidTestCase
 
     /**
      * Article_Pictures::cleanupCustomFields() - when custom fields are not empty
-     *
-     * @return null
      */
     public function testCleanupCustomFields_fieldsNotEmpty()
     {
@@ -295,8 +291,6 @@ class ArticlePicturesTest extends \OxidTestCase
 
     /**
      * Article_Pictures::save() - in demo shop mode
-     *
-     * @return null
      */
     public function testSave_demoShopMode()
     {
@@ -317,8 +311,6 @@ class ArticlePicturesTest extends \OxidTestCase
 
     /**
      * Article_Pictures::deletePicture() - in demo shop mode
-     *
-     * @return null
      */
     public function testDeletePicture_demoShopMode()
     {

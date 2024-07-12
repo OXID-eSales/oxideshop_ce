@@ -14,8 +14,6 @@ class MaintenanceTest extends \OxidTestCase
 
     /**
      * Test case for oxMaintenance::execute()
-     *
-     * @return null
      */
     public function testExecute()
     {

@@ -21,8 +21,6 @@ class CmpLangTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -36,8 +34,6 @@ class CmpLangTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -53,8 +49,10 @@ class CmpLangTest extends \OxidTestCase
         $oView = oxNew('oxubase');
         $oView->setClassKey('basket');
         $oView->setFncName('addVoucher');
+
         $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);
+
         $oLangView->setParent($oView);
         Registry::set(Config::class, $oConfig);
         $oLangView->init();
@@ -73,8 +71,10 @@ class CmpLangTest extends \OxidTestCase
         $oView = oxNew('oxubase');
         $oView->setClassKey('basket');
         $oView->setFncName('changebasket');
+
         $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);
+
         $oLangView->setParent($oView);
         Registry::set(Config::class, $oConfig);
         $oLangView->init();

@@ -21,8 +21,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePasswordNoUser()
     {
@@ -42,8 +40,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePasswordEmptyNewPass()
     {
@@ -68,8 +64,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePasswordTooShortNewPass()
     {
@@ -94,8 +88,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePasswordPasswordsDoNotMatch()
     {
@@ -120,8 +112,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePasswordMissingOldPass()
     {
@@ -148,8 +138,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::changePassword()
-     *
-     * @return null
      */
     public function testChangePassword()
     {
@@ -180,8 +168,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::isPasswordChanged()
-     *
-     * @return null
      */
     public function testIsPasswordChanged()
     {
@@ -194,8 +180,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -208,8 +192,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Newsletter::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -225,8 +207,6 @@ class AccountPasswordTest extends \OxidTestCase
 
     /**
      * Testing Account_Password::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {
@@ -238,8 +218,6 @@ class AccountPasswordTest extends \OxidTestCase
     /**
      * Test Account_Password::changePassword() - try to login with password with spec chars.
      * #0003680
-     *
-     * @return null
      */
     public function testLogin_setPasswordWithSpecChars()
     {

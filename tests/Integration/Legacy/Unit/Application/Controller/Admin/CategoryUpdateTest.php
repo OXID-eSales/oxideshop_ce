@@ -18,8 +18,6 @@ class CategoryUpdateTest extends \OxidTestCase
 
     /**
      * Category_Update::GetCatListUpdateInfo() test case
-     *
-     * @return null
      */
     public function testGetCatListUpdateInfo()
     {
@@ -34,8 +32,6 @@ class CategoryUpdateTest extends \OxidTestCase
 
     /**
      * Category_Update::getCategoryList() test case
-     *
-     * @return null
      */
     public function testGetCategoryList()
     {
@@ -47,8 +43,6 @@ class CategoryUpdateTest extends \OxidTestCase
 
     /**
      * Category_Update::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

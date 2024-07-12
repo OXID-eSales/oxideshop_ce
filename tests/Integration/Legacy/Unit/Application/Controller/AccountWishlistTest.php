@@ -20,8 +20,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::render()
-     *
-     * @return null
      */
     public function testRenderNoUser()
     {
@@ -32,8 +30,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::render()
-     *
-     * @return null
      */
     public function testRender()
     {
@@ -47,8 +43,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::showSuggest()
-     *
-     * @return null
      */
     public function testShowSuggest()
     {
@@ -65,8 +59,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getWishList()
-     *
-     * @return null
      */
     public function testGetWishListNoUserNoWishlist()
     {
@@ -78,8 +70,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getWishList()
-     *
-     * @return null
      */
     public function testGetWishList()
     {
@@ -97,8 +87,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getWishList() when basket is empty
-     *
-     * @return null
      */
     public function testGetWishList_basketIsEmpty()
     {
@@ -120,8 +108,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getWishProductList()
-     *
-     * @return null
      */
     public function testGetWishProductListNoWishList()
     {
@@ -132,8 +118,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getWishProductList()
-     *
-     * @return null
      */
     public function testGetWishProductList()
     {
@@ -147,8 +131,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::getSimilarRecommLists()
-     *
-     * @return null
      */
     public function testGetSimilarRecommListIds()
     {
@@ -168,8 +150,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::sendWishList()
-     *
-     * @return null
      */
     public function testSendWishListMissingParameters()
     {
@@ -190,8 +170,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::sendWishList()
-     *
-     * @return null
      */
     public function testSendWishList()
     {
@@ -225,8 +203,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::togglePublic()
-     *
-     * @return null
      */
     public function testTogglePublic()
     {
@@ -253,8 +229,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_Wishlist::searchForWishList()
-     *
-     * @return null
      */
     public function testSearchForWishList()
     {
@@ -270,8 +244,6 @@ class AccountWishlistTest extends \OxidTestCase
 
     /**
      * Testing Account_RecommList::getBreadCrumb()
-     *
-     * @return null
      */
     public function testGetBreadCrumb()
     {

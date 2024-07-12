@@ -55,7 +55,7 @@ class DiagnosticsTest extends \OxidTestCase
         $oDb->execute("DELETE FROM `oxshops` WHERE `oxid` > 1");
 
         for ($i = 2; $i < 5; $i++) {
-            $oDb->execute("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, " . ($i % 2) . ", 'Test Shop $i')");
+            $oDb->execute(sprintf('INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES (%d, ', $i) . ($i % 2) . sprintf(', \'Test Shop %d\')', $i));
         }
 
         $oDb->execute("DELETE FROM `oxcategories`");

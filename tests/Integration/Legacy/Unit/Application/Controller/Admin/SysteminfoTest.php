@@ -18,8 +18,6 @@ class SysteminfoTest extends \OxidTestCase
 
     /**
      * sysreq::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {

@@ -21,7 +21,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * @var Database The doctrine database we want to test in this class.
      */
-    protected $database = null;
+    protected $database;
 
     /**
      * Set up the test

@@ -23,8 +23,6 @@ class ManufacturerTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -117,7 +115,7 @@ class ManufacturerTest extends \OxidTestCase
         $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = "select count(*) from oxarticles where oxmanufacturerid = '$sManufacturerId' ";
+        $sQ = sprintf('select count(*) from oxarticles where oxmanufacturerid = \'%s\' ', $sManufacturerId);
         $iCnt = $myDB->getOne($sQ);
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ['isAdmin']);
@@ -328,8 +326,6 @@ class ManufacturerTest extends \OxidTestCase
 
     /**
      * Test case for new folder structure icon getter
-     *
-     * @return null
      */
     public function testGetIconUrlAccordingToNewFilesStructure()
     {
@@ -337,13 +333,13 @@ class ManufacturerTest extends \OxidTestCase
         $height = 90;
 
         Registry::getConfig()->setConfigParam('sManufacturerIconsize', false);
-        Registry::getConfig()->setConfigParam('sIconsize', "$width*$height");
+        Registry::getConfig()->setConfigParam('sIconsize', sprintf('%d*%d', $width, $height));
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ["getConfig"], [], '', false);
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = $this->getConfig()->getOutUrl() . basename((string) $this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/manufacturer/icon/${width}_${height}_75/big_matsol_1_mico.png";
+        $sUrl .= sprintf('/generated/manufacturer/icon/%d_%d_75/big_matsol_1_mico.png', $width, $height);
 
         $this->assertEquals($sUrl, $oManufacturer->getIconUrl());
     }
@@ -382,8 +378,6 @@ class ManufacturerTest extends \OxidTestCase
 
     /**
      * Title getter test
-     *
-     * @return null
      */
     public function testGetTitle()
     {

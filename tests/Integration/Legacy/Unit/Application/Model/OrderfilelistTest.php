@@ -16,8 +16,6 @@ class OrderfilelistTest extends \OxidTestCase
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp(): void
     {
@@ -25,17 +23,20 @@ class OrderfilelistTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId_1');
+
         $oOrder->oxorder__oxuserid = new oxField('_userId');
         $oOrder->save();
 
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId_2');
+
         $oOrder->oxorder__oxpaid = new oxField('2011-01-10 12:12:12');
         $oOrder->oxorder__oxuserid = new oxField('_userId');
         $oOrder->save();
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId_1');
+
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
         $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
@@ -43,6 +44,7 @@ class OrderfilelistTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId_2');
+
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
         $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
@@ -77,8 +79,6 @@ class OrderfilelistTest extends \OxidTestCase
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown(): void
     {
@@ -93,8 +93,6 @@ class OrderfilelistTest extends \OxidTestCase
 
     /**
      * Testing oxOrder::getOrderFiles
-     *
-     * @return null
      */
     public function testLoadUserFiles()
     {
@@ -116,8 +114,6 @@ class OrderfilelistTest extends \OxidTestCase
 
     /**
      * Testing oxOrder::getOrderFiles
-     *
-     * @return null
      */
     public function testLoadOrderFiles()
     {

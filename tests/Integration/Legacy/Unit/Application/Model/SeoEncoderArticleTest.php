@@ -48,8 +48,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * oxSeoEncoderArticle::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriVendor()
     {
@@ -65,8 +63,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * oxSeoEncoderArticle::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriManufacturer()
     {
@@ -82,8 +78,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * oxSeoEncoderArticle::_getAltUri() test case
-     *
-     * @return null
      */
     public function testGetAltUriDefault()
     {
@@ -100,13 +94,12 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * #0001472: / in article title
-     *
-     * @return null
      */
     public function testForBugEntry1472()
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->setId("testArticleId");
+
         $oArticle->oxarticles__oxtitle = new oxField("'DIN lang 1/3 A4 / A6' ? 'EIN Fach' ? '1/3 A4 Prospektständer BIO'", oxField::T_RAW);
 
         $sUrl = $this->getConfig()->getConfigParam("sShopURL") . "DIN-lang-1-3-A4-A6-EIN-Fach-1-3-A4-Prospektstaender-BIO.html";
@@ -148,8 +141,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * article has no vendor defined
-     *
-     * @return null
      */
     public function testGetVendorArticleHasNoManufacturerDefined()
     {
@@ -159,8 +150,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * article has no manufacturer defined
-     *
-     * @return null
      */
     public function testGetVendorUnknownViewClass()
     {
@@ -179,8 +168,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * unknown Vendor id
-     *
-     * @return null
      */
     public function testGetVendorUnknownManufacturerId()
     {
@@ -193,8 +180,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * current view Vendor matches product
-     *
-     * @return null
      */
     public function testGetVendorCurrentViewVendorMatchesProduct()
     {
@@ -212,15 +197,13 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $this->getConfig()->setActiveView($oView);
 
         $oEncoder = oxNew('oxSeoEncoderArticle');
-        $oManufacturer = $oEncoder->getVendor($oArticle, 0);
+        $oEncoder->getVendor($oArticle, 0);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
     }
 
     /**
      * language ids does not match
-     *
-     * @return null
      */
     public function testGetVendorLanguageIdsDoesNotMatch()
     {
@@ -245,8 +228,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * view manufacturer does not match article
-     *
-     * @return null
      */
     public function testGetVendorViewVendorDoesNotMatchArticle()
     {
@@ -271,8 +252,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * article has no manufacturer defined
-     *
-     * @return null
      */
     public function testGetManufacturerArticleHasNoManufacturerDefined()
     {
@@ -282,8 +261,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * article has no manufacturer defined
-     *
-     * @return null
      */
     public function testGetManufacturerUnknownViewClass()
     {
@@ -302,8 +279,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * unknown Manufacturer id
-     *
-     * @return null
      */
     public function testGetManufacturerUnknownManufacturerId()
     {
@@ -316,8 +291,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * current view manufacturer matches product
-     *
-     * @return null
      */
     public function testGetManufacturerCurrentViewManufacturerMatchesProduct()
     {
@@ -342,8 +315,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * language ids does not match
-     *
-     * @return null
      */
     public function testGetManufacturerLanguageIdsDoesNotMatch()
     {
@@ -368,8 +339,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * view manufacturer does not match article
-     *
-     * @return null
      */
     public function testGetManufacturerViewManufacturerDoesNotMatchArticle()
     {
@@ -402,6 +371,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
         // creating test recomm list
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->setId("_testRecomm");
+
         $oRecomm->oxrecommlists__oxshopid = new oxField($this->getConfig()->getBaseShopId());
         $oRecomm->oxrecommlists__oxtitle = new oxField("testrecommtitle");
         $oRecomm->save();
@@ -545,6 +515,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getCategory']);
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArtId');
+
         $oArticle->oxarticles__oxtitle = new oxField('äöüÄÖÜß');
 
         $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "oxid.html", $oArticle->getLink());
@@ -573,6 +544,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $sManufacturerId = oxDb::getDb()->getOne("select oxid from oxmanufacturers");
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
+
         $sSeoUri = "Nach-Hersteller/" . str_replace([' ', '.', '+'], '-', $oManufacturer->oxmanufacturers__oxtitle->value) . "/oxid-test-article-title-oxid-test-article-var-select.html";
 
         $oArticle = oxNew('oxArticle');
@@ -1037,15 +1009,12 @@ class SeoEncoderArticleTest extends \OxidTestCase
      */
     public function testActicleIsSavedSeoUrlShouldStayTheSame()
     {
-        if ((new Facts())->getEdition() === 'EE') {
-            $sArtId = '2363';
-        } else {
-            $sArtId = '1131';
-        }
+        $sArtId = (new Facts())->getEdition() === 'EE' ? '2363' : '1131';
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load($sArtId);
         $oArticle->save();
+
         $sSeoUrl = $oArticle->getLink();
 
         $oArticle = oxNew('oxArticle');
@@ -1063,12 +1032,14 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxbase');
         $oArticle->init('oxarticles');
         $oArticle->load('2363');
+
         $oArticle->oxarticles__oxtitle = new oxField(" testa");
         $oArticle->setId('testa');
         $oArticle->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load('testa');
+
         $sSeoUrl = $oArticle->getLink();
 
         $oArticle = oxNew('oxbase');
@@ -1079,6 +1050,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->load('testb');
+
         $sNewSeoUrl = $oArticle->getLink();
 
         $this->assertNotEquals($sSeoUrl, $sNewSeoUrl);
@@ -1095,10 +1067,10 @@ class SeoEncoderArticleTest extends \OxidTestCase
                    ( 'article_id', '132', '{$sShopId}', '0', '', '', 'oxarticle', '0', '0', '' )";
         $oDb->execute($sQ);
 
-        $sQ = "insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'article_id', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( \'article_id\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
 
-        $sQ = "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'article_id', '132', '{$sShopId}', '0' )";
+        $sQ = sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( \'article_id\', \'132\', \'%s\', \'0\' )', $sShopId);
         $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'article_id'"));
@@ -1180,19 +1152,18 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
     /**
      * oxSeoEncoderArticle::getArticleUri() test case
-     *
-     * @return null
      */
     public function testGetArticleUriForMainCategory()
     {
         $sProdId = "1126";
-        $sCatId = oxDb::getDb()->getOne("select oxcatnid from oxobject2category where oxobjectid = '{$sProdId}'");
+        $sCatId = oxDb::getDb()->getOne(sprintf('select oxcatnid from oxobject2category where oxobjectid = \'%s\'', $sProdId));
 
         $oProduct = oxNew('oxArticle');
         $oProduct->load($sProdId);
 
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sCatId);
+
         $sBaseUri = str_replace($this->getConfig()->getConfigParam("sShopURL"), "", $oCategory->getLink());
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class, ['getCategory', 'getMainCategory', 'loadFromDb']);
@@ -1205,8 +1176,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
     /**
      * Test case for #0002564: seo urls of variant-members without title and
      * varselect get generic postfix instead of artnum
-     *
-     * @return null
      */
     public function testFor0002564()
     {
@@ -1214,24 +1183,28 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oProduct1 = oxNew('oxArticle');
         $oProduct1->setId("_testVar1");
+
         $oProduct1->oxarticles__oxartnum = new oxField("artnum1");
         $oProduct1->oxarticles__oxparentid = new oxField($sParentId);
         $oProduct1->save();
 
         $oProduct2 = oxNew('oxArticle');
         $oProduct2->setId("_testVar2");
+
         $oProduct2->oxarticles__oxartnum = new oxField("artnum2");
         $oProduct2->oxarticles__oxparentid = new oxField($sParentId);
         $oProduct2->save();
 
         $oProduct3 = oxNew('oxArticle');
         $oProduct3->setId("_testVar3");
+
         $oProduct3->oxarticles__oxartnum = new oxField("artnum3");
         $oProduct3->oxarticles__oxparentid = new oxField($sParentId);
         $oProduct3->save();
 
         $oProduct4 = oxNew('oxArticle');
         $oProduct4->setId("_testVar4");
+
         $oProduct4->oxarticles__oxartnum = new oxField("artnum4");
         $oProduct4->oxarticles__oxparentid = new oxField($sParentId);
         $oProduct4->save();

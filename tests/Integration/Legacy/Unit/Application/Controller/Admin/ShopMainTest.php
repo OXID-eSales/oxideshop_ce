@@ -29,8 +29,6 @@ class ShopMainTest extends \OxidTestCase
 
     /**
      * Shop_Main::Save() test case
-     *
-     * @return null
      */
     public function testSaveSuccess()
     {
@@ -41,11 +39,12 @@ class ShopMainTest extends \OxidTestCase
         try {
             $oView = oxNew('Shop_Main');
             $oView->save();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("save", $oExcp->getMessage(), "error in Shop_Main::save()");
+        } catch (Exception $exception) {
+            $this->assertEquals("save", $exception->getMessage(), "error in Shop_Main::save()");
 
             return;
         }
+
         $this->fail("error in Shop_Main::save()");
     }
 }

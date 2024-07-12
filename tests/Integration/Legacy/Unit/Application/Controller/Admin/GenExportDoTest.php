@@ -56,8 +56,8 @@ final class GenExportDoTest extends TestCase
         $templateRenderer
             ->method('renderTemplate')
             ->with(
-                $this->equalTo('genexport'),
-                $this->equalTo($parameters)
+                'genexport',
+                $parameters
             );
 
         $templateRendererBridge = $this
@@ -89,7 +89,7 @@ final class GenExportDoTest extends TestCase
             ->method('getService')
             ->willReturn($templateRendererBridge);
 
-        $this->assertEquals(
+        $this->assertSame(
             2,
             $controller->nextTick(1)
         );
@@ -106,15 +106,15 @@ final class GenExportDoTest extends TestCase
         $controller->write($someContents);
         fclose($controller->fpFile);
 
-        $this->assertEquals(
-            "{$someContents}\n",
+        $this->assertSame(
+            $someContents . PHP_EOL,
             file_get_contents($testFile, true)
         );
     }
 
     public function testRender(): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             'dynbase_do',
             oxNew(GenericExportDo::class)
                 ->render()

@@ -25,7 +25,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophet;
 use Psr\Container\ContainerInterface;
 
-final class EmailTest extends \OxidTestCase
+final class EmailTest extends \PHPUnit\Framework\TestCase
 {
     use ProphecyTrait;
 

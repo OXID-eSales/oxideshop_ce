@@ -14,7 +14,7 @@ use \oxDb;
 /**
  * Tests for Shop_Main class
  */
-class DeliverySetRDFaTest extends \OxidTestCase
+class DeliverySetRDFaTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

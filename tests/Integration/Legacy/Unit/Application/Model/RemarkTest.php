@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use \oxRegistry;
 
-class RemarkTest extends \OxidTestCase
+class RemarkTest extends \PHPUnit\Framework\TestCase
 {
     private $_oRemark;
 

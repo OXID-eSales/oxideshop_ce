@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Application\Model\UserList;
 /**
  * Tests for Account class
  */
-class AccountWishlistTest extends \OxidTestCase
+class AccountWishlistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

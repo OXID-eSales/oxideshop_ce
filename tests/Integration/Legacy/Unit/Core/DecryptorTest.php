@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * Class Unit_Core_oxEncryptorTest
  */
-class DecryptorTest extends \OxidTestCase
+class DecryptorTest extends \PHPUnit\Framework\TestCase
 {
     public function providerDecodingOfStringWithCorrectKey()
     {

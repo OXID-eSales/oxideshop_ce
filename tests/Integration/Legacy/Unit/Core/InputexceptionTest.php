@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class InputexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class InputexceptionTest extends \PHPUnit\Framework\TestCase
 {
 
     // We check on class name and message only - rest is not checked yet

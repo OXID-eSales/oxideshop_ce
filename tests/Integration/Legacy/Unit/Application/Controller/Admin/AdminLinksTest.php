@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Admin_Links class
  */
-class AdminLinksTest extends \OxidTestCase
+class AdminLinksTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

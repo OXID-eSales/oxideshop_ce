@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Application\Model\OrderFile;
 /**
  * Tests for Account_downloads class
  */
-class AccountdownloadsTest extends \OxidTestCase
+class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

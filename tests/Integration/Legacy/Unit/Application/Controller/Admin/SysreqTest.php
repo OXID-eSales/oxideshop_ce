@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for sysreq class
  */
-class SysreqTest extends \OxidTestCase
+class SysreqTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

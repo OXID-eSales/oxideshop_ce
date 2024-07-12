@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class FileCollectorTest extends \OxidTestCase
+class FileCollectorTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Category_Text class
  */
-class CategoryTextTest extends \OxidTestCase
+class CategoryTextTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

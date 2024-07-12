@@ -117,7 +117,7 @@ class PaymentHelper extends oxPayment
 /**
  * Testing oxorder class.
  */
-class OrderTest extends \OxidTestCase
+class OrderTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

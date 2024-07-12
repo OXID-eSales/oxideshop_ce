@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use OxidEsales\Eshop\Application\Model\Order;
 
-class OrderarticlelistTest extends \OxidTestCase
+class OrderarticlelistTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oOrderArticle;
 

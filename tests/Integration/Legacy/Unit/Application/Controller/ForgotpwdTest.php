@@ -17,7 +17,7 @@ use \oxTestModules;
 /**
  * Testing forgotpwd class
  */
-class ForgotpwdTest extends \OxidTestCase
+class ForgotpwdTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Actions_Order_Ajax class
  */
-class ActionsOrderAjaxTest extends \OxidTestCase
+class ActionsOrderAjaxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * ActionsOrderAjax::getQuery() test case

@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Testing oxVendorList class
  */
-class VendorListTest extends \OxidTestCase
+class VendorListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

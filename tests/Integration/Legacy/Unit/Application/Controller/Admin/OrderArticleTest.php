@@ -45,7 +45,7 @@ class OrderArticleHelper extends oxOrder
     }
 }
 
-class OrderArticleTest extends \OxidTestCase
+class OrderArticleTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

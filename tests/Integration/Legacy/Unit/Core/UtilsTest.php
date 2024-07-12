@@ -17,7 +17,7 @@ use oxTestModules;
 use oxUtils;
 use stdClass;
 
-class UtilsTest extends \OxidTestCase
+class UtilsTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
 

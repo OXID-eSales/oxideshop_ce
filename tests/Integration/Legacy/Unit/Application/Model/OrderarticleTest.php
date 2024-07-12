@@ -20,7 +20,7 @@ use \oxTestModules;
 /**
  * Class Unit_Models_oxorderarticleTest
  */
-class OrderarticleTest extends \OxidTestCase
+class OrderarticleTest extends \PHPUnit\Framework\TestCase
 {
 
     /** @var OrderArticle orderArticle */

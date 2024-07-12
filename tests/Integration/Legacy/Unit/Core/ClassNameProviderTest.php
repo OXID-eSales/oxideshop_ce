@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use OxidEsales\EshopCommunity\Core\BackwardsCompatibleClassNameProvider;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ClassNameProviderTest extends UnitTestCase
+class ClassNameProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function providerReturnsClassNameFromClassAlias()
     {

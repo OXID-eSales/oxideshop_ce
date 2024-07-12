@@ -14,7 +14,7 @@ use \oxDb;
 /**
  * Testing oxattribute class.
  */
-class AttributeTest extends \OxidTestCase
+class AttributeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

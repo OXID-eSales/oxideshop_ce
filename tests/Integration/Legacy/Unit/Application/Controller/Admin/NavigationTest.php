@@ -19,7 +19,7 @@ use stdClass;
 /**
  * Tests for Navigation class
  */
-class NavigationTest extends \OxidTestCase
+class NavigationTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

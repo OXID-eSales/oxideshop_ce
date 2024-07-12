@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use Psr\Log\LoggerInterface;
 
-class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ExceptionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider dataProviderExceptions Provides an OXID eShop style exception and a standard PHP Exception

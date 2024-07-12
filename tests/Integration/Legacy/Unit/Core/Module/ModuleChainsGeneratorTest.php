@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('module')]
-class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ModuleChainsGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

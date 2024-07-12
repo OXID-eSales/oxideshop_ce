@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Application\Model\VendorList;
 /**
  * Tests for Article_List class
  */
-class ArticleListTest extends \OxidTestCase
+class ArticleListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

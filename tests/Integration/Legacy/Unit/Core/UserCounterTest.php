@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class UserCounterTest extends \OxidTestCase
+class UserCounterTest extends \PHPUnit\Framework\TestCase
 {
     public function testCountingAdmins()
     {

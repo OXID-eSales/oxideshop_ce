@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Shop_Config class
  */
-class ThemeMainTest extends \OxidTestCase
+class ThemeMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

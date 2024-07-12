@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class NamespaceInformationProviderTest extends UnitTestCase
+class NamespaceInformationProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test getter for shop edition namespaces.

@@ -18,7 +18,7 @@ use \oxTestModules;
 /**
  * Tests for Category_Main class
  */
-class CategoryMainTest extends \OxidTestCase
+class CategoryMainTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var oxCategory

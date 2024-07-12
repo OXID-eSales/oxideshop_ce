@@ -12,7 +12,7 @@ use \oxRegistry;
 /**
  * Tests for contact class
  */
-class ExceptionErrorTest extends \OxidTestCase
+class ExceptionErrorTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

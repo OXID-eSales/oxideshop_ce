@@ -57,7 +57,7 @@ class modForTestInitLoadingPriority extends oxConfig
     }
 }
 
-class ConfigTest extends \OxidTestCase
+class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
     protected $_iCurr;

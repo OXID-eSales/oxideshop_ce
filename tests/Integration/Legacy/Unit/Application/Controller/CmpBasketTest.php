@@ -14,7 +14,7 @@ use \stdClass;
 use \oxRegistry;
 use \oxTestModules;
 
-class CmpBasketTest extends \OxidTestCase
+class CmpBasketTest extends \PHPUnit\Framework\TestCase
 {
     public function testToBasketReturnsNull()
     {

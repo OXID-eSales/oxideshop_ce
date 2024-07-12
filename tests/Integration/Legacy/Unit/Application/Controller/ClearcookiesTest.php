@@ -12,7 +12,7 @@ use \oxRegistry;
 /**
  * Tests for content class
  */
-class ClearcookiesTest extends \OxidTestCase
+class ClearcookiesTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oObj;
 

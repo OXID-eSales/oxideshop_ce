@@ -20,7 +20,7 @@ use oxRegistry;
 use oxTestModules;
 use PHPUnit\Framework\MockObject\MockObject;
 
-final class RecommlistTest extends \OxidTestCase
+final class RecommlistTest extends \PHPUnit\Framework\TestCase
 {
     private $_sArticleID;
 

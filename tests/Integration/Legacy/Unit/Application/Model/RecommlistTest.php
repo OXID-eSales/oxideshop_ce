@@ -14,7 +14,7 @@ use \oxDb;
 use oxObjectException;
 use \oxTestModules;
 
-class RecommlistTest extends \OxidTestCase
+class RecommlistTest extends \PHPUnit\Framework\TestCase
 {
     private $_sArticleID;
 

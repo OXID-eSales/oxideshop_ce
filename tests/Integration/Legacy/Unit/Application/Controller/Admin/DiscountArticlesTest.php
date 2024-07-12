@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Discount_Articles class
  */
-class DiscountArticlesTest extends \OxidTestCase
+class DiscountArticlesTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

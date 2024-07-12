@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxCompanyVatIn;
 
-class CompanyVatInTest extends \OxidTestCase
+class CompanyVatInTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstruct()
     {

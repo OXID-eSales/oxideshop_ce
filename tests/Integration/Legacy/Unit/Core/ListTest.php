@@ -21,7 +21,7 @@ class TestElement extends oxI18n
     }
 }
 
-class ListTest extends \OxidTestCase
+class ListTest extends \PHPUnit\Framework\TestCase
 {
     private $_oList;
 

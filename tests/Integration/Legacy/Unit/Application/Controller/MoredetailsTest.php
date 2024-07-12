@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Testing moredetails class
  */
-class MoredetailsTest extends \OxidTestCase
+class MoredetailsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

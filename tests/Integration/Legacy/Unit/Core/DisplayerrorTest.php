@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class DisplayerrorTest extends \OxidTestCase
+class DisplayerrorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var oxDisplayError */
     private $_oDisplayError;

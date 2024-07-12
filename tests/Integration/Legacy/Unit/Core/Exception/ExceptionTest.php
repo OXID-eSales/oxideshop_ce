@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ExceptionTest extends UnitTestCase
+class ExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstruct(): void
     {

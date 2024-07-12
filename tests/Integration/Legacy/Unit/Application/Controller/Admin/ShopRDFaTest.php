@@ -14,7 +14,7 @@ use \oxRegistry;
 /**
  * Tests for Shop_Main class
  */
-class ShopRDFaTest extends \OxidTestCase
+class ShopRDFaTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

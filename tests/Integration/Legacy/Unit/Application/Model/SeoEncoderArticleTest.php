@@ -16,7 +16,7 @@ use oxRegistry;
 use oxSeoEncoderArticle;
 use oxTestModules;
 
-class SeoEncoderArticleTest extends \OxidTestCase
+class SeoEncoderArticleTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use \Exception;
 use \oxTestModules;
 
-final class CountryListTest extends \OxidTestCase
+final class CountryListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

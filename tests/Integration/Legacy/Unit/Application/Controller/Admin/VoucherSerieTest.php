@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for VoucherSerie class
  */
-class VoucherSerieTest extends \OxidTestCase
+class VoucherSerieTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

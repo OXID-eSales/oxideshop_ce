@@ -20,7 +20,7 @@ use oxTestModules;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
-class ShopControlTest extends \OxidTestCase
+class ShopControlTest extends \PHPUnit\Framework\TestCase
 {
     use ProphecyTrait;
 

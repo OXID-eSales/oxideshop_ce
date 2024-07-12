@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
 
-class UtilsFileTest extends \OxidTestCase
+class UtilsFileTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

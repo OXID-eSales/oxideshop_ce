@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Account class
  */
-class AccountOrderTest extends \OxidTestCase
+class AccountOrderTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

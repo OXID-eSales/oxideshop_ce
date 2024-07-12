@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Shop_Config class
  */
-class ThemeConfigTest extends \OxidTestCase
+class ThemeConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Shop_Config::Render() test case

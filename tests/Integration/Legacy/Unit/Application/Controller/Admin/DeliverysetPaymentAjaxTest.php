@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Delivery_Payment_Ajax class
  */
-class DeliverysetPaymentAjaxTest extends \OxidTestCase
+class DeliverysetPaymentAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sGroupsView = 'oxv_oxgroups_de';
 

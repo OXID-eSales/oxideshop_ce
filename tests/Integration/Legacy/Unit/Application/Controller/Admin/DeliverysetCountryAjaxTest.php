@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Delivery_Groups_Ajax class
  */
-class DeliverysetCountryAjaxTest extends \OxidTestCase
+class DeliverysetCountryAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sShopId = '1';
 

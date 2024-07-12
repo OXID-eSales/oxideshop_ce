@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-class CmpCurTest extends \OxidTestCase
+class CmpCurTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

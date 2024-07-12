@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for User_List class
  */
-class UserListTest extends \OxidTestCase
+class UserListTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testInit()
@@ -106,7 +106,7 @@ class UserListTest extends \OxidTestCase
             $this->assertEquals("list was empty", $exception->getMessage(), "Error in User_List::deleteEntry()");
             return;
         }
-        
+
         $this->fail("Error in User_List::deleteEntry()");
     }
 

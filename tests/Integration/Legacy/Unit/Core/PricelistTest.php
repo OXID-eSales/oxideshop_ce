@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class PricelistTest extends \OxidTestCase
+class PricelistTest extends \PHPUnit\Framework\TestCase
 {
     public $aPrices = [];
 

@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Testing oxAdminView class
  */
-class AdminViewTest extends \OxidTestCase
+class AdminViewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -278,7 +278,7 @@ class AdminViewTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
         $oAView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->assertEquals(true, $oAView->authorize());
-        
+
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
         $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);

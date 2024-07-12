@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('module')]
-class ModuleVariablesLocatorTest extends \OxidTestCase
+class ModuleVariablesLocatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetModuleVarFromDB()
     {

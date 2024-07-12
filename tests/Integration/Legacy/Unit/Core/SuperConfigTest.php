@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
-class SuperConfigTest extends \OxidTestCase
+class SuperConfigTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetUser()
     {

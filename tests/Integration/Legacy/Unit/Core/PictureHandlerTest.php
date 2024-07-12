@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\PictureHandler;
 use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
 
-final class PictureHandlerTest extends \OxidTestCase
+final class PictureHandlerTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

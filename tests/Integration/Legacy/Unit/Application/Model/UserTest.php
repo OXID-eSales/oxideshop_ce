@@ -27,7 +27,7 @@ use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use OxidEsales\Facts\Facts;
 use oxInputException;
 use oxnewssubscribed;
@@ -35,8 +35,6 @@ use oxRegistry;
 use oxTestModules;
 use oxUser;
 use oxUtilsServer;
-
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
 /**
  * Mocks loadFromUserID and loadFromEMail in oxNewsSubscribed class.
@@ -117,7 +115,7 @@ class UserTest_oxUtilsServerHelper2 extends oxUtilsServer
     }
 }
 
-final class UserTest extends \OxidTestCase
+final class UserTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
     use FieldTestingTrait;

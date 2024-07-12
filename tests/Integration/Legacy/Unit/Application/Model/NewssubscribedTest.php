@@ -9,9 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxNewsSubscribedHelper.php';
-
-class NewssubscribedTest extends \OxidTestCase
+class NewssubscribedTest extends \PHPUnit\Framework\TestCase
 {
     private $_oNewsSub;
 

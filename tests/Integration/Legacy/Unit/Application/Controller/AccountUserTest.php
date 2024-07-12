@@ -12,7 +12,7 @@ use \oxField;
 /**
  * Tests for Account class
  */
-class AccountUserTest extends \OxidTestCase
+class AccountUserTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

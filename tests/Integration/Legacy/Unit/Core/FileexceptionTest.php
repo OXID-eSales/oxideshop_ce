@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class FileexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class FileexceptionTest extends \PHPUnit\Framework\TestCase
 {
     private $testObject;
 

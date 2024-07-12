@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa;
 use OxidEsales\Eshop\Application\Model\Payment;
 use stdClass;
 
-final class PaymentRDFaTest extends \OxidTestCase
+final class PaymentRDFaTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

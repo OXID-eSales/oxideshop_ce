@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Delivery_Main class
  */
-class DeliveryMainTest extends \OxidTestCase
+class DeliveryMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Tools_Main class
  */
-class ToolsMainTest extends \OxidTestCase
+class ToolsMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
 
-class UserbasketTest extends \OxidTestCase
+class UserbasketTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

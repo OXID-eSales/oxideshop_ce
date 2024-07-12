@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Adminlinks_Main class
  */
-class AdminLinksMainTest extends \OxidTestCase
+class AdminLinksMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

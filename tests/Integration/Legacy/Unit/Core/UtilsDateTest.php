@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsDate;
 use stdclass;
 
-class UtilsDateTest extends \OxidTestCase
+class UtilsDateTest extends \PHPUnit\Framework\TestCase
 {
     public function testFormatDBDate()
     {

@@ -13,7 +13,7 @@ use \oxRegistry;
 /**
  * Tests for VoucherSerie_Export class
  */
-class VoucherSerieExportTest extends \OxidTestCase
+class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

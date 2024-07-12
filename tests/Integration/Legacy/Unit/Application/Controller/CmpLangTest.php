@@ -16,7 +16,7 @@ use \oxTestModules;
  * Language component test
  */
 
-class CmpLangTest extends \OxidTestCase
+class CmpLangTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

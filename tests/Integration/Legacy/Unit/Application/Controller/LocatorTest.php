@@ -42,7 +42,7 @@ class testOxLocator extends oxLocator
     }
 }
 
-class LocatorTest extends \OxidTestCase
+class LocatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Make a copy of The Barrel for testing

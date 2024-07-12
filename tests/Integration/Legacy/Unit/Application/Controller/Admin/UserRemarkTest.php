@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Testing User_Remark class
  */
-class UserRemarkTest extends \OxidTestCase
+class UserRemarkTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

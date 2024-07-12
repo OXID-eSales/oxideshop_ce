@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 /**
  * Tests for Discount_Users_Ajax class
  */
-class DiscountUsersAjaxTest extends \OxidTestCase
+class DiscountUsersAjaxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

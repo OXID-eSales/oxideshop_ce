@@ -31,7 +31,7 @@ class mod_oxpaymentgateway extends oxpaymentgateway
     }
 }
 
-class PaymentGatewayTest extends \OxidTestCase
+class PaymentGatewayTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use OxidEsales\Eshop\Core\Field;
 
-class OrderfilelistTest extends \OxidTestCase
+class OrderfilelistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

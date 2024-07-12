@@ -17,7 +17,7 @@ use \oxTestModules;
 /**
  * Testing user class
  */
-class UserTest extends \OxidTestCase
+class UserTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oUser = [];
 

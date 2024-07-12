@@ -14,7 +14,7 @@ use \oxRegistry;
 /**
  * Testing oxvoucherserie class
  */
-class VoucherlistTest extends \OxidTestCase
+class VoucherlistTest extends \PHPUnit\Framework\TestCase
 {
     public const MAX_LOOP_AMOUNT = 4;
 

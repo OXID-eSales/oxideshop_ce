@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Object_Seo class
  */
-class ObjectSeoTest extends \OxidTestCase
+class ObjectSeoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

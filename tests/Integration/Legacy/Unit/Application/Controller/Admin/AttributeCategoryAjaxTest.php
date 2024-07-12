@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Attribute_Category_Ajax class
  */
-class AttributeCategoryAjaxTest extends \OxidTestCase
+class AttributeCategoryAjaxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

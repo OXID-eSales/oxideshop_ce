@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\Category;
 /**
  * Tests for Category_Pictures class
  */
-class CategoryPicturesTest extends \OxidTestCase
+class CategoryPicturesTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

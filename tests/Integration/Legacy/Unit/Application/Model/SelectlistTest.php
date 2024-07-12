@@ -9,10 +9,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxDb;
 use oxField;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use stdclass;
 
-class SelectlistTest extends \OxidTestCase
+class SelectlistTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

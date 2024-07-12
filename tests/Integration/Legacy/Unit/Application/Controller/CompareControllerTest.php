@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Tests for compare class
  */
-class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class CompareControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

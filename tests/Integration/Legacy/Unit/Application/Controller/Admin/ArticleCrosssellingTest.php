@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Article_Crossselling class
  */
-class ArticleCrosssellingTest extends \OxidTestCase
+class ArticleCrosssellingTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

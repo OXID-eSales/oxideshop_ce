@@ -16,13 +16,11 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxUtils;
 use stdClass;
-
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxBaseHelper.php';
 
 class _oxBase extends oxBase
 {
@@ -187,7 +185,7 @@ class oxUtilsNoCaching extends oxUtils
     }
 }
 
-class BaseTest extends \OxidTestCase
+class BaseTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
     use ContainerTrait;

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class ShopViewValidatorTest extends \OxidTestCase
+class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

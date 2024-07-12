@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for Tools class
  */
-class ToolsTest extends \OxidTestCase
+class ToolsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

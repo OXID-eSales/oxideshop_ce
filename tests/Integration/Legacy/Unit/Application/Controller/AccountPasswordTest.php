@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Account class
  */
-class AccountPasswordTest extends \OxidTestCase
+class AccountPasswordTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

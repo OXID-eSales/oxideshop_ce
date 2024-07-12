@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\OrderArticleList;
 /**
  * Tests for User_Article class
  */
-class UserArticleTest extends \OxidTestCase
+class UserArticleTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

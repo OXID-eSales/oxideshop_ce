@@ -28,7 +28,7 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Testing JavaScriptRegistrator class
  */
-class JavaScriptRegistratorTest extends \OxidTestCase
+class JavaScriptRegistratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider addFileProvider

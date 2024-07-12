@@ -25,7 +25,7 @@ class modOxDeliverySetList_paymentList extends oxPaymentList
     }
 }
 
-class DeliverysetListTest extends \OxidTestCase
+class DeliverysetListTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

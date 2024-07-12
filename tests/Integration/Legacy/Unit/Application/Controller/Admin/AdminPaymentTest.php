@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Admin_Payment class
  */
-class AdminPaymentTest extends \OxidTestCase
+class AdminPaymentTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

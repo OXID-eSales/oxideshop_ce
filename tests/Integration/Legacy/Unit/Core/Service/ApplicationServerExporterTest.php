@@ -13,7 +13,7 @@ use \OxidEsales\Eshop\Core\DatabaseProvider;
 /**
  * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
  */
-class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ApplicationServerExporterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @param array $activeServers            An array of application servers.

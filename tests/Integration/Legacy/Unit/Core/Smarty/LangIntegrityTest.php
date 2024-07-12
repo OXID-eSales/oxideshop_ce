@@ -27,7 +27,7 @@ use \RecursiveDirectoryIterator;
  * - make sure all templates have translations
  * - find unused translations. Too long, not to be used for automatic testing.
  */
-class LangIntegrityTest extends \OxidTestCase
+class LangIntegrityTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
     /**

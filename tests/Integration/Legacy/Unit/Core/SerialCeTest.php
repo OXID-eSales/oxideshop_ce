@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * License key managing class.
  */
-class SerialCeTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class SerialCeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * This test makes sure \OxidEsales\Eshop\Core\Serial class does not exist in CE edition

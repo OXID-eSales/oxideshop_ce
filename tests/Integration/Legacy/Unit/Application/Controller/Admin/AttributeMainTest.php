@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Attribute_Main class
  */
-class AttributeMainTest extends \OxidTestCase
+class AttributeMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

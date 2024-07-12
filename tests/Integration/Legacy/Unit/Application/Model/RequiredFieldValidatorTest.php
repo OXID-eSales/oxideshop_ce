@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 /**
  * Testing oxRequiredFieldValidator class.
  */
-class RequiredFieldValidatorTest extends \OxidTestCase
+class RequiredFieldValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function providerValidateFieldValue()
     {

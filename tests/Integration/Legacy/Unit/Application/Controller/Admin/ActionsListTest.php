@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Actions_List class
  */
-class ActionsListTest extends \OxidTestCase
+class ActionsListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

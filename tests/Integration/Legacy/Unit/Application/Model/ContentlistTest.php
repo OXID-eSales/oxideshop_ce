@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 
-class ContentlistTest extends \OxidTestCase
+class ContentlistTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oContent;
 

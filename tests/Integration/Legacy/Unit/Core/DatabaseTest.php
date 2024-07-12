@@ -24,7 +24,7 @@ use ReflectionClass;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('database-adapter')]
-class DatabaseTest extends UnitTestCase
+class DatabaseTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Clean-up oxarticles table + parent::tearDown()

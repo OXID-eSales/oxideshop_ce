@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxVariantSelectList;
 
-class VariantselectlistTest extends \OxidTestCase
+class VariantselectlistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

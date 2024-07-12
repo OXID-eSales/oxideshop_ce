@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 /**
  * Testing oxRequiredFieldsValidator class.
  */
-class RequiredAddressFieldsTest extends \OxidTestCase
+class RequiredAddressFieldsTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetRequiredFieldsWhenNoFieldsAreSetInConfig()
     {

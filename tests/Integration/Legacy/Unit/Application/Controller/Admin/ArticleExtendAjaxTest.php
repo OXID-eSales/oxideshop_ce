@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Article_Extend_Ajax class
  */
-class ArticleExtendAjaxTest extends \OxidTestCase
+class ArticleExtendAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sCategoriesView = 'oxv_oxcategories_1_de';
 

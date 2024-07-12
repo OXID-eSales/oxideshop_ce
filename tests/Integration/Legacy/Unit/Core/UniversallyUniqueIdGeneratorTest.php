@@ -12,7 +12,7 @@ use \oxUniversallyUniqueIdGenerator;
 /**
  * Class Unit_Core_oxServersClusterIdGeneratorTest
  */
-class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
+class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testUUIDUniqueness()
     {

@@ -53,7 +53,7 @@ class _DynExportBase extends DynExportBase
 /**
  * Tests for DynExportBase class
  */
-class DynExportBaseTest extends \OxidTestCase
+class DynExportBaseTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

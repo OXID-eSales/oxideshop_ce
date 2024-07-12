@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxTestModules;
 
-class MaintenanceTest extends \OxidTestCase
+class MaintenanceTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

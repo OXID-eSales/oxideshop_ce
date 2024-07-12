@@ -71,7 +71,7 @@ class oxdeliverylistTest_forGetList extends oxdeliverylist
     }
 }
 
-class DeliverylistTest extends \OxidTestCase
+class DeliverylistTest extends \PHPUnit\Framework\TestCase
 {
     /** @var oxUser */
     protected $_oUser;

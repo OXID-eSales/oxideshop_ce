@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax;
 /**
  * Tests for Actions_Order_Ajax class
  */
-class ArticleAccessoriesAjaxTest extends \OxidTestCase
+class ArticleAccessoriesAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
    /**

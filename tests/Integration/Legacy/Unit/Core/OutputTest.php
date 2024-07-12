@@ -38,7 +38,7 @@ class oxConfigForUnit_oxoutputTest extends oxconfig
     }
 }
 
-class OutputTest extends \OxidTestCase
+class OutputTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing output processor

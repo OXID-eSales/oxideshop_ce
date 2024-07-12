@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxPasswordHasher;
 
-class PasswordHasherTest extends \OxidTestCase
+class PasswordHasherTest extends \PHPUnit\Framework\TestCase
 {
     public function testHash()
     {

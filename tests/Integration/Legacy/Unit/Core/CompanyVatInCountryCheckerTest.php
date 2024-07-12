@@ -11,7 +11,7 @@ use \oxCompanyVatIn;
 use oxCompanyVatInCountryChecker;
 use \oxField;
 
-class CompanyVatInCountryCheckerTest extends \OxidTestCase
+class CompanyVatInCountryCheckerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetCountry_set()
     {

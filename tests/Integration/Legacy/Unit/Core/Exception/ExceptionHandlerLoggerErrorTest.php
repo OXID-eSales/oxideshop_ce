@@ -31,7 +31,7 @@ use Symfony\Component\Filesystem\Path;
  * even if the DI container can't be used to fetch the logger.
  *
  */
-final class ExceptionHandlerLoggerErrorTest extends UnitTestCase
+final class ExceptionHandlerLoggerErrorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var string */
     private $logFileName;

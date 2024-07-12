@@ -20,8 +20,6 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxBasketHelper.php';
-
 class UtilsServerHelper extends oxUtilsServer
 {
     /**
@@ -149,7 +147,7 @@ class testSession extends oxSession
     }
 }
 
-class SessionTest extends \OxidTestCase
+class SessionTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

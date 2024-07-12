@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Shop class
  */
-class ThemeTest extends \OxidTestCase
+class ThemeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

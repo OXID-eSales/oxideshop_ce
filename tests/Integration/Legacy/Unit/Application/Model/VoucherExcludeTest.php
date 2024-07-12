@@ -14,7 +14,7 @@ use oxVoucherException;
 /**
  * Testing oxVoucher class
  */
-class VoucherExcludeTest extends \OxidTestCase
+class VoucherExcludeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

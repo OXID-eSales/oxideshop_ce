@@ -21,7 +21,7 @@ class oxVariantHandlerForOxvarianthandlerTest extends oxVariantHandler
     }
 }
 
-class VarianthandlerTest extends \OxidTestCase
+class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

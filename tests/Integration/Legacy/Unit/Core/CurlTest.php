@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class CurlTest extends \OxidTestCase
+class CurlTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

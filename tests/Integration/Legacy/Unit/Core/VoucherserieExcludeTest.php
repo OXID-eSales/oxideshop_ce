@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 /**
  * Testing myvoucherserie class
  */
-class VoucherserieExcludeTest extends \OxidTestCase
+class VoucherserieExcludeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

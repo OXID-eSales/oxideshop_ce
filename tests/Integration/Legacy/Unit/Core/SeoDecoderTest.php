@@ -14,7 +14,7 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-class SeoDecoderTest extends \OxidTestCase
+class SeoDecoderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

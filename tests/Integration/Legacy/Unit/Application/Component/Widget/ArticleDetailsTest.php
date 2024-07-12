@@ -19,7 +19,7 @@ use \oxTestModules;
 /**
  * Tests for oxwArticleBox class
  */
-class ArticleDetailsTest extends \OxidTestCase
+class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test get active zoom picture.

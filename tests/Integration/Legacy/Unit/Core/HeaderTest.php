@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * Tests for oxHeader class
  */
-class HeaderTest extends \OxidTestCase
+class HeaderTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

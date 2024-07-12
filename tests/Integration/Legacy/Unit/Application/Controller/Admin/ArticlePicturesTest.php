@@ -19,7 +19,7 @@ use \oxTestModules;
 /**
  * Tests for Article_Pictures class
  */
-class ArticlePicturesTest extends \OxidTestCase
+class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

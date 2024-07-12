@@ -15,7 +15,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  *  - IBAN Registry (all IBAN lengths by country)
  *  - BIC (Bank International Code)
  */
-class SepaBICValidatorTest extends \OxidTestCase
+class SepaBICValidatorTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for User_Address class
  */
-class UserAddressTest extends \OxidTestCase
+class UserAddressTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

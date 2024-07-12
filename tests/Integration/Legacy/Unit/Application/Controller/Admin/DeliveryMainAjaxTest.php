@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Delivery_Groups_Ajax class
  */
-class DeliveryMainAjaxTest extends \OxidTestCase
+class DeliveryMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sCountryView = 'oxv_oxcountry_de';
 

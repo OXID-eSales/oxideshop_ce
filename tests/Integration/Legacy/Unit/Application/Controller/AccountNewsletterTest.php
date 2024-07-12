@@ -13,7 +13,7 @@ use \oxRegistry;
 /**
  * Tests for Account class
  */
-class AccountNewsletterTest extends \OxidTestCase
+class AccountNewsletterTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

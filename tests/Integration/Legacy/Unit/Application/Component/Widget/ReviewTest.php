@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwReview class
  */
-class ReviewTest extends \OxidTestCase
+class ReviewTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing oxwReview::getReviewType()

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwLanguageList class
  */
-class LanguageListTest extends \OxidTestCase
+class LanguageListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

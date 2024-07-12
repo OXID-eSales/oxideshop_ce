@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class SelectionTest extends \OxidTestCase
+class SelectionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing constructor and setters

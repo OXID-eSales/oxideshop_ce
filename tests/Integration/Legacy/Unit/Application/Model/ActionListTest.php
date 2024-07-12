@@ -17,7 +17,7 @@ use \oxActionList;
 /**
  * Tests for Actions_List class
  */
-class ActionListTest extends \OxidTestCase
+class ActionListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

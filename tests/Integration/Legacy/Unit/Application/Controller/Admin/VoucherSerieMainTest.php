@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for VoucherSerie_Main class
  */
-class VoucherSerieMainTest extends \OxidTestCase
+class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

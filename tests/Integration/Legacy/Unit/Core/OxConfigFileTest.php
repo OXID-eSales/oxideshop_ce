@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxConfigFile;
 
-class OxConfigFileTest extends \OxidTestCase
+class OxConfigFileTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

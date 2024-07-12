@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 /**
  * Tests for Shop_License class
  */
-class ShopLicenseTest extends \OxidTestCase
+class ShopLicenseTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Sets malladmin parameter

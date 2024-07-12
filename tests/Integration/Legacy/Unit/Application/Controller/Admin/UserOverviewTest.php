@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\User;
 /**
  * Tests for User_Overview class
  */
-class UserOverviewTest extends \OxidTestCase
+class UserOverviewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

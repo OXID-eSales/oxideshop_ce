@@ -13,7 +13,7 @@ use oxRegistry;
 use oxTestModules;
 use oxuser;
 
-class VatSelectorTest extends \OxidTestCase
+class VatSelectorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var oxArticle */
     private $oArticle;

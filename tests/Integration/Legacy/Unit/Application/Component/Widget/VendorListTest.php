@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\VendorList;
 /**
  * Tests for oxwVendorList class
  */
-class VendorListTest extends \OxidTestCase
+class VendorListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

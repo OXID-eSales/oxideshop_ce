@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * Testing oxArticleException class.
  */
-class ArticleExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ArticleExceptionTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

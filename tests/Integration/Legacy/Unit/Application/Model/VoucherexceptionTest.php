@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class VoucherexceptionTest extends \OxidTestCase
+class VoucherexceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetVoucherNr()
     {

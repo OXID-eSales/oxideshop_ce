@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Article_Stock class
  */
-class ArticleStockTest extends \OxidTestCase
+class ArticleStockTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

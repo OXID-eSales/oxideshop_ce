@@ -11,7 +11,7 @@ use oxDb;
 use oxField;
 use oxRegistry;
 
-class ReviewTest extends \OxidTestCase
+class ReviewTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oReview;
 

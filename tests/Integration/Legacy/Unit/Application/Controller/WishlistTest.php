@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use \oxRegistry;
 
-class WishlistTest extends \OxidTestCase
+class WishlistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

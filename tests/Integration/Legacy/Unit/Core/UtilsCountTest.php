@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use \oxRegistry;
 
-class UtilsCountTest extends \OxidTestCase
+class UtilsCountTest extends \PHPUnit\Framework\TestCase
 {
     /** @var array */
     private $categories = [];

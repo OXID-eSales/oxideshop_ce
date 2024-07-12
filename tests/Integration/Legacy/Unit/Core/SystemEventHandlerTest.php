@@ -12,7 +12,7 @@ use DateTime;
 /**
  * @covers \OxidEsales\Eshop\Core\SystemEventHandler
  */
-class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class SystemEventHandlerTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

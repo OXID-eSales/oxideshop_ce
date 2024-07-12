@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \DOMDocument;
 
-class UtilsXmlTest extends \OxidTestCase
+class UtilsXmlTest extends \PHPUnit\Framework\TestCase
 {
     public function xmlProviderNoDomDocument()
     {

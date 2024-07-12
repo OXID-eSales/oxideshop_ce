@@ -15,7 +15,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-final class DiscountItemAjaxTest extends UnitTestCase
+final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetQuery(): void
     {

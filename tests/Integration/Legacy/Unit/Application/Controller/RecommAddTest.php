@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 
-class RecommAddTest extends \OxidTestCase
+class RecommAddTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

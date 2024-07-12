@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for VoucherSerie_List class
  */
-class VoucherSerieListTest extends \OxidTestCase
+class VoucherSerieListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

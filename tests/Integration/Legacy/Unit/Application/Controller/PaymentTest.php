@@ -28,7 +28,7 @@ class PaymentHelper2 extends oxPayment
 }
 
 
-class PaymentTest extends \OxidTestCase
+class PaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

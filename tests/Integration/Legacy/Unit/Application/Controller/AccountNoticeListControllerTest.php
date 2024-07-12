@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * Tests for Account class
  * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController
  */
-class AccountNoticeListControllerTest extends \OxidTestCase
+class AccountNoticeListControllerTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

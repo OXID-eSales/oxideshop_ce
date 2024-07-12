@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for PriceAlarm_Main class
  */
-class PriceAlarmMainTest extends \OxidTestCase
+class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

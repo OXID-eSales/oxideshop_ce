@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for Delivery_Users class
  */
-class DeliveryUsersTest extends \OxidTestCase
+class DeliveryUsersTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Shop_List class
  */
-class ShopListTest extends \OxidTestCase
+class ShopListTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Shop_List::Init() test case

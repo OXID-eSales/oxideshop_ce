@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Language class
  */
-class LanguageTest extends \OxidTestCase
+class LanguageTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

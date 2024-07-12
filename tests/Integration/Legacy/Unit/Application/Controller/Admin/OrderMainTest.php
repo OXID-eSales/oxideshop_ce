@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for Order_Main class
  */
-class OrderMainTest extends \OxidTestCase
+class OrderMainTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * tear down the test.

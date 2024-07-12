@@ -37,7 +37,7 @@ class TypeHintTestOrder extends \OxidEsales\Eshop\Application\Model\Order
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload
  */
-class TypeHintTest extends UnitTestCase
+class TypeHintTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Executed after test is down.

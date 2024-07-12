@@ -19,7 +19,7 @@ use \OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
  *
  * @covers oxOnlineCaller
  */
-class OnlineCallerTest extends \OxidTestCase
+class OnlineCallerTest extends \PHPUnit\Framework\TestCase
 {
     public const SUT = 'oxOnlineCaller';
 

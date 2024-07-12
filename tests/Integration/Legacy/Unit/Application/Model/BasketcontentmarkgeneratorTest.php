@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxBasketContentMarkGenerator;
 
-class BasketcontentmarkgeneratorTest extends \OxidTestCase
+class BasketcontentmarkgeneratorTest extends \PHPUnit\Framework\TestCase
 {
     public function providerGetExplanationMarks()
     {

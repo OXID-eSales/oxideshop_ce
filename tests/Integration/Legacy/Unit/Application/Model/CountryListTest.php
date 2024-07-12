@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use oxField;
 use OxidEsales\EshopEnterprise\Application\Model\Country;
 
-class CountryListTest extends \OxidTestCase
+class CountryListTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

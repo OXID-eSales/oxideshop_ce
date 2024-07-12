@@ -12,7 +12,7 @@ use \oxRegistry;
 /**
  * Testing links class
  */
-class LinksTest extends \OxidTestCase
+class LinksTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

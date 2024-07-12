@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-class ThemeListTest extends \OxidTestCase
+class ThemeListTest extends \PHPUnit\Framework\TestCase
 {
     public function testRender()
     {

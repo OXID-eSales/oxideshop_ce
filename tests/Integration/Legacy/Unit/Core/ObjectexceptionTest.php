@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class ObjectexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ObjectexceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetObject()
     {

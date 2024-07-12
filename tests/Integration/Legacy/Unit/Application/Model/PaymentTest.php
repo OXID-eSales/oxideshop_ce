@@ -21,7 +21,7 @@ class testPayment extends oxPayment
     }
 }
 
-class PaymentTest extends \OxidTestCase
+class PaymentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

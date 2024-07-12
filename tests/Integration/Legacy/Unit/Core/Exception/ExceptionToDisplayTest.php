@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 use \oxRegistry;
 use \oxTestModules;
 
-class ExceptionToDisplayTest extends \OxidTestCase
+class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetStackTrace()
     {

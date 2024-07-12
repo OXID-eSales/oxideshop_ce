@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for DeliverySet class
  */
-class DeliverySetTest extends \OxidTestCase
+class DeliverySetTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

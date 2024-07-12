@@ -13,7 +13,7 @@ use \stdClass;
 /**
  * Tests for PriceAlarm_List class
  */
-class PriceAlarmListTest extends \OxidTestCase
+class PriceAlarmListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -11,7 +11,7 @@ use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Facts\Facts;
 use \stdClass;
 
-class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
 {
     public function testRequestFormation()
     {

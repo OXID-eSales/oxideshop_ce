@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 use \oxRegistry;
 use \oxTestModules;
 
-class SearchTest extends \OxidTestCase
+class SearchTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsEmptySearch()
     {

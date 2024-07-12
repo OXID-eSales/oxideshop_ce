@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Model;
 use OxidEsales\Eshop\Core\Model\FieldNameHelper;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class FullFieldNameConstructorTest extends UnitTestCase
+class FullFieldNameConstructorTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetFullName()
     {

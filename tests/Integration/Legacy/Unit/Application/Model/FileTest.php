@@ -12,7 +12,7 @@ use \oxDb;
 use OxidEsales\EshopCommunity\Core\Field;
 use \oxTestModules;
 
-class FileTest extends \OxidTestCase
+class FileTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

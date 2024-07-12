@@ -13,7 +13,7 @@ use \oxField;
 /**
  * Testing oxshoplist class
  */
-class ListobjectTest extends \OxidTestCase
+class ListobjectTest extends \PHPUnit\Framework\TestCase
 {
 
 

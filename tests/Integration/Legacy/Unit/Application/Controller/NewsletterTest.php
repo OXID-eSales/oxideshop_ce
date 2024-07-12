@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Testing newsletter class.
  */
-class NewsletterTest extends \OxidTestCase
+class NewsletterTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

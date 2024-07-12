@@ -25,12 +25,10 @@ if (!function_exists('getSeoProcType')) {
     }
 }
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxUBaseHelper.php';
-
 /**
  * Testing oxUBase class
  */
-class UBaseTest extends \OxidTestCase
+class UBaseTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sRequestMethod;
 

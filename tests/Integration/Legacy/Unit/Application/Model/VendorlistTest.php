@@ -12,9 +12,7 @@ use \oxRegistry;
 use \oxTestModules;
 use oxUtilsHelper;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
-
-class VendorlistTest extends \OxidTestCase
+class VendorlistTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

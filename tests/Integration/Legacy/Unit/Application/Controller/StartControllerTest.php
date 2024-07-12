@@ -14,7 +14,7 @@ use oxTestModules;
 /**
  * Testing start class
  */
-class StartControllerTest extends \OxidTestCase
+class StartControllerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetTitleSuffix()
     {

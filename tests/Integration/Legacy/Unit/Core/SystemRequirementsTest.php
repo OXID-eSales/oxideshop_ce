@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\SystemRequirements;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 
-final class SystemRequirementsTest extends UnitTestCase
+final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetBytes()
     {

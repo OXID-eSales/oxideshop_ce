@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use \oxRegistry;
 
-class RatingTest extends \OxidTestCase
+class RatingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

@@ -11,7 +11,7 @@ use \stdClass;
 use \oxCompanyVatIn;
 use \oxTestModules;
 
-class OnlineVatIdCheckTest extends \OxidTestCase
+class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

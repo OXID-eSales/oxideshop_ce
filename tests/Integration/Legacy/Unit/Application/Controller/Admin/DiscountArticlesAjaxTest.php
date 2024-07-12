@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 /**
  * Tests for Discount_Article_Ajax class
  */
-class DiscountArticlesAjaxTest extends \OxidTestCase
+class DiscountArticlesAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

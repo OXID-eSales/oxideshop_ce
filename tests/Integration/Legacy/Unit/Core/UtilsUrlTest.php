@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use \oxRegistry;
 use \oxTestModules;
 
-class UtilsUrlTest extends \OxidTestCase
+class UtilsUrlTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * oxUtilsUrl::prepareCanonicalUrl() test case

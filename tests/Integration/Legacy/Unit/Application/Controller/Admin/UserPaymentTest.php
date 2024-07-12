@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Testing User_Payment class
  */
-class UserPaymentTest extends \OxidTestCase
+class UserPaymentTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

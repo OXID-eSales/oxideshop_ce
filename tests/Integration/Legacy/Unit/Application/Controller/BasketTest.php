@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for basket class
  */
-class BasketTest extends \OxidTestCase
+class BasketTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

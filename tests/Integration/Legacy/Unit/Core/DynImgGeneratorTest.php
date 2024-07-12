@@ -11,7 +11,7 @@ use oxDynImgGenerator;
 use OxidEsales\EshopCommunity\Core\DynamicImageGenerator;
 use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
-final class DynImgGeneratorTest extends \OxidTestCase
+final class DynImgGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetInstance(): void
     {

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for GenExport_Main class
  */
-class GenExportMainTest extends \OxidTestCase
+class GenExportMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

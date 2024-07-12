@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Application\Model\Category;
 /**
  * Tests for oxwArticleBox class
  */
-class ArticleBoxTest extends \OxidTestCase
+class ArticleBoxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Template view parameters data provider

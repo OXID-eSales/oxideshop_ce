@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for Category_Seo class
  */
-class CategorySeoTest extends \OxidTestCase
+class CategorySeoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class StateTest extends \OxidTestCase
+class StateTest extends \PHPUnit\Framework\TestCase
 {
     public function testInit()
     {

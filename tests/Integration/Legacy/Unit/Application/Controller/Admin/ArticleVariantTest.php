@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Article_Variant class
  */
-class ArticleVariantTest extends \OxidTestCase
+class ArticleVariantTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Article_Variant::render() test case

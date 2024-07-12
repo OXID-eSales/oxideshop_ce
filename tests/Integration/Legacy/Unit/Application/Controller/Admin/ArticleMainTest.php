@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Application\Model\VendorList;
 /**
  * Tests for Article_Main class
  */
-class ArticleMainTest extends \OxidTestCase
+class ArticleMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

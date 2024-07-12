@@ -12,7 +12,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 /**
  * Tests for oxwCategoryTree class
  */
-class CategoryTreeTest extends UnitTestCase
+class CategoryTreeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::getDeepLevel()

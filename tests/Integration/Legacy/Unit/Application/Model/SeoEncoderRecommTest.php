@@ -18,7 +18,7 @@ use oxRegistry;
 use oxTestModules;
 
 
-final class SeoEncoderRecommTest extends \OxidTestCase
+final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

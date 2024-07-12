@@ -18,7 +18,7 @@ use \oxTestModules;
 /**
  * Testing oxmanufacturer class
  */
-class ManufacturerTest extends \OxidTestCase
+class ManufacturerTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

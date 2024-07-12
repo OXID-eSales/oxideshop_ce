@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxOnlineModuleVersionNotifier;
 
-class OnlineModuleVersionNotifierTest extends \OxidTestCase
+class OnlineModuleVersionNotifierTest extends \PHPUnit\Framework\TestCase
 {
     public function testVersionNotifyWithModulesInShop()
     {

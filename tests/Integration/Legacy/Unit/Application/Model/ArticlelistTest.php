@@ -14,11 +14,11 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\CoreCommunity\DatabaseProvider;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use oxRegistry;
 use oxTestModules;
 
-final class ArticlelistTest extends \OxidTestCase
+final class ArticlelistTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
     /**

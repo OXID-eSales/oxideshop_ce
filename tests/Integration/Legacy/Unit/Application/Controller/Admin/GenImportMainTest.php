@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for GenImport_Main class
  */
-class GenImportMainTest extends \OxidTestCase
+class GenImportMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

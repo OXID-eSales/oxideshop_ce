@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class oxNoJsValidatorTest extends \OxidTestCase
+class oxNoJsValidatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return array

@@ -28,7 +28,7 @@ class testOxWrapping extends oxWrapping
 /**
  * Testing oxwrapping class
  */
-class RappingTest extends \OxidTestCase
+class RappingTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sCardOxid;
 

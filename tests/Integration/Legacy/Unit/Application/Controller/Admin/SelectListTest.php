@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for SelectList class
  */
-class SelectListTest extends \OxidTestCase
+class SelectListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

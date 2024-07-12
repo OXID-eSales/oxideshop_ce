@@ -23,7 +23,7 @@ use \oxTestModules;
 /**
  * Testing details class
  */
-class DetailsTest extends \OxidTestCase
+class DetailsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

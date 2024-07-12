@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * Class Unit_Core_oxEncryptorTest
  */
-class EncryptorTest extends \OxidTestCase
+class EncryptorTest extends \PHPUnit\Framework\TestCase
 {
     public function providerEncodingAndDecoding()
     {

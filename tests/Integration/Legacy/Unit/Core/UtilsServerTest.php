@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxRegistry;
 
-class UtilsServerTest extends \OxidTestCase
+class UtilsServerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

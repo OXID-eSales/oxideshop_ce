@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class Sha512HasherTest extends \OxidTestCase
+class Sha512HasherTest extends \PHPUnit\Framework\TestCase
 {
     public function testEncrypt()
     {

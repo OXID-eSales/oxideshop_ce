@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit;
 
 use OxidEsales\Eshop\Core\Str;
 

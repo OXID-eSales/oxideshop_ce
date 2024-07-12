@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use oxRegistry;
 
-class UtilsViewTest extends \OxidTestCase
+class UtilsViewTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
 

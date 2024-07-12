@@ -31,7 +31,7 @@ class modSeoEncoder extends oxSeoEncoder
     }
 }
 
-class SeoEncoderTest extends \OxidTestCase
+class SeoEncoderTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {
@@ -152,7 +152,7 @@ class SeoEncoderTest extends \OxidTestCase
         $this->assertEquals("http/www+oxideshop+com/", $oEncoder->prepareUri("http://www!oxideshop~com"));
     }
 
-    
+
     public function testPrepareUriNonRec()
     {
         $oEncoder = oxNew('oxSeoEncoder');

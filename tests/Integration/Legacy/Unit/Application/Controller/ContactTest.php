@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for contact class
  */
-class ContactTest extends \OxidTestCase
+class ContactTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

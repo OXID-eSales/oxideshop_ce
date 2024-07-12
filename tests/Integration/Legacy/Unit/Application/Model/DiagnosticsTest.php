@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxDb;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
-class DiagnosticsTest extends \OxidTestCase
+class DiagnosticsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

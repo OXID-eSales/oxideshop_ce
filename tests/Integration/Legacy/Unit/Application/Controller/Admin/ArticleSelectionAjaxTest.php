@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Article_Rights_Visible_Ajax class
  */
-class ArticleSelectionAjaxTest extends \OxidTestCase
+class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

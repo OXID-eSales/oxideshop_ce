@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 /**
  * Tests for Discount_Main_Ajax class
  */
-class DiscountMainAjaxTest extends \OxidTestCase
+class DiscountMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

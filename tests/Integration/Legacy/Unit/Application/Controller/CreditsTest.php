@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\Content;
 /**
  * Tests for content class
  */
-class CreditsTest extends \OxidTestCase
+class CreditsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

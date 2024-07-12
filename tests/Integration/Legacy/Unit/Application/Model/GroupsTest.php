@@ -14,7 +14,7 @@ use \oxRegistry;
 /**
  * Testing oxgroups class
  */
-class GroupsTest extends \OxidTestCase
+class GroupsTest extends \PHPUnit\Framework\TestCase
 {
     protected $_aAdd = ['oxobject2delivery' => ['oxobjectid', ''], 'oxobject2discount' => ['oxobjectid', ''], 'oxobject2group'    => ['oxgroupsid', ''], 'oxobject2payment'  => ['oxobjectid', '']];
 

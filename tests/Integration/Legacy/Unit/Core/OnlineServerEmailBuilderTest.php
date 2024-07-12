@@ -13,7 +13,7 @@ use \oxRegistry;
 /**
  * Class Unit_Core_OnlineServerEmailBuilderTest
  */
-class OnlineServerEmailBuilderTest extends \OxidTestCase
+class OnlineServerEmailBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testBuildIfParametersWereSetCorrectly()
     {

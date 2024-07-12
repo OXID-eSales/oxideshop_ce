@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 /**
  * Testing oxshoplist class
  */
-class ShoplistTest extends \OxidTestCase
+class ShoplistTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * All shop list test

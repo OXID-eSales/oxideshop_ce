@@ -11,7 +11,7 @@ use \oxField;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 
-class PaymentlistTest extends \OxidTestCase
+class PaymentlistTest extends \PHPUnit\Framework\TestCase
 {
     protected $_aPayList = [];
 

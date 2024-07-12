@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 
-class CountryTest extends \OxidTestCase
+class CountryTest extends \PHPUnit\Framework\TestCase
 {
     public $oObj;
 

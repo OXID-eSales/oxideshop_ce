@@ -15,7 +15,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  * Test class for DatabaseException
  */
 #[\PHPUnit\Framework\Attributes\Group('database-adapter')]
-class DatabaseExceptionTest extends UnitTestCase
+class DatabaseExceptionTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

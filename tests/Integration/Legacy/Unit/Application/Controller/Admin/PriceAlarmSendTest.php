@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for PriceAlarm_Send class
  */
-class PriceAlarmSendTest extends \OxidTestCase
+class PriceAlarmSendTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

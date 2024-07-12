@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use OxidEsales\EshopCommunity\Core\Request;
 use stdClass;
 
-class RequestTest extends \OxidTestCase
+class RequestTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetRequestEscapedParameter()
     {

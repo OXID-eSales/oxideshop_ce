@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use \oxRegistry;
 
-class OrderFileTest extends \OxidTestCase
+class OrderFileTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

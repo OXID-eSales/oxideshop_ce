@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for sysreq class
  */
-class SysteminfoTest extends \OxidTestCase
+class SysteminfoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

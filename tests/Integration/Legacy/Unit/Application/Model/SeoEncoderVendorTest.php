@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Testing oxseoencodervendor class
  */
-class SeoEncoderVendorTest extends \OxidTestCase
+class SeoEncoderVendorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

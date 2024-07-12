@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Wrapping_List class
  */
-class WrappingListTest extends \OxidTestCase
+class WrappingListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

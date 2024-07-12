@@ -18,7 +18,7 @@ use oxRegistry;
 use oxTestModules;
 use stdClass;
 
-class LangTest extends \OxidTestCase
+class LangTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
 

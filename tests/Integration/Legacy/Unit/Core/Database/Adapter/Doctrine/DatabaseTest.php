@@ -14,7 +14,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  * Unit tests for our database abstraction layer object.
  */
 #[\PHPUnit\Framework\Attributes\Group('database-adapter')]
-class DatabaseTest extends UnitTestCase
+class DatabaseTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

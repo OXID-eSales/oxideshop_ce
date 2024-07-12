@@ -13,7 +13,7 @@ use \oxDb;
 /**
  * Tests for Content_Seo class
  */
-class ContentSeoTest extends \OxidTestCase
+class ContentSeoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

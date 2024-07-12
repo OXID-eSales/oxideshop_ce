@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxTestModules;
 
-class RegisterTest extends \OxidTestCase
+class RegisterTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

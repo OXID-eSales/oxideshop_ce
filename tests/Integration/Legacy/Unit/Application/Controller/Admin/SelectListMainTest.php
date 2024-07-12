@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for SelectList_Main class
  */
-class SelectListMainTest extends \OxidTestCase
+class SelectListMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

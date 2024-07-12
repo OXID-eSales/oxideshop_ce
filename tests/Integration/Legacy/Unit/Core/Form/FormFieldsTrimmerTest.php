@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Form
  */
-class FormFieldsTrimmerTest extends UnitTestCase
+class FormFieldsTrimmerTest extends \PHPUnit\Framework\TestCase
 {
     public function testTrimming()
     {

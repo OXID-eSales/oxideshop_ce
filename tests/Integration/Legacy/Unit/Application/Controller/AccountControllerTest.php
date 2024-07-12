@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Tests for Account class
  */
-class AccountControllerTest extends UnitTestCase
+class AccountControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test view render().

@@ -19,7 +19,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use oxTestModules;
 
-class SearchTest extends UnitTestCase
+class SearchTest extends \PHPUnit\Framework\TestCase
 {
 
     /** @var  Search */

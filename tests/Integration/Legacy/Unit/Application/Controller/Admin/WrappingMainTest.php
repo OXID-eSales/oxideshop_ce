@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for Wrapping_Main class
  */
-class WrappingMainTest extends \OxidTestCase
+class WrappingMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

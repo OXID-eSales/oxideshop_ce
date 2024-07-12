@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Testing thankyou class
  */
-class ThankyouTest extends \OxidTestCase
+class ThankyouTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -20,7 +20,7 @@ use OxidEsales\EshopCommunity\Application\Model\Vendor;
 /**
  * Tests for Article_Seo class
  */
-class ArticleSeoTest extends \OxidTestCase
+class ArticleSeoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

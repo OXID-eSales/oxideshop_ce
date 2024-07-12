@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use \oxCompanyVatInValidator;
 use \oxCompanyVatIn;
 
-class CompanyVatInValidatorTest extends \OxidTestCase
+class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetCountry_Construct()
     {

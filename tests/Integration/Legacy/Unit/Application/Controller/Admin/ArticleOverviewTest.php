@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Article_Overview class
  */
-class ArticleOverviewTest extends \OxidTestCase
+class ArticleOverviewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

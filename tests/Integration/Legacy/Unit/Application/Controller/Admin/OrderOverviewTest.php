@@ -17,7 +17,7 @@ use \oxTestModules;
 /**
  * Tests for Order_Overview class
  */
-class OrderOverviewTest extends \OxidTestCase
+class OrderOverviewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

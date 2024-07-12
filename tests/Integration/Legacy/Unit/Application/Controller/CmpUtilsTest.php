@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * oxcmp_utils tests
  */
-class CmpUtilsTest extends \OxidTestCase
+class CmpUtilsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing oxcmp_utils::toCompareList()

@@ -81,7 +81,7 @@ class modForTestSetAsDiscountArticle extends oxBasketItem
     }
 }
 
-class BasketitemTest extends \OxidTestCase
+class BasketitemTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

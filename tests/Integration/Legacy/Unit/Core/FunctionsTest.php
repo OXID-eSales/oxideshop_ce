@@ -17,7 +17,7 @@ use \oxTestModules;
 /**
  * Tests for functions in source/oxfunctions.php file.
  */
-class FunctionsTest extends \OxidTestCase
+class FunctionsTest extends \PHPUnit\Framework\TestCase
 {
     /** @var string */
     protected $requestMethod;

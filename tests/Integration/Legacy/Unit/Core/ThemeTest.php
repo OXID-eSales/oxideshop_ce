@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use \oxTheme;
 use \another;
 
-class ThemeTest extends \OxidTestCase
+class ThemeTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

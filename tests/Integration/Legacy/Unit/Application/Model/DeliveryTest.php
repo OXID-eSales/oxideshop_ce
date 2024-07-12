@@ -56,7 +56,7 @@ class modOxDelivery extends oxDelivery
     }
 }
 
-class DeliveryTest extends \OxidTestCase
+class DeliveryTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sOxId;
 

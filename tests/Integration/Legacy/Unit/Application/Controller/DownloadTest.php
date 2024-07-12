@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Download class
  */
-class DownloadTest extends \OxidTestCase
+class DownloadTest extends \PHPUnit\Framework\TestCase
 {
 
 

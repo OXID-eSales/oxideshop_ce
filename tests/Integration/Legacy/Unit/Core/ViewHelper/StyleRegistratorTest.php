@@ -28,7 +28,7 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Testing StyleRegistrator class
  */
-class StyleRegistratorTest extends \OxidTestCase
+class StyleRegistratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider addFileProvider

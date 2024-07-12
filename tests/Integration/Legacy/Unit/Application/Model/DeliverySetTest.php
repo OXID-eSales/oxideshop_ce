@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use \oxDb;
 
-class DeliverySetTest extends \OxidTestCase
+class DeliverySetTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

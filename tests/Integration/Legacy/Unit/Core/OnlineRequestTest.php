@@ -15,7 +15,7 @@ use OxidEsales\Facts\Facts;
  *
  * @covers oxOnlineRequest
  */
-class OnlineRequestTest extends \OxidTestCase
+class OnlineRequestTest extends \PHPUnit\Framework\TestCase
 {
     public function testClusterIdGenerationWhenNotSet()
     {

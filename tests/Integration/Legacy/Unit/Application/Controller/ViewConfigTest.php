@@ -19,7 +19,7 @@ use stdClass;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class ViewConfigTest extends \OxidTestCase
+class ViewConfigTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

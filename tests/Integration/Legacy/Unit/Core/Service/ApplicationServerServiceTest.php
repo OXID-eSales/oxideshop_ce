@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 /**
  * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  */
-class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

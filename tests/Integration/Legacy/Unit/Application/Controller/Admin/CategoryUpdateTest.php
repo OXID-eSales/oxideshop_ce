@@ -13,7 +13,7 @@ use \oxTestModules;
 /**
  * Tests for Category_Update class
  */
-class CategoryUpdateTest extends \OxidTestCase
+class CategoryUpdateTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

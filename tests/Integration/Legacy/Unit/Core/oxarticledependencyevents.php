@@ -7,7 +7,7 @@
 /**
  * Testing oxArticle class.
  */
-class Unit_Core_oxArticleTest extends OxidTestCase
+class Unit_Core_oxArticleTest extends \PHPUnit\Framework\TestCase
 {
     public function testHasSortingFieldsChangedWhenNoFieldsWereChanged()
     {

@@ -14,7 +14,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Attribute_Category_Ajax class
  */
-class VendorMainAjaxTest extends \OxidTestCase
+class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

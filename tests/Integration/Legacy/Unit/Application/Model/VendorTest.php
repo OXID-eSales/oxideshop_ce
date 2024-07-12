@@ -17,7 +17,7 @@ use \oxField;
 /**
  * Testing oxvendor class
  */
-class VendorTest extends \OxidTestCase
+class VendorTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sVndIcon = "/vendor/icon/big_matsol_1_mico.png";
 

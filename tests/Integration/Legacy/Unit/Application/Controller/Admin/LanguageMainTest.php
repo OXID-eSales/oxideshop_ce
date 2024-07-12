@@ -16,7 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Tests for Language_Main class
  */
-class LanguageMainTest extends \OxidTestCase
+class LanguageMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

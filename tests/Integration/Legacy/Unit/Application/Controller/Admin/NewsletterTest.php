@@ -13,7 +13,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Tests for Admin_Newsletter class
  */
-class NewsletterTest extends \OxidTestCase
+class NewsletterTest extends \PHPUnit\Framework\TestCase
 {
     use ProphecyTrait;
 

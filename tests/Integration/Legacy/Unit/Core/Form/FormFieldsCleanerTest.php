@@ -11,7 +11,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsCleaner;
 
-class FormFieldsCleanerTest extends UnitTestCase
+class FormFieldsCleanerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetAllFieldsWhenNothingInWhiteList()
     {

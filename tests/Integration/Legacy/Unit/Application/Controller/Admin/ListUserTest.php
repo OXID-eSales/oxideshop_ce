@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
 /**
  * Tests for List_User class
  */
-class ListUserTest extends \OxidTestCase
+class ListUserTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

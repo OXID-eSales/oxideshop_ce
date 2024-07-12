@@ -24,8 +24,6 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
-
 class modForTestAddBundles extends oxBasket
 {
     public function setBasket($aBasket)
@@ -44,7 +42,7 @@ class modForTestAddBundles extends oxBasket
     }
 }
 
-class BasketTest extends \OxidTestCase
+class BasketTest extends \PHPUnit\Framework\TestCase
 {
     public $oArticle;
 

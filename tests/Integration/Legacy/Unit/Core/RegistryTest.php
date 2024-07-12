@@ -19,7 +19,7 @@ use stdClass;
 /**
  * Test case for \OxidEsales\Eshop\Core\Registry
  */
-class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

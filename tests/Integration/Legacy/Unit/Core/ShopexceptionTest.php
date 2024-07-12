@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class ShopexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ShopexceptionTest extends \PHPUnit\Framework\TestCase
 {
 
     // We check on class name (exception class) and message only - rest is not checked yet

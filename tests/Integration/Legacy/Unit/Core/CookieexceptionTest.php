@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class CookieexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class CookieexceptionTest extends \PHPUnit\Framework\TestCase
 {
 
     // We check on class name and message only - rest is not checked yet

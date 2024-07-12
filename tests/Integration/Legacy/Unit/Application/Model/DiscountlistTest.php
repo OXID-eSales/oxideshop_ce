@@ -12,7 +12,7 @@ use oxRegistry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 
-class DiscountlistTest extends \OxidTestCase
+class DiscountlistTest extends \PHPUnit\Framework\TestCase
 {
     public $aDiscountIds = [];
 

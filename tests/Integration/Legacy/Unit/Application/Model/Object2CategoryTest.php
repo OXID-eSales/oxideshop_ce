@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-class Object2CategoryTest extends \OxidTestCase
+class Object2CategoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests setter and getter of product id

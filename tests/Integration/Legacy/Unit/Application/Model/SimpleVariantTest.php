@@ -13,7 +13,7 @@ use \StdClass;
 use \oxRegistry;
 use \oxTestModules;
 
-class SimpleVariantTest extends \OxidTestCase
+class SimpleVariantTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

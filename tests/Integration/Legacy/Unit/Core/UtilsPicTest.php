@@ -16,7 +16,7 @@ use stdClass;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-final class UtilsPicTest extends \OxidTestCase
+final class UtilsPicTest extends \PHPUnit\Framework\TestCase
 {
     private $testPicture = 'test.jpg';
 

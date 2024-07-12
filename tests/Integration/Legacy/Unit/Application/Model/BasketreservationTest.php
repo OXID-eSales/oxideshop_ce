@@ -13,7 +13,7 @@ use \oxTestModules;
 use OxidEsales\EshopCommunity\Application\Model\BasketReservation;
 use \OxidEsales\Eshop\Core\UtilsObject;
 
-class BasketreservationTest extends \OxidTestCase
+class BasketreservationTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

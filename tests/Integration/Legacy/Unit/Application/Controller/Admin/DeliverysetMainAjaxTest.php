@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Delivery_Groups_Ajax class
  */
-class DeliverysetMainAjaxTest extends \OxidTestCase
+class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sDeliveryView = 'oxv_oxdelivery_1_de';
 

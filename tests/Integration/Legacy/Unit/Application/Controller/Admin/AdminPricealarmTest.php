@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Admin_Pricealarm class
  */
-class AdminPricealarmTest extends \OxidTestCase
+class AdminPricealarmTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

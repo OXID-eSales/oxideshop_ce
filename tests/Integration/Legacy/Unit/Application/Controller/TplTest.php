@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-class TplTest extends \OxidTestCase
+class TplTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

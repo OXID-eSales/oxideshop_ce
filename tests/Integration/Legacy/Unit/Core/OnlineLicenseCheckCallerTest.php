@@ -21,7 +21,7 @@ use \oxTestModules;
  * @covers oxOnlineLicenseCheckRequest
  * @covers oxOnlineModulesNotifierRequest
  */
-class OnlineLicenseCheckCallerTest extends \OxidTestCase
+class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
 {
     public function testIfCorrectRequestPassedToXmlFormatter()
     {

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for UserGroup class
  */
-class UserGroupTest extends \OxidTestCase
+class UserGroupTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class CounterTest extends \OxidTestCase
+class CounterTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

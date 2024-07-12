@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class SystemComponentExceptionTest extends \OxidTestCase
+class SystemComponentExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetComponent()
     {

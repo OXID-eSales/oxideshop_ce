@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Tests for Vendor_Seo class
  */
-class VendorSeoTest extends \OxidTestCase
+class VendorSeoTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

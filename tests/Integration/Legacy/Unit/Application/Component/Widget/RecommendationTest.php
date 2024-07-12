@@ -13,7 +13,7 @@ use RecommList;
 /**
  * Tests for oxwRecomm class
  */
-class RecommendationTest extends \OxidTestCase
+class RecommendationTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

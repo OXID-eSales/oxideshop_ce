@@ -11,7 +11,7 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-class PricealarmTest extends \OxidTestCase
+class PricealarmTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -8,9 +8,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxField;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 
-class FieldTest extends \OxidTestCase
+class FieldTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

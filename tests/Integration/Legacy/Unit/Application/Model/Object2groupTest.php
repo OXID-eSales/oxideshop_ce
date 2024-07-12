@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use \oxDb;
 
-class Object2groupTest extends \OxidTestCase
+class Object2groupTest extends \PHPUnit\Framework\TestCase
 {
     private $_oGroup;
 

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwCategoryTree class
  */
-class WidgetTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class WidgetTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

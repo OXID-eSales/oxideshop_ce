@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Testing oxseoencodercontent class
  */
-class SeoEncoderContentTest extends \OxidTestCase
+class SeoEncoderContentTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

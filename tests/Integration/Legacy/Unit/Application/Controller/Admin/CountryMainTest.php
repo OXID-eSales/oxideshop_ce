@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Country_Main class
  */
-class CountryMainTest extends \OxidTestCase
+class CountryMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxPrice;
 
-class PriceTest extends \OxidTestCase
+class PriceTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oPrice;
 

@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('module')]
-class ModuleVariablesCacheTest extends \OxidTestCase
+class ModuleVariablesCacheTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetCache()
     {

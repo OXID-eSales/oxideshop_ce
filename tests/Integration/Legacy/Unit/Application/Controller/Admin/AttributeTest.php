@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Attribute class
  */
-class AttributeTest extends \OxidTestCase
+class AttributeTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

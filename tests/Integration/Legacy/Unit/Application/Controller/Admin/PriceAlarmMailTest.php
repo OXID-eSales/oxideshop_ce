@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for PriceAlarm_Mail class
  */
-class PriceAlarmMailTest extends \OxidTestCase
+class PriceAlarmMailTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

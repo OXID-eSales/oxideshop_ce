@@ -42,7 +42,7 @@ class oxModuleUtilsObject extends \oxUtilsObject
     }
 }
 
-class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class UtilsobjectTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown(): void
     {

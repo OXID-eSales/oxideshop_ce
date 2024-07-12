@@ -14,7 +14,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Delivery_Groups_Ajax class
  */
-class DeliveryUsersAjaxTest extends \OxidTestCase
+class DeliveryUsersAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sShopId = ShopIdCalculator::BASE_SHOP_ID;
 

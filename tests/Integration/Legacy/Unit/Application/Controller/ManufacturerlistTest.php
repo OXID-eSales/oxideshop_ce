@@ -16,7 +16,7 @@ use \oxTestModules;
 /**
  * Testing oxManufacturerList class
  */
-class ManufacturerlistTest extends \OxidTestCase
+class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

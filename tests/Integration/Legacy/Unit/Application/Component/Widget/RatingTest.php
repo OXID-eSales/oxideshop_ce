@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwCategoryTree class
  */
-class RatingTest extends \OxidTestCase
+class RatingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing oxwRating::render()

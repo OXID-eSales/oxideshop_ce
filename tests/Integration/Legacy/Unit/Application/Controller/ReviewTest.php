@@ -15,7 +15,7 @@ use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
-class ReviewTest extends \OxidTestCase
+class ReviewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

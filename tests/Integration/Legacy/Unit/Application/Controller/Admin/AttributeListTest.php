@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for Attribute_List class
  */
-class AttributeListTest extends \OxidTestCase
+class AttributeListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

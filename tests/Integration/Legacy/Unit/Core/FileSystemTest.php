@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 
-class FileSystemTest extends UnitTestCase
+class FileSystemTest extends \PHPUnit\Framework\TestCase
 {
     public function testCombinePathsReturnEmptyPathWhenCalledWithoutParameters()
     {

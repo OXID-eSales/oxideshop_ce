@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Country class
  */
-class CountryTest extends \OxidTestCase
+class CountryTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use \oxRegistry;
 
-class UserAddressListTest extends \OxidTestCase
+class UserAddressListTest extends \PHPUnit\Framework\TestCase
 {
     public $aList = [];
 

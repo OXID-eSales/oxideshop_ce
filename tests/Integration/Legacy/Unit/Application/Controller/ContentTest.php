@@ -21,7 +21,7 @@ use \stdClass;
 use \oxDb;
 use \oxTestModules;
 
-class ContentTest extends \OxidTestCase
+class ContentTest extends \PHPUnit\Framework\TestCase
 {
     /** @var oxContent  */
     protected $_oObj;

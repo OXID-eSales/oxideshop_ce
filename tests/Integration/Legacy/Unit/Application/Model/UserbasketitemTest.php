@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use oxArticle;
 use oxField;
 use OxidEsales\EshopCommunity\Application\Model\Article;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use stdclass;
 
 class modOxArticle_oxUserBasketItem extends oxArticle
@@ -26,7 +26,7 @@ class modOxArticle_oxUserBasketItem extends oxArticle
     }
 }
 
-class UserbasketitemTest extends \OxidTestCase
+class UserbasketitemTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

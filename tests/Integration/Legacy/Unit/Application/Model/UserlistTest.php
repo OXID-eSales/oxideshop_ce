@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Testing oxuserlist class
  */
-class UserlistTest extends \OxidTestCase
+class UserlistTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

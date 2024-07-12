@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 /**
  * Tests for Manufacturer_Main_Ajax class
  */
-class ManufacturerMainAjaxTest extends \OxidTestCase
+class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Initialize the fixture.

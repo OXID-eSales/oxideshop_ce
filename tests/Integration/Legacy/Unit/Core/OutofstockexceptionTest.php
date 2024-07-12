@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class OutofstockexceptionTest extends \PHPUnit\Framework\TestCase
 {
     private $testObject;
 

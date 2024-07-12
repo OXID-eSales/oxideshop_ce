@@ -10,10 +10,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\GenericImport\GenericImport;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidTestCase;
 use oxUser;
 use oxUtilsServer;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Without this class it is not possible to fake log in without errors.
@@ -26,7 +26,7 @@ class GenericImportTest_oxUtilsServer extends oxUtilsServer
     }
 }
 
-class GenericImportTest extends OxidTestCase
+class GenericImportTest extends TestCase
 {
     protected function tearDown(): void
     {

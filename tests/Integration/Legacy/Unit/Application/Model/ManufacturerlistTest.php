@@ -10,11 +10,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use oxDb;
 use OxidEsales\Eshop\Application\Model\ManufacturerList;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use oxRegistry;
 use oxTestModules;
 
-class ManufacturerlistTest extends \OxidTestCase
+class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

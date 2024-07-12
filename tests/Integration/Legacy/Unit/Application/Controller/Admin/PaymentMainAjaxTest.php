@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Payment_Main_Ajax class
  */
-class PaymentMainAjaxTest extends \OxidTestCase
+class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

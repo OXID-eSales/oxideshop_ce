@@ -18,7 +18,7 @@ use \oxTestModules;
 /**
  * Tests for aList class
  */
-class AlistTest extends \OxidTestCase
+class AlistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

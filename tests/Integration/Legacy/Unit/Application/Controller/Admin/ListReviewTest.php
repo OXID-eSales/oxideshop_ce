@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 /**
  * Tests for List_Review class
  */
-class ListReviewTest extends \OxidTestCase
+class ListReviewTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

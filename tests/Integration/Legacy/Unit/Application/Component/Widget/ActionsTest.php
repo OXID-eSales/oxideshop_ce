@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 /**
  * Tests for oxwAction class
  */
-class ActionsTest extends \OxidTestCase
+class ActionsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

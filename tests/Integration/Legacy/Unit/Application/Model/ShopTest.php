@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Core\I18n;
 use \oxDb;
 use \oxField;
 
-class ShopTest extends \OxidTestCase
+class ShopTest extends \PHPUnit\Framework\TestCase
 {
     public function testStructure()
     {

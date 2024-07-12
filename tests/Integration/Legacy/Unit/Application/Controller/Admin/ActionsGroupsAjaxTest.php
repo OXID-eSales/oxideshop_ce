@@ -12,7 +12,7 @@ use \oxDb;
 /**
  * Tests for Actions_List class
  */
-class ActionsGroupsAjaxTest extends \OxidTestCase
+class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

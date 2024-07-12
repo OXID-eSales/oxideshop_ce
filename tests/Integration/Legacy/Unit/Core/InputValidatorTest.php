@@ -22,7 +22,7 @@ use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Application\Model\User;
 
-class InputValidatorTest extends UnitTestCase
+class InputValidatorTest extends \PHPUnit\Framework\TestCase
 {
     private $_validator;
 

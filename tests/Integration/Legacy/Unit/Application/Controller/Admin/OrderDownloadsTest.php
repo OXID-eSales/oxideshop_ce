@@ -15,7 +15,7 @@ use \oxRegistry;
 /**
  * Tests for Order_Article class
  */
-class OrderDownloadsTest extends \OxidTestCase
+class OrderDownloadsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

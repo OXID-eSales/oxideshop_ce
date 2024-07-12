@@ -33,7 +33,7 @@ class AdminListHelper extends \oxAdminList
 /**
  * Testing oxAdminList class.
  */
-class AdminListTest extends \OxidTestCase
+class AdminListTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

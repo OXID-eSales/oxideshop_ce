@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use PHPUnit\Framework\MockObject\MockObject;
 
-class TableViewNameGeneratorTest extends \OxidTestCase
+class TableViewNameGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testLanguageTableViewNameGenerationWhenDefaultLanguageIsUsed()
     {

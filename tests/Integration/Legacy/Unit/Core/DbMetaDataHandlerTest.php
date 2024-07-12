@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxDb;
 
-class DbMetaDataHandlerTest extends \OxidTestCase
+class DbMetaDataHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

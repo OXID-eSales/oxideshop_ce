@@ -13,7 +13,7 @@ use \SimpleXMLElement;
 /**
  * Testing oxXml class.
  */
-class SimpleXmlTest extends \OxidTestCase
+class SimpleXmlTest extends \PHPUnit\Framework\TestCase
 {
     public function testObjectToXml()
     {

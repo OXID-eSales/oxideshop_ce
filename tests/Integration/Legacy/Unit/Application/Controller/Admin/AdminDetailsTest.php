@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Facts\Facts;
 use stdClass;
 
-class AdminDetailsTest extends \OxidTestCase
+class AdminDetailsTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

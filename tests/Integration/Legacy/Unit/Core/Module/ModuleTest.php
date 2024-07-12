@@ -20,7 +20,7 @@ use oxRegistry;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('module')]
-class ModuleTest extends \OxidTestCase
+class ModuleTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tear down the fixture.

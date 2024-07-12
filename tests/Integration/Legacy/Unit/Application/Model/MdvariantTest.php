@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
  * Unit_oxmdvariantTest
  *
  */
-class MdvariantTest extends \OxidTestCase
+class MdvariantTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

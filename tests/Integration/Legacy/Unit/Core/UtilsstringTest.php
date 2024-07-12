@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxRegistry;
 
-class UtilsstringTest extends \OxidTestCase
+class UtilsstringTest extends \PHPUnit\Framework\TestCase
 {
     public function testPrepareCSVField()
     {

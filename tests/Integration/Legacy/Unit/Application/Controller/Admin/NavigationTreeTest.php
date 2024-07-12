@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use oxTestModules;
 use stdClass;
 
-class NavigationTreeTest extends \OxidTestCase
+class NavigationTreeTest extends \PHPUnit\Framework\TestCase
 {
     use ContainerTrait;
 

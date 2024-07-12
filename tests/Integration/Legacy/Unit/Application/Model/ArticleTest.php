@@ -17,7 +17,7 @@ use \oxArticle;
 use oxArticleHelper;
 use \oxField;
 use \Exception;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use OxidEsales\Facts\Facts;
 use \StdClass;
 use \oxbasket;
@@ -29,9 +29,7 @@ if (!defined('OX_IS_ADMIN')) {
     define('OX_IS_ADMIN', false);
 }
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
-
-class ArticleTest extends \OxidTestCase
+class ArticleTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

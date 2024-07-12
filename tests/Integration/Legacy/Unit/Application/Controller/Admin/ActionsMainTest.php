@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for Actions_Main class
  */
-class ActionsMainTest extends \OxidTestCase
+class ActionsMainTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

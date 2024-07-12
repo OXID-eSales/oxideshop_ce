@@ -14,7 +14,7 @@ use \oxRegistry;
 /**
  * Testing oxvoucherserie class
  */
-class VoucherserieTest extends \OxidTestCase
+class VoucherserieTest extends \PHPUnit\Framework\TestCase
 {
     protected $_aIds;
 

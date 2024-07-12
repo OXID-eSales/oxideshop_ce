@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwMiniBasket class
  */
-class MiniBasketTest extends \OxidTestCase
+class MiniBasketTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing oxwMiniBasket::render()

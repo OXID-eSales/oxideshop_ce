@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 
-class MediaurlTest extends \OxidTestCase
+class MediaurlTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
     /**

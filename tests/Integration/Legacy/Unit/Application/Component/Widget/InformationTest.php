@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwInformation class
  */
-class InformationTest extends \OxidTestCase
+class InformationTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwCookieNote class
  */
-class CookieNoteTest extends \OxidTestCase
+class CookieNoteTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use \oxRegistry;
 
-class PricealarmTest extends \OxidTestCase
+class PricealarmTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -11,7 +11,7 @@ use \oxField;
 use \oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
-class LinksTest extends \OxidTestCase
+class LinksTest extends \PHPUnit\Framework\TestCase
 {
     private $_oxLinks;
 

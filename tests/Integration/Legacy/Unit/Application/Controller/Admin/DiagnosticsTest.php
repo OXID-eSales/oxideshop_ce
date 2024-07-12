@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Discount class
  */
-class DiagnosticsTest extends \OxidTestCase
+class DiagnosticsTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

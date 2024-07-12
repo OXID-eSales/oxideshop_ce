@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\core;
 use \oxField;
 use oxStr;
 
-class EmailUtf8Test extends \OxidTestCase
+class EmailUtf8Test extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing email charset

@@ -15,7 +15,7 @@ use \oxRegistry;
 /**
  * Testing oxuserpayment class
  */
-class UserpaymentTest extends \OxidTestCase
+class UserpaymentTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oUpay;
 

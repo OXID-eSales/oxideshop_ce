@@ -11,13 +11,13 @@ use Exception;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Config;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use oxTestModules;
 
 /**
  * Tests for Recommendation List class
  */
-class AccountRecommlistTest extends \OxidTestCase
+class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

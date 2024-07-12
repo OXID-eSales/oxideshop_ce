@@ -14,7 +14,7 @@ use \oxRegistry;
 /**
  * testing oxattributelist class.
  */
-class AttributelistTest extends \OxidTestCase
+class AttributelistTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

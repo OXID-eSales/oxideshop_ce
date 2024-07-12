@@ -13,7 +13,7 @@ use \oxField;
 //class should be named Unit_oxSimpleVariantListTest
 //but GAAAH IT DOES NOT WORK somehow, just because of the name??????
 //T2009-04-20
-class SimplevariantlistTest extends \OxidTestCase
+class SimplevariantlistTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetParent()
     {

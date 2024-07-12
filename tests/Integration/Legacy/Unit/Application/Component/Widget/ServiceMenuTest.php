@@ -12,7 +12,7 @@ use \oxTestModules;
 /**
  * Tests for oxwServiceMenu class
  */
-class ServiceMenuTest extends \OxidTestCase
+class ServiceMenuTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Testing oxwServiceMenu::getCompareItemsCnt()

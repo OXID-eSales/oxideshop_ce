@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  * @package Unit\Core
  */
 #[\PHPUnit\Framework\Attributes\Group('module')]
-class ModuleListTest extends \OxidTestCase
+class ModuleListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

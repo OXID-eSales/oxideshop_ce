@@ -13,13 +13,11 @@ use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Tests\FieldTestingTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Unit\FieldTestingTrait;
 use oxRegistry;
 use oxTestModules;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
-
-class CategoryTest extends \OxidTestCase
+class CategoryTest extends \PHPUnit\Framework\TestCase
 {
     use FieldTestingTrait;
 

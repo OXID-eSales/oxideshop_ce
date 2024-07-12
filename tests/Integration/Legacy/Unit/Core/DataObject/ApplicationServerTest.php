@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\DataObject;
 /**
  * @covers \OxidEsales\Eshop\Core\DataObject\ApplicationServer
  */
-class ApplicationServerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ApplicationServerTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetId()
     {

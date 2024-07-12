@@ -85,7 +85,7 @@ class oxArticle_Extended extends oxArticle
     }
 }
 
-class DiscountTest extends \OxidTestCase
+class DiscountTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown(): void
     {

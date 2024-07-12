@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * Tests for ajaxListComponent class
  */
-class AjaxListComponentTest extends \OxidTestCase
+class AjaxListComponentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * ajaxListComponent::_getActionIds() test case

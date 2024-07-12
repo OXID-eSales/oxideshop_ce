@@ -140,7 +140,7 @@ class oxCategoryListHelperLoadCategoryMenusPE extends \oxCategoryList
     }
 }
 
-class CategoryListTest extends \OxidTestCase
+class CategoryListTest extends \PHPUnit\Framework\TestCase
 {
     /** @var oxCategoryList  */
     protected $_oList;

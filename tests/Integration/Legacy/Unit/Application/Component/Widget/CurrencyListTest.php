@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 /**
  * Tests for oxwCurrencyList class
  */
-class CurrencyListTest extends \OxidTestCase
+class CurrencyListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

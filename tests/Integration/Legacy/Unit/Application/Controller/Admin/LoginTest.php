@@ -21,7 +21,7 @@ use \oxTestModules;
 /**
  * Testing login class.
  */
-class LoginTest extends \OxidTestCase
+class LoginTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

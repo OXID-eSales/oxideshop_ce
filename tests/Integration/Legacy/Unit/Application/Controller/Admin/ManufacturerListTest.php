@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 /**
  * Tests for Manufacturer_List class
  */
-class ManufacturerListTest extends \OxidTestCase
+class ManufacturerListTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

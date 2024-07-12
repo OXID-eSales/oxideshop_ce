@@ -19,8 +19,6 @@ use \oxRegistry;
 use \oxTestModules;
 use Psr\Log\LoggerInterface;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
-
 class modOxView extends oxView
 {
     public function setVar($sName, $sValue)
@@ -34,7 +32,7 @@ class modOxView extends oxView
     }
 }
 
-class ViewTest extends \OxidTestCase
+class ViewTest extends \PHPUnit\Framework\TestCase
 {
     protected $_oView;
 

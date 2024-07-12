@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 /**
  * Tests for Category_Main_Ajax class
  */
-class CategoryMainAjaxTest extends \OxidTestCase
+class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
 {
     protected $_sArticleView = 'oxv_oxarticles_1_de';
 

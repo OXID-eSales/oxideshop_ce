@@ -13,7 +13,7 @@ use \stdClass;
 use \oxField;
 use \oxTestModules;
 
-class CmpCategoriesTest extends \OxidTestCase
+class CmpCategoriesTest extends \PHPUnit\Framework\TestCase
 {
     public static $oCL;
 

@@ -13,7 +13,7 @@ use \oxDb;
 use OxidEsales\Eshop\Application\Model\Category;
 use \oxTestModules;
 
-class SeoEncoderCategoryTest extends \OxidTestCase
+class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

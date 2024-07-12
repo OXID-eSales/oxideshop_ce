@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Config;
 /**
  * Tests for Shop_Config class
  */
-class ShopConfigTest extends \OxidTestCase
+class ShopConfigTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {

@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Application\Model\Attribute;
 /**
  * Tests for Attribute_Category class
  */
-class AttributeCategoryTest extends \OxidTestCase
+class AttributeCategoryTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

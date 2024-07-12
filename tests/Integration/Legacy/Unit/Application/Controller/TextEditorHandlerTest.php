@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 /**
  * Testing TextEditorHandler class.
  */
-class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test renderTextEditor: return plain text editor output, if rich text editor is not set.

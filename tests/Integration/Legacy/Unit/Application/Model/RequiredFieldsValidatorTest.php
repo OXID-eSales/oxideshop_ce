@@ -12,7 +12,7 @@ use \oxField;
 /**
  * Testing oxRequiredFieldsValidator class.
  */
-class RequiredFieldsValidatorTest extends \OxidTestCase
+class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetGetRequiredFields()
     {

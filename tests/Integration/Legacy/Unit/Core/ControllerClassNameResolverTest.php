@@ -16,7 +16,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core
  */
-class ControllerClassNameResolverTest extends UnitTestCase
+class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test mapping class name to id, result found in shop controller map.

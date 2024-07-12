@@ -29,8 +29,6 @@ use oxRegistry;
 use oxTestModules;
 use stdClass;
 
-require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
-
 class modoxdeliverylist_oxorder extends oxdeliverylist
 {
     public $aTestDeliveriesSetsRetValue = ['testShipSetId1', 'testShipSetId2'];
@@ -44,7 +42,7 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
     }
 }
 
-class OrderTest extends \OxidTestCase
+class OrderTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp(): void
     {

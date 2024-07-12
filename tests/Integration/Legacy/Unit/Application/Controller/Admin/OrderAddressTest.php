@@ -14,7 +14,7 @@ use \oxTestModules;
 /**
  * Tests for Order_Address class
  */
-class OrderAddressTest extends \OxidTestCase
+class OrderAddressTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

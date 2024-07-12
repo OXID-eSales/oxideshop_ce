@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class AdminLogSqlDecoratorTest extends UnitTestCase
+class AdminLogSqlDecoratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testPrepareSqlForLogging()
     {

@@ -13,7 +13,7 @@ use \oxDb;
 /**
  * Testing oxaddress class.
  */
-class AddressTest extends \OxidTestCase
+class AddressTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

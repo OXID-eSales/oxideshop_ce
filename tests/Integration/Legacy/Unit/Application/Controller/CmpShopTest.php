@@ -15,7 +15,7 @@ use \oxTestModules;
 /**
  * oxcmp_shop tests
  */
-class CmpShopTest extends \OxidTestCase
+class CmpShopTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

@@ -86,7 +86,7 @@ class OrderDownloadsTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Order_Downloads');
         $oOrderFiles = $oView->getEditObject();
-        $this->assertTrue($oOrderFiles instanceof orderfilelist);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\OrderFileList::class, $oOrderFiles);
     }
 
     /**
@@ -108,9 +108,9 @@ class OrderDownloadsTest extends \PHPUnit\Framework\TestCase
 
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load("_testOrderFile");
-        $this->assertEquals('0', $oOrderFile->oxorderfiles__oxdownloadcount->value);
-        $this->assertTrue($oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate);
-        $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
-        $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
+        $this->assertSame('0', $oOrderFile->oxorderfiles__oxdownloadcount->value);
+        $this->assertGreaterThanOrEqual($sDate, $oOrderFile->oxorderfiles__oxvaliduntil->value);
+        $this->assertSame('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
+        $this->assertSame('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
     }
 }

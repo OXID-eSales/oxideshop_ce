@@ -85,7 +85,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
     {
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $this->assertTrue($oNewsSubscribed->loadFromEmail('useremail@useremail.nl'));
-        $this->assertEquals('_testNewsSubscrId', $oNewsSubscribed->oxnewssubscribed__oxid->value);
+        $this->assertSame('_testNewsSubscrId', $oNewsSubscribed->oxnewssubscribed__oxid->value);
     }
 
     /**
@@ -105,7 +105,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
     {
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $this->assertTrue($oNewsSubscribed->loadFromUserId('_testUserId'));
-        $this->assertEquals('_testNewsSubscrId', $oNewsSubscribed->oxnewssubscribed__oxid->value);
+        $this->assertSame('_testNewsSubscrId', $oNewsSubscribed->oxnewssubscribed__oxid->value);
     }
 
     /**
@@ -132,7 +132,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
 
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscr2Id');
-        $this->assertTrue(($oNewsSubscribed->oxnewssubscribed__oxsubscribed->value >= $sNow));
+        $this->assertGreaterThanOrEqual($sNow, $oNewsSubscribed->oxnewssubscribed__oxsubscribed->value);
     }
 
     /**
@@ -153,7 +153,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
-        $this->assertTrue($oNewsSubscribed->oxnewssubscribed__oxunsubscribed->value >= $sNow);
+        $this->assertGreaterThanOrEqual($sNow, $oNewsSubscribed->oxnewssubscribed__oxunsubscribed->value);
     }
 
     /**
@@ -181,7 +181,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
     public function testGetOptInStatus()
     {
         $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField(3, oxField::T_RAW);
-        $this->assertEquals(3, $this->_oNewsSub->getOptInStatus());
+        $this->assertSame(3, $this->_oNewsSub->getOptInStatus());
     }
 
     /**
@@ -194,7 +194,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
-        $this->assertEquals(9, $oNewsSubscribed->oxnewssubscribed__oxdboptin->value);
+        $this->assertSame(9, $oNewsSubscribed->oxnewssubscribed__oxdboptin->value);
     }
 
 
@@ -204,7 +204,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
     public function testGetOptInEmailStatus()
     {
         $this->_oNewsSub->oxnewssubscribed__oxemailfailed = new oxField('xxx', oxField::T_RAW);
-        $this->assertEquals('xxx', $this->_oNewsSub->getOptInEmailStatus());
+        $this->assertSame('xxx', $this->_oNewsSub->getOptInEmailStatus());
     }
 
 
@@ -219,7 +219,7 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
-        $this->assertEquals(1, $oNewsSubscribed->oxnewssubscribed__oxemailfailed->value);
+        $this->assertSame(1, $oNewsSubscribed->oxnewssubscribed__oxemailfailed->value);
     }
 
 
@@ -241,10 +241,10 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
-        $this->assertEquals('newusersal', $oNewsSubscribed->oxnewssubscribed__oxsal->value);
-        $this->assertEquals('newuserfname', $oNewsSubscribed->oxnewssubscribed__oxfname->value);
-        $this->assertEquals('newuserlname', $oNewsSubscribed->oxnewssubscribed__oxlname->value);
-        $this->assertEquals('newuseremail@useremail.nl', $oNewsSubscribed->oxnewssubscribed__oxemail->value);
+        $this->assertSame('newusersal', $oNewsSubscribed->oxnewssubscribed__oxsal->value);
+        $this->assertSame('newuserfname', $oNewsSubscribed->oxnewssubscribed__oxfname->value);
+        $this->assertSame('newuserlname', $oNewsSubscribed->oxnewssubscribed__oxlname->value);
+        $this->assertSame('newuseremail@useremail.nl', $oNewsSubscribed->oxnewssubscribed__oxemail->value);
     }
 
     /**
@@ -266,10 +266,10 @@ class NewssubscribedTest extends \PHPUnit\Framework\TestCase
         $oNewsSubscribed = oxNew('oxnewssubscribed');
         $oNewsSubscribed->load('_testNewsSubscrId');
 
-        $this->assertEquals('newusersal', $oNewsSubscribed->oxnewssubscribed__oxsal->value);
-        $this->assertEquals('newuserfname', $oNewsSubscribed->oxnewssubscribed__oxfname->value);
-        $this->assertEquals('newuserlname', $oNewsSubscribed->oxnewssubscribed__oxlname->value);
-        $this->assertEquals('useremail@useremail.nl', $oNewsSubscribed->oxnewssubscribed__oxemail->value);
+        $this->assertSame('newusersal', $oNewsSubscribed->oxnewssubscribed__oxsal->value);
+        $this->assertSame('newuserfname', $oNewsSubscribed->oxnewssubscribed__oxfname->value);
+        $this->assertSame('newuserlname', $oNewsSubscribed->oxnewssubscribed__oxlname->value);
+        $this->assertSame('useremail@useremail.nl', $oNewsSubscribed->oxnewssubscribed__oxemail->value);
     }
 
     /**

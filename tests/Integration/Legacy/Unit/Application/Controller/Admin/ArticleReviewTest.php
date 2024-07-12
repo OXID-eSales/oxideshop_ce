@@ -57,9 +57,9 @@ class ArticleReviewTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
 
-        $this->assertEquals('article_review', $sTplName);
+        $this->assertSame('article_review', $sTplName);
     }
 
     /**
@@ -130,9 +130,9 @@ class ArticleReviewTest extends \PHPUnit\Framework\TestCase
         $oA = oxNew('oxArticle');
         $oA->load($this->getTestArticleId());
         $this->getConfig()->setConfigParam('blShowVariantReviews', false);
-        $this->assertEquals(1, count($o->getReviewList($oA)));
+        $this->assertCount(1, $o->getReviewList($oA));
         $this->getConfig()->setConfigParam('blShowVariantReviews', true);
-        $this->assertEquals(2, count($o->getReviewList($oA)));
+        $this->assertCount(2, $o->getReviewList($oA));
     }
 
     /**

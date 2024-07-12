@@ -96,7 +96,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -107,7 +107,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where 1", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -119,7 +119,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("from " . $this->getObject2AttributeViewTable() . " left join " . $this->getArticleViewTable() . " on " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxobjectid where " . $this->getObject2AttributeViewTable() . sprintf('.oxattrid = \'%s\' and ', $sOxid) . $this->getArticleViewTable() . ".oxid is not null", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getObject2AttributeViewTable() . " left join " . $this->getArticleViewTable() . " on " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2AttributeViewTable() . ".oxobjectid where " . $this->getObject2AttributeViewTable() . sprintf(".oxattrid = '%s' and ", $sOxid) . $this->getArticleViewTable() . ".oxid is not null", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -131,7 +131,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxobjectid from " . $this->getObject2AttributeViewTable() . " where " . $this->getObject2AttributeViewTable() . sprintf('.oxattrid = \'%s\' )', $sSynchoxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxobjectid from " . $this->getObject2AttributeViewTable() . " where " . $this->getObject2AttributeViewTable() . sprintf(".oxattrid = '%s' )", $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -144,7 +144,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxobjectid from " . $this->getObject2AttributeViewTable() . " where " . $this->getObject2AttributeViewTable() . sprintf('.oxattrid = \'%s\' )', $sSynchoxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxid not in ( select " . $this->getObject2AttributeViewTable() . ".oxobjectid from " . $this->getObject2AttributeViewTable() . " where " . $this->getObject2AttributeViewTable() . sprintf(".oxattrid = '%s' )", $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -153,7 +153,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testAddFilter()
     {
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("", trim((string) $oView->addFilter('')));
+        $this->assertSame("", trim((string) $oView->addFilter('')));
     }
 
     /**
@@ -164,7 +164,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('')));
+        $this->assertSame("group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('')));
     }
 
     /**
@@ -174,7 +174,7 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('attribute_main_ajax');
-        $this->assertEquals("select count( * ) from ( select count( * ) group by " . $this->getArticleViewTable() . ".oxid  ) as _cnttable", trim((string) $oView->addFilter('select count( * )')));
+        $this->assertSame("select count( * ) from ( select count( * ) group by " . $this->getArticleViewTable() . ".oxid  ) as _cnttable", trim((string) $oView->addFilter('select count( * )')));
     }
 
     /**
@@ -183,11 +183,11 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemoveAttrArticle()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testOxid1', '_testOxid2']));
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectRemove'"));
+        $oView->method('getActionIds')->willReturn(['_testOxid1', '_testOxid2']);
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectRemove'"));
 
         $oView->removeAttrArticle();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectRemove'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectRemove'"));
     }
 
     /**
@@ -198,11 +198,11 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sOxid = '_testRemoveAll';
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxattrid='_testRemoveAll'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxattrid='_testRemoveAll'"));
 
         $oView = oxNew('attribute_main_ajax');
         $oView->removeAttrArticle();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxattrid='_testRemoveAll'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxattrid='_testRemoveAll'"));
     }
 
     /**
@@ -214,12 +214,12 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testOxidAdd1', '_testOxidAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testOxidAdd1', '_testOxidAdd2']);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxattrid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2attribute where oxattrid='%s'", $sSynchoxid)));
 
         $oView->addAttrArticle();
-        $this->assertEquals(2, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxattrid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(2, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2attribute where oxattrid='%s'", $sSynchoxid)));
     }
 
     /**
@@ -231,12 +231,12 @@ class AttributeMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);
 
-        $iCount = oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . sprintf('.oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = \'%s\'  )', $sSynchoxid));
+        $iCount = oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where 1  and " . $this->getArticleViewTable() . ".oxparentid = ''  and " . $this->getArticleViewTable() . sprintf(".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '%s'  )", $sSynchoxid));
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxattrid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2attribute where oxattrid='%s'", $sSynchoxid)));
 
         $oView = oxNew('attribute_main_ajax');
         $oView->addAttrArticle();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2attribute where oxattrid=\'%s\'', $sSynchoxid)));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2attribute where oxattrid='%s'", $sSynchoxid)));
     }
 }

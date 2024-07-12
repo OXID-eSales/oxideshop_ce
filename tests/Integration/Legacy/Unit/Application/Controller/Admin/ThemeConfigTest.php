@@ -18,7 +18,7 @@ class ThemeConfigTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oView = oxNew('Theme_Config');
-        $this->assertEquals('theme_config', $oView->render());
+        $this->assertSame('theme_config', $oView->render());
     }
 
     /**
@@ -28,7 +28,7 @@ class ThemeConfigTest extends \PHPUnit\Framework\TestCase
     {
         $sThemeName = 'testtheme';
         $oTheme_Config = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeConfiguration::class, ['getEditObjectId']);
-        $oTheme_Config->expects($this->any())->method('getEditObjectId')->will($this->returnValue($sThemeName));
-        $this->assertEquals('theme:' . $sThemeName, $oTheme_Config->getModuleForConfigVars());
+        $oTheme_Config->method('getEditObjectId')->willReturn($sThemeName);
+        $this->assertSame('theme:' . $sThemeName, $oTheme_Config->getModuleForConfigVars());
     }
 }

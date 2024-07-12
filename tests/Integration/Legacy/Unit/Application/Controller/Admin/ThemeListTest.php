@@ -12,7 +12,7 @@ class ThemeListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oView = oxNew('Theme_List');
-        $this->assertEquals('theme_list', $oView->render());
+        $this->assertSame('theme_list', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertNotEmpty($aViewData['mylist']);

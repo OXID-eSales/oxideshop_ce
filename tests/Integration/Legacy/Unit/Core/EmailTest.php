@@ -29,13 +29,13 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
 {
     use ProphecyTrait;
 
-    protected $email;
+    private $email;
 
-    protected $user;
+    private $user;
 
-    protected $shop;
+    private $shop;
 
-    protected $article;
+    private $article;
 
     protected function setUp(): void
     {
@@ -122,7 +122,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $user = oxNew('oxuser');
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendRegisterEmail"]);
-        $email->expects($this->once())->method('sendRegisterEmail')->with($this->equalTo($user), $this->equalTo(null));
+        $email->expects($this->once())->method('sendRegisterEmail')->with($user, null);
 
         $email->sendRegisterConfirmEmail($user);
 
@@ -143,7 +143,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $imageDirectory = $config->getImageDir();
 
         $imageGenerator = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, ['getImagePath']);
-        $imageGenerator->expects($this->any())->method('getImagePath')->will($this->returnValue($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/nopic.jpg'));
+        $imageGenerator->method('getImagePath')->willReturn($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/nopic.jpg');
         oxTestModules::addModuleObject('oxDynImgGenerator', $imageGenerator);
 
         $body = '<img src="' . $imageDirectory . 'stars.jpg" border="0" hspace="0" vspace="0" alt="stars" align="texttop">';
@@ -164,10 +164,10 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance']);
-        $email->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
-        $email->method('addEmbeddedImage')->will($this->returnValue(true));
-        $email->expects($this->once())->method('getBody')->will($this->returnValue($body));
-        $email->expects($this->once())->method('setBody')->with($this->equalTo($generatedEmailBody));
+        $email->method('getUtilsObjectInstance')->willReturn($utilsObjectMock);
+        $email->method('addEmbeddedImage')->willReturn(true);
+        $email->expects($this->once())->method('getBody')->willReturn($body);
+        $email->expects($this->once())->method('setBody')->with($generatedEmailBody);
 
         $email->includeImages(
             $imageDirectory,
@@ -181,31 +181,31 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSendMailBySmtp()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail"]);
-        $email->expects($this->once())->method('sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
 
         $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
         $email->setHost("localhost");
         $email->setMailer("smtp");
 
         $this->assertTrue($email->send());
-        $this->assertEquals('smtp', $email->getMailer());
+        $this->assertSame('smtp', $email->getMailer());
     }
 
     public function testSendMailByPhpMailFunction()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail"]);
-        $email->expects($this->once())->method('sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
 
         $email->setMailer('mail');
         $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
         $this->assertTrue($email->send());
-        $this->assertEquals('mail', $email->getMailer());
+        $this->assertSame('mail', $email->getMailer());
     }
 
     public function testSendMailByPhpMailWhenSmtpFails()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['sendMail', 'sendMailErrorMsg']);
-        $email->expects($this->atLeast(2))->method('sendMail')->will($this->returnValue(false));
+        $email->expects($this->atLeast(2))->method('sendMail')->willReturn(false);
         $email->expects($this->atLeastOnce())->method('sendMailErrorMsg');
 
         $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
@@ -213,15 +213,15 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $email->setMailer("smtp");
 
         $this->assertFalse($email->send());
-        $this->assertEquals('mail', $email->getMailer());
+        $this->assertSame('mail', $email->getMailer());
     }
 
     public function testSendMailErrorMsgWhenMailingFails()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "sendMailErrorMsg", "getMailer"]);
-        $email->expects($this->exactly(2))->method('sendMail')->will($this->returnValue(false));
+        $email->expects($this->exactly(2))->method('sendMail')->willReturn(false);
         $email->expects($this->exactly(2))->method('sendMailErrorMsg');
-        $email->expects($this->once())->method('getMailer')->will($this->returnValue("smtp"));
+        $email->expects($this->once())->method('getMailer')->willReturn("smtp");
 
         $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
         $email->send();
@@ -232,14 +232,14 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         // just forcing to connect to webserver..
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['isValidSmtpHost']);
         $email->expects($this->once())->method('isValidSmtpHost')
-            ->with($this->equalTo('127.0.0.1'))
-            ->will($this->returnValue(true));
+            ->with('127.0.0.1')
+            ->willReturn(true);
 
         $email->setSmtp($this->shop);
-        $this->assertEquals('smtp', $email->getMailer());
-        $this->assertEquals('127.0.0.1', $email->Host);
-        $this->assertEquals('testSmtpUser', $email->Username);
-        $this->assertEquals('testSmtpPassword', $email->Password);
+        $this->assertSame('smtp', $email->getMailer());
+        $this->assertSame('127.0.0.1', $email->Host);
+        $this->assertSame('testSmtpUser', $email->Username);
+        $this->assertSame('testSmtpPassword', $email->Password);
     }
 
     public function testSetSmtpWithNoSmtpValues()
@@ -248,7 +248,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
 
         $this->shop->oxshops__oxsmtp = new oxField(null, oxField::T_RAW);
         $email->setSmtp($this->shop);
-        $this->assertEquals('mail', $email->getMailer());
+        $this->assertSame('mail', $email->getMailer());
     }
 
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
@@ -263,9 +263,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $basket->setCost('oxdelivery', new oxPrice(6626));
 
         $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, ["getOrderUser", "getBasket", "getPayment"]);
-        $order->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->user));
-        $order->expects($this->any())->method('getBasket')->will($this->returnValue($basket));
-        $order->expects($this->any())->method('getPayment')->will($this->returnValue($payment));
+        $order->method('getOrderUser')->willReturn($this->user);
+        $order->method('getBasket')->willReturn($basket);
+        $order->method('getPayment')->willReturn($payment);
 
         $order->oxorder__oxbillcompany = new oxField('');
         $order->oxorder__oxbillfname = new oxField('');
@@ -277,8 +277,8 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $order->oxorder__oxdeltype = new oxField("oxidstandard");
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
-        $email->expects($this->once())->method('sendMail')->will($this->returnValue(true));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->sendOrderEmailToOwner($order);
         $this->assertTrue($blRet, 'Order email was not sent to shop owner');
@@ -290,7 +290,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
         $email->expects($this->never())->method('sendMail');
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->SendForgotPwdEmail('nosuchuser@useremail.nl');
         $this->assertFalse($blRet, 'Mail was sent to not existing user');
@@ -299,11 +299,11 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSendForgotPwdEmailSendingFailed()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["send", "getShop"]);
-        $email->expects($this->any())->method('send')->will($this->returnValue(false));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->method('send')->willReturn(false);
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->SendForgotPwdEmail('username@useremail.nl');
-        $this->assertEquals(-1, $blRet);
+        $this->assertSame(-1, $blRet);
     }
 
     public function testSendEmailToMultipleUsers()
@@ -313,16 +313,16 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $sBody = 'testBody';
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
-        $email->expects($this->once())->method('sendMail')->will($this->returnValue(true));
-        $email->expects($this->once())->method('getShop')->will($this->returnValue($this->shop));
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
+        $email->expects($this->once())->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->sendEmail($aTo, $sSubject, $sBody);
         $this->assertTrue($blRet, 'Mail was not sent');
 
         $aRecipients = $email->getRecipient();
-        $this->assertEquals(2, count($aRecipients));
-        $this->assertEquals('username@useremail.nl', $aRecipients[0][0]);
-        $this->assertEquals('username2@useremail.nl', $aRecipients[1][0]);
+        $this->assertCount(2, $aRecipients);
+        $this->assertSame('username@useremail.nl', $aRecipients[0][0]);
+        $this->assertSame('username2@useremail.nl', $aRecipients[1][0]);
     }
 
     /*
@@ -337,14 +337,14 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $this->article->save();
 
         $basketItem = $this->getMock(BasketItem::class, ['getArticle', 'getProductId']);
-        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
-        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
+        $basketItem->method('getArticle')->willReturn($this->article);
+        $basketItem->method('getProductId')->willReturn('_testArticleId');
 
         $aBasketContents[] = $basketItem;
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
-        $email->expects($this->once())->method('sendMail')->will($this->returnValue(true));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertTrue($blRet, 'Stock remind mail was not sent');
@@ -358,14 +358,14 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $this->article->save();
 
         $basketItem = $this->getMock(BasketItem::class, ['getArticle', 'getProductId']);
-        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
-        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('testArticleId'));
+        $basketItem->method('getArticle')->willReturn($this->article);
+        $basketItem->method('getProductId')->willReturn('testArticleId');
 
         $aBasketContents[] = $basketItem;
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
-        $email->expects($this->never())->method('sendMail')->will($this->returnValue(true));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->expects($this->never())->method('sendMail')->willReturn(true);
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertFalse($blRet, 'No need to send stock remind mail');
@@ -380,14 +380,14 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $this->article->save();
 
         $basketItem = $this->getMock(BasketItem::class, ['getArticle', 'getProductId']);
-        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
-        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('testArticleId'));
+        $basketItem->method('getArticle')->willReturn($this->article);
+        $basketItem->method('getProductId')->willReturn('testArticleId');
 
         $aBasketContents[] = $basketItem;
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop"]);
-        $email->expects($this->never())->method('sendMail')->will($this->returnValue(true));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->expects($this->never())->method('sendMail')->willReturn(true);
+        $email->method('getShop')->willReturn($this->shop);
 
         $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertFalse($blRet, 'No need to send stock remind mail');
@@ -399,7 +399,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $sImageDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
 
         $email = oxNew('oxEmail');
-        $email->setBody(sprintf('<img src=\'%s/test.png\'> --- <img src=\'%s/test.jpg\'>', $sImageDir, $sImageDir));
+        $email->setBody(sprintf("<img src='%s/test.png'> --- <img src='%s/test.jpg'>", $sImageDir, $sImageDir));
 
         $email->includeImages(
             $sImageDir,
@@ -410,22 +410,22 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         );
 
         $aAttachments = $email->getAttachments();
-        $this->assertEquals('test.png', $aAttachments[0][1]);
-        $this->assertEquals('test.jpg', $aAttachments[1][1]);
+        $this->assertSame('test.png', $aAttachments[0][1]);
+        $this->assertSame('test.jpg', $aAttachments[1][1]);
     }
 
     public function testSetGetSubject()
     {
         $email = oxNew('oxEmail');
         $email->setSubject('testSubject');
-        $this->assertEquals('testSubject', $email->getSubject());
+        $this->assertSame('testSubject', $email->getSubject());
     }
 
     public function testSetGetBody()
     {
         $email = oxNew('oxEmail');
         $email->setBody('testBody');
-        $this->assertEquals('testBody', $email->getBody());
+        $this->assertSame('testBody', $email->getBody());
     }
 
     public function testClearSidFromBody()
@@ -435,16 +435,16 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $email = oxNew('oxEmail');
 
         $email->setBody('testBody index.php?bonusid=111&sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
+        $this->assertSame('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
         $email->setBody('testBody index.php?bonusid=111&force_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
+        $this->assertSame('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
         $email->setBody('testBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
+        $this->assertSame('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
         $email->setBody('testBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
+        $this->assertSame('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
     }
 
     public function testSetGetAltBody()
@@ -452,7 +452,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $email = oxNew('oxEmail');
 
         $email->setAltBody('testAltBody');
-        $this->assertEquals('testAltBody', $email->getAltBody());
+        $this->assertSame('testAltBody', $email->getAltBody());
     }
 
     public function testClearSidFromAltBody()
@@ -460,22 +460,22 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $sShopId = $this->getConfig()->getBaseShopId();
 
         $this->email->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
+        $this->assertSame('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
         $this->email->setAltBody('testAltBody index.php?bonusid=111&force_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
+        $this->assertSame('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
         $this->email->setAltBody('testAltBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
+        $this->assertSame('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
         $this->email->setAltBody('testAltBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
+        $this->assertSame('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
     }
 
     public function testClearHtmlEntitiesFromAltBody()
     {
         $this->email->setAltBody('testAltBody &amp; &quot; &#039; &lt; &gt;');
-        $this->assertEquals('testAltBody & " \' < >', $this->email->getAltBody());
+        $this->assertSame('testAltBody & " \' < >', $this->email->getAltBody());
     }
 
     public function testSetGetRecipient()
@@ -484,19 +484,19 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $aUser[0][1] = 'testUserName';
 
         $this->email->setRecipient($aUser[0][0], $aUser[0][1]);
-        $this->assertEquals($aUser, $this->email->getRecipient());
+        $this->assertSame($aUser, $this->email->getRecipient());
     }
 
     public function testSetRecipient_emptyEmail()
     {
         $this->email->setRecipient("", "");
-        $this->assertEquals([], $this->email->getRecipient());
+        $this->assertSame([], $this->email->getRecipient());
     }
 
     public function testSetRecipient_emptyName()
     {
         $this->email->setRecipient("test@test.lt", "");
-        $this->assertEquals([["test@test.lt", ""]], $this->email->getRecipient());
+        $this->assertSame([["test@test.lt", ""]], $this->email->getRecipient());
     }
 
     public function testSetGetReplyTo()
@@ -505,13 +505,13 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $aUser[0][1] = 'testUserName';
 
         $this->email->setReplyTo($aUser[0][0], $aUser[0][1]);
-        $this->assertEquals($aUser, $this->email->getReplyTo());
+        $this->assertSame($aUser, $this->email->getReplyTo());
     }
 
     public function testSetReplyToWithNoParams()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["getShop"]);
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->method('getShop')->willReturn($this->shop);
 
         $email->setReplyTo();
         $aReplyTo = $email->getReplyTo();
@@ -522,14 +522,14 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSetGetFrom()
     {
         $this->email->setFrom('testuser@testuser.com', 'testUserName');
-        $this->assertEquals('testuser@testuser.com', $this->email->getFrom());
-        $this->assertEquals('testUserName', $this->email->getFromName());
+        $this->assertSame('testuser@testuser.com', $this->email->getFrom());
+        $this->assertSame('testUserName', $this->email->getFromName());
     }
 
     public function testSetCharSet()
     {
         $this->email->setCharSet('testCharset');
-        $this->assertEquals('testCharset', $this->email->getCharSet());
+        $this->assertSame('testCharset', $this->email->getCharSet());
     }
 
     public function testSetDefaultCharSet()
@@ -541,25 +541,25 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSetGetMailer()
     {
         $this->email->setMailer('smtp');
-        $this->assertEquals('smtp', $this->email->getMailer());
+        $this->assertSame('smtp', $this->email->getMailer());
     }
 
     public function testSetGetHost()
     {
         $this->email->setHost('localhost');
-        $this->assertEquals('localhost', $this->email->Host);
+        $this->assertSame('localhost', $this->email->Host);
     }
 
     public function testGetErrorInfo()
     {
         $this->email->ErrorInfo = 'testErrorMessage';
-        $this->assertEquals('testErrorMessage', $this->email->getErrorInfo());
+        $this->assertSame('testErrorMessage', $this->email->getErrorInfo());
     }
 
     public function testSetMailWordWrap()
     {
         $this->email->setMailWordWrap('500');
-        $this->assertEquals('500', $this->email->WordWrap);
+        $this->assertSame('500', $this->email->WordWrap);
     }
 
     public function testGetUseInlineImagesFromConfig()
@@ -586,9 +586,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSendMailErrorMsg()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["getRecipient", "getMailer", "sendMail", "sendMailErrorMsg"]);
-        $email->method('getRecipient')->will($this->returnValue([1]));
-        $email->method('getMailer')->will($this->returnValue("smtp"));
-        $email->method('sendMail')->will($this->returnValue(false));
+        $email->method('getRecipient')->willReturn([1]);
+        $email->method('getMailer')->willReturn("smtp");
+        $email->method('sendMail')->willReturn(false);
 
         $this->assertFalse($email->send());
     }
@@ -596,8 +596,8 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSendMailErrorMsg_failsOnlySmtp()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["getRecipient", "getMailer", "sendMail", "sendMailErrorMsg"]);
-        $email->method('getRecipient')->will($this->returnValue([1]));
-        $email->method('getMailer')->will($this->returnValue("smtp"));
+        $email->method('getRecipient')->willReturn([1]);
+        $email->method('getMailer')->willReturn("smtp");
 
         $email
             ->method('sendMail')
@@ -612,9 +612,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testSendMailErrorMsg_failsMail()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["getRecipient", "getMailer", "sendMail", "sendMailErrorMsg"]);
-        $email->method('getRecipient')->will($this->returnValue([1]));
-        $email->method('getMailer')->will($this->returnValue("mail"));
-        $email->method('sendMail')->will($this->returnValue(false));
+        $email->method('getRecipient')->willReturn([1]);
+        $email->method('getMailer')->willReturn("mail");
+        $email->method('sendMail')->willReturn(false);
         $email->method('sendMailErrorMsg');
 
         $this->assertFalse($email->send());
@@ -653,32 +653,32 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
 
         $this->email->clearMailer();
 
-        $this->assertEquals([], $this->email->getRecipient());
-        $this->assertEquals([], $this->email->getReplyTo());
-        $this->assertEquals('', $this->email->getErrorInfo());
+        $this->assertSame([], $this->email->getRecipient());
+        $this->assertSame([], $this->email->getReplyTo());
+        $this->assertSame('', $this->email->getErrorInfo());
     }
 
     public function testSetMailParamsWithDefaultShop()
     {
         // no smtp connect
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['isValidSmtpHost', 'getShop']);
-        $email->expects($this->any())->method('isValidSmtpHost')->will($this->returnValue(false));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->method('isValidSmtpHost')->willReturn(false);
+        $email->method('getShop')->willReturn($this->shop);
 
         //with no params must get default shop values
         $email->setMailParams();
 
-        $this->assertEquals('orderemail@orderemail.nl', $email->getFrom());
-        $this->assertEquals('testShopName', $email->getFromName());
-        $this->assertEquals('mail', $email->getMailer());
+        $this->assertSame('orderemail@orderemail.nl', $email->getFrom());
+        $this->assertSame('testShopName', $email->getFromName());
+        $this->assertSame('mail', $email->getMailer());
     }
 
     public function testSetMailParamsWithSelectedShop()
     {
         // with smtp connect
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['isValidSmtpHost', 'getShop']);
-        $email->expects($this->any())->method('isValidSmtpHost')->will($this->returnValue(true));
-        $email->expects($this->any())->method('getShop')->will($this->returnValue($this->shop));
+        $email->method('isValidSmtpHost')->willReturn(true);
+        $email->method('getShop')->willReturn($this->shop);
 
         $oShop = oxNew("oxshop");
         $oShop->oxshops__oxorderemail = new oxField('orderemail2@orderemail2.nl', oxField::T_RAW);
@@ -689,12 +689,12 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
 
         $email->setMailParams($oShop);
 
-        $this->assertEquals('orderemail2@orderemail2.nl', $email->getFrom());
-        $this->assertEquals('testShopName2', $email->getFromName());
-        $this->assertEquals('smtp', $email->getMailer());
-        $this->assertEquals('127.0.0.1', $email->Host);
-        $this->assertEquals('testSmtpUser2', $email->Username);
-        $this->assertEquals('testSmtpPassword2', $email->Password);
+        $this->assertSame('orderemail2@orderemail2.nl', $email->getFrom());
+        $this->assertSame('testShopName2', $email->getFromName());
+        $this->assertSame('smtp', $email->getMailer());
+        $this->assertSame('127.0.0.1', $email->Host);
+        $this->assertSame('testSmtpUser2', $email->Username);
+        $this->assertSame('testSmtpPassword2', $email->Password);
     }
 
     public function testGetShopWhenShopIsNotSet()
@@ -714,7 +714,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testGetShopWithLanguageId()
     {
         $oShop = $this->email->getShop(1);
-        $this->assertEquals(1, $oShop->getLanguage());
+        $this->assertSame(1, $oShop->getLanguage());
         $this->assertEquals($this->getConfig()->getShopId(), $oShop->getShopId());
     }
 
@@ -725,7 +725,7 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $sShopId = $this->getConfig()->getBaseShopId();
 
         $oShop = $this->email->getShop(1, $sShopId);
-        $this->assertEquals(1, $oShop->getLanguage());
+        $this->assertSame(1, $oShop->getLanguage());
         $this->assertEquals($sShopId, $oShop->getShopId());
         $this->assertEquals($this->shop, $this->email->getShop());
     }
@@ -734,8 +734,8 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     {
         $this->email->setSmtpAuthInfo('testUserName', 'testPassword');
 
-        $this->assertEquals('testUserName', $this->email->Username);
-        $this->assertEquals('testPassword', $this->email->Password);
+        $this->assertSame('testUserName', $this->email->Username);
+        $this->assertSame('testPassword', $this->email->Password);
     }
 
     public function testSetSmtpDebug()
@@ -750,8 +750,8 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $this->email->setAltBody('testaltbody 55 €'); //with euro sign
         $this->email->makeOutputProcessing();
 
-        $this->assertEquals('testbody 55 €', $this->email->getBody());
-        $this->assertEquals('testaltbody 55 €', $this->email->getAltBody());
+        $this->assertSame('testbody 55 €', $this->email->getBody());
+        $this->assertSame('testaltbody 55 €', $this->email->getAltBody());
     }
 
     public function testHeaderLine()
@@ -780,19 +780,19 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     public function testGetNewsSubsLink()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
-        $this->assertEquals($sUrl, $this->email->getNewsSubsLink('XXXX'));
+        $this->assertSame($sUrl, $this->email->getNewsSubsLink('XXXX'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->email->getNewsSubsLink('XXXX'));
+        $this->assertSame($sUrl, $this->email->getNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
-        $this->assertEquals($sUrl, $this->email->getNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertSame($sUrl, $this->email->getNewsSubsLink('XXXX', 'AAAA'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->email->getNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertSame($sUrl, $this->email->getNewsSubsLink('XXXX', 'AAAA'));
     }
 
     public function testSetSmtpProtocol()
@@ -802,9 +802,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
             ->method('set')
             ->withConsecutive(['SMTPSecure', 'ssl'], ['SMTPSecure', 'tls']);
 
-        $this->assertEquals("hostname:23", $email->setSmtpProtocol('ssl://hostname:23'));
-        $this->assertEquals("hostname:23", $email->setSmtpProtocol('tls://hostname:23'));
-        $this->assertEquals("ssx://hostname:23", $email->setSmtpProtocol('ssx://hostname:23'));
+        $this->assertSame("hostname:23", $email->setSmtpProtocol('ssl://hostname:23'));
+        $this->assertSame("hostname:23", $email->setSmtpProtocol('tls://hostname:23'));
+        $this->assertSame("ssx://hostname:23", $email->setSmtpProtocol('ssx://hostname:23'));
     }
 
     public function testSendOrderEmailToOwnerCorrectSenderReceiver()
@@ -814,24 +814,24 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $renderer->exists(Argument::type('string'))->willReturn(false);
 
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getRenderer"]);
-        $email->expects($this->once())->method("sendMail")->will($this->returnValue(true));
-        $email->expects($this->any())->method("getRenderer")->will($this->returnValue($renderer->reveal()));
+        $email->expects($this->once())->method("sendMail")->willReturn(true);
+        $email->method("getRenderer")->willReturn($renderer->reveal());
 
         $user = oxNew('oxUser');
         $user->load("oxdefaultadmin");
         //oxOrder mock
         $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, ["getOrderUser"]);
-        $order->expects($this->once())->method("getOrderUser")->will($this->returnValue($user));
+        $order->expects($this->once())->method("getOrderUser")->willReturn($user);
 
         $email->sendOrderEmailToOwner($order);
 
         //testing actual From field Value
-        $this->assertEquals("order@myoxideshop.com", $email->getFrom());
+        $this->assertSame("order@myoxideshop.com", $email->getFrom());
         //testing actual To field Value
         $aTo = [];
         $aTo[0][0] = 'order@myoxideshop.com';
         $aTo[0][1] = 'order';
-        $this->assertEquals($aTo, $email->getRecipient());
+        $this->assertSame($aTo, $email->getRecipient());
     }
 
     public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()
@@ -868,20 +868,17 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         ContainerFactory::resetContainer();
     }
 
-    public function dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration()
+    public function dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration(): \Iterator
     {
-        return [
-            [
-                'configParameterLoadReviewsValue'  => true,
-                'isReviewLinkExpectedToBeIncluded' => true,
-                'message'                          => 'Links to product reviews are included in the email body'
-            ],
-            [
-                'configParameterLoadReviewsValue'  => false,
-                'isReviewLinkExpectedToBeIncluded' => false,
-                'message'                          => 'No links to product reviews are included in the email body'
-            ],
-
+        yield [
+            'configParameterLoadReviewsValue'  => true,
+            'isReviewLinkExpectedToBeIncluded' => true,
+            'message'                          => 'Links to product reviews are included in the email body'
+        ];
+        yield [
+            'configParameterLoadReviewsValue'  => false,
+            'isReviewLinkExpectedToBeIncluded' => false,
+            'message'                          => 'No links to product reviews are included in the email body'
         ];
     }
 
@@ -919,33 +916,31 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($isReviewLinkExpectedToBeIncluded, $this->isReviewLinkIncluded($body), $message);
     }
 
-    public function dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration()
+    public function dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration(): \Iterator
     {
-        return [
-            [
-                'configParameterLoadReviewsValue'                 => true,
-                'configParameterIncludeProductReviewLinksInEmail' => true,
-                'isReviewLinkExpectedToBeIncluded'                => true,
-                'message'                                         => 'Links to product reviews are included in the email body'
-            ],
-            [
-                'configParameterLoadReviewsValue'                 => true,
-                'configParameterIncludeProductReviewLinksInEmail' => false,
-                'isReviewLinkExpectedToBeIncluded'                => false,
-                'message'                                         => 'No links to product reviews are included in the email body'
-            ],
-            [
-                'configParameterLoadReviewsValue'                 => false,
-                'configParameterIncludeProductReviewLinksInEmail' => true,
-                'isReviewLinkExpectedToBeIncluded'                => false,
-                'message'                                         => 'No links to product reviews are included in the email body'
-            ],
-            [
-                'configParameterLoadReviewsValue'                 => false,
-                'configParameterIncludeProductReviewLinksInEmail' => false,
-                'isReviewLinkExpectedToBeIncluded'                => false,
-                'message'                                         => 'No links to product reviews are included in the email body'
-            ],
+        yield [
+            'configParameterLoadReviewsValue'                 => true,
+            'configParameterIncludeProductReviewLinksInEmail' => true,
+            'isReviewLinkExpectedToBeIncluded'                => true,
+            'message'                                         => 'Links to product reviews are included in the email body'
+        ];
+        yield [
+            'configParameterLoadReviewsValue'                 => true,
+            'configParameterIncludeProductReviewLinksInEmail' => false,
+            'isReviewLinkExpectedToBeIncluded'                => false,
+            'message'                                         => 'No links to product reviews are included in the email body'
+        ];
+        yield [
+            'configParameterLoadReviewsValue'                 => false,
+            'configParameterIncludeProductReviewLinksInEmail' => true,
+            'isReviewLinkExpectedToBeIncluded'                => false,
+            'message'                                         => 'No links to product reviews are included in the email body'
+        ];
+        yield [
+            'configParameterLoadReviewsValue'                 => false,
+            'configParameterIncludeProductReviewLinksInEmail' => false,
+            'isReviewLinkExpectedToBeIncluded'                => false,
+            'message'                                         => 'No links to product reviews are included in the email body'
         ];
     }
 
@@ -959,16 +954,16 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
     {
         $priceStub = $this->getMockBuilder(Price::class)
             ->getMock();
-        $priceStub->method('getPrice')->will($this->returnValue(256));
-        $priceStub->method('getBruttoPrice')->will($this->returnValue(8));
+        $priceStub->method('getPrice')->willReturn(256);
+        $priceStub->method('getBruttoPrice')->willReturn(8);
 
         $basketItemStub = $this->getMockBuilder(BasketItem::class)
             ->setMethods(['getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle'])
             ->getMock();
-        $basketItemStub->method('getPrice')->will($this->returnValue($priceStub));
-        $basketItemStub->method('getUnitPrice')->will($this->returnValue($priceStub));
-        $basketItemStub->method('getRegularUnitPrice')->will($this->returnValue($priceStub));
-        $basketItemStub->method('getTitle')->will($this->returnValue("testarticle"));
+        $basketItemStub->method('getPrice')->willReturn($priceStub);
+        $basketItemStub->method('getUnitPrice')->willReturn($priceStub);
+        $basketItemStub->method('getRegularUnitPrice')->willReturn($priceStub);
+        $basketItemStub->method('getTitle')->willReturn("testarticle");
 
         // insert test article
         $article = oxNew("oxArticle");
@@ -982,10 +977,10 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $basketStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)
             ->setMethods(['getBasketArticles', 'getContents', 'getCosts', 'getBruttoSum',])
             ->getMock();
-        $basketStub->method('getBasketArticles')->will($this->returnValue([$article]));
-        $basketStub->method('getContents')->will($this->returnValue([$basketItemStub]));
-        $basketStub->method('getCosts')->will($this->returnValue($priceStub));
-        $basketStub->method('getBruttoSum')->will($this->returnValue(7));
+        $basketStub->method('getBasketArticles')->willReturn([$article]);
+        $basketStub->method('getContents')->willReturn([$basketItemStub]);
+        $basketStub->method('getCosts')->willReturn($priceStub);
+        $basketStub->method('getBruttoSum')->willReturn(7);
 
         $payment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $payment->oxpayments__oxdesc = new oxField("testPaymentDesc");
@@ -1000,9 +995,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
         $orderStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Order::class)
             ->setMethods(['getOrderUser', 'getBasket', 'getPayment'])
             ->getMock();
-        $orderStub->method('getOrderUser')->will($this->returnValue($user));
-        $orderStub->method('getBasket')->will($this->returnValue($basketStub));
-        $orderStub->method('getPayment')->will($this->returnValue($payment));
+        $orderStub->method('getOrderUser')->willReturn($user);
+        $orderStub->method('getBasket')->willReturn($basketStub);
+        $orderStub->method('getPayment')->willReturn($payment);
 
         $orderStub->oxorder__oxordernr = new oxField('987654321', oxField::T_RAW);
         $orderStub->oxorder__oxbillfname = new oxField('');
@@ -1029,9 +1024,9 @@ final class EmailTest extends \PHPUnit\Framework\TestCase
             ->setMethods(['sendMail', 'getShop', 'getOrderFileList'])
             ->getMock();
         ;
-        $emailStub->method('sendMail')->will($this->returnValue(true));
-        $emailStub->method('getShop')->will($this->returnValue($shop));
-        $emailStub->method('getOrderFileList')->will($this->returnValue(false));
+        $emailStub->method('sendMail')->willReturn(true);
+        $emailStub->method('getShop')->willReturn($shop);
+        $emailStub->method('getOrderFileList')->willReturn(false);
 
         return $emailStub;
     }

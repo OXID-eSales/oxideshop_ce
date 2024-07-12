@@ -23,7 +23,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
         $myConfig = $this->getConfig();
         $sDate = date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - 5 * 24 * 60 * 60);
         $sInsert = "INSERT INTO `oxratings` (`OXID` ,`OXSHOPID` ,`OXUSERID` ,`OXOBJECTID` ,`OXRATING` ,`OXTIMESTAMP` ,
-                    `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . sprintf('\', \'oxdefaultadmin\', \'1651\', \'5\', \'%s\', \'oxarticle\')', $sDate);
+                    `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . sprintf("', 'oxdefaultadmin', '1651', '5', '%s', 'oxarticle')", $sDate);
         $oDB->Execute($sInsert);
     }
 
@@ -84,10 +84,10 @@ class RatingTest extends \PHPUnit\Framework\TestCase
         $oRev->save();
 
         $oRating = oxNew('oxRating');
-        $this->assertEquals(2, $oRating->getRatingAverage('xxx', 'oxarticle'));
-        $this->assertEquals(2, $oRating->getRatingCount('xxx', 'oxarticle'));
-        $this->assertEquals(3, $oRating->getRatingAverage('xxx', 'oxarticle', ['yyy']));
-        $this->assertEquals(3, $oRating->getRatingCount('xxx', 'oxarticle', ['yyy']));
+        $this->assertSame(2, $oRating->getRatingAverage('xxx', 'oxarticle'));
+        $this->assertSame(2, $oRating->getRatingCount('xxx', 'oxarticle'));
+        $this->assertSame(3, $oRating->getRatingAverage('xxx', 'oxarticle', ['yyy']));
+        $this->assertSame(3, $oRating->getRatingCount('xxx', 'oxarticle', ['yyy']));
     }
 
     public function testGetObjectIdAndType()
@@ -111,14 +111,14 @@ class RatingTest extends \PHPUnit\Framework\TestCase
 
         $oRat = oxNew('oxRating');
         $oRat->load('id1');
-        $this->assertEquals('id1', $oRat->getId());
-        $this->assertEquals('xx1', $oRat->getObjectId());
-        $this->assertEquals('oxarticle', $oRat->getObjectType());
+        $this->assertSame('id1', $oRat->getId());
+        $this->assertSame('xx1', $oRat->getObjectId());
+        $this->assertSame('oxarticle', $oRat->getObjectType());
 
         $oRat = oxNew('oxRating');
         $oRat->load('id2');
-        $this->assertEquals('id2', $oRat->getId());
-        $this->assertEquals('xx2', $oRat->getObjectId());
-        $this->assertEquals('oxrecommlist', $oRat->getObjectType());
+        $this->assertSame('id2', $oRat->getId());
+        $this->assertSame('xx2', $oRat->getObjectId());
+        $this->assertSame('oxrecommlist', $oRat->getObjectType());
     }
 }

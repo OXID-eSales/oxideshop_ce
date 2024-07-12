@@ -14,7 +14,7 @@ class InputexceptionTest extends \PHPUnit\Framework\TestCase
     public function testGetString()
     {
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\InputException::class, $testObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\InputException::class, $testObject::class);
         $sStringOut = $testObject->getString(); // (string)$testObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertStringContainsString('InputException', $sStringOut);
     }

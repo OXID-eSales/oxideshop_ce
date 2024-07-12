@@ -23,13 +23,13 @@ class CmpCurTest extends \PHPUnit\Framework\TestCase
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         $oCur = $session->getBasket()->getBasketCurrency();
-        $this->assertEquals(2, $oCur->decimal);
+        $this->assertSame(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
         $this->getConfig()->setConfigParam("aCurrencies", ["EUR@ 1.00@ ,@ .@ ¤@ 1"]);
         $oCurView->init();
 
         $oCur = $session->getBasket()->getBasketCurrency();
-        $this->assertEquals(1, $oCur->decimal);
+        $this->assertSame(1, $oCur->decimal);
     }
 }

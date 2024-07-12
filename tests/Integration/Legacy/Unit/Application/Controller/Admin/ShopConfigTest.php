@@ -15,7 +15,7 @@ use OxidEsales\Eshop\Core\Config;
  */
 class ShopConfigTest extends \PHPUnit\Framework\TestCase
 {
-    public function setup(): void
+    protected function setup(): void
     {
         $this->setAdminMode(true);
 
@@ -29,7 +29,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals('shop_config', $oView->render());
+        $this->assertSame('shop_config', $oView->render());
     }
 
     public function testSaveConfVars(): void
@@ -68,7 +68,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetModuleForConfigVars()
     {
         $oTest = oxNew('Shop_Config');
-        $this->assertEquals('', $oTest->getModuleForConfigVars());
+        $this->assertSame('', $oTest->getModuleForConfigVars());
     }
 
     /**
@@ -91,7 +91,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals("a\nb\nc", $oView->arrayToMultiline($aInput));
+        $this->assertSame("a\nb\nc", $oView->arrayToMultiline($aInput));
     }
 
     /**
@@ -104,7 +104,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals([0 => "a", 1 => "b", 3 => "c"], $oView->multilineToArray($sMultiline));
+        $this->assertSame([0 => "a", 1 => "b", 3 => "c"], $oView->multilineToArray($sMultiline));
     }
 
     /**
@@ -117,7 +117,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals("a => b\nc => d", $oView->aarrayToMultiline($aInput));
+        $this->assertSame("a => b\nc => d", $oView->aarrayToMultiline($aInput));
     }
 
     /**
@@ -130,7 +130,7 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Shop_Config');
-        $this->assertEquals(["a" => "b", "c" => "d"], $oView->multilineToAarray($sMultiline));
+        $this->assertSame(["a" => "b", "c" => "d"], $oView->multilineToAarray($sMultiline));
     }
 
     /**
@@ -139,10 +139,10 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     public function testParseConstraint()
     {
         $oTest = oxNew('Shop_Config');
-        $this->assertEquals('', $oTest->parseConstraint('sometype', 'asdd'));
-        $this->assertEquals('', $oTest->parseConstraint('bool', 'asdd'));
-        $this->assertEquals('', $oTest->parseConstraint('string', 'asdd'));
-        $this->assertEquals(['a', 'bc', 'd'], $oTest->parseConstraint('select', 'a|bc|d'));
+        $this->assertSame('', $oTest->parseConstraint('sometype', 'asdd'));
+        $this->assertSame('', $oTest->parseConstraint('bool', 'asdd'));
+        $this->assertSame('', $oTest->parseConstraint('string', 'asdd'));
+        $this->assertSame(['a', 'bc', 'd'], $oTest->parseConstraint('select', 'a|bc|d'));
     }
 
     /**
@@ -151,10 +151,10 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     public function testSerializeConstraint()
     {
         $oTest = oxNew('Shop_Config');
-        $this->assertEquals('', $oTest->serializeConstraint('sometype', 'asdd'));
-        $this->assertEquals('', $oTest->serializeConstraint('bool', 'asdd'));
-        $this->assertEquals('', $oTest->serializeConstraint('string', 'asdd'));
-        $this->assertEquals('a|bc|d', $oTest->serializeConstraint('select', ['a', 'bc', 'd']));
+        $this->assertSame('', $oTest->serializeConstraint('sometype', 'asdd'));
+        $this->assertSame('', $oTest->serializeConstraint('bool', 'asdd'));
+        $this->assertSame('', $oTest->serializeConstraint('string', 'asdd'));
+        $this->assertSame('a|bc|d', $oTest->serializeConstraint('select', ['a', 'bc', 'd']));
     }
 
     /**
@@ -163,8 +163,8 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     public function testSerializeConfVar()
     {
         $oTest = oxNew('Shop_Config');
-        $this->assertEquals('1.1', $oTest->serializeConfVar('str', 'iMinOrderPrice', '1,1'));
-        $this->assertEquals('2,2', $oTest->serializeConfVar('str', 'shouldNotChange', '2,2'));
+        $this->assertSame('1.1', $oTest->serializeConfVar('str', 'iMinOrderPrice', '1,1'));
+        $this->assertSame('2,2', $oTest->serializeConfVar('str', 'shouldNotChange', '2,2'));
     }
 
     /**
@@ -173,8 +173,8 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
     public function testUnserializeConfVar()
     {
         $oTest = oxNew('Shop_Config');
-        $this->assertEquals('1.1', $oTest->unserializeConfVar('str', 'iMinOrderPrice', '1,1'));
-        $this->assertEquals('2,2', $oTest->unserializeConfVar('str', 'shouldNotChange', '2,2'));
+        $this->assertSame('1.1', $oTest->unserializeConfVar('str', 'iMinOrderPrice', '1,1'));
+        $this->assertSame('2,2', $oTest->unserializeConfVar('str', 'shouldNotChange', '2,2'));
     }
 
 
@@ -186,14 +186,14 @@ class ShopConfigTest extends \PHPUnit\Framework\TestCase
         $oTest = oxNew('Shop_Config');
         $aDbConfig = $oTest->loadConfVars($this->getConfig()->getShopId(), '');
 
-        $this->assertEquals(
+        $this->assertSame(
             ['vars', 'constraints', 'grouping'],
             array_keys($aDbConfig)
         );
 
         $iVarSum = array_sum(array_map(count(...), $aDbConfig['vars']));
         $this->assertGreaterThan(100, $iVarSum);
-        $this->assertEquals($iVarSum, count($aDbConfig['constraints']));
+        $this->assertCount($iVarSum, $aDbConfig['constraints']);
     }
 
     public function testInformationSendingToOxidConfigurable()

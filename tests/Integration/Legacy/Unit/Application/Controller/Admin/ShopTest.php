@@ -18,6 +18,6 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oView = oxNew('Shop');
-        $this->assertEquals('shop', $oView->render());
+        $this->assertSame('shop', $oView->render());
     }
 }

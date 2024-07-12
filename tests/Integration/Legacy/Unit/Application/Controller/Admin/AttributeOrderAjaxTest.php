@@ -55,7 +55,7 @@ class AttributeOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('attribute_order_ajax');
         $sViewTable = $this->getVieTableName();
 
-        $this->assertEquals(sprintf('from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = \'%s\'', $sViewTable, $sViewTable, $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame(sprintf("from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = '%s'", $sViewTable, $sViewTable, $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -64,7 +64,7 @@ class AttributeOrderAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetSorting()
     {
         $oView = oxNew('attribute_order_ajax');
-        $this->assertEquals("order by oxcategory2attribute.oxsort", trim((string) $oView->getSorting()));
+        $this->assertSame("order by oxcategory2attribute.oxsort", trim((string) $oView->getSorting()));
     }
 
     /**
@@ -76,10 +76,10 @@ class AttributeOrderAjaxTest extends \PHPUnit\Framework\TestCase
 
         $sViewTable = $this->getVieTableName();
 
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = \'%s\' ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf("select count( * )  from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = '%s' ", $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, ["output"]);
-        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
+        $oView->method('output')->with(json_encode($aData));
         $oView->setsorting();
     }
 
@@ -95,13 +95,13 @@ class AttributeOrderAjaxTest extends \PHPUnit\Framework\TestCase
 
         $sViewTable = $this->getVieTableName();
 
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = \'%s\' ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf("select count( * )  from %s left join oxcategory2attribute on oxcategory2attribute.oxattrid = %s.oxid where oxobjectid = '%s' ", $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, ["output"]);
-        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
+        $oView->method('output')->with(json_encode($aData));
         $oView->setsorting();
 
-        $this->assertEquals(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select sum(oxsort) from oxcategory2attribute where oxobjectid='_testObject'"));
     }
 
     /**
@@ -112,6 +112,7 @@ class AttributeOrderAjaxTest extends \PHPUnit\Framework\TestCase
         if ((new Facts())->getEdition() === 'EE') {
             return "oxv_oxattribute_1_de";
         }
+
         return "oxv_oxattribute_de";
     }
 }

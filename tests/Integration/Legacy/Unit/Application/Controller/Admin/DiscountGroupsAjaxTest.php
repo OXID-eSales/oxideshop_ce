@@ -48,7 +48,7 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('discount_groups_ajax');
         $sQuery = sprintf('from %s where 1', $sGroupTable);
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -68,7 +68,7 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxgroups'  and";
         $sQuery .= sprintf(' %s.oxid not in ( select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sGroupTable, $sGroupTable, $sGroupTable, $sGroupTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxgroups' )";
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -85,7 +85,7 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery = sprintf('from %s where 1  and', $sGroupTable);
         $sQuery .= sprintf(' %s.oxid not in ( select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sGroupTable, $sGroupTable, $sGroupTable, $sGroupTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxgroups' )";
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -94,11 +94,11 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemoveDiscGroup()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountGroupsAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testO2DRemove1', '_testO2DRemove2']));
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $oView->method('getActionIds')->willReturn(['_testO2DRemove1', '_testO2DRemove2']);
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->removeDiscGroup();
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -110,11 +110,11 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView = oxNew('discount_groups_ajax');
         $oView->removeDiscGroup();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -125,11 +125,11 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testDiscount';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountGroupsAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['oxidmiddlecust', 'oxidgoodcust']));
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $oView->method('getActionIds')->willReturn(['oxidmiddlecust', 'oxidgoodcust']);
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->addDiscGroup();
-        $this->assertEquals(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -145,9 +145,9 @@ class DiscountGroupsAjaxTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('discount_groups_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2discount where oxdiscountid='%s'", $sSynchoxid)));
 
         $oView->addDiscGroup();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2discount where oxdiscountid='%s'", $sSynchoxid)));
     }
 }

@@ -53,8 +53,8 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
-        $this->assertEquals("testModuleId", $oModule->getInfo("id"));
-        $this->assertEquals("testModuleTitle", $oModule->getInfo("title"));
+        $this->assertSame("testModuleId", $oModule->getInfo("id"));
+        $this->assertSame("testModuleTitle", $oModule->getInfo("title"));
     }
 
     /**
@@ -67,11 +67,11 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
-        $this->assertEquals('testModuleTitle', $oModule->getInfo("title"));
-        $this->assertEquals('testModuleTitle', $oModule->getInfo("title", 1));
+        $this->assertSame('testModuleTitle', $oModule->getInfo("title"));
+        $this->assertSame('testModuleTitle', $oModule->getInfo("title", 1));
 
-        $this->assertEquals("test DE value", $oModule->getInfo("description", 0));
-        $this->assertEquals("test EN value", $oModule->getInfo("description", 1));
+        $this->assertSame("test DE value", $oModule->getInfo("description", 0));
+        $this->assertSame("test EN value", $oModule->getInfo("description", 1));
 
         $this->expectException(
             \OxidEsales\EshopCommunity\Core\Exception\LanguageNotFoundException::class
@@ -84,7 +84,10 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
 
     public function providerGetMetadataPath()
     {
-        return [["oe/module/"], ["oe/module"]];
+        return [
+            ["oe/module/"],
+            ["oe/module"],
+        ];
     }
 
     /**
@@ -97,7 +100,7 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModule);
 
-        $this->assertEquals('testModuleId', $oModule->getId());
+        $this->assertSame('testModuleId', $oModule->getId());
     }
 
     /**
@@ -110,7 +113,7 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $module = oxNew(Module::class);
         $module->setModuleData($metaData);
 
-        $this->assertEquals([], $module->getControllers(), 'If key controllers is not set in metadata.php, Module::getControllers() will return an empty array');
+        $this->assertSame([], $module->getControllers(), 'If key controllers is not set in metadata.php, Module::getControllers() will return an empty array');
     }
 
     /**
@@ -132,29 +135,27 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedResult, $module->getControllers(), $message);
     }
 
-    public function dataProviderTestGetControllersWithExistingControllers()
+    public function dataProviderTestGetControllersWithExistingControllers(): \Iterator
     {
-        return [
-            [
-                'metaDataControllers' => ['controller_id' => 'ControllerName'],
-                'expectedResult' => ['controller_id' => 'ControllerName'],
-                'message' => 'Controller value is not converted to lowercase'
-            ],
-            [
-                'metaDataControllers' => ['Controller_Id' => 'ControllerName'],
-                'expectedResult' => ['controller_id' => 'ControllerName'],
-                'message' => 'Controller Id is converted to lowercase'
-            ],
-            [
-                'metaDataControllers' => [],
-                'expectedResult' => [],
-                'message' => 'An empty array is returned, if controllers is an empty array'
-            ],
-            [
-                'metaDataControllers' => null,
-                'expectedResult' => [],
-                'message' => 'An empty array is returned, if controllers is null'
-            ],
+        yield [
+            'metaDataControllers' => ['controller_id' => 'ControllerName'],
+            'expectedResult' => ['controller_id' => 'ControllerName'],
+            'message' => 'Controller value is not converted to lowercase'
+        ];
+        yield [
+            'metaDataControllers' => ['Controller_Id' => 'ControllerName'],
+            'expectedResult' => ['controller_id' => 'ControllerName'],
+            'message' => 'Controller Id is converted to lowercase'
+        ];
+        yield [
+            'metaDataControllers' => [],
+            'expectedResult' => [],
+            'message' => 'An empty array is returned, if controllers is an empty array'
+        ];
+        yield [
+            'metaDataControllers' => null,
+            'expectedResult' => [],
+            'message' => 'An empty array is returned, if controllers is null'
         ];
     }
 
@@ -179,31 +180,28 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $module->getControllers();
     }
 
-    public function dataProviderTestGetControllersWithWrongMetadataValue()
+    public function dataProviderTestGetControllersWithWrongMetadataValue(): \Iterator
     {
         $expectedException = \InvalidArgumentException::class;
-
-        return [
-          [
-              'metaDataControllers' => false,
-              'expectedException' => $expectedException
-          ],
-          [
-              'metaDataControllers' => '',
-              'expectedException' => $expectedException
-          ],
-          [
-              'metaDataControllers' => 'string',
-              'expectedException' => $expectedException
-          ],
-          [
-              'metaDataControllers' => 1,
-              'expectedException' => $expectedException
-          ],
-          [
-              'metaDataControllers' => new \stdClass(),
-              'expectedException' => $expectedException
-          ],
+        yield [
+            'metaDataControllers' => false,
+            'expectedException' => $expectedException
+        ];
+        yield [
+            'metaDataControllers' => '',
+            'expectedException' => $expectedException
+        ];
+        yield [
+            'metaDataControllers' => 'string',
+            'expectedException' => $expectedException
+        ];
+        yield [
+            'metaDataControllers' => 1,
+            'expectedException' => $expectedException
+        ];
+        yield [
+            'metaDataControllers' => new \stdClass(),
+            'expectedException' => $expectedException
         ];
     }
 
@@ -241,9 +239,9 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
     {
         $iLang = oxRegistry::getLang()->getTplLanguage();
         $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, ['getInfo']);
-        $oModule->expects($this->once())->method('getInfo')->with($this->equalTo("title"), $this->equalTo($iLang))->will($this->returnValue("testTitle"));
+        $oModule->expects($this->once())->method('getInfo')->with("title", $iLang)->willReturn("testTitle");
 
-        $this->assertEquals("testTitle", $oModule->getTitle());
+        $this->assertSame("testTitle", $oModule->getTitle());
     }
 
     /**
@@ -253,9 +251,9 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
     {
         $iLang = oxRegistry::getLang()->getTplLanguage();
         $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, ['getInfo']);
-        $oModule->expects($this->once())->method('getInfo')->with($this->equalTo("description"), $this->equalTo($iLang))->will($this->returnValue("testDesc"));
+        $oModule->expects($this->once())->method('getInfo')->with("description", $iLang)->willReturn("testDesc");
 
-        $this->assertEquals("testDesc", $oModule->getDescription());
+        $this->assertSame("testDesc", $oModule->getDescription());
     }
 
     public function testGetIdByPathWithProjectConfiguration()
@@ -276,7 +274,7 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
         $module = "oe/testModule/mytest";
 
         $moduleClass = oxNew(Module::class);
-        $this->assertEquals('testModule', $moduleClass->getIdByPath($module));
+        $this->assertSame('testModule', $moduleClass->getIdByPath($module));
     }
 
     public function testGetIdByPathUnknownPath()
@@ -285,7 +283,7 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
 
         $oModule = oxNew('oxModule');
         $oModule->getIdByPath($sModule);
-        $this->assertEquals('ModuleName', $oModule->getIdByPath($sModule));
+        $this->assertSame('ModuleName', $oModule->getIdByPath($sModule));
     }
 
     public function testGetIdByPathUnknownPathNotDir()
@@ -294,6 +292,6 @@ class ModuleTest extends \PHPUnit\Framework\TestCase
 
         $oModule = oxNew('oxModule');
         $oModule->getIdByPath($sModule);
-        $this->assertEquals('myorder', $oModule->getIdByPath($sModule));
+        $this->assertSame('myorder', $oModule->getIdByPath($sModule));
     }
 }

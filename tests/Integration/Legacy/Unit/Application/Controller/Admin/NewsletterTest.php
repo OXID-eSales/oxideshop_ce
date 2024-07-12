@@ -23,7 +23,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testRender(): void
     {
         $oView = oxNew('Admin_Newsletter');
-        $this->assertEquals('newsletter', $oView->render());
+        $this->assertSame('newsletter', $oView->render());
     }
 
     public function testIfExportRecipientsGenerateCSVFile(): void

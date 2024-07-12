@@ -24,7 +24,7 @@ class ListobjectTest extends \PHPUnit\Framework\TestCase
     {
         $oListObject = new oxListObject('table');
         $oListObject->assign(['oxid' => 10]);
-        $this->assertEquals(10, $oListObject->getId());
+        $this->assertSame(10, $oListObject->getId());
     }
 
     /**
@@ -54,8 +54,8 @@ class ListobjectTest extends \PHPUnit\Framework\TestCase
         $oListObject = new oxListObject('table');
         $oListObject->assign(['oxid' => 10]);
         $oListObject->assign(['oxname' => 'title']);
-        $this->assertEquals(10, $oListObject->table__oxid->value);
-        $this->assertEquals('title', $oListObject->table__oxname->value);
+        $this->assertSame(10, $oListObject->table__oxid->value);
+        $this->assertSame('title', $oListObject->table__oxname->value);
     }
 
     /**
@@ -65,6 +65,6 @@ class ListobjectTest extends \PHPUnit\Framework\TestCase
     {
         $oListObject = new oxListObject('table');
         $oListObject->assign('oxid');
-        $this->assertEquals(0, count(get_object_vars($oListObject)));
+        $this->assertCount(0, get_object_vars($oListObject));
     }
 }

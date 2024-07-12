@@ -237,10 +237,10 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testIsLoaded()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ["addField", "buildSelectString", "assignRecord", "getViewName"]);
-        $oBase->expects($this->once())->method('addField')->with($this->equalTo('oxid'), $this->equalTo(0));
-        $oBase->expects($this->once())->method('getViewName')->will($this->returnValue("testView"));
-        $oBase->expects($this->once())->method('buildSelectString')->with($this->equalto(["testView.oxid" => "xxx"]))->will($this->returnValue("testSql"));
-        $oBase->expects($this->once())->method('assignRecord')->with($this->equalTo("testSql"))->will($this->returnValue(true));
+        $oBase->expects($this->once())->method('addField')->with('oxid', 0);
+        $oBase->expects($this->once())->method('getViewName')->willReturn("testView");
+        $oBase->expects($this->once())->method('buildSelectString')->with(["testView.oxid" => "xxx"])->willReturn("testSql");
+        $oBase->expects($this->once())->method('assignRecord')->with("testSql")->willReturn(true);
 
         $this->assertFalse($oBase->isLoaded());
 
@@ -254,11 +254,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testIsDerivedBothShopIdsAreNull()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getShopId']);
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
+        $oConfig->method('getShopId')->willReturn(null);
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['getConfig', 'getShopId'], [], '', false);
         Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
+        $oBase->method('getShopId')->willReturn(null);
 
         $this->assertNull($oBase->isDerived());
     }
@@ -271,11 +271,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $expected = (new Facts())->getEdition() === 'EE' ? false : null;
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getShopId']);
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
+        $oConfig->method('getShopId')->willReturn('xxx');
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['getConfig', 'getShopId'], [], '', false);
         Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
+        $oBase->method('getShopId')->willReturn('xxx');
 
         $this->assertSame($expected, $oBase->isDerived());
     }
@@ -288,11 +288,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $expected = (new Facts())->getEdition() === 'EE' ? true : null;
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getShopId']);
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
+        $oConfig->method('getShopId')->willReturn('xxx');
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['getConfig', 'getShopId'], [], '', false);
         Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
+        $oBase->method('getShopId')->willReturn('yyy');
 
         $this->assertSame($expected, $oBase->isDerived());
     }
@@ -303,7 +303,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testAllowDerivedUpdate()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['isDerived']);
-        $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
+        $oBase->expects($this->once())->method('isDerived')->willReturn(false);
         $this->assertTrue($oBase->allowDerivedUpdate());
     }
 
@@ -313,7 +313,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testAllowDerivedDelete()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['isDerived']);
-        $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
+        $oBase->expects($this->once())->method('isDerived')->willReturn(false);
         $this->assertTrue($oBase->allowDerivedDelete());
     }
 
@@ -324,13 +324,13 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['initDataStructure', 'isAdmin', 'exists', 'isDerived', 'update', 'insert', 'onChange', 'getId']);
         $oBase->expects($this->once())->method('initDataStructure');
-        $oBase->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $oBase->expects($this->once())->method('exists')->will($this->returnValue(false));
+        $oBase->expects($this->once())->method('isAdmin')->willReturn(true);
+        $oBase->expects($this->once())->method('exists')->willReturn(false);
         $oBase->expects($this->never())->method('isDerived');
         $oBase->expects($this->never())->method('update');
-        $oBase->expects($this->once())->method('insert')->will($this->returnValue(true));
-        $oBase->expects($this->once())->method('onChange')->with($this->equalTo(ACTION_INSERT));
-        $oBase->expects($this->once())->method('getId')->will($this->returnValue('ggg'));
+        $oBase->expects($this->once())->method('insert')->willReturn(true);
+        $oBase->expects($this->once())->method('onChange')->with(ACTION_INSERT);
+        $oBase->expects($this->once())->method('getId')->willReturn('ggg');
 
         // initing ..
         $oBase->init('oxsomething');
@@ -340,11 +340,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->addField('oxfield2', 1, 'timestamp');
         $oBase->addField('oxfield3', 1, 'date');
 
-        $this->assertEquals('ggg', $oBase->save());
+        $this->assertSame('ggg', $oBase->save());
 
-        $this->assertEquals("0000-00-00 00:00:00", $oBase->oxsomething__oxfield1->value);
-        $this->assertEquals("00000000000000", $oBase->oxsomething__oxfield2->value);
-        $this->assertEquals("0000-00-00", $oBase->oxsomething__oxfield3->value);
+        $this->assertSame("0000-00-00 00:00:00", $oBase->oxsomething__oxfield1->value);
+        $this->assertSame("00000000000000", $oBase->oxsomething__oxfield2->value);
+        $this->assertSame("0000-00-00", $oBase->oxsomething__oxfield3->value);
     }
 
     /**
@@ -355,7 +355,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase = oxNew('oxBase');
 
         $this->assertEquals($this->getConfig()->getShopId(), $oBase->getShopId());
-        $this->assertNotEquals(0, $this->getConfig()->getShopID());
+        $this->assertNotSame(0, $this->getConfig()->getShopID());
     }
 
     /**
@@ -371,8 +371,8 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $handle->z = 'z';
         $o->oxClone($u);
         $handle->z = 'x';
-        $this->assertEquals('a', $o->aa);
-        $this->assertEquals('z', $o->ab->z);
+        $this->assertSame('a', $o->aa);
+        $this->assertSame('z', $o->ab->z);
     }
 
     /**
@@ -396,7 +396,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setClassVar("_sOXID", 'test id');
 
         $this->assertFalse($oBase->isPropertyLoaded('sOXID'));
-        $this->assertEquals('test id', $oBase->sOXID);
+        $this->assertSame('test id', $oBase->sOXID);
     }
 
     /**
@@ -421,7 +421,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setId("2000");
 
         $sTitle = $oBase->oxarticles__oxtitle->value;
-        $this->assertEquals("Wanduhr ROBOT", $sTitle);
+        $this->assertSame("Wanduhr ROBOT", $sTitle);
     }
 
     /**
@@ -482,8 +482,8 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->load(2000);
 
         $this->assertFalse($oBase->isPropertyLoaded('oxid'));
-        $this->assertEquals("2000", $oBase->getId());
-        $this->assertEquals("2000", $oBase->oxarticles__oxid->value);
+        $this->assertSame("2000", $oBase->getId());
+        $this->assertSame("2000", $oBase->oxarticles__oxid->value);
     }
 
     /**
@@ -560,7 +560,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxarticles");
         $oBase->init();
-        $this->assertEquals("oxarticles", $oBase->getClassVar("_sCoreTable"));
+        $this->assertSame("oxarticles", $oBase->getClassVar("_sCoreTable"));
     }
 
     /**
@@ -571,7 +571,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $expected = $this->getArticlesViewName();
         $oBase = new _oxBase();
         $oBase->init("oxarticles");
-        $this->assertEquals("oxarticles", $oBase->getCoreTableName());
+        $this->assertSame("oxarticles", $oBase->getCoreTableName());
         $this->assertEquals($expected, $oBase->getViewName());
     }
 
@@ -589,7 +589,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
-        $this->assertFalse(isset($aFieldNames['oxtitle']));
+        $this->assertArrayNotHasKey('oxtitle', $aFieldNames);
         ;
     }
 
@@ -604,7 +604,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->initDataStructure(true);
         $this->assertTrue(property_exists($oBase, 'oxarticles__oxtitle') && $oBase->oxarticles__oxtitle !== null);
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
-        $this->assertTrue(isset($aFieldNames['oxtitle']));
+        $this->assertArrayHasKey('oxtitle', $aFieldNames);
     }
 
     /**
@@ -614,7 +614,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
-        $this->assertEquals("oxtesttable__oxtestfield", $oBase->getFieldLongName('oxtestfield'));
+        $this->assertSame("oxtesttable__oxtestfield", $oBase->getFieldLongName('oxtestfield'));
     }
 
     /**
@@ -624,7 +624,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sClassName", "test class");
-        $this->assertEquals("test class", $oBase->getClassName());
+        $this->assertSame("test class", $oBase->getClassName());
     }
 
     public function testGetUpdateFields()
@@ -650,7 +650,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $shopId = $this->getUpdateShopId();
 
-        $expectedOxid = sprintf('oxid = \'test1\',oxshopid = \'%s\',oxtype = \'\',oxtitle = \'title1\'', $shopId);
+        $expectedOxid = sprintf("oxid = 'test1',oxshopid = '%s',oxtype = '',oxtitle = 'title1'", $shopId);
         $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields(false));
     }
 
@@ -665,7 +665,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $shopId = $this->getUpdateShopId();
 
         $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
-        $expectedOxid = sprintf('oxid = \'test1\',oxshopid = \'%s\',oxtype = \'\',oxtitle_1 = \'\'', $shopId);
+        $expectedOxid = sprintf("oxid = 'test1',oxshopid = '%s',oxtype = '',oxtitle_1 = ''", $shopId);
         $this->assertStringStartsWith($expectedOxid, $base->getUpdateFields());
     }
 
@@ -676,7 +676,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "table1");
-        $this->assertEquals("table1", $oBase->getCoreTableName());
+        $this->assertSame("table1", $oBase->getCoreTableName());
     }
 
     /**
@@ -687,8 +687,8 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $oBase->setId("test id");
-        $this->assertEquals("test id", $oBase->getClassVar("_sOXID"));
-        $this->assertEquals("test id", $oBase->oxactions__oxid->value);
+        $this->assertSame("test id", $oBase->getClassVar("_sOXID"));
+        $this->assertSame("test id", $oBase->oxactions__oxid->value);
     }
 
     /**
@@ -698,7 +698,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sOXID", "testId");
-        $this->assertEquals("testId", $oBase->getId());
+        $this->assertSame("testId", $oBase->getId());
     }
 
     /**
@@ -708,7 +708,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setShopId(5);
-        $this->assertEquals(5, $oBase->getClassVar("_iShopId"));
+        $this->assertSame(5, $oBase->getClassVar("_iShopId"));
     }
 
     /**
@@ -718,7 +718,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_iShopId", "testShopId");
-        $this->assertEquals("testShopId", $oBase->getShopId());
+        $this->assertSame("testShopId", $oBase->getShopId());
     }
 
     /**
@@ -740,10 +740,10 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions"); // multilanguage name
-        $this->assertEquals("oxv_oxactions", $oBase->getViewName());
+        $this->assertSame("oxv_oxactions", $oBase->getViewName());
         $oBase = new _oxBase();
         $oBase->init("oxconfig"); // non-multilanguage name
-        $this->assertEquals("oxconfig", $oBase->getViewName());
+        $this->assertSame("oxconfig", $oBase->getViewName());
     }
 
     /**
@@ -769,11 +769,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase->modifyCacheKey('testCache1', true);
-        $this->assertEquals('testCache1', $oBase->getClassVar('_sCacheKey'));
+        $this->assertSame('testCache1', $oBase->getClassVar('_sCacheKey'));
         $oBase->modifyCacheKey('testCache2', true);
-        $this->assertEquals('testCache2', $oBase->getClassVar('_sCacheKey'));
+        $this->assertSame('testCache2', $oBase->getClassVar('_sCacheKey'));
         $oBase->modifyCacheKey('testCache3', false);
-        $this->assertEquals('testCache2testCache3', $oBase->getClassVar('_sCacheKey'));
+        $this->assertSame('testCache2testCache3', $oBase->getClassVar('_sCacheKey'));
     }
 
     /**
@@ -809,7 +809,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
         $rs = $oDB->select($select);
         $oBase->assign($rs->fields);
-        $this->assertEquals("oxtopstart", $oBase->getId());
+        $this->assertSame("oxtopstart", $oBase->getId());
     }
 
     /**
@@ -856,7 +856,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $sQ = "select * from oxactions where oxid = '_test'";
         $oBase->assignRecord($sQ);
 
-        $this->assertEquals('testTitle', $oBase->oxactions__oxtitle->value);
+        $this->assertSame('testTitle', $oBase->oxactions__oxtitle->value);
     }
 
     /**
@@ -927,7 +927,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setNonPublicVar("_sCoreTable", "oxactions");
 
         $aFieldNames = $oBase->getNonPublicVar('_aFieldNames');
-        $this->assertFalse(isset($aFieldNames['oxtitle']));
+        $this->assertArrayNotHasKey('oxtitle', $aFieldNames);
         $rs = ["oxid" => "oxtopstart", "oxtitle" => "Startseite unten"];
         foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
@@ -938,7 +938,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         //was not set before
         $this->assertTrue(isset($oBase->oxactions__oxtitle));
         $aFieldNames = $oBase->getNonPublicVar('_aFieldNames');
-        $this->assertEquals(0, $aFieldNames['oxtitle']);
+        $this->assertSame(0, $aFieldNames['oxtitle']);
     }
 
     /**
@@ -955,15 +955,13 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $oBase->getFieldData("oxid"));
     }
 
-    public function getFieldDataDataProvider(): array
+    public function getFieldDataDataProvider(): \Iterator
     {
         $stringWithSpecialChars = 'special<>chars';
-        return [
-            ['oxstart', null, "oxstart"],
-            ['oxstart', Field::T_RAW, "oxstart"],
-            [$stringWithSpecialChars, null, $this->encode($stringWithSpecialChars)],
-            [$stringWithSpecialChars, Field::T_RAW, $stringWithSpecialChars],
-        ];
+        yield ['oxstart', null, "oxstart"];
+        yield ['oxstart', Field::T_RAW, "oxstart"];
+        yield [$stringWithSpecialChars, null, $this->encode($stringWithSpecialChars)];
+        yield [$stringWithSpecialChars, Field::T_RAW, $stringWithSpecialChars];
     }
 
     /**
@@ -990,14 +988,12 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $oBase->getRawFieldData("oxid"));
     }
 
-    public function getRawFieldDataDataProvider(): array
+    public function getRawFieldDataDataProvider(): \Iterator
     {
-        return [
-            ['oxstart', null, "oxstart"],
-            ['oxstart', Field::T_RAW, "oxstart"],
-            ['special<>chars', null, "special<>chars"],
-            ['special<>chars', Field::T_RAW, "special<>chars"],
-        ];
+        yield ['oxstart', null, "oxstart"];
+        yield ['oxstart', Field::T_RAW, "oxstart"];
+        yield ['special<>chars', null, "special<>chars"];
+        yield ['special<>chars', Field::T_RAW, "special<>chars"];
     }
 
     /**
@@ -1039,10 +1035,10 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         }
 
         $oObj->load(2080);
-        $this->assertEquals(2080, $oObj->getId());
+        $this->assertSame(2080, $oObj->getId());
         //load in 2 languages anyway
-        $this->assertEquals("Barzange PROFI", $oObj->oxarticles__oxtitle->value);
-        $this->assertEquals($expectedTranslation, $oObj->oxarticles__oxtitle_1->value);
+        $this->assertSame("Barzange PROFI", $oObj->oxarticles__oxtitle->value);
+        $this->assertSame($expectedTranslation, $oObj->oxarticles__oxtitle_1->value);
     }
 
     /**
@@ -1055,7 +1051,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->init("oxactions");
         $oBase->load("oxtopstart");
 
-        $this->assertEquals("oxtopstart", $oBase->getId());
+        $this->assertSame("oxtopstart", $oBase->getId());
 
         $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
     }
@@ -1070,8 +1066,8 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->init("oxarticles");
         $oBase->load("2000");
 
-        $this->assertEquals("2000", $oBase->getId());
-        $this->assertEquals("Wanduhr ROBOT", $oBase->oxarticles__oxtitle->value);
+        $this->assertSame("2000", $oBase->getId());
+        $this->assertSame("Wanduhr ROBOT", $oBase->oxarticles__oxtitle->value);
         $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
     }
 
@@ -1085,9 +1081,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->init("oxarticles");
         $oBase->load("2000");
 
-        $this->assertEquals("2000", $oBase->getId());
+        $this->assertSame("2000", $oBase->getId());
         $aFieldList = $oBase->getClassVar("_aFieldNames");
-        $this->assertFalse(isset($aFieldList["oxnonexistingfield"]));
+        $this->assertArrayNotHasKey("oxnonexistingfield", $aFieldList);
     }
 
     /**
@@ -1103,7 +1099,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $sSelect = $oBase->buildSelectString([$sView . '.oxid' => "oxtopstart"]);
         $sSelect = str_replace("  ", " ", $sSelect);
 
-        $this->assertEquals(sprintf('select `%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp` from %s where 1 and %s.oxid = \'oxtopstart\'', $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $sSelect);
+        $this->assertSame(sprintf("select `%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp` from %s where 1 and %s.oxid = 'oxtopstart'", $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $sSelect);
     }
 
     /**
@@ -1120,7 +1116,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $sSelect = $oBase->buildSelectString(["oxid" => "111"]);
         $sSelect = str_replace("  ", " ", $sSelect);
-        $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
+        $this->assertSame("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
     }
 
     /**
@@ -1137,7 +1133,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $sSelect = $oBase->buildSelectString(["oxid" => "111"]);
         $sSelect = str_replace("  ", " ", $sSelect);
-        $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
+        $this->assertSame("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
     }
 
     /**
@@ -1189,7 +1185,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sView = $tableViewNameGenerator->getViewName('oxactions', -1);
-        $this->assertEquals(sprintf('`%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp`', $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $oBase->getSelectFields());
+        $this->assertSame(sprintf('`%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxtitle_1`, `%s`.`oxtitle_2`, `%s`.`oxtitle_3`, `%s`.`oxlongdesc`, `%s`.`oxlongdesc_1`, `%s`.`oxlongdesc_2`, `%s`.`oxlongdesc_3`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxpic_1`, `%s`.`oxpic_2`, `%s`.`oxpic_3`, `%s`.`oxlink`, `%s`.`oxlink_1`, `%s`.`oxlink_2`, `%s`.`oxlink_3`, `%s`.`oxsort`, `%s`.`oxtimestamp`', $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView, $sView), $oBase->getSelectFields());
     }
 
     /**
@@ -1267,7 +1263,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         // now deleting and checking for records in DB
         $sResult = $oBase->delete("_test");
-        $this->assertEquals(0, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(0, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertTrue($sResult);
     }
 
@@ -1286,7 +1282,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setIsDerived(true);
         // now deleting and checking for records in DB
         $sResult = $oBase->delete();
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertFalse($sResult);
     }
 
@@ -1304,7 +1300,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setId("_test");
         // now deleting and checking for records in DB
         $sResult = $oBase->delete();
-        $this->assertEquals(0, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(0, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertTrue($sResult);
     }
 
@@ -1321,7 +1317,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->init('oxactions');
         // now deleting and checking for records in DB
         $sResult = $oBase->delete();
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertEquals(false, $sResult);
     }
 
@@ -1339,7 +1335,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         // now deleting and checking for records in DB
         $sResult = $oBase->delete("ssss");
 
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertEquals(false, $sResult);
     }
 
@@ -1350,14 +1346,14 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $oBase = new _oxBase();
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['update']);
-        $oBase->expects($this->any())
+        $oBase
             ->method('update')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $oBase->init('oxactions');
         $oBase->setId('oxtopstart');
 
         $sResult = $oBase->save();
-        $this->assertEquals('oxtopstart', $sResult);
+        $this->assertSame('oxtopstart', $sResult);
     }
 
     /**
@@ -1378,14 +1374,14 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testSaveIfNew()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['insert']);
-        $oBase->expects($this->any())
+        $oBase
             ->method('insert')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $oBase->init("oxactions");
         $oBase->setId("_test");
 
         $sResult = $oBase->save();
-        $this->assertEquals("_test", $sResult);
+        $this->assertSame("_test", $sResult);
     }
 
     /**
@@ -1394,9 +1390,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testSaveIfCannotInsert()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, ['insert']);
-        $oBase->expects($this->any())
+        $oBase
             ->method('insert')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $oBase->init("oxactions");
         $oBase->setId("_test");
 
@@ -1410,9 +1406,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testSaveIsDerived()
     {
         $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, ['update']);
-        $oBase->expects($this->any())
+        $oBase
             ->method('update')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $oBase->init("oxactions");
         $oBase->setId("oxtopstart");
         $oBase->setIsDerived(true);
@@ -1436,7 +1432,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($sResult);
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $res = $myDB->select("select oxupdate from oxuserbaskets where oxid='_test'");
-        $this->assertNotEquals("2007-07-07 00:00:00", $res->fields['oxupdate']);
+        $this->assertNotSame("2007-07-07 00:00:00", $res->fields['oxupdate']);
     }
 
     public function testSaveWithDateTimeTypeColumn(): void
@@ -1452,7 +1448,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($sResult);
 
         $sActivefrom = oxDb::getDb()->getOne("select oxactivefrom from oxdiscount where oxid='_test'");
-        $this->assertEquals("2007-07-07 00:00:00", $sActivefrom);
+        $this->assertSame("2007-07-07 00:00:00", $sActivefrom);
     }
 
     public function testSaveWithDateTypeColumn(): void
@@ -1473,7 +1469,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $return = $base->save();
 
         $res = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->select(
-            sprintf('select `%s` from `%s` where `%s` = \'%s\'', $col2, $table, $col1, $val1)
+            sprintf("select `%s` from `%s` where `%s` = '%s'", $col2, $table, $col1, $val1)
         );
         $this->assertNotNull($return);
         $this->assertSame($val2, $res->fields[$col2]);
@@ -1491,7 +1487,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         } catch (Exception $exception) {
         }
 
-        $this->assertTrue($exception instanceof \OxidEsales\EshopCommunity\Core\Exception\ObjectException);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Exception\ObjectException::class, $exception);
     }
 
     /**
@@ -1501,7 +1497,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         $myDB = oxDb::getDb();
         $shopId = $this->getUpdateShopId();
-        $sInsert = sprintf('Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values (\'_test\',\'%s\',\'test\')', $shopId);
+        $sInsert = sprintf("Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values ('_test','%s','test')", $shopId);
         $myDB->Execute($sInsert);
 
         $oBase = new _oxBase();
@@ -1544,9 +1540,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $myDB->Execute($sInsert);
 
         $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, ['getUpdateFields']);
-        $oBase->expects($this->any())
+        $oBase
             ->method('getUpdateFields')
-            ->will($this->returnValue(''));
+            ->willReturn('');
 
         $oBase->init("oxarticles");
         $oBase->setId("_test");
@@ -1580,7 +1576,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $return = $base->insert();
 
         $count = (int) oxDb::getDb()->getOne(
-            sprintf('select count(*) from `%s` where %s = \'%s\'', $table, $col1, $val1)
+            sprintf("select count(*) from `%s` where %s = '%s'", $table, $col1, $val1)
         );
         $this->assertSame(1, $count);
         $this->assertNotNull($return);
@@ -1599,7 +1595,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setId("_test");
 
         $sResult = $oBase->insert();
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
+        $this->assertSame(1, (int) $myDB->getOne('select count(*) from oxactions where oxid = "_test"'));
         $this->assertNotNull($sResult);
         $this->assertEquals($oBase->getId(), $oBase->oxactions__oxid->value);
     }
@@ -1616,7 +1612,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->oxactions__oxtitle = new oxField('test1', oxField::T_RAW);
         $sResult = $oBase->insert();
 
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxactions where oxtitle = "test1"'));
+        $this->assertSame(1, (int) $myDB->getOne('select count(*) from oxactions where oxtitle = "test1"'));
         $this->assertNotNull($sResult);
         $this->assertEquals($oBase->getId(), $oBase->oxactions__oxid->value);
     }
@@ -1632,7 +1628,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $oBase = oxNew('oxBase');
         $sResult = $oBase->getObjectViewName("oxarticles");
-        $this->assertEquals("oxv_oxarticles", $sResult);
+        $this->assertSame("oxv_oxarticles", $sResult);
     }
 
     /**
@@ -1646,7 +1642,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $oBase = oxNew('oxBase');
         $sResult = $oBase->getObjectViewName("oxarticles", "1");
-        $this->assertEquals("oxv_oxarticles", $sResult);
+        $this->assertSame("oxv_oxarticles", $sResult);
     }
 
     public function testGetObjectViewNameWithNonMultiShopTable(): void
@@ -1674,7 +1670,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $aExpectedFields = ['oxid' => 0, 'oxshopid' => 0, 'oxtype' => 0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive' => 0, 'oxactivefrom' => 0, 'oxactiveto' => 0, 'oxpic' => 0, 'oxpic_1' => 0, 'oxpic_2' => 0, 'oxpic_3' => 0, 'oxlink' => 0, 'oxlink_1' => 0, 'oxlink_2' => 0, 'oxlink_3' => 0, 'oxsort' => 0, 'oxtimestamp' => 0];
 
-        $this->assertEquals($aExpectedFields, $oBase->getAllFields(true));
+        $this->assertSame($aExpectedFields, $oBase->getAllFields(true));
     }
 
     /**
@@ -1698,7 +1694,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
-        $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
+        $this->assertSame(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
         $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
     }
 
@@ -1713,9 +1709,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
-        $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
+        $this->assertSame(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
         $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
-        $this->assertEquals(20, $oBase->oxtesttable__oxtestfield->fldmax_length);
+        $this->assertSame(20, $oBase->oxtesttable__oxtestfield->fldmax_length);
         $this->assertFalse($oBase->getClassVar("_blIsSimplyClonable"));
     }
 
@@ -1730,9 +1726,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
 
-        $this->assertEquals(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
+        $this->assertSame(["oxid" => 0, "oxtestfield" => 1], $aFieldNames);
         $this->assertTrue(property_exists($oBase, 'oxtesttable__oxtestfield') && $oBase->oxtesttable__oxtestfield !== null);
-        $this->assertEquals('datetime', $oBase->oxtesttable__oxtestfield->fldtype);
+        $this->assertSame('datetime', $oBase->oxtesttable__oxtestfield->fldtype);
         $this->assertFalse($oBase->getClassVar("_blIsSimplyClonable"));
     }
 
@@ -1744,7 +1740,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $iCurrTime = 1453734000; //some rounded timestamp
 
         $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, ['getRequestTime']);
-        $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
+        $oUtilsDate->method('getRequestTime')->willReturn($iCurrTime);
         Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $aFields = ['oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1];
@@ -1754,9 +1750,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $oBase->setNonPublicVar('_aFieldNames', $aFields);
         $oBase->setNonPublicVar('_sCoreTable', 'oxbase');
 
-        $sPattern = sprintf(' (   oxbase.oxactive = 1  or  ( oxbase.oxactivefrom < \'%s\' and oxbase.oxactiveto > \'%s\' ) ) ', $sDate, $sDate);
+        $sPattern = sprintf(" (   oxbase.oxactive = 1  or  ( oxbase.oxactivefrom < '%s' and oxbase.oxactiveto > '%s' ) ) ", $sDate, $sDate);
 
-        $this->assertEquals($sPattern, $oBase->getSqlActiveSnippet());
+        $this->assertSame($sPattern, $oBase->getSqlActiveSnippet());
     }
 
     /**
@@ -1796,7 +1792,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testTestingLazyLoadAndMultilangFieldProblem()
     {
         $sId = oxDb::getDb()->getOne("select oxid from oxarticles where oxtitle_1 != '' and oxtitle != oxtitle_1");
-        $sTitle = oxDb::getDb()->getOne(sprintf('select oxtitle_1 from oxarticles where oxid=\'%s\'', $sId));
+        $sTitle = oxDb::getDb()->getOne(sprintf("select oxtitle_1 from oxarticles where oxid='%s'", $sId));
         $oArticle = oxNew('oxArticle');
         $oArticle->loadInLang(1, $sId);
 
@@ -1818,7 +1814,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $sCacheKey = 'fieldnames_oxarticles_nonExistantFieldTest';
         $aFieldNames = oxRegistry::getUtils()->fromFileCache($sCacheKey);
 
-        $this->assertFalse(isset($aFieldNames['nonexistantfield']));
+        $this->assertArrayNotHasKey('nonexistantfield', $aFieldNames);
     }
 
     /**
@@ -1884,10 +1880,10 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     public function testGetFieldNamesOnBase()
     {
         $oBase = oxNew('oxBase');
-        $this->assertEquals(["oxid"], $oBase->getFieldNames());
+        $this->assertSame(["oxid"], $oBase->getFieldNames());
 
         $oBase->init("notExistingTable");
-        $this->assertEquals(["oxid"], $oBase->getFieldNames());
+        $this->assertSame(["oxid"], $oBase->getFieldNames());
     }
 
     /**
@@ -1901,8 +1897,9 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $aFieldNames = $oBase->getFieldNames();
 
         $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
-        $this->assertTrue(
-            in_array("oxtitle", $aFieldNames),
+        $this->assertContains(
+            "oxtitle",
+            $aFieldNames,
             "oxtitle expected to be in array:  " . serialize($aFieldNames)
         );
     }
@@ -1920,7 +1917,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $aFieldNames = $oBase->getFieldNames();
 
         $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
-        $this->assertTrue(in_array("oxtitle", $aFieldNames));
+        $this->assertContains("oxtitle", $aFieldNames);
     }
 
     /**
@@ -1939,7 +1936,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $aFieldNames = $oBase->getFieldNames();
 
         $this->assertTrue(is_array($aFieldNames) && $aFieldNames !== []);
-        $this->assertTrue(in_array("oxtitle", $aFieldNames));
+        $this->assertContains("oxtitle", $aFieldNames);
     }
 
     public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNotLoaded()

@@ -40,14 +40,14 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('fnc', "testFnc");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isMall", "getConfigParam", "getShopHomeUrl"]);
-        $oConfig->expects($this->any())->method('isMall')->will($this->returnValue(false));
+        $oConfig->method('isMall')->willReturn(false);
         $oConfig->expects($this->never())->method('getShopHomeUrl');
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["getConfig", "runOnce", "isAdmin", "process"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oControl->expects($this->once())->method('runOnce');
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"));
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->expects($this->once())->method('process')->with(\OxidEsales\Eshop\Application\Controller\StartController::class, "testFnc");
 
         $oControl->start();
     }
@@ -70,8 +70,8 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["getConfig", "runOnce", "isAdmin", "process"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oControl->expects($this->once())->method('runOnce');
-        $oControl->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $oControl->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class), $this->equalTo("testFnc"));
+        $oControl->expects($this->once())->method('isAdmin')->willReturn(true);
+        $oControl->expects($this->once())->method('process')->with(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class, "testFnc");
         $oControl->start();
         //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
     }
@@ -87,8 +87,8 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "isAdmin", "process"], [], '', false);
         $oControl->expects($this->once())->method('runOnce');
-        $oControl->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
-        $oControl->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\Admin\AdminStart::class), $this->equalTo("testFnc"));
+        $oControl->expects($this->once())->method('isAdmin')->willReturn(true);
+        $oControl->expects($this->once())->method('process')->with(\OxidEsales\Eshop\Application\Controller\Admin\AdminStart::class, "testFnc");
         $oControl->start();
     }
 
@@ -117,12 +117,10 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $oControl->start($controllerName, 'functionToLoad');
     }
 
-    public function unknownControllerClass()
+    public function unknownControllerClass(): \Iterator
     {
-        return [
-            'unknown controller class' => ['unknownClass'],
-            'any oxid class not allowed' => [\OxidEsales\Eshop\Core\Utils::class],
-        ];
+        yield 'unknown controller class' => ['unknownClass'];
+        yield 'any oxid class not allowed' => [\OxidEsales\Eshop\Core\Utils::class];
     }
 
     /**
@@ -147,7 +145,7 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "process"], [], '', false);
-        $oControl->expects($this->any())->method('process')->will($this->throwException($componentException));
+        $oControl->method('process')->willThrowException($componentException);
 
         try {
             $oControl->start('basket');
@@ -174,16 +172,16 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
 
         $oConfig = $this->getMock(Config::class, ["isMall", "getConfigParam", "getShopId", "getShopHomeUrl"]);
-        $oConfig->expects($this->any())->method('isMall')->will($this->returnValue(true));
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(999));
-        $oConfig->expects($this->any())->method('getShopHomeUrl');
+        $oConfig->method('isMall')->willReturn(true);
+        $oConfig->method('getShopId')->willReturn(999);
+        $oConfig->method('getShopHomeUrl');
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["getConfig", "runOnce", "isAdmin", "process", "isDebugMode"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oControl->expects($this->any())->method('runOnce');
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('process')->will($this->throwException($componentException));
-        $oControl->expects($this->any())->method('isDebugMode')->will($this->returnValue(false));
+        $oControl->method('runOnce');
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('process')->willThrowException($componentException);
+        $oControl->method('isDebugMode')->willReturn(false);
 
         $oControl->start();
     }
@@ -205,10 +203,10 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "isAdmin", "process", "isDebugMode"], [], '', false);
-        $oControl->expects($this->any())->method('runOnce');
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('process')->will($this->throwException($componentException));
-        $oControl->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
+        $oControl->method('runOnce');
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('process')->willThrowException($componentException);
+        $oControl->method('isDebugMode')->willReturn(true);
 
         $oControl->start();
     }
@@ -237,10 +235,10 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "isAdmin", "process", "isDebugMode"], [], '', false);
-        $oControl->expects($this->any())->method('runOnce');
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('process')->will($this->throwException($exceptionMock));
-        $oControl->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
+        $oControl->method('runOnce');
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('process')->willThrowException($exceptionMock);
+        $oControl->method('isDebugMode')->willReturn(true);
 
         try {
             $oControl->start();
@@ -269,15 +267,15 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $aTasks = ["isAdmin", "log", "startMonitor", "stopMonitoring", 'getOutputManager', 'executeMaintenanceTasks', 'formOutput'];
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, ['output', 'flushOutput', 'sendHeaders']);
-        $oOut->expects($this->once())->method('output')->with($this->equalTo($controllerClassName));
-        $oOut->expects($this->once())->method('flushOutput')->will($this->returnValue(null));
-        $oOut->expects($this->once())->method('sendHeaders')->will($this->returnValue(null));
+        $oOut->expects($this->once())->method('output')->with($controllerClassName);
+        $oOut->expects($this->once())->method('flushOutput')->willReturn(null);
+        $oOut->expects($this->once())->method('sendHeaders')->willReturn(null);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, $aTasks, [], '', false);
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('getOutputManager')->will($this->returnValue($oOut));
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('getOutputManager')->willReturn($oOut);
         $oControl->expects($this->atLeastOnce())->method('executeMaintenanceTasks');
-        $oControl->expects($this->any())->method('formOutput')->will($this->returnValue('string'));
+        $oControl->method('formOutput')->willReturn('string');
 
         $oControl->process($controllerClassName, null);
     }
@@ -301,16 +299,16 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $aTasks = ["isAdmin", "log", "startMonitor", "stopMonitoring", 'getOutputManager', 'getErrors', 'executeMaintenanceTasks', 'formOutput'];
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, ['output', 'flushOutput', 'sendHeaders', 'setOutputFormat']);
-        $oOut->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
-        $oOut->method('sendHeaders')->will($this->returnValue(null));
-        $oOut->method('flushOutput')->will($this->returnValue(null));
+        $oOut->method('setOutputFormat')->with(oxOutput::OUTPUT_FORMAT_JSON);
+        $oOut->method('sendHeaders')->willReturn(null);
+        $oOut->method('flushOutput')->willReturn(null);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, $aTasks, [], '', false);
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('getOutputManager')->will($this->returnValue($oOut));
-        $oControl->expects($this->any())->method('getErrors')->will($this->returnValue([]));
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('getOutputManager')->willReturn($oOut);
+        $oControl->method('getErrors')->willReturn([]);
         $oControl->expects($this->atLeastOnce())->method('executeMaintenanceTasks');
-        $oControl->expects($this->any())->method('formOutput')->will($this->returnValue('string'));
+        $oControl->method('formOutput')->willReturn('string');
 
         $oControl->process($controllerClassName, null);
     }
@@ -335,12 +333,12 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $sTplPath .= $this->getConfig()->getConfigParam('sTheme') . "/tpl/page/checkout/basket";
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getTemplatePath", "pageClose"]);
-        $oConfig->expects($this->any())->method('getTemplatePath')->will($this->returnValue($sTplPath));
+        $oConfig->method('getTemplatePath')->willReturn($sTplPath);
 
         $aTasks = ["isAdmin", "log", "startMonitor", "getConfig", "stopMonitoring", 'getOutputManager', 'getErrors', 'executeMaintenanceTasks', 'formOutput'];
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, ['output', 'flushOutput', 'sendHeaders', 'setOutputFormat']);
-        $oOut->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
+        $oOut->method('setOutputFormat')->with(oxOutput::OUTPUT_FORMAT_JSON);
         $oOut
             ->method('output')
             ->withConsecutive(
@@ -352,15 +350,15 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
                 [$controllerClassName, $this->anything()]
             );
 
-        $oOut->method('sendHeaders')->will($this->returnValue(null));
-        $oOut->method('flushOutput')->will($this->returnValue(null));
+        $oOut->method('sendHeaders')->willReturn(null);
+        $oOut->method('flushOutput')->willReturn(null);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, $aTasks, [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('getOutputManager')->will($this->returnValue($oOut));
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->method('getOutputManager')->willReturn($oOut);
         $oControl->expects($this->atLeastOnce())->method('executeMaintenanceTasks');
-        $oControl->expects($this->any())->method('formOutput')->will($this->returnValue('string'));
+        $oControl->method('formOutput')->willReturn('string');
         $aErrors = [];
         $oDE = oxNew('oxDisplayError');
         $oDE->setMessage('test1');
@@ -372,7 +370,7 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $oDE->setMessage('test4');
         $aErrors['default'][] = serialize($oDE);
 
-        $oControl->expects($this->any())->method('getErrors')->will($this->returnValue($aErrors));
+        $oControl->method('getErrors')->willReturn($aErrors);
 
         $oControl->process($controllerClassName, null);
     }
@@ -388,18 +386,18 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $oOut->expects($this->never())->method('output');
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["isAdmin", 'getOutputManager'], [], '', false);
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oControl->expects($this->never())->method('getOutputManager')->will($this->returnValue($oOut));
+        $oControl->method('isAdmin')->willReturn(true);
+        $oControl->expects($this->never())->method('getOutputManager')->willReturn($oOut);
         $oControl->startMonitor();
         $oControl->stopMonitoring();
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, ['output']);
-        $oOut->expects($this->once())->method('output')->with($this->equalTo('debuginfo'));
+        $oOut->expects($this->once())->method('output')->with('debuginfo');
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["isAdmin", 'getOutputManager', 'isDebugMode'], [], '', false);
-        $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->once())->method('getOutputManager')->will($this->returnValue($oOut));
-        $oControl->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
+        $oControl->method('isAdmin')->willReturn(false);
+        $oControl->expects($this->once())->method('getOutputManager')->willReturn($oOut);
+        $oControl->method('isDebugMode')->willReturn(true);
         $oControl->startMonitor();
         $oControl->stopMonitoring();
     }
@@ -423,21 +421,21 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
     {
         $this->setSessionParam('Errors', null);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals([], $oControl->getErrors('start'));
-        $this->assertEquals([], $this->getSessionParam('Errors'));
-        $this->assertEquals([], $oControl->getErrors('start'));
+        $this->assertSame([], $oControl->getErrors('start'));
+        $this->assertSame([], $this->getSessionParam('Errors'));
+        $this->assertSame([], $oControl->getErrors('start'));
 
         $this->setSessionParam('Errors', []);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals([], $oControl->getErrors('start'));
-        $this->assertEquals([], $this->getSessionParam('Errors'));
-        $this->assertEquals([], $oControl->getErrors('start'));
+        $this->assertSame([], $oControl->getErrors('start'));
+        $this->assertSame([], $this->getSessionParam('Errors'));
+        $this->assertSame([], $oControl->getErrors('start'));
 
         $this->setSessionParam('Errors', ['asd' => 'asd']);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(['asd' => 'asd'], $oControl->getErrors('start'));
-        $this->assertEquals([], $this->getSessionParam('Errors'));
-        $this->assertEquals(['asd' => 'asd'], $oControl->getErrors('start'));
+        $this->assertSame(['asd' => 'asd'], $oControl->getErrors('start'));
+        $this->assertSame([], $this->getSessionParam('Errors'));
+        $this->assertSame(['asd' => 'asd'], $oControl->getErrors('start'));
     }
 
     public function testGetErrorsForActController()
@@ -445,10 +443,10 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $this->setSessionParam('Errors', ['asd' => 'asd']);
         $this->setSessionParam('ErrorController', ['asd' => 'start']);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(['asd' => 'asd'], $oControl->getErrors('start'));
-        $this->assertEquals([], $this->getSessionParam('Errors'));
-        $this->assertEquals(['asd' => 'asd'], $oControl->getErrors('start'));
-        $this->assertEquals([], $this->getSessionParam('ErrorController'));
+        $this->assertSame(['asd' => 'asd'], $oControl->getErrors('start'));
+        $this->assertSame([], $this->getSessionParam('Errors'));
+        $this->assertSame(['asd' => 'asd'], $oControl->getErrors('start'));
+        $this->assertSame([], $this->getSessionParam('ErrorController'));
     }
 
     public function testGetErrorsForDifferentController()
@@ -456,15 +454,15 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $this->setSessionParam('Errors', ['asd' => 'asd']);
         $this->setSessionParam('ErrorController', ['asd' => 'oxwidget']);
         $oControl = oxNew('oxShopControl');
-        $this->assertEquals(['asd' => 'asd'], $oControl->getErrors('start'));
-        $this->assertEquals(['asd' => 'asd'], $this->getSessionParam('Errors'));
+        $this->assertSame(['asd' => 'asd'], $oControl->getErrors('start'));
+        $this->assertSame(['asd' => 'asd'], $this->getSessionParam('Errors'));
     }
 
     public function testGetOutputManager()
     {
         $oControl = oxNew('oxShopControl');
         $oOut = $oControl->getOutputManager();
-        $this->assertTrue($oOut instanceof Output);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Output::class, $oOut);
         $oOut1 = $oControl->getOutputManager();
         $this->assertSame($oOut, $oOut1);
     }
@@ -494,7 +492,7 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
 
         $oView = $this->getMock($sCL, ['executeFunction', 'getFncName', 'getClassKey']);
         $oView->expects($this->never())->method('executeFunction');
-        $oView->expects($this->once())->method('getFncName')->will($this->returnValue($sFNC));
+        $oView->expects($this->once())->method('getFncName')->willReturn($sFNC);
 
         Registry::set('logger', $this->getMockBuilder(LoggerInterface::class)->getMock());
         $className = $oView::class;
@@ -502,15 +500,15 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
             ->with(sprintf('Non public method cannot be accessed: %s::%s', $className, $sFNC));
 
         Registry::set(\OxidEsales\Eshop\Core\Utils::class, $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock());
-        Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->will($this->returnCallback(function (): never {
+        Registry::getUtils()->expects($this->once())->method('handlePageNotFoundError')->willReturnCallback(function (): never {
             throw new \Exception('404 Page will show');
-        }));
+        });
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('404 Page will show');
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ['initializeViewObject']);
-        $oControl->expects($this->once())->method('initializeViewObject')->with($sCL, $sFNC, null, null)->will($this->returnValue($oView));
+        $oControl->expects($this->once())->method('initializeViewObject')->with($sCL, $sFNC, null, null)->willReturn($oView);
 
         $oControl->start($sWebCL, $sFNC);
     }
@@ -526,8 +524,8 @@ class ShopControlTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('fnc', 'testFnc');
 
         $control = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ['process', 'handleRoutingException', 'isDebugMode'], [], '', false, false, true);
-        $control->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\OrderController::class));
-        $control->expects($this->any())->method('isDebugMode')->will($this->returnValue(true));
+        $control->expects($this->once())->method('process')->with(\OxidEsales\Eshop\Application\Controller\OrderController::class);
+        $control->method('isDebugMode')->willReturn(true);
         $control->expects($this->never())->method('handleRoutingException');
 
         $control->start();

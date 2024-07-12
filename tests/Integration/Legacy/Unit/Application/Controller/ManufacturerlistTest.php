@@ -44,16 +44,16 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ["getId"]);
-        $oManufacturer->expects($this->atLeastOnce())->method('getId')->will($this->returnValue("testId"));
+        $oManufacturer->expects($this->atLeastOnce())->method('getId')->willReturn("testId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree", "getActManufacturer", "getArticleList", "processListArticles", "checkRequestedPage"]);
-        $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue(true));
-        $oView->expects($this->atLeastOnce())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $oView->method('getManufacturerTree')->willReturn(true);
+        $oView->expects($this->atLeastOnce())->method('getActManufacturer')->willReturn($oManufacturer);
         $oView->expects($this->atLeastOnce())->method('getArticleList');
         $oView->expects($this->once())->method('processListArticles');
         $oView->expects($this->once())->method('checkRequestedPage');
 
-        $this->assertEquals("page/list/list", $oView->render());
+        $this->assertSame("page/list/list", $oView->render());
     }
 
     /**
@@ -71,10 +71,10 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setIsVisible(true);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree", "getActManufacturer"]);
-        $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
-        $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $oView->method('getManufacturerTree')->willReturn($oManufacturerTree);
+        $oView->method('getActManufacturer')->willReturn($oManufacturer);
 
-        $this->assertEquals("page/list/list", $oView->render());
+        $this->assertSame("page/list/list", $oView->render());
     }
 
     /**
@@ -95,13 +95,13 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setIsVisible(true);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree", "getActManufacturer"]);
-        $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
-        $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $oView->method('getManufacturerTree')->willReturn($oManufacturerTree);
+        $oView->method('getActManufacturer')->willReturn($oManufacturer);
 
         try {
             $oView->render();
         } catch (Exception $exception) {
-            $this->assertEquals('OK', $exception->getMessage(), 'failed redirect on inactive category');
+            $this->assertSame('OK', $exception->getMessage(), 'failed redirect on inactive category');
 
             return;
         }
@@ -129,8 +129,8 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $manufacturer->setIsVisible(true);
 
         $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree", "getActManufacturer"]);
-        $view->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($manufacturerTree));
-        $view->expects($this->any())->method('getActManufacturer')->will($this->returnValue($manufacturer));
+        $view->method('getManufacturerTree')->willReturn($manufacturerTree);
+        $view->method('getActManufacturer')->willReturn($manufacturer);
 
         $view->render();
     }
@@ -144,7 +144,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('manufacturerlist');
         $oView->setItemSorting("testCnid", "testBy", "testDir");
-        $this->assertEquals(["sortby" => "testBy", "sortdir" => "testDir"], $oView->getSorting("testCnid"));
+        $this->assertSame(["sortby" => "testBy", "sortdir" => "testDir"], $oView->getSorting("testCnid"));
     }
 
     /**
@@ -155,11 +155,11 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ["getLink"]);
-        $oManufacturer->expects($this->atLeastOnce())->method('getLink')->will($this->returnValue("testLink"));
+        $oManufacturer->expects($this->atLeastOnce())->method('getLink')->willReturn("testLink");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getActManufacturer"]);
-        $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $this->assertEquals("testLink", $oView->generatePageNavigationUrl());
+        $oView->expects($this->once())->method('getActManufacturer')->willReturn($oManufacturer);
+        $this->assertSame("testLink", $oView->generatePageNavigationUrl());
     }
 
     /**
@@ -182,11 +182,11 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ["getBaseSeoLink"]);
-        $oManufacturer->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue("testLink"));
+        $oManufacturer->expects($this->once())->method('getBaseSeoLink')->willReturn("testLink");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getActManufacturer"]);
-        $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $this->assertEquals("testLink", $oView->addPageNrParam("testUrl", 1));
+        $oView->expects($this->once())->method('getActManufacturer')->willReturn($oManufacturer);
+        $this->assertSame("testLink", $oView->addPageNrParam("testUrl", 1));
     }
 
     /**
@@ -210,14 +210,14 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setId("testManufacturerId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getActManufacturer"]);
-        $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $oView->expects($this->once())->method('getActManufacturer')->willReturn($oManufacturer);
 
         $oUBaseView = oxNew('oxUBase');
         $sTestParams = $oUBaseView->getAddUrlParams();
         $sTestParams .= ($sTestParams ? '&amp;' : '') . "listtype=manufacturer";
         $sTestParams .= "&amp;mnid=testManufacturerId";
 
-        $this->assertEquals($sTestParams, $oView->getAddUrlParams());
+        $this->assertSame($sTestParams, $oView->getAddUrlParams());
     }
 
     /**
@@ -226,12 +226,12 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testGetTreePath()
     {
         $oManufacturerList = $this->getMock(\OxidEsales\Eshop\Application\Model\ManufacturerList::class, ["getPath"]);
-        $oManufacturerList->expects($this->once())->method('getPath')->will($this->returnValue("testPath"));
+        $oManufacturerList->expects($this->once())->method('getPath')->willReturn("testPath");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree"]);
-        $oView->expects($this->once())->method('getManufacturerTree')->will($this->returnValue($oManufacturerList));
+        $oView->expects($this->once())->method('getManufacturerTree')->willReturn($oManufacturerList);
 
-        $this->assertEquals("testPath", $oView->getTreePath());
+        $this->assertSame("testPath", $oView->getTreePath());
     }
 
     /**
@@ -240,9 +240,9 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testGetSubject()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getActManufacturer"]);
-        $oView->expects($this->once())->method('getActManufacturer')->will($this->returnValue("testActManufacturer"));
+        $oView->expects($this->once())->method('getActManufacturer')->willReturn("testActManufacturer");
 
-        $this->assertEquals("testActManufacturer", $oView->getSubject(0));
+        $this->assertSame("testActManufacturer", $oView->getSubject(0));
     }
 
     /**
@@ -253,7 +253,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         oxNew('oxArticle');
 
         $oListView = oxNew('manufacturerlist');
-        $this->assertEquals(2, $oListView->getProductLinkType());
+        $this->assertSame(2, $oListView->getProductLinkType());
     }
 
     /**
@@ -285,7 +285,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('Manufacturerlist');
         $oManufacturer->setManufacturerTree($oManufacturerTree);
 
-        $this->assertEquals(4, $oManufacturer->hasVisibleSubCats());
+        $this->assertSame(4, $oManufacturer->hasVisibleSubCats());
     }
 
     /**
@@ -312,7 +312,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 
         $oArtList = $oManufacturerList->getArticleList();
 
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), count($oArtList));
+        $this->assertCount(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), $oArtList);
     }
 
     /**
@@ -321,8 +321,8 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testGetPageNavigation()
     {
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ['generatePageNavigation']);
-        $oManufacturer->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
-        $this->assertEquals('aaa', $oManufacturer->getPageNavigation());
+        $oManufacturer->method('generatePageNavigation')->willReturn("aaa");
+        $this->assertSame('aaa', $oManufacturer->getPageNavigation());
     }
 
     /**
@@ -379,7 +379,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testNoIndex()
     {
         $oManufacturer = oxNew('manufacturerlist');
-        $this->assertTrue(0 === $oManufacturer->noIndex());
+        $this->assertSame(0, $oManufacturer->noIndex());
     }
 
     /**
@@ -397,7 +397,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $oManufacturerList->setManufacturerTree(new oxManufacturerList());
         $oManufacturerList->setNonPublicVar("_oActManufacturer", $oManufacturer);
 
-        $this->assertEquals('online kaufen', $oManufacturerList->getTitleSuffix());
+        $this->assertSame('online kaufen', $oManufacturerList->getTitleSuffix());
     }
 
     /**
@@ -406,19 +406,19 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
     public function testGetBreadCrumb()
     {
         $oCat1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ['getLink']);
-        $oCat1->expects($this->once())->method('getLink')->will($this->returnValue('linkas1'));
+        $oCat1->expects($this->once())->method('getLink')->willReturn('linkas1');
         $oCat1->oxcategories__oxtitle = new oxField('title1');
 
         $oCat2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ['getLink']);
-        $oCat2->expects($this->once())->method('getLink')->will($this->returnValue('linkas2'));
+        $oCat2->expects($this->once())->method('getLink')->willReturn('linkas2');
         $oCat2->oxcategories__oxtitle = new oxField('title2');
 
         $oCategoryList = $this->getMock('oxmanufacturelist', ['getPath']);
-        $oCategoryList->expects($this->once())->method('getPath')->will($this->returnValue([$oCat1, $oCat2]));
+        $oCategoryList->expects($this->once())->method('getPath')->willReturn([$oCat1, $oCat2]);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, ["getManufacturerTree"]);
-        $oView->expects($this->once())->method('getManufacturerTree')->will($this->returnValue($oCategoryList));
+        $oView->expects($this->once())->method('getManufacturerTree')->willReturn($oCategoryList);
 
-        $this->assertTrue(count($oView->getBreadCrumb()) >= 1);
+        $this->assertGreaterThanOrEqual(1, count($oView->getBreadCrumb()));
     }
 }

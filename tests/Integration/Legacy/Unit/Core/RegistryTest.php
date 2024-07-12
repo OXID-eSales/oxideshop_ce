@@ -29,7 +29,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     {
         $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $expectedClass = \OxidEsales\Eshop\Core\UtilsObject::class;
-        $this->assertEquals($expectedClass, $utilsObject::class);
+        $this->assertSame($expectedClass, $utilsObject::class);
     }
 
     /**
@@ -38,7 +38,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testGet()
     {
         $oStr = Registry::get("oxstr");
-        $this->assertTrue($oStr instanceof \OxidEsales\Eshop\Core\Str);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Str::class, $oStr);
     }
 
     /**
@@ -50,7 +50,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
         $oStr->test = "testValue";
         //differen case
         $oStr2 = Registry::get("OxStr");
-        $this->assertEquals("testValue", $oStr2->test);
+        $this->assertSame("testValue", $oStr2->test);
     }
 
     /**
@@ -61,7 +61,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
         $oStr = Registry::get("oxstr");
         $oStr->test = "testValue";
         $oStr = Registry::get("oxstr");
-        $this->assertEquals("testValue", $oStr->test);
+        $this->assertSame("testValue", $oStr->test);
     }
 
     /**
@@ -75,7 +75,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
         Registry::set("testCase", $oTest);
         $oTest2 = Registry::get("testCase");
 
-        $this->assertEquals("testPublicVal", $oTest2->testPublic);
+        $this->assertSame("testPublicVal", $oTest2->testPublic);
         Registry::set("testCase", null);
     }
 
@@ -85,41 +85,41 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testGetConfig()
     {
         $oSubj = $this->getConfig();
-        $this->assertTrue($oSubj instanceof \OxidEsales\Eshop\Core\Config);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Config::class, $oSubj);
     }
 
     public function testGetSession()
     {
         $oSubj = Registry::getSession();
-        $this->assertTrue($oSubj instanceof \OxidEsales\Eshop\Core\Session);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Session::class, $oSubj);
     }
 
     public function testGetLang()
     {
         $oSubj = Registry::getLang();
-        $this->assertTrue($oSubj instanceof \OxidEsales\Eshop\Core\Language);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Language::class, $oSubj);
     }
 
     public function testGetLUtils()
     {
         $oSubj = Registry::getUtils();
-        $this->assertTrue($oSubj instanceof \OxidEsales\Eshop\Core\Utils);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Utils::class, $oSubj);
     }
 
     public function testGetKeys()
     {
         Registry::set("testKey", "testVal");
-        $this->assertTrue(in_array("testkey", Registry::getKeys()));
+        $this->assertContains("testkey", Registry::getKeys());
         \OxidEsales\Eshop\Core\Registry::set("testKey", null);
     }
 
     public function testUnset()
     {
         \OxidEsales\Eshop\Core\Registry::set("testKey", "testVal");
-        $this->assertTrue(in_array("testkey", Registry::getKeys()));
+        $this->assertContains("testkey", Registry::getKeys());
         \OxidEsales\Eshop\Core\Registry::set("testKey", null);
-        $this->assertFalse(in_array("testKey", Registry::getKeys()));
-        $this->assertFalse(in_array("testkey", Registry::getKeys()));
+        $this->assertNotContains("testKey", Registry::getKeys());
+        $this->assertNotContains("testkey", Registry::getKeys());
     }
 
     public function testInstanceExists()
@@ -136,8 +136,8 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testGetControllerClassNameResolver()
     {
         $object = Registry::getControllerClassNameResolver();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface);
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Contract\ClassNameResolverInterface::class, $object);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, $object);
     }
 
     /**
@@ -147,7 +147,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetForBcUtilsObjectClassName()
     {
         $object = Registry::get('oxUtilsObject');
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsObject::class, $object);
     }
 
     /**
@@ -157,7 +157,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetForNamespaceUtilsObject()
     {
         $object = Registry::get(\OxidEsales\Eshop\Core\UtilsObject::class);
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsObject::class, $object);
     }
 
     /**
@@ -166,7 +166,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsObject()
     {
         $object = Registry::getUtilsObject();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsObject);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsObject::class, $object);
     }
 
     /**
@@ -230,7 +230,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     {
         $bcClassName = 'oxArticle';
         $unifiedNamespaceClassName = \OxidEsales\Eshop\Application\Model\Article::class;
-        $this->assertEquals($unifiedNamespaceClassName, Registry::getStorageKey($bcClassName));
+        $this->assertSame($unifiedNamespaceClassName, Registry::getStorageKey($bcClassName));
     }
 
     /**
@@ -240,7 +240,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     {
         $bcClassName = 'oxConfigFile';
         $unifiedNamespaceClassName = \OxidEsales\Eshop\Core\ConfigFile::class;
-        $this->assertEquals($unifiedNamespaceClassName, Registry::getStorageKey($bcClassName));
+        $this->assertSame($unifiedNamespaceClassName, Registry::getStorageKey($bcClassName));
     }
 
     /**
@@ -249,7 +249,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testGetStorageKeyNamespaceClass()
     {
         $unifiedNamespaceClassName = \OxidEsales\Eshop\Application\Model\Article::class;
-        $this->assertEquals($unifiedNamespaceClassName, Registry::getStorageKey($unifiedNamespaceClassName));
+        $this->assertSame($unifiedNamespaceClassName, Registry::getStorageKey($unifiedNamespaceClassName));
     }
 
     /**
@@ -258,8 +258,8 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryKeys()
     {
         $storageKeys = Registry::getKeys();
-        $this->assertTrue(in_array(\OxidEsales\Eshop\Core\UtilsObject::class, $storageKeys));
-        $this->assertTrue(in_array(\OxidEsales\Eshop\Core\ConfigFile::class, $storageKeys));
+        $this->assertContains(\OxidEsales\Eshop\Core\UtilsObject::class, $storageKeys);
+        $this->assertContains(\OxidEsales\Eshop\Core\ConfigFile::class, $storageKeys);
     }
 
     /**
@@ -283,7 +283,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetInputValidator()
     {
         $object = Registry::getInputValidator();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\InputValidator);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\InputValidator::class, $object);
     }
 
     /**
@@ -292,7 +292,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetPictureHandler()
     {
         $object = Registry::getPictureHandler();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\PictureHandler);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\PictureHandler::class, $object);
     }
 
     /**
@@ -301,7 +301,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetRequest()
     {
         $object = Registry::getRequest();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\Request);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Request::class, $object);
     }
 
     /**
@@ -310,7 +310,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetSeoDecoder()
     {
         $object = Registry::getSeoDecoder();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\SeoDecoder);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\SeoDecoder::class, $object);
     }
 
     /**
@@ -319,7 +319,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetSeoEncoder()
     {
         $object = Registry::getSeoEncoder();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\SeoEncoder);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\SeoEncoder::class, $object);
     }
 
     /**
@@ -328,7 +328,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsCount()
     {
         $object = Registry::getUtilsCount();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsCount);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsCount::class, $object);
     }
 
     /**
@@ -337,7 +337,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsDate()
     {
         $object = Registry::getUtilsDate();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsDate);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsDate::class, $object);
     }
 
     /**
@@ -346,7 +346,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsFile()
     {
         $object = Registry::getUtilsFile();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsFile);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsFile::class, $object);
     }
 
     /**
@@ -355,7 +355,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsPic()
     {
         $object = Registry::getUtilsPic();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsPic);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsPic::class, $object);
     }
 
     /**
@@ -364,7 +364,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsServer()
     {
         $object = Registry::getUtilsServer();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsServer);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsServer::class, $object);
     }
 
     /**
@@ -373,7 +373,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsString()
     {
         $object = Registry::getUtilsString();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsString);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsString::class, $object);
     }
 
     /**
@@ -382,7 +382,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsUrl()
     {
         $object = Registry::getUtilsUrl();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsUrl);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsUrl::class, $object);
     }
 
     /**
@@ -391,7 +391,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsView()
     {
         $object = Registry::getUtilsView();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsView);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsView::class, $object);
     }
 
     /**
@@ -400,7 +400,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     public function testRegistryGetUtilsXml()
     {
         $object = Registry::getUtilsXml();
-        $this->assertTrue($object instanceof \OxidEsales\Eshop\Core\UtilsXml);
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\UtilsXml::class, $object);
     }
 
     /**
@@ -409,23 +409,23 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
      */
     public function testRegistryBCGet()
     {
-        $this->assertTrue(Registry::getInputValidator() === Registry::get('oxInputValidator'));
-        $this->assertTrue(Registry::getPictureHandler() === Registry::get('oxPictureHandler'));
-        $this->assertTrue(Registry::getSeoDecoder() === Registry::get('oxSeoDecoder'));
-        $this->assertTrue(Registry::getSeoEncoder() === Registry::get('oxSeoEncoder'));
-        $this->assertTrue(Registry::getUtilsCount() === Registry::get('oxUtilsCount'));
-        $this->assertTrue(Registry::getUtilsDate() === Registry::get('oxUtilsDate'));
-        $this->assertTrue(Registry::getUtilsFile() === Registry::get('oxUtilsFile'));
-        $this->assertTrue(Registry::getUtilsPic() === Registry::get('oxUtilsPic'));
-        $this->assertTrue(Registry::getUtilsServer() === Registry::get('oxUtilsServer'));
-        $this->assertTrue(Registry::getUtilsString() === Registry::get('oxUtilsString'));
-        $this->assertTrue(Registry::getUtilsUrl() === Registry::get('oxUtilsUrl'));
-        $this->assertTrue(Registry::getUtilsView() === Registry::get('oxUtilsView'));
-        $this->assertTrue(Registry::getUtilsXml() === Registry::get('oxUtilsXml'));
-        $this->assertTrue(Registry::getConfig() === Registry::get('oxConfig'));
-        $this->assertTrue(Registry::getSession() === Registry::get('oxSession'));
-        $this->assertTrue(Registry::getLang() === Registry::get('oxLang'));
-        $this->assertTrue(Registry::getUtils() === Registry::get('oxUtils'));
+        $this->assertSame(Registry::get('oxInputValidator'), Registry::getInputValidator());
+        $this->assertSame(Registry::get('oxPictureHandler'), Registry::getPictureHandler());
+        $this->assertSame(Registry::get('oxSeoDecoder'), Registry::getSeoDecoder());
+        $this->assertSame(Registry::get('oxSeoEncoder'), Registry::getSeoEncoder());
+        $this->assertSame(Registry::get('oxUtilsCount'), Registry::getUtilsCount());
+        $this->assertSame(Registry::get('oxUtilsDate'), Registry::getUtilsDate());
+        $this->assertSame(Registry::get('oxUtilsFile'), Registry::getUtilsFile());
+        $this->assertSame(Registry::get('oxUtilsPic'), Registry::getUtilsPic());
+        $this->assertSame(Registry::get('oxUtilsServer'), Registry::getUtilsServer());
+        $this->assertSame(Registry::get('oxUtilsString'), Registry::getUtilsString());
+        $this->assertSame(Registry::get('oxUtilsUrl'), Registry::getUtilsUrl());
+        $this->assertSame(Registry::get('oxUtilsView'), Registry::getUtilsView());
+        $this->assertSame(Registry::get('oxUtilsXml'), Registry::getUtilsXml());
+        $this->assertSame(Registry::get('oxConfig'), Registry::getConfig());
+        $this->assertSame(Registry::get('oxSession'), Registry::getSession());
+        $this->assertSame(Registry::get('oxLang'), Registry::getLang());
+        $this->assertSame(Registry::get('oxUtils'), Registry::getUtils());
     }
 
     /**
@@ -444,30 +444,28 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function dataProviderTestRegistryGettersReturnProperInstances()
+    public function dataProviderTestRegistryGettersReturnProperInstances(): \Iterator
     {
-        return [
-            ['getInputValidator', \OxidEsales\Eshop\Core\InputValidator::class],
-            ['getPictureHandler', \OxidEsales\Eshop\Core\PictureHandler::class],
-            ['getRequest', \OxidEsales\Eshop\Core\Request::class],
-            ['getSeoDecoder', \OxidEsales\Eshop\Core\SeoDecoder::class],
-            ['getSeoEncoder', \OxidEsales\Eshop\Core\SeoEncoder::class],
-            ['getUtilsCount', \OxidEsales\Eshop\Core\UtilsCount::class],
-            ['getUtilsDate', \OxidEsales\Eshop\Core\UtilsDate::class],
-            ['getUtilsFile', \OxidEsales\Eshop\Core\UtilsFile::class],
-            ['getUtilsPic', \OxidEsales\Eshop\Core\UtilsPic::class],
-            ['getUtilsServer', \OxidEsales\Eshop\Core\UtilsServer::class],
-            ['getUtilsString', \OxidEsales\Eshop\Core\UtilsString::class],
-            ['getUtilsUrl', \OxidEsales\Eshop\Core\UtilsUrl::class],
-            ['getUtilsView', \OxidEsales\Eshop\Core\UtilsView::class],
-            ['getUtilsXml', \OxidEsales\Eshop\Core\UtilsXml::class],
-            ['getConfig', \OxidEsales\Eshop\Core\Config::class],
-            ['getSession', \OxidEsales\Eshop\Core\Session::class],
-            ['getLang', \OxidEsales\Eshop\Core\Language::class],
-            ['getUtils', \OxidEsales\Eshop\Core\Utils::class],
-            ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class],
-            ['getLogger', LoggerInterface::class]
-        ];
+        yield ['getInputValidator', \OxidEsales\Eshop\Core\InputValidator::class];
+        yield ['getPictureHandler', \OxidEsales\Eshop\Core\PictureHandler::class];
+        yield ['getRequest', \OxidEsales\Eshop\Core\Request::class];
+        yield ['getSeoDecoder', \OxidEsales\Eshop\Core\SeoDecoder::class];
+        yield ['getSeoEncoder', \OxidEsales\Eshop\Core\SeoEncoder::class];
+        yield ['getUtilsCount', \OxidEsales\Eshop\Core\UtilsCount::class];
+        yield ['getUtilsDate', \OxidEsales\Eshop\Core\UtilsDate::class];
+        yield ['getUtilsFile', \OxidEsales\Eshop\Core\UtilsFile::class];
+        yield ['getUtilsPic', \OxidEsales\Eshop\Core\UtilsPic::class];
+        yield ['getUtilsServer', \OxidEsales\Eshop\Core\UtilsServer::class];
+        yield ['getUtilsString', \OxidEsales\Eshop\Core\UtilsString::class];
+        yield ['getUtilsUrl', \OxidEsales\Eshop\Core\UtilsUrl::class];
+        yield ['getUtilsView', \OxidEsales\Eshop\Core\UtilsView::class];
+        yield ['getUtilsXml', \OxidEsales\Eshop\Core\UtilsXml::class];
+        yield ['getConfig', \OxidEsales\Eshop\Core\Config::class];
+        yield ['getSession', \OxidEsales\Eshop\Core\Session::class];
+        yield ['getLang', \OxidEsales\Eshop\Core\Language::class];
+        yield ['getUtils', \OxidEsales\Eshop\Core\Utils::class];
+        yield ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class];
+        yield ['getLogger', LoggerInterface::class];
     }
 
     /**
@@ -480,34 +478,32 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
         $object_1 = Registry::$method();
         $object_2 = Registry::$method();
 
-        $this->assertTrue(($object_1 === $object_2), '2 consecutive calls to Registry::' . $method . '() will return identical objects');
+        $this->assertSame($object_2, $object_1, '2 consecutive calls to Registry::' . $method . '() will return identical objects');
     }
 
     /**
      * @return array
      */
-    public function dataProviderTestRegistryGettersReturnIdenticalObjects()
+    public function dataProviderTestRegistryGettersReturnIdenticalObjects(): \Iterator
     {
-        return [
-            ['getInputValidator'],
-            ['getPictureHandler'],
-            ['getRequest'],
-            ['getSeoDecoder'],
-            ['getSeoEncoder'],
-            ['getUtilsCount'],
-            ['getUtilsDate'],
-            ['getUtilsFile'],
-            ['getUtilsPic'],
-            ['getUtilsServer'],
-            ['getUtilsString'],
-            ['getUtilsUrl'],
-            ['getUtilsView'],
-            ['getUtilsXml'],
-            ['getConfig'],
-            ['getSession'],
-            ['getLang'],
-            ['getUtils'],
-            ['getLogger'],
-        ];
+        yield ['getInputValidator'];
+        yield ['getPictureHandler'];
+        yield ['getRequest'];
+        yield ['getSeoDecoder'];
+        yield ['getSeoEncoder'];
+        yield ['getUtilsCount'];
+        yield ['getUtilsDate'];
+        yield ['getUtilsFile'];
+        yield ['getUtilsPic'];
+        yield ['getUtilsServer'];
+        yield ['getUtilsString'];
+        yield ['getUtilsUrl'];
+        yield ['getUtilsView'];
+        yield ['getUtilsXml'];
+        yield ['getConfig'];
+        yield ['getSession'];
+        yield ['getLang'];
+        yield ['getUtils'];
+        yield ['getLogger'];
     }
 }

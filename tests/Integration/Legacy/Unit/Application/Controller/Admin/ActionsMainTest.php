@@ -31,8 +31,8 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals("actions_main", $sTplName);
+        $this->assertSame('-1', $aViewData["oxid"]);
+        $this->assertSame("actions_main", $sTplName);
     }
 
     /**
@@ -44,13 +44,13 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, ["createCategoryTree"]);
-        $oView->expects($this->any())->method('createCategoryTree')->will($this->returnValue(false));
+        $oView->method('createCategoryTree')->willReturn(false);
         $sTplName = $oView->render();
 
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
-        $this->assertEquals("actions_main", $sTplName);
+        $this->assertSame("actions_main", $sTplName);
     }
 
     /**
@@ -65,7 +65,7 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Actions_Main');
         $sTplName = $oView->render();
 
-        $this->assertEquals("popups/actions_main", $sTplName);
+        $this->assertSame("popups/actions_main", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -87,23 +87,23 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
         $oArticle->oxarticles__oxtitle = new oxField("testArtTitle");
 
         $oPromotion = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, ["getBannerArticle"]);
-        $oPromotion->expects($this->once())->method('getBannerArticle')->will($this->returnValue($oArticle));
+        $oPromotion->expects($this->once())->method('getBannerArticle')->willReturn($oArticle);
         $oPromotion->load($sPromotion);
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, ["getViewDataElement", "createCategoryTree"]);
-        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
+        $oView->expects($this->once())->method('getViewDataElement')->willReturn($oPromotion);
         $oView->expects($this->once())->method('createCategoryTree');
         $sTplName = $oView->render();
 
 
-        $this->assertEquals("popups/actions_article", $sTplName);
+        $this->assertSame("popups/actions_article", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
         $this->assertNotNull($aViewData["oxajax"]);
-        $this->assertEquals("testArtNr", $aViewData["actionarticle_artnum"]);
-        $this->assertEquals("testArtTitle", $aViewData["actionarticle_title"]);
+        $this->assertSame("testArtNr", $aViewData["actionarticle_artnum"]);
+        $this->assertSame("testArtTitle", $aViewData["actionarticle_title"]);
     }
 
     /**
@@ -120,12 +120,12 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, ["getViewDataElement", "createCategoryTree"]);
-        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
+        $oView->expects($this->once())->method('getViewDataElement')->willReturn($oPromotion);
         $oView->expects($this->never())->method('createCategoryTree');
         $sTplName = $oView->render();
 
 
-        $this->assertEquals("popups/actions_groups", $sTplName);
+        $this->assertSame("popups/actions_groups", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
@@ -148,16 +148,16 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, ["getViewDataElement", "generateTextEditor"]);
-        $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('generateTextEditor')->will($this->returnValue("sHtmlEditor"));
+        $oView->expects($this->once())->method('getViewDataElement')->willReturn($oPromotion);
+        $oView->expects($this->once())->method('generateTextEditor')->willReturn("sHtmlEditor");
         $sTplName = $oView->render();
 
-        $this->assertEquals("actions_main", $sTplName);
+        $this->assertSame("actions_main", $sTplName);
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
         $this->assertNull($aViewData["oxajax"]);
-        $this->assertEquals("sHtmlEditor", $aViewData["editor"]);
+        $this->assertSame("sHtmlEditor", $aViewData["editor"]);
     }
 
     /**
@@ -176,8 +176,8 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData["updatelist"]));
-        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertArrayHasKey("updatelist", $aViewData);
+        $this->assertSame(1, $aViewData["updatelist"]);
     }
 
     /**
@@ -203,15 +203,15 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, ["getViewDataElement", "generateTextEditor"]);
-        $oView->expects($this->once())->method('getViewDataElement')->with($this->equalTo("edit"))->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.css"));
+        $oView->expects($this->once())->method('getViewDataElement')->with("edit")->willReturn($oPromotion);
+        $oView->expects($this->once())->method('generateTextEditor')->with("100%", 300, $oPromotion, "oxactions__oxlongdesc", "details.css");
 
         $sTplName = $oView->render();
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals("actions_main", $sTplName);
+        $this->assertSame('-1', $aViewData["oxid"]);
+        $this->assertSame("actions_main", $sTplName);
     }
 
     /**
@@ -230,8 +230,8 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData["updatelist"]));
-        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertArrayHasKey("updatelist", $aViewData);
+        $this->assertSame(1, $aViewData["updatelist"]);
         $this->assertNull(oxRegistry::getSession()->getVariable("saved_oxid"));
     }
 
@@ -252,7 +252,7 @@ class ActionsMainTest extends \PHPUnit\Framework\TestCase
         $oView->save();
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData["updatelist"]));
-        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertArrayHasKey("updatelist", $aViewData);
+        $this->assertSame(1, $aViewData["updatelist"]);
     }
 }

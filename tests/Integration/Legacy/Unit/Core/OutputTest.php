@@ -46,7 +46,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     public function testProcess()
     {
         $oOutput = oxNew('oxOutput');
-        $this->assertEquals('someting', $oOutput->process('someting', 'something'));
+        $this->assertSame('someting', $oOutput->process('someting', 'something'));
     }
 
     /**
@@ -55,7 +55,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     public function testProcessWithEuroSign()
     {
         $oOutput = oxNew('oxOutput');
-        $this->assertEquals('�someting', $oOutput->process('�someting', 'something'));
+        $this->assertSame('�someting', $oOutput->process('�someting', 'something'));
     }
 
     /**
@@ -65,7 +65,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     {
         $oOutput = oxNew('oxOutput');
 
-        $this->assertEquals('�someting', $oOutput->process('�someting', 'something'));
+        $this->assertSame('�someting', $oOutput->process('�someting', 'something'));
     }
 
     public function testAddVersionTags()
@@ -78,8 +78,8 @@ class OutputTest extends \PHPUnit\Framework\TestCase
         $result = $output->addVersionTags($test);
 
         $editionName = $this->getEditionName();
-        $this->assertNotEquals($test, $result);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar<head>test2</head>', $currentYear), $result);
+        $this->assertNotSame($test, $result);
+        $this->assertSame("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar<head>test2</head>', $currentYear), $result);
     }
 
     /**
@@ -94,8 +94,8 @@ class OutputTest extends \PHPUnit\Framework\TestCase
         $sRes = $oOutput->addVersionTags($sTest);
 
         $editionName = $this->getEditionName();
-        $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar', $sCurYear), $sRes);
+        $this->assertNotSame($sTest, $sRes);
+        $this->assertSame("<head>foo</head>\n  <!-- OXID eShop " . $editionName . sprintf(' Edition, Shopping Cart System (c) OXID eSales AG 2003 - %s - https://www.oxid-esales.com -->bar', $sCurYear), $sRes);
     }
 
     /**
@@ -104,7 +104,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     public function testProcessViewArray()
     {
         $oOutput = oxNew('oxOutput');
-        $this->assertEquals(['something'], $oOutput->processViewArray(['something'], 'something'));
+        $this->assertSame(['something'], $oOutput->processViewArray(['something'], 'something'));
     }
 
     /**
@@ -123,7 +123,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
     public function testSetCharsetSetOutputFormatSendHeaders()
     {
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['setHeader']);
-        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
+        $utils->expects($this->once())->method('setHeader')->with('Content-Type: text/html; charset=asd');
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
@@ -132,7 +132,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
 
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['setHeader']);
-        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
+        $utils->expects($this->once())->method('setHeader')->with('Content-Type: application/json; charset=asdd');
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
@@ -142,7 +142,7 @@ class OutputTest extends \PHPUnit\Framework\TestCase
 
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['setHeader']);
-        $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
+        $utils->expects($this->once())->method('setHeader')->with('Content-Type: text/html; charset=asdd');
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
         $oOutput = oxNew('oxOutput');
@@ -156,19 +156,19 @@ class OutputTest extends \PHPUnit\Framework\TestCase
         $oOutput = oxNew('oxOutput');
         ob_start();
         $oOutput->output('asd', 'asasd');
-        $this->assertEquals('asasd', ob_get_clean());
+        $this->assertSame('asasd', ob_get_clean());
         ob_start();
         $oOutput->flushOutput();
-        $this->assertEquals('', ob_get_clean());
+        $this->assertSame('', ob_get_clean());
 
         $oOutput = oxNew('oxOutput');
         $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
         ob_start();
         $oOutput->output('asd', 'asasd');
-        $this->assertEquals('', ob_get_clean());
+        $this->assertSame('', ob_get_clean());
         ob_start();
         $oOutput->flushOutput();
-        $this->assertEquals('{"asd":"asasd"}', ob_get_clean());
+        $this->assertSame('{"asd":"asasd"}', ob_get_clean());
     }
 
     private function getEditionName()

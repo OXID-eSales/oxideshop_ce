@@ -25,8 +25,8 @@ class DeliverySetUsersTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Users');
-        $this->assertEquals('deliveryset_users', $oView->render());
+        $this->assertSame('deliveryset_users', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('readonly', $aViewData);
     }
 }

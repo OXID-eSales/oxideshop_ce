@@ -23,8 +23,8 @@ class ListUserTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, ["getUserDefListSize"]);
-        $oView->expects($this->once())->method('getUserDefListSize')->will($this->returnValue(999));
-        $this->assertEquals(999, $oView->getViewListSize());
+        $oView->expects($this->once())->method('getUserDefListSize')->willReturn(999);
+        $this->assertSame(999, $oView->getViewListSize());
     }
 
     /**
@@ -33,10 +33,10 @@ class ListUserTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oNavTree = $this->getMock(NavigationTree::class, ["getDomXml"]);
-        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
+        $oNavTree->expects($this->once())->method('getDomXml')->willReturn(new DOMDocument());
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, ["getNavigation"]);
-        $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavTree));
-        $this->assertEquals("list_user", $oView->render());
+        $oView->expects($this->once())->method('getNavigation')->willReturn($oNavTree);
+        $this->assertSame("list_user", $oView->render());
     }
 }

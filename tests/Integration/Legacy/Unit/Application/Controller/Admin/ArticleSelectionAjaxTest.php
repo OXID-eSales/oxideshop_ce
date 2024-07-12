@@ -45,7 +45,7 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = ''", trim((string) $oView->getQuery()));
+        $this->assertSame("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . ".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = ''", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -57,7 +57,7 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\'  )', $sSynchoxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf(".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '%s'  )", $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -69,7 +69,7 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\' or oxobject2selectlist.oxobjectid = \'_testArticlePArent\'', $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf(".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '%s' or oxobject2selectlist.oxobjectid = '_testArticlePArent'", $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -83,7 +83,7 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\'  )', $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf(".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '%s'  )", $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -97,7 +97,7 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('article_selection_ajax');
-        $this->assertEquals("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf('.oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = \'%s\' or oxobject2selectlist.oxobjectid = \'_testArticlePArent\'  )', $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getSelectListViewTable() . "  where " . $this->getSelectListViewTable() . ".oxid not in ( select oxobject2selectlist.oxselnid  from oxobject2selectlist left join " . $this->getSelectListViewTable() . " on " . $this->getSelectListViewTable() . sprintf(".oxid=oxobject2selectlist.oxselnid  where oxobject2selectlist.oxobjectid = '%s' or oxobject2selectlist.oxobjectid = '_testArticlePArent'  )", $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -108,11 +108,11 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $oDb = oxDb::getDb();
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testOxid1', '_testOxid2']));
+        $oView->method('getActionIds')->willReturn(['_testOxid1', '_testOxid2']);
 
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
         $oView->removeSel();
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
     }
 
     /**
@@ -125,10 +125,10 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
         $oView = oxNew('article_selection_ajax');
         $oView->removeSel();
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
     }
 
     /**
@@ -142,11 +142,11 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testAdd1', '_testAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testAdd1', '_testAdd2']);
 
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
         $oView->addSel();
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
     }
 
     /**
@@ -171,9 +171,9 @@ class ArticleSelectionAjaxTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
         $oView = oxNew('article_selection_ajax');
         $oView->addSel();
-        $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
+        $this->assertSame(1, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
     }
 }

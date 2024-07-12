@@ -21,13 +21,13 @@ class VariantselectlistTest extends \PHPUnit\Framework\TestCase
 
         // initial state
         $this->assertNull($oSelectionList->getActiveSelection());
-        $this->assertEquals("test", $oSelectionList->getLabel());
+        $this->assertSame("test", $oSelectionList->getLabel());
 
         // adding variants
         $oSelectionList->addVariant("test1", "test1", true, false);
 
         // checking various getters
-        $this->assertEquals(1, count($oSelectionList->getSelections()));
+        $this->assertCount(1, $oSelectionList->getSelections());
 
         // adding variants
         $oSelectionList->addVariant("test1", "test1", false, true);
@@ -37,11 +37,11 @@ class VariantselectlistTest extends \PHPUnit\Framework\TestCase
         // checking for active selection
         $oActiveSelection = $oSelectionList->getActiveSelection();
         $this->assertNotNull($oActiveSelection);
-        $this->assertEquals("test2", $oActiveSelection->getName());
-        $this->assertEquals("test2", $oActiveSelection->getValue());
+        $this->assertSame("test2", $oActiveSelection->getName());
+        $this->assertSame("test2", $oActiveSelection->getValue());
 
         // checking various getters
-        $this->assertEquals(2, count($oSelectionList->getSelections()));
+        $this->assertCount(2, $oSelectionList->getSelections());
     }
 
     /**
@@ -63,9 +63,9 @@ class VariantselectlistTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Selection::class, $aSelections["test2"]);
         $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Selection::class, $aSelections["test3"]);
 
-        $this->assertEquals("0", $aSelections["test1"]->getName());
-        $this->assertEquals("0", $aSelections["test2"]->getName());
-        $this->assertEquals("01", $aSelections["test3"]->getName());
+        $this->assertSame("0", $aSelections["test1"]->getName());
+        $this->assertSame("0", $aSelections["test2"]->getName());
+        $this->assertSame("01", $aSelections["test3"]->getName());
 
         $this->assertNotInstanceOf('oxSelection', $aSelections["test4"]);
         $this->assertNotInstanceOf('oxSelection', $aSelections["test5"]);

@@ -47,7 +47,7 @@ class LinksTest extends \PHPUnit\Framework\TestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $oLink = oxNew("oxlinks", $tableViewNameGenerator->getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
-        $this->assertEquals('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
+        $this->assertSame('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
     }
 
     /**
@@ -61,6 +61,6 @@ class LinksTest extends \PHPUnit\Framework\TestCase
 
         $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
         $this->_oxLinks->Save();
-        $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', $oLink->oxlinks__oxurldesc->value);
+        $this->assertSame('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', $oLink->oxlinks__oxurldesc->value);
     }
 }

@@ -44,7 +44,7 @@ class GenericImportTest extends TestCase
 
         /** @var oxUser|MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oUser->method('isAdmin')->willReturn(true);
         $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         $oUser->loadAdminUser();
 
@@ -73,9 +73,11 @@ class GenericImportTest extends TestCase
     /**
      * @return array
      */
-    public function providerMapFields()
+    public function providerMapFields(): \Iterator
     {
-        return [[['aa', 'bb', 'cc'], ['OXID' => 'oxid', 'OXTITLE' => 'oxtitle', 'OXNAME' => 'oxname'], ['oxid' => 'aa', 'oxtitle' => 'bb', 'oxname' => 'cc']], [['aa', 'bb', 'cc'], ['OXID' => 'oxid', 'OXTITLE' => '', 'OXNAME' => 'oxname'], ['oxid' => 'aa', 'oxname' => 'cc']], [['aa', 'bb', 'NULL'], ['OXID' => 'oxid', 'OXNAME' => 'oxname', 'OXVAT' => 'oxvat'], ['oxid' => 'aa', 'oxname' => 'bb', 'oxvat' => null]]];
+        yield [['aa', 'bb', 'cc'], ['OXID' => 'oxid', 'OXTITLE' => 'oxtitle', 'OXNAME' => 'oxname'], ['oxid' => 'aa', 'oxtitle' => 'bb', 'oxname' => 'cc']];
+        yield [['aa', 'bb', 'cc'], ['OXID' => 'oxid', 'OXTITLE' => '', 'OXNAME' => 'oxname'], ['oxid' => 'aa', 'oxname' => 'cc']];
+        yield [['aa', 'bb', 'NULL'], ['OXID' => 'oxid', 'OXNAME' => 'oxname', 'OXVAT' => 'oxvat'], ['oxid' => 'aa', 'oxname' => 'bb', 'oxvat' => null]];
     }
 
     /**
@@ -88,11 +90,11 @@ class GenericImportTest extends TestCase
     public function testMapFields($dataToMap, $csvFields, $mappedData)
     {
         $importObject = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject::class, ['import']);
-        $importObject->expects($this->once())->method('import')->with($mappedData)->will($this->returnValue(1));
+        $importObject->expects($this->once())->method('import')->with($mappedData)->willReturn(1);
 
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['createImportObject', 'checkAccess']);
-        $oImport->expects($this->any())->method('createImportObject')->will($this->returnValue($importObject));
+        $oImport->method('createImportObject')->willReturn($importObject);
 
         $oImport->setImportType('A');
         $oImport->setCsvFileFieldsOrder($csvFields);
@@ -102,19 +104,19 @@ class GenericImportTest extends TestCase
     public function testCalculationOfImportedRows()
     {
         $importObject = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject::class, ['import']);
-        $importObject->expects($this->any())->method('import')->will($this->returnValue(1));
+        $importObject->method('import')->willReturn(1);
 
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['createImportObject', 'checkAccess']);
-        $oImport->expects($this->any())->method('createImportObject')->will($this->returnValue($importObject));
+        $oImport->method('createImportObject')->willReturn($importObject);
 
-        $this->assertEquals(0, $oImport->getImportedRowCount());
+        $this->assertSame(0, $oImport->getImportedRowCount());
 
         $oImport->setImportType('A');
         $oImport->setCsvFileFieldsOrder(['OXID' => 'oxid', 'OXTITLE' => 'oxtitle', 'OXNAME' => 'oxname']);
         $oImport->importData([['aa', 'bb', 'cc']]);
 
-        $this->assertEquals(1, $oImport->getImportedRowCount());
+        $this->assertSame(1, $oImport->getImportedRowCount());
     }
 
     /**
@@ -123,7 +125,7 @@ class GenericImportTest extends TestCase
     public function testDoImportFailsWhenUserIsNotLoggedIn()
     {
         $importer = new GenericImport();
-        $this->assertEquals('ERPGENIMPORT_ERROR_USER_NO_RIGHTS', $importer->importFile());
+        $this->assertSame('ERPGENIMPORT_ERROR_USER_NO_RIGHTS', $importer->importFile());
     }
 
     /**
@@ -133,9 +135,9 @@ class GenericImportTest extends TestCase
     {
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['init']);
-        $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
+        $oImport->expects($this->once())->method('init')->willReturn(true);
 
-        $this->assertEquals('ERPGENIMPORT_ERROR_WRONG_FILE', $oImport->importFile('nosuchfile'));
+        $this->assertSame('ERPGENIMPORT_ERROR_WRONG_FILE', $oImport->importFile('nosuchfile'));
     }
 
     /**
@@ -145,8 +147,8 @@ class GenericImportTest extends TestCase
     {
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['init', 'checkAccess']);
-        $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
-        $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
+        $oImport->expects($this->once())->method('init')->willReturn(true);
+        $oImport->method('checkAccess')->willReturn(true);
 
         $oImport->setCsvContainsHeader(true);
         $oImport->setImportType('U');
@@ -162,8 +164,8 @@ class GenericImportTest extends TestCase
         $aUser1 = oxDb::getDb()->getAll("select OXID, OXACTIVE, OXSHOPID, OXUSERNAME, OXFNAME, OXLNAME from oxuser where oxid='_testId1'");
         $aUser2 = oxDb::getDb()->getAll("select OXID, OXACTIVE, OXSHOPID, OXUSERNAME, OXFNAME, OXLNAME from oxuser where oxid='_testId2'");
 
-        $this->assertEquals($aTestData1, $aUser1);
-        $this->assertEquals($aTestData2, $aUser2);
+        $this->assertSame($aTestData1, $aUser1);
+        $this->assertSame($aTestData2, $aUser2);
     }
 
     /**
@@ -173,8 +175,8 @@ class GenericImportTest extends TestCase
     {
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['init', 'checkAccess']);
-        $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
-        $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
+        $oImport->expects($this->once())->method('init')->willReturn(true);
+        $oImport->method('checkAccess')->willReturn(true);
 
         $oImport->setCsvContainsHeader(true);
         $oImport->setImportType('U');
@@ -183,7 +185,7 @@ class GenericImportTest extends TestCase
         //checking if header line was not saved to DB
         $csvWithHeaders = $this->createCsvFile(true);
         $oImport->importFile($csvWithHeaders);
-        $this->assertEquals(2, count($oImport->getStatistics()));
+        $this->assertCount(2, $oImport->getStatistics());
         $this->assertFalse(oxDb::getDb()->getOne("select OXID from oxuser where oxid='OXID'"));
     }
 
@@ -194,8 +196,8 @@ class GenericImportTest extends TestCase
     {
         /** @var GenericImport|MockObject $oImport */
         $oImport = $this->getMock(\OxidEsales\EshopCommunity\Core\GenericImport\GenericImport::class, ['init', 'checkAccess']);
-        $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
-        $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
+        $oImport->expects($this->once())->method('init')->willReturn(true);
+        $oImport->method('checkAccess')->willReturn(true);
 
         $oImport->setCsvContainsHeader(false);
         $oImport->setImportType('U');
@@ -204,7 +206,7 @@ class GenericImportTest extends TestCase
         //checking if first line from csv file was saved to DB
         $csvWithoutHeaders = $this->createCsvFile(false);
         $oImport->importFile($csvWithoutHeaders);
-        $this->assertEquals('_testId1', oxDb::getDb()->getOne("select oxid from oxuser where oxid='_testId1'"));
+        $this->assertSame('_testId1', oxDb::getDb()->getOne("select oxid from oxuser where oxid='_testId1'"));
     }
 
     /**

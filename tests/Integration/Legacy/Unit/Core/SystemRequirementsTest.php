@@ -19,9 +19,9 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
     {
         $systemRequirements = new SystemRequirements();
 
-        $this->assertEquals(33554432, $systemRequirements->getBytes('32M'));
-        $this->assertEquals(32768, $systemRequirements->getBytes('32K'));
-        $this->assertEquals(34359738368, $systemRequirements->getBytes('32G'));
+        $this->assertSame(33554432, $systemRequirements->getBytes('32M'));
+        $this->assertSame(32768, $systemRequirements->getBytes('32K'));
+        $this->assertSame(34359738368, $systemRequirements->getBytes('32G'));
     }
 
     public function testGetRequiredModules()
@@ -58,7 +58,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
 
         $systemRequirementsMock->method('isAdmin')->willReturn(false);
 
-        $this->assertEquals(2, $systemRequirementsMock->checkServerPermissions());
+        $this->assertSame(2, $systemRequirementsMock->checkServerPermissions());
     }
 
     public function testCheckServerPermissionsReturnsSetupBlockedStatusIfDirectoriesDoNotExist()
@@ -70,7 +70,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
 
         $systemRequirementsMock->method('isAdmin')->willReturn(false);
 
-        $this->assertEquals(0, $systemRequirementsMock->checkServerPermissions('nonExistentSourcePath'));
+        $this->assertSame(0, $systemRequirementsMock->checkServerPermissions('nonExistentSourcePath'));
     }
 
     public function testCheckCollation()
@@ -79,7 +79,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
 
         $collations = $systemRequirements->checkCollation();
 
-        $this->assertEquals(0, count($collations));
+        $this->assertCount(0, $collations);
     }
 
     public function testGetSysReqStatus()
@@ -95,9 +95,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
     {
         $url = (new SystemRequirements())->getReqInfoUrl('');
 
-        $this->assertTrue(
-            \array_key_exists('scheme', \parse_url((string) $url))
-        );
+        $this->assertArrayHasKey('scheme', \parse_url((string) $url));
     }
 
     public function testGetReqInfoUrlWithKnownParameterWillAddAnchorToUrl(): void
@@ -235,9 +233,15 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerCheckMemoryLimit()
+    public function providerCheckMemoryLimit(): \Iterator
     {
-        return [['8M', 0], ['31M', 0], ['32M', 1], ['59M', 1], ['60M', 2], ['61M', 2], ['-1', 2]];
+        yield ['8M', 0];
+        yield ['31M', 0];
+        yield ['32M', 1];
+        yield ['59M', 1];
+        yield ['60M', 2];
+        yield ['61M', 2];
+        yield ['-1', 2];
     }
 
     /**
@@ -257,7 +261,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
 
         $systemRequirements = new SystemRequirements();
 
-        $this->assertEquals($expectedResult, $systemRequirements->checkMemoryLimit($memoryLimit));
+        $this->assertSame($expectedResult, $systemRequirements->checkMemoryLimit($memoryLimit));
     }
 
     public function testFilterSystemRequirementsInfo()
@@ -316,7 +320,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedValue, $actualValue);
     }
 
-    public function canSetupContinuePositiveValuesProvider()
+    public function canSetupContinuePositiveValuesProvider(): \Iterator
     {
         $testCase1 = [
             'group_a' => [
@@ -333,11 +337,8 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
                 'module_c' => SystemRequirements::MODULE_STATUS_UNABLE_TO_DETECT,
             ]
         ];
-
-        return [
-            [$testCase1],
-            [$testCase2],
-        ];
+        yield [$testCase1];
+        yield [$testCase2];
     }
 
     /**
@@ -353,7 +354,7 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedValue, $actualValue);
     }
 
-    public function canSetupContinueNegativeValuesProvider()
+    public function canSetupContinueNegativeValuesProvider(): \Iterator
     {
         $testCase1 = [
             'group_a' => [
@@ -370,11 +371,8 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
                 'module_c' => SystemRequirements::MODULE_STATUS_BLOCKS_SETUP,
             ],
         ];
-
-        return [
-            [$testCase1],
-            [$testCase2],
-        ];
+        yield [$testCase1];
+        yield [$testCase2];
     }
 
     public function testIterateThroughSystemRequirementsInfo()
@@ -410,6 +408,6 @@ final class SystemRequirementsTest extends \PHPUnit\Framework\TestCase
     {
         $result = (new SystemRequirements())->checkCryptographicallySufficientConfiguration();
 
-        $this->assertEquals(SystemRequirements::MODULE_STATUS_OK, $result);
+        $this->assertSame(SystemRequirements::MODULE_STATUS_OK, $result);
     }
 }

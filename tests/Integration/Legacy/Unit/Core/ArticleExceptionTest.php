@@ -54,7 +54,7 @@ class ArticleExceptionTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oTestObject->getProductId());
 
         $this->_oTestObject->setProductId('xxx');
-        $this->assertEquals('xxx', $this->_oTestObject->getProductId());
+        $this->assertSame('xxx', $this->_oTestObject->getProductId());
     }
 
     /**
@@ -62,7 +62,7 @@ class ArticleExceptionTest extends \PHPUnit\Framework\TestCase
      */
     public function testType()
     {
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\ArticleException::class, $this->_oTestObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\ArticleException::class, $this->_oTestObject::class);
     }
 
     /**
@@ -70,7 +70,7 @@ class ArticleExceptionTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetGetArticleNr()
     {
-        $this->assertEquals($this->_sArticle, $this->_oTestObject->getArticleNr());
+        $this->assertSame($this->_sArticle, $this->_oTestObject->getArticleNr());
     }
 
     /**
@@ -94,8 +94,8 @@ class ArticleExceptionTest extends \PHPUnit\Framework\TestCase
         $aRes = $this->_oTestObject->getValues();
         $this->assertArrayHasKey('articleNr', $aRes);
         $this->assertArrayHasKey('productId', $aRes);
-        $this->assertTrue($this->_sArticle === $aRes['articleNr']);
-        $this->assertTrue($this->_sArticle === $aRes['productId']);
+        $this->assertSame($aRes['articleNr'], $this->_sArticle);
+        $this->assertSame($aRes['productId'], $this->_sArticle);
     }
 
     /**

@@ -28,10 +28,10 @@ class OrderListTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('order_list');
-        $this->assertEquals('order_list', $oView->render());
+        $this->assertSame('order_list', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['folder']));
-        $this->assertTrue(isset($aViewData['afolder']));
+        $this->assertArrayHasKey('folder', $aViewData);
+        $this->assertArrayHasKey('afolder', $aViewData);
     }
 
     /**

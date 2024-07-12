@@ -44,7 +44,7 @@ final class PaymentRDFaTest extends \PHPUnit\Framework\TestCase
             'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
             [$sTestID, 'rdfapayment']
         );
-        $this->assertFalse(empty($iExists));
+        $this->assertNotEmpty($iExists);
 
         $oView = oxNew('Payment_RDFa');
         $oView->save();
@@ -53,7 +53,7 @@ final class PaymentRDFaTest extends \PHPUnit\Framework\TestCase
             'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
             [$sTestID, 'rdfapayment']
         );
-        $this->assertTrue(empty($iExists));
+        $this->assertEmpty($iExists);
     }
 
     /**
@@ -92,12 +92,12 @@ final class PaymentRDFaTest extends \PHPUnit\Framework\TestCase
         $aAssignedRDFaPayments = ['GoogleCheckout'];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa::class, ['getAssignedRDFaPayments']);
-        $oView->expects($this->once())->method('getAssignedRDFaPayments')->will($this->returnValue($aAssignedRDFaPayments));
+        $oView->expects($this->once())->method('getAssignedRDFaPayments')->willReturn($aAssignedRDFaPayments);
         $aCurrResp = $oView->getAllRDFaPayments();
 
         $this->assertTrue(is_array($aCurrResp), 'Array should be returned');
-        $this->assertTrue(count($aCurrResp) > 0, 'Empty array returned');
-        $this->assertTrue(current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass');
+        $this->assertGreaterThan(0, count($aCurrResp), 'Empty array returned');
+        $this->assertInstanceOf(\stdClass::class, current($aCurrResp), 'Array elements should be of type stdClass');
         foreach ($aCurrResp as $oItem) {
             foreach ($aAssignedRDFaPayments as $sAssignedName) {
                 if (strcasecmp($oItem->name, $sAssignedName) === 0) {

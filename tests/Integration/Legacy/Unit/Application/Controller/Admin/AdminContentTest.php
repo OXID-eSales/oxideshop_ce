@@ -20,6 +20,6 @@ class AdminContentTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Content');
-        $this->assertEquals('content', $oView->render());
+        $this->assertSame('content', $oView->render());
     }
 }

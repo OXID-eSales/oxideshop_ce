@@ -21,6 +21,7 @@ use \oxTestModules;
  */
 class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 {
+    public $_oArticle;
     /**
      * Initialize the fixture.
      */
@@ -74,10 +75,10 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertTrue($aViewData["parentarticle"] instanceof Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["parentarticle"]);
 
-        $this->assertEquals('article_pictures', $sTplName);
+        $this->assertSame('article_pictures', $sTplName);
     }
 
     /**
@@ -99,7 +100,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         $oArtPic->deletePicture();
 
-        $this->assertEquals("", $oDb->getOne("select oxicon from oxarticles where oxid='_testArtId' "));
+        $this->assertSame("", $oDb->getOne("select oxicon from oxarticles where oxid='_testArtId' "));
     }
 
     /**
@@ -120,7 +121,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         $oArtPic->deletePicture();
 
-        $this->assertEquals("", $oDb->getOne("select oxthumb from oxarticles where oxid='_testArtId' "));
+        $this->assertSame("", $oDb->getOne("select oxthumb from oxarticles where oxid='_testArtId' "));
     }
 
     /**
@@ -141,7 +142,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         $oArtPic->deletePicture();
 
-        $this->assertEquals("", $oDb->getOne("select oxpic2 from oxarticles where oxid='_testArtId' "));
+        $this->assertSame("", $oDb->getOne("select oxpic2 from oxarticles where oxid='_testArtId' "));
     }
 
     /**
@@ -168,7 +169,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testDeleteMainIcon()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['isDerived']);
-        $oArticle->expects($this->atLeastOnce())->method('isDerived')->will($this->returnValue(null));
+        $oArticle->expects($this->atLeastOnce())->method('isDerived')->willReturn(null);
 
         $oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
 
@@ -180,7 +181,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
         $oArtPic = $this->getProxyClass("Article_Pictures");
         $oArtPic->deleteMainIcon($oArticle);
 
-        $this->assertEquals("", $oArticle->oxarticles__oxicon->value);
+        $this->assertSame("", $oArticle->oxarticles__oxicon->value);
     }
 
     /**
@@ -189,7 +190,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testDeleteThumbnail()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['isDerived']);
-        $oArticle->expects($this->atLeastOnce())->method('isDerived')->will($this->returnValue(null));
+        $oArticle->expects($this->atLeastOnce())->method('isDerived')->willReturn(null);
 
         $oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
 
@@ -201,7 +202,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
         $oArtPic = $this->getProxyClass("Article_Pictures");
         $oArtPic->deleteThumbnail($oArticle);
 
-        $this->assertEquals("", $oArticle->oxarticles__oxthumb->value);
+        $this->assertSame("", $oArticle->oxarticles__oxthumb->value);
     }
 
     /**
@@ -210,19 +211,19 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testResetMasterPicture()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['isDerived']);
-        $oArticle->expects($this->atLeastOnce())->method('isDerived')->will($this->returnValue(null));
+        $oArticle->expects($this->atLeastOnce())->method('isDerived')->willReturn(null);
 
         $oArticle->oxarticles__oxpic2 = new oxField("testPic2.jpg");
 
         $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, ["deleteArticleMasterPicture"]);
-        $oPicHandler->expects($this->once())->method('deleteArticleMasterPicture')->with($this->equalTo($oArticle), $this->equalTo(2), $this->equalTo(false));
+        $oPicHandler->expects($this->once())->method('deleteArticleMasterPicture')->with($oArticle, 2, false);
 
         oxTestModules::addModuleObject("oxPictureHandler", $oPicHandler);
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
         $oArtPic->resetMasterPicture($oArticle, 2);
 
-        $this->assertEquals("testPic2.jpg", $oArticle->oxarticles__oxpic2->value);
+        $this->assertSame("testPic2.jpg", $oArticle->oxarticles__oxpic2->value);
     }
 
     /**
@@ -232,7 +233,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testResetMasterPicture_makesCleanupOnFields()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['isDerived']);
-        $oArticle->expects($this->atLeastOnce())->method('isDerived')->will($this->returnValue(null));
+        $oArticle->expects($this->atLeastOnce())->method('isDerived')->willReturn(null);
 
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
         $oArticle->oxarticles__oxpic2 = new oxField("testPic2.jpg");
@@ -266,8 +267,8 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         $oArtPic->cleanupCustomFields($this->_oArticle);
 
-        $this->assertEquals("", $this->_oArticle->oxarticles__oxicon->value);
-        $this->assertEquals("", $this->_oArticle->oxarticles__oxthumb->value);
+        $this->assertSame("", $this->_oArticle->oxarticles__oxicon->value);
+        $this->assertSame("", $this->_oArticle->oxarticles__oxthumb->value);
     }
 
     /**
@@ -285,8 +286,8 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
 
         $oArtPic->cleanupCustomFields($this->_oArticle);
 
-        $this->assertEquals("testIcon.jpg", $this->_oArticle->oxarticles__oxicon->value);
-        $this->assertEquals("testThumb.jpg", $this->_oArticle->oxarticles__oxthumb->value);
+        $this->assertSame("testIcon.jpg", $this->_oArticle->oxarticles__oxicon->value);
+        $this->assertSame("testThumb.jpg", $this->_oArticle->oxarticles__oxthumb->value);
     }
 
     /**
@@ -295,7 +296,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testSave_demoShopMode()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop"]);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         oxRegistry::getSession()->deleteVariable("Errors");
 
@@ -306,7 +307,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
 
-        $this->assertTrue($oEx instanceof ExceptionToDisplay);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::class, $oEx);
     }
 
     /**
@@ -315,7 +316,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testDeletePicture_demoShopMode()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop"]);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         oxRegistry::getSession()->deleteVariable("Errors");
 
@@ -326,7 +327,7 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
         $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize($aEx["default"][0]);
 
-        $this->assertTrue($oEx instanceof ExceptionToDisplay);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::class, $oEx);
     }
 
     /**
@@ -335,9 +336,9 @@ class ArticlePicturesTest extends \PHPUnit\Framework\TestCase
     public function testSubshopStaysSame()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['load', 'save', 'assign']);
-        $oArticle->expects($this->once())->method('load')->with($this->equalTo('asdasdasd'))->will($this->returnValue(true));
-        $oArticle->expects($this->once())->method('assign')->with($this->equalTo(['s' => 'test']))->will($this->returnValue(null));
-        $oArticle->expects($this->once())->method('save')->will($this->returnValue(null));
+        $oArticle->expects($this->once())->method('load')->with('asdasdasd')->willReturn(true);
+        $oArticle->expects($this->once())->method('assign')->with(['s' => 'test'])->willReturn(null);
+        $oArticle->expects($this->once())->method('save')->willReturn(null);
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 

@@ -20,6 +20,6 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Manufacturer');
-        $this->assertEquals('manufacturer', $oView->render());
+        $this->assertSame('manufacturer', $oView->render());
     }
 }

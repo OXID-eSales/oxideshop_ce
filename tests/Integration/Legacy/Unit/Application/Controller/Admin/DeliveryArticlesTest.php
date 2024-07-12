@@ -26,10 +26,10 @@ class DeliveryArticlesTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Delivery_Articles');
-        $this->assertEquals('delivery_articles', $oView->render());
+        $this->assertSame('delivery_articles', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Delivery);
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Delivery::class, $aViewData['edit']);
+        $this->assertArrayHasKey('readonly', $aViewData);
     }
 }

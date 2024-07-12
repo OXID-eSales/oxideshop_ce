@@ -24,7 +24,7 @@ class FileexceptionTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\FileException::class, $this->message);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\FileException::class, $this->testObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\FileException::class, $this->testObject::class);
         $this->testObject->setFileName($this->fileName);
         $this->testObject->setFileError($this->fileError);
     }
@@ -53,7 +53,7 @@ class FileexceptionTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->testObject->getValues();
         $this->assertArrayHasKey('fileName', $result);
-        $this->assertTrue($this->fileName === $result['fileName']);
+        $this->assertSame($result['fileName'], $this->fileName);
     }
 
     /**

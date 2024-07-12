@@ -54,7 +54,7 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         $query = sprintf('SELECT oxid FROM %s WHERE oxid LIKE \'\_CountryListTestId\_%%\'', $viewName);
         $countryList->selectString($query);
 
-        $this->assertEquals(8, $countryList->count(), 'A total of 8 records is retrieved');
+        $this->assertSame(8, $countryList->count(), 'A total of 8 records is retrieved');
     }
 
     public function testSelectStringOrderByOxOrder()
@@ -67,7 +67,7 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         $expectedArrayKeys = ['_CountryListTestId_0', '_CountryListTestId_1', '_CountryListTestId_2', '_CountryListTestId_3', '_CountryListTestId_4', '_CountryListTestId_5', '_CountryListTestId_6', '_CountryListTestId_7'];
         $actualArrayKeys = $countryList->arrayKeys();
 
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder');
+        $this->assertSame($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder');
     }
 
     public function testSelectStringChangeOrderRetrievesResultInProperOrder()
@@ -89,7 +89,7 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         $expectedArrayKeys = ['_CountryListTestId_1', '_CountryListTestId_2', '_CountryListTestId_3', '_CountryListTestId_4', '_CountryListTestId_5', '_CountryListTestId_6', '_CountryListTestId_7', '_CountryListTestId_0'];
         $actualArrayKeys = $countryList->arrayKeys();
 
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder after the field oxd order is changed');
+        $this->assertSame($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxorder after the field oxd order is changed');
     }
 
     public function testSelectStringOrderByOxTitle()
@@ -102,7 +102,7 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         $expectedArrayKeys = ['_CountryListTestId_0', '_CountryListTestId_1', '_CountryListTestId_2', '_CountryListTestId_3', '_CountryListTestId_4', '_CountryListTestId_5', '_CountryListTestId_6', '_CountryListTestId_7'];
         $actualArrayKeys = $countryList->arrayKeys();
 
-        $this->assertEquals($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxtitle');
+        $this->assertSame($expectedArrayKeys, $actualArrayKeys, 'The countries are properly sorted by the field oxtitle');
     }
 
     /**
@@ -114,7 +114,7 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         $countryList = oxNew('oxCountryList');
         $countryList->loadActiveCountries();
 
-        $this->assertEquals(5, $countryList->count());
+        $this->assertSame(5, $countryList->count());
     }
 
     /**
@@ -125,6 +125,6 @@ class CountryListTest extends \PHPUnit\Framework\TestCase
         /** @var \oxCountryList $countryList */
         $countryList = oxNew('oxCountryList');
         $countryList->loadActiveCountries(1);
-        $this->assertEquals('Germany', $countryList['a7c40f631fc920687.20179984']->oxcountry__oxtitle->value);
+        $this->assertSame('Germany', $countryList['a7c40f631fc920687.20179984']->oxcountry__oxtitle->value);
     }
 }

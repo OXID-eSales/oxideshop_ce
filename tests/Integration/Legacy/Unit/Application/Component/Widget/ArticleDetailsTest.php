@@ -27,7 +27,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetActZoomPic()
     {
         $oDetails = oxNew('oxwArticleDetails');
-        $this->assertEquals(1, $oDetails->getActZoomPic());
+        $this->assertSame(1, $oDetails->getActZoomPic());
     }
 
     /**
@@ -38,7 +38,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue(''));
+        $oCategory->method('getDefaultSorting')->willReturn('');
         $oController->setActiveCategory($oCategory);
 
         $this->assertEquals(null, $oController->getDefaultSorting());
@@ -52,10 +52,10 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
+        $oCategory->method('getDefaultSorting')->willReturn('testsort');
         $oController->setActiveCategory($oCategory);
 
-        $this->assertEquals(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
+        $this->assertSame(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
     }
 
     /**
@@ -66,11 +66,11 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting', 'getDefaultSortingMode']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
-        $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(null));
+        $oCategory->method('getDefaultSorting')->willReturn('testsort');
+        $oCategory->method('getDefaultSortingMode')->willReturn(null);
         $oController->setActiveCategory($oCategory);
 
-        $this->assertEquals(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
+        $this->assertSame(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
     }
 
     /**
@@ -82,12 +82,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting', 'getDefaultSortingMode']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
-        $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(false));
+        $oCategory->method('getDefaultSorting')->willReturn('testsort');
+        $oCategory->method('getDefaultSortingMode')->willReturn(false);
 
         $oController->setActiveCategory($oCategory);
 
-        $this->assertEquals(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
+        $this->assertSame(['sortby' => 'testsort', 'sortdir' => "asc"], $oController->getDefaultSorting());
     }
 
     /**
@@ -98,12 +98,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting', 'getDefaultSortingMode']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
-        $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(true));
+        $oCategory->method('getDefaultSorting')->willReturn('testsort');
+        $oCategory->method('getDefaultSortingMode')->willReturn(true);
 
         $oController->setActiveCategory($oCategory);
 
-        $this->assertEquals(['sortby' => 'testsort', 'sortdir' => "desc"], $oController->getDefaultSorting());
+        $this->assertSame(['sortby' => 'testsort', 'sortdir' => "desc"], $oController->getDefaultSorting());
     }
 
     /**
@@ -112,14 +112,14 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetParentProduct()
     {
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["isBuyable"]);
-        $oProduct->expects($this->any())->method('isBuyable')->will($this->returnValue(true));
+        $oProduct->method('isBuyable')->willReturn(true);
 
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct"]);
-        $oDetailsView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetailsView->method('getProduct')->willReturn($oProduct);
 
         $oProduct = $oDetailsView->getParentProduct('1126');
-        $this->assertTrue($oProduct instanceof Article);
-        $this->assertEquals('1126', $oProduct->getId());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $oProduct);
+        $this->assertSame('1126', $oProduct->getId());
     }
 
     /**
@@ -143,8 +143,8 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam('bl_perfLoadReviews', true);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct', 'getUser']);
-        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArt));
-        $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oDetails->method('getProduct')->willReturn($oArt);
+        $oDetails->method('getUser')->willReturn($oUser);
 
         $this->assertTrue($oDetails->canRate());
     }
@@ -161,9 +161,9 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
 
-        $sSelect = sprintf('select oxattrid from oxobject2attribute where oxobjectid = \'%s\'', $sArtID);
+        $sSelect = sprintf("select oxattrid from oxobject2attribute where oxobjectid = '%s'", $sArtID);
         $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = sprintf('select oxvalue from oxobject2attribute where oxattrid = \'%s\' and oxobjectid = \'%s\'', $sID, $sArtID);
+        $sSelect = sprintf("select oxvalue from oxobject2attribute where oxattrid = '%s' and oxobjectid = '%s'", $sID, $sArtID);
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $aAttrList = $oDetails->getAttributes();
         $sAttribValue = $aAttrList[$sID]->value;
@@ -178,30 +178,30 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('listtype', 'vendor');
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getActiveCategory']);
         $oDetailsView->expects($this->never())->method('getActiveCategory');
-        $this->assertEquals(OXARTICLE_LINKTYPE_VENDOR, $oDetailsView->getLinkType());
+        $this->assertSame(OXARTICLE_LINKTYPE_VENDOR, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', 'manufacturer');
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getActiveCategory']);
         $oDetailsView->expects($this->never())->method('getActiveCategory');
-        $this->assertEquals(OXARTICLE_LINKTYPE_MANUFACTURER, $oDetailsView->getLinkType());
+        $this->assertSame(OXARTICLE_LINKTYPE_MANUFACTURER, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', null);
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getActiveCategory']);
-        $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue(null));
-        $this->assertEquals(OXARTICLE_LINKTYPE_CATEGORY, $oDetailsView->getLinkType());
+        $oDetailsView->expects($this->once())->method('getActiveCategory')->willReturn(null);
+        $this->assertSame(OXARTICLE_LINKTYPE_CATEGORY, $oDetailsView->getLinkType());
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['isPriceCategory']);
-        $oCategory->expects($this->once())->method('isPriceCategory')->will($this->returnValue(true));
+        $oCategory->expects($this->once())->method('isPriceCategory')->willReturn(true);
 
         $this->setRequestParameter('listtype', "recommlist");
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getActiveCategory']);
-        $oDetailsView->expects($this->never())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals(OXARTICLE_LINKTYPE_RECOMM, $oDetailsView->getLinkType());
+        $oDetailsView->expects($this->never())->method('getActiveCategory')->willReturn($oCategory);
+        $this->assertSame(OXARTICLE_LINKTYPE_RECOMM, $oDetailsView->getLinkType());
 
         $this->setRequestParameter('listtype', null);
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getActiveCategory']);
-        $oDetailsView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals(OXARTICLE_LINKTYPE_PRICECATEGORY, $oDetailsView->getLinkType());
+        $oDetailsView->expects($this->once())->method('getActiveCategory')->willReturn($oCategory);
+        $this->assertSame(OXARTICLE_LINKTYPE_PRICECATEGORY, $oDetailsView->getLinkType());
     }
 
     /**
@@ -222,12 +222,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oList->assign(['asdasd' => $oKeep1, 'asd' => $oKeep2]);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getVariantList', 'getProduct']);
-        $oDetails->expects($this->once())->method('getVariantList')->will($this->returnValue($oList));
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oProd));
+        $oDetails->expects($this->once())->method('getVariantList')->willReturn($oList);
+        $oDetails->expects($this->once())->method('getProduct')->willReturn($oProd);
 
         $aRet = $oDetails->getVariantListExceptCurrent();
 
-        $this->assertEquals(1, count($aRet));
+        $this->assertCount(1, $aRet);
 
         $oExpect = oxNew('oxlist');
         $oExpect->assign(['asd' => $oKeep2]);
@@ -237,7 +237,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($oKeep2, $aRet['asd']);
 
         // original unchanged
-        $this->assertEquals(2, count($oList));
+        $this->assertCount(2, $oList);
     }
 
     /**
@@ -262,12 +262,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
 
         $oProductParent = $this->getMock($articleProxyName, ['getSelectLists', 'getId']);
         $oProductParent->expects($this->once())->method('getSelectLists');
-        $oProductParent->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('123'));
+        $oProductParent->expects($this->atLeastOnce())->method('getId')->willReturn('123');
         $oProductParent->oxarticles__oxvarcount = new oxField(10);
 
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getParentArticle', 'getVariants', 'getId']);
         $oProduct->expects($this->never())->method('getVariants');
-        $oProduct->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('testArtId'));
+        $oProduct->expects($this->atLeastOnce())->method('getId')->willReturn('testArtId');
         $oProduct->oxarticles__oxvarcount = new oxField(10);
 
         $oVar1 = oxNew('oxArticle');
@@ -292,10 +292,10 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oProductParent->setNonPublicVar('_aVariantsWithNotOrderables', ["full" => $oVarList]);
         $oProductParent->setNonPublicVar('_blNotBuyableParent', true);
 
-        $oProduct->expects($this->any())->method('getParentArticle')->will($this->returnValue($oProductParent));
+        $oProduct->method('getParentArticle')->willReturn($oProductParent);
 
         $oDetailsView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct', 'getLinkType']);
-        $oDetailsView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetailsView->expects($this->once())->method('getProduct')->willReturn($oProduct);
         $oDetailsView->expects($this->exactly(6))->method('getLinkType');
         $oDetailsView->loadVariantInformation();
     }
@@ -311,7 +311,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         }
 
         $oDetails = $this->getProxyClass('oxwArticleDetails');
-        $this->assertEquals(3, $oDetails->getVariantList()->count());
+        $this->assertSame(3, $oDetails->getVariantList()->count());
     }
 
     /**
@@ -330,9 +330,9 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
 
         $oMediaUrls = $oDetails->getMediaFiles();
 
-        $this->assertEquals(1, count($oMediaUrls));
-        $this->assertTrue(isset($oMediaUrls['_test2']));
-        $this->assertEquals('test2', $oMediaUrls['_test2']->oxmediaurls__oxdesc->value);
+        $this->assertCount(1, $oMediaUrls);
+        $this->assertArrayHasKey('_test2', $oMediaUrls);
+        $this->assertSame('test2', $oMediaUrls['_test2']->oxmediaurls__oxdesc->value);
     }
 
     /**
@@ -352,7 +352,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oDetails = oxNew('oxwArticleDetails');
         $oDetails->init();
 
-        $this->assertEquals('1771', $oDetails->getLastProducts()->current()->getId());
+        $this->assertSame('1771', $oDetails->getLastProducts()->current()->getId());
     }
 
     /**
@@ -366,10 +366,10 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         }
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getManufacturerId']);
-        $oArticle->expects($this->any())->method('getManufacturerId')->will($this->returnValue(false));
+        $oArticle->method('getManufacturerId')->willReturn(false);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArticle));
+        $oDetails->method('getProduct')->willReturn($oArticle);
 
         $oExpVendor = oxNew('oxVendor');
         $oExpVendor->load($sManId);
@@ -389,10 +389,10 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         }
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getVendorId']);
-        $oArticle->expects($this->any())->method('getVendorId')->will($this->returnValue(false));
+        $oArticle->method('getVendorId')->willReturn(false);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oDetails->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
         $oExpVendor = oxNew('oxVendor');
         $oExpVendor->load($sVendId);
@@ -436,10 +436,10 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $sActPic = $this->getConfig()->getPictureUrl(null) . "generated/product/1/250_200_75/" . basename($oArticle->oxarticles__oxpic1->value);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getPicturesProduct"]);
-        $oDetails->expects($this->once())->method('getPicturesProduct')->will($this->returnValue($oArticle));
+        $oDetails->expects($this->once())->method('getPicturesProduct')->willReturn($oArticle);
         $aPicGallery = $oDetails->getPictureGallery();
 
-        $this->assertEquals($sActPic, $aPicGallery['ActPic']);
+        $this->assertSame($sActPic, $aPicGallery['ActPic']);
     }
 
     /**
@@ -450,7 +450,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $aPicGallery = ['ActPic' => 'aaa'];
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_aPicGallery", $aPicGallery);
-        $this->assertEquals('aaa', $oDetails->getActPicture());
+        $this->assertSame('aaa', $oDetails->getActPicture());
     }
 
     /**
@@ -472,7 +472,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $aPicGallery = ['Icons' => 'aaa'];
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_aPicGallery", $aPicGallery);
-        $this->assertEquals('aaa', $oDetails->getIcons());
+        $this->assertSame('aaa', $oDetails->getIcons());
     }
 
     /**
@@ -494,7 +494,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $aPicGallery = ['ZoomPics' => 'aaa'];
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setNonPublicVar("_aPicGallery", $aPicGallery);
-        $this->assertEquals('aaa', $oDetails->getZoomPics());
+        $this->assertSame('aaa', $oDetails->getZoomPics());
     }
 
     /**
@@ -503,12 +503,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetReviews()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getReviews']);
-        $oArticle->expects($this->any())->method('getReviews')->will($this->returnValue("aaa"));
+        $oArticle->method('getReviews')->willReturn("aaa");
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oDetails->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
-        $this->assertEquals('aaa', $oDetails->getReviews());
+        $this->assertSame('aaa', $oDetails->getReviews());
     }
 
     /**
@@ -522,7 +522,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
 
         $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oDetails->getCrossSelling();
-        $this->assertTrue($oList instanceof ArticleList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $oList);
 
         $iCount = 2;
         if ((new Facts())->getEdition() === 'EE') {
@@ -538,7 +538,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetSimilarProductsEmptyProductList()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountNoticeListController::class, ["getNoticeProductList"]);
-        $oView->expects($this->any())->method('getNoticeProductList')->will($this->returnValue([]));
+        $oView->method('getNoticeProductList')->willReturn([]);
         $this->assertNull($oView->getSimilarProducts());
     }
 
@@ -548,11 +548,11 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetSimilarProducts()
     {
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["getSimilarProducts"]);
-        $oProduct->expects($this->any())->method('getSimilarProducts')->will($this->returnValue("testSimilarProducts"));
+        $oProduct->method('getSimilarProducts')->willReturn("testSimilarProducts");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountNoticeListController::class, ["getNoticeProductList"]);
-        $oView->expects($this->any())->method('getNoticeProductList')->will($this->returnValue([$oProduct]));
-        $this->assertEquals("testSimilarProducts", $oView->getSimilarProducts());
+        $oView->method('getNoticeProductList')->willReturn([$oProduct]);
+        $this->assertSame("testSimilarProducts", $oView->getSimilarProducts());
     }
 
     /**
@@ -563,11 +563,11 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $articleId = "articleId";
         $aArrayKeys = [$articleId];
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getId"]);
-        $oProduct->expects($this->once())->method("getId")->will($this->returnValue($articleId));
+        $oProduct->expects($this->once())->method("getId")->willReturn($articleId);
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct"]);
-        $oDetails->expects($this->once())->method("getProduct")->will($this->returnValue($oProduct));
-        $this->assertEquals($aArrayKeys, $oDetails->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getProduct()");
+        $oDetails->expects($this->once())->method("getProduct")->willReturn($oProduct);
+        $this->assertSame($aArrayKeys, $oDetails->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getProduct()");
     }
 
     /**
@@ -576,12 +576,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetAccessoires()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getAccessoires']);
-        $oArticle->expects($this->any())->method('getAccessoires')->will($this->returnValue("aaa"));
+        $oArticle->method('getAccessoires')->willReturn("aaa");
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oDetails->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
-        $this->assertEquals("aaa", $oDetails->getAccessoires());
+        $this->assertSame("aaa", $oDetails->getAccessoires());
     }
 
     /**
@@ -590,12 +590,12 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetAlsoBoughtTheseProducts()
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getCustomerAlsoBoughtThisProducts']);
-        $oArticle->expects($this->any())->method('getCustomerAlsoBoughtThisProducts')->will($this->returnValue("aaa"));
+        $oArticle->method('getCustomerAlsoBoughtThisProducts')->willReturn("aaa");
 
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oDetails->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
-        $this->assertEquals("aaa", $oDetails->getAlsoBoughtTheseProducts());
+        $this->assertSame("aaa", $oDetails->getAlsoBoughtTheseProducts());
     }
 
     /**
@@ -607,7 +607,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oArticle->oxarticles__oxblfixedprice = new oxField(1, oxField::T_RAW);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oView->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
         $this->assertEquals(false, $oView->isPriceAlarm());
     }
@@ -621,7 +621,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oArticle->oxarticles__oxblfixedprice = new oxField(0, oxField::T_RAW);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oArticle));
+        $oView->expects($this->once())->method('getProduct')->willReturn($oArticle);
 
         $this->assertEquals(true, $oView->isPriceAlarm());
     }
@@ -634,7 +634,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setSearchTitle("tetsTitle");
 
-        $this->assertEquals("tetsTitle", $oDetails->getSearchTitle());
+        $this->assertSame("tetsTitle", $oDetails->getSearchTitle());
     }
 
     /**
@@ -645,7 +645,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oDetails = $this->getProxyClass('oxwArticleDetails');
         $oDetails->setCatTreePath("tetsPath");
 
-        $this->assertEquals("tetsPath", $oDetails->getCatTreePath());
+        $this->assertSame("tetsPath", $oDetails->getCatTreePath());
     }
 
     /**
@@ -677,35 +677,35 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetRatingValue_active()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getConfigParam']);
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blShowVariantReviews'))->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('getConfigParam')->with('blShowVariantReviews')->willReturn(true);
 
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getArticleRatingAverage']);
-        $oProduct->expects($this->once())->method('getArticleRatingAverage')->will($this->returnValue(123.855));
+        $oProduct->expects($this->once())->method('getArticleRatingAverage')->willReturn(123.855);
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), ['getConfig', 'isReviewActive', 'getProduct']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView->expects($this->once())->method('isReviewActive')->willReturn(true);
+        $oView->expects($this->once())->method('getProduct')->willReturn($oProduct);
 
-        $this->assertSame(123.9, $oView->getRatingValue());
-        $this->assertSame(123.9, $oView->getNonPublicVar('_dRatingValue'));
+        $this->assertEqualsWithDelta(123.9, $oView->getRatingValue(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(123.9, $oView->getNonPublicVar('_dRatingValue'), PHP_FLOAT_EPSILON);
     }
 
     public function testGetRatingValue_inactive()
     {
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), ['getConfig', 'isReviewActive', 'getProduct']);
         $oView->expects($this->never())->method('getConfig');
-        $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('isReviewActive')->willReturn(false);
         $oView->expects($this->never())->method('getProduct');
 
-        $this->assertSame(0.0, $oView->getRatingValue());
-        $this->assertSame(0.0, $oView->getNonPublicVar('_dRatingValue'));
+        $this->assertEqualsWithDelta(0.0, $oView->getRatingValue(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(0.0, $oView->getNonPublicVar('_dRatingValue'), PHP_FLOAT_EPSILON);
     }
 
     public function testIsReviewActive()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getConfigParam']);
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
+        $oConfig->expects($this->once())->method('getConfigParam')->with('bl_perfLoadReviews')->willReturn('test_isactive');
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
@@ -716,15 +716,15 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetRatingCount_active()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getConfigParam']);
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blShowVariantReviews'))->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('getConfigParam')->with('blShowVariantReviews')->willReturn(true);
 
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getArticleRatingCount']);
-        $oProduct->expects($this->once())->method('getArticleRatingCount')->will($this->returnValue(123));
+        $oProduct->expects($this->once())->method('getArticleRatingCount')->willReturn(123);
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), ['getConfig', 'isReviewActive', 'getProduct']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView->expects($this->once())->method('isReviewActive')->willReturn(true);
+        $oView->expects($this->once())->method('getProduct')->willReturn($oProduct);
 
         $this->assertSame(123, $oView->getRatingCount());
         $this->assertSame(123, $oView->getNonPublicVar('_iRatingCnt'));
@@ -734,11 +734,11 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     {
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), ['getConfig', 'isReviewActive', 'getProduct']);
         //$oView->expects( $this->never() )->method( 'getConfig' );
-        $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('isReviewActive')->willReturn(false);
         $oView->expects($this->never())->method('getProduct');
 
-        $this->assertSame(false, $oView->getRatingCount());
-        $this->assertSame(false, $oView->getNonPublicVar('_iRatingCnt'));
+        $this->assertFalse($oView->getRatingCount());
+        $this->assertFalse($oView->getNonPublicVar('_iRatingCnt'));
     }
 
     public function testGetPriceAlarmStatus()
@@ -767,29 +767,29 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetVariantSelections()
     {
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getVariantSelections"]);
-        $oProduct->expects($this->once())->method("getVariantSelections")->will($this->returnValue("varselections"));
+        $oProduct->expects($this->once())->method("getVariantSelections")->willReturn("varselections");
         //$oProduct->expects( $this->never() )->method( "getId" );
 
         // no parent
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct", "getParentProduct"]);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getProduct')->willReturn($oProduct);
+        $oView->expects($this->once())->method('getParentProduct')->willReturn(false);
 
-        $this->assertEquals("varselections", $oView->getVariantSelections());
+        $this->assertSame("varselections", $oView->getVariantSelections());
 
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getVariantSelections"]);
-        $oProduct->expects($this->never())->method('getVariantSelections')->will($this->returnValue("varselections"));
+        $oProduct->expects($this->never())->method('getVariantSelections')->willReturn("varselections");
         //$oProduct->expects( $this->once() )->method( 'getId');
 
         $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getVariantSelections"]);
-        $oParent->expects($this->once())->method('getVariantSelections')->will($this->returnValue("parentselections"));
+        $oParent->expects($this->once())->method('getVariantSelections')->willReturn("parentselections");
 
         // has parent
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct", "getParentProduct"]);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('getParentProduct')->will($this->returnValue($oParent));
+        $oView->expects($this->once())->method('getProduct')->willReturn($oProduct);
+        $oView->expects($this->once())->method('getParentProduct')->willReturn($oParent);
 
-        $this->assertEquals("parentselections", $oView->getVariantSelections());
+        $this->assertSame("parentselections", $oView->getVariantSelections());
     }
 
     /**
@@ -802,8 +802,8 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
 
         // no picture product id
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct", 'getVariantSelections']);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
-        $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getProduct')->willReturn($oProduct);
+        $oView->expects($this->once())->method('getVariantSelections')->willReturn(false);
         $this->assertSame($oProduct, $oView->getPicturesProduct());
     }
 
@@ -816,7 +816,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         // no picture product id
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct", 'getVariantSelections']);
         $oView->expects($this->never())->method('getProduct');
-        $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue($aInfo));
+        $oView->expects($this->once())->method('getVariantSelections')->willReturn($aInfo);
         $this->assertSame($oProduct, $oView->getPicturesProduct());
     }
 
@@ -828,9 +828,9 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $aInfo = ['oActiveVariant' => $oProduct, 'blPerfectFit'   => true];
         // no picture product id
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ["getProduct", 'getVariantSelections']);
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue('prod'));
-        $oView->expects($this->once())->method('getVariantSelections')->will($this->returnValue($aInfo));
-        $this->assertEquals('prod', $oView->getPicturesProduct());
+        $oView->expects($this->once())->method('getProduct')->willReturn('prod');
+        $oView->expects($this->once())->method('getVariantSelections')->willReturn($aInfo);
+        $this->assertSame('prod', $oView->getPicturesProduct());
     }
 
     /**
@@ -839,7 +839,7 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetProductInvisibleProduct()
     {
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['isVisible']);
-        $oProduct->expects($this->once())->method('isVisible')->will($this->returnValue(false));
+        $oProduct->expects($this->once())->method('isVisible')->willReturn(false);
 
         $this->setRequestParameter('anid', 'notexistingproductid');
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception( \$aA[0] ); }");
@@ -864,11 +864,11 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
     {
         $this->setConfigParam('blUseMultidimensionVariants', true);
         $oMdVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\MdVariant::class, ['getMaxDepth']);
-        $oMdVariant->expects($this->any())->method('getMaxDepth')->will($this->returnValue(2));
+        $oMdVariant->method('getMaxDepth')->willReturn(2);
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getMdVariants']);
-        $oProduct->expects($this->any())->method('getMdVariants')->will($this->returnValue($oMdVariant));
+        $oProduct->method('getMdVariants')->willReturn($oMdVariant);
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, ['getProduct']);
-        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetails->method('getProduct')->willReturn($oProduct);
 
         $this->assertTrue($oDetails->isMdVariantView());
     }
@@ -892,8 +892,8 @@ class ArticleDetailsTest extends \PHPUnit\Framework\TestCase
         $oController = oxNew('oxwArticleDetails');
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getDefaultSorting', 'getDefaultSortingMode']);
-        $oCategory->expects($this->any())->method('getDefaultSorting')->will($this->returnValue('testsort'));
-        $oCategory->expects($this->any())->method('getDefaultSortingMode')->will($this->returnValue(true));
+        $oCategory->method('getDefaultSorting')->willReturn('testsort');
+        $oCategory->method('getDefaultSortingMode')->willReturn(true);
 
         $oController->setActiveCategory($oCategory);
 

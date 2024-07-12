@@ -20,6 +20,6 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Delivery');
-        $this->assertEquals('delivery', $oView->render());
+        $this->assertSame('delivery', $oView->render());
     }
 }

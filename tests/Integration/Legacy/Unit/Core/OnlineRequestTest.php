@@ -21,7 +21,7 @@ class OnlineRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('sClusterId', '');
         $request = oxNew('oxOnlineRequest');
-        $this->assertNotEquals('', $request->clusterId);
+        $this->assertNotSame('', $request->clusterId);
     }
 
     public function testClusterIdIsNotRegenerationWhenAlreadySet()

@@ -25,8 +25,8 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
 
         $shopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        oxDb::getDb()->execute(sprintf('replace into oxobject2group set oxid=\'_testId1\', oxshopid=\'%d\', oxobjectid=\'_testVoucherId1\', oxgroupsid=\'_testGroupId1\'', $shopId));
-        oxDb::getDb()->execute(sprintf('replace into oxobject2group set oxid=\'_testId2\', oxshopid=\'%d\', oxobjectid=\'_testVoucherId1\', oxgroupsid=\'_testGroupId2\'', $shopId));
+        oxDb::getDb()->execute(sprintf("replace into oxobject2group set oxid='_testId1', oxshopid='%d', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId1'", $shopId));
+        oxDb::getDb()->execute(sprintf("replace into oxobject2group set oxid='_testId2', oxshopid='%d', oxobjectid='_testVoucherId1', oxgroupsid='_testGroupId2'", $shopId));
 
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId1', oxactive=1, oxtitle='_testGroup1', oxtitle_1='_testGroup1_en'");
         oxDb::getDb()->execute("replace into oxgroups set oxid='_testGroupId2', oxactive=1, oxtitle='_testGroup2', oxtitle_1='_testGroup2_en'");
@@ -56,12 +56,12 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
 
         $oDb = oxDb::getDb();
 
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
 
         $oView = oxNew('voucherserie_groups_ajax');
         $oView->removeGroupFromVoucher();
 
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
     }
 
     /**
@@ -72,14 +72,14 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "_testVoucherId1");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testId1']));
+        $oView->method('getActionIds')->willReturn(['_testId1']);
 
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
 
         $oView->removeGroupFromVoucher();
 
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
-        $this->assertEquals("_testVoucherId1", oxDb::getDb()->getOne("select oxobjectid from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame("_testVoucherId1", oxDb::getDb()->getOne("select oxobjectid from oxobject2group where oxid like '_test%'"));
     }
 
     /**
@@ -91,14 +91,14 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", "_testVoucherId1");
 
         oxDb::getDB()->execute("delete from oxobject2group where oxid like '\_test%'");
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, ["getQuery"]);
-        $oView->expects($this->once())->method('getQuery')->will($this->returnValue("from oxv_oxgroups_de where oxid like '\_test%'"));
+        $oView->expects($this->once())->method('getQuery')->willReturn("from oxv_oxgroups_de where oxid like '\_test%'");
 
         $oView->addGroupToVoucher();
 
-        $this->assertEquals(4, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxobjectid = '_testVoucherId1'"));
+        $this->assertSame(4, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxobjectid = '_testVoucherId1'"));
     }
 
     /**
@@ -109,13 +109,13 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", "_testVoucherId1");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, ["getActionIds"]);
-        $oView->expects($this->once())->method('getActionIds')->will($this->returnValue(['_testGroupId3']));
+        $oView->expects($this->once())->method('getActionIds')->willReturn(['_testGroupId3']);
 
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
 
         $oView->addGroupToVoucher();
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxobjectid = '_testVoucherId1'"));
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxobjectid = '_testVoucherId1'"));
     }
 
 
@@ -125,7 +125,7 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('voucherserie_groups_ajax');
-        $this->assertEquals('from oxv_oxgroups_de where 1', trim((string) $oView->getQuery()));
+        $this->assertSame('from oxv_oxgroups_de where 1', trim((string) $oView->getQuery()));
     }
 
     /**
@@ -136,9 +136,9 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testGroupGetQuerySynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sResult = sprintf('from oxv_oxgroups_de where 1 and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = \'%s\' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )', $sSynchoxid);
+        $sResult = sprintf("from oxv_oxgroups_de where 1 and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '%s' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )", $sSynchoxid);
         $oView = oxNew('voucherserie_groups_ajax');
-        $this->assertEquals($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
+        $this->assertSame($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
     }
 
     /**
@@ -149,9 +149,9 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $sOxid = '_testGroupGetQuery';
         $this->setRequestParameter("oxid", $sOxid);
 
-        $sResult = sprintf('from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = \'%s\' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid', $sOxid);
+        $sResult = sprintf("from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '%s' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid", $sOxid);
         $oView = oxNew('voucherserie_groups_ajax');
-        $this->assertEquals($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
+        $this->assertSame($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
     }
 
     /**
@@ -164,10 +164,10 @@ class VoucherseriegroupsajaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sResult = sprintf('from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = \'%s\' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid', $sOxid);
-        $sResult .= sprintf(' and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = \'%s\' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )', $sSynchoxid);
+        $sResult = sprintf("from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '%s' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid", $sOxid);
+        $sResult .= sprintf(" and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where oxobject2group.oxobjectid = '%s' and oxv_oxgroups_de.oxid = oxobject2group.oxgroupsid )", $sSynchoxid);
 
         $oView = oxNew('voucherserie_groups_ajax');
-        $this->assertEquals($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
+        $this->assertSame($sResult, trim(preg_replace("/\s+/", " ", $oView->getQuery())));
     }
 }

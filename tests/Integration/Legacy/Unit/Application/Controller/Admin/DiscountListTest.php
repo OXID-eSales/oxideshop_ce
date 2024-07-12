@@ -24,15 +24,15 @@ class DiscountListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('Discount_List'));
         $oView->init();
 
-        $this->assertEquals("oxdiscount", $oView->getNonPublicVar("_sListClass"));
-        $this->assertEquals("oxdiscountlist", $oView->getNonPublicVar("_sListType"));
-        $this->assertEquals(['oxdiscount' => ["oxsort" => "asc"]], $oView->getListSorting());
-        $this->assertEquals('discount_list', $oView->render());
+        $this->assertSame("oxdiscount", $oView->getNonPublicVar("_sListClass"));
+        $this->assertSame("oxdiscountlist", $oView->getNonPublicVar("_sListType"));
+        $this->assertSame(['oxdiscount' => ["oxsort" => "asc"]], $oView->getListSorting());
+        $this->assertSame('discount_list', $oView->render());
     }
 }

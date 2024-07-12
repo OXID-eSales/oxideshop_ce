@@ -18,9 +18,9 @@ class ModuleVariablesLocatorTest extends \PHPUnit\Framework\TestCase
         $cache = $this->getMock('oxFileCache');
 
         $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, ['getShopId'], [], '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
+        $shopIdCalculator->method('getShopId')->willReturn($this->getShopId());
 
         $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);
-        $this->assertEquals(["a7c40f631fc920687.20179984"], $moduleCache->getModuleVariable("aHomeCountry"));
+        $this->assertSame(["a7c40f631fc920687.20179984"], $moduleCache->getModuleVariable("aHomeCountry"));
     }
 }

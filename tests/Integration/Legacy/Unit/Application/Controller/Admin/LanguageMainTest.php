@@ -27,7 +27,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Language_Main');
         $sTplName = $oView->render();
 
-        $this->assertEquals('language_main', $sTplName);
+        $this->assertSame('language_main', $sTplName);
     }
 
     /**
@@ -72,8 +72,8 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["validateInput", "getConfig", "getLanguages"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oMainLang->expects($this->once())->method('getLanguages')->will($this->returnValue($aDefaultLangData));
-        $oMainLang->expects($this->once())->method('validateInput')->will($this->returnValue(true));
+        $oMainLang->expects($this->once())->method('getLanguages')->willReturn($aDefaultLangData);
+        $oMainLang->expects($this->once())->method('validateInput')->willReturn(true);
 
         $oMainLang->save();
     }
@@ -101,14 +101,14 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("editval", $aNewParams);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["saveShopConfVar"]);
-        $oConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValue(true));
+        $oConfig->method('saveShopConfVar')->willReturn(true);
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["validateInput", "getConfig", "checkMultilangFieldsExistsInDb", "addNewMultilangFieldsToDb", "getLanguages"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oMainLang->expects($this->once())->method('getLanguages')->will($this->returnValue($aLangData));
-        $oMainLang->expects($this->once())->method('validateInput')->will($this->returnValue(true));
-        $oMainLang->expects($this->once())->method('checkMultilangFieldsExistsInDb')->with($this->equalTo('fr'))->will($this->returnValue(false));
+        $oMainLang->expects($this->once())->method('getLanguages')->willReturn($aLangData);
+        $oMainLang->expects($this->once())->method('validateInput')->willReturn(true);
+        $oMainLang->expects($this->once())->method('checkMultilangFieldsExistsInDb')->with('fr')->willReturn(false);
         $oMainLang->expects($this->once())->method('addNewMultilangFieldsToDb');
 
         $oMainLang->save();
@@ -153,7 +153,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
 
         $oView = $this->getProxyClass("Language_Main");
 
-        $this->assertEquals($aLangData, $oView->getLanguages());
+        $this->assertSame($aLangData, $oView->getLanguages());
     }
 
     /**
@@ -214,7 +214,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals($aRes, $oView->assignDefaultLangParams($aLangData));
+        $this->assertSame($aRes, $oView->assignDefaultLangParams($aLangData));
     }
 
     /**
@@ -226,7 +226,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["saveShopConfVar"]);
-        $oConfig->expects($this->atLeastOnce())->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(1));
+        $oConfig->expects($this->atLeastOnce())->method('saveShopConfVar')->with('str', 'sDefaultLang', 1);
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
@@ -247,7 +247,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals(2, $oView->getAvailableLangBaseId());
+        $this->assertSame(2, $oView->getAvailableLangBaseId());
     }
 
     /**
@@ -259,7 +259,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $aLangData['params']['en'] = ["baseId" => 1, "active" => 1, "sort" => 10, "default" => false];
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getTranslationsDir"]);
-        $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue("dir/to/langfile"));
+        $oConfig->expects($this->once())->method("getTranslationsDir")->with('lang.php', oxRegistry::getLang()->getLanguageAbbr(1))->willReturn("dir/to/langfile");
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
@@ -283,7 +283,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getTranslationsDir"]);
 
-        $oConfig->expects($this->once())->method("getTranslationsDir")->with($this->equalTo('lang.php'), oxRegistry::getLang()->getLanguageAbbr(1))->will($this->returnValue(""));
+        $oConfig->expects($this->once())->method("getTranslationsDir")->with('lang.php', oxRegistry::getLang()->getLanguageAbbr(1))->willReturn("");
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), ["getConfig"], [], '', false);
@@ -378,8 +378,8 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getProxyClass("Language_Main");
         $oView->setNonPublicVar("_aLangData", $aLangData);
 
-        $this->assertEquals(1, $oView->sortLangParamsByBaseIdCallback($aLangData['params']['en'], $aLangData['params']['de']));
-        $this->assertEquals(-1, $oView->sortLangParamsByBaseIdCallback($aLangData['params']['de'], $aLangData['params']['en']));
+        $this->assertSame(1, $oView->sortLangParamsByBaseIdCallback($aLangData['params']['en'], $aLangData['params']['de']));
+        $this->assertSame(-1, $oView->sortLangParamsByBaseIdCallback($aLangData['params']['de'], $aLangData['params']['en']));
     }
 
     /**
@@ -391,7 +391,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("editval", ['abbr' => 'en']);
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
-        $oMainLang->expects($this->once())->method('checkLangExists')->with($this->equalTo("en"))->will($this->returnValue(true));
+        $oMainLang->expects($this->once())->method('checkLangExists')->with("en")->willReturn(true);
 
         $this->assertFalse($oMainLang->validateInput());
 
@@ -448,7 +448,7 @@ class LanguageMainTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("editval", ['abbr' => 'ch-xx']);
 
         $mainLanguage = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, ["checkLangExists"]);
-        $mainLanguage->expects($this->once())->method('checkLangExists')->with($this->equalTo("ch-xx"))->will($this->returnValue(false));
+        $mainLanguage->expects($this->once())->method('checkLangExists')->with("ch-xx")->willReturn(false);
 
         $this->assertFalse($mainLanguage->validateInput());
 

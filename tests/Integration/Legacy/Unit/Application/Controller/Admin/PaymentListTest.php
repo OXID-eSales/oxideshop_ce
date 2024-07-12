@@ -20,6 +20,6 @@ class PaymentListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Payment_List');
-        $this->assertEquals('payment_list', $oView->render());
+        $this->assertSame('payment_list', $oView->render());
     }
 }

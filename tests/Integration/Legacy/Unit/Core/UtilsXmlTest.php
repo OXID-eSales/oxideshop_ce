@@ -11,16 +11,20 @@ use \DOMDocument;
 
 class UtilsXmlTest extends \PHPUnit\Framework\TestCase
 {
-    public function xmlProviderNoDomDocument()
+    public function xmlProviderNoDomDocument(): \Iterator
     {
-        return [['<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', true], ['<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>', false]];
+        yield ['<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', true];
+        yield ['<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><message>ACK</message>', false];
     }
 
     public function xmlProviderWithDomDocument()
     {
         $oDom = new DOMDocument();
 
-        return [['<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>ACK</html>', $oDom, false], ['<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', $oDom, true]];
+        return [
+            ['<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html>ACK</html>', $oDom, false],
+            ['<?xml version="1.0" encoding="utf-8"?><message>ACK</message>', $oDom, true],
+        ];
     }
 
     /**

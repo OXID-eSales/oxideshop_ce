@@ -36,7 +36,7 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Category_Seo');
-        $this->assertEquals('object_seo', $oView->render());
+        $this->assertSame('object_seo', $oView->render());
     }
 
     /**
@@ -46,7 +46,7 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Category_Seo');
-        $this->assertEquals('oxcategory', $oView->getType());
+        $this->assertSame('oxcategory', $oView->getType());
     }
 
     /**
@@ -64,7 +64,7 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Category_Seo');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("markRelatedAsExpired", $exception->getMessage(), "Error in Category_Seo::Save()");
+            $this->assertSame("markRelatedAsExpired", $exception->getMessage(), "Error in Category_Seo::Save()");
 
             return;
         }
@@ -78,7 +78,7 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Category_Seo');
-        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderCategory);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\SeoEncoderCategory::class, $oView->getEncoder());
     }
 
     /**
@@ -128,12 +128,12 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, ["getCategoryUri"]);
-        $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("CategoryUri"));
+        $oEncoder->expects($this->once())->method('getCategoryUri')->willReturn("CategoryUri");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, ["getEditObjectId", "getEncoder"]);
-        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
-        $this->assertEquals("CategoryUri", $oView->getEntryUri());
+        $oView->expects($this->once())->method('getEditObjectId')->willReturn("_test1");
+        $oView->expects($this->once())->method('getEncoder')->willReturn($oEncoder);
+        $this->assertSame("CategoryUri", $oView->getEntryUri());
     }
 
     /**
@@ -150,7 +150,7 @@ class CategorySeoTest extends \PHPUnit\Framework\TestCase
         $oCategory->load("_test1");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, ["getEditLang"]);
-        $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
+        $oView->expects($this->once())->method('getEditLang')->willReturn(0);
 
         $this->assertEquals($oCategory->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }

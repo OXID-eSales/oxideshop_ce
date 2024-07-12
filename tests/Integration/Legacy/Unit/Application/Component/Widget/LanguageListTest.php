@@ -19,6 +19,6 @@ class LanguageListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oLanguageList = oxNew('oxwLanguageList');
-        $this->assertEquals('widget/header/languages', $oLanguageList->render());
+        $this->assertSame('widget/header/languages', $oLanguageList->render());
     }
 }

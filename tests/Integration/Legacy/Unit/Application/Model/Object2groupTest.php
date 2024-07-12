@@ -38,7 +38,7 @@ class Object2groupTest extends \PHPUnit\Framework\TestCase
     protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
-        $sDelete = sprintf('delete from `%s` where oxid=\'', $this->objectTable) . $this->_sObjID . "'";
+        $sDelete = sprintf("delete from `%s` where oxid='", $this->objectTable) . $this->_sObjID . "'";
         $oDB->Execute($sDelete);
 
         $sDelete = "delete from oxobject2group where oxobjectid='" . $this->_sObjID . "'";
@@ -52,9 +52,9 @@ class Object2groupTest extends \PHPUnit\Framework\TestCase
 
     public function testSave()
     {
-        $sSelect = sprintf('select 1 from oxobject2group where oxobjectid=\'%s\'', $this->_sObjID);
+        $sSelect = sprintf("select 1 from oxobject2group where oxobjectid='%s'", $this->_sObjID);
 
-        $this->assertEquals('1', oxDb::getDb()->getOne($sSelect));
+        $this->assertSame('1', oxDb::getDb()->getOne($sSelect));
     }
 
     public function testSaveNew()

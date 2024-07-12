@@ -43,16 +43,16 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
 
         $sDate = date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 24 * 3600);
 
-        $this->assertEquals('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
-        $this->assertEquals('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
-        $this->assertEquals('fileName', $oOrderFile->oxorderfiles__oxfilename->value);
-        $this->assertEquals('fileId', $oOrderFile->oxorderfiles__oxfileid->value);
-        $this->assertEquals('fileId', $oOrderFile->getFileId());
-        $this->assertEquals('1', $oOrderFile->oxorderfiles__oxshopid->value);
-        $this->assertEquals('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
-        $this->assertEquals('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
-        $this->assertEquals('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
-        $this->assertEquals(substr($sDate, 0, 10), substr($oOrderFile->oxorderfiles__oxvaliduntil->value, 0, 10));
+        $this->assertSame('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
+        $this->assertSame('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
+        $this->assertSame('fileName', $oOrderFile->oxorderfiles__oxfilename->value);
+        $this->assertSame('fileId', $oOrderFile->oxorderfiles__oxfileid->value);
+        $this->assertSame('fileId', $oOrderFile->getFileId());
+        $this->assertSame('1', $oOrderFile->oxorderfiles__oxshopid->value);
+        $this->assertSame('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
+        $this->assertSame('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
+        $this->assertSame('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
+        $this->assertSame(substr($sDate, 0, 10), substr($oOrderFile->oxorderfiles__oxvaliduntil->value, 0, 10));
     }
 
     /**
@@ -110,16 +110,16 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
-        $this->assertEquals('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
-        $this->assertEquals('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
-        $this->assertEquals('fileId', $oOrderFile->oxorderfiles__oxfileid->value);
-        $this->assertEquals('1', $oOrderFile->oxorderfiles__oxshopid->value);
-        $this->assertEquals('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
-        $this->assertEquals('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
-        $this->assertEquals('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
-        $this->assertEquals('2011-10-10 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
-        $this->assertEquals('2011-10-20 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
-        $this->assertEquals("2011-10-20 12:12:00", $oOrderFile->oxorderfiles__oxvaliduntil->value);
+        $this->assertSame('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
+        $this->assertSame('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
+        $this->assertSame('fileId', $oOrderFile->oxorderfiles__oxfileid->value);
+        $this->assertSame('1', $oOrderFile->oxorderfiles__oxshopid->value);
+        $this->assertSame('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
+        $this->assertSame('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
+        $this->assertSame('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
+        $this->assertSame('2011-10-10 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
+        $this->assertSame('2011-10-20 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
+        $this->assertSame("2011-10-20 12:12:00", $oOrderFile->oxorderfiles__oxvaliduntil->value);
 
         $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d H:i:s', $iTime + 24 * 3600);
@@ -130,10 +130,10 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
         $oOrderFileReset = oxNew('oxOrderFile');
         $oOrderFileReset->load($id);
 
-        $this->assertEquals('0', $oOrderFileReset->oxorderfiles__oxdownloadcount->value);
-        $this->assertTrue($oOrderFileReset->oxorderfiles__oxvaliduntil->value >= $sDate);
-        $this->assertEquals('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxfirstdownload->value);
-        $this->assertEquals('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxlastdownload->value);
+        $this->assertSame('0', $oOrderFileReset->oxorderfiles__oxdownloadcount->value);
+        $this->assertGreaterThanOrEqual($sDate, $oOrderFileReset->oxorderfiles__oxvaliduntil->value);
+        $this->assertSame('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxfirstdownload->value);
+        $this->assertSame('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxlastdownload->value);
     }
 
     /**
@@ -150,7 +150,7 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
-        $this->assertEquals('2010-10-10 11:23', $oOrderFile->getValidUntil());
+        $this->assertSame('2010-10-10 11:23', $oOrderFile->getValidUntil());
     }
 
     /**
@@ -168,7 +168,7 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
-        $this->assertEquals(3, $oOrderFile->getLeftDownloadCount());
+        $this->assertSame(3, $oOrderFile->getLeftDownloadCount());
     }
 
     /**
@@ -186,7 +186,7 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
-        $this->assertEquals(0, $oOrderFile->getLeftDownloadCount());
+        $this->assertSame(0, $oOrderFile->getLeftDownloadCount());
     }
 
     /**
@@ -212,17 +212,17 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
 
         $sFileId = $oOrderFile->processOrderFile();
 
-        $this->assertEquals('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);
-        $this->assertEquals('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
-        $this->assertEquals('fileId', $sFileId);
-        $this->assertEquals('1', $oOrderFile->oxorderfiles__oxshopid->value);
-        $this->assertEquals('1', $oOrderFile->oxorderfiles__oxdownloadcount->value);
-        $this->assertEquals('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
-        $this->assertEquals('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
-        $this->assertEquals('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
-        $this->assertTrue($oOrderFile->oxorderfiles__oxfirstdownload->value >= $sNowDate);
-        $this->assertTrue($oOrderFile->oxorderfiles__oxlastdownload->value >= $sNowDate);
-        $this->assertTrue($oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate);
+        $this->assertSame('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);
+        $this->assertSame('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
+        $this->assertSame('fileId', $sFileId);
+        $this->assertSame('1', $oOrderFile->oxorderfiles__oxshopid->value);
+        $this->assertSame('1', $oOrderFile->oxorderfiles__oxdownloadcount->value);
+        $this->assertSame('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
+        $this->assertSame('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
+        $this->assertSame('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
+        $this->assertGreaterThanOrEqual($sNowDate, $oOrderFile->oxorderfiles__oxfirstdownload->value);
+        $this->assertGreaterThanOrEqual($sNowDate, $oOrderFile->oxorderfiles__oxlastdownload->value);
+        $this->assertGreaterThanOrEqual($sDate, $oOrderFile->oxorderfiles__oxvaliduntil->value);
     }
 
     /**
@@ -248,15 +248,15 @@ class OrderFileTest extends \PHPUnit\Framework\TestCase
 
         $sFileId = $oOrderFile->processOrderFile();
 
-        $this->assertEquals('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);
-        $this->assertEquals('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
-        $this->assertEquals('fileId', $sFileId);
-        $this->assertEquals('1', $oOrderFile->oxorderfiles__oxshopid->value);
-        $this->assertEquals('3', $oOrderFile->oxorderfiles__oxdownloadcount->value);
-        $this->assertEquals('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
-        $this->assertEquals('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
-        $this->assertEquals('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
-        $this->assertEquals('2011-10-10 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
-        $this->assertTrue($oOrderFile->oxorderfiles__oxlastdownload->value >= $sLastDate);
+        $this->assertSame('_orderId', $oOrderFile->oxorderfiles__oxorderid->value);
+        $this->assertSame('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
+        $this->assertSame('fileId', $sFileId);
+        $this->assertSame('1', $oOrderFile->oxorderfiles__oxshopid->value);
+        $this->assertSame('3', $oOrderFile->oxorderfiles__oxdownloadcount->value);
+        $this->assertSame('10', $oOrderFile->oxorderfiles__oxmaxdownloadcount->value);
+        $this->assertSame('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
+        $this->assertSame('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
+        $this->assertSame('2011-10-10 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
+        $this->assertGreaterThanOrEqual($sLastDate, $oOrderFile->oxorderfiles__oxlastdownload->value);
     }
 }

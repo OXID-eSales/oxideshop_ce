@@ -28,10 +28,10 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('SelectList_Main');
-        $this->assertEquals('selectlist_main', $oView->render());
+        $this->assertSame('selectlist_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof selectlist);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\SelectList::class, $aViewData['edit']);
     }
 
     /**
@@ -43,10 +43,10 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('SelectList_Main');
-        $this->assertEquals('selectlist_main', $oView->render());
+        $this->assertSame('selectlist_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -63,7 +63,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('SelectList_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in SelectList_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in SelectList_Main::save()");
 
             return;
         }
@@ -85,7 +85,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('SelectList_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in SelectList_Main::saveinnlang()");
+            $this->assertSame("save", $exception->getMessage(), "error in SelectList_Main::saveinnlang()");
 
             return;
         }
@@ -127,7 +127,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = oxNew('SelectList_Main');
         $this->assertNull($oView->addField());
-        $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
+        $this->assertSame(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -144,7 +144,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, ["rearrangeFields", "save"]);
-        $oView->expects($this->once())->method('rearrangeFields')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('rearrangeFields')->willReturn(true);
         $oView->expects($this->never())->method('save');
         $this->assertNull($oView->addField());
     }
@@ -163,7 +163,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, ["rearrangeFields", "save"]);
-        $oView->expects($this->once())->method('rearrangeFields')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('rearrangeFields')->willReturn(false);
         $oView->expects($this->once())->method('save');
         $this->assertNull($oView->addField());
     }
@@ -178,7 +178,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = oxNew('SelectList_Main');
         $this->assertNull($oView->changeField());
-        $this->assertEquals(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
+        $this->assertSame(-1, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -195,8 +195,8 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, ["parseFieldName", "rearrangeFields", "save"]);
-        $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
-        $oView->expects($this->once())->method('rearrangeFields')->will($this->returnValue(true));
+        $oView->expects($this->once())->method('parseFieldName')->willReturn("testField1");
+        $oView->expects($this->once())->method('rearrangeFields')->willReturn(true);
         $oView->expects($this->never())->method('save');
         $oView->changeField();
     }
@@ -215,8 +215,8 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, ["parseFieldName", "rearrangeFields", "save"]);
-        $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
-        $oView->expects($this->once())->method('rearrangeFields')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('parseFieldName')->willReturn("testField1");
+        $oView->expects($this->once())->method('rearrangeFields')->willReturn(false);
         $oView->expects($this->once())->method('save');
         $oView->changeField();
     }
@@ -241,7 +241,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", [1]);
         $this->assertTrue($oView->rearrangeFields("test", -1));
-        $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
+        $this->assertSame(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -253,7 +253,7 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getProxyClass("SelectList_Main");
         $oView->setNonPublicVar("aFieldArray", [1]);
         $this->assertTrue($oView->rearrangeFields("test", 1));
-        $this->assertEquals(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
+        $this->assertSame(-2, oxRegistry::getSession()->getVariable("iErrorCode"));
     }
 
     /**
@@ -296,6 +296,6 @@ class SelectListMainTest extends \PHPUnit\Framework\TestCase
     public function testParseFieldName()
     {
         $oView = oxNew('SelectList_Main');
-        $this->assertEquals("bbb", $oView->parseFieldName("aaa__@@bbb"));
+        $this->assertSame("bbb", $oView->parseFieldName("aaa__@@bbb"));
     }
 }

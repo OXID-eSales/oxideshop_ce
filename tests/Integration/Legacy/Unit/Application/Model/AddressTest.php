@@ -28,7 +28,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
+        $this->assertSame("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**
@@ -41,7 +41,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Street StreetNr, Kaunas", $oSubj->toString());
+        $this->assertSame("Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**
@@ -55,7 +55,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Lname, Street StreetNr, Kaunas", $oSubj->toString());
+        $this->assertSame("Lname, Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**
@@ -70,7 +70,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
         $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
-        $this->assertEquals("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
+        $this->assertSame("Fname Lname, Street StreetNr, Kaunas", $oSubj->toString());
     }
 
     /**
@@ -79,7 +79,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
     public function testToStringMagicMocked()
     {
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, ["toString"]);
-        $oSubj->expects($this->once())->method('toString')->will($this->returnValue("teststr"));
+        $oSubj->expects($this->once())->method('toString')->willReturn("teststr");
     }
 
     /**
@@ -113,7 +113,7 @@ class AddressTest extends \PHPUnit\Framework\TestCase
     {
         $oSubj = oxNew('oxAddress');
         $oSubj->oxaddress__oxstateid = new oxField('TTT');
-        $this->assertEquals('TTT', $oSubj->getStateId());
+        $this->assertSame('TTT', $oSubj->getStateId());
     }
 
     /**
@@ -138,13 +138,13 @@ class AddressTest extends \PHPUnit\Framework\TestCase
 
         $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, ['getStateObject', 'getStateId']);
 
-        $oAddressMock->expects($this->any())
+        $oAddressMock
             ->method('getStateObject')
-            ->will($this->returnValue($oStateMock));
+            ->willReturn($oStateMock);
 
-        $oAddressMock->expects($this->any())
+        $oAddressMock
             ->method('getStateId')
-            ->will($this->returnValue($iAlternateStateId));
+            ->willReturn($iAlternateStateId);
 
         $sExpected = oxDb::getDb()->getOne('SELECT oxtitle FROM oxstates WHERE oxid = "' . $iStateId . '"');
         $this->assertSame($sExpected, $oAddressMock->getStateTitle($iStateId), "State title is correct");

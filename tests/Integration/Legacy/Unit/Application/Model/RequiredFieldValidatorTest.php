@@ -12,9 +12,21 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
  */
 class RequiredFieldValidatorTest extends \PHPUnit\Framework\TestCase
 {
-    public function providerValidateFieldValue()
+    public function providerValidateFieldValue(): \Iterator
     {
-        return [['value1', true], [' value1 ', true], [null, false], ['', false], [' ', false], ['    ', false], [[], true], [['value1'], true], [['value1', 'value2'], true], [[null], false], [[''], false], [['', 'value2'], false], [['value1', ''], false]];
+        yield ['value1', true];
+        yield [' value1 ', true];
+        yield [null, false];
+        yield ['', false];
+        yield [' ', false];
+        yield ['    ', false];
+        yield [[], true];
+        yield [['value1'], true];
+        yield [['value1', 'value2'], true];
+        yield [[null], false];
+        yield [[''], false];
+        yield [['', 'value2'], false];
+        yield [['value1', ''], false];
     }
 
     /**

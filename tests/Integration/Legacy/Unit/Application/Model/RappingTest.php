@@ -30,6 +30,7 @@ class testOxWrapping extends oxWrapping
  */
 class RappingTest extends \PHPUnit\Framework\TestCase
 {
+    public $sTableName;
     protected $_sCardOxid;
 
     protected $_sWrapOxid;
@@ -155,9 +156,9 @@ class RappingTest extends \PHPUnit\Framework\TestCase
     public function testGetWrappingCount()
     {
         $oWrap = oxNew('oxwrapping');
-        $this->assertEquals(4, $oWrap->getWrappingCount('WRAP'));
-        $this->assertEquals(4, $oWrap->getWrappingCount('CARD'));
-        $this->assertEquals(0, $oWrap->getWrappingCount('xxx'));
+        $this->assertSame(4, $oWrap->getWrappingCount('WRAP'));
+        $this->assertSame(4, $oWrap->getWrappingCount('CARD'));
+        $this->assertSame(0, $oWrap->getWrappingCount('xxx'));
     }
 
     /**
@@ -168,19 +169,19 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getPictureUrl']);
         $oConfig->expects($this->once())->method('getPictureUrl')
             ->with(
-                $this->equalTo(null),
-                $this->equalTo(false),
-                $this->equalTo(false),
-                $this->equalTo(null),
-                $this->equalTo('123')
+                null,
+                false,
+                false,
+                null,
+                '123'
             )
-            ->will($this->returnValue('testDynPath'));
+            ->willReturn('testDynPath');
 
         $oWrapping = $this->getMock(\OxidEsales\Eshop\Application\Model\Wrapping::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oWrapping->oxwrapping__oxshopid = new oxField('123');
 
-        $this->assertEquals('testDynPath', $oWrapping->getNoSslDynImageDir());
+        $this->assertSame('testDynPath', $oWrapping->getNoSslDynImageDir());
     }
 
     /**
@@ -191,7 +192,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oWrapping = oxNew('oxwrapping');
         $oWrapping->Load($this->_sWrapOxid);
 
-        $this->assertEquals('WRAP', $oWrapping->oxwrapping__oxtype->value);
+        $this->assertSame('WRAP', $oWrapping->oxwrapping__oxtype->value);
     }
 
     public function testLoadCard()
@@ -199,7 +200,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oCard = oxNew('oxwrapping');
         $oCard->Load($this->_sCardOxid);
 
-        $this->assertEquals('CARD', $oCard->oxwrapping__oxtype->value);
+        $this->assertSame('CARD', $oCard->oxwrapping__oxtype->value);
     }
 
     public function testGetCardPrice()
@@ -213,9 +214,9 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oCard->setWrappingVat($this->_dDefaultVAT);
         $oCardPrice = $oCard->getWrappingPrice();
 
-        $this->assertEquals(2.5, $oCardPrice->getBruttoPrice());
-        $this->assertEquals('2,10', oxRegistry::getLang()->formatCurrency($oCardPrice->getNettoPrice()));
-        $this->assertEquals('0,40', oxRegistry::getLang()->formatCurrency($oCardPrice->getVATValue()));
+        $this->assertEqualsWithDelta(2.5, $oCardPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame('2,10', oxRegistry::getLang()->formatCurrency($oCardPrice->getNettoPrice()));
+        $this->assertSame('0,40', oxRegistry::getLang()->formatCurrency($oCardPrice->getVATValue()));
     }
 
     public function testGetWrapPrice()
@@ -230,9 +231,9 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oWrap->setWrappingVat($this->_dDefaultVAT);
         $oWrapPrice = $oWrap->getWrappingPrice(2);
 
-        $this->assertEquals(5.9, $oWrapPrice->getBruttoPrice());
-        $this->assertEquals('4,96', oxRegistry::getLang()->formatCurrency($oWrapPrice->getNettoPrice()));
-        $this->assertEquals('0,94', oxRegistry::getLang()->formatCurrency($oWrapPrice->getVATValue()));
+        $this->assertEqualsWithDelta(5.9, $oWrapPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame('4,96', oxRegistry::getLang()->formatCurrency($oWrapPrice->getNettoPrice()));
+        $this->assertSame('0,94', oxRegistry::getLang()->formatCurrency($oWrapPrice->getVATValue()));
     }
 
     public function testGetWrapPriceVatOnTop()
@@ -248,10 +249,10 @@ class RappingTest extends \PHPUnit\Framework\TestCase
 
         $dVat = 1 + $this->getConfig()->getConfigParam('dDefaultVAT') / 100;
         $this->assertEqualsWithDelta(5.9 * $dVat, $oWrapPrice->getBruttoPrice(), 2);
-        $this->assertEquals(5.9, $oWrapPrice->getNettoPrice());
-        $this->assertEquals('7,02', oxRegistry::getLang()->formatCurrency($oWrapPrice->getBruttoPrice()));
-        $this->assertEquals('5,90', oxRegistry::getLang()->formatCurrency($oWrapPrice->getNettoPrice()));
-        $this->assertEquals('1,12', oxRegistry::getLang()->formatCurrency($oWrapPrice->getVATValue()));
+        $this->assertEqualsWithDelta(5.9, $oWrapPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame('7,02', oxRegistry::getLang()->formatCurrency($oWrapPrice->getBruttoPrice()));
+        $this->assertSame('5,90', oxRegistry::getLang()->formatCurrency($oWrapPrice->getNettoPrice()));
+        $this->assertSame('1,12', oxRegistry::getLang()->formatCurrency($oWrapPrice->getVATValue()));
     }
 
     /**
@@ -268,7 +269,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
 
         // validating
         $oWrapping->setWrappingVat($this->_dDefaultVAT);
-        $this->assertEquals(2.95, $oWrapping->getWrappingPrice()->getBruttoPrice());
+        $this->assertEqualsWithDelta(2.95, $oWrapping->getWrappingPrice()->getBruttoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testCalcFPriceInEUR()
@@ -288,7 +289,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
 
         // validating
         $oWrapping->setWrappingVat($this->_dDefaultVAT);
-        $this->assertEquals('2,95', oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice()));
+        $this->assertSame('2,95', oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice()));
     }
 
     public function testCalcFPriceInGBP()
@@ -305,7 +306,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $sPrice = oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice());
 
         // validating
-        $this->assertEquals('2.53', $sPrice);
+        $this->assertSame('2.53', $sPrice);
     }
 
     public function testCalcFPriceInCHF()
@@ -327,7 +328,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $sPrice = oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice());
 
         // validating
-        $this->assertEquals('4,23', $sPrice);
+        $this->assertSame('4,23', $sPrice);
     }
 
     public function testGetWrappingListIfNotAllActive()
@@ -337,12 +338,12 @@ class RappingTest extends \PHPUnit\Framework\TestCase
         $oWrap = oxNew('oxwrapping');
         $oWrapList = $oWrap->getWrappingList('WRAP');
 
-        $this->assertEquals(4, $oWrapList->count());
+        $this->assertSame(4, $oWrapList->count());
         foreach ($oWrapList as $oWrapping) {
             if ($oWrapping->getId() == '_testWrap3') {
-                $this->assertEquals('0,00', $oWrapping->getFPrice());
+                $this->assertSame('0,00', $oWrapping->getFPrice());
             } else {
-                $this->assertEquals('2,95', $oWrapping->getFPrice());
+                $this->assertSame('2,95', $oWrapping->getFPrice());
             }
         }
 
@@ -350,15 +351,15 @@ class RappingTest extends \PHPUnit\Framework\TestCase
 
         foreach ($oCardList as $oCard) {
             if ($oCard->getId() == '_testCard3') {
-                $this->assertEquals('0,00', $oCard->getFPrice());
+                $this->assertSame('0,00', $oCard->getFPrice());
             } elseif ($oCard->getId() == '81b40cf0cd383d3a9.70988998') {
-                $this->assertEquals('3,00', $oCard->getFPrice());
+                $this->assertSame('3,00', $oCard->getFPrice());
             } else {
-                $this->assertEquals('2,50', $oCard->getFPrice());
+                $this->assertSame('2,50', $oCard->getFPrice());
             }
         }
 
-        $this->assertEquals(4, $oCardList->count());
+        $this->assertSame(4, $oCardList->count());
     }
 
     public function testGetWrappingList()
@@ -373,7 +374,7 @@ class RappingTest extends \PHPUnit\Framework\TestCase
 
         $oWrapList = $oWrap->getWrappingList('WRAP');
 
-        $this->assertEquals(4, $oWrapList->count());
+        $this->assertSame(4, $oWrapList->count());
     }
 
     /**
@@ -382,10 +383,10 @@ class RappingTest extends \PHPUnit\Framework\TestCase
     public function testGetFPrice()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getBruttoPrice')->willReturn(11.588);
         $oWrap = $this->getProxyClass("oxWrapping");
         $oWrap->setNonPublicVar('_oPrice', $oPrice);
-        $this->assertEquals("11,59", $oWrap->getFPrice());
+        $this->assertSame("11,59", $oWrap->getFPrice());
     }
 
     public function testGetPictureUrl()

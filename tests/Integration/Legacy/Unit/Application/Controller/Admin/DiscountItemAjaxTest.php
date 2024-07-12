@@ -22,14 +22,14 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
         $expected = sprintf('from %s left join %s on %s.oxid=%s.oxitmartid ', $discountView, $productView, $productView, $discountView);
-        $expected .= sprintf(' where %s.oxid = \'_testOxid\' and %s.oxitmartid != \'\'', $discountView, $discountView);
+        $expected .= sprintf(" where %s.oxid = '_testOxid' and %s.oxitmartid != ''", $discountView, $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testOxid';
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryOxid(): void
@@ -38,10 +38,10 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
         $objectToCategoryView = oxNew(TableViewNameGenerator::class)->getViewName('oxobject2category');
         $expected = sprintf('from %s left join %s on  %s.oxid=%s.oxobjectid ', $objectToCategoryView, $productView, $productView, $objectToCategoryView);
-        $expected .= sprintf(' where %s.oxcatnid = \'_testOxid\' and %s.oxid is not null  and ', $objectToCategoryView, $productView);
+        $expected .= sprintf(" where %s.oxcatnid = '_testOxid' and %s.oxid is not null  and ", $objectToCategoryView, $productView);
         $expected .= $productView . '.oxvarcount = 0 and ';
         $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
-        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
+        $expected .= sprintf(" and %s.oxid = '_testSynchoxid' )", $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testSynchoxid';
@@ -49,7 +49,7 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryOxidParentIsBuyable(): void
@@ -58,9 +58,9 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
         $objectToCategoryView = oxNew(TableViewNameGenerator::class)->getViewName('oxobject2category');
         $expected = sprintf('from %s left join %s on  %s.oxid=%s.oxobjectid ', $objectToCategoryView, $productView, $productView, $objectToCategoryView);
-        $expected .= sprintf(' where %s.oxcatnid = \'_testOxid\' and %s.oxid is not null  and ', $objectToCategoryView, $productView);
+        $expected .= sprintf(" where %s.oxcatnid = '_testOxid' and %s.oxid is not null  and ", $objectToCategoryView, $productView);
         $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
-        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
+        $expected .= sprintf(" and %s.oxid = '_testSynchoxid' )", $discountView);
 
         $_POST['oxid'] = '_testOxid';
         $_POST['synchoxid'] = '_testSynchoxid';
@@ -68,38 +68,38 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQuerySynchoxid(): void
     {
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
-        $expected = sprintf('from %s where 1 and %s.oxparentid = \'\' and %s.oxvarcount = 0 and ', $productView, $productView, $productView);
+        $expected = sprintf("from %s where 1 and %s.oxparentid = '' and %s.oxvarcount = 0 and ", $productView, $productView, $productView);
         $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
-        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
+        $expected .= sprintf(" and %s.oxid = '_testSynchoxid' )", $discountView);
 
         $_POST['synchoxid'] = '_testSynchoxid';
         Registry::getConfig()->setConfigParam('blVariantParentBuyable', false);
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQuerySynchoxidParentIsBuyable(): void
     {
         $productView = oxNew(TableViewNameGenerator::class)->getViewName('oxarticles');
         $discountView = oxNew(TableViewNameGenerator::class)->getViewName('oxdiscount');
-        $expected = sprintf('from %s where 1 and %s.oxparentid = \'\'  and ', $productView, $productView);
+        $expected = sprintf("from %s where 1 and %s.oxparentid = ''  and ", $productView, $productView);
         $expected .= sprintf(' %s.oxid not in (  select %s.oxid from %s, %s where %s.oxid=%s.oxitmartid ', $productView, $productView, $discountView, $productView, $productView, $discountView);
-        $expected .= sprintf(' and %s.oxid = \'_testSynchoxid\' )', $discountView);
+        $expected .= sprintf(" and %s.oxid = '_testSynchoxid' )", $discountView);
         $_POST['synchoxid'] = '_testSynchoxid';
         Registry::getConfig()->setConfigParam('blVariantParentBuyable', true);
 
         $query = oxNew(DiscountItemAjax::class)->getQuery();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryCols(): void
@@ -115,7 +115,7 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithMultipleIdentifiers(): void
@@ -143,7 +143,7 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 
         $query = $component->getQueryCols();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithVariants(): void
@@ -159,7 +159,7 @@ final class DiscountItemAjaxTest extends \PHPUnit\Framework\TestCase
 
         $query = oxNew(DiscountItemAjax::class)->getQueryCols();
 
-        $this->assertEquals(sprintf(' %s ', $expected), $query);
+        $this->assertSame(sprintf(' %s ', $expected), $query);
     }
 
     public function testGetQueryColsWithDbViewsWillContainJustColumnName(): void

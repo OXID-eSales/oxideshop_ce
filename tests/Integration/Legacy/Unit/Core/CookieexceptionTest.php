@@ -15,7 +15,7 @@ class CookieexceptionTest extends \PHPUnit\Framework\TestCase
     {
         $message = 'Erik was here..';
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class, $message);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\CookieException::class, $testObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\CookieException::class, $testObject::class);
         $stringOut = $testObject->getString();
         $this->assertStringContainsString($message, $stringOut); // Message
         $this->assertStringContainsString('CookieException', $stringOut); // Exception class name

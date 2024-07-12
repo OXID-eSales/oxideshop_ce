@@ -120,11 +120,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     use ContainerTrait;
     use FieldTestingTrait;
 
-    protected $_aShops = [1];
+    private $_aShops = [1];
 
-    protected $_aUsers = [];
+    private $_aUsers = [];
 
-    protected $_aDynPaymentFields = ['kktype'   => 'Test Bank', 'kknumber' => '123456', 'kkmonth'  => '123456', 'kkyear'   => 'Test User', 'kkname'   => 'Test Name', 'kkpruef'  => '123456'];
+    private $_aDynPaymentFields = ['kktype'   => 'Test Bank', 'kknumber' => '123456', 'kkmonth'  => '123456', 'kkyear'   => 'Test User', 'kkname'   => 'Test Name', 'kkpruef'  => '123456'];
 
     protected function tearDown(): void
     {
@@ -164,7 +164,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
      *
      * @return oxUser
      */
-    protected function createUser($sUserName = null, $iActive = 1, $sRights = 'user', $sShopId = null)
+    private function createUser($sUserName = null, $iActive = 1, $sRights = 'user', $sShopId = null)
     {
         $oUtils = oxRegistry::getUtils();
         $oDb = $this->getDb();
@@ -282,21 +282,21 @@ final class UserTest extends \PHPUnit\Framework\TestCase
             $oDb->Execute($sQ);
         }
 
-        $iTotal = $oDb->getOne(sprintf('select count(*) from oxorder where oxshopid = \'%s\' and oxuserid = \'%s\'', $sShopID, $sUserId));
+        $iTotal = $oDb->getOne(sprintf("select count(*) from oxorder where oxshopid = '%s' and oxuserid = '%s'", $sShopID, $sUserId));
 
         $oOrders = $oUser->getOrders(10, 0);
-        $this->assertEquals(10, $oOrders->count());
+        $this->assertSame(10, $oOrders->count());
         $iTotal -= 10;
 
         $oOrders = $oUser->getOrders(10, 1);
-        $this->assertEquals(10, $oOrders->count());
+        $this->assertSame(10, $oOrders->count());
         $iTotal -= 10;
 
         $oOrders = $oUser->getOrders(10, 2);
         $this->assertEquals($iTotal, $oOrders->count());
 
         $oOrders = $oUser->getOrders(10, 3);
-        $this->assertEquals(0, $oOrders->count());
+        $this->assertSame(0, $oOrders->count());
     }
 
     /**
@@ -306,7 +306,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $sDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
         $oDb = $this->getDb();
-        $sSql = sprintf('INSERT INTO oxinvitations SET oxuserid = \'oxdefaultadmin\', oxemail = \'oxemail\',  oxdate=\'%s\', oxpending = \'1\', oxaccepted = \'0\', oxtype = \'1\' ', $sDate);
+        $sSql = sprintf("INSERT INTO oxinvitations SET oxuserid = 'oxdefaultadmin', oxemail = 'oxemail',  oxdate='%s', oxpending = '1', oxaccepted = '0', oxtype = '1' ", $sDate);
         $oDb->execute($sSql);
         $this->getConfig()->setConfigParam("dPointsForRegistration", 10);
         $this->getConfig()->setConfigParam("dPointsForInvitation", false);
@@ -314,7 +314,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable('re', md5('oxemail'));
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["save"]);
-        $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
+        $oUser->expects($this->once())->method('save')->willReturn(true);
         $this->assertFalse($oUser->setCreditPointsForRegistrant("oxdefaultadmin", md5('oxemail')));
         $this->assertNull(oxRegistry::getSession()->getVariable('su'));
         $this->assertNull(oxRegistry::getSession()->getVariable('re'));
@@ -328,7 +328,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("dPointsForInvitation", 10);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["save"]);
-        $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
+        $oUser->expects($this->once())->method('save')->willReturn(true);
         $this->assertTrue($oUser->setCreditPointsForInviter());
     }
 
@@ -338,10 +338,10 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testIsTermsAccepted()
     {
         $sShopId = $this->getConfig()->getShopId();
-        $this->getDb()->execute(sprintf('insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ( \'testUserId\', \'%s\', \'0\' )', $sShopId));
+        $this->getDb()->execute(sprintf("insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ( 'testUserId', '%s', '0' )", $sShopId));
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getId"]);
-        $oUser->expects($this->once())->method('getId')->will($this->returnValue('testUserId'));
+        $oUser->expects($this->once())->method('getId')->willReturn('testUserId');
         $this->assertTrue($oUser->isTermsAccepted());
     }
 
@@ -409,7 +409,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sAddressId = 'xxx';
         $oUser = oxNew('oxUser');
         $oUser->setSelectedAddressId($sAddressId);
-        $this->assertEquals($sAddressId, $oUser->getSelectedAddressId());
+        $this->assertSame($sAddressId, $oUser->getSelectedAddressId());
     }
 
     public function testAllowDerivedUpdate()
@@ -430,33 +430,33 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testMagicGetter()
     {
         $oNewsSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus', 'getOptInEmailStatus']);
-        $oNewsSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue('getOptInStatus'));
-        $oNewsSubscription->expects($this->once())->method('getOptInEmailStatus')->will($this->returnValue('getOptInEmailStatus'));
+        $oNewsSubscription->expects($this->once())->method('getOptInStatus')->willReturn('getOptInStatus');
+        $oNewsSubscription->expects($this->once())->method('getOptInEmailStatus')->willReturn('getOptInEmailStatus');
 
         $oUser = $this->getMock(
             'oxuser',
             ['getUserGroups', 'getNoticeListArtCnt', 'getWishListArtCnt', 'getRecommListsCount', 'getUserAddresses', 'getUserPayments', 'getUserCountry', 'getNewsSubscription']
         );
 
-        $oUser->expects($this->once())->method('getUserGroups')->will($this->returnValue('getUserGroups'));
-        $oUser->expects($this->once())->method('getNoticeListArtCnt')->will($this->returnValue('getNoticeListArtCnt'));
-        $oUser->expects($this->once())->method('getWishListArtCnt')->will($this->returnValue('getWishListArtCnt'));
-        $oUser->expects($this->once())->method('getRecommListsCount')->will($this->returnValue('getRecommListsCount'));
-        $oUser->expects($this->once())->method('getUserAddresses')->will($this->returnValue('getUserAddresses'));
-        $oUser->expects($this->once())->method('getUserPayments')->will($this->returnValue('getUserPayments'));
-        $oUser->expects($this->once())->method('getUserCountry')->will($this->returnValue('getUserCountry'));
-        $oUser->expects($this->exactly(2))->method('getNewsSubscription')->will($this->returnValue($oNewsSubscription));
+        $oUser->expects($this->once())->method('getUserGroups')->willReturn('getUserGroups');
+        $oUser->expects($this->once())->method('getNoticeListArtCnt')->willReturn('getNoticeListArtCnt');
+        $oUser->expects($this->once())->method('getWishListArtCnt')->willReturn('getWishListArtCnt');
+        $oUser->expects($this->once())->method('getRecommListsCount')->willReturn('getRecommListsCount');
+        $oUser->expects($this->once())->method('getUserAddresses')->willReturn('getUserAddresses');
+        $oUser->expects($this->once())->method('getUserPayments')->willReturn('getUserPayments');
+        $oUser->expects($this->once())->method('getUserCountry')->willReturn('getUserCountry');
+        $oUser->expects($this->exactly(2))->method('getNewsSubscription')->willReturn($oNewsSubscription);
 
-        $this->assertEquals('getUserGroups', $oUser->oGroups);
-        $this->assertEquals('getNoticeListArtCnt', $oUser->iCntNoticeListArticles);
-        $this->assertEquals('getWishListArtCnt', $oUser->iCntWishListArticles);
-        $this->assertEquals('getRecommListsCount', $oUser->iCntRecommLists);
-        $this->assertEquals('getUserAddresses', $oUser->oAddresses);
-        $this->assertEquals('getUserPayments', $oUser->oPayments);
-        $this->assertEquals('getUserCountry', $oUser->oxuser__oxcountry);
+        $this->assertSame('getUserGroups', $oUser->oGroups);
+        $this->assertSame('getNoticeListArtCnt', $oUser->iCntNoticeListArticles);
+        $this->assertSame('getWishListArtCnt', $oUser->iCntWishListArticles);
+        $this->assertSame('getRecommListsCount', $oUser->iCntRecommLists);
+        $this->assertSame('getUserAddresses', $oUser->oAddresses);
+        $this->assertSame('getUserPayments', $oUser->oPayments);
+        $this->assertSame('getUserCountry', $oUser->oxuser__oxcountry);
 
-        $this->assertEquals('getOptInStatus', $oUser->sDBOptin);
-        $this->assertEquals('getOptInEmailStatus', $oUser->sEmailFailed);
+        $this->assertSame('getOptInStatus', $oUser->sDBOptin);
+        $this->assertSame('getOptInEmailStatus', $oUser->sEmailFailed);
     }
 
     public function testIsSamePassword()
@@ -479,11 +479,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $oUser = oxNew('oxUser');
         $oUser->setPassword('xxx');
-        $this->assertFalse('' == $oUser->oxuser__oxpassword->value);
+        $this->assertNotSame('', $oUser->oxuser__oxpassword->value);
         $this->assertTrue($oUser->isSamePassword('xxx'));
 
         $oUser->setPassword();
-        $this->assertTrue('' == $oUser->oxuser__oxpassword->value);
+        $this->assertSame('', $oUser->oxuser__oxpassword->value);
     }
 
     public function testEncodePasswordIsDeterministic()
@@ -506,7 +506,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxshopid = new oxfield('yyy');
         $oUser->oxuser__oxupdatekey = new oxfield('zzz');
 
-        $this->assertEquals(md5('xxxyyyzzz'), $oUser->getUpdateId());
+        $this->assertSame(md5('xxxyyyzzz'), $oUser->getUpdateId());
     }
 
     public function testReSetUpdateKey()
@@ -515,8 +515,8 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->expects($this->once())->method('save');
         $oUser->setUpdateKey(true);
 
-        $this->assertEquals('', $oUser->oxuser__oxupdatekey->value);
-        $this->assertEquals(0, $oUser->oxuser__oxupdateexp->value);
+        $this->assertSame('', $oUser->oxuser__oxupdatekey->value);
+        $this->assertSame(0, $oUser->oxuser__oxupdateexp->value);
     }
 
     public function testLoadUserByUpdateId()
@@ -550,7 +550,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->insert();
 
-        $this->assertEquals('1000', $this->getDb()->getOne(sprintf('select oxboni from oxuser where oxid = \'%s\' ', $sId)));
+        $this->assertSame('1000', $this->getDb()->getOne(sprintf("select oxboni from oxuser where oxid = '%s' ", $sId)));
     }
 
 
@@ -610,8 +610,8 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->markTestSkippedIfNoSubShop();
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin', 'getViewName'], [], '', false);
-        $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oUser->expects($this->any())->method('getViewName')->will($this->returnValue('oxuser'));
+        $oUser->method('isAdmin')->willReturn(true);
+        $oUser->method('getViewName')->willReturn('oxuser');
 
         $oUser->init('oxuser');
         $this->assertTrue($oUser->checkIfEmailExists(\OXADMIN_LOGIN));
@@ -629,7 +629,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $oNewUser = oxNew('oxUser');
         $oNewUser->load($oUser->getId());
-        $this->assertEquals('user', $oNewUser->oxuser__oxrights->value);
+        $this->assertSame('user', $oNewUser->oxuser__oxrights->value);
     }
 
     /**
@@ -646,7 +646,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxfname = new oxField('a', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('b', oxField::T_RAW);
         $oUser->save();
-        $this->assertEquals('1000', $oUser->oxuser__oxboni->value);
+        $this->assertSame('1000', $oUser->oxuser__oxboni->value);
 
         $aInvAdress = ['oxuser__oxfname'     => 'xxx', 'oxuser__oxlname'     => 'yyy', 'oxuser__oxstreetnr'  => '11', 'oxuser__oxstreet'    => 'zzz', 'oxuser__oxzip'       => '22', 'oxuser__oxcity'      => 'ooo', 'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984'];
 
@@ -661,7 +661,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $oUser->load($oUser->oxuser__oxid->value);
         $oUser->changeUserData($oUser->oxuser__oxusername->value, $oUser->oxuser__oxpassword->value, $oUser->oxuser__oxpassword->value, $aInvAdress, []);
-        $this->assertEquals('1000', $oUser->oxuser__oxboni->value);
+        $this->assertSame('1000', $oUser->oxuser__oxboni->value);
     }
 
     /**
@@ -846,7 +846,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // each new created user is assigned to 1 new created user group
         $sGroupId = $oDb->getOne('select oxgroupsid from oxobject2group where oxobjectid="' . $sUserId . '"');
-        $this->assertTrue(isset($oGroups[$sGroupId]));
+        $this->assertArrayHasKey($sGroupId, $oGroups);
     }
 
     // 2. fetching group info for not existing user - must return 0 group
@@ -858,7 +858,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oGroups = $oUser->getUserGroups();
 
         // no user for not existing user
-        $this->assertEquals(0, count($oGroups));
+        $this->assertCount(0, $oGroups);
     }
 
 
@@ -878,7 +878,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(true, isset($aAddress[$sAddressId]));
 
         $aAddress = $oUser->getUserAddresses('xxx');
-        $this->assertEquals(0, count($aAddress));
+        $this->assertCount(0, $aAddress);
     }
 
     // 2. fetching address info for not existing user - must return 0 address
@@ -888,7 +888,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $aAddress = $oUser->getUserAddresses('xxx');
 
         // each new created user is assigned to 1 new created address
-        $this->assertEquals(0, count($aAddress));
+        $this->assertCount(0, $aAddress);
     }
 
     /**
@@ -901,7 +901,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUserPayments = $oUser->getUserPayments();
 
         // each new created user is assigned to 1 new created exec. payment
-        $this->assertEquals(1, count($oUserPayments));
+        $this->assertCount(1, $oUserPayments);
 
         $oUserPayments->rewind();
         $oUserPayment = $oUserPayments->current();
@@ -917,7 +917,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oPayments = $oUser->getUserPayments('xxx');
 
         // each new created user is assigned to 1 new created exec. payment
-        $this->assertEquals(0, count($oPayments));
+        $this->assertCount(0, $oPayments);
     }
 
     /**
@@ -941,7 +941,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = oxNew('oxUser');
         $oRecommlists = $oUser->getUserRecommLists($sUserId);
 
-        $this->assertEquals(1, count($oRecommlists));
+        $this->assertCount(1, $oRecommlists);
         $oRecommlist = $oRecommlists->current();
         $this->assertEquals($oRecommlist->oxrecommlists__oxuserid->value, $sUserId);
         $this->assertEquals($oRecommlist->oxrecommlists__oxtitle->value, "oxtest");
@@ -970,7 +970,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $iRecommlists = $oUser->getRecommListsCount();
 
-        $this->assertEquals(1, $iRecommlists);
+        $this->assertSame(1, $iRecommlists);
     }
 
     /**
@@ -988,12 +988,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->save();
 
         // looking for other info
-        $this->assertEquals('user', $oUser->oxuser__oxrights->value);
+        $this->assertSame('user', $oUser->oxuser__oxrights->value);
         $this->assertEquals(false, empty($oUser->oxuser__oxregister->value));
 
         // looking for record in oxremark table
         $sQ = 'select count(oxid) from oxremark where oxparentid = "' . $oUser->getId() . '" and oxtype !="o"';
-        $this->assertEquals(1, (int) $oDb->getOne($sQ));
+        $this->assertSame(1, (int) $oDb->getOne($sQ));
 
         $oUser = oxNew('oxUser');
         $oUser->setId($oUser->getId());
@@ -1015,10 +1015,10 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $aInvAddress ['oxuser__oxaddinfo'] = $string;
         $oUser->assign($aInvAddress);
         $oUser->save();
-        $this->assertEquals($this->encode($string), $oUser->oxuser__oxcompany->value);
-        $this->assertEquals($this->encode($string), $oUser->oxuser__oxaddinfo->value);
+        $this->assertSame($this->encode($string), $oUser->oxuser__oxcompany->value);
+        $this->assertSame($this->encode($string), $oUser->oxuser__oxaddinfo->value);
         $sQ = 'select oxcompany from oxuser where oxid = "' . $oUser->oxuser__oxid->value . '" ';
-        $this->assertEquals($string, $oDb->getOne($sQ));
+        $this->assertSame($string, $oDb->getOne($sQ));
     }
 
     /**
@@ -1036,13 +1036,13 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->save();
 
         // looking for other info
-        $this->assertEquals('user', $oUser->oxuser__oxrights->value);
+        $this->assertSame('user', $oUser->oxuser__oxrights->value);
         $this->assertEquals(false, empty($oUser->oxuser__oxregister->value));
-        $this->assertEquals('1212-12-12', $oUser->oxuser__oxbirthdate->value);
+        $this->assertSame('1212-12-12', $oUser->oxuser__oxbirthdate->value);
 
         // looking for record in oxremark tabl
         $sQ = 'select count(oxid) from oxremark where oxparentid = "' . $oUser->getId() . '"  and oxtype !="o"';
-        $this->assertEquals(1, (int) $oDb->getOne($sQ));
+        $this->assertSame(1, (int) $oDb->getOne($sQ));
     }
 
     /**
@@ -1052,7 +1052,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testGetUserRightsNoInitialRights()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('user', $oUser->getUserRights());
+        $this->assertSame('user', $oUser->getUserRights());
     }
 
     // 2. user initial rights are malladmin
@@ -1062,7 +1062,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals('malladmin', $oUser->getUserRights());
+        $this->assertSame('malladmin', $oUser->getUserRights());
     }
 
     // 3. user initial rights are "user"
@@ -1071,7 +1071,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable("usr", null);
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals('user', $oUser->getUserRights());
+        $this->assertSame('user', $oUser->getUserRights());
     }
 
     // 4. user initial rights are sub shop admin
@@ -1096,12 +1096,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         // check for denial
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField(2, oxField::T_RAW);
-        $this->assertEquals("user", $oUser->getUserRights());
+        $this->assertSame("user", $oUser->getUserRights());
 
         // check for denial
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
-        $this->assertEquals("user", $oUser->getUserRights());
+        $this->assertSame("user", $oUser->getUserRights());
     }
 
     /**
@@ -1169,7 +1169,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
             $count = $this->getDb()->getOne($query);
 
-            $this->assertEquals(0, $count);
+            $this->assertSame(0, $count);
         }
     }
 
@@ -1242,7 +1242,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->load($sUserId);
 
         $sCreate = $oDb->getOne('select oxcreate from oxuser where oxid="' . $oUser->getId() . '" ');
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
+        $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
     }
 
 
@@ -1258,11 +1258,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking
         $sQ = 'select count(*) from oxuser where oxid = "' . $oUser->oxuser__oxid->value . '" ';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
 
         // checking boni
         $sQ = 'select oxboni from oxuser where oxid = "' . $oUser->oxuser__oxid->value . '" ';
-        $this->assertEquals(1000, $oDb->getOne($sQ));
+        $this->assertSame(1000, $oDb->getOne($sQ));
     }
 
 
@@ -1275,7 +1275,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sUserId = $oUser->getId();
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oUser->method('isAdmin')->willReturn(false);
         $oUser->load($sUserId);
 
         // copying to test
@@ -1383,7 +1383,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = $this->createUser();
 
         // checking order count
-        $this->assertEquals(1, count($oUser->getOrders()));
+        $this->assertCount(1, $oUser->getOrders());
     }
 
     // 2. checking order count for random user. order count must be 1
@@ -1393,7 +1393,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxregister = new oxField(0, oxField::T_RAW);
 
         // checking order count
-        $this->assertEquals(0, count($oUser->getOrders()));
+        $this->assertCount(0, $oUser->getOrders());
     }
 
 
@@ -1404,7 +1404,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testGetOrderCountEmptyUser()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals(0, $oUser->getOrderCount());
+        $this->assertSame(0, $oUser->getOrderCount());
     }
 
     // 2. demo user has 1 demo order
@@ -1427,7 +1427,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = oxNew('oxUser');
         //to make sure there is no user in the session
         $oUser->logout();
-        $this->assertEquals('', $oUser->getActiveCountry());
+        $this->assertSame('', $oUser->getActiveCountry());
     }
 
     public function testGetActiveCountryPassedAddress()
@@ -1487,7 +1487,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking
         $sQ = 'select count(*) from oxuser where oxid = "' . $oUser->getId() . '" ';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
     }
 
     // 2. creating with additional duplicate entries check for mall users
@@ -1502,7 +1502,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking
         $sQ = 'select count(*) from oxuser where oxid = "' . $oUser->getId() . '" ';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
     }
 
     //3. creating user which overrides some user without password. It should erase previously
@@ -1520,7 +1520,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking
         $sQ = 'select count(*) from oxuser where oxusername = "' . $oUser->oxuser__oxusername->value . '" ';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
     }
 
     public function testCreateUserMallUsersTryingToCreateSameUserAgainShouldThrowAnExcp()
@@ -1535,7 +1535,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
             $oUser->createUser();
         } catch (Exception $exception) {
             $oLang = oxRegistry::getLang();
-            $this->assertEquals(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $oUser->oxuser__oxusername->value), $exception->getMessage());
+            $this->assertSame(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $oUser->oxuser__oxusername->value), $exception->getMessage());
 
             return;
         }
@@ -1546,12 +1546,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testCreateUserSavingFailsExcpThrown()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['save']);
-        $oUser->expects($this->once())->method("save")->will($this->returnValue(false));
+        $oUser->expects($this->once())->method("save")->willReturn(false);
 
         try {
             $oUser->createUser();
         } catch (Exception $exception) {
-            $this->assertEquals('ERROR_MESSAGE_USER_USERCREATIONFAILED', $exception->getMessage());
+            $this->assertSame('ERROR_MESSAGE_USER_USERCREATIONFAILED', $exception->getMessage());
 
             return;
         }
@@ -1588,18 +1588,18 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sNewGroup = $oDb->getOne('select oxid from oxgroups where oxid not in ( select oxgroupsid from oxobject2group where oxobjectid="' . $sUserId . '" ) ');
 
         // checking before insert
-        $this->assertEquals(1, count($oUser->getUserGroups()));
+        $this->assertCount(1, $oUser->getUserGroups());
 
         // assigning to some group
         $this->assertTrue($oUser->addToGroup($sNewGroup));
 
         // checking DB
         $sCnt = $oDb->getOne('select count(*) from oxobject2group where oxobjectid="' . $sUserId . '" and oxgroupsid="' . $sNewGroup . '" ');
-        $this->assertEquals(1, $sCnt);
+        $this->assertSame(1, $sCnt);
 
         $oGroups = $oUser->getUserGroups();
         // checking group count after adding to new one
-        $this->assertEquals(2, count($oGroups));
+        $this->assertCount(2, $oGroups);
 
         // #0003218: validating loaded groups
         $this->assertEquals(true, isset($oGroups[$sNewGroup]));
@@ -1626,7 +1626,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->load($sUserId);
 
         // checking before insert
-        $this->assertEquals(2, $oUser->getUserGroups()->count());
+        $this->assertSame(2, $oUser->getUserGroups()->count());
 
         // assigning to some group
         $oUser->removeFromGroup($sGroupId);
@@ -1635,10 +1635,10 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sQ = 'select count(*) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "' . $sGroupId . '" ';
         $sCnt = $oDb->getOne($sQ);
 
-        $this->assertEquals(0, $sCnt);
+        $this->assertSame(0, $sCnt);
 
         // checking before insert
-        $this->assertEquals(1, count($oUser->getUserGroups()));
+        $this->assertCount(1, $oUser->getUserGroups());
     }
 
 
@@ -1671,12 +1671,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         // checking if (un)assigned to (from) groups
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidcustomer"';
 
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidsmallcust"';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
 
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidnotyetordered"';
-        $this->assertEquals(0, $oDb->getOne($sQ));
+        $this->assertSame(0, $oDb->getOne($sQ));
     }
 
     public function testOnOrderExecute1()
@@ -1704,12 +1704,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking if (un)assigned to (from) groups
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidcustomer"';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidmiddlecust"';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
 
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidnotyetordered"';
-        $this->assertEquals(0, $oDb->getOne($sQ));
+        $this->assertSame(0, $oDb->getOne($sQ));
     }
 
     public function testOnOrderExecute2()
@@ -1737,12 +1737,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         // checking if (un)assigned to (from) groups
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidcustomer"';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidgoodcust"';
-        $this->assertEquals(1, $oDb->getOne($sQ));
+        $this->assertSame(1, $oDb->getOne($sQ));
 
         $sQ = 'select count(oxid) from oxobject2group where oxobjectid = "' . $sUserId . '" and oxgroupsid = "oxidnotyetordered"';
-        $this->assertEquals(0, $oDb->getOne($sQ));
+        $this->assertSame(0, $oDb->getOne($sQ));
     }
 
     /**
@@ -1754,7 +1754,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = $this->createUser();
 
         $oBasket = $oUser->getBasket('oxtest');
-        $this->assertEquals(1, $oBasket->getItemCount(false));
+        $this->assertSame(1, $oBasket->getItemCount(false));
     }
 
     // 2. fetching basket for no user - should return 0
@@ -1763,7 +1763,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = oxNew('oxUser');
 
         $oBasket = $oUser->getBasket('oxtest2');
-        $this->assertEquals(0, $oBasket->getItemCount(false));
+        $this->assertSame(0, $oBasket->getItemCount(false));
     }
 
 
@@ -1773,31 +1773,31 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testConvertBirthdayGoodInput()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('1981-05-14', $oUser->convertBirthday(['year' => 1981, 'month' => 05, 'day' => 14]));
+        $this->assertSame('1981-05-14', $oUser->convertBirthday(['year' => 1981, 'month' => 05, 'day' => 14]));
     }
 
     public function testConvertBirthdayAlmostGoodInput()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('1981-02-01', $oUser->convertBirthday(['year' => 1981, 'month' => 02, 'day' => 31]));
+        $this->assertSame('1981-02-01', $oUser->convertBirthday(['year' => 1981, 'month' => 02, 'day' => 31]));
     }
 
     public function testConvertBirthdayAlmostGoodInput2()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('1981-04-01', $oUser->convertBirthday(['year' => 1981, 'month' => 04, 'day' => 31]));
+        $this->assertSame('1981-04-01', $oUser->convertBirthday(['year' => 1981, 'month' => 04, 'day' => 31]));
     }
 
     public function testConvertBirthdayBadInput()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('', $oUser->convertBirthday('oxtest'));
+        $this->assertSame('', $oUser->convertBirthday('oxtest'));
     }
 
     public function testConvertBirthdaySomeGoodInput()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals('1981-01-01', $oUser->convertBirthday(['year' => 1981]));
+        $this->assertSame('1981-01-01', $oUser->convertBirthday(['year' => 1981]));
     }
 
     /**
@@ -1844,7 +1844,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testCheckValuesWithInputException()
     {
         $oInputValidator = $this->getMock('oxInputValidator');
-        $oInputValidator->expects($this->once())->method("checkVatId")->will($this->throwException(new oxInputException()));
+        $oInputValidator->expects($this->once())->method("checkVatId")->willThrowException(new oxInputException());
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oUser = oxNew('oxUser');
@@ -1866,7 +1866,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["ingroup", "removefromgroup", "addtogroup"]);
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
-        $oUser->expects($this->exactly(2))->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true)));
+        $oUser->expects($this->exactly(2))->method('inGroup')->willReturnOnConsecutiveCalls($this->returnValue(false), $this->returnValue(true));
 
         $oUser->setAutoGroups('xxx', []);
     }
@@ -1878,7 +1878,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('aHomeCountry', 'xxx');
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
-        $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(true), $this->returnValue(false)));
+        $oUser->method('inGroup')->willReturnOnConsecutiveCalls($this->returnValue(true), $this->returnValue(false));
 
         $oUser->setAutoGroups('xxx');
     }
@@ -1889,7 +1889,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('aHomeCountry', ['asd', 'xxx', 'ad']);
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
-        $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(true), $this->returnValue(false)));
+        $oUser->method('inGroup')->willReturnOnConsecutiveCalls($this->returnValue(true), $this->returnValue(false));
 
         $oUser->setAutoGroups('xxx');
     }
@@ -1903,11 +1903,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oConfig = $this->getMock('oxconfig');
 
         $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus', 'setOptInStatus']);
-        $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(1));
+        $oSubscription->expects($this->once())->method('getOptInStatus')->willReturn(1);
         $oSubscription->expects($this->never())->method('setOptInStatus');
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription', 'addToGroup', 'removeFromGroup']);
-        $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
+        $oUser->expects($this->once())->method('getNewsSubscription')->willReturn($oSubscription);
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
         Registry::set(Config::class, $oConfig);
@@ -1921,12 +1921,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('blOrderOptInEmail', false);
 
         $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus', 'setOptInStatus']);
-        $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(0));
-        $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(1));
+        $oSubscription->expects($this->once())->method('getOptInStatus')->willReturn(0);
+        $oSubscription->expects($this->once())->method('setOptInStatus')->with(1);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription', 'addToGroup', 'removeFromGroup']);
-        $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
-        $oUser->expects($this->once())->method('addToGroup')->with($this->equalTo('oxidnewsletter'));
+        $oUser->expects($this->once())->method('getNewsSubscription')->willReturn($oSubscription);
+        $oUser->expects($this->once())->method('addToGroup')->with('oxidnewsletter');
         $oUser->expects($this->never())->method('removeFromGroup');
         Registry::set(Config::class, $oConfig);
 
@@ -1942,11 +1942,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
         $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus', 'setOptInStatus']);
-        $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(0));
-        $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(2));
+        $oSubscription->expects($this->once())->method('getOptInStatus')->willReturn(0);
+        $oSubscription->expects($this->once())->method('setOptInStatus')->with(2);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription', 'addToGroup', 'removeFromGroup']);
-        $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
+        $oUser->expects($this->once())->method('getNewsSubscription')->willReturn($oSubscription);
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
         Registry::set(Config::class, $oConfig);
@@ -1958,7 +1958,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         // email should be sent only once
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['sendNewsletterDBOptInMail']);
-        $oEmail->expects($this->once())->method('sendNewsletterDBOptInMail')->will($this->returnValue(true));
+        $oEmail->expects($this->once())->method('sendNewsletterDBOptInMail')->willReturn(true);
 
         oxTestModules::addModuleObject("oxemail", $oEmail);
 
@@ -1974,7 +1974,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
             );
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription', 'addToGroup', 'removeFromGroup']);
-        $oUser->expects($this->any())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
+        $oUser->method('getNewsSubscription')->willReturn($oSubscription);
         Registry::set(Config::class, $oConfig);
 
         // first call, mail should be sent
@@ -1993,12 +1993,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus', 'setOptInStatus']);
         $oSubscription->expects($this->never())->method('getOptInStatus');
-        $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(0));
+        $oSubscription->expects($this->once())->method('setOptInStatus')->with(0);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription', 'addToGroup', 'removeFromGroup']);
-        $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
+        $oUser->expects($this->once())->method('getNewsSubscription')->willReturn($oSubscription);
         $oUser->expects($this->never())->method('addToGroup');
-        $oUser->expects($this->once())->method('removeFromGroup')->with($this->equalTo('oxidnewsletter'));
+        $oUser->expects($this->once())->method('removeFromGroup')->with('oxidnewsletter');
         Registry::set(Config::class, $oConfig);
 
         $this->assertTrue($oUser->setNewsSubscription(false, false));
@@ -2023,7 +2023,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oActiveUser->oxuser__oxusername->value);
 
         $oAdminUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $oAdminUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oAdminUser->method('isAdmin')->willReturn(true);
         $oAdminUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
 
         $oActiveUser->loadAdminUser();
@@ -2043,7 +2043,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $testUser->method('isAdmin')->willReturn(false);
         //trying to login
         $testUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         $oActUser->loadActiveUser();
@@ -2065,12 +2065,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $testUser->method('isAdmin')->willReturn(false);
 
         $sOriginalPassword = $this->getDb()->getOne('select OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
         $sTemporaryPassword = $this->get(PasswordServiceBridgeInterface::class)->hash($sOriginalPassword, 'PASSWORD_BCRYPT');
 
-        $sSql = sprintf('update oxuser set OXPASSWORD = \'%s\'  where OXID=\'oxdefaultadmin\'', $sTemporaryPassword);
+        $sSql = sprintf("update oxuser set OXPASSWORD = '%s'  where OXID='oxdefaultadmin'", $sTemporaryPassword);
         $this->addToDatabase($sSql, 'oxuser');
         $sVal = \OXADMIN_LOGIN . '@@@' . crypt((string) $sTemporaryPassword, \OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT);
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('oxid_' . $sShopId, $sVal);
@@ -2078,7 +2078,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oActUser->loadActiveUser();
         $testUser->logout();
 
-        $sSql = sprintf('update oxuser set OXPASSWORD = \'%s\' where OXID=\'oxdefaultadmin\'', $sOriginalPassword);
+        $sSql = sprintf("update oxuser set OXPASSWORD = '%s' where OXID='oxdefaultadmin'", $sOriginalPassword);
         $this->addToDatabase($sSql, 'oxuser');
 
         $this->assertEquals(\OXADMIN_LOGIN, $oActUser->oxuser__oxusername->value);
@@ -2092,7 +2092,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxUtilsServer');
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oUser->method('isAdmin')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->delOxCookie();
         try {
             //should throw no cookie support exception
@@ -2117,7 +2117,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = $oUser->getUser();
 
         $this->assertNotNull($oUser);
-        $this->assertEquals('oxdefaultadmin', $oUser->getId());
+        $this->assertSame('oxdefaultadmin', $oUser->getId());
 
         $oUser->logout();
 
@@ -2132,7 +2132,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testLogin_resetsActiveUser()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["setUser"]);
-        $oUser->expects($this->once())->method("setUser")->with($this->equalTo(null));
+        $oUser->expects($this->once())->method("setUser")->with(null);
 
         $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
     }
@@ -2148,7 +2148,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
             $oUser->login(1, \OXADMIN_PASSWD);
         } catch (Exception $exception) {
             $exceptionThrown = true;
-            $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
+            $this->assertSame('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
         }
 
         $this->assertTrue($exceptionThrown, 'exception must be thrown');
@@ -2161,13 +2161,13 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $exceptionThrown = false;
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['load']);
-        $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(false));
+        $oUser->expects($this->atLeastOnce())->method('load')->willReturn(false);
 
         try {
             $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         } catch (Exception $exception) {
             $exceptionThrown = true;
-            $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
+            $this->assertSame('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
         }
 
         $this->assertTrue($exceptionThrown, 'exception must be thrown due to problems loading user object');
@@ -2183,13 +2183,13 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\User::class)
             ->setMethods(['load'])
             ->getMock();
-        $oUser->method('load')->will($this->returnValue(false));
+        $oUser->method('load')->willReturn(false);
 
         try {
             $oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD);
         } catch (Exception $exception) {
             $exceptionThrown = true;
-            $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
+            $this->assertSame('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
         }
 
         $this->assertTrue($exceptionThrown, 'exception must be thrown due to problems loading user object');
@@ -2208,7 +2208,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
             $this->assertTrue($oUser->login(\OXADMIN_LOGIN, \OXADMIN_PASSWD, true));
         } catch (Exception $exception) {
             $exceptionThrown = true;
-            $this->assertEquals("cookie is set", $exception->getMessage());
+            $this->assertSame("cookie is set", $exception->getMessage());
         }
 
         $this->assertTrue($exceptionThrown, 'forced exception must be thrown');
@@ -2239,12 +2239,12 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('blDemoShop', 1);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oUser->method('isAdmin')->willReturn(true);
 
         try {
             $oUser->login('nonadmin', \OXADMIN_PASSWD);
         } catch (Exception $exception) {
-            $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
+            $this->assertSame('ERROR_MESSAGE_USER_NOVALIDLOGIN', $exception->getMessage());
 
             return;
         }
@@ -2298,7 +2298,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         if ($oUser) {
             $this->assertNotNull($oUser);
-            $this->assertEquals('oxdefaultadmin', $oUser->getId());
+            $this->assertSame('oxdefaultadmin', $oUser->getId());
 
             $oUser->logout();
 
@@ -2343,8 +2343,8 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sSelect = 'select oxaddress.oxcountry from oxaddress where oxaddress.oxid = "xxx" AND oxaddress.oxuserid = "' . $sUserId . '" ';
 
         $sCountry = $oDb->getOne($sSelect);
-        $this->assertEquals('xxx', oxRegistry::getSession()->getVariable('deladrid'));
-        $this->assertEquals('Deutschland', $sCountry);
+        $this->assertSame('xxx', oxRegistry::getSession()->getVariable('deladrid'));
+        $this->assertSame('Deutschland', $sCountry);
     }
 
     // trying to set non empty address
@@ -2363,11 +2363,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $oUser->assignAddress($aDelAddress);
         $oDb = $this->getDb();
-        $this->assertEquals('xxx', oxRegistry::getSession()->getVariable('deladrid'));
+        $this->assertSame('xxx', oxRegistry::getSession()->getVariable('deladrid'));
         $sSelect = 'select oxaddress.oxcompany from oxaddress where oxaddress.oxuserid = "' . $sUserId . '" AND oxid = "xxx" ';
 
         $sCompany = $oDb->getOne($sSelect);
-        $this->assertEquals('xxx & CO.', $sCompany);
+        $this->assertSame('xxx & CO.', $sCompany);
     }
 
     /**
@@ -2381,7 +2381,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('oxaddressid', 'test_user1');
 
         $oAddress = $oUser->getSelectedAddress();
-        $this->assertEquals('test_user1', $oAddress->getId());
+        $this->assertSame('test_user1', $oAddress->getId());
     }
 
     /**
@@ -2402,7 +2402,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $this->getSession()->setVariable('oxaddressid', null);
         $oAddress = $oUser->getSelectedAddress();
-        $this->assertEquals('xxx', $oAddress->getId());
+        $this->assertSame('xxx', $oAddress->getId());
     }
 
     /**
@@ -2418,7 +2418,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->oAddresses->rewind();
         $oAddress = $oUser->oAddresses->current();
         $this->assertEquals($oAddress->getId(), $oSelAddress->getId());
-        $this->assertEquals(1, $oAddress->selected);
+        $this->assertSame(1, $oAddress->selected);
     }
 
     /**
@@ -2433,7 +2433,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable('oxaddressid', null);
 
         $oSelAddress = $oUser->getSelectedAddress($oUser->getId());
-        $this->assertEquals('test_user1', $oSelAddress->getId());
+        $this->assertSame('test_user1', $oSelAddress->getId());
     }
 
     public function testGetNoticeListArtCnt()
@@ -2445,11 +2445,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->load($sUserId);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getItemCount']);
-        $oBasket->expects($this->once())->method('getItemCount')->will($this->returnValue(11));
+        $oBasket->expects($this->once())->method('getItemCount')->willReturn(11);
         $aBaskets['noticelist'] = $oBasket;
         $oUser->setNonPublicVar('_aBaskets', $aBaskets);
 
-        $this->assertEquals(11, $oUser->getNoticeListArtCnt());
+        $this->assertSame(11, $oUser->getNoticeListArtCnt());
     }
 
     public function testGetWishListArtCnt()
@@ -2461,11 +2461,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->load($sUserId);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getItemCount']);
-        $oBasket->expects($this->once())->method('getItemCount')->will($this->returnValue(11));
+        $oBasket->expects($this->once())->method('getItemCount')->willReturn(11);
         $aBaskets['wishlist'] = $oBasket;
         $oUser->setNonPublicVar('_aBaskets', $aBaskets);
 
-        $this->assertEquals(11, $oUser->getWishListArtCnt());
+        $this->assertSame(11, $oUser->getWishListArtCnt());
     }
 
     /**
@@ -2506,7 +2506,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testGetUserCountryId()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals("a7c40f631fc920687.20179984", $oUser->getUserCountryId('DE'));
+        $this->assertSame("a7c40f631fc920687.20179984", $oUser->getUserCountryId('DE'));
     }
 
     /**
@@ -2515,7 +2515,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testGetUserCountryWithId()
     {
         $oUser = $this->getProxyClass("oxUser");
-        $this->assertEquals("Deutschland", $oUser->getUserCountry("a7c40f631fc920687.20179984")->value);
+        $this->assertSame("Deutschland", $oUser->getUserCountry("a7c40f631fc920687.20179984")->value);
         $this->assertNull($oUser->getNonPublicVar("_oUserCountryTitle"));
     }
 
@@ -2526,8 +2526,8 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $oUser = $this->getProxyClass("oxUser");
         $oUser->load('oxdefaultadmin');
-        $this->assertEquals("Deutschland", $oUser->getUserCountry()->value);
-        $this->assertEquals("Deutschland", $oUser->getNonPublicVar("_oUserCountryTitle")->value);
+        $this->assertSame("Deutschland", $oUser->getUserCountry()->value);
+        $this->assertSame("Deutschland", $oUser->getNonPublicVar("_oUserCountryTitle")->value);
         $this->assertEquals($oUser->getUserCountry()->value, $this->getDb()->getOne('select oxtitle' . oxRegistry::getLang()->getLanguageTag(null) . ' from oxcountry where oxid = "' . $oUser->oxuser__oxcountryid->value . '"'));
     }
 
@@ -2544,7 +2544,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sReviewUser = $this->getDb()->getOne('select md5(concat("oxid", oxpassword, oxusername )) from oxuser where oxid = "oxdefaultadmin"');
         $oUser = $this->getProxyClass("oxuser");
 
-        $this->assertEquals('oxdefaultadmin', $oUser->getReviewUserId($sReviewUser));
+        $this->assertSame('oxdefaultadmin', $oUser->getReviewUserId($sReviewUser));
     }
 
     /**
@@ -2576,11 +2576,11 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie();
 
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $testUser->method('isAdmin')->willReturn(false);
 
         $this->assertTrue($testUser->loadActiveUser());
 
-        $this->assertEquals($sCookie, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
+        $this->assertSame($sCookie, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
     }
 
     /**
@@ -2594,7 +2594,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie('RandomUserId', 'RandomPassword');
 
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isAdmin']);
-        $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $testUser->method('isAdmin')->willReturn(false);
 
         $this->assertFalse($testUser->loadActiveUser());
 
@@ -2604,15 +2604,15 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testGetWishListId()
     {
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['getWishId']);
-        $oBasketItem->expects($this->once())->method('getWishId')->will($this->returnValue("testwishid"));
+        $oBasketItem->expects($this->once())->method('getWishId')->willReturn("testwishid");
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue([$oBasketItem]));
+        $oBasket->expects($this->once())->method('getContents')->willReturn([$oBasketItem]);
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasket']);
-        $session->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $session->expects($this->once())->method('getBasket')->willReturn($oBasket);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oUserView = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $this->assertEquals("testwishid", $oUserView->getWishListId());
+        $this->assertSame("testwishid", $oUserView->getWishListId());
     }
 
     /**
@@ -2628,17 +2628,17 @@ final class UserTest extends \PHPUnit\Framework\TestCase
 
         $aRec = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("select * from oxinvitations order by oxemail");
 
-        $this->assertEquals("oxdefaultadmin", $aRec[0]["OXUSERID"]);
-        $this->assertEquals("test1@oxid-esales.com", $aRec[0]["OXEMAIL"]);
-        $this->assertEquals("1", $aRec[0]["OXPENDING"]);
-        $this->assertEquals("0", $aRec[0]["OXACCEPTED"]);
-        $this->assertEquals("1", $aRec[0]["OXTYPE"]);
+        $this->assertSame("oxdefaultadmin", $aRec[0]["OXUSERID"]);
+        $this->assertSame("test1@oxid-esales.com", $aRec[0]["OXEMAIL"]);
+        $this->assertSame("1", $aRec[0]["OXPENDING"]);
+        $this->assertSame("0", $aRec[0]["OXACCEPTED"]);
+        $this->assertSame("1", $aRec[0]["OXTYPE"]);
 
-        $this->assertEquals("oxdefaultadmin", $aRec[1]["OXUSERID"]);
-        $this->assertEquals("test2@oxid-esales.com", $aRec[1]["OXEMAIL"]);
-        $this->assertEquals("1", $aRec[1]["OXPENDING"]);
-        $this->assertEquals("0", $aRec[1]["OXACCEPTED"]);
-        $this->assertEquals("1", $aRec[1]["OXTYPE"]);
+        $this->assertSame("oxdefaultadmin", $aRec[1]["OXUSERID"]);
+        $this->assertSame("test2@oxid-esales.com", $aRec[1]["OXEMAIL"]);
+        $this->assertSame("1", $aRec[1]["OXPENDING"]);
+        $this->assertSame("0", $aRec[1]["OXACCEPTED"]);
+        $this->assertSame("1", $aRec[1]["OXTYPE"]);
     }
 
     /**
@@ -2650,7 +2650,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $sUserId = $oUser->getId();
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["inGroup"]);
-        $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(false));
+        $oUser->method('inGroup')->willReturn(false);
         $oUser->load($sUserId);
 
         $oGroup = oxNew('oxGroups');
@@ -2681,7 +2681,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         $oUser->save();
 
         $oU = oxNew('oxUser');
-        $this->assertEquals('_testId_1', $oU->getIdByUserName('aaa@bbb.lt'));
+        $this->assertSame('_testId_1', $oU->getIdByUserName('aaa@bbb.lt'));
         $this->assertFalse($oU->getIdByUserName('bbb@ccc.lt'));
     }
 
@@ -2703,10 +2703,10 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     public function testUserCreditRating()
     {
         $oUser = oxNew('oxUser');
-        $this->assertEquals(1000, $oUser->getBoni());
+        $this->assertSame(1000, $oUser->getBoni());
 
         $this->getConfig()->setConfigParam('iCreditRating', 100);
-        $this->assertEquals(100, $oUser->getBoni());
+        $this->assertSame(100, $oUser->getBoni());
     }
 
     /**
@@ -2716,7 +2716,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     {
         $oSubj = oxNew('oxUser');
         $oSubj->oxuser__oxstateid = new oxField('TTT');
-        $this->assertEquals('TTT', $oSubj->getStateId());
+        $this->assertSame('TTT', $oSubj->getStateId());
     }
 
     /**
@@ -2742,13 +2742,13 @@ final class UserTest extends \PHPUnit\Framework\TestCase
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
         $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getStateObject', 'getStateId']);
 
-        $oUserMock->expects($this->any())
+        $oUserMock
             ->method('getStateObject')
-            ->will($this->returnValue($oStateMock));
+            ->willReturn($oStateMock);
 
-        $oUserMock->expects($this->any())
+        $oUserMock
             ->method('getStateId')
-            ->will($this->returnValue($iAlternateStateId));
+            ->willReturn($iAlternateStateId);
 
         $sExpected = $this->getDb()->getOne('SELECT oxtitle FROM oxstates WHERE oxid = "' . $iStateId . '"');
         $this->assertSame($sExpected, $oUserMock->getStateTitle($iStateId), "State title is correct");
@@ -2795,7 +2795,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
     /**
      * @return string
      */
-    protected function prepareUserDataForDeletion()
+    private function prepareUserDataForDeletion()
     {
         $user = $this->createUser();
         $userId = $user->getId();
@@ -2909,7 +2909,7 @@ final class UserTest extends \PHPUnit\Framework\TestCase
      *
      * @return bool
      */
-    protected function executeAccountDeletion($userId)
+    private function executeAccountDeletion($userId)
     {
         $user = oxNew(User::class);
         $user->load($userId);

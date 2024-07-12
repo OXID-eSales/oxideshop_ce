@@ -38,7 +38,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
         $oManufacturer = oxNew('oxManufacturer');
-        $this->assertEquals("sManufacturerPageUrl", $oManufacturer->getBaseSeoLink(0, 1));
+        $this->assertSame("sManufacturerPageUrl", $oManufacturer->getBaseSeoLink(0, 1));
     }
 
     public function testGetBaseSeoLink()
@@ -47,7 +47,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxSeoEncoderManufacturer", "getManufacturerPageUrl", "{return 'sManufacturerPageUrl';}");
 
         $oManufacturer = oxNew('oxManufacturer');
-        $this->assertEquals("sManufacturerUrl", $oManufacturer->getBaseSeoLink(0));
+        $this->assertSame("sManufacturerUrl", $oManufacturer->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
@@ -58,7 +58,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setId("testManufacturerId");
 
         $sTestUrl = $this->getConfig()->getShopHomeUrl($iLang, false) . 'cl=manufacturerlist&amp;mnid=' . $oManufacturer->getId();
-        $this->assertEquals($sTestUrl, $oManufacturer->getBaseStdLink($iLang));
+        $this->assertSame($sTestUrl, $oManufacturer->getBaseStdLink($iLang));
     }
 
     public function testGetContentCats()
@@ -72,23 +72,23 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.png', basename((string) $oManufacturer->getIconUrl()));
+        $this->assertSame('big_matsol_1_mico.png', basename((string) $oManufacturer->getIconUrl()));
 
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ['getLink', 'getNrOfArticles', 'getIsVisible', 'getHasVisibleSubCats']);
 
-        $oManufacturer->expects($this->exactly(4))->method('getLink')->will($this->returnValue('Link'));
-        $oManufacturer->expects($this->once())->method('getNrOfArticles')->will($this->returnValue('NrOfArticles'));
-        $oManufacturer->expects($this->once())->method('getIsVisible')->will($this->returnValue('IsVisible'));
-        $oManufacturer->expects($this->once())->method('getHasVisibleSubCats')->will($this->returnValue('HasVisibleSubCats'));
+        $oManufacturer->expects($this->exactly(4))->method('getLink')->willReturn('Link');
+        $oManufacturer->expects($this->once())->method('getNrOfArticles')->willReturn('NrOfArticles');
+        $oManufacturer->expects($this->once())->method('getIsVisible')->willReturn('IsVisible');
+        $oManufacturer->expects($this->once())->method('getHasVisibleSubCats')->willReturn('HasVisibleSubCats');
 
-        $this->assertEquals('Link', $oManufacturer->oxurl);
-        $this->assertEquals('Link', $oManufacturer->openlink);
-        $this->assertEquals('Link', $oManufacturer->closelink);
-        $this->assertEquals('Link', $oManufacturer->link);
-        $this->assertEquals('NrOfArticles', $oManufacturer->iArtCnt);
-        $this->assertEquals('IsVisible', $oManufacturer->isVisible);
-        $this->assertEquals('HasVisibleSubCats', $oManufacturer->hasVisibleSubCats);
+        $this->assertSame('Link', $oManufacturer->oxurl);
+        $this->assertSame('Link', $oManufacturer->openlink);
+        $this->assertSame('Link', $oManufacturer->closelink);
+        $this->assertSame('Link', $oManufacturer->link);
+        $this->assertSame('NrOfArticles', $oManufacturer->iArtCnt);
+        $this->assertSame('IsVisible', $oManufacturer->isVisible);
+        $this->assertSame('HasVisibleSubCats', $oManufacturer->hasVisibleSubCats);
     }
 
     public function testAssignWithoutArticleCnt()
@@ -104,7 +104,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
 
         $iArticleCount = -1;
 
-        $this->assertEquals($iArticleCount, $oManufacturer->oxmanufacturers__oxnrofarticles->value);
+        $this->assertSame($iArticleCount, $oManufacturer->oxmanufacturers__oxnrofarticles->value);
     }
 
     public function testAssignWithArticleCnt()
@@ -115,11 +115,11 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $sQ = 'select oxid from oxmanufacturers where oxmanufacturers.oxshopid = "' . $myConfig->getShopID() . '"';
         $sManufacturerId = $myDB->getOne($sQ);
 
-        $sQ = sprintf('select count(*) from oxarticles where oxmanufacturerid = \'%s\' ', $sManufacturerId);
+        $sQ = sprintf("select count(*) from oxarticles where oxmanufacturerid = '%s' ", $sManufacturerId);
         $iCnt = $myDB->getOne($sQ);
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, ['isAdmin']);
-        $oManufacturer->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oManufacturer->method('isAdmin')->willReturn(false);
         $oManufacturer->setShowArticleCnt(true);
         $oManufacturer->load($sManufacturerId);
 
@@ -132,7 +132,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getStdLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getStdLink());
     }
 
     public function testGetLinkSeoDe()
@@ -153,7 +153,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setLanguage(0);
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
     }
 
     public function testGetLinkSeoEng()
@@ -173,7 +173,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(1, $sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink());
     }
 
     public function testGetLink()
@@ -183,14 +183,14 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx', $oManufacturer->getLink());
     }
 
     public function testGetStdLinkWithLangParam()
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getStdLink(1));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getStdLink(1));
     }
 
     public function testGetLinkSeoDeWithLangParam()
@@ -211,7 +211,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setLanguage(1);
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(0));
+        $this->assertSame($this->getConfig()->getShopUrl() . 'Nach-Hersteller/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(0));
     }
 
     public function testGetLinkSeoEngWithLangParam()
@@ -231,7 +231,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->loadInLang(0, $sManufacturerId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
+        $this->assertSame($this->getConfig()->getShopUrl() . 'en/By-manufacturer/' . str_replace(' ', '-', $sManufacturerTitle) . '/', $oManufacturer->getLink(1));
     }
 
     public function testGetLinkWithLangParam()
@@ -241,23 +241,23 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getLink(1));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;lang=1', $oManufacturer->getLink(1));
     }
 
     public function testLoadRootManufacturer()
     {
         $oV = oxNew('oxManufacturer');
         $oV->load('root');
-        $this->assertTrue($oV instanceof Manufacturer);
-        $this->assertEquals('root', $oV->getId());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Manufacturer::class, $oV);
+        $this->assertSame('root', $oV->getId());
 
         $oV = oxNew('oxManufacturer');
         $oV->loadInLang(0, 'root');
-        $this->assertEquals(0, $oV->getLanguage());
+        $this->assertSame(0, $oV->getLanguage());
 
         $oV = oxNew('oxManufacturer');
         $oV->loadInLang(1, 'root');
-        $this->assertEquals(1, $oV->getLanguage());
+        $this->assertSame(1, $oV->getLanguage());
 
         $oV = oxNew('oxManufacturer');
         $oV->load('root');
@@ -275,7 +275,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setNonPublicVar("_blShowArticleCnt", true);
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), $oManufacturer->getNrOfArticles());
+        $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($sManufacturerId), $oManufacturer->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()
@@ -289,7 +289,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->load($sManufacturerId);
         $oManufacturer->setNonPublicVar("_blShowArticleCnt", false);
 
-        $this->assertEquals(-1, $oManufacturer->getNrOfArticles());
+        $this->assertSame(-1, $oManufacturer->getNrOfArticles());
     }
 
     public function testSetGetIsVisible()
@@ -321,7 +321,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.png', basename((string) $oManufacturer->getIconUrl()));
+        $this->assertSame('big_matsol_1_mico.png', basename((string) $oManufacturer->getIconUrl()));
     }
 
     /**
@@ -341,7 +341,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $sUrl = $this->getConfig()->getOutUrl() . basename((string) $this->getConfig()->getPicturePath(""));
         $sUrl .= sprintf('/generated/manufacturer/icon/%d_%d_75/big_matsol_1_mico.png', $width, $height);
 
-        $this->assertEquals($sUrl, $oManufacturer->getIconUrl());
+        $this->assertSame($sUrl, $oManufacturer->getIconUrl());
     }
 
     public function testDelete()
@@ -365,7 +365,7 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
     {
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;foo=bar', $oManufacturer->getStdLink(0, ['foo' => 'bar']));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=manufacturerlist&amp;mnid=xxx&amp;foo=bar', $oManufacturer->getStdLink(0, ['foo' => 'bar']));
     }
 
     public function testGetThumbUrl()
@@ -384,6 +384,6 @@ class ManufacturerTest extends \PHPUnit\Framework\TestCase
         $sTitle = "testtitle";
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->oxmanufacturers__oxtitle = new oxField("testtitle");
-        $this->assertEquals($sTitle, $oManufacturer->getTitle());
+        $this->assertSame($sTitle, $oManufacturer->getTitle());
     }
 }

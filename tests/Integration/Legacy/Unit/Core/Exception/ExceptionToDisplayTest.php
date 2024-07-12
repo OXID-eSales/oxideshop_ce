@@ -16,14 +16,14 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
     {
         $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setStackTrace('stack trace');
-        $this->assertEquals('stack trace', $oTestObject->getStackTrace());
+        $this->assertSame('stack trace', $oTestObject->getStackTrace());
     }
 
     public function testSetGetValues()
     {
         $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setValues([1 => 'test1', 2 => 'test2']);
-        $this->assertEquals('test2', $oTestObject->getValue(2));
+        $this->assertSame('test2', $oTestObject->getValue(2));
     }
 
     public function testAddGetValues()
@@ -31,14 +31,14 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setValues([1 => 'test1', 2 => 'test2']);
         $oTestObject->addValue(4, 'test4');
-        $this->assertEquals('test4', $oTestObject->getValue(4));
+        $this->assertSame('test4', $oTestObject->getValue(4));
     }
 
     public function testSetGetExceptionType()
     {
         $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setExceptionType('test type');
-        $this->assertEquals('test type', $oTestObject->getErrorClassType());
+        $this->assertSame('test type', $oTestObject->getErrorClassType());
     }
 
     public function testSetDebug()
@@ -46,7 +46,7 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $oTestObject = $this->getProxyClass("oxExceptionToDisplay");
         $oTestObject->setDebug(2);
         //nothing should happen in unittests
-        $this->assertEquals(2, $oTestObject->getNonPublicVar('_blDebug'));
+        $this->assertSame(2, $oTestObject->getNonPublicVar('_blDebug'));
     }
 
     public function testSetGetMessage()
@@ -54,7 +54,7 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $oTestObject = oxNew('oxExceptionToDisplay');
         $oTestObject->setMessage("TEST_EXCEPTION");
         //nothing should happen in unittests
-        $this->assertEquals("TEST_EXCEPTION", $oTestObject->getOxMessage());
+        $this->assertSame("TEST_EXCEPTION", $oTestObject->getOxMessage());
     }
 
     public function testSetGetMessage_withStringArguments()
@@ -63,7 +63,7 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $oTestObject->setMessageArgs(100, "200", "mineralinis");
         $oTestObject->setMessage("TEST %d ERROR %s STRING %s");
 
-        $this->assertEquals("TEST 100 ERROR 200 STRING mineralinis", $oTestObject->getOxMessage());
+        $this->assertSame("TEST 100 ERROR 200 STRING mineralinis", $oTestObject->getOxMessage());
     }
 
     public function testSetGetMessageIfDebugOn()
@@ -88,7 +88,7 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $sRet .= "1 => test1\n";
         $sRet .= "2 => test2\n";
         //nothing should happen in unittests
-        $this->assertEquals($sRet, $oTestObject->__toString());
+        $this->assertSame($sRet, $oTestObject->__toString());
     }
 
     public function testSetMessageArgs()
@@ -96,6 +96,6 @@ class ExceptionToDisplayTest extends \PHPUnit\Framework\TestCase
         $oTestObject = $this->getProxyClass("oxExceptionToDisplay");
         $oTestObject->setMessageArgs(100, "200", "testString");
 
-        $this->assertEquals([100, "200", "testString"], $oTestObject->getNonPublicVar('_aMessageArgs'));
+        $this->assertSame([100, "200", "testString"], $oTestObject->getNonPublicVar('_aMessageArgs'));
     }
 }

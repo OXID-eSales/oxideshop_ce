@@ -42,8 +42,8 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertEquals('article_stock', $sTplName);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
+        $this->assertSame('article_stock', $sTplName);
     }
 
     /**
@@ -63,7 +63,7 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Stock');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Stock::save()");
 
             return;
         }
@@ -87,7 +87,7 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Stock');
             $oView->addprice();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::addprice()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Stock::addprice()");
 
             return;
         }
@@ -115,7 +115,7 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Stock');
             $oView->addprice($sOXID, $aParams);
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Stock::addprice()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Stock::addprice()");
 
             return;
         }
@@ -144,13 +144,13 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
 
         $oView->addprice($sOXID, $aParams);
-        $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
+        $this->assertSame("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
         $oView->addprice($sOXID, $aParams);
-        $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
+        $this->assertSame("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
         //update amount
         $aParams = ["oxprice2article__oxamountto" => 100];
         $oView->addprice($sOXID, $aParams);
-        $this->assertEquals("100", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
+        $this->assertSame("100", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
     }
 
     /**
@@ -175,7 +175,7 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
             ["oxprice2article__oxamountto" => 9, "pricetype"                   => "oxaddabs", "price"                       => 9]
         );
         $oView->updateprices();
-        $this->assertEquals("50", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
+        $this->assertSame("50", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
     }
 
     /**
@@ -191,12 +191,12 @@ class ArticleStockTest extends \PHPUnit\Framework\TestCase
 
         $this->setRequestParameter('oxid', '_testArtId');
         $oView->deleteprice();
-        $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
+        $this->assertSame("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
 
         $this->setRequestParameter('oxid', '');
         $this->setRequestParameter('priceid', '_testId');
         $oView->deleteprice();
-        $this->assertEquals("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
+        $this->assertSame("1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
 
         $this->setRequestParameter('oxid', '_testArtId');
         $this->setRequestParameter('priceid', '_testId');

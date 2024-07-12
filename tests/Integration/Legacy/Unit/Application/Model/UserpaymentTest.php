@@ -130,7 +130,7 @@ class UserpaymentTest extends \PHPUnit\Framework\TestCase
     {
         $oUpay = oxNew('oxuserpayment');
         $oUpay->load('_testOxId');
-        $this->assertEquals('Nachnahme', $oUpay->oxpayments__oxdesc->value);
+        $this->assertSame('Nachnahme', $oUpay->oxpayments__oxdesc->value);
     }
 
     /**
@@ -141,7 +141,7 @@ class UserpaymentTest extends \PHPUnit\Framework\TestCase
         $oUpay = oxNew('oxuserpayment');
         $oUpay->load('_testOxId');
 
-        $this->assertEquals('_testValue', $oUpay->oxuserpayments__oxvalue->value);
+        $this->assertSame('_testValue', $oUpay->oxuserpayments__oxvalue->value);
     }
 
     public function testInsertForOxValue()
@@ -152,7 +152,7 @@ class UserpaymentTest extends \PHPUnit\Framework\TestCase
         $oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
         $oUpay->save();
 
-        $this->assertEquals("123456789", oxDb::getDb()->getOne("SELECT oxvalue FROM oxuserpayments WHERE oxid='_testOxId2'"));
+        $this->assertSame("123456789", oxDb::getDb()->getOne("SELECT oxvalue FROM oxuserpayments WHERE oxid='_testOxId2'"));
     }
 
     /**
@@ -190,7 +190,7 @@ class UserpaymentTest extends \PHPUnit\Framework\TestCase
         $oUserPayment = oxNew('oxUserPayment');
 
         $this->assertTrue($oUserPayment->getPaymentByPaymentType($oUser, 'oxidinvoice'));
-        $this->assertEquals('_testOxId', $oUserPayment->getId());
+        $this->assertSame('_testOxId', $oUserPayment->getId());
     }
 
     /**

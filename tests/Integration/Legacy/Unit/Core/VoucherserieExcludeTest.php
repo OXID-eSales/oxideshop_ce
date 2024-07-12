@@ -64,8 +64,8 @@ class VoucherserieExcludeTest extends \PHPUnit\Framework\TestCase
         $iCountVouchers = oxDb::getDb()->getOne("SELECT count(*) FROM `oxvouchers`        WHERE `OXID`= 'test_111';");
         $iCountRelations = oxDb::getDb()->getOne("SELECT count(*) FROM `oxobject2discount` WHERE `OXID`= 'test_r1';");
 
-        $this->assertEquals(0, $iCountSeries);
-        $this->assertEquals(0, $iCountVouchers);
-        $this->assertEquals(0, $iCountRelations);
+        $this->assertSame(0, $iCountSeries);
+        $this->assertSame(0, $iCountVouchers);
+        $this->assertSame(0, $iCountRelations);
     }
 }

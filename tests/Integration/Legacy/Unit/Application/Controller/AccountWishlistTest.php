@@ -24,8 +24,8 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testRenderNoUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login', $oView->render());
+        $oView->method('getUser')->willReturn(false);
+        $this->assertSame('page/account/login', $oView->render());
     }
 
     /**
@@ -37,8 +37,8 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/wishlist', $oView->render());
+        $oView->method('getUser')->willReturn($oUser);
+        $this->assertSame('page/account/wishlist', $oView->render());
     }
 
     /**
@@ -63,7 +63,7 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetWishListNoUserNoWishlist()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $oView->method('getUser')->willReturn(false);
         $this->assertFalse($oView->getWishList());
     }
 
@@ -74,13 +74,13 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetWishList()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["isEmpty"]);
-        $oBasket->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $oBasket->method('isEmpty')->willReturn(false);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getBasket"]);
-        $oUser->expects($this->any())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
+        $oUser->method('getBasket')->with("wishlist")->willReturn($oBasket);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oView->method('getUser')->willReturn($oUser);
         $this->assertSame($oBasket, $oView->getWishList());
     }
 
@@ -91,14 +91,14 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetWishList_basketIsEmpty()
     {
         $oUserBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, ["isEmpty"]);
-        $oUserBasket->expects($this->once())->method('isEmpty')->will($this->returnValue(true));
+        $oUserBasket->expects($this->once())->method('isEmpty')->willReturn(true);
         $oUserBasket->setId("testwishlist");
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getBasket"]);
-        $oUser->expects($this->any())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oUserBasket));
+        $oUser->method('getBasket')->with("wishlist")->willReturn($oUserBasket);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oView->method('getUser')->willReturn($oUser);
 
         $oWishList = $oView->getWishList();
 
@@ -112,7 +112,7 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetWishProductListNoWishList()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getWishList"]);
-        $oView->expects($this->any())->method('getWishList')->will($this->returnValue(false));
+        $oView->method('getWishList')->willReturn(false);
         $this->assertFalse($oView->getWishProductList());
     }
 
@@ -122,11 +122,11 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetWishProductList()
     {
         $oWishList = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, ["getArticles"]);
-        $oWishList->expects($this->any())->method('getArticles')->will($this->returnValue("testArticles"));
+        $oWishList->method('getArticles')->willReturn("testArticles");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getWishList"]);
-        $oView->expects($this->any())->method('getWishList')->will($this->returnValue($oWishList));
-        $this->assertEquals("testArticles", $oView->getWishProductList());
+        $oView->method('getWishList')->willReturn($oWishList);
+        $this->assertSame("testArticles", $oView->getWishProductList());
     }
 
     /**
@@ -139,13 +139,13 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
 
         // Mock to get Id
         $oSimilarProd = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getId"]);
-        $oSimilarProd->expects($this->once())->method("getId")->will($this->returnValue($sArrayKey));
+        $oSimilarProd->expects($this->once())->method("getId")->willReturn($sArrayKey);
 
         $aWishProdList = [$oSimilarProd];
 
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getWishProductList"]);
-        $oSearch->expects($this->once())->method("getWishProductList")->will($this->returnValue($aWishProdList));
-        $this->assertEquals($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getWishProductList()");
+        $oSearch->expects($this->once())->method("getWishProductList")->willReturn($aWishProdList);
+        $this->assertSame($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getWishProductList()");
     }
 
     /**
@@ -160,11 +160,11 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         $oView = oxNew('Account_Wishlist');
-        $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
+        $this->assertSame("addErrorToDisplay", $oView->sendWishList());
         $this->assertEquals((object) $aParams, $oView->getEnteredData());
     }
 
@@ -182,21 +182,21 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getId"]);
-        $oUser->expects($this->once())->method('getId')->will($this->returnValue("testId"));
+        $oUser->expects($this->once())->method('getId')->willReturn("testId");
         $oUser->oxuser__oxusername = new oxField("testName");
         $oUser->oxuser__oxfname = new oxField("testFName");
         $oUser->oxuser__oxlname = new oxField("testLName");
 
         /** @var Account_Wishlist|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oView->method('getUser')->willReturn($oUser);
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
+        $this->assertSame("addErrorToDisplay", $oView->sendWishList());
         $this->assertEquals($oObj, $oView->getEnteredData());
         $this->assertFalse($oView->isWishListEmailSent());
     }
@@ -214,16 +214,16 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getBasket"]);
-        $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
+        $oUser->expects($this->once())->method('getBasket')->with("wishlist")->willReturn($oBasket);
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Wishlist|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, ["getUser"]);
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oView->expects($this->once())->method('getUser')->willReturn($oUser);
         $oView->togglePublic();
     }
 
@@ -238,8 +238,8 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Account_Wishlist');
         $oView->searchForWishList();
 
-        $this->assertTrue($oView->getWishListUsers() instanceof UserList);
-        $this->assertEquals("searchParam", $oView->getWishListSearchParam());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\UserList::class, $oView->getWishListUsers());
+        $this->assertSame("searchParam", $oView->getWishListSearchParam());
     }
 
     /**
@@ -249,6 +249,6 @@ class AccountWishlistTest extends \PHPUnit\Framework\TestCase
     {
         $oAccWishList = oxNew('Account_Wishlist');
 
-        $this->assertEquals(2, count($oAccWishList->getBreadCrumb()));
+        $this->assertCount(2, $oAccWishList->getBreadCrumb());
     }
 }

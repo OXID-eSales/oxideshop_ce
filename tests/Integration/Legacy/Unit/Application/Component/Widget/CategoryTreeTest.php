@@ -21,14 +21,14 @@ class CategoryTreeTest extends \PHPUnit\Framework\TestCase
     {
         $categoryTree = oxNew(\OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::class);
         $categoryTree->setViewParameters(["deepLevel" => 2]);
-        $this->assertEquals(2, $categoryTree->getDeepLevel());
+        $this->assertSame(2, $categoryTree->getDeepLevel());
     }
 
     public function testChecksIfContentCategoryNotReturned()
     {
         $categoryTree = oxNew(\OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::class);
 
-        $this->assertSame(false, $categoryTree->getContentCategory());
+        $this->assertFalse($categoryTree->getContentCategory());
     }
 
     public function testChecksIfContentCategoryReturned()

@@ -26,6 +26,6 @@ class SysteminfoTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('systeminfo');
-        $this->assertEquals("Access denied !", $oView->render());
+        $this->assertSame("Access denied !", $oView->render());
     }
 }

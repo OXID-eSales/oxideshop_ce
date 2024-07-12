@@ -57,7 +57,7 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getDeliveryViewTable() . " where 1", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -69,7 +69,7 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -81,7 +81,7 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -95,7 +95,7 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -104,12 +104,12 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemoveFromSet()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testDeliverysetMain1', '_testDeliverysetMain2']));
+        $oView->method('getActionIds')->willReturn(['_testDeliverysetMain1', '_testDeliverysetMain2']);
 
         $sSql = "select count(oxid) from oxdel2delset where oxid in ('_testDeliverysetMain1', '_testDeliverysetMain2')";
-        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(2, oxDb::getDb()->getOne($sSql));
         $oView->removeFromSet();
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -124,9 +124,9 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sSql = "select count(oxdel2delset.oxid) from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sOxid . "'";
 
         $oView = oxNew('deliveryset_main_ajax');
-        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(2, oxDb::getDb()->getOne($sSql));
         $oView->removeFromSet();
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -137,14 +137,14 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testActionAddMain';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = sprintf('select count(oxid) from oxdel2delset where oxdelsetid=\'%s\'', $sSynchoxid);
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $sSql = sprintf("select count(oxid) from oxdel2delset where oxdelsetid='%s'", $sSynchoxid);
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testActionAdd1', '_testActionAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testActionAdd1', '_testActionAdd2']);
 
         $oView->addToSet();
-        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(2, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -159,11 +159,11 @@ class DeliverysetMainAjaxTest extends \PHPUnit\Framework\TestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(" . $this->getDeliveryViewTable() . ".oxid) from " . $this->getDeliveryViewTable() . " where 1 and " . $this->getDeliveryViewTable() . ".oxid not in ( select " . $this->getDeliveryViewTable() . ".oxid from " . $this->getDeliveryViewTable() . " left join oxdel2delset on oxdel2delset.oxdelid=" . $this->getDeliveryViewTable() . ".oxid where oxdel2delset.oxdelsetid = '" . $sSynchoxid . "' )");
 
-        $sSql = sprintf('select count(oxid) from oxdel2delset where oxdelsetid=\'%s\'', $sSynchoxid);
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $sSql = sprintf("select count(oxid) from oxdel2delset where oxdelsetid='%s'", $sSynchoxid);
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testActionAdd1', '_testActionAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testActionAdd1', '_testActionAdd2']);
 
         $oView->addToSet();
         $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));

@@ -36,7 +36,7 @@ class ClearcookiesTest extends \PHPUnit\Framework\TestCase
 
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
-        $this->assertEquals('page/info/clearcookies', $oView->render());
+        $this->assertSame('page/info/clearcookies', $oView->render());
     }
 
     /**
@@ -45,6 +45,6 @@ class ClearcookiesTest extends \PHPUnit\Framework\TestCase
     public function testGetBreadCrumb()
     {
         $oView = oxNew('ClearCookies');
-        $this->assertEquals(1, count($oView->getBreadCrumb()));
+        $this->assertCount(1, $oView->getBreadCrumb());
     }
 }

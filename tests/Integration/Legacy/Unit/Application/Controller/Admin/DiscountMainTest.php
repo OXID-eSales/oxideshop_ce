@@ -38,10 +38,10 @@ class DiscountMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Discount_Main');
-        $this->assertEquals('discount_main', $oView->render());
+        $this->assertSame('discount_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof discount);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Discount::class, $aViewData['edit']);
     }
 
     /**
@@ -53,10 +53,10 @@ class DiscountMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Discount_Main');
-        $this->assertEquals('discount_main', $oView->render());
+        $this->assertSame('discount_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -73,7 +73,7 @@ class DiscountMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Discount_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Discount_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Discount_Main::save()");
 
             return;
         }
@@ -95,7 +95,7 @@ class DiscountMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Discount_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Discount_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Discount_Main::save()");
 
             return;
         }
@@ -130,14 +130,14 @@ class DiscountMainTest extends \PHPUnit\Framework\TestCase
 
         $oView->setNonPublicVar("_iEditLang", 0);
         $this->setRequestParameter("oxid", '-1');
-        $this->assertEquals(" -- ", $oView->getItemDiscountProductTitle());
+        $this->assertSame(" -- ", $oView->getItemDiscountProductTitle());
 
         $oView->setNonPublicVar("_iEditLang", 0);
         $this->setRequestParameter("oxid", "_testDiscountId");
-        $this->assertEquals(sprintf('%s %s', $sId, $sTitleDe), $oView->getItemDiscountProductTitle());
+        $this->assertSame(sprintf('%s %s', $sId, $sTitleDe), $oView->getItemDiscountProductTitle());
 
         $oView->setNonPublicVar("_iEditLang", 1);
         $this->setRequestParameter("oxid", "_testDiscountId");
-        $this->assertEquals(sprintf('%s %s', $sId, $sTitleEn), $oView->getItemDiscountProductTitle());
+        $this->assertSame(sprintf('%s %s', $sId, $sTitleEn), $oView->getItemDiscountProductTitle());
     }
 }

@@ -26,7 +26,7 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      *
      * @return null;
      */
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -55,7 +55,7 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
     public function testSetGetId()
     {
         $this->_oSubj->setId("testId");
-        $this->assertEquals("testId", $this->_oSubj->getId());
+        $this->assertSame("testId", $this->_oSubj->getId());
     }
 
     /**
@@ -64,7 +64,7 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
     public function testSetGetParentId()
     {
         $this->_oSubj->setParentId("testParentId");
-        $this->assertEquals("testParentId", $this->_oSubj->getParentId());
+        $this->assertSame("testParentId", $this->_oSubj->getParentId());
     }
 
     /**
@@ -149,7 +149,7 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
         $oGreen = $this->_oSubj->getMdSubvariantByName("Green");
         $oVariant = $oGreen->getMdSubvariantByName("XXL");
         $this->assertNotNull($oVariant);
-        $this->assertEquals(32, strlen((string) $oVariant->getId()));
+        $this->assertSame(32, strlen((string) $oVariant->getId()));
         $this->assertEquals($oGreen->getId(), $oGreen->getMdSubvariantByName("XXL")->getParentId());
     }
 
@@ -158,10 +158,10 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetArticleId()
     {
-        $this->assertEquals("id01", $this->_oSubj->getArticleId());
-        $this->assertEquals("id11", $this->_oSubj->getMdSubvariantByName("Green")->getArticleId());
-        $this->assertEquals("id11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getArticleId());
-        $this->assertEquals("id11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getArticleId());
+        $this->assertSame("id01", $this->_oSubj->getArticleId());
+        $this->assertSame("id11", $this->_oSubj->getMdSubvariantByName("Green")->getArticleId());
+        $this->assertSame("id11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getArticleId());
+        $this->assertSame("id11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getArticleId());
     }
 
     /**
@@ -186,10 +186,10 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetLink()
     {
-        $this->assertEquals("ld01", $this->_oSubj->getLink());
-        $this->assertEquals("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getLink());
-        $this->assertEquals("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getLink());
-        $this->assertEquals("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getLink());
+        $this->assertSame("ld01", $this->_oSubj->getLink());
+        $this->assertSame("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getLink());
+        $this->assertSame("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getLink());
+        $this->assertSame("ld11", $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getLink());
     }
 
     /**
@@ -198,7 +198,7 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
     public function testSetGetName()
     {
         $this->_oSubj->setName("testName");
-        $this->assertEquals("testName", $this->_oSubj->getName());
+        $this->assertSame("testName", $this->_oSubj->getName());
     }
 
     /**
@@ -210,8 +210,8 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->_oSubj->getMdSubvariantByName("Green")->getDPrice());
         $this->assertNull($this->_oSubj->getMdSubvariantByName("Red")->getDPrice());
         $this->assertNull($this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getDPrice());
-        $this->assertEquals(4, $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getDPrice());
-        $this->assertEquals(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getDPrice());
+        $this->assertSame(4, $this->_oSubj->getMdSubvariantByName("Green")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getDPrice());
+        $this->assertSame(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("S")->getMdSubvariantByName("Silk")->getDPrice());
     }
 
     /**
@@ -234,11 +234,11 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetMinDPrice()
     {
-        $this->assertEquals(1, $this->_oSubj->getMinDPrice());
-        $this->assertEquals(1, $this->_oSubj->getMdSubvariantByName("Red")->getMinDPrice());
-        $this->assertEquals(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMinDPrice());
-        $this->assertEquals(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getMinDPrice());
-        $this->assertEquals(2, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getMinDPrice());
+        $this->assertSame(1, $this->_oSubj->getMinDPrice());
+        $this->assertSame(1, $this->_oSubj->getMdSubvariantByName("Red")->getMinDPrice());
+        $this->assertSame(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMinDPrice());
+        $this->assertSame(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getMinDPrice());
+        $this->assertSame(2, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getMinDPrice());
     }
 
     /**
@@ -246,11 +246,11 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetMaxDepth()
     {
-        $this->assertEquals(3, $this->_oSubj->getMaxDepth());
-        $this->assertEquals(2, $this->_oSubj->getMdSubvariantByName("Red")->getMaxDepth());
-        $this->assertEquals(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMaxDepth());
-        $this->assertEquals(0, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getMaxDepth());
-        $this->assertEquals(0, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getMaxDepth());
+        $this->assertSame(3, $this->_oSubj->getMaxDepth());
+        $this->assertSame(2, $this->_oSubj->getMdSubvariantByName("Red")->getMaxDepth());
+        $this->assertSame(1, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMaxDepth());
+        $this->assertSame(0, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getMaxDepth());
+        $this->assertSame(0, $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getMaxDepth());
     }
 
     /**
@@ -258,11 +258,11 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetFPrice()
     {
-        $this->assertEquals('ab 1,00 €', $this->_oSubj->getFPrice());
-        $this->assertEquals('ab 1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
-        $this->assertEquals('ab 1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
-        $this->assertEquals('1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getFPrice());
-        $this->assertEquals('2,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getFPrice());
+        $this->assertSame('ab 1,00 €', $this->_oSubj->getFPrice());
+        $this->assertSame('ab 1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
+        $this->assertSame('ab 1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
+        $this->assertSame('1,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getFPrice());
+        $this->assertSame('2,00 €', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getFPrice());
     }
 
     /**
@@ -280,6 +280,6 @@ class MdvariantTest extends \PHPUnit\Framework\TestCase
         $sUrl = '';
         $oSubj->addNames($sArtId, $aNames, $dPrice, $sUrl);
         $iPrice = $oSubj->getFPrice();
-        $this->assertTrue(empty($iPrice));
+        $this->assertEmpty($iPrice);
     }
 }

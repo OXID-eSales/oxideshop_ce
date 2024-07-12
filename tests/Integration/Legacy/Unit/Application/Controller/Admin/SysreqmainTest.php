@@ -21,7 +21,7 @@ class SysreqmainTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('sysreq_main');
-        $this->assertEquals('sysreq_main', $oView->render());
+        $this->assertSame('sysreq_main', $oView->render());
     }
 
     /**
@@ -31,9 +31,9 @@ class SysreqmainTest extends \PHPUnit\Framework\TestCase
     {
         // defining parameters
         $oView = oxNew('sysreq_main');
-        $this->assertEquals('pass', $oView->getModuleClass(2));
-        $this->assertEquals('pmin', $oView->getModuleClass(1));
-        $this->assertEquals('null', $oView->getModuleClass(-1));
-        $this->assertEquals('fail', $oView->getModuleClass(0));
+        $this->assertSame('pass', $oView->getModuleClass(2));
+        $this->assertSame('pmin', $oView->getModuleClass(1));
+        $this->assertSame('null', $oView->getModuleClass(-1));
+        $this->assertSame('fail', $oView->getModuleClass(0));
     }
 }

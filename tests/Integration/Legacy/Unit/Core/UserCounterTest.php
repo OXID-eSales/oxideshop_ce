@@ -20,7 +20,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(4, $oCounter->getAdminCount());
+        $this->assertSame(4, $oCounter->getAdminCount());
     }
 
     public function testCountingAdminsWhenInActiveAdminsExist()
@@ -34,7 +34,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(4, $oCounter->getAdminCount());
+        $this->assertSame(4, $oCounter->getAdminCount());
     }
 
     public function testCountingAdminsWhenNoAdminsExist()
@@ -45,7 +45,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser2', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(0, $oCounter->getAdminCount());
+        $this->assertSame(0, $oCounter->getAdminCount());
     }
 
     public function testCountingActiveAdmins()
@@ -59,7 +59,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(4, $oCounter->getActiveAdminCount());
+        $this->assertSame(4, $oCounter->getActiveAdminCount());
     }
 
     public function testCountingActiveAdminsWhenInActiveAdminsExist()
@@ -73,7 +73,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(2, $oCounter->getActiveAdminCount());
+        $this->assertSame(2, $oCounter->getActiveAdminCount());
     }
 
     public function testCountingActiveAdminsWhenNoAdminsExist()
@@ -84,7 +84,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
         $this->createUserWithRights('_tesUser2', true, 'user');
 
         $oCounter = oxNew('oxUserCounter');
-        $this->assertEquals(0, $oCounter->getActiveAdminCount());
+        $this->assertSame(0, $oCounter->getActiveAdminCount());
     }
 
     /**
@@ -94,7 +94,7 @@ class UserCounterTest extends \PHPUnit\Framework\TestCase
      */
     protected function createUserWithRights($sId, $sActive, $sRights)
     {
-        $sQ = sprintf('insert into `oxuser` (oxid, oxusername, oxactive, oxrights) values (\'%s\', \'%s\', \'%s\', \'%s\')', $sId, $sId, $sActive, $sRights);
+        $sQ = sprintf("insert into `oxuser` (oxid, oxusername, oxactive, oxrights) values ('%s', '%s', '%s', '%s')", $sId, $sId, $sActive, $sRights);
         $this->getDb()->execute($sQ);
     }
 }

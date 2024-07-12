@@ -30,8 +30,8 @@ class AdminLinksMainTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals('adminlinks_main', $sTplName);
+        $this->assertSame('-1', $aViewData["oxid"]);
+        $this->assertSame('adminlinks_main', $sTplName);
     }
 
     /**
@@ -48,7 +48,7 @@ class AdminLinksMainTest extends \PHPUnit\Framework\TestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
-        $this->assertEquals("adminlinks_main", $sTplName);
+        $this->assertSame("adminlinks_main", $sTplName);
     }
 
     /**
@@ -65,7 +65,7 @@ class AdminLinksMainTest extends \PHPUnit\Framework\TestCase
         $aViewData = $oView->getViewData();
 
         $this->assertNotNull($aViewData["updatelist"]);
-        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertSame(1, $aViewData["updatelist"]);
     }
 
     /**
@@ -82,6 +82,6 @@ class AdminLinksMainTest extends \PHPUnit\Framework\TestCase
         $aViewData = $oView->getViewData();
 
         $this->assertNotNull($aViewData["updatelist"]);
-        $this->assertEquals(1, $aViewData["updatelist"]);
+        $this->assertSame(1, $aViewData["updatelist"]);
     }
 }

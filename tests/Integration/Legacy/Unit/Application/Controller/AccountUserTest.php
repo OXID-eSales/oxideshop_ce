@@ -21,8 +21,8 @@ class AccountUserTest extends \PHPUnit\Framework\TestCase
     public function testRenderNoUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login', $oView->render());
+        $oView->method('getUser')->willReturn(false);
+        $this->assertSame('page/account/login', $oView->render());
     }
 
     /**
@@ -34,8 +34,8 @@ class AccountUserTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/user', $oView->render());
+        $oView->method('getUser')->willReturn($oUser);
+        $this->assertSame('page/account/user', $oView->render());
     }
 
     /**
@@ -45,7 +45,7 @@ class AccountUserTest extends \PHPUnit\Framework\TestCase
     {
         $oAccUser = oxNew('Account_User');
 
-        $this->assertEquals(2, count($oAccUser->getBreadCrumb()));
+        $this->assertCount(2, $oAccUser->getBreadCrumb());
     }
 
     /**

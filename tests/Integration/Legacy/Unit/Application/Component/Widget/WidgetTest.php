@@ -22,8 +22,8 @@ class WidgetTest extends \PHPUnit\Framework\TestCase
         $languageList->init();
 
         $components = $languageList->getComponents();
-        $this->assertEquals(1, count($components));
-        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $components["oxcmp_lang"]->getThisAction());
+        $this->assertCount(1, $components);
+        $this->assertSame('oxidesales\eshop\application\component\languagecomponent', $components["oxcmp_lang"]->getThisAction());
     }
 
     /**
@@ -40,7 +40,7 @@ class WidgetTest extends \PHPUnit\Framework\TestCase
         $languageListWidget->init();
 
         $components = $languageListWidget->getComponents();
-        $this->assertEquals(1, count($components));
-        $this->assertTrue(isset($components["oxcmp_lang"]));
+        $this->assertCount(1, $components);
+        $this->assertArrayHasKey("oxcmp_lang", $components);
     }
 }

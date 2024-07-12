@@ -37,7 +37,7 @@ class ApplicationServerExporterTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for the test method testExport.
      */
-    public function dataProviderForExportApplicationServerList()
+    public function dataProviderForExportApplicationServerList(): \Iterator
     {
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId('serverNameHash1');
@@ -49,13 +49,10 @@ class ApplicationServerExporterTest extends \PHPUnit\Framework\TestCase
         $activeServers2 = [$server, $server];
 
         $expectedServerCollection = ['id'                => 'serverNameHash1', 'ip'                => '127.0.0.1', 'lastFrontendUsage' => 'frontendUsageTimestamp', 'lastAdminUsage'    => ''];
-
-        return [
-            [false, 0, null],
-            [[], 0, null],
-            [$activeServers, 1, $expectedServerCollection],
-            [$activeServers2, 2, $expectedServerCollection],
-        ];
+        yield [false, 0, null];
+        yield [[], 0, null];
+        yield [$activeServers, 1, $expectedServerCollection];
+        yield [$activeServers2, 2, $expectedServerCollection];
     }
 
     /**
@@ -66,7 +63,7 @@ class ApplicationServerExporterTest extends \PHPUnit\Framework\TestCase
     private function getApplicationServerServiceMock($appServerList)
     {
         $appServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface::class)->getMock();
-        $appServer->expects($this->any())->method('loadActiveAppServerList')->will($this->returnValue($appServerList));
+        $appServer->method('loadActiveAppServerList')->willReturn($appServerList);
 
         return $appServer;
     }

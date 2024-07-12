@@ -60,8 +60,8 @@ class CmpLangTest extends \PHPUnit\Framework\TestCase
         $sExpLink0 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket";
         $sExpLink1 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;lang=1";
 
-        $this->assertEquals($sExpLink0, $oLang[0]->link);
-        $this->assertEquals($sExpLink1, $oLang[1]->link);
+        $this->assertSame($sExpLink0, $oLang[0]->link);
+        $this->assertSame($sExpLink1, $oLang[1]->link);
     }
 
     public function testInitSetLink()
@@ -82,7 +82,7 @@ class CmpLangTest extends \PHPUnit\Framework\TestCase
         $sExpLink0 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket";
         $sExpLink1 = $this->getConfig()->getShopCurrentURL(0) . "cl=basket&amp;fnc=changebasket&amp;lang=1";
 
-        $this->assertEquals($sExpLink0, $oLang[0]->link);
-        $this->assertEquals($sExpLink1, $oLang[1]->link);
+        $this->assertSame($sExpLink0, $oLang[0]->link);
+        $this->assertSame($sExpLink1, $oLang[1]->link);
     }
 }

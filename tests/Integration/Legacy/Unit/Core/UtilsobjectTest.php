@@ -44,7 +44,7 @@ class oxModuleUtilsObject extends \oxUtilsObject
 
 class UtilsobjectTest extends \PHPUnit\Framework\TestCase
 {
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
@@ -62,7 +62,7 @@ class UtilsobjectTest extends \PHPUnit\Framework\TestCase
     {
         $utilsObject = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         $expectedClass = \OxidEsales\Eshop\Core\UtilsObject::class;
-        $this->assertEquals($expectedClass, $utilsObject::class);
+        $this->assertSame($expectedClass, $utilsObject::class);
     }
 
     /**
@@ -70,20 +70,20 @@ class UtilsobjectTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetObject()
     {
-        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class) instanceof _oxutils_test);
-        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1) instanceof _oxutils_test);
-        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2) instanceof _oxutils_test);
-        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3) instanceof _oxutils_test);
-        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3, 4) instanceof _oxutils_test);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class));
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1));
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2));
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3));
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3, 4));
     }
 
     public function testOxNewSettingParameters()
     {
         $oArticle = oxNew('oxarticle', ['aaa' => 'bbb']);
 
-        $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
-        $this->assertTrue(isset($oArticle->aaa));
-        $this->assertEquals('bbb', $oArticle->aaa);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $oArticle);
+        $this->assertTrue(property_exists($oArticle, 'aaa') && $oArticle->aaa !== null);
+        $this->assertSame('bbb', $oArticle->aaa);
     }
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
@@ -101,7 +101,7 @@ class UtilsobjectTest extends \PHPUnit\Framework\TestCase
     {
         $id1 = Registry::getUtilsObject()->generateUid();
         $id2 = Registry::getUtilsObject()->generateUid();
-        $this->assertNotEquals($id1, $id2);
+        $this->assertNotSame($id1, $id2);
     }
 
     public function testResetInstanceCacheSingle()
@@ -114,8 +114,8 @@ class UtilsobjectTest extends \PHPUnit\Framework\TestCase
 
         $aGotInstanceCache = $oTestInstance->getClassNameCache();
 
-        $this->assertEquals(1, count($aGotInstanceCache));
-        $this->assertTrue($aGotInstanceCache["oxattribute"] instanceof \OxidEsales\EshopCommunity\Application\Model\Attribute);
+        $this->assertCount(1, $aGotInstanceCache);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Attribute::class, $aGotInstanceCache["oxattribute"]);
     }
 
     public function testResetInstanceCacheAll()
@@ -128,6 +128,6 @@ class UtilsobjectTest extends \PHPUnit\Framework\TestCase
 
         $aGotInstanceCache = $oTestInstance->getClassNameCache();
 
-        $this->assertEquals(0, count($aGotInstanceCache));
+        $this->assertCount(0, $aGotInstanceCache);
     }
 }

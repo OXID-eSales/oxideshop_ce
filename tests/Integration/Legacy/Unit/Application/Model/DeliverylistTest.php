@@ -246,7 +246,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $iListCOunt = count($oDelList);
 
         // list must contain at least one item
-        $this->assertTrue($iListCOunt > 0);
+        $this->assertGreaterThan(0, $iListCOunt);
 
         $oDelivery = current($oDelList);
 
@@ -284,8 +284,8 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $iNewListCount = count($oDelList);
 
         // list must contain at least one item
-        $this->assertTrue($iNewListCount > 0);
-        $this->assertTrue($iNewListCount === $iListCOunt);
+        $this->assertGreaterThan(0, $iNewListCount);
+        $this->assertSame($iListCOunt, $iNewListCount);
 
         $blFound = false;
         foreach ($oDelList as $oDel) {
@@ -342,7 +342,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oList->__construct();
 
         // checking object type
-        $this->assertTrue($oList->getBaseObject() instanceof delivery);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Delivery::class, $oList->getBaseObject());
     }
 
     /**
@@ -352,14 +352,14 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
     {
         $oList = $this->getProxyClass('oxDeliveryList');
         $oList->setHomeCountry(['something']);
-        $this->assertEquals('something', $oList->getNonPublicVar('_sHomeCountry'));
+        $this->assertSame('something', $oList->getNonPublicVar('_sHomeCountry'));
     }
 
     public function testSetHomeCountryIfNotArray()
     {
         $oList = $this->getProxyClass('oxDeliveryList');
         $oList->setHomeCountry('something');
-        $this->assertEquals('something', $oList->getNonPublicVar('_sHomeCountry'));
+        $this->assertSame('something', $oList->getNonPublicVar('_sHomeCountry'));
     }
 
     /**
@@ -372,8 +372,8 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oList->setHomeCountry(['_testHomeCountryId']);
         $oList->getActiveDeliveryList(null, null, '_testDeliverySetId');
 
-        $this->assertEquals('_testHomeCountryId_testDeliverySetId', $oList->getNonPublicVar('_sUserId'));
-        $this->assertEquals(
+        $this->assertSame('_testHomeCountryId_testDeliverySetId', $oList->getNonPublicVar('_sUserId'));
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2', '_testDeliveryId1'],
             array_keys($oList->aList)
         );
@@ -394,8 +394,8 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oList = $this->getProxyClass('oxDeliveryList');
         $oList->getActiveDeliveryList($this->_oUser, null, 'oxidstandard');
         // testing with demo deliveries
-        $this->assertEquals($this->_oUser->getId() . 'a7c40f631fc920687.20179984oxidstandard', $oList->getNonPublicVar('_sUserId'));
-        $this->assertEquals(
+        $this->assertSame($this->_oUser->getId() . 'a7c40f631fc920687.20179984oxidstandard', $oList->getNonPublicVar('_sUserId'));
+        $this->assertSame(
             ['1b842e734b62a4775.45738618', '1b842e73470578914.54719298'],
             array_keys($oList->aList)
         );
@@ -409,12 +409,12 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxUser|MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getId', 'getActiveCountry']);
-        $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
-        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
+        $oUser->expects($this->once())->method('getId')->willReturn('xxx');
+        $oUser->expects($this->once())->method('getActiveCountry')->willReturn('yyy');
 
         /** @var oxDeliveryList|MockObject $oList */
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, ['getUser', 'getFilterSelect', 'selectString', 'rewind']);
-        $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oList->expects($this->once())->method('getUser')->willReturn($oUser);
         $oList->expects($this->once())->method('getFilterSelect');
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
@@ -430,7 +430,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxDeliveryList|MockObject $oList */
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, ['getUser', 'selectString', 'rewind']);
-        $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
+        $oList->expects($this->once())->method('getUser')->willReturn(null);
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
 
@@ -451,12 +451,12 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oDList->getActiveDeliveryList($this->_oUser, 'a7c40f63264309e05.58576680', '_testDeliverySetId');
 
         //testing if getList calls _getFilterSelect() with correct params
-        $this->assertEquals('_testUserId', $oDList->sFilterUser->getId());
-        $this->assertEquals('a7c40f63264309e05.58576680', $oDList->sFilterCountryId); // luxemburg
-        $this->assertEquals('_testDeliverySetId', $oDList->sFilterDeliverySet);
+        $this->assertSame('_testUserId', $oDList->sFilterUser->getId());
+        $this->assertSame('a7c40f63264309e05.58576680', $oDList->sFilterCountryId); // luxemburg
+        $this->assertSame('_testDeliverySetId', $oDList->sFilterDeliverySet);
 
-        $this->assertEquals(3, $oDList->count());
-        $this->assertEquals(
+        $this->assertSame(3, $oDList->count());
+        $this->assertSame(
             ['_testDeliveryId1', '_testDeliveryId2', '_testDeliveryId3'],
             array_keys($oDList->aList)
         );
@@ -473,8 +473,8 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oDList = new oxdeliverylistTest_forGetList();
         $oDList->getActiveDeliveryList($this->_oUser, null, '_testDeliverySetId');
 
-        $this->assertEquals(3, $oDList->count());
-        $this->assertEquals(
+        $this->assertSame(3, $oDList->count());
+        $this->assertSame(
             ['_testDeliveryId1', '_testDeliveryId2', '_testDeliveryId3'],
             array_keys($oDList->aList)
         );
@@ -484,8 +484,8 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
 
         // testing if cache works
         $oDList->getActiveDeliveryList($this->_oUser, null, '_testDeliverySetId');
-        $this->assertEquals(3, $oDList->count());
-        $this->assertEquals(
+        $this->assertSame(3, $oDList->count());
+        $this->assertSame(
             ['_testDeliveryId1', '_testDeliveryId2', '_testDeliveryId3'],
             array_keys($oDList->aList)
         );
@@ -524,7 +524,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $sQ = strtolower((string) preg_replace($aSearch, " ", $sQ));
         $sTestSQ = strtolower(preg_replace($aSearch, " ", $sTestSQ));
 
-        $this->assertEquals($sQ, $sTestSQ);
+        $this->assertSame($sQ, $sTestSQ);
     }
 
     /**
@@ -561,7 +561,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $sQ = strtolower((string) preg_replace($aSearch, $aReplace, $sQ));
         $sTestSQ = strtolower(preg_replace($aSearch, $aReplace, $sTestSQ));
 
-        $this->assertEquals($sQ, $sTestSQ);
+        $this->assertSame($sQ, $sTestSQ);
     }
 
     /**
@@ -599,7 +599,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $sQ = strtolower((string) preg_replace($aSearch, $aReplace, $sQ));
         $sTestSQ = strtolower(preg_replace($aSearch, $aReplace, $sTestSQ));
 
-        $this->assertEquals($sQ, $sTestSQ);
+        $this->assertSame($sQ, $sTestSQ);
     }
 
     /**
@@ -639,7 +639,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $sQ = strtolower((string) preg_replace($aSearch, $aReplace, $sQ));
         $sTestSQ = strtolower(preg_replace($aSearch, $aReplace, $sTestSQ));
 
-        $this->assertEquals($sQ, $sTestSQ);
+        $this->assertSame($sQ, $sTestSQ);
     }
 
     /**
@@ -660,15 +660,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(3, count($aList));
-        $this->assertEquals(
+        $this->assertCount(3, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2', '_testDeliveryId1'],
             array_keys($aList)
         );
@@ -695,15 +695,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals(
+        $this->assertCount(2, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2'],
             array_keys($aList)
         );
@@ -724,17 +724,17 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(true);
 
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(4, count($aList));
-        $this->assertTrue(in_array('_testDeliverySetId', array_keys($aList)));
+        $this->assertCount(4, $aList);
+        $this->assertContains('_testDeliverySetId', array_keys($aList));
     }
 
     public function testGetDeliveryListNoDelFound()
@@ -743,7 +743,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList(oxNew('oxBasket'), oxNew('oxuser'), 'somecountry', null);
 
-        $this->assertEquals(0, count($aList));
+        $this->assertCount(0, $aList);
     }
 
     /**
@@ -776,15 +776,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(3, count($aList));
-        $this->assertEquals(
+        $this->assertCount(3, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2', '_testDeliveryId1'],
             array_keys($aList)
         );
@@ -827,15 +827,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(3, count($aList));
-        $this->assertEquals(
+        $this->assertCount(3, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2', '_testDeliveryId1'],
             array_keys($aList)
         );
@@ -871,15 +871,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals(
+        $this->assertCount(2, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2'],
             array_keys($aList)
         );
@@ -915,17 +915,17 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(false);
 
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(3, count($aList));
-        $this->assertEquals(
+        $this->assertCount(3, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2', '_testDeliveryId1'],
             array_keys($aList)
         );
@@ -976,17 +976,17 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $_oBasketItem2;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setCollectFittingDeliveriesSets(false);
 
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals(
+        $this->assertCount(2, $aList);
+        $this->assertSame(
             ['_testDeliveryId2', '_testDeliveryId1'],
             array_keys($aList)
         );
@@ -1025,15 +1025,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals(
+        $this->assertCount(2, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2'],
             array_keys($aList)
         );
@@ -1067,15 +1067,15 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $aBasketContents[] = $basketItem;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->any())
+        $oBasket
             ->method('getContents')
-            ->will($this->returnValue($aBasketContents));
+            ->willReturn($aBasketContents);
 
         $oDList = oxNew("oxDeliveryList");
         $aList = $oDList->getDeliveryList($oBasket, null, null, '_testDeliverySetId');
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals(
+        $this->assertCount(2, $aList);
+        $this->assertSame(
             ['_testDeliveryId3', '_testDeliveryId2'],
             array_keys($aList)
         );
@@ -1091,7 +1091,7 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
 
         $oDList = oxNew("oxDeliveryList");
         $oDList->setUser($oUser);
-        $this->assertEquals('testUserId', $oDList->getUser()->getId());
+        $this->assertSame('testUserId', $oDList->getUser()->getId());
     }
 
     /**
@@ -1144,12 +1144,12 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
         $oDList->getActiveDeliveryList($oUser, 'a7c40f631fc920687.20179984', 'b3b46b74d3894f9f5.62965460');
 
         //testing if getList calls _getFilterSelect() with correct params
-        $this->assertEquals('oxdefaultadmin', $oDList->sFilterUser->getId());
-        $this->assertEquals('a7c40f631fc920687.20179984', $oDList->sFilterCountryId); // luxemburg
-        $this->assertEquals('b3b46b74d3894f9f5.62965460', $oDList->sFilterDeliverySet);
+        $this->assertSame('oxdefaultadmin', $oDList->sFilterUser->getId());
+        $this->assertSame('a7c40f631fc920687.20179984', $oDList->sFilterCountryId); // luxemburg
+        $this->assertSame('b3b46b74d3894f9f5.62965460', $oDList->sFilterDeliverySet);
 
-        $this->assertEquals(3, $oDList->count());
-        $this->assertEquals(
+        $this->assertSame(3, $oDList->count());
+        $this->assertSame(
             ['_testDeliveryId1', '_testDeliveryId2', '_testDeliveryId3'],
             array_keys($oDList->aList)
         );
@@ -1162,6 +1162,6 @@ class DeliverylistTest extends \PHPUnit\Framework\TestCase
     {
         $oDList = oxNew("oxDeliveryList");
         $oDList->loadDeliveryListForProduct($this->_aTestProducts[0]);
-        $this->assertEquals(7, $oDList->count());
+        $this->assertSame(7, $oDList->count());
     }
 }

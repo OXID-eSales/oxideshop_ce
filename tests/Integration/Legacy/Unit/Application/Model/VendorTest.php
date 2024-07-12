@@ -95,7 +95,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
 
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
-        $this->assertEquals("sVendorPageUrl", $vendor->getBaseSeoLink(0, 1));
+        $this->assertSame("sVendorPageUrl", $vendor->getBaseSeoLink(0, 1));
     }
 
     public function testGetBaseSeoLink()
@@ -105,7 +105,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
 
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
-        $this->assertEquals("sVendorUrl", $vendor->getBaseSeoLink(0));
+        $this->assertSame("sVendorUrl", $vendor->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
@@ -117,7 +117,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $vendor->setId("testVendorId");
 
         $sTestUrl = Registry::getConfig()->getShopHomeUrl($iLang, false) . "cl=vendorlist&amp;cnid=v_" . $vendor->getId();
-        $this->assertEquals($sTestUrl, $vendor->getBaseStdLink($iLang));
+        $this->assertSame($sTestUrl, $vendor->getBaseStdLink($iLang));
     }
 
     public function testGetContentCats()
@@ -133,7 +133,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $vendor = $this->getProxyClass("oxvendor");
         $vendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $this->assertEquals('big_matsol_1_mico.png', basename((string) $vendor->getIconUrl()));
+        $this->assertSame('big_matsol_1_mico.png', basename((string) $vendor->getIconUrl()));
     }
 
     public function testAssignWithoutArticleCnt()
@@ -146,8 +146,8 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $expectedArticleCount = -1;
         $actualArticleCount = $vendor->getNrOfArticles();
 
-        $this->assertEquals($expectedArticleCount, $vendor->oxvendor__oxnrofarticles->value);
-        $this->assertEquals($expectedArticleCount, $actualArticleCount);
+        $this->assertSame($expectedArticleCount, $vendor->oxvendor__oxnrofarticles->value);
+        $this->assertSame($expectedArticleCount, $actualArticleCount);
     }
 
     public function testAssignWithArticleCnt()
@@ -166,7 +166,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
 
         /** @var Vendor|\PHPUnit\Framework\MockObject\MockObject $vendor */
         $vendor = $this->getMock(\OxidEsales\Eshop\Application\Model\Vendor::class, ['isAdmin']);
-        $vendor->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $vendor->method('isAdmin')->willReturn(false);
         $vendor->setShowArticleCnt(true);
         $vendor->load($this->testVendorId);
 
@@ -176,8 +176,8 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** Delete the article before the assertion */
         $article->delete();
 
-        $this->assertEquals($expectedArticleCount, $vendor->oxvendor__oxnrofarticles->value);
-        $this->assertEquals($expectedArticleCount, $actualArticleCount);
+        $this->assertSame($expectedArticleCount, $vendor->oxvendor__oxnrofarticles->value);
+        $this->assertSame($expectedArticleCount, $actualArticleCount);
     }
 
     public function testGetStdLink()
@@ -185,7 +185,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
         $vendor->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $vendor->getStdLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $vendor->getStdLink());
     }
 
     public function testGetLinkSeoDe()
@@ -203,7 +203,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $expectedUrl = $this->getConfig()->getShopUrl() . 'Nach-Lieferant/' . str_replace(' ', '-', $this->testVendorTitle_0) . '/';
         $actualUrl = $vendor->getLink();
 
-        $this->assertEquals($expectedUrl, $actualUrl);
+        $this->assertSame($expectedUrl, $actualUrl);
     }
 
     public function testGetLinkSeoEng()
@@ -221,7 +221,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink();
 
-        $this->assertEquals($expectedUrl, $actualUrl);
+        $this->assertSame($expectedUrl, $actualUrl);
     }
 
     public function testGetLink()
@@ -232,7 +232,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $vendor = oxNew('oxvendor');
         $vendor->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $vendor->getLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx', $vendor->getLink());
     }
 
     public function testGetStdLinkWithLangParam()
@@ -240,7 +240,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
         $vendor->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $vendor->getStdLink(1));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $vendor->getStdLink(1));
     }
 
     public function testGetLinkSeoDeWithLangParam()
@@ -257,7 +257,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $expectedUrl = $this->getConfig()->getShopUrl() . 'Nach-Lieferant/' . str_replace(' ', '-', $this->testVendorTitle_0) . '/';
         $actualUrl = $vendor->getLink(0);
 
-        $this->assertEquals($expectedUrl, $actualUrl);
+        $this->assertSame($expectedUrl, $actualUrl);
     }
 
     public function testGetLinkSeoEngWithLangParam()
@@ -276,7 +276,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink(1);
 
-        $this->assertEquals($expectedUrl, $actualUrl);
+        $this->assertSame($expectedUrl, $actualUrl);
     }
 
     public function testGetLinkWithLangParam()
@@ -287,7 +287,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $vendor = oxNew('oxvendor');
         $vendor->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $vendor->getLink(1));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;lang=1', $vendor->getLink(1));
     }
 
     public function testLoadRootVendor()
@@ -295,16 +295,16 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxVendor');
         $vendor->load('root');
-        $this->assertTrue($vendor instanceof Vendor);
-        $this->assertEquals('root', $vendor->getId());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Vendor::class, $vendor);
+        $this->assertSame('root', $vendor->getId());
 
         $vendor = oxNew('oxVendor');
         $vendor->loadInLang(0, 'root');
-        $this->assertEquals(0, $vendor->getLanguage());
+        $this->assertSame(0, $vendor->getLanguage());
 
         $vendor = oxNew('oxVendor');
         $vendor->loadInLang(1, 'root');
-        $this->assertEquals(1, $vendor->getLanguage());
+        $this->assertSame(1, $vendor->getLanguage());
 
         $vendor = oxNew('oxVendor');
         $vendor->load('root');
@@ -334,7 +334,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
 
         $article->delete();
 
-        $this->assertEquals($expectedArticleCount, $actualArticleCount);
+        $this->assertSame($expectedArticleCount, $actualArticleCount);
     }
 
     public function testGetNrOfArticlesDonotShow()
@@ -347,7 +347,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $actualArticleCount = $vendor->getNrOfArticles();
         $expectedArticleCount = -1;
 
-        $this->assertEquals($expectedArticleCount, $actualArticleCount);
+        $this->assertSame($expectedArticleCount, $actualArticleCount);
     }
 
     public function testSetGetIsVisible()
@@ -392,7 +392,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         $sUrl = $config->getOutUrl() . basename($config->getPicturePath(''));
         $sUrl .= '/generated/vendor/icon/100_100_75/big_matsol_1_mico.png';
 
-        $this->assertEquals($sUrl, $vendor->getIconUrl());
+        $this->assertSame($sUrl, $vendor->getIconUrl());
     }
 
     public function testDelete()
@@ -403,13 +403,13 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
         $this->assertEquals(false, $vendor->delete());
-        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
+        $this->assertCount(0, oxRegistry::get("oxSeoEncoderVendor")->onDelete);
         $this->assertEquals(false, $vendor->exists());
 
         $vendor->save();
         $this->assertEquals(true, $vendor->delete());
         $this->assertEquals(false, $vendor->exists());
-        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
+        $this->assertCount(1, oxRegistry::get("oxSeoEncoderVendor")->onDelete);
         $this->assertSame($vendor, oxRegistry::get("oxSeoEncoderVendor")->onDelete[0]);
     }
 
@@ -418,7 +418,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
         $vendor->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;foo=bar&amp;lang=1', $vendor->getStdLink(1, ['foo' => 'bar']));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=vendorlist&amp;cnid=v_xxx&amp;foo=bar&amp;lang=1', $vendor->getStdLink(1, ['foo' => 'bar']));
     }
 
     public function testGetThumbUrl()
@@ -439,7 +439,7 @@ class VendorTest extends \PHPUnit\Framework\TestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxvendor');
         $vendor->oxvendor__oxtitle = new oxField("testtitle", oxField::T_RAW);
-        $this->assertEquals($sTitle, $vendor->getTitle());
+        $this->assertSame($sTitle, $vendor->getTitle());
     }
 
     protected function insertTestVendor()

@@ -60,7 +60,7 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase
         $file = file_get_contents($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
         $file = str_replace("\r", "", $file);
         @unlink($myConfig->getConfigParam('sCompileDir') . "/vardump.txt");
-        $this->assertEquals($file, "'bobo'", $file);
+        $this->assertSame($file, "'bobo'", $file);
     }
 
     public function testIsSearchEngineUrl()
@@ -72,7 +72,7 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase
     {
         $article = oxNew('oxArticle');
 
-        $this->assertTrue($article instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $article);
     }
 
     public function testOxNewWithNonExistingClassName()
@@ -86,14 +86,14 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase
     public function testGetViewName()
     {
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $this->assertEquals('xxx', $tableViewNameGenerator->getViewName('xxx', 'xxx'));
+        $this->assertSame('xxx', $tableViewNameGenerator->getViewName('xxx', 'xxx'));
     }
 
     #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testError_404_handler()
     {
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['handlePageNotFoundError']);
-        $oUtils->method('handlePageNotFoundError')->with($this->equalTo('asd'));
+        $oUtils->method('handlePageNotFoundError')->with('asd');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
         error_404_handler('asd');

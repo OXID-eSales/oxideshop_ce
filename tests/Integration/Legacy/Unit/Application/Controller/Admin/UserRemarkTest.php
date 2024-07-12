@@ -29,13 +29,13 @@ class UserRemarkTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = oxNew('user_remark');
-        $this->assertEquals("user_remark", $oView->render());
+        $this->assertSame("user_remark", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof user);
-        $this->assertTrue($aViewData['allremark'] instanceof ListModel);
-        $this->assertEquals('text-testId', $aViewData['remarktext']);
-        $this->assertEquals('header-testId', $aViewData['remarkheader']);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\User::class, $aViewData['edit']);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Model\ListModel::class, $aViewData['allremark']);
+        $this->assertSame('text-testId', $aViewData['remarktext']);
+        $this->assertSame('header-testId', $aViewData['remarkheader']);
     }
 
     /**
@@ -54,7 +54,7 @@ class UserRemarkTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('user_remark');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in user_remark::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in user_remark::save()");
 
             return;
         }
@@ -73,7 +73,7 @@ class UserRemarkTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('user_remark');
             $oView->delete();
         } catch (Exception $exception) {
-            $this->assertEquals("delete", $exception->getMessage(), "Error in user_remark::delete()");
+            $this->assertSame("delete", $exception->getMessage(), "Error in user_remark::delete()");
 
             return;
         }

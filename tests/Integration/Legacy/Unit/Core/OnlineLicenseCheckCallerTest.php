@@ -29,7 +29,7 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
         $oRequest = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class, [], [], '', false);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute']);
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
+        $oCurl->method('execute')->willReturn($this->getValidResponseXml());
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->atLeastOnce())->method('objectToXml')->with($oRequest, 'olcRequest');
         /** @var oxSimpleXml $oSimpleXml */
@@ -44,14 +44,14 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
     public function testServiceCallWithCorrectRequest()
     {
         $oSimpleXml = $this->getMock('oxSimpleXml');
-        $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
+        $oSimpleXml->method('objectToXml')->willReturn('formed_xml');
         /** @var oxSimpleXml $oSimpleXml */
 
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
         $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute', 'setParameters']);
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
+        $oCurl->method('execute')->willReturn($this->getValidResponseXml());
         $oCurl->expects($this->once())->method('setParameters')->with(['xmlRequest' => 'formed_xml']);
         /** @var oxCurl $oCurl */
 
@@ -60,9 +60,15 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
 
-    public function providerUnexpectedExceptionIsThrownOnIncorrectResponse()
+    public function providerUnexpectedExceptionIsThrownOnIncorrectResponse(): \Iterator
     {
-        return [['OLC_ERROR_RESPONSE_NOT_VALID', ''], ['OLC_ERROR_RESPONSE_NOT_VALID', 'any random non xml text'], ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?>'], ['OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><test></test>'], ['OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><invalid_license><code>123</code></invalid_license>'], ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?><olc></olc>'], ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?><olc></olc>']];
+        yield ['OLC_ERROR_RESPONSE_NOT_VALID', ''];
+        yield ['OLC_ERROR_RESPONSE_NOT_VALID', 'any random non xml text'];
+        yield ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?>'];
+        yield ['OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><test></test>'];
+        yield ['OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><invalid_license><code>123</code></invalid_license>'];
+        yield ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?><olc></olc>'];
+        yield ['OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?><olc></olc>'];
     }
 
     /**
@@ -76,10 +82,11 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage($sMessage);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute', 'getStatusCode']);
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
-        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
+        $oCurl->method('execute')->willReturn($sResponseXml);
+        $oCurl->method('getStatusCode')->willReturn(200);
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, ['build']);
-        $oEmailBuilder->expects($this->any())->method('build');
+        $oEmailBuilder->method('build');
+
         $oSimpleXml = $this->getMock('oxSimpleXml');
         /** @var oxSimpleXml $oSimpleXml */
 
@@ -95,10 +102,10 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
         $oExpectedResponse->message = 'ACK';
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute']);
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue($this->getValidResponseXml()));
+        $oCurl->method('execute')->willReturn($this->getValidResponseXml());
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, ['build']);
-        $oEmailBuilder->expects($this->any())->method('build');
+        $oEmailBuilder->method('build');
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
@@ -124,16 +131,16 @@ class OnlineLicenseCheckCallerTest extends \PHPUnit\Framework\TestCase
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, ['execute']);
         $stubbedExceptionMessage = 'This is a stubbed exception';
-        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception($stubbedExceptionMessage)));
+        $oCurl->method('execute')->willThrowException(new Exception($stubbedExceptionMessage));
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ['send']);
-        $oEmail->expects($this->any())->method('send');
+        $oEmail->method('send');
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, ['build']);
-        $oEmailBuilder->expects($this->any())
+        $oEmailBuilder
             ->method('build')
             ->with($expectedEmailBody)
-            ->will($this->returnValue($oEmail));
+            ->willReturn($oEmail);
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $simpleXml);
 

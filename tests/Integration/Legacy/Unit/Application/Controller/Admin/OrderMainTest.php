@@ -36,10 +36,10 @@ class OrderMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Order_Main');
-        $this->assertEquals('order_main', $oView->render());
+        $this->assertSame('order_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof order);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Order::class, $aViewData['edit']);
     }
 
     /**
@@ -51,10 +51,10 @@ class OrderMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Order_Main');
-        $this->assertEquals('order_main', $oView->render());
+        $this->assertSame('order_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -73,7 +73,7 @@ class OrderMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Order_Main');
             $oView->senddownloadlinks();
         } catch (Exception $exception) {
-            $this->assertEquals("sendDownloadLinksMail", $exception->getMessage(), "error in Order_Main::senddownloadlinks()");
+            $this->assertSame("sendDownloadLinksMail", $exception->getMessage(), "error in Order_Main::senddownloadlinks()");
 
             return;
         }
@@ -95,7 +95,7 @@ class OrderMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Order_Main');
             $oView->resetorder();
         } catch (Exception $exception) {
-            $this->assertEquals("recalculateOrder", $exception->getMessage(), "error in Order_Main::resetorder()");
+            $this->assertSame("recalculateOrder", $exception->getMessage(), "error in Order_Main::resetorder()");
 
             return;
         }

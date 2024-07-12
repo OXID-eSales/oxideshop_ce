@@ -51,7 +51,7 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oView->getUpdateId());
 
         $this->setRequestParameter('uid', 'testuid');
-        $this->assertEquals('testuid', $oView->getUpdateId());
+        $this->assertSame('testuid', $oView->getUpdateId());
     }
 
     /**
@@ -167,7 +167,7 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('password_new_confirm', 'aaaaaa');
 
         $oView = oxNew('forgotpwd');
-        $this->assertEquals('forgotpwd?success=1', $oView->updatePassword());
+        $this->assertSame('forgotpwd?success=1', $oView->updatePassword());
     }
 
     /**
@@ -177,7 +177,7 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
     {
         $oF = oxNew('ForgotPwd');
 
-        $this->assertEquals(1, count($oF->getBreadCrumb()));
+        $this->assertCount(1, $oF->getBreadCrumb());
     }
 
     /**
@@ -196,7 +196,7 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject('oxuser', $oUser);
 
         $oInputValidator = $this->getMock('oxInputValidator');
-        $oInputValidator->expects($this->once())->method('checkPassword')->with($this->equalTo($oUser), $this->equalTo($sPass), $this->equalTo($sPass), $this->equalTo(true))->will($this->returnValue(new oxException()));
+        $oInputValidator->expects($this->once())->method('checkPassword')->with($oUser, $sPass, $sPass, true)->willReturn(new oxException());
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oView = oxNew('ForgotPwd');
@@ -222,8 +222,8 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, ['showUpdateScreen', 'updateSuccess']);
-        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
-        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(false));
+        $oView->method('showUpdateScreen')->willReturn(false);
+        $oView->method('updateSuccess')->willReturn(false);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
@@ -234,8 +234,8 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_ShowUpdateScreen()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, ['showUpdateScreen', 'updateSuccess']);
-        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(true));
-        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
+        $oView->method('showUpdateScreen')->willReturn(true);
+        $oView->method('updateSuccess')->willReturn(true);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('NEW_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
@@ -246,8 +246,8 @@ class ForgotpwdTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_UpdateSuccess()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, ['showUpdateScreen', 'updateSuccess']);
-        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
-        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
+        $oView->method('showUpdateScreen')->willReturn(false);
+        $oView->method('updateSuccess')->willReturn(true);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('CHANGE_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }

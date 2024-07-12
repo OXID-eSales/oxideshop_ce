@@ -43,9 +43,9 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxcategory", "loadInLang", "{ return true; }");
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, ["getCategoryUri"]);
-        $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("categoryUri"));
+        $oEncoder->expects($this->once())->method('getCategoryUri')->willReturn("categoryUri");
 
-        $this->assertEquals("categoryUri", $oEncoder->getAltUri('1126', 0));
+        $this->assertSame("categoryUri", $oEncoder->getAltUri('1126', 0));
     }
 
     /**
@@ -75,7 +75,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $oSubCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
         $oSubCategory->save();
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'parent-category/sub-category/', $oSubCategory->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . 'parent-category/sub-category/', $oSubCategory->getLink());
     }
 
     /**
@@ -93,15 +93,15 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $shopUrl = $this->getConfig()->getShopUrl();
         $subCategory = oxNew('oxCategory');
         $subCategory->load($subCategoryId);
-        $this->assertEquals($shopUrl . $subCategoryLink, $subCategory->getLink());
+        $this->assertSame($shopUrl . $subCategoryLink, $subCategory->getLink());
 
         $category = oxNew('oxCategory');
         $category->load($categoryId);
-        $this->assertEquals($shopUrl . $categoryLink, $category->getLink());
+        $this->assertSame($shopUrl . $categoryLink, $category->getLink());
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($shopUrl . $subCategoryLink, $encoder->getCategoryUrl($subCategory));
-        $this->assertEquals($shopUrl . $categoryLink, $encoder->getCategoryUrl($category));
+        $this->assertSame($shopUrl . $subCategoryLink, $encoder->getCategoryUrl($subCategory));
+        $this->assertSame($shopUrl . $categoryLink, $encoder->getCategoryUrl($category));
     }
 
     /**
@@ -116,7 +116,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $categoryTree->next();
 
         $link = $this->getTestConfig()->getShopEdition() === 'EE' ? 'Fuer-Sie/' : 'Geschenke/';
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $categoryTree->current()->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $categoryTree->current()->getLink());
     }
 
     /**
@@ -136,7 +136,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->save();
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . 'Admin-oxid/', $oCategory->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . 'Admin-oxid/', $oCategory->getLink());
     }
 
     /**
@@ -145,13 +145,13 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
     public function testGetCategoryUrl()
     {
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getLanguage']);
-        $oCategory->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
+        $oCategory->expects($this->once())->method('getLanguage')->willReturn(0);
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, ['getFullUrl', 'getCategoryUri']);
-        $oEncoder->expects($this->once())->method('getFullUrl')->will($this->returnValue('seocaturl'));
-        $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue(true));
+        $oEncoder->expects($this->once())->method('getFullUrl')->willReturn('seocaturl');
+        $oEncoder->expects($this->once())->method('getCategoryUri')->willReturn(true);
 
-        $this->assertEquals('seocaturl', $oEncoder->getCategoryUrl($oCategory));
+        $this->assertSame('seocaturl', $oEncoder->getCategoryUrl($oCategory));
     }
 
     /**
@@ -168,7 +168,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $category->load($categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category));
     }
 
     public function testGetCategoryUrlExistingCategoryEng()
@@ -182,7 +182,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $category->loadInLang(1, $categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category));
     }
 
     /**
@@ -199,7 +199,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $category->loadInLang(1, $categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category, 0));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category, 0));
     }
 
     public function testGetCategoryUrlExistingCategoryEngWithLangParam()
@@ -213,7 +213,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $category->loadInLang(0, $categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category, 1));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryUrl($category, 1));
     }
 
     /**
@@ -245,7 +245,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory->loadInLang(1, $categoryId);
 
         $oEncoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $oEncoder->getCategoryPageUrl($oCategory, 22));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $oEncoder->getCategoryPageUrl($oCategory, 22));
     }
 
     public function testGetCategoryPageUrlWithLangParam()
@@ -259,7 +259,7 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $category->loadInLang(0, $categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryPageUrl($category, 22, 1));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getCategoryPageUrl($category, 22, 1));
     }
 
     /**
@@ -275,31 +275,31 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
         $object2Category->oxobject2category__oxobjectid = new oxField($articleId);
         $object2Category->oxobject2category__oxcatnid = new oxField($categoryId);
         $object2Category->save();
-        oxDb::getDb()->execute(sprintf('insert into oxseo (oxobjectid, oxident, oxtype, oxexpired, oxparams) value (\'%s\', \'testArt\', \'oxarticle\', \'0\', \'%s\')', $articleId, $categoryId));
-        oxDb::getDb()->execute(sprintf('insert into oxseo (oxobjectid, oxident, oxtype, oxexpired) value (\'%s\', \'testCat\', \'oxcategory\', \'0\' )', $subCategoryId));
+        oxDb::getDb()->execute(sprintf("insert into oxseo (oxobjectid, oxident, oxtype, oxexpired, oxparams) value ('%s', 'testArt', 'oxarticle', '0', '%s')", $articleId, $categoryId));
+        oxDb::getDb()->execute(sprintf("insert into oxseo (oxobjectid, oxident, oxtype, oxexpired) value ('%s', 'testCat', 'oxcategory', '0' )", $subCategoryId));
 
-        $subCategoryArticleId = oxDb::getDb()->getOne(sprintf('select oxobjectid from oxobject2category where OXCATNID = \'%s\'', $subCategoryId));
+        $subCategoryArticleId = oxDb::getDb()->getOne(sprintf("select oxobjectid from oxobject2category where OXCATNID = '%s'", $subCategoryId));
         $article = oxNew('oxArticle');
         $article->load($subCategoryArticleId);
         $article->getLink();
 
-        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxparams = \'%s\' and oxobjectid = \'%s\'', $categoryId, $articleId));
-        $this->assertEquals(0, (int) $isExpired);
+        $isExpired = oxDb::getDb()->getOne(sprintf("select oxexpired from oxseo where oxtype = 'oxarticle' and oxparams = '%s' and oxobjectid = '%s'", $categoryId, $articleId));
+        $this->assertSame(0, (int) $isExpired);
         $category = oxNew('oxCategory');
         $category->load($categoryId);
 
         $encoder = oxNew('oxSeoEncoderCategory');
         $encoder->markRelatedAsExpired($category);
 
-        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxobjectid = \'%s\'', $articleId));
-        $this->assertEquals(1, (int) $isExpired);
-        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxcategory\' and oxobjectid = \'%s\'', $subCategoryId));
-        $this->assertEquals(1, (int) $isExpired);
+        $isExpired = oxDb::getDb()->getOne(sprintf("select oxexpired from oxseo where oxtype = 'oxarticle' and oxobjectid = '%s'", $articleId));
+        $this->assertSame(1, (int) $isExpired);
+        $isExpired = oxDb::getDb()->getOne(sprintf("select oxexpired from oxseo where oxtype = 'oxcategory' and oxobjectid = '%s'", $subCategoryId));
+        $this->assertSame(1, (int) $isExpired);
 
-        $isExpired = oxDb::getDb()->getOne(sprintf('select oxexpired from oxseo where oxtype = \'oxarticle\' and oxobjectid=\'%s\'', $subCategoryArticleId));
-        $this->assertEquals(1, (int) $isExpired);
-        $count = oxDb::getDb()->getOne(sprintf('select count(*) from oxseo where oxexpired=0 and oxtype = \'oxarticle\' and oxobjectid=\'%s\'', $subCategoryArticleId));
-        $this->assertEquals(0, (int) $count);
+        $isExpired = oxDb::getDb()->getOne(sprintf("select oxexpired from oxseo where oxtype = 'oxarticle' and oxobjectid='%s'", $subCategoryArticleId));
+        $this->assertSame(1, (int) $isExpired);
+        $count = oxDb::getDb()->getOne(sprintf("select count(*) from oxseo where oxexpired=0 and oxtype = 'oxarticle' and oxobjectid='%s'", $subCategoryArticleId));
+        $this->assertSame(0, (int) $count);
     }
 
     public function testonDeleteCategory()
@@ -316,9 +316,9 @@ class SeoEncoderCategoryTest extends \PHPUnit\Framework\TestCase
                values
                    ( 'obj_art', '321', '{$sShopId}', '0', '', '', 'oxarticle', '0', '0', 'obj_id' )";
         $oDb->execute($sQ);
-        $sQ = sprintf('insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( \'obj_id\', \'%s\', \'0\' )', $sShopId);
+        $sQ = sprintf("insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'obj_id', '%s', '0' )", $sShopId);
         $oDb->execute($sQ);
-        $sQ = sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( \'obj_id\', \'132\', \'%s\', \'0\' )', $sShopId);
+        $sQ = sprintf("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'obj_id', '132', '%s', '0' )", $sShopId);
         $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'obj_id'"));

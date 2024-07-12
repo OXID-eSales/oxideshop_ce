@@ -17,8 +17,8 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     public function testStructure()
     {
         $oShop = oxNew('oxShop');
-        $this->assertTrue($oShop instanceof \OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel);
-        $this->assertEquals('oxshops', $oShop->getCoreTableName());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Model\MultiLanguageModel::class, $oShop);
+        $this->assertSame('oxshops', $oShop->getCoreTableName());
     }
 
     public function testIsProductiveMode_ProductiveMode()
@@ -56,18 +56,15 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     /**
      * Provides parameters and expected results for testMakeViewQuery
      */
-    public function makeViewQueryParamProvider()
+    public function makeViewQueryParamProvider(): \Iterator
     {
         $sFieldsMultilang = 'OXID, OXTITLE, OXTITLE_1';
         $sFields = 'OXID, OXTITLE';
 
         $aMockedFunctionReturns = ['getViewSelectMultilang' => $sFieldsMultilang, 'getViewSelect'          => $sFields];
-
-        return [
-            ['oxarticles', null, $aMockedFunctionReturns, 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT ' . $sFieldsMultilang . ' FROM oxarticles'],
-            // default
-            ['oxarticles', 'de', $aMockedFunctionReturns, 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT ' . $sFields . ' FROM oxarticles'],
-        ];
+        yield ['oxarticles', null, $aMockedFunctionReturns, 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT ' . $sFieldsMultilang . ' FROM oxarticles'];
+        // default
+        yield ['oxarticles', 'de', $aMockedFunctionReturns, 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT ' . $sFields . ' FROM oxarticles'];
     }
 
     /**
@@ -80,12 +77,12 @@ class ShopTest extends \PHPUnit\Framework\TestCase
         /** @var oxShop|PHPUnit\Framework\MockObject\MockObject $oShop */
         $oShop = $this->getMock(\OxidEsales\Eshop\Application\Model\Shop::class, array_keys($aMockedFunctionReturns));
         foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
-            $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));
+            $oShop->method($sFunction)->willReturn($sReturnValue);
         }
 
         $oShop->createViewQuery($sTable, [0 => $sLang]);
         $aQueries = $oShop->getQueries();
-        $this->assertEquals(rtrim((string) $sQuery), rtrim((string) $aQueries[0]));
+        $this->assertSame(rtrim((string) $sQuery), rtrim((string) $aQueries[0]));
     }
 
     /**
@@ -129,7 +126,7 @@ class ShopTest extends \PHPUnit\Framework\TestCase
         }
 
         $oShop = oxNew('oxShop');
-        $this->assertEquals([], $oShop->getMultiShopTables());
+        $this->assertSame([], $oShop->getMultiShopTables());
     }
 
     /**
@@ -139,7 +136,7 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->setMultiShopTables(['table1', 'table2']);
-        $this->assertEquals(['table1', 'table2'], $oShop->getMultiShopTables());
+        $this->assertSame(['table1', 'table2'], $oShop->getMultiShopTables());
     }
 
     /**
@@ -149,10 +146,10 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->addQuery('query');
-        $this->assertEquals(['query'], $oShop->getQueries());
+        $this->assertSame(['query'], $oShop->getQueries());
 
         $oShop->addQuery('anotherquery');
-        $this->assertEquals(['query', 'anotherquery'], $oShop->getQueries());
+        $this->assertSame(['query', 'anotherquery'], $oShop->getQueries());
     }
 
     /**
@@ -161,7 +158,7 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     public function testGetQueriesNoQueriesAdded()
     {
         $oShop = oxNew('oxShop');
-        $this->assertEquals([], $oShop->getQueries());
+        $this->assertSame([], $oShop->getQueries());
     }
 
     /**
@@ -171,7 +168,7 @@ class ShopTest extends \PHPUnit\Framework\TestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->setQueries(['query', 'query2']);
-        $this->assertEquals(['query', 'query2'], $oShop->getQueries());
+        $this->assertSame(['query', 'query2'], $oShop->getQueries());
     }
 
     /**

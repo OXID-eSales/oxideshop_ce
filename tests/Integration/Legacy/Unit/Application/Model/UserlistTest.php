@@ -18,7 +18,7 @@ class UserlistTest extends \PHPUnit\Framework\TestCase
     /**
      * Initialize the fixture.
      */
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
         $oUser = oxNew('oxuser');
@@ -74,7 +74,7 @@ class UserlistTest extends \PHPUnit\Framework\TestCase
     /**
      * Tear down the fixture.
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $oUser = oxNew('oxuser');
         $oUser->delete('user1');
@@ -118,8 +118,13 @@ class UserlistTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectResult, $oUserList->count());
     }
 
-    public function loadWishListUsersDataProvider()
+    public function loadWishListUsersDataProvider(): \Iterator
     {
-        return [['user1@gmail.com', 1], ['user2@yahoo.com', 1], ['user', 0], ['@', 0], ['@yahoo', 0], ['@gmail.com', 0]];
+        yield ['user1@gmail.com', 1];
+        yield ['user2@yahoo.com', 1];
+        yield ['user', 0];
+        yield ['@', 0];
+        yield ['@yahoo', 0];
+        yield ['@gmail.com', 0];
     }
 }

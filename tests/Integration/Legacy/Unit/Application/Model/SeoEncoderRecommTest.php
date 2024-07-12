@@ -42,18 +42,18 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $iLang = 0;
 
         $oRecomm = $this->getMock(RecommendationList::class, ["getId", "getBaseStdLink"]);
-        $oRecomm->expects($this->any())->method('getId')->will($this->returnValue("testRecommId"));
-        $oRecomm->expects($this->any())->method('getBaseStdLink')->will($this->returnValue("testBaseLink"));
+        $oRecomm->method('getId')->willReturn("testRecommId");
+        $oRecomm->method('getBaseStdLink')->willReturn("testBaseLink");
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
         $oEncoder = $this->getMock(SeoEncoderRecomm::class, ["loadFromDb", "getStaticUri", "prepareTitle", "processSeoUrl", "saveToDb"]);
-        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('getStaticUri')->with($this->equalTo($oRecomm->getBaseStdLink($iLang)), $this->equalTo($this->getConfig()->getShopId()), $this->equalTo($iLang))->will($this->returnValue("testShopUrl/"));
-        $oEncoder->expects($this->once())->method('prepareTitle')->with($this->equalTo($oRecomm->oxrecommlists__oxtitle->value))->will($this->returnValue("testTitle"));
-        $oEncoder->expects($this->once())->method('processSeoUrl')->with($this->equalTo("testShopUrl/testTitle"), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
-        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($oRecomm->getStdLink($iLang)), $this->equalTo("testSeoUrl"), $this->equalTo($iLang), $this->equalTo($this->getConfig()->getShopId()));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with('dynamic', $oRecomm->getId(), $iLang)->willReturn(false);
+        $oEncoder->expects($this->once())->method('getStaticUri')->with($oRecomm->getBaseStdLink($iLang), $this->getConfig()->getShopId(), $iLang)->willReturn("testShopUrl/");
+        $oEncoder->expects($this->once())->method('prepareTitle')->with($oRecomm->oxrecommlists__oxtitle->value)->willReturn("testTitle");
+        $oEncoder->expects($this->once())->method('processSeoUrl')->with("testShopUrl/testTitle", $oRecomm->getId(), $iLang)->willReturn("testSeoUrl");
+        $oEncoder->expects($this->once())->method('saveToDb')->with('dynamic', $oRecomm->getId(), $oRecomm->getStdLink($iLang), "testSeoUrl", $iLang, $this->getConfig()->getShopId());
 
-        $this->assertEquals("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
+        $this->assertSame("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
     }
 
     public function testGetRecommUriCallCheck()
@@ -61,18 +61,18 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $iLang = 0;
 
         $oRecomm = $this->getMock(RecommendationList::class, ["getId", "getBaseStdLink", "getStdLink"]);
-        $oRecomm->expects($this->any())->method('getId')->will($this->returnValue("testRecommId"));
+        $oRecomm->method('getId')->willReturn("testRecommId");
         $oRecomm->expects($this->never())->method('getBaseStdLink');
         $oRecomm->expects($this->never())->method('getStdLink');
 
         $oEncoder = $this->getMock(SeoEncoderRecomm::class, ["loadFromDb", "getStaticUri", "prepareTitle", "processSeoUrl", "saveToDb"]);
-        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('dynamic'), $this->equalTo($oRecomm->getId()), $this->equalTo($iLang))->will($this->returnValue("testSeoUrl"));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with('dynamic', $oRecomm->getId(), $iLang)->willReturn("testSeoUrl");
         $oEncoder->expects($this->never())->method('getStaticUri');
         $oEncoder->expects($this->never())->method('prepareTitle');
         $oEncoder->expects($this->never())->method('processSeoUrl');
         $oEncoder->expects($this->never())->method('saveToDb');
 
-        $this->assertEquals("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
+        $this->assertSame("testSeoUrl", $oEncoder->getRecommUri($oRecomm, $iLang));
     }
 
     public function testGetRecommUri(): void
@@ -81,7 +81,7 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
 
         $recommendationList = $this->getMock(RecommendationList::class, ["getId", "getBaseStdLink"]);
         $recommendationList->method('getId')->willReturn("testRecommId");
-        $recommendationList->method('getBaseStdLink')->with($this->equalTo($lang))->willReturn("testStdLink");
+        $recommendationList->method('getBaseStdLink')->with($lang)->willReturn("testStdLink");
         $recommendationList->oxrecommlists__oxtitle = new oxField("testTitle");
 
         $shopId = ShopIdCalculator::BASE_SHOP_ID;
@@ -89,15 +89,15 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $encoder = $this->getMock(SeoEncoderRecomm::class, ['getStaticUri']);
         $encoder->expects($this->once())->method('getStaticUri')
             ->with(
-                $this->equalTo('testStdLink'),
+                'testStdLink',
                 $shopId,
                 1
             )
             ->willReturn("recommstdlink/");
-        $this->assertEquals("en/recommstdlink/testTitle/", $encoder->getRecommUri($recommendationList, $lang));
+        $this->assertSame("en/recommstdlink/testTitle/", $encoder->getRecommUri($recommendationList, $lang));
 
         // now checking if db is filled
-        $this->assertEquals(
+        $this->assertSame(
             1,
             oxDb::getDb()->getOne("select 1 from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'")
         );
@@ -109,10 +109,10 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $oEncoder = $this->getMock(SeoEncoderRecomm::class, ["getFullUrl", "getRecommUri"]);
-        $oEncoder->expects($this->any())->method('getRecommUri')->with($this->equalTo($oRecomm), $this->equalTo($iLang))->will($this->returnValue("testRecommUri"));
-        $oEncoder->expects($this->any())->method('getFullUrl')->with($this->equalTo("testRecommUri"), $this->equalTo($iLang))->will($this->returnValue("testRecommUrl"));
+        $oEncoder->method('getRecommUri')->with($oRecomm, $iLang)->willReturn("testRecommUri");
+        $oEncoder->method('getFullUrl')->with("testRecommUri", $iLang)->willReturn("testRecommUrl");
 
-        $this->assertEquals("testRecommUrl", $oEncoder->getRecommUrl($oRecomm));
+        $this->assertSame("testRecommUrl", $oEncoder->getRecommUrl($oRecomm));
     }
 
     public function testGetRecommPageUrl()
@@ -120,8 +120,8 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $oRecomm = $this->getMock(RecommendationList::class, ["getId", "getBaseStdLink"]);
-        $oRecomm->expects($this->any())->method('getId')->will($this->returnValue("testRecommId"));
-        $oRecomm->expects($this->any())->method('getBaseStdLink')->with($this->equalTo($iLang))->will($this->returnValue("testStdLink"));
+        $oRecomm->method('getId')->willReturn("testRecommId");
+        $oRecomm->method('getBaseStdLink')->with($iLang)->willReturn("testStdLink");
         $oRecomm->oxrecommlists__oxtitle = new oxField("testTitle");
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
@@ -129,14 +129,14 @@ final class SeoEncoderRecommTest extends \PHPUnit\Framework\TestCase
         $oEncoder = $this->getMock(SeoEncoderRecomm::class, ['getStaticUri']);
         $oEncoder->expects($this->once())->method('getStaticUri')
             ->with(
-                $this->equalTo('testStdLink'),
+                'testStdLink',
                 $sShopId,
                 0
             )
-            ->will($this->returnValue("recommstdlink/"));
-        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/?pgNr=1", $oEncoder->getRecommPageUrl($oRecomm, 1));
+            ->willReturn("recommstdlink/");
+        $this->assertSame($this->getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/?pgNr=1", $oEncoder->getRecommPageUrl($oRecomm, 1));
 
         // now checking if db is filled, paginated page is no longer stored
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(*) from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select count(*) from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'"));
     }
 }

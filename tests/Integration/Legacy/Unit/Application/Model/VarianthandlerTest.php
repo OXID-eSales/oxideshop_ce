@@ -44,7 +44,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
         $oHandler = $this->getProxyClass("oxVariantHandler");
         $this->assertNull($oHandler->getNonPublicVar("_oArticles"));
         $oHandler->init("testData");
-        $this->assertEquals("testData", $oHandler->getNonPublicVar("_oArticles"));
+        $this->assertSame("testData", $oHandler->getNonPublicVar("_oArticles"));
     }
 
     public function testGetValuePrice()
@@ -59,9 +59,9 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
         $oValue->value = '';
 
         $oVariantHandler = oxNew("oxVariantHandler");
-        $this->assertEquals(10, $oVariantHandler->getValuePrice($oValue, 10));
+        $this->assertSame(10, $oVariantHandler->getValuePrice($oValue, 10));
         $oValue->priceUnit = '%';
-        $this->assertEquals(1, $oVariantHandler->getValuePrice($oValue, 10));
+        $this->assertSame(1, $oVariantHandler->getValuePrice($oValue, 10));
 
         $oValue = new stdClass();
         $oValue->price = -10;
@@ -69,7 +69,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
         $oValue->priceUnit = '%';
         $oValue->name = 'red';
         $oValue->value = '';
-        $this->assertEquals(-1, $oVariantHandler->getValuePrice($oValue, 10));
+        $this->assertSame(-1, $oVariantHandler->getValuePrice($oValue, 10));
     }
 
     public function testAssignValues()
@@ -96,11 +96,12 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->assignValues($aValues, oxNew('oxArticleList'), $oArticle, ['en', 'de']);
+
         $oRez = $myDB->select("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
-            $this->assertEquals('red', $oRez->fields[0]);
-            $this->assertEquals('rot', $oRez->fields[1]);
+            $this->assertSame('red', $oRez->fields[0]);
+            $this->assertSame('rot', $oRez->fields[1]);
             $oRez->fetchRow();
         }
     }
@@ -113,7 +114,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $sSql = sprintf('insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values (\'_testSell\', \'%d\', \'oxsellisttest\', \'oxsellisttest\', \'%s\')', $sShopId, $sVal);
+        $sSql = sprintf("insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '%d', 'oxsellisttest', 'oxsellisttest', '%s')", $sShopId, $sVal);
         $this->addToDatabase($sSql, 'oxselectlist');
 
         $oArticle = oxNew("oxArticle");
@@ -121,12 +122,12 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         $oVariantHandler = oxNew("oxVariantHandler");
         $oVariantHandler->genVariantFromSell(['_testSell'], $oArticle);
-        $this->assertEquals(3, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
+        $this->assertSame(3, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
         //twice
         $oVariantHandler->genVariantFromSell(['_testSell'], $oArticle);
-        $this->assertEquals(9, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
+        $this->assertSame(9, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
         $this->assertTrue((bool) strpos((string) $myDB->getOne("select oxvarselect from oxarticles where oxparentid = '2000' limit 1"), "|"));
-        $this->assertEquals(18, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid in ( select art.oxid from oxarticles as art where art.oxparentid = '2000')"));
+        $this->assertSame(18, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid in ( select art.oxid from oxarticles as art where art.oxparentid = '2000')"));
     }
 
     /**
@@ -140,7 +141,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $sSql = sprintf('insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values (\'_testSell\', \'%d\', \'oxsellisttest\', \'oxsellisttest\', \'%s\')', $sShopId, $sVal);
+        $sSql = sprintf("insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '%d', 'oxsellisttest', 'oxsellisttest', '%s')", $sShopId, $sVal);
         $this->addToDatabase($sSql, 'oxselectlist');
 
         $oArticle = oxNew("oxArticle");
@@ -151,7 +152,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         $oArticle2 = oxNew("oxArticle");
         $oArticle2->load('2000');
-        $this->assertEquals(3, $oArticle2->oxarticles__oxvarcount->value);
+        $this->assertSame(3, $oArticle2->oxarticles__oxvarcount->value);
 
         /**
          * $this->assertEquals( 3, $myDB->getOne( "select count(*) from oxarticles where oxparentid = '2000'" ));
@@ -170,16 +171,16 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
         $sVariantId = $oVariantHandler->createNewVariant($aParams, "_testArt");
         $oVariant = oxNew("oxArticle");
         $oVariant->load($sVariantId);
-        $this->assertEquals("_testVar", $sVariantId);
-        $this->assertEquals("_testVar", $oVariant->oxarticles__oxvarselect->value);
-        $this->assertEquals("_testArt", $oVariant->oxarticles__oxparentid->value);
-        $this->assertEquals("123", $oVariant->oxarticles__oxartnum->value);
-        $this->assertEquals("10", $oVariant->oxarticles__oxprice->value);
-        $this->assertEquals("1", $oVariant->oxarticles__oxisconfigurable->value);
+        $this->assertSame("_testVar", $sVariantId);
+        $this->assertSame("_testVar", $oVariant->oxarticles__oxvarselect->value);
+        $this->assertSame("_testArt", $oVariant->oxarticles__oxparentid->value);
+        $this->assertSame("123", $oVariant->oxarticles__oxartnum->value);
+        $this->assertSame("10", $oVariant->oxarticles__oxprice->value);
+        $this->assertSame("1", $oVariant->oxarticles__oxisconfigurable->value);
 
         $oVariant = oxNew("oxArticle");
         $oVariant->loadInLang(1, $sVariantId);
-        $this->assertEquals("_testVar_1", $oVariant->oxarticles__oxvarselect->value);
+        $this->assertSame("_testVar_1", $oVariant->oxarticles__oxvarselect->value);
     }
 
     /**
@@ -202,16 +203,16 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
     public function testBuildMdVariants()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ["getBruttoPrice"]);
-        $oPrice->expects($this->exactly(2))->method('getBruttoPrice')->will($this->returnValue(999));
+        $oPrice->expects($this->exactly(2))->method('getBruttoPrice')->willReturn(999);
 
         $oVar1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getPrice", "getLink"]);
-        $oVar1->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
-        $oVar1->expects($this->once())->method('getLink')->will($this->returnValue("testLink"));
+        $oVar1->expects($this->once())->method('getPrice')->willReturn($oPrice);
+        $oVar1->expects($this->once())->method('getLink')->willReturn("testLink");
         $oVar1->oxarticles__oxvarselect = new oxField("var1value1 | var1value2 | var1value3");
 
         $oVar2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getPrice", "getLink"]);
-        $oVar2->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
-        $oVar2->expects($this->once())->method('getLink')->will($this->returnValue("testLink"));
+        $oVar2->expects($this->once())->method('getPrice')->willReturn($oPrice);
+        $oVar2->expects($this->once())->method('getLink')->willReturn("testLink");
         $oVar2->oxarticles__oxvarselect = new oxField("var2value1 | var2value2 | var2value3");
 
         $oVariants = oxNew('oxList');
@@ -231,7 +232,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         // empty variant list
         $oHandler = new oxVariantHandlerForOxvarianthandlerTest();
-        $this->assertEquals([], $oHandler->fillVariantSelections([], 100, $aFilter, ""));
+        $this->assertSame([], $oHandler->fillVariantSelections([], 100, $aFilter, ""));
 
         // filled variant list
         $oVariant1 = oxNew('oxbase');
@@ -260,7 +261,7 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
         // checking
         $oHandler = new oxVariantHandlerForOxvarianthandlerTest();
         $this->assertEquals($aArray, $oHandler->fillVariantSelections([$oVariant1, $oVariant2, $oVariant3], 2, $aFilter, "test1"));
-        $this->assertEquals(["0cc175b9c0f1b6a831c399e269772661", "92eb5ffee6ae2fec3ad71c777531578f"], $aFilter);
+        $this->assertSame(["0cc175b9c0f1b6a831c399e269772661", "92eb5ffee6ae2fec3ad71c777531578f"], $aFilter);
     }
 
 
@@ -428,24 +429,24 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
 
         // testing
         $this->assertNotNull($aList);
-        $this->assertEquals(2, count($aList));
+        $this->assertCount(2, $aList);
 
-        $this->assertEquals(1, count($aList[0]->getSelections()));
-        $this->assertEquals(1, count($aList[1]->getSelections()));
+        $this->assertCount(1, $aList[0]->getSelections());
+        $this->assertCount(1, $aList[1]->getSelections());
 
         $oSel1 = current($aList[0]->getSelections());
         $oSel2 = current($aList[1]->getSelections());
 
         $this->assertNotNull($oSel1);
-        $this->assertEquals('a', $oSel1->getName());
-        $this->assertEquals(md5('a'), $oSel1->getValue());
+        $this->assertSame('a', $oSel1->getName());
+        $this->assertSame(md5('a'), $oSel1->getValue());
         $this->assertFalse($oSel1->isDisabled());
         $this->assertTrue($oSel1->isActive());
 
 
         $this->assertNotNull($oSel2);
-        $this->assertEquals('b', $oSel2->getName());
-        $this->assertEquals(md5('b'), $oSel2->getValue());
+        $this->assertSame('b', $oSel2->getName());
+        $this->assertSame(md5('b'), $oSel2->getValue());
         $this->assertFalse($oSel2->isDisabled());
         $this->assertFalse($oSel2->isActive());
     }
@@ -457,26 +458,26 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
     {
         $oHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, ['getSelections', "fillVariantSelections", "applyVariantSelectionsFilter", "buildVariantSelectionsList"]);
         $oHandler->expects($this->once())->method('getSelections')
-            ->with($this->equalTo("testvarname"))
-            ->will($this->returnValue(['t1', 't2', 't3']));
+            ->with("testvarname")
+            ->willReturn(['t1', 't2', 't3']);
         $oHandler->expects($this->once())->method('fillVariantSelections')
             ->with(
-                $this->equalTo(['xdxvarid' => 'oVariant']),
-                $this->equalTo(3),
-                $this->equalTo('$aFilter'),
-                $this->equalTo('$sActVariantId')
+                ['xdxvarid' => 'oVariant'],
+                3,
+                '$aFilter',
+                '$sActVariantId'
             )
-            ->will($this->returnValue("rawselections"));
+            ->willReturn("rawselections");
 
         $oHandler->expects($this->once())->method('applyVariantSelectionsFilter')
-            ->with($this->equalTo("rawselections"), $this->equalTo('$aFilter'))
-            ->will($this->returnValue(["rawselections", 'xdxvarid', 'perfecto?']));
+            ->with("rawselections", '$aFilter')
+            ->willReturn(["rawselections", 'xdxvarid', 'perfecto?']);
 
         $oHandler->expects($this->once())->method('buildVariantSelectionsList')
-            ->with($this->equalTo(['t1', 't2', 't3']), $this->equalTo("rawselections"))
-            ->will($this->returnValue("selections"));
+            ->with(['t1', 't2', 't3'], "rawselections")
+            ->willReturn("selections");
 
-        $this->assertEquals(
+        $this->assertSame(
             ["selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => 'oVariant', 'blPerfectFit' => 'perfecto?'],
             $oHandler->buildVariantSelections("testvarname", ['xdxvarid' => 'oVariant'], '$aFilter', '$sActVariantId')
         );
@@ -489,26 +490,26 @@ class VarianthandlerTest extends \PHPUnit\Framework\TestCase
     {
         $oHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, ['getSelections', "fillVariantSelections", "applyVariantSelectionsFilter", "buildVariantSelectionsList"]);
         $oHandler->expects($this->once())->method('getSelections')
-            ->with($this->equalTo("testvarname"))
-            ->will($this->returnValue(['t1', 't2', 't3']));
+            ->with("testvarname")
+            ->willReturn(['t1', 't2', 't3']);
         $oHandler->expects($this->once())->method('fillVariantSelections')
             ->with(
-                $this->equalTo(['xdxvarid' => 'oVariant']),
-                $this->equalTo(2),
-                $this->equalTo('$aFilter'),
-                $this->equalTo('$sActVariantId')
+                ['xdxvarid' => 'oVariant'],
+                2,
+                '$aFilter',
+                '$sActVariantId'
             )
-            ->will($this->returnValue("rawselections"));
+            ->willReturn("rawselections");
 
         $oHandler->expects($this->once())->method('applyVariantSelectionsFilter')
-            ->with($this->equalTo("rawselections"), $this->equalTo('$aFilter'))
-            ->will($this->returnValue(["rawselections", 'xdxvarid', 'perfecto?']));
+            ->with("rawselections", '$aFilter')
+            ->willReturn(["rawselections", 'xdxvarid', 'perfecto?']);
 
         $oHandler->expects($this->once())->method('buildVariantSelectionsList')
-            ->with($this->equalTo(['t1', 't2']), $this->equalTo("rawselections"))
-            ->will($this->returnValue("selections"));
+            ->with(['t1', 't2'], "rawselections")
+            ->willReturn("selections");
 
-        $this->assertEquals(
+        $this->assertSame(
             ["selections" => "selections", "rawselections" => "rawselections", 'oActiveVariant' => 'oVariant', 'blPerfectFit' => 'perfecto?'],
             $oHandler->buildVariantSelections("testvarname", ['xdxvarid' => 'oVariant'], '$aFilter', '$sActVariantId', 2)
         );

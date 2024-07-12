@@ -33,7 +33,7 @@ class MoredetailsTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
-        $this->assertEquals('2000', $oMoreDetails->getProductId());
+        $this->assertSame('2000', $oMoreDetails->getProductId());
     }
 
     /**
@@ -45,7 +45,7 @@ class MoredetailsTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('anid', '2000');
         $oMoreDetails->init();
 
-        $this->assertEquals('2000', $oMoreDetails->getProduct()->getId());
+        $this->assertSame('2000', $oMoreDetails->getProduct()->getId());
     }
 
     /**
@@ -57,7 +57,7 @@ class MoredetailsTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('anid', '096a1b0849d5ffa4dd48cd388902420b');
         $oMoreDetails->init();
 
-        $this->assertEquals('1', $oMoreDetails->getActPictureId());
+        $this->assertSame('1', $oMoreDetails->getActPictureId());
     }
 
     /**
@@ -70,6 +70,6 @@ class MoredetailsTest extends \PHPUnit\Framework\TestCase
         $oMoreDetails->init();
         $aZoom = $oMoreDetails->getArtZoomPics();
 
-        $this->assertEquals('front_z1(1).jpg', basename((string) $aZoom[1]['file']));
+        $this->assertSame('front_z1(1).jpg', basename((string) $aZoom[1]['file']));
     }
 }

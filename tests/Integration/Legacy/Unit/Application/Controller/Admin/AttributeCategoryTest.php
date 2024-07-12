@@ -24,9 +24,9 @@ class AttributeCategoryTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Attribute_Category');
-        $this->assertEquals('attribute_category', $oView->render());
+        $this->assertSame('attribute_category', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Attribute);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Attribute::class, $aViewData['edit']);
     }
 }

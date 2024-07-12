@@ -18,7 +18,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oRating = oxNew('oxwRating');
-        $this->assertEquals('widget/reviews/rating', $oRating->render());
+        $this->assertSame('widget/reviews/rating', $oRating->render());
     }
 
     /**
@@ -28,7 +28,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
     {
         $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(["dRatingValue" => 2.59]);
-        $this->assertEquals(2.6, $oRating->getRatingValue());
+        $this->assertEqualsWithDelta(2.6, $oRating->getRatingValue(), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -38,7 +38,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
     {
         $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(["dRatingCount" => 6]);
-        $this->assertEquals(6, $oRating->getRatingCount());
+        $this->assertSame(6, $oRating->getRatingCount());
     }
 
     /**
@@ -58,7 +58,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
     {
         $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(['anid' => 'testanid']);
-        $this->assertEquals('testanid', $oRating->getArticleNId());
+        $this->assertSame('testanid', $oRating->getArticleNId());
     }
 
     /**
@@ -68,7 +68,7 @@ class RatingTest extends \PHPUnit\Framework\TestCase
     {
         $oRating = oxNew('oxwRating');
         $oRating->setViewParameters(["sRateUrl" => "testUrl"]);
-        $this->assertEquals('testUrl', $oRating->getRateUrl());
+        $this->assertSame('testUrl', $oRating->getRateUrl());
     }
 
     /**

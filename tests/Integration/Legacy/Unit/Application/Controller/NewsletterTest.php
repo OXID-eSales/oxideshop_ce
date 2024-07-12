@@ -64,7 +64,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartArticle();
 
-        $this->assertEquals('1849', $oArticleList->getId());
+        $this->assertSame('1849', $oArticleList->getId());
     }
 
     /**
@@ -79,9 +79,9 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews = oxNew("NewsLetter");
         $oArticleList = $oTestNews->getTopStartActionArticles();
 
-        $this->assertEquals(1, count($oArticleList));
-        $this->assertEquals(89.9, $oArticleList[1849]->getPrice()->getBruttoPrice());
-        $this->assertEquals("Bar Butler 6 BOTTLES", $oArticleList[1849]->oxarticles__oxtitle->value);
+        $this->assertCount(1, $oArticleList);
+        $this->assertEqualsWithDelta(89.9, $oArticleList[1849]->getPrice()->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame("Bar Butler 6 BOTTLES", $oArticleList[1849]->oxarticles__oxtitle->value);
     }
 
     /**
@@ -93,7 +93,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam('aHomeCountry', ['testcountry', 'testcountry1']);
         $sCountryId = $oTestNews->getHomeCountryId();
 
-        $this->assertEquals('testcountry', $sCountryId);
+        $this->assertSame('testcountry', $sCountryId);
     }
 
     /**
@@ -106,7 +106,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(3, $iStatus);
+        $this->assertSame(3, $iStatus);
     }
 
     public function testRemovemeGroupsRemoved()
@@ -124,14 +124,14 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
 
         $oTestNews->addme();
         $oUserGroups = $oUser->getUserGroups();
-        $this->assertTrue(isset($oUserGroups['oxidnewsletter']), 'user should be subscribed for newsletter group.');
+        $this->assertArrayHasKey('oxidnewsletter', $oUserGroups, 'user should be subscribed for newsletter group.');
 
         $oTestNews->removeme();
         $oUser2 = oxNew('oxuser');
         $oUser2->load('testAddMe');
 
         $oUserGroups = $oUser2->getUserGroups();
-        $this->assertFalse(isset($oUserGroups['oxidnewsletter']), 'user should be unsubscribed from newsletter group.');
+        $this->assertArrayNotHasKey('oxidnewsletter', $oUserGroups, 'user should be unsubscribed from newsletter group.');
     }
 
     public function testGetNewsletterStatusAfterAddme()
@@ -149,7 +149,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->addme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(2, $iStatus);
+        $this->assertSame(2, $iStatus);
 
         $oUser->delete();
     }
@@ -173,7 +173,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(1, $iStatus);
+        $this->assertSame(1, $iStatus);
     }
 
     /**
@@ -196,7 +196,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(2, $iStatus);
+        $this->assertSame(2, $iStatus);
     }
 
     /**
@@ -218,7 +218,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(1, $iStatus);
+        $this->assertSame(1, $iStatus);
     }
 
     /**
@@ -241,7 +241,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "select oxusername from oxuser where oxusername='test@test.de'";
         $sUserName = $oDB->getOne($sSql);
-        $this->assertEquals('test@test.de', $sUserName);
+        $this->assertSame('test@test.de', $sUserName);
     }
 
     /**
@@ -265,7 +265,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
         $sStatus = $oDB->getOne($sSql);
-        $this->assertEquals('2', $sStatus);
+        $this->assertSame('2', $sStatus);
     }
 
     /**
@@ -292,7 +292,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
         $sStatus = $oDB->getOne($sSql);
-        $this->assertEquals('2', $sStatus);
+        $this->assertSame('2', $sStatus);
 
         //unsubscribing
         $this->setRequestParameter('subscribeStatus', null);
@@ -300,7 +300,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
         $sStatus = $oDB->getOne($sSql);
-        $this->assertEquals('0', $sStatus);
+        $this->assertSame('0', $sStatus);
     }
 
     /**
@@ -318,7 +318,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->fill();
         $aRegParams = $oTestNews->getRegParams();
 
-        $this->assertEquals($aParams, $aRegParams);
+        $this->assertSame($aParams, $aRegParams);
     }
 
     /**
@@ -333,8 +333,8 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
-        $this->assertEquals(3, $iStatus);
-        $this->assertEquals('malladmin', oxDb::getDb()->getOne('select oxrights from oxuser where oxid="oxdefaultadmin"'));
+        $this->assertSame(3, $iStatus);
+        $this->assertSame('malladmin', oxDb::getDb()->getOne('select oxrights from oxuser where oxid="oxdefaultadmin"'));
     }
 
     /**
@@ -343,19 +343,19 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oTestNews = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, ['getTopStartArticle', 'getTopStartActionArticles', 'getHomeCountryId', 'getNewsletterStatus', 'getRegParams']);
-        $oTestNews->expects($this->once())->method('getTopStartArticle')->will($this->returnValue(1));
-        $oTestNews->expects($this->once())->method('getTopStartActionArticles')->will($this->returnValue(2));
-        $oTestNews->expects($this->once())->method('getHomeCountryId')->will($this->returnValue(3));
-        $oTestNews->expects($this->once())->method('getNewsletterStatus')->will($this->returnValue(4));
-        $oTestNews->expects($this->once())->method('getRegParams')->will($this->returnValue(5));
+        $oTestNews->expects($this->once())->method('getTopStartArticle')->willReturn(1);
+        $oTestNews->expects($this->once())->method('getTopStartActionArticles')->willReturn(2);
+        $oTestNews->expects($this->once())->method('getHomeCountryId')->willReturn(3);
+        $oTestNews->expects($this->once())->method('getNewsletterStatus')->willReturn(4);
+        $oTestNews->expects($this->once())->method('getRegParams')->willReturn(5);
 
-        $this->assertEquals('page/info/newsletter', $oTestNews->render());
+        $this->assertSame('page/info/newsletter', $oTestNews->render());
 
-        $this->assertEquals('1', $oTestNews->getTopStartArticle());
-        $this->assertEquals('2', $oTestNews->getTopStartActionArticles());
-        $this->assertEquals('3', $oTestNews->getHomeCountryId());
-        $this->assertEquals('4', $oTestNews->getNewsletterStatus());
-        $this->assertEquals('5', $oTestNews->getRegParams());
+        $this->assertSame('1', $oTestNews->getTopStartArticle());
+        $this->assertSame('2', $oTestNews->getTopStartActionArticles());
+        $this->assertSame('3', $oTestNews->getHomeCountryId());
+        $this->assertSame('4', $oTestNews->getNewsletterStatus());
+        $this->assertSame('5', $oTestNews->getRegParams());
     }
 
     /**
@@ -435,7 +435,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_KeepSubscribed()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, ['getNewsletterStatus']);
-        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(null));
+        $oView->method('getNewsletterStatus')->willReturn(null);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
@@ -446,7 +446,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_NeedsConfirmation()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, ['getNewsletterStatus']);
-        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(1));
+        $oView->method('getNewsletterStatus')->willReturn(1);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
@@ -457,7 +457,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_SuccessfulSubscription()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, ['getNewsletterStatus']);
-        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(2));
+        $oView->method('getNewsletterStatus')->willReturn(2);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_NEWSLETTER_CONGRATULATIONS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
@@ -468,7 +468,7 @@ class NewsletterTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle_RemovedSubscription()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, ['getNewsletterStatus']);
-        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(3));
+        $oView->method('getNewsletterStatus')->willReturn(3);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('SUCCESS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }

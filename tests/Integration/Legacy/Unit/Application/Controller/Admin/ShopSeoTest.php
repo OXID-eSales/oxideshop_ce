@@ -40,7 +40,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
 
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sEditObjectId", $shopId);
-        $this->assertEquals('shop_seo', $oView->render());
+        $this->assertSame('shop_seo', $oView->render());
     }
 
     /**
@@ -66,7 +66,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
-        $this->assertTrue(isset($aUrlData[$iLangId]));
+        $this->assertArrayHasKey($iLangId, $aUrlData);
         $this->assertEquals($sObjectId, $aUrlData[$iLangId][0]);
         $this->assertEquals($sSeoUrl, $aUrlData[$iLangId][1]);
 
@@ -77,7 +77,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
         $aUrlData = $oView->getViewDataElement("aSeoUrls");
 
         $this->assertEquals($sObjectId, $oView->getViewDataElement("sActSeoObject"));
-        $this->assertTrue(isset($aUrlData[$iLangId]));
+        $this->assertArrayHasKey($iLangId, $aUrlData);
         $this->assertEquals($sObjectId, $aUrlData[$iLangId][0]);
         $this->assertEquals($sSeoUrl, $aUrlData[$iLangId][1]);
     }
@@ -102,12 +102,12 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, $aTasks);
             foreach ($aTasks as $sMethodName) {
-                $oView->expects($this->any())->method($sMethodName);
+                $oView->method($sMethodName);
             }
 
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("encodeStaticUrls", $exception->getMessage(), "Error in Shop_Seo::save()");
+            $this->assertSame("encodeStaticUrls", $exception->getMessage(), "Error in Shop_Seo::save()");
 
             return;
         }
@@ -143,7 +143,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Shop_Seo');
-        $this->assertEquals("&amp;", $oView->cleanupUrl("&amp;&amp;&&"));
+        $this->assertSame("&amp;", $oView->cleanupUrl("&amp;&amp;&&"));
     }
 
     /**
@@ -159,7 +159,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Shop_Seo');
             $oView->dropSeoIds();
         } catch (Exception $exception) {
-            $this->assertEquals("markAsExpired", $exception->getMessage(), "error in Shop_Seo::dropSeoIds()");
+            $this->assertSame("markAsExpired", $exception->getMessage(), "error in Shop_Seo::dropSeoIds()");
 
             return;
         }
@@ -179,7 +179,7 @@ class ShopSeoTest extends \PHPUnit\Framework\TestCase
 
         // inserting test record
         $oDb->execute("insert into oxseo (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, `OXSEOURL`, `OXTYPE`, `OXFIXED`, `OXEXPIRED`, `OXPARAMS`) values( 'testObjectId', 'testident', '1', '0', 'teststdurl', 'testseourl', 'static', '0', '', '' )");
-        $this->assertEquals(1, $oDb->getOne("select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'"));
+        $this->assertSame(1, $oDb->getOne("select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'"));
 
         // testing..
         $oView = oxNew('Shop_Seo');

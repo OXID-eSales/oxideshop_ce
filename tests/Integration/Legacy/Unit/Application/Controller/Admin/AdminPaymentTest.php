@@ -19,6 +19,6 @@ class AdminPaymentTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oView = oxNew('Admin_Payment');
-        $this->assertEquals('admin_payment', $oView->render());
+        $this->assertSame('admin_payment', $oView->render());
     }
 }

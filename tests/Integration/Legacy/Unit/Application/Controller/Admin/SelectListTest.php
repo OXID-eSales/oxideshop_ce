@@ -20,6 +20,6 @@ class SelectListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('SelectList');
-        $this->assertEquals('selectlist', $oView->render());
+        $this->assertSame('selectlist', $oView->render());
     }
 }

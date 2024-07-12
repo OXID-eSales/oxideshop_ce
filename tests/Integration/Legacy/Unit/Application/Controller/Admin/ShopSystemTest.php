@@ -20,6 +20,6 @@ class ShopSystemTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Shop_System');
-        $this->assertEquals('shop_system', $oView->render());
+        $this->assertSame('shop_system', $oView->render());
     }
 }

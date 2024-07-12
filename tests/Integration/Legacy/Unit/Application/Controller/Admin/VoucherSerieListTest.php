@@ -26,7 +26,7 @@ class VoucherSerieListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxvoucherserie', 'deleteVoucherList', '{ return true; }');
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('VoucherSerie_List'));
@@ -49,6 +49,6 @@ class VoucherSerieListTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($aViewData["updatelist"]);
         $this->assertNull($aViewData["sort"]);
 
-        $this->assertEquals('voucherserie_list', $sTplName);
+        $this->assertSame('voucherserie_list', $sTplName);
     }
 }

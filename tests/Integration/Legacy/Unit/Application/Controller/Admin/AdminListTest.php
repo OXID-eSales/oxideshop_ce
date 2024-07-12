@@ -60,11 +60,11 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testGetUserDefListSize()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(50, $oAdminList->getUserDefListSize());
+        $this->assertSame(50, $oAdminList->getUserDefListSize());
 
         $this->setRequestParameter('viewListSize', 999);
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(999, $oAdminList->getUserDefListSize());
+        $this->assertSame(999, $oAdminList->getUserDefListSize());
     }
 
     /**
@@ -75,12 +75,12 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         // testing is config value taken
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('iAdminListSize', 0);
-        $this->assertEquals(10, $oAdminList->getViewListSize());
+        $this->assertSame(10, $oAdminList->getViewListSize());
 
         // testing if cookie data is used
         $this->getSession()->setVariable('profile', [1 => 500]);
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(500, $oAdminList->getViewListSize());
+        $this->assertSame(500, $oAdminList->getViewListSize());
     }
 
     /**
@@ -89,7 +89,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testProcessFilter()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals('test string', $oAdminList->processFilter('%test  string%'));
+        $this->assertSame('test string', $oAdminList->processFilter('%test  string%'));
     }
 
     /**
@@ -98,8 +98,8 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testBuildFilter()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals(" like '%\'test\'\\\"%' ", $oAdminList->buildFilter("'test'\"", true));
-        $this->assertEquals(" = 'test' ", $oAdminList->buildFilter('test', false));
+        $this->assertSame(" like '%\'test\'\\\"%' ", $oAdminList->buildFilter("'test'\"", true));
+        $this->assertSame(" = 'test' ", $oAdminList->buildFilter('test', false));
     }
 
     /**
@@ -129,7 +129,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oAdminList->deleteEntry();
 
         $this->assertFalse(oxDb::getDb()->getOne("select oxid from oxlinks where oxid = '_testId' "));
-        $this->assertEquals(-1, $_POST['oxid']);
+        $this->assertSame(-1, $_POST['oxid']);
     }
 
     /**
@@ -161,30 +161,30 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sPage = "1 from 7";
         $oAdminList->setCurrentListPosition($sPage);
-        $this->assertEquals(0, $oAdminList->getNonPublicVar('_iCurrListPos'));
-        $this->assertEquals(0, $oAdminList->getNonPublicVar('_iOverPos'));
+        $this->assertSame(0, $oAdminList->getNonPublicVar('_iCurrListPos'));
+        $this->assertSame(0, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "3 from 7";
         $oAdminList->setCurrentListPosition($sPage);
-        $this->assertEquals(20, $oAdminList->getNonPublicVar('_iCurrListPos'));
-        $this->assertEquals(20, $oAdminList->getNonPublicVar('_iOverPos'));
+        $this->assertSame(20, $oAdminList->getNonPublicVar('_iCurrListPos'));
+        $this->assertSame(20, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "7 from 7";
 
         $oAdminList->setCurrentListPosition($sPage);
-        $this->assertEquals(60, $oAdminList->getNonPublicVar('_iCurrListPos'));
-        $this->assertEquals(60, $oAdminList->getNonPublicVar('_iOverPos'));
+        $this->assertSame(60, $oAdminList->getNonPublicVar('_iCurrListPos'));
+        $this->assertSame(60, $oAdminList->getNonPublicVar('_iOverPos'));
 
         $sPage = "80 from 7";
 
         $oAdminList->setCurrentListPosition($sPage);
-        $this->assertEquals(100, $oAdminList->getNonPublicVar('_iCurrListPos'));
-        $this->assertEquals(100, $oAdminList->getNonPublicVar('_iOverPos'));
+        $this->assertSame(100, $oAdminList->getNonPublicVar('_iCurrListPos'));
+        $this->assertSame(100, $oAdminList->getNonPublicVar('_iOverPos'));
 
 
         $sPage = '';
         $oAdminList->setCurrentListPosition($sPage);
-        $this->assertEquals(10, $oAdminList->getNonPublicVar('_iCurrListPos'));
+        $this->assertSame(10, $oAdminList->getNonPublicVar('_iCurrListPos'));
     }
 
     /**
@@ -200,14 +200,14 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $aSorting = ["oxarticles" => ["oxtitle" => "asc"]];
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, ["isMultilang", "getLanguage"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getListSorting", "getItemListBaseObject"]);
-        $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
-        $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
+        $oAdminList->expects($this->once())->method('getListSorting')->willReturn($aSorting);
+        $oAdminList->expects($this->once())->method('getItemListBaseObject')->willReturn($oListObject);
 
-        $this->assertEquals(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertSame(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
@@ -220,14 +220,14 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $aSorting = ["oxlinks" => ["oxtitle" => "asc", "oxactive" => "asc", "sort" => "asc"]];
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, ["isMultilang", "getLanguage"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getListSorting", "getItemListBaseObject"]);
-        $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
-        $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
+        $oAdminList->expects($this->once())->method('getListSorting')->willReturn($aSorting);
+        $oAdminList->expects($this->once())->method('getItemListBaseObject')->willReturn($oListObject);
 
-        $this->assertEquals(sprintf('order by `%s`.`oxtitle`, `%s`.`oxactive` desc , `%s`.`sort`', $sTable, $sTable, $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertSame(sprintf('order by `%s`.`oxtitle`, `%s`.`oxactive` desc , `%s`.`sort`', $sTable, $sTable, $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
@@ -237,12 +237,12 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testPrepareOrderByQueryByInternalParam()
     {
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, ["isMultilang", "getLanguage", "getCoreTableName"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
-        $oListObject->expects($this->once())->method('getCoreTableName')->will($this->returnValue("oxlinks"));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
+        $oListObject->expects($this->once())->method('getCoreTableName')->willReturn("oxlinks");
 
         $oList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, ["getBaseObject"]);
-        $oList->expects($this->any())->method('getBaseObject')->will($this->returnValue($oListObject));
+        $oList->method('getBaseObject')->willReturn($oListObject);
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxlinks', 1);
@@ -253,7 +253,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sResultSql = $oAdminList->prepareOrderByQuery('');
 
-        $this->assertEquals(sprintf('order by `%s`.`oxactive` desc', $sTable), trim((string) $sResultSql));
+        $this->assertSame(sprintf('order by `%s`.`oxactive` desc', $sTable), trim((string) $sResultSql));
     }
 
     /**
@@ -269,7 +269,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sResultSql = $oAdminList->prepareOrderByQuery('');
 
-        $this->assertEquals('', trim((string) $sResultSql));
+        $this->assertSame('', trim((string) $sResultSql));
     }
 
     /**
@@ -282,14 +282,14 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $aSorting = ["oxlinks" => ["oxtitle" => "desc"]];
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, ["isMultilang", "getLanguage"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getListSorting", "getItemListBaseObject"]);
-        $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
-        $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
+        $oAdminList->expects($this->once())->method('getListSorting')->willReturn($aSorting);
+        $oAdminList->expects($this->once())->method('getItemListBaseObject')->willReturn($oListObject);
 
-        $this->assertEquals(sprintf('order by `%s`.`oxtitle` desc', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertSame(sprintf('order by `%s`.`oxtitle` desc', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
@@ -302,14 +302,14 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $aSorting = ["oxlinks" => ["oxurldesc" => "asc"]];
 
         $oListObject = $this->getMock(\OxidEsales\Eshop\Application\Model\Links::class, ["isMultilang", "getLanguage"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getListSorting", "getItemListBaseObject"]);
-        $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
-        $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
+        $oAdminList->expects($this->once())->method('getListSorting')->willReturn($aSorting);
+        $oAdminList->expects($this->once())->method('getItemListBaseObject')->willReturn($oListObject);
 
-        $this->assertEquals(sprintf('order by `%s`.`oxurldesc`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertSame(sprintf('order by `%s`.`oxurldesc`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
@@ -322,14 +322,14 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $aSorting = ["oxarticles" => ["oxtitle" => "asc"]];
 
         $oListObject = $this->getMock('oxarticles', ["isMultilang", "getLanguage"]);
-        $oListObject->expects($this->once())->method('isMultilang')->will($this->returnValue(true));
-        $oListObject->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
+        $oListObject->expects($this->once())->method('isMultilang')->willReturn(true);
+        $oListObject->expects($this->once())->method('getLanguage')->willReturn(1);
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getListSorting", "getItemListBaseObject"]);
-        $oAdminList->expects($this->once())->method('getListSorting')->will($this->returnValue($aSorting));
-        $oAdminList->expects($this->once())->method('getItemListBaseObject')->will($this->returnValue($oListObject));
+        $oAdminList->expects($this->once())->method('getListSorting')->willReturn($aSorting);
+        $oAdminList->expects($this->once())->method('getItemListBaseObject')->willReturn($oListObject);
 
-        $this->assertEquals(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
+        $this->assertSame(sprintf('order by `%s`.`oxtitle`', $sTable), trim((string) $oAdminList->prepareOrderByQuery('')));
     }
 
     /**
@@ -342,7 +342,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $sSql = sprintf('select `%s`.`oxid`, `%s`.`oxshopid`, `%s`.`oxtype`, `%s`.`oxtitle`, `%s`.`oxlongdesc`, `%s`.`oxactive`, `%s`.`oxactivefrom`, `%s`.`oxactiveto`, `%s`.`oxpic`, `%s`.`oxlink`, `%s`.`oxsort`, `%s`.`oxtimestamp` from %s where 1 ', $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable, $sTable);
 
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals($sSql, $oAdminList->buildSelectString(new oxActions()));
+        $this->assertSame($sSql, $oAdminList->buildSelectString(new oxActions()));
     }
 
     /**
@@ -353,7 +353,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oAdminList = $this->getProxyClass('oxAdminList');
         $sResultSql = $oAdminList->buildSelectString(null);
 
-        $this->assertEquals('', $sResultSql);
+        $this->assertSame('', $sResultSql);
     }
 
     /**
@@ -373,7 +373,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "and ( `oxtitle` like '%testvalue%' ) and ( `oxid` = 'testid' )";
 
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -393,7 +393,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "and ( `oxtitle` like '%testvalue1%' and `oxtitle` like '%testvalue2%' and `oxtitle` like '%testvalue3%' ) and ( `oxid` = 'testid' )";
 
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -415,7 +415,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "and ( `oxtitle` = 'das' and ( `oxtitle` = '%testvalueäö%' or `oxtitle` = '%testvalue&auml;&ouml;%' ) and `oxtitle` = 'asd' ) and ( `oxid` = 'testid' )";
 
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -434,7 +434,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "";
 
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -453,7 +453,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "and ( `oxtitle` like '%0%' )";
 
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -475,7 +475,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $sResultSql = $oAdminList->prepareWhereQuery($aWhere, '');
 
         $sSql = " and ( oxorder.oxfolder = 'Neu' )";
-        $this->assertEquals($sSql, $sResultSql);
+        $this->assertSame($sSql, $sResultSql);
     }
 
     /**
@@ -484,7 +484,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testChangeselect()
     {
         $oAdminList = oxNew('oxAdminList');
-        $this->assertEquals('xxx', $oAdminList->changeselect('xxx'));
+        $this->assertSame('xxx', $oAdminList->changeselect('xxx'));
     }
 
     /**
@@ -505,7 +505,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oLinks->init('oxLinks');
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getItemList"]);
-        $oAdminList->expects($this->any())->method('getItemList')->will($this->returnValue($oLinks));
+        $oAdminList->method('getItemList')->willReturn($oLinks);
         $this->assertEquals($aResultWhere, $oAdminList->buildWhere());
     }
 
@@ -524,7 +524,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oAdminList->setNonPublicVar('_oList', $oListItem);
 
         $aBuildWhere = $oAdminList->buildWhere();
-        $this->assertEquals('', $aBuildWhere['oxcontents.oxfolder']);
+        $this->assertSame('', $aBuildWhere['oxcontents.oxfolder']);
     }
 
     /**
@@ -546,7 +546,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
 
         $oAdminList = $this->getProxyClass('oxAdminList');
         $oAdminList->setNonPublicVar('_oList', $oLinks);
-        $this->assertEquals([], $oAdminList->buildWhere());
+        $this->assertSame([], $oAdminList->buildWhere());
     }
 
     /**
@@ -570,7 +570,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oLinks->init('oxLinks');
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getItemList"]);
-        $oAdminList->expects($this->any())->method('getItemList')->will($this->returnValue($oLinks));
+        $oAdminList->method('getItemList')->willReturn($oLinks);
 
         $this->assertEquals($aResultWhere, $oAdminList->buildWhere());
     }
@@ -593,7 +593,7 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oLinks->init('oxLinks');
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getItemList"]);
-        $oAdminList->expects($this->any())->method('getItemList')->will($this->returnValue($oLinks));
+        $oAdminList->method('getItemList')->willReturn($oLinks);
 
         $this->assertEquals($aResultWhere, $oAdminList->buildWhere());
     }
@@ -627,8 +627,8 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oBaseObject->oxlinks__oxinsert->fldtype = "date";
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ["getItemList", "getItemListBaseObject"]);
-        $oAdminList->expects($this->any())->method('getItemList')->will($this->returnValue($oLinks));
-        $oAdminList->expects($this->any())->method('getItemListBaseObject')->will($this->returnValue($oBaseObject));
+        $oAdminList->method('getItemList')->willReturn($oLinks);
+        $oAdminList->method('getItemListBaseObject')->willReturn($oBaseObject);
 
         $this->assertEquals($aResultWhere, $oAdminList->buildWhere());
     }
@@ -660,9 +660,9 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
         $oPageNavi->changePage[6]->selected = 1;
 
         $this->assertEquals($oPageNavi, $aViewData['pagenavi']);
-        $this->assertEquals(0, $aViewData['lstrt']);
-        $this->assertEquals(1000, $aViewData['listsize']);
-        $this->assertEquals(0, $aViewData['iListFillsize']);
+        $this->assertSame(0, $aViewData['lstrt']);
+        $this->assertSame(1000, $aViewData['listsize']);
+        $this->assertSame(0, $aViewData['iListFillsize']);
     }
 
     /**
@@ -671,17 +671,17 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     public function testSetupNavigation()
     {
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ['getTabs', 'getActiveTab']);
-        $oNavigation->expects($this->once())->method('getTabs')->with($this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('editnavi'));
-        $oNavigation->expects($this->exactly(2))->method('getActiveTab')->with($this->equalTo('xxx'), $this->equalTo(0))->will($this->onConsecutiveCalls('actlocation', 'default_edit'));
+        $oNavigation->expects($this->once())->method('getTabs')->with('xxx', 0)->willReturn('editnavi');
+        $oNavigation->expects($this->exactly(2))->method('getActiveTab')->with('xxx', 0)->willReturnOnConsecutiveCalls('actlocation', 'default_edit');
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ['getNavigation']);
-        $oAdminList->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
+        $oAdminList->expects($this->once())->method('getNavigation')->willReturn($oNavigation);
 
         $oAdminList->setupNavigation('xxx');
-        $this->assertEquals('editnavi', $oAdminList->getViewDataElement('editnavi'));
-        $this->assertEquals('actlocation', $oAdminList->getViewDataElement('actlocation'));
-        $this->assertEquals('default_edit', $oAdminList->getViewDataElement('default_edit'));
-        $this->assertEquals(0, $oAdminList->getViewDataElement('actedit'));
+        $this->assertSame('editnavi', $oAdminList->getViewDataElement('editnavi'));
+        $this->assertSame('actlocation', $oAdminList->getViewDataElement('actlocation'));
+        $this->assertSame('default_edit', $oAdminList->getViewDataElement('default_edit'));
+        $this->assertSame(0, $oAdminList->getViewDataElement('actedit'));
     }
 
     /**
@@ -691,17 +691,17 @@ class AdminListTest extends \PHPUnit\Framework\TestCase
     {
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ['getTabs', 'getActiveTab']);
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, ['getNavigation']);
-        $oAdminList->expects($this->any())->method('getNavigation')->will($this->returnValue($oNavigation));
+        $oAdminList->method('getNavigation')->willReturn($oNavigation);
 
         //setting active tab 1
         $this->setRequestParameter('actedit', 1);
         $oAdminList->setupNavigation('xxx');
-        $this->assertEquals('1', $oAdminList->getViewDataElement('actedit'));
+        $this->assertSame('1', $oAdminList->getViewDataElement('actedit'));
 
         //creating new item (oxid = -1)
         $this->setRequestParameter('oxid', -1);
         $oAdminList->setupNavigation('xxx');
-        $this->assertEquals('0', $oAdminList->getViewDataElement('actedit'));
+        $this->assertSame('0', $oAdminList->getViewDataElement('actedit'));
     }
 
     /**

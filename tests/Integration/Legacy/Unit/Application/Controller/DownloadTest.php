@@ -24,15 +24,15 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, ['load', 'processOrderFile', 'getFileId']);
-        $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
-        $oOrderFile->expects($this->any())->method('getFileId')->will($this->returnValue('_fileId'));
+        $oOrderFile->method('load')->willReturn(true);
+        $oOrderFile->method('processOrderFile')->willReturn('_fileId');
+        $oOrderFile->method('getFileId')->willReturn('_fileId');
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, ['load', 'download', 'exist']);
-        $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('exist')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('download');
+        $oFile->method('load')->willReturn(true);
+        $oFile->method('exist')->willReturn(true);
+        $oFile->method('download');
         oxTestModules::addModuleObject('oxFile', $oFile);
 
         $oDownloads = oxNew('Download');
@@ -51,7 +51,7 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
             $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $exception) {
-            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
+            $this->assertSame(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -68,19 +68,19 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxFile", "download", "{ throw new exception( 'testDownload', 123 );}");
         $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, ['load', 'processOrderFile']);
-        $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
+        $oOrderFile->method('load')->willReturn(true);
+        $oOrderFile->method('processOrderFile')->willReturn('_fileId');
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, ['load', 'download']);
-        $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
+        $oFile->method('load')->willReturn(true);
         oxTestModules::addModuleObject('oxFile', $oFile);
         try {
             $oDownloads = oxNew('Download');
             ;
             $oDownloads->render();
         } catch (Exception $exception) {
-            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
+            $this->assertSame(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -96,15 +96,15 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}");
         $this->setRequestParameter('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, ['load', 'processOrderFile']);
-        $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
+        $oOrderFile->method('load')->willReturn(true);
+        $oOrderFile->method('processOrderFile')->willReturn('_fileId');
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         try {
             $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $exception) {
-            $this->assertEquals(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
+            $this->assertSame(123, $exception->getCode(), 'Error executing "testRenderWrongLink" test');
 
             return;
         }
@@ -121,15 +121,15 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('sorderfileid', "_testOrderFile");
 
         $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, ['load', 'processOrderFile', 'getFileId']);
-        $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue('_fileId'));
-        $oOrderFile->expects($this->any())->method('getFileId')->will($this->returnValue('_fileId'));
+        $oOrderFile->method('load')->willReturn(true);
+        $oOrderFile->method('processOrderFile')->willReturn('_fileId');
+        $oOrderFile->method('getFileId')->willReturn('_fileId');
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, ['load', 'download', 'exist']);
-        $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('exist')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('download')->will($this->throwException(oxNew('oxException')));
+        $oFile->method('load')->willReturn(true);
+        $oFile->method('exist')->willReturn(true);
+        $oFile->method('download')->willThrowException(oxNew('oxException'));
         oxTestModules::addModuleObject('oxFile', $oFile);
 
         $oException = oxNew('oxExceptionToDisplay');
@@ -143,7 +143,7 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
             $oDownloads = oxNew('Download');
             $oDownloads->render();
         } catch (Exception $exception) {
-            $this->assertEquals(123, $exception->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test');
+            $this->assertSame(123, $exception->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test');
 
             return;
         }
@@ -161,15 +161,15 @@ class DownloadTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('sorderfileid', "_testOrderFile");
 
         $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, ['load', 'processOrderFile', 'getFileId']);
-        $oOrderFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oOrderFile->expects($this->any())->method('getFileId')->will($this->returnValue('_fileId'));
-        $oOrderFile->expects($this->any())->method('processOrderFile')->will($this->returnValue(false));
+        $oOrderFile->method('load')->willReturn(true);
+        $oOrderFile->method('getFileId')->willReturn('_fileId');
+        $oOrderFile->method('processOrderFile')->willReturn(false);
         oxTestModules::addModuleObject('oxOrderFile', $oOrderFile);
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, ['load', 'download', 'exist']);
-        $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('exist')->will($this->returnValue(true));
-        $oFile->expects($this->any())->method('download');
+        $oFile->method('load')->willReturn(true);
+        $oFile->method('exist')->willReturn(true);
+        $oFile->method('download');
         oxTestModules::addModuleObject('oxFile', $oFile);
 
         $oException = oxNew('oxExceptionToDisplay');

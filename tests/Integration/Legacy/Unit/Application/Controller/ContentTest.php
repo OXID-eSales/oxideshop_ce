@@ -65,8 +65,8 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     public function testCanShowContent()
     {
         $oView = $this->getMock(ContentController::class, ["getUser", "isEnabledPrivateSales"], [], '', false);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(true));
+        $oView->method('getUser')->willReturn(false);
+        $oView->method('isEnabledPrivateSales')->willReturn(true);
 
         $this->assertTrue($oView->canShowContent("oxagb"));
         $this->assertTrue($oView->canShowContent("oxrightofwithdrawal"));
@@ -74,8 +74,8 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oView->canShowContent("testcontentident"));
 
         $oView = $this->getMock(ContentController::class, ["getUser", "isEnabledPrivateSales"], [], '', false);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
+        $oView->method('getUser')->willReturn(false);
+        $oView->method('isEnabledPrivateSales')->willReturn(false);
         $this->assertTrue($oView->canShowContent("testcontentident"));
     }
 
@@ -100,7 +100,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('oxcid', 'testseoobjectid');
 
         $oContentView = oxNew('content');
-        $this->assertEquals('testseoobjectid', $oContentView->getSeoObjectId());
+        $this->assertSame('testseoobjectid', $oContentView->getSeoObjectId());
     }
 
     /**
@@ -112,7 +112,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('oxubase');
         $oContentView = oxNew('content');
-        $this->assertEquals($oView->getViewId() . '|testparam', $oContentView->getViewId());
+        $this->assertSame($oView->getViewId() . '|testparam', $oContentView->getViewId());
     }
 
     public function testRender(): void
@@ -130,7 +130,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $oContentView->expects($this->atLeastOnce())->method('canShowContent')->willReturn(true);
         $oContentView->expects($this->atLeastOnce())->method('getContent')->willReturn($oContent);
         $oContentView->expects($this->atLeastOnce())->method('showPlainTemplate')->willReturn('true');
-        $this->assertEquals('page/info/content_plain', $oContentView->render());
+        $this->assertSame('page/info/content_plain', $oContentView->render());
     }
 
     /**
@@ -146,10 +146,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         try {
             // testing..
             $oView = $this->getMock(ContentController::class, ["canShowContent"], [], '', false);
-            $oView->expects($this->once())->method('canShowContent')->will($this->returnValue(false));
+            $oView->expects($this->once())->method('canShowContent')->willReturn(false);
             $oView->render();
         } catch (Exception $exception) {
-            $this->assertEquals("redirect", $exception->getMessage(), "Error in oxsclogincontent::getContentId()");
+            $this->assertSame("redirect", $exception->getMessage(), "Error in oxsclogincontent::getContentId()");
 
             return;
         }
@@ -164,10 +164,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     {
         $oContent = oxNew('oxArticle');
         $oContent->oxcontents__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, ['__get']);
-        $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
+        $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->willReturn('testtitle');
 
         $oContentView = $this->getMock(ContentController::class, ['getContent']);
-        $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oContentView->expects($this->once())->method('getContent')->willReturn($oContent);
 
         $oView = oxNew('oxubase');
         $this->assertEquals($oView->prepareMetaKeyword('testtitle'), $oContentView->prepareMetaKeyword(null));
@@ -180,10 +180,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     {
         $oContent = oxNew('oxArticle');
         $oContent->oxcontents__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, ['__get']);
-        $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
+        $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->willReturn('testtitle');
 
         $oContentView = $this->getMock(ContentController::class, ['getContent']);
-        $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oContentView->expects($this->once())->method('getContent')->willReturn($oContent);
 
         $oView = oxNew('oxubase');
         $this->assertEquals($oView->prepareMetaDescription('testtitle'), $oContentView->prepareMetaDescription(null));
@@ -195,7 +195,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     public function testGetContentCategoryNoCategoryAssigned()
     {
         $oView = $this->getMock(ContentController::class, ['getContent']);
-        $oView->expects($this->once())->method('getContent')->will($this->returnValue(new oxcontent()));
+        $oView->expects($this->once())->method('getContent')->willReturn(new oxcontent());
 
         $this->assertFalse($oView->getContentCategory());
     }
@@ -209,7 +209,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $oContent->oxcontents__oxtype = new oxfield(2);
 
         $oView = $this->getMock(ContentController::class, ['getContent']);
-        $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oView->expects($this->once())->method('getContent')->willReturn($oContent);
 
         $this->assertEquals($oContent, $oView->getContentCategory());
     }
@@ -246,16 +246,16 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('plain', 0);
 
         $oView = $this->getMock(ContentController::class, ['getUser']);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $oView->method('getUser')->willReturn(false);
         $this->assertTrue($oView->showPlainTemplate());
 
         $this->setRequestParameter('plain', 0);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['isTermsAccepted']);
-        $oUser->expects($this->any())->method('isTermsAccepted')->will($this->returnValue(true));
+        $oUser->method('isTermsAccepted')->willReturn(true);
 
         $oView = $this->getMock(ContentController::class, ['getUser']);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oView->method('getUser')->willReturn($oUser);
         $this->assertFalse($oView->showPlainTemplate());
     }
 
@@ -329,7 +329,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('tpl', 'test');
         $oObj = $this->getProxyClass("content");
-        $this->assertEquals('message/test', $oObj->getTplName());
+        $this->assertSame('message/test', $oObj->getTplName());
     }
 
     /**
@@ -341,9 +341,9 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blPsLoginEnabled", false);
 
         $oView = $this->getMock(ContentController::class, ['getTplName']);
-        $oView->expects($this->once())->method('getTplName')->will($this->returnValue('test'));
+        $oView->expects($this->once())->method('getTplName')->willReturn('test');
 
-        $this->assertEquals('test', $oView->render());
+        $this->assertSame('test', $oView->render());
     }
 
     public function testContentNotFound()
@@ -351,17 +351,17 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('oxcid', null);
         $this->setRequestParameter('oxloadid', null);
         $oView = $this->getMock(ContentController::class, ['getTplName', 'getContentId']);
-        $oView->expects($this->once())->method('getTplName')->will($this->returnValue(''));
-        $oView->expects($this->any())->method('getContentId')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getTplName')->willReturn('');
+        $oView->method('getContentId')->willReturn(false);
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, ['handlePageNotFoundError']);
-        $oUtils->expects($this->once())->method('handlePageNotFoundError')->will($this->throwException(new Exception("404")));
+        $oUtils->expects($this->once())->method('handlePageNotFoundError')->willThrowException(new Exception("404"));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
         try {
             $oView->render();
         } catch (Exception $exception) {
-            $this->assertEquals('404', $exception->getMessage());
+            $this->assertSame('404', $exception->getMessage());
 
             return;
         }
@@ -376,7 +376,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     {
         $oContent = oxNew('Content');
 
-        $this->assertEquals(1, count($oContent->getBreadCrumb()));
+        $this->assertCount(1, $oContent->getBreadCrumb());
     }
 
     /**
@@ -386,7 +386,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('oxcid', $this->_oObj->getId());
         $oContent = oxNew('content');
-        $this->assertEquals('test', $oContent->getTitle());
+        $this->assertSame('test', $oContent->getTitle());
     }
 
     /**
@@ -414,10 +414,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oViewProxy = $this->getProxyClass('Content');
         $sExpResp = $oViewProxy->getNonPublicVar('_sBusinessTemplate');
-        $this->assertFalse(empty($sExpResp));
+        $this->assertNotEmpty($sExpResp);
 
         $oView = $this->getMock(ContentController::class, ['getContent']);
-        $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oView->expects($this->once())->method('getContent')->willReturn($oContent);
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
     }
@@ -435,10 +435,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oViewProxy = $this->getProxyClass('Content');
         $sExpResp = $oViewProxy->getNonPublicVar('_sDeliveryTemplate');
-        $this->assertFalse(empty($sExpResp));
+        $this->assertNotEmpty($sExpResp);
 
         $oView = $this->getMock(ContentController::class, ['getContent']);
-        $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oView->expects($this->once())->method('getContent')->willReturn($oContent);
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
     }
@@ -456,10 +456,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oViewProxy = $this->getProxyClass('Content');
         $sExpResp = $oViewProxy->getNonPublicVar('_sPaymentTemplate');
-        $this->assertFalse(empty($sExpResp));
+        $this->assertNotEmpty($sExpResp);
 
         $oView = $this->getMock(ContentController::class, ['getContent']);
-        $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
+        $oView->expects($this->once())->method('getContent')->willReturn($oContent);
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
     }
@@ -490,7 +490,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaPayments();
-        $this->assertTrue($oResp instanceof PaymentList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\PaymentList::class, $oResp);
     }
 
     /**
@@ -502,7 +502,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaDeliverySets();
-        $this->assertTrue($oResp instanceof DeliverySetList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\DeliverySetList::class, $oResp);
     }
 
     /**
@@ -534,10 +534,10 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Content');
         $oResp = $oView->getDeliveryChargeSpecs();
 
-        $this->assertEquals(5, count($oResp));
+        $this->assertCount(5, $oResp);
         foreach ($oResp as $oDelivery) {
-            $this->assertTrue($oDelivery instanceof Delivery);
-            $this->assertTrue($oDelivery->deliverysetmethods instanceof DeliverySetList);
+            $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Delivery::class, $oDelivery);
+            $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\DeliverySetList::class, $oDelivery->deliverysetmethods);
         }
     }
 
@@ -550,7 +550,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getDeliveryList();
-        $this->assertTrue($oResp instanceof DeliveryList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\DeliveryList::class, $oResp);
     }
 
     /**
@@ -580,8 +580,8 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $startTime = time() - (2 * 60 * 60);
         $endTime = $startTime + (3 * 24 * 60 * 60);
 
-        $this->assertTrue(date('Y-m-d\TH:i:s', $startTime) <= $aResp['validfrom']);
-        $this->assertTrue(date('Y-m-d\TH:i:s', $endTime) <= $aResp['validthrough']);
+        $this->assertLessThanOrEqual($aResp['validfrom'], date('Y-m-d\TH:i:s', $startTime));
+        $this->assertLessThanOrEqual($aResp['validthrough'], date('Y-m-d\TH:i:s', $endTime));
     }
 
     /**
@@ -597,7 +597,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('oxcid', $this->_oObj->getId());
         $oContent = oxNew('content');
 
-        $this->assertEquals('ABSSSSSSSS', $oContent->getParsedContent(), 'Result from smarty not same as in content page.');
+        $this->assertSame('ABSSSSSSSS', $oContent->getParsedContent(), 'Result from smarty not same as in content page.');
 
         // Check if second CMS page will be generated with different content.
         $oSecond = oxNew('oxcontent');
@@ -615,7 +615,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('oxcid', $oSecond->getId());
         $oContent = oxNew('content');
 
-        $this->assertEquals('ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.');
+        $this->assertSame('ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.');
     }
 
     /**
@@ -626,13 +626,13 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam('blSeoMode', true);
 
         $contentMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, ["getBaseSeoLink", "getBaseStdLink"]);
-        $contentMock->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
-        $contentMock->expects($this->never())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
+        $contentMock->expects($this->once())->method('getBaseSeoLink')->willReturn("testSeoUrl");
+        $contentMock->expects($this->never())->method('getBaseStdLink')->willReturn("testStdUrl");
 
         $contentView = $this->getMock(ContentController::class, ["getContent"]);
-        $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
+        $contentView->expects($this->once())->method('getContent')->willReturn($contentMock);
 
-        $this->assertEquals("testSeoUrl", $contentView->getCanonicalUrl());
+        $this->assertSame("testSeoUrl", $contentView->getCanonicalUrl());
     }
 
     /**
@@ -643,13 +643,13 @@ class ContentTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam('blSeoMode', false);
 
         $contentMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, ["getBaseSeoLink", "getBaseStdLink"]);
-        $contentMock->expects($this->never())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
-        $contentMock->expects($this->once())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
+        $contentMock->expects($this->never())->method('getBaseSeoLink')->willReturn("testSeoUrl");
+        $contentMock->expects($this->once())->method('getBaseStdLink')->willReturn("testStdUrl");
 
         $contentView = $this->getMock(ContentController::class, ["getContent"]);
-        $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
+        $contentView->expects($this->once())->method('getContent')->willReturn($contentMock);
 
-        $this->assertEquals("testStdUrl", $contentView->getCanonicalUrl());
+        $this->assertSame("testStdUrl", $contentView->getCanonicalUrl());
     }
 
     /**
@@ -658,7 +658,7 @@ class ContentTest extends \PHPUnit\Framework\TestCase
     public function testGetCanonicalUrlNoContent()
     {
         $contentView = $this->getMock(ContentController::class, ['getContent']);
-        $contentView->expects($this->once())->method('getContent')->will($this->returnValue(null));
+        $contentView->expects($this->once())->method('getContent')->willReturn(null);
         $this->assertSame('', $contentView->getCanonicalUrl());
     }
 }

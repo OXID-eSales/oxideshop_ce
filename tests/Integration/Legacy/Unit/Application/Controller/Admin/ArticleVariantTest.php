@@ -28,11 +28,11 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Article_Variant');
-        $this->assertEquals('article_variant', $oView->render());
+        $this->assertSame('article_variant', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertTrue($aViewData["mylist"] instanceof ArticleList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aViewData["mylist"]);
     }
 
     /**
@@ -45,14 +45,14 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Article_Variant');
-        $this->assertEquals('article_variant', $oView->render());
+        $this->assertSame('article_variant', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertTrue($aViewData["parentarticle"] instanceof Article);
-        $this->assertEquals(1, $aViewData["issubvariant"]);
-        $this->assertEquals(1, $aViewData["readonly"]);
-        $this->assertTrue($aViewData["mylist"] instanceof ArticleList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["parentarticle"]);
+        $this->assertSame(1, $aViewData["issubvariant"]);
+        $this->assertSame(1, $aViewData["readonly"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aViewData["mylist"]);
     }
 
     /**
@@ -68,7 +68,7 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Variant');
             $oView->savevariant();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
 
             return;
         }
@@ -88,7 +88,7 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Variant');
             $oView->savevariant();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Variant::savevariant()");
 
             return;
         }
@@ -128,7 +128,7 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Variant');
             $oView->deleteVariant();
         } catch (Exception $exception) {
-            $this->assertEquals("delete", $exception->getMessage(), "error in Article_Variant::deleteVariant()");
+            $this->assertSame("delete", $exception->getMessage(), "error in Article_Variant::deleteVariant()");
 
             return;
         }
@@ -148,7 +148,7 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Variant');
             $oView->changename();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Variant::changename()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Variant::changename()");
 
             return;
         }
@@ -171,7 +171,7 @@ class ArticleVariantTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Variant');
             $oView->addsel();
         } catch (Exception $exception) {
-            $this->assertEquals("genVariantFromSell", $exception->getMessage(), "error in Article_Variant::addsel()");
+            $this->assertSame("genVariantFromSell", $exception->getMessage(), "error in Article_Variant::addsel()");
 
             return;
         }

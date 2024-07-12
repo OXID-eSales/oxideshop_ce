@@ -126,9 +126,9 @@ class SelectlistTest extends \PHPUnit\Framework\TestCase
         $aSelList = $oSelList->getFieldList();
 
         // checking loaded data
-        $this->assertEquals($this->encode('&amp;&test1, 10') . ' +14,33 CHF', $aSelList[0]->name);
-        $this->assertEquals("test2, 10 +14,33 CHF", $aSelList[1]->name);
-        $this->assertEquals("test3, 10 +14,33 CHF", $aSelList[2]->name);
+        $this->assertSame($this->encode('&amp;&test1, 10') . ' +14,33 CHF', $aSelList[0]->name);
+        $this->assertSame("test2, 10 +14,33 CHF", $aSelList[1]->name);
+        $this->assertSame("test3, 10 +14,33 CHF", $aSelList[2]->name);
     }
 
     /**
@@ -137,18 +137,18 @@ class SelectlistTest extends \PHPUnit\Framework\TestCase
     public function testSetActiveSelectionByIndex()
     {
         $oSel0 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, ["setActiveState"], [], '', false);
-        $oSel0->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
+        $oSel0->expects($this->once())->method('setActiveState')->with(false);
 
         $oSel1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, ["setActiveState"], [], '', false);
-        $oSel1->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
+        $oSel1->expects($this->once())->method('setActiveState')->with(false);
 
         $oSel2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, ["setActiveState"], [], '', false);
-        $oSel2->expects($this->once())->method('setActiveState')->with($this->equalTo(true));
+        $oSel2->expects($this->once())->method('setActiveState')->with(true);
 
         $aSelections = [$oSel0, $oSel1, $oSel2];
 
         $oSelectList = $this->getMock(\OxidEsales\Eshop\Application\Model\SelectList::class, ["getSelections"]);
-        $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
+        $oSelectList->expects($this->once())->method('getSelections')->willReturn($aSelections);
         $oSelectList->setActiveSelectionByIndex(2);
 
         $this->assertEquals($oSel2, $oSelectList->getActiveSelection());
@@ -162,8 +162,8 @@ class SelectlistTest extends \PHPUnit\Framework\TestCase
         $aSelections = ["oxSel0", "oxSel1", "oxSel2"];
 
         $oSelectList = $this->getMock(\OxidEsales\Eshop\Application\Model\SelectList::class, ["getSelections"]);
-        $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
-        $this->assertEquals("oxSel0", $oSelectList->getActiveSelection());
+        $oSelectList->expects($this->once())->method('getSelections')->willReturn($aSelections);
+        $this->assertSame("oxSel0", $oSelectList->getActiveSelection());
     }
 
     /**
@@ -192,7 +192,7 @@ class SelectlistTest extends \PHPUnit\Framework\TestCase
     {
         $oSelectList = oxNew('oxselectlist');
         $oSelectList->oxselectlist__oxtitle = new oxField("test");
-        $this->assertEquals("test", $oSelectList->getLabel());
+        $this->assertSame("test", $oSelectList->getLabel());
     }
 
     /**
@@ -206,6 +206,6 @@ class SelectlistTest extends \PHPUnit\Framework\TestCase
 
         // setting and checking VAT
         $oSelectList->setVat(123);
-        $this->assertEquals(123, $oSelectList->getVat());
+        $this->assertSame(123, $oSelectList->getVat());
     }
 }

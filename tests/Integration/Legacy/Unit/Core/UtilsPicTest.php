@@ -75,7 +75,7 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
     }
 
-    protected function resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
+    private function resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
         $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
@@ -169,9 +169,10 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function testIsPicDeletableDataProvider()
+    public function testIsPicDeletableDataProvider(): \Iterator
     {
-        return [['testOK.jpg', 1, true], ['testFail.jpg', 2, false]];
+        yield ['testOK.jpg', 1, true];
+        yield ['testFail.jpg', 2, false];
     }
 
     /**
@@ -232,11 +233,11 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
     public function testOverwritePicGoodParams()
     {
         $oFiles = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, ['getImageDirByType']);
-        $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/test_image_dir/'));
+        $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->willReturn('/test_image_dir/');
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
         $oUtilsPic = $this->getMock(UtilsPic::class, ['safePictureDelete']);
-        $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('yyy'), $this->equalTo('yyy/test_image_dir/'), $this->equalTo('oxtbl'), $this->equalTo('oxpic'))->will($this->returnValue(true));
+        $oUtilsPic->expects($this->once())->method('safePictureDelete')->with('yyy', 'yyy/test_image_dir/', 'oxtbl', 'oxpic')->willReturn(true);
 
         $oObject = new stdClass();
         $oObject->oxtbl__oxpic = new oxField('yyy', oxField::T_RAW);
@@ -249,11 +250,11 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
     public function testOverwritePic_generatesCorectFilePath()
     {
         $oFiles = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, ['getImageDirByType']);
-        $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/testType_dir/'));
+        $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->willReturn('/testType_dir/');
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
         $oUtilsPic = $this->getMock(UtilsPic::class, ['safePictureDelete']);
-        $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('testPictureName'), $this->equalTo('testAbsPath/testType_dir/'));
+        $oUtilsPic->expects($this->once())->method('safePictureDelete')->with('testPictureName', 'testAbsPath/testType_dir/');
 
         $oObject = new stdclass();
         $oObject->oxtbl__oxpic = new oxField('testPictureName', oxField::T_RAW);
@@ -268,7 +269,7 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
     public function testSafePictureDeleteMustFailDeletion()
     {
         $oUtilsPic = $this->getMock(UtilsPic::class, ['isPicDeletable', 'deletePicture']);
-        $oUtilsPic->expects($this->once())->method('isPicDeletable')->will($this->returnValue(false));
+        $oUtilsPic->expects($this->once())->method('isPicDeletable')->willReturn(false);
         $oUtilsPic->expects($this->never())->method('deletePicture');
 
         $this->assertFalse($oUtilsPic->safePictureDelete('', '', '', ''));
@@ -278,8 +279,8 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
     public function testSafePictureDeleteMustSucceed()
     {
         $oUtilsPic = $this->getMock(UtilsPic::class, ['isPicDeletable', 'deletePicture']);
-        $oUtilsPic->expects($this->once())->method('isPicDeletable')->will($this->returnValue(true));
-        $oUtilsPic->expects($this->once())->method('deletePicture')->will($this->returnValue(true));
+        $oUtilsPic->expects($this->once())->method('isPicDeletable')->willReturn(true);
+        $oUtilsPic->expects($this->once())->method('deletePicture')->willReturn(true);
 
         $this->assertTrue($oUtilsPic->safePictureDelete('', '', '', ''));
     }
@@ -296,7 +297,7 @@ final class UtilsPicTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->resizeGIFTest($sTestImageFileGIF, $sTestImageFileResizedGIF, 1));
     }
 
-    protected function resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
+    private function resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
         $myUtils = oxNew('oxUtilsPic');
         $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;

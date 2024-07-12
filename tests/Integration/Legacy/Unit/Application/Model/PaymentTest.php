@@ -26,7 +26,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
     /**
      * Tear down the fixture.
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxobject2group', 'oxgroupsid');
         parent::tearDown();
@@ -81,7 +81,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setDynValues(['field0' => 'val0']);
         $payment->setDynValue('field1', 'val1');
 
-        $this->assertEquals(['field0' => 'val0', 'field1' => 'val1'], $payment->getDynValues());
+        $this->assertSame(['field0' => 'val0', 'field1' => 'val1'], $payment->getDynValues());
     }
 
     public function testGetDynValues()
@@ -99,13 +99,13 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->load('oxidpayadvance');
 
         $basePrice = 100.0;
-        $this->assertEquals(0, $payment->getPaymentValue($basePrice));
+        $this->assertSame(0, $payment->getPaymentValue($basePrice));
 
         $payment->load('oxidcashondel');
-        $this->assertEquals(7.5, $payment->getPaymentValue($basePrice));
+        $this->assertEqualsWithDelta(7.5, $payment->getPaymentValue($basePrice), PHP_FLOAT_EPSILON);
 
         $payment->oxpayments__oxaddsum = new oxField(-105, oxField::T_RAW);
-        $this->assertEquals(100, $payment->getPaymentValue($basePrice));
+        $this->assertSame(100, $payment->getPaymentValue($basePrice));
     }
 
     public function testGettingPaymentValueInSpecialCurrency()
@@ -116,20 +116,20 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->load('oxidpayadvance');
 
         $basePrice = 100.0;
-        $this->assertEquals(0, $payment->getPaymentValue($basePrice));
+        $this->assertSame(0, $payment->getPaymentValue($basePrice));
 
         $payment->load('oxidcashondel');
-        $this->assertEquals(10.7445, $payment->getPaymentValue($basePrice));
+        $this->assertEqualsWithDelta(10.7445, $payment->getPaymentValue($basePrice), PHP_FLOAT_EPSILON);
 
         $payment->oxpayments__oxaddsum = new oxField(-105, oxField::T_RAW);
-        $this->assertEquals(100, $payment->getPaymentValue($basePrice));
+        $this->assertSame(100, $payment->getPaymentValue($basePrice));
     }
 
     public function testGetPaymentCountries()
     {
         $payment = oxNew(Payment::class);
         $payment->load('oxiddebitnote');
-        $this->assertEquals(3, count($payment->getCountries()), "Failed getting countries list");
+        $this->assertCount(3, $payment->getCountries(), "Failed getting countries list");
     }
 
     public function testPaymentDeleteFromDb()
@@ -147,10 +147,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->delete('oxpaymenttest');
 
         $q = "select count(oxid) from oxpayments where oxid = 'oxpaymenttest' ";
-        $this->assertEquals(0, $db->getOne($q), "Failed deleting payment items from oxpayments table");
+        $this->assertSame(0, $db->getOne($q), "Failed deleting payment items from oxpayments table");
 
         $q = "select count(oxid) from oxobject2payment where oxid = 'oxob2p_testid' ";
-        $this->assertEquals(0, $db->getOne($q), "Failed deleting items from oxobject2payment table");
+        $this->assertSame(0, $db->getOne($q), "Failed deleting items from oxobject2payment table");
     }
 
     public function testPaymentDeleteNotSetObject()
@@ -167,10 +167,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->delete();
 
         $q = "select count(oxid) from oxpayments where oxid = 'oxpaymenttest' ";
-        $this->assertEquals(1, $db->getOne($q));
+        $this->assertSame(1, $db->getOne($q));
 
         $q = "select count(oxid) from oxobject2payment where oxid = 'oxob2p_testid' ";
-        $this->assertEquals(1, $db->getOne($q));
+        $this->assertSame(1, $db->getOne($q));
     }
 
     public function testIsValidPaymentEmptyPaymentButThereAreCountries()
@@ -184,7 +184,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
 
         $isValidPayment = $payment->isValidPayment([], $this->getConfig()->getBaseShopId(), $user, 0.0, 'oxidstandard');
         $this->assertFalse($isValidPayment);
-        $this->assertEquals(-3, $payment->getPaymentErrorNumber());
+        $this->assertSame(-3, $payment->getPaymentErrorNumber());
     }
 
     public function testIsValidPaymentEmptyPaymentAndThereAreNoCountries()
@@ -194,7 +194,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->oxpayments__oxactive = new oxField(1);
 
         $user = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getActiveCountry']);
-        $user->expects($this->once())->method('getActiveCountry')->will($this->returnValue('otherCountry'));
+        $user->expects($this->once())->method('getActiveCountry')->willReturn('otherCountry');
         $user->Load('oxdefaultadmin');
 
         $isValidPayment = $payment->isValidPayment([], $this->getConfig()->getBaseShopId(), $user, 0.0, 'oxidstandard');
@@ -212,7 +212,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->oxpayments__oxid = new oxField('oxempty');
         $payment->oxpayments__oxactive = new oxField(1);
         $this->assertFalse($payment->isValidPayment([], $this->getConfig()->getBaseShopId(), $user, 0.0, 'oxidstandard'));
-        $this->assertEquals(-2, $payment->getPaymentErrorNumber());
+        $this->assertSame(-2, $payment->getPaymentErrorNumber());
     }
 
     public function testIsValidPaymentOxemptyIsInActive()
@@ -225,7 +225,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $user->Load('oxdefaultadmin');
 
         $this->assertFalse($payment->isValidPayment([], $this->getConfig()->getBaseShopId(), $user, 0.0, 'oxidstandard'));
-        $this->assertEquals(-2, $payment->getPaymentErrorNumber());
+        $this->assertSame(-2, $payment->getPaymentErrorNumber());
     }
 
     public function testIsValidPaymentDebitNoteChecking()
@@ -336,20 +336,20 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $user->load('oxdefaultadmin');
 
         $isValidPayment = $payment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $user, 1000001, 'oxidstandard');
-        $this->assertEquals(-3, $payment->getNonPublicVar('_iPaymentError'));
+        $this->assertSame(-3, $payment->getNonPublicVar('_iPaymentError'));
 
-        $isValidPayment = $payment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $user, 1000001, null);
-        $this->assertEquals(-2, $payment->getNonPublicVar('_iPaymentError'));
+        $payment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $user, 1000001, null);
+        $this->assertSame(-2, $payment->getNonPublicVar('_iPaymentError'));
 
         $payment->isValidPayment(null, $this->getConfig()->getBaseShopId(), $user, 1000001, null);
-        $this->assertEquals(1, $payment->getNonPublicVar('_iPaymentError'));
+        $this->assertSame(1, $payment->getNonPublicVar('_iPaymentError'));
     }
 
     public function testGetPaymentErrorNumber()
     {
         $payment = $this->getProxyClass("oxPayment");
         $payment->setNonPublicVar('_iPaymentError', 2);
-        $this->assertEquals(2, $payment->getPaymentErrorNumber());
+        $this->assertSame(2, $payment->getPaymentErrorNumber());
     }
 
     public function testSetPaymentVatOnTop()

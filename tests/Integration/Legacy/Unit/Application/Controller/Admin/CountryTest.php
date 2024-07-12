@@ -20,6 +20,6 @@ class CountryTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Country');
-        $this->assertEquals('country', $oView->render());
+        $this->assertSame('country', $oView->render());
     }
 }

@@ -19,6 +19,7 @@ use oxTestModules;
  */
 class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 {
+    public $_sArticleID;
     use FieldTestingTrait;
 
     /**
@@ -60,7 +61,7 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
@@ -82,12 +83,12 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecommList);
         $oRecomm->removeArticle();
     }
 
@@ -100,7 +101,7 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
@@ -123,13 +124,13 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getActiveRecommList", "setActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
-        $oRecomm->expects($this->once())->method('setActiveRecommList')->with($this->equalTo(false));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecommList);
+        $oRecomm->expects($this->once())->method('setActiveRecommList')->with(false);
         $oRecomm->editList();
     }
 
@@ -140,12 +141,12 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn(false);
         $oRecomm->saveRecommList();
 
         $this->assertFalse($oRecomm->isSavedList());
@@ -160,13 +161,13 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
-        $oRecomm->expects($this->any())->method('getActiveRecommList');
+        $oRecomm->expects($this->once())->method('getUser')->willReturn(false);
+        $oRecomm->method('getActiveRecommList');
         $oRecomm->saveRecommList();
 
         $this->assertFalse($oRecomm->isSavedList());
@@ -186,17 +187,17 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(false));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn($oUser);
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn(false);
         $oRecomm->saveRecommList();
 
         $this->assertTrue($oRecomm->isSavedList());
-        $this->assertEquals("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
+        $this->assertSame("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
     }
 
     /**
@@ -220,17 +221,17 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn($oUser);
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecommList);
         $oRecomm->saveRecommList();
 
         $this->assertTrue($oRecomm->isSavedList());
-        $this->assertEquals("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxid='" . $oRecommList->getId() . "' and oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
+        $this->assertSame("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxid='" . $oRecommList->getId() . "' and oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
     }
 
     // #1428: xss possible while saving recomm list
@@ -253,17 +254,17 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn($oUser);
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecommList);
         $oRecomm->saveRecommList();
 
         $this->assertTrue($oRecomm->isSavedList());
-        $this->assertEquals($this->encode($string), $oRecommList->oxrecommlists__oxtitle->value);
+        $this->assertSame($this->encode($string), $oRecommList->oxrecommlists__oxtitle->value);
     }
 
     /**
@@ -283,18 +284,18 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn($oUser);
         $oRecomm->expects($this->once())->method('getActiveRecommList');
         try {
             $oRecomm->saveRecommList();
         } catch (Exception $exception) {
             // this excp should be thrown at oxUtilsView::addErrorToDisplay check it:
-            $this->assertEquals('lalala01user', $exception->getMessage());
+            $this->assertSame('lalala01user', $exception->getMessage());
 
             return;
         }
@@ -308,12 +309,12 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testGetRecommLists()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getUserRecommLists']);
-        $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
+        $oUser->expects($this->once())->method('getUserRecommLists')->willReturn('testRecommList');
 
         $oRecomm = oxNew('account_recommlist');
         $oRecomm->setUser($oUser);
         $oRecomm->getRecommLists('test');
-        $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
+        $this->assertSame('testRecommList', $oRecomm->getRecommLists('test'));
     }
 
     /**
@@ -327,7 +328,7 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommtList->load('testlist');
 
         $oRecomm->setNonPublicVar("_oActRecommList", $oRecommtList);
-        $this->assertEquals(1, count($oRecomm->getArticleList()));
+        $this->assertCount(1, $oRecomm->getArticleList());
     }
 
     /**
@@ -349,12 +350,12 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecList->save();
 
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getUser"]);
-        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getUser')->willReturn($oUser);
 
         $oRecommList = $oRecomm->getActiveRecommList();
 
-        $this->assertFalse($oRecommList === false);
-        $this->assertEquals('testlist', $oRecommList->getId());
+        $this->assertNotFalse($oRecommList);
+        $this->assertSame('testlist', $oRecommList->getId());
     }
 
     /**
@@ -363,12 +364,12 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testGetActiveRecommListIfOff()
     {
         $oCfg = $this->getMock(Config::class, ["getShowListmania"]);
-        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
+        $oCfg->expects($this->once())->method('getShowListmania')->willReturn(false);
 
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getViewConfig"]);
-        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->once())->method('getViewConfig')->willReturn($oCfg);
 
-        $this->assertSame(false, $oRecomm->getActiveRecommList());
+        $this->assertFalse($oRecomm->getActiveRecommList());
     }
 
     /**
@@ -377,19 +378,19 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testSaveRecommListIfOff()
     {
         $oCfg = $this->getMock(Config::class, ["getShowListmania"]);
-        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
+        $oCfg->expects($this->once())->method('getShowListmania')->willReturn(false);
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getViewConfig", 'getUser']);
-        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->once())->method('getViewConfig')->willReturn($oCfg);
         $oRecomm->expects($this->never())->method('getUser');
 
-        $this->assertSame(null, $oRecomm->saveRecommList());
+        $this->assertNull($oRecomm->saveRecommList());
     }
 
     /**
@@ -398,21 +399,21 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testEditListIfOff()
     {
         $oCfg = $this->getMock(Config::class, ["getShowListmania"]);
-        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
+        $oCfg->expects($this->once())->method('getShowListmania')->willReturn(false);
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getViewConfig", 'getActiveRecommList']);
-        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->once())->method('getViewConfig')->willReturn($oCfg);
         $oRecomm->expects($this->never())->method('getActiveRecommList');
 
         $this->setRequestParameter('deleteList', 'asd');
 
-        $this->assertSame(null, $oRecomm->editList());
+        $this->assertNull($oRecomm->editList());
     }
 
     /**
@@ -421,21 +422,21 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testRemoveArticleIfOff()
     {
         $oCfg = $this->getMock(Config::class, ["getShowListmania"]);
-        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
+        $oCfg->expects($this->once())->method('getShowListmania')->willReturn(false);
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var Account_Recommlist|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ["getViewConfig", 'getActiveRecommList']);
-        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->once())->method('getViewConfig')->willReturn($oCfg);
         $oRecomm->expects($this->never())->method('getActiveRecommList');
 
         $this->setRequestParameter('aid', 'asd');
 
-        $this->assertSame(null, $oRecomm->removeArticle());
+        $this->assertNull($oRecomm->removeArticle());
     }
 
     /**
@@ -444,9 +445,9 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testGetPageNavigation()
     {
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ['generatePageNavigation', 'getActiveRecommlist']);
-        $oRecomm->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
-        $oRecomm->expects($this->any())->method('getActiveRecommlist')->will($this->returnValue(false));
-        $this->assertEquals('aaa', $oRecomm->getPageNavigation());
+        $oRecomm->method('generatePageNavigation')->willReturn("aaa");
+        $oRecomm->method('getActiveRecommlist')->willReturn(false);
+        $this->assertSame('aaa', $oRecomm->getPageNavigation());
     }
 
     /**
@@ -458,7 +459,7 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('account_recommlist');
         $oView->setActiveRecommList("testRecommList");
-        $this->assertEquals("testRecommList", $oView->getActiveRecommList());
+        $this->assertSame("testRecommList", $oView->getActiveRecommList());
     }
 
     /**
@@ -467,13 +468,13 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testGetNavigationParams()
     {
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, ['getId']);
-        $oList->expects($this->once())->method('getId')->will($this->returnValue("testId"));
+        $oList->expects($this->once())->method('getId')->willReturn("testId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ['getActiveRecommList']);
-        $oView->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oList));
+        $oView->expects($this->once())->method('getActiveRecommList')->willReturn($oList);
         $aParams = $oView->getNavigationParams();
-        $this->assertTrue(isset($aParams['recommid']));
-        $this->assertEquals("testId", $aParams['recommid']);
+        $this->assertArrayHasKey('recommid', $aParams);
+        $this->assertSame("testId", $aParams['recommid']);
     }
 
     /**
@@ -482,8 +483,8 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     public function testRenderNoUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ['getUser']);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login', $oView->render());
+        $oView->method('getUser')->willReturn(false);
+        $this->assertSame('page/account/login', $oView->render());
     }
 
     /**
@@ -496,13 +497,13 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxpassword = new oxField("testPass");
 
         $oLists = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, ['count']);
-        $oLists->expects($this->once())->method('count')->will($this->returnValue(1));
+        $oLists->expects($this->once())->method('count')->willReturn(1);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, ['getUser', "getRecommLists", "getActiveRecommList"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $oView->expects($this->once())->method('getRecommLists')->will($this->returnValue($oLists));
-        $oView->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(false));
-        $this->assertEquals('page/account/recommendationlist', $oView->render());
+        $oView->method('getUser')->willReturn($oUser);
+        $oView->expects($this->once())->method('getRecommLists')->willReturn($oLists);
+        $oView->expects($this->once())->method('getActiveRecommList')->willReturn(false);
+        $this->assertSame('page/account/recommendationlist', $oView->render());
     }
 
     /**
@@ -512,7 +513,7 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
     {
         $oAccRecommList = oxNew('Account_Recommlist');
 
-        $this->assertEquals(2, count($oAccRecommList->getBreadCrumb()));
+        $this->assertCount(2, $oAccRecommList->getBreadCrumb());
     }
 
     public function testGetArticleCount()
@@ -520,6 +521,6 @@ class AccountRecommlistTest extends \PHPUnit\Framework\TestCase
         $oList = $this->getProxyClass('account_recommlist');
         $oList->setNonPublicVar('_iAllArtCnt', 3);
 
-        $this->assertEquals(3, $oList->getArticleCount());
+        $this->assertSame(3, $oList->getArticleCount());
     }
 }

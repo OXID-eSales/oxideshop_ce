@@ -20,6 +20,6 @@ class PriceAlarmMailTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('PriceAlarm_Mail');
-        $this->assertEquals('pricealarm_mail', $oView->render());
+        $this->assertSame('pricealarm_mail', $oView->render());
     }
 }

@@ -53,7 +53,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
 
         $oRes = $this->_oList[1];
 
-        $this->assertEquals("HELLO", $oRes->sTest);
+        $this->assertSame("HELLO", $oRes->sTest);
     }
 
     public function testSplIterator()
@@ -71,7 +71,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
             $sTest .= $oObject->sTest;
         }
 
-        $this->assertEquals("HELLO AGAIN", $sTest);
+        $this->assertSame("HELLO AGAIN", $sTest);
     }
 
     public function testAssign()
@@ -92,7 +92,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($value, $aTest[$key]);
         }
 
-        $this->assertEquals($i, 3);
+        $this->assertSame($i, 3);
     }
 
     public function testAssignArray()
@@ -115,7 +115,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
             ++$i;
         }
 
-        $this->assertEquals($i, 4);
+        $this->assertSame($i, 4);
     }
 
     public function testSplCount()
@@ -132,8 +132,8 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oTest->sTest = " !";
         $this->_oList[] = $oTest;
 
-        $this->assertEquals(3, count($this->_oList));
-        $this->assertEquals(3, count($this->_oList->aList));
+        $this->assertCount(3, $this->_oList);
+        $this->assertCount(3, $this->_oList->aList);
     }
 
     public function testClear()
@@ -148,7 +148,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
 
         $this->_oList->clear();
 
-        $this->assertEquals(0, count($this->_oList));
+        $this->assertCount(0, $this->_oList);
     }
 
     public function testOxidAsIndex()
@@ -157,8 +157,8 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oTest->oxtest__oxid = new oxField("123", oxField::T_RAW);
         $oTest->oxtest__oxany = new oxField('test', oxField::T_RAW);
         $this->_oList[] = $oTest;
-        $this->assertTrue(isset($this->_oList["123"]));
-        $this->assertFalse(isset($this->_oList[0]));
+        $this->assertArrayHasKey("123", $this->_oList);
+        $this->assertArrayNotHasKey(0, $this->_oList);
         $this->assertEquals($this->_oList["123"]->oxtest__oxany->value, 'test');
     }
 
@@ -184,18 +184,18 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oAction->blIsClonedAndKeptProperty = true;
 
         $oList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, ['getBaseObject']);
-        $oList->expects($this->once())->method('getBaseObject')->will($this->returnValue($oAction));
+        $oList->expects($this->once())->method('getBaseObject')->willReturn($oAction);
         $oList->init('oxactions');
 
         $oList->selectString('select * from oxactions where oxid like "\_%"');
 
-        $this->assertEquals('2', count($oList));
-        $this->assertEquals('_test1', $oList['_test1']->getId());
-        $this->assertEquals('action1', $oList['_test1']->oxactions__oxtitle->value);
+        $this->assertCount('2', $oList);
+        $this->assertSame('_test1', $oList['_test1']->getId());
+        $this->assertSame('action1', $oList['_test1']->oxactions__oxtitle->value);
         $this->assertTrue($oList['_test1']->blIsClonedAndKeptProperty);
 
-        $this->assertEquals('_test2', $oList['_test2']->getId());
-        $this->assertEquals('action2', $oList['_test2']->oxactions__oxtitle->value);
+        $this->assertSame('_test2', $oList['_test2']->getId());
+        $this->assertSame('action2', $oList['_test2']->oxactions__oxtitle->value);
         $this->assertTrue($oList['_test2']->blIsClonedAndKeptProperty);
     }
 
@@ -219,7 +219,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList->setSqlLimit(1, 1);
         $oList->selectString('select * from oxactions where oxid like "\_%"');
 
-        $this->assertEquals('1', count($oList));
+        $this->assertCount('1', $oList);
     }
 
     /**
@@ -245,7 +245,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $list->setSqlLimit(1, -10);
         $list->selectString('select * from oxactions where oxid like "\_%"');
 
-        $this->assertEquals('2', count($list));
+        $this->assertCount('2', $list);
     }
 
     public function testSelectStringEmpty()
@@ -253,7 +253,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew("oxlist");
         $oList->init("oxBase", "oxactions");
         $oList->selectString("select * from oxactions where oxid = 'non existant' ");
-        $this->assertEquals(0, $oList->count());
+        $this->assertSame(0, $oList->count());
     }
 
     public function testContainsFieldValue()
@@ -271,8 +271,8 @@ class ListTest extends \PHPUnit\Framework\TestCase
     {
         $oList = oxNew("oxcountrylist");
         $oList->getList();
-        $this->assertEquals(5, count($oList));
-        $this->assertEquals("DE", $oList["a7c40f631fc920687.20179984"]->oxcountry__oxisoalpha2->value);
+        $this->assertCount(5, $oList);
+        $this->assertSame("DE", $oList["a7c40f631fc920687.20179984"]->oxcountry__oxisoalpha2->value);
     }
 
     public function testGetListReturns()
@@ -287,7 +287,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
 
-        $this->assertEquals(['xxx' => 'yyy'], $oList->getArray());
+        $this->assertSame(['xxx' => 'yyy'], $oList->getArray());
     }
 
     public function testOffsetGet()
@@ -295,7 +295,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
 
-        $this->assertEquals('yyy', $oList->offsetGet('xxx'));
+        $this->assertSame('yyy', $oList->offsetGet('xxx'));
         $this->assertFalse($oList->offsetGet('yyy'));
     }
 
@@ -303,7 +303,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
     {
         $oList = oxNew('oxlist');
         $oList->offsetSet('xxx', 'yyy');
-        $this->assertEquals('yyy', $oList->offsetGet('xxx'));
+        $this->assertSame('yyy', $oList->offsetGet('xxx'));
         $oList->offsetUnset('xxx');
         $this->assertFalse($oList->offsetGet('xxx'));
     }
@@ -315,7 +315,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew('oxlist');
         $oList->assign($aArray);
 
-        $this->assertEquals(array_keys($aArray), $oList->arrayKeys());
+        $this->assertSame(array_keys($aArray), $oList->arrayKeys());
     }
 
     public function testReverse()
@@ -325,7 +325,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew('oxlist');
         $oList->assign($aArray);
 
-        $this->assertEquals($aArray = ['b' => 'b1', 'a' => 'a1'], $oList->reverse());
+        $this->assertSame($aArray = ['b' => 'b1', 'a' => 'a1'], $oList->reverse());
     }
 
     public function testSetsInListAttritbue()
@@ -364,10 +364,10 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oSubj = $this->getProxyClass("oxList");
 
         $oSubj->setNonPublicVar("_sCoreTable", "");
-        $this->assertEquals($sFieldName, $oSubj->getFieldLongName($sFieldName));
+        $this->assertSame($sFieldName, $oSubj->getFieldLongName($sFieldName));
 
         $oSubj->setNonPublicVar("_sCoreTable", $sCoreTable);
-        $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->getFieldLongName($sFieldName));
+        $this->assertSame($sCoreTable . "__" . $sFieldName, $oSubj->getFieldLongName($sFieldName));
     }
 
     public function testUnsetForeach()
@@ -379,10 +379,10 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList->offsetSet('k4', 'cnt1');
 
         $iTotal = count($oList);
-        $this->assertEquals(4, $iTotal);
+        $this->assertSame(4, $iTotal);
         foreach ($oList as $sKey => $sVal) {
-            $this->assertEquals($iTotal, count($oList));
-            $this->assertEquals('cnt' . $iTotal, $sVal);
+            $this->assertCount($iTotal, $oList);
+            $this->assertSame('cnt' . $iTotal, $sVal);
 
             $iTotal--;
             unset($oList[$sKey]);
@@ -421,11 +421,11 @@ class ListTest extends \PHPUnit\Framework\TestCase
         $oList->offsetSet('k4', 'cnt1');
 
         $iTotal = count($oList);
-        $this->assertEquals(4, $iTotal);
+        $this->assertSame(4, $iTotal);
         reset($oList);
         foreach ($oList->aList as $sKey => $sVal) {
-            $this->assertEquals($iTotal, count($oList));
-            $this->assertEquals('cnt' . $iTotal, $sVal);
+            $this->assertCount($iTotal, $oList);
+            $this->assertSame('cnt' . $iTotal, $sVal);
 
             $iTotal--;
             unset($oList[$sKey]);
@@ -472,9 +472,9 @@ class ListTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(3, $oList->current());
+        $this->assertSame(3, $oList->current());
         $oList->rewind();
-        $this->assertEquals(1, $oList->current());
+        $this->assertSame(1, $oList->current());
     }
 
     /**

@@ -56,7 +56,7 @@ class ContentlistTest extends \PHPUnit\Framework\TestCase
         $sOxid = $this->_oContent->getId();
 
         // testing if there is what to test
-        $this->assertTrue(isset($oList->aList[$sOxid]));
+        $this->assertArrayHasKey($sOxid, $oList->aList);
         $this->assertTrue(isset($oList->aList[$sOxid]->oxcontents__oxid->value));
         $this->assertTrue(isset($oList->aList[$sOxid]->oxcontents__oxloadid->value));
 
@@ -80,8 +80,8 @@ class ContentlistTest extends \PHPUnit\Framework\TestCase
         $sOxid = $this->_oContent->getId();
 
         // testing if there is what to test
-        $this->assertTrue(isset($oList->aList['testoxcontentlist']));
-        $this->assertTrue(isset($oList->aList['testoxcontentlist'][0]));
+        $this->assertArrayHasKey('testoxcontentlist', $oList->aList);
+        $this->assertArrayHasKey(0, $oList->aList['testoxcontentlist']);
         $this->assertTrue(isset($oList->aList['testoxcontentlist'][0]->oxcontents__oxid->value));
         $this->assertTrue(isset($oList->aList['testoxcontentlist'][0]->oxcontents__oxloadid->value));
 
@@ -98,6 +98,6 @@ class ContentlistTest extends \PHPUnit\Framework\TestCase
         $oContent = oxNew('oxContentList');
         $oContent->loadServices();
 
-        $this->assertEquals(6, count($oContent));
+        $this->assertCount(6, $oContent);
     }
 }

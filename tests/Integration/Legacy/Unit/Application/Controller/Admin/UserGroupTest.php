@@ -20,6 +20,6 @@ class UserGroupTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('UserGroup');
-        $this->assertEquals('usergroup', $oView->render());
+        $this->assertSame('usergroup', $oView->render());
     }
 }

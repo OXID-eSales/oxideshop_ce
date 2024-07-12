@@ -20,6 +20,6 @@ class AdminOrderTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Order');
-        $this->assertEquals('order', $oView->render());
+        $this->assertSame('order', $oView->render());
     }
 }

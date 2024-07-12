@@ -17,6 +17,8 @@ use \oxDb;
 class AttributeTest extends \PHPUnit\Framework\TestCase
 {
 
+    public $_oAttr;
+    public $sOxid;
     /**
      * Initialize the fixture.
      */
@@ -70,8 +72,8 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->_oAttr->delete();
 
-        $sCheckOxid1 = oxDb::getDb()->GetOne(sprintf('select oxid from oxobject2attribute where oxattrid = \'%s\'', $this->sOxid));
-        $sCheckOxid2 = oxDb::getDb()->GetOne(sprintf('select oxid from oxcategory2attribute where oxattrid = \'%s\'', $this->sOxid));
+        $sCheckOxid1 = oxDb::getDb()->GetOne(sprintf("select oxid from oxobject2attribute where oxattrid = '%s'", $this->sOxid));
+        $sCheckOxid2 = oxDb::getDb()->GetOne(sprintf("select oxid from oxcategory2attribute where oxattrid = '%s'", $this->sOxid));
         $oAttr = oxNew('oxAttribute');
         if ($sCheckOxid1 || $sCheckOxid2 || $oAttr->Load($this->_oAttr->getId())) {
             $this->fail("fail deleting");
@@ -98,13 +100,13 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
         $oValue4->name = 'blau';
         $aSellValue = [$sVarId  => [0 => $oValue, 1 => $oValue2], $sVarId2 => [0 => $oValue3, 1 => $oValue4]];
         $oAttr->assignVarToAttribute($aSellValue, $aSellTitle);
-        $this->assertEquals(2, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid like '_testVar%'"));
+        $this->assertSame(2, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid like '_testVar%'"));
         $oRez = $myDB->select("select oxvalue, oxvalue_1, oxobjectid  from oxobject2attribute where oxobjectid = '_testVar'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
-            $this->assertEquals('red', $oRez->fields[0]);
-            $this->assertEquals('_testVar', $oRez->fields[2]);
-            $this->assertEquals('rot', $oRez->fields[1]);
+            $this->assertSame('red', $oRez->fields[0]);
+            $this->assertSame('_testVar', $oRez->fields[2]);
+            $this->assertSame('rot', $oRez->fields[1]);
             $oRez->fetchRow();
         }
     }
@@ -127,8 +129,8 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
         $oAttr = $this->getProxyClass("oxAttribute");
         $aSellTitle = [0 => '_testAttr', 1 => '_testAttr_1'];
         $sId = $oAttr->createAttribute($aSellTitle);
-        $this->assertEquals('_testAttr', oxDb::getDB()->getOne(sprintf('select oxtitle from oxattribute where oxid = \'%s\'', $sId)));
-        $this->assertEquals('_testAttr_1', oxDb::getDB()->getOne(sprintf('select oxtitle_1 from oxattribute where oxid = \'%s\'', $sId)));
+        $this->assertSame('_testAttr', oxDb::getDB()->getOne(sprintf("select oxtitle from oxattribute where oxid = '%s'", $sId)));
+        $this->assertSame('_testAttr_1', oxDb::getDB()->getOne(sprintf("select oxtitle_1 from oxattribute where oxid = '%s'", $sId)));
     }
 
     /**
@@ -138,7 +140,7 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
     {
         $oAttr = $this->getProxyClass("oxAttribute");
         $aId = $oAttr->getAttributeAssigns('test_oxid');
-        $this->assertEquals(1, count($aId));
+        $this->assertCount(1, $aId);
     }
 
 
@@ -149,7 +151,7 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
     {
         $oAttr = oxNew('oxAttribute');
         $oAttr->setTitle('title');
-        $this->assertEquals('title', $oAttr->getTitle());
+        $this->assertSame('title', $oAttr->getTitle());
     }
 
     /**
@@ -159,7 +161,7 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
     {
         $oAttr = oxNew('oxAttribute');
         $oAttr->setActiveValue('selectedValue');
-        $this->assertEquals('selectedValue', $oAttr->getActiveValue());
+        $this->assertSame('selectedValue', $oAttr->getActiveValue());
     }
 
     /**
@@ -171,6 +173,6 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
         $oAttr->addValue('val1');
         $oAttr->addValue('val2');
 
-        $this->assertEquals(['val1', 'val2'], $oAttr->getValues());
+        $this->assertSame(['val1', 'val2'], $oAttr->getValues());
     }
 }

@@ -19,6 +19,7 @@ use oxTestModules;
 
 class CategoryTest extends \PHPUnit\Framework\TestCase
 {
+    public $_oCategory;
     use FieldTestingTrait;
 
     protected $_oCategoryA;
@@ -75,7 +76,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                   sprintf('values (\'test\',\'test\',\'%d\',\'1\',\'4\',\'test\',\'\',\'\',\'\',\'\',\'1\',\'10\',\'50\')', $sShopId);
+                   sprintf("values ('test','test','%d','1','4','test','','','','','1','10','50')", $sShopId);
         $this->addToDatabase($sInsert, 'oxcategories');
 
         $this->_oCategory = oxNew('oxcategory');
@@ -121,7 +122,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryPageUrl", "{return 'sCategoryPageUrl';}");
 
         $oCategory = oxNew('oxCategory');
-        $this->assertEquals("sCategoryPageUrl", $oCategory->getBaseSeoLink(0, 1));
+        $this->assertSame("sCategoryPageUrl", $oCategory->getBaseSeoLink(0, 1));
     }
 
     public function testGetBaseSeoLink()
@@ -130,7 +131,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxSeoEncoderCategory", "getCategoryPageUrl", "{return 'sCategoryPageUrl';}");
 
         $oCategory = oxNew('oxCategory');
-        $this->assertEquals("sCategoryUrl", $oCategory->getBaseSeoLink(0));
+        $this->assertSame("sCategoryUrl", $oCategory->getBaseSeoLink(0));
     }
 
     public function testGetBaseStdLink()
@@ -141,7 +142,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory->setId("testCategoryId");
 
         $sTestUrl = Registry::getConfig()->getShopHomeUrl($iLang, false) . "cl=alist&amp;cnid=" . $oCategory->getId();
-        $this->assertEquals($sTestUrl, $oCategory->getBaseStdLink($iLang));
+        $this->assertSame($sTestUrl, $oCategory->getBaseStdLink($iLang));
     }
 
     public function testGetBaseStdLinkExt()
@@ -153,7 +154,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->oxcategories__oxextlink = new oxField("trestssa");
 
-        $this->assertEquals("trestssa", $oCategory->getBaseStdLink($iLang));
+        $this->assertSame("trestssa", $oCategory->getBaseStdLink($iLang));
     }
 
     public function testIsPriceCategory()
@@ -180,10 +181,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testGetSqlActiveSnippet()
     {
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['isAdmin', 'getViewName']);
-        $oCategory->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oCategory->expects($this->any())->method('getViewName')->will($this->returnValue('xxx'));
+        $oCategory->method('isAdmin')->willReturn(true);
+        $oCategory->method('getViewName')->willReturn('xxx');
 
-        $this->assertEquals("(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet());
+        $this->assertSame("(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet());
     }
 
     public function testAssign()
@@ -194,8 +195,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->_oCategory->save();
         $sDimagedir = $this->getConfig()->getPictureUrl(null, false, $this->getConfig()->isSsl(), null);
         $this->reload();
-        $this->assertEquals('aa[{* smarty comment *}]zz', $this->_oCategory->oxcategories__oxlongdesc->value);
-        $this->assertEquals(0, $this->_oCategory->getNrOfArticles());
+        $this->assertSame('aa[{* smarty comment *}]zz', $this->_oCategory->oxcategories__oxlongdesc->value);
+        $this->assertSame(0, $this->_oCategory->getNrOfArticles());
         $this->assertEquals($sDimagedir, $this->_oCategory->dimagedir);
     }
 
@@ -214,8 +215,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oObj->save();
         $this->assertEquals($oObj->getId(), $oObj->oxcategories__oxid->value);
         $this->assertEquals($oObj->getId(), $oObj->oxcategories__oxrootid->value);
-        $this->assertEquals(1, $oObj->oxcategories__oxleft->value);
-        $this->assertEquals(2, $oObj->oxcategories__oxright->value);
+        $this->assertSame(1, $oObj->oxcategories__oxleft->value);
+        $this->assertSame(2, $oObj->oxcategories__oxright->value);
 
         // so.. this one is OK, check if it could be a parent
         $oObj2 = oxNew("oxCategory");
@@ -229,14 +230,14 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         // this one is OK too. did it update parent??
         $oObj3 = oxNew("oxCategory");
         $oObj3->load($oObj->getId());
-        $this->assertEquals(1, $oObj3->oxcategories__oxleft->value);
-        $this->assertEquals(4, $oObj3->oxcategories__oxright->value);
+        $this->assertSame(1, $oObj3->oxcategories__oxleft->value);
+        $this->assertSame(4, $oObj3->oxcategories__oxright->value);
     }
 
     public function testAssignCountArt()
     {
         $oObj = oxNew('oxCategory');
-        $this->assertEquals(0, $oObj->getNrOfArticles());
+        $this->assertSame(0, $oObj->getNrOfArticles());
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
 
         $sCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
@@ -272,12 +273,12 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         // parent is not deletable
         $this->assertEquals(false, $this->_oCategory->delete());
         $this->assertEquals(true, $this->_oCategory->exists());
-        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
+        $this->assertCount(0, oxRegistry::get("oxSeoEncoderCategory")->onDelete);
 
         // so delete child
         $oCategory = oxNew('oxCategory');
         $this->assertEquals(true, $oCategory->delete($this->_oCategoryB->getId()));
-        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
+        $this->assertCount(1, oxRegistry::get("oxSeoEncoderCategory")->onDelete);
         $this->assertSame($oCategory, oxRegistry::get("oxSeoEncoderCategory")->onDelete[0]);
 
         $this->reload();
@@ -300,7 +301,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->reload();
         $iCnt = $myDB->getOne('select count(*) from oxobject2delivery where oxobjectid = "' . $sCatId . '"');
 
-        $this->assertEquals(0, $iCnt);
+        $this->assertSame(0, $iCnt);
     }
 
     public function testGetCatInLang()
@@ -326,7 +327,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->_oCategory->save();
         $oCatBaseLang = $this->_oCategory->getCatInLang();
         //$this->getConfig()->cleanup();
-        $this->assertEquals('test', $oCatBaseLang->oxcategories__oxtitle->value);
+        $this->assertSame('test', $oCatBaseLang->oxcategories__oxtitle->value);
     }
 
     public function testUpdate()
@@ -335,10 +336,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->_oCategoryB->save(); // call update
         $this->reload();
         // child is now root too
-        $this->assertEquals(1, $this->_oCategory->oxcategories__oxleft->value);
-        $this->assertEquals(2, $this->_oCategory->oxcategories__oxright->value);
-        $this->assertEquals(1, $this->_oCategoryB->oxcategories__oxleft->value);
-        $this->assertEquals(2, $this->_oCategoryB->oxcategories__oxright->value);
+        $this->assertSame(1, $this->_oCategory->oxcategories__oxleft->value);
+        $this->assertSame(2, $this->_oCategory->oxcategories__oxright->value);
+        $this->assertSame(1, $this->_oCategoryB->oxcategories__oxleft->value);
+        $this->assertSame(2, $this->_oCategoryB->oxcategories__oxright->value);
         $this->assertEquals($this->_oCategoryB->getId(), $this->_oCategoryB->oxcategories__oxrootid->value);
 
         // as now we have two roots, make former parent be a child
@@ -346,10 +347,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->_oCategory->save(); // call update
         $this->reload();
         // Obj is now child of Obj2
-        $this->assertEquals(1, $this->_oCategoryB->oxcategories__oxleft->value);
-        $this->assertEquals(4, $this->_oCategoryB->oxcategories__oxright->value);
-        $this->assertEquals(2, $this->_oCategory->oxcategories__oxleft->value);
-        $this->assertEquals(3, $this->_oCategory->oxcategories__oxright->value);
+        $this->assertSame(1, $this->_oCategoryB->oxcategories__oxleft->value);
+        $this->assertSame(4, $this->_oCategoryB->oxcategories__oxright->value);
+        $this->assertSame(2, $this->_oCategory->oxcategories__oxleft->value);
+        $this->assertSame(3, $this->_oCategory->oxcategories__oxright->value);
 
         // now try something new, can a parent be a child to its child??
         $this->_oCategoryB->oxcategories__oxparentid = new oxField($this->_oCategory->getId(), oxField::T_RAW);
@@ -376,7 +377,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oObj2 = oxNew('oxCategory');
         $oObj2->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj2->save(); // call update
-        $this->assertEquals("oxrootid", $oObj2->oxcategories__oxparentid->value);
+        $this->assertSame("oxrootid", $oObj2->oxcategories__oxparentid->value);
     }
 
     public function testSetFieldData()
@@ -387,8 +388,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("oxlongdesC", $string);
-        $this->assertEquals($this->encode($string), $oObj->oxcategories__oxid->value);
-        $this->assertEquals($string, $oObj->oxcategories__oxlongdesc->value);
+        $this->assertSame($this->encode($string), $oObj->oxcategories__oxid->value);
+        $this->assertSame($string, $oObj->oxcategories__oxlongdesc->value);
     }
 
     public function testSetFieldDataUpperCase()
@@ -399,8 +400,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("OXLONGDESC", $string);
-        $this->assertEquals($this->encode($string), $oObj->oxcategories__oxid->value);
-        $this->assertEquals($string, $oObj->oxcategories__oxlongdesc->value);
+        $this->assertSame($this->encode($string), $oObj->oxcategories__oxid->value);
+        $this->assertSame($string, $oObj->oxcategories__oxlongdesc->value);
     }
 
     public function testSetFieldDataLongField()
@@ -411,8 +412,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $string = "asd< as";
         $oObj->setFieldData("oxid", $string);
         $oObj->setFieldData("oxcategories__oxlongdesc", $string);
-        $this->assertEquals($this->encode($string), $oObj->oxcategories__oxid->value);
-        $this->assertEquals($string, $oObj->oxcategories__oxlongdesc->value);
+        $this->assertSame($this->encode($string), $oObj->oxcategories__oxid->value);
+        $this->assertSame($string, $oObj->oxcategories__oxlongdesc->value);
     }
 
     /**
@@ -423,7 +424,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx', $oCategory->getStdLink());
+        $this->assertSame('xxx', $oCategory->getStdLink());
     }
 
     public function testGetStdLinkshoudlReturnDefaultLink()
@@ -431,7 +432,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
     }
 
     /**
@@ -444,7 +445,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink());
     }
 
     public function testGetLinkWithExtLink()
@@ -454,7 +455,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('www.test.com', oxField::T_RAW);
 
-        $this->assertEquals('www.test.com', $oCategory->getLink());
+        $this->assertSame('www.test.com', $oCategory->getLink());
     }
 
     public function testGetLinkSeoDe()
@@ -470,9 +471,9 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->loadInLang(0, $categoryId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
         //testing magic getter
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->link);
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->link);
     }
 
     public function testGetLinkSeoEng()
@@ -487,7 +488,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->loadInLang(1, $categoryId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink());
     }
 
     /**
@@ -498,7 +499,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx', $oCategory->getStdLink(2));
+        $this->assertSame('xxx', $oCategory->getStdLink(2));
     }
 
     public function testGetStdLinkshoudlReturnDefaultLinkWithLangParam()
@@ -508,7 +509,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx&amp;lang=3", $oCategory->getStdLink(3));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx&amp;lang=3", $oCategory->getStdLink(3));
     }
 
     /**
@@ -521,7 +522,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('xxx');
 
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink(0));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=xxx", $oCategory->getStdLink(0));
     }
 
     public function testGetLinkSeoWithLangParam()
@@ -536,7 +537,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->load($categoryId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
     }
 
     public function testGetLinkSeoDeWithLangParam()
@@ -551,7 +552,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->loadInLang(1, $categoryId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(0));
     }
 
     public function testGetLinkSeoEngWithLangParam()
@@ -566,7 +567,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategory->loadInLang(0, $categoryId);
 
-        $this->assertEquals($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(1));
+        $this->assertSame($this->getConfig()->getShopUrl() . $expectation, $oCategory->getLink(1));
     }
 
     public function testGetIsVisible()
@@ -633,7 +634,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testSetGetSubCats()
     {
         $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getIsVisible']);
-        $oSubCat->expects($this->once())->method('getIsVisible')->will($this->returnValue(true));
+        $oSubCat->expects($this->once())->method('getIsVisible')->willReturn(true);
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCats([$oSubCat]);
         $this->assertEquals([$oSubCat], $oCategory->getSubCats());
@@ -645,7 +646,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testSetGetSubCat()
     {
         $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getIsVisible']);
-        $oSubCat->expects($this->any())->method('getIsVisible')->will($this->returnValue(true));
+        $oSubCat->method('getIsVisible')->willReturn(true);
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCat($oSubCat);
         $this->assertEquals($oSubCat->getId(), $oCategory->getSubCat(0)->getId());
@@ -659,18 +660,18 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     {
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setContentCats(["aaa"]);
-        $this->assertEquals(["aaa"], $oCategory->getContentCats());
+        $this->assertSame(["aaa"], $oCategory->getContentCats());
         //testing magic getter
-        $this->assertEquals(["aaa"], $oCategory->aContent);
+        $this->assertSame(["aaa"], $oCategory->aContent);
     }
 
     public function testSetGetContentCat()
     {
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setContentCat("aaa");
-        $this->assertEquals(["aaa"], $oCategory->getContentCats());
+        $this->assertSame(["aaa"], $oCategory->getContentCats());
         $oCategory->setContentCat("aaa", "test");
-        $this->assertEquals(["aaa", "test" => "aaa"], $oCategory->getContentCats());
+        $this->assertSame(["aaa", "test" => "aaa"], $oCategory->getContentCats());
     }
 
 
@@ -689,9 +690,9 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     {
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setNrOfArticles(12);
-        $this->assertEquals(12, $oCategory->getNrOfArticles());
+        $this->assertSame(12, $oCategory->getNrOfArticles());
         //testing magic getter
-        $this->assertEquals(12, $oCategory->iArtCnt);
+        $this->assertSame(12, $oCategory->iArtCnt);
     }
 
     public function testGetNrOfArticlesDoNotShowCatArtCnt()
@@ -721,7 +722,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     {
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setLink('testurl');
-        $this->assertEquals('testurl', $oCategory->getLink());
+        $this->assertSame('testurl', $oCategory->getLink());
     }
 
     public function testSetGetExpanded()
@@ -758,7 +759,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->oxcategories__oxparentid = new oxField(5);
         $oCategory->setParentCategory("parentCat");
-        $this->assertEquals("parentCat", $oCategory->getParentCategory());
+        $this->assertSame("parentCat", $oCategory->getParentCategory());
     }
 
     public function testGetParentCategory()
@@ -779,7 +780,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
     public function testGetRootId()
     {
-        $this->assertEquals("test", oxcategory::getRootId($this->_oCategoryB->getId()));
+        $this->assertSame("test", oxcategory::getRootId($this->_oCategoryB->getId()));
     }
 
     public function testGetRootIdWithoutCat()
@@ -794,20 +795,20 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         oxRegistry::getLang()->setBaseLanguage(0);
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sId);
-        $this->assertEquals('Wohnen', $oCategory->oxcategories__oxtitle->value);
+        $this->assertSame('Wohnen', $oCategory->oxcategories__oxtitle->value);
 
         oxRegistry::getLang()->setBaseLanguage(1);
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sId);
-        $this->assertEquals('Living', $oCategory->oxcategories__oxtitle->value);
+        $this->assertSame('Living', $oCategory->oxcategories__oxtitle->value);
     }
 
     public function testGetStdLinkWithParams()
     {
         $oCategory = oxNew('oxCategory');
         $oCategory->setId('l_id');
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar", $oCategory->getStdLink(0, ['foo' => 'bar']));
-        $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar&amp;lang=1", $oCategory->getStdLink(1, ['foo' => 'bar']));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar", $oCategory->getStdLink(0, ['foo' => 'bar']));
+        $this->assertSame($this->getConfig()->getShopHomeURL() . "cl=alist&amp;cnid=l_id&amp;foo=bar&amp;lang=1", $oCategory->getStdLink(1, ['foo' => 'bar']));
     }
 
     public function testGetPictureUrlForType()
@@ -822,8 +823,8 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oCategory->getPictureUrlForType($sEmptyPic, '0'));
         $this->assertFalse($oCategory->getPictureUrlForType($sEmptyPic, 'icon'));
 
-        $this->assertEquals($oCategory->getPictureUrl() . '0/' . $sExistingPic, $oCategory->getPictureUrlForType($sExistingPic, '0'));
-        $this->assertEquals($oCategory->getPictureUrl() . 'icon/' . $sExistingIcon, $oCategory->getPictureUrlForType($sExistingIcon, 'icon'));
+        $this->assertSame($oCategory->getPictureUrl() . '0/' . $sExistingPic, $oCategory->getPictureUrlForType($sExistingPic, '0'));
+        $this->assertSame($oCategory->getPictureUrl() . 'icon/' . $sExistingIcon, $oCategory->getPictureUrlForType($sExistingIcon, 'icon'));
     }
 
     /**
@@ -843,14 +844,14 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         // old path
         $oCategory->oxcategories__oxthumb = new oxField($sExistingPic);
-        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/thumb/555_200_75/' . $sExistingPic, $oCategory->getThumbUrl());
+        $this->assertSame($oCategory->getPictureUrl() . 'generated/category/thumb/555_200_75/' . $sExistingPic, $oCategory->getThumbUrl());
 
         // new path
         $sUrl = $this->getConfig()->getOutUrl() . basename((string) $this->getConfig()->getPicturePath(""));
         $sUrl .= "/generated/category/thumb/555_200_75/sportswear_1_tc.jpg";
 
         $oCategory->oxcategories__oxthumb = new oxField("sportswear_1_tc.jpg");
-        $this->assertEquals($sUrl, $oCategory->getThumbUrl());
+        $this->assertSame($sUrl, $oCategory->getThumbUrl());
     }
 
     /**
@@ -870,14 +871,14 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         // old path
         $oCategory->oxcategories__oxicon = new oxField($sExistingIcon);
-        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/icon/168_100_75/' . $sExistingIcon, $oCategory->getIconUrl());
+        $this->assertSame($oCategory->getPictureUrl() . 'generated/category/icon/168_100_75/' . $sExistingIcon, $oCategory->getIconUrl());
 
         // new path
         $sUrl = $this->getConfig()->getOutUrl() . basename((string) $this->getConfig()->getPicturePath(""));
         $sUrl .= "/generated/category/icon/168_100_75/access_1_cico.jpg";
 
         $oCategory->oxcategories__oxicon = new oxField("access_1_cico.jpg");
-        $this->assertEquals($sUrl, $oCategory->getIconUrl());
+        $this->assertSame($sUrl, $oCategory->getIconUrl());
     }
 
     /**
@@ -897,14 +898,14 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         // old path
         $oCategory->oxcategories__oxpromoicon = new oxField($sExistingIcon);
-        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/promo_icon/370_107_75/' . $sExistingIcon, $oCategory->getPromotionIconUrl());
+        $this->assertSame($oCategory->getPictureUrl() . 'generated/category/promo_icon/370_107_75/' . $sExistingIcon, $oCategory->getPromotionIconUrl());
 
         // new path
         $sUrl = $this->getConfig()->getOutUrl() . basename((string) $this->getConfig()->getPicturePath(""));
         $sUrl .= "/generated/category/promo_icon/370_107_75/cat_promo_pico.jpg";
 
         $oCategory->oxcategories__oxpromoicon = new oxField("cat_promo_pico.jpg");
-        $this->assertEquals($sUrl, $oCategory->getPromotionIconUrl());
+        $this->assertSame($sUrl, $oCategory->getPromotionIconUrl());
     }
 
     public function testGetAttributes()
@@ -914,10 +915,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oAttrList->offsetSet(1, $oAttr);
 
         $oCAttrList = $this->getMock(\OxidEsales\Eshop\Application\Model\AttributeList::class, ['getCategoryAttributes']);
-        $oCAttrList->expects($this->any())->method('getCategoryAttributes')->will($this->returnValue($oAttrList));
+        $oCAttrList->method('getCategoryAttributes')->willReturn($oAttrList);
 
         $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getAttributes']);
-        $oCategory->expects($this->any())->method('getAttributes')->will($this->returnValue($oCAttrList));
+        $oCategory->method('getAttributes')->willReturn($oCAttrList);
 
         $this->assertEquals($oCAttrList->getArray(), $oCategory->getAttributes()->getArray());
     }
@@ -939,7 +940,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $oCatAttributes = oxNew("oxCategory");
         $oCatAttributes->setId($sCacheId);
 
-        $this->assertEquals($sCacheResult, $oCatAttributes->getAttributes());
+        $this->assertSame($sCacheResult, $oCatAttributes->getAttributes());
     }
 
     /**
@@ -950,7 +951,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $sTitle = "testtitle";
         $oCat = oxNew('oxCategory');
         $oCat->oxcategories__oxtitle = new oxField("testtitle");
-        $this->assertEquals($sTitle, $oCat->getTitle());
+        $this->assertSame($sTitle, $oCat->getTitle());
     }
 
     /**
@@ -962,10 +963,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oCategory->getDefaultSorting());
 
         $oCategory->load("30e44ab85808a1f05.26160932");
-        $this->assertEquals('', $oCategory->getDefaultSorting());
+        $this->assertSame('', $oCategory->getDefaultSorting());
 
         $oCategory->oxcategories__oxdefsort = new oxField("testtitle");
-        $this->assertEquals("testtitle", $oCategory->getDefaultSorting());
+        $this->assertSame("testtitle", $oCategory->getDefaultSorting());
     }
 
     /**
@@ -978,10 +979,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
 
         $oCategoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e60a535f16.78077188';
         $oCategory->load($oCategoryId);
-        $this->assertEquals(0, $oCategory->getDefaultSortingMode());
+        $this->assertSame(0, $oCategory->getDefaultSortingMode());
 
         $oCategory->oxcategories__oxdefsortmode = new oxField('desc');
-        $this->assertEquals('desc', $oCategory->getDefaultSortingMode());
+        $this->assertSame('desc', $oCategory->getDefaultSortingMode());
     }
 
     /**

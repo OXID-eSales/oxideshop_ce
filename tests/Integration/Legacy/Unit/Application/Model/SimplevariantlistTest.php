@@ -19,7 +19,7 @@ class SimplevariantlistTest extends \PHPUnit\Framework\TestCase
     {
         $oSubj = $this->getProxyClass("oxSimpleVariantList");
         $oSubj->setParent("testString");
-        $this->assertEquals("testString", $oSubj->getNonPublicVar("_oParent"));
+        $this->assertSame("testString", $oSubj->getNonPublicVar("_oParent"));
     }
 
     public function testAssignElement()
@@ -54,7 +54,7 @@ class SimplevariantlistTest extends \PHPUnit\Framework\TestCase
 
         $oVariantList = $oParent->getVariants();
 
-        $this->assertTrue($oVariantList instanceof ListModel);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Model\ListModel::class, $oVariantList);
         $this->assertTrue($oVariantList->offsetExists($sVariantId));
 
         $oVariant = $oVariantList->offsetGet($sVariantId);

@@ -50,9 +50,9 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemovePromotionGroup()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsGroupsAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testId1', '_testId2']));
+        $oView->method('getActionIds')->willReturn(['_testId1', '_testId2']);
 
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDelete'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDelete'"));
         $oView->removePromotionGroup();
         $this->assertFalse((bool) oxDb::getDb()->getOne("select oxid from oxobject2action where oxactionid='_testGroupDelete' limit 1"));
     }
@@ -65,11 +65,11 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("all", true);
         $this->setRequestParameter("oxid", '_testGroupDeleteAll');
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDeleteAll'"));
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDeleteAll'"));
 
         $oView = oxNew('actions_groups_ajax');
         $oView->removePromotionGroup();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDeleteAll'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testGroupDeleteAll'"));
     }
 
     /**
@@ -80,11 +80,11 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsGroupsAjax::class, ["getActionIds"]);
         $this->setRequestParameter("synchoxid", '_testActionAdd');
 
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testGroupAdd1', '_testGroupAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testGroupAdd1', '_testGroupAdd2']);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
         $oView->addPromotionGroup();
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
     }
 
     /**
@@ -96,9 +96,9 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", '_testActionAdd');
         $this->setRequestParameter("all", true);
 
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testGroupAdd1', '_testGroupAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testGroupAdd1', '_testGroupAdd2']);
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2action where oxactionid='_testActionAdd'"));
         $oView->addPromotionGroup();
 
         $count = $this->getTestConfig()->getShopEdition() == 'EE' ? 18 : 17;
@@ -111,7 +111,7 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals('from oxv_oxgroups_de where 1', trim((string) $oView->getQuery()));
+        $this->assertSame('from oxv_oxgroups_de where 1', trim((string) $oView->getQuery()));
     }
 
     /**
@@ -123,7 +123,7 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals(sprintf('from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = \'%s\' and oxobject2action.oxclass = \'oxgroups\' )', $sSynchoxid), trim((string) $oView->getQuery()));
+        $this->assertSame(sprintf("from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '%s' and oxobject2action.oxclass = 'oxgroups' )", $sSynchoxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -135,7 +135,7 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals(sprintf('from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = \'%s\' and oxobject2action.oxclass = \'oxgroups\'', $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame(sprintf("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '%s' and oxobject2action.oxclass = 'oxgroups'", $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -149,6 +149,6 @@ class ActionsGroupsAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('actions_groups_ajax');
-        $this->assertEquals(sprintf('from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = \'%s\' and oxobject2action.oxclass = \'oxgroups\'  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = \'%s\' and oxobject2action.oxclass = \'oxgroups\' )', $sOxid, $sSynchoxid), trim((string) $oView->getQuery()));
+        $this->assertSame(sprintf("from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '%s' and oxobject2action.oxclass = 'oxgroups'  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '%s' and oxobject2action.oxclass = 'oxgroups' )", $sOxid, $sSynchoxid), trim((string) $oView->getQuery()));
     }
 }

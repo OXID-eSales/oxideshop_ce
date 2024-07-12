@@ -13,7 +13,7 @@ class StateTest extends \PHPUnit\Framework\TestCase
     {
         $oState = oxNew('oxState');
         $oState->load('AB');
-        $this->assertEquals('Alberta', $oState->oxstates__oxtitle->value);
+        $this->assertSame('Alberta', $oState->oxstates__oxtitle->value);
     }
 
     /**
@@ -22,7 +22,7 @@ class StateTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByCode()
     {
         $oState = oxNew('oxState');
-        $this->assertEquals('MB', $oState->getIdByCode('MB', '8f241f11095649d18.02676059'));
+        $this->assertSame('MB', $oState->getIdByCode('MB', '8f241f11095649d18.02676059'));
     }
 
     /**
@@ -30,7 +30,7 @@ class StateTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerStateIDs()
+    public function providerStateIDs(): \Iterator
     {
         $sMsgCorrect = 'State title is correct';
         $sMsgEmptyString = 'Empty string is returned';
@@ -46,15 +46,12 @@ class StateTest extends \PHPUnit\Framework\TestCase
         $sWrongId3 = 's4';
 
         $sEmptyString = '';
-
-        return [
-            /*     ID          expected         message         */
-            [$iStateId, $sStateTitle, $sMsgCorrect],
-            [$sStateId, $sAltStateTitle, $sMsgCorrect],
-            [$sWrongId1, $sEmptyString, $sMsgEmptyString],
-            [$sWrongId2, $sEmptyString, $sMsgEmptyString],
-            [$sWrongId3, $sEmptyString, $sMsgEmptyString],
-        ];
+        /*     ID          expected         message         */
+        yield [$iStateId, $sStateTitle, $sMsgCorrect];
+        yield [$sStateId, $sAltStateTitle, $sMsgCorrect];
+        yield [$sWrongId1, $sEmptyString, $sMsgEmptyString];
+        yield [$sWrongId2, $sEmptyString, $sMsgEmptyString];
+        yield [$sWrongId3, $sEmptyString, $sMsgEmptyString];
     }
 
     /**

@@ -20,6 +20,6 @@ class DiagnosticsMainTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Diagnostics_Main');
-        $this->assertEquals('diagnostics_form', $oView->render());
+        $this->assertSame('diagnostics_form', $oView->render());
     }
 }

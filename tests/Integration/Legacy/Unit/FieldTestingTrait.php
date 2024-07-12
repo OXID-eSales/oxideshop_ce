@@ -19,12 +19,12 @@ trait FieldTestingTrait
 {
     public function encode(string $string): string
     {
-        return !$this->isSmarty() ? $string : Str::getStr()->htmlspecialchars($string);
+        return $this->isSmarty() ? Str::getStr()->htmlspecialchars($string) : $string;
     }
 
     public function insertLineBreaks(string $string): string
     {
-        return !$this->isSmarty() ? $string : \str_replace("\r", '', \nl2br($string));
+        return $this->isSmarty() ? \str_replace("\r", '', \nl2br($string)) : $string;
     }
 
     private function isSmarty(): bool

@@ -56,7 +56,7 @@ class GroupsTest extends \PHPUnit\Framework\TestCase
 
         // checking of group is deleted from DB
         $groupId = $group->getId();
-        $sQ = sprintf('select count(*) from oxgroups where oxid = \'%s\' ', $groupId);
+        $sQ = sprintf("select count(*) from oxgroups where oxid = '%s' ", $groupId);
         if ($myDB->getOne($sQ)) {
             $this->fail('item from oxgroups are not deleted');
         }
@@ -65,7 +65,7 @@ class GroupsTest extends \PHPUnit\Framework\TestCase
         foreach ($this->_aAdd as $sTable => $aField) {
             $sField = $aField[0];
 
-            $sQ = sprintf('select count(*) from %s where %s.%s = \'%s\' ', $sTable, $sTable, $sField, $groupId);
+            $sQ = sprintf("select count(*) from %s where %s.%s = '%s' ", $sTable, $sTable, $sField, $groupId);
             if ($myDB->getOne($sQ)) {
                 $this->fail('records from ' . $sTable . ' are not deleted');
             }

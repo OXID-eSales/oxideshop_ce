@@ -18,6 +18,6 @@ class MiniBasketTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oWMiniBasket = oxNew('oxwMiniBasket');
-        $this->assertEquals('widget/header/minibasket', $oWMiniBasket->render());
+        $this->assertSame('widget/header/minibasket', $oWMiniBasket->render());
     }
 }

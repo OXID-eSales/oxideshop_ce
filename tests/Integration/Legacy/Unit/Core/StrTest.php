@@ -16,11 +16,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
     {
         $oStr = $this->getProxyClass('oxStr');
 
-        $this->assertTrue($oStr->getStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\StrMb::class, $oStr->getStrHandler());
     }
 
     public function testGetStr()
     {
-        $this->assertTrue(oxStr::getStr() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\StrMb::class, oxStr::getStr());
     }
 }

@@ -32,9 +32,20 @@ class CompanyVatInTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($sExpectCode, $oVatIn->getCountryCode());
     }
 
-    public function vatInProviderForCountryCode()
+    public function vatInProviderForCountryCode(): \Iterator
     {
-        return [['LT12345', 'LT'], [' LT12345', 'LT'], ['lt12345', 'LT'], ['LT 12345', 'LT'], ['LT-12 345', 'LT'], ['LT.123.45', 'LT'], ['LT,123,45', 'LT'], ['', ''], [null, ''], [1, '1'], ['1111', '11'], ['abcd', 'AB']];
+        yield ['LT12345', 'LT'];
+        yield [' LT12345', 'LT'];
+        yield ['lt12345', 'LT'];
+        yield ['LT 12345', 'LT'];
+        yield ['LT-12 345', 'LT'];
+        yield ['LT.123.45', 'LT'];
+        yield ['LT,123,45', 'LT'];
+        yield ['', ''];
+        yield [null, ''];
+        yield [1, '1'];
+        yield ['1111', '11'];
+        yield ['abcd', 'AB'];
     }
 
     /**
@@ -46,8 +57,18 @@ class CompanyVatInTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($sExpectCode, $oVatIn->getNumbers());
     }
 
-    public function vatInProviderForNumbers()
+    public function vatInProviderForNumbers(): \Iterator
     {
-        return [['LT12345', '12345'], [' LT12345', '12345'], ['LT12345 ', '12345'], [' LT12345 ', '12345'], ['', ''], ['1111', '11'], ['abcd', 'cd'], ['LT 12345', '12345'], ['LT-12 345', '12345'], ['LT.123.45', '.123.45'], ['LT,123,45', ',123,45']];
+        yield ['LT12345', '12345'];
+        yield [' LT12345', '12345'];
+        yield ['LT12345 ', '12345'];
+        yield [' LT12345 ', '12345'];
+        yield ['', ''];
+        yield ['1111', '11'];
+        yield ['abcd', 'cd'];
+        yield ['LT 12345', '12345'];
+        yield ['LT-12 345', '12345'];
+        yield ['LT.123.45', '.123.45'];
+        yield ['LT,123,45', ',123,45'];
     }
 }

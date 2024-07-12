@@ -44,11 +44,11 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
-        $this->assertTrue($aViewData["artcattree"] instanceof CategoryList);
-        $this->assertTrue($aViewData["aMediaUrls"] instanceof ListModel);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CategoryList::class, $aViewData["artcattree"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Model\ListModel::class, $aViewData["aMediaUrls"]);
 
-        $this->assertEquals('article_extend', $sTplName);
+        $this->assertSame('article_extend', $sTplName);
     }
 
     /**
@@ -65,7 +65,7 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Article_Extend');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Article_Extend::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Article_Extend::save()");
 
             return;
         }
@@ -86,7 +86,7 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Article_Extend');
-        $this->assertEquals("EXCEPTION_NODESCRIPTIONADDED", $oView->save());
+        $this->assertSame("EXCEPTION_NODESCRIPTIONADDED", $oView->save());
     }
 
     /**
@@ -104,7 +104,7 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Article_Extend');
-        $this->assertEquals("EXCEPTION_NOMEDIAADDED", $oView->save());
+        $this->assertSame("EXCEPTION_NOMEDIAADDED", $oView->save());
     }
 
     /**
@@ -121,14 +121,14 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("mediaDesc", "testDesc");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getUploadedFile", "isDemoShop"]);
-        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(["name" => "testName"]));
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
+        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->willReturn(["name" => "testName"]);
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(false);
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, ["getConfig", "resetContentCache"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oView->expects($this->any())->method('resetContentCache');
-        $this->assertEquals("handleUploadedFile", $oView->save());
+        $oView->method('resetContentCache');
+        $this->assertSame("handleUploadedFile", $oView->save());
     }
 
     /**
@@ -145,20 +145,20 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("mediaDesc", "testDesc");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getUploadedFile", "isDemoShop"]);
-        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(["name" => "testName"]));
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
+        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->willReturn(["name" => "testName"]);
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(false);
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, ["getConfig", "resetContentCache"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oView->expects($this->any())->method('resetContentCache');
+        $oView->method('resetContentCache');
 
 
         // testing..
         try {
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("oxmediaurl.save", $exception->getMessage(), "error in Article_Extend::save()");
+            $this->assertSame("oxmediaurl.save", $exception->getMessage(), "error in Article_Extend::save()");
 
             return;
         }
@@ -172,22 +172,17 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
     public function testSaveDemoShopFileUpload()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getUploadedFile", "isDemoShop"]);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
-        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will(
-            $this->onConsecutiveCalls(
-                ["name" => ['FL@oxarticles__oxfile' => "testFile"]],
-                ["name" => "testName"]
-            )
-        );
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
+        $oConfig->expects($this->exactly(2))->method('getUploadedFile')->willReturnOnConsecutiveCalls(["name" => ['FL@oxarticles__oxfile' => "testFile"]], ["name" => "testName"]);
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, ["getConfig", "resetContentCache"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oView->expects($this->any())->method('resetContentCache');
+        $oView->method('resetContentCache');
         $oView->save();
         // testing..
         $aErr = $this->getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
-        $this->assertEquals('ARTICLE_EXTEND_UPLOADISDISABLED', $oErr->getOxMessage());
+        $this->assertSame('ARTICLE_EXTEND_UPLOADISDISABLED', $oErr->getOxMessage());
     }
 
     /**
@@ -220,7 +215,7 @@ class ArticleExtendTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Article_Extend');
         $aParams = $oView->addDefaultValues($aParams);
 
-        $this->assertEquals("http://www.delfi.lt", $aParams['oxarticles__oxexturl']);
+        $this->assertSame("http://www.delfi.lt", $aParams['oxarticles__oxexturl']);
     }
 
     /**

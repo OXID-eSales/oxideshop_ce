@@ -23,23 +23,21 @@ class SepaBICValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerIsValid_validBIC_true()
+    public function providerIsValid_validBIC_true(): \Iterator
     {
-        return [
-            ["ASPKAT2L"],
-            ["AAAACCXX"],
-            ["AAAACC22"],
-            ["AAAACCXXHHH"],
-            ["AAAACC33555"],
-            ["AAAACCXX555"],
-            [" AAAACCXX"],
-            ["AAAACCXX "],
-            ["\tAAAACCXX"],
-            ["AAAACCXX\n"],
-            ["AAAACCXX\n\r"],
-            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
-            ["COBADEHD055"],
-        ];
+        yield ["ASPKAT2L"];
+        yield ["AAAACCXX"];
+        yield ["AAAACC22"];
+        yield ["AAAACCXXHHH"];
+        yield ["AAAACC33555"];
+        yield ["AAAACCXX555"];
+        yield [" AAAACCXX"];
+        yield ["AAAACCXX "];
+        yield ["\tAAAACCXX"];
+        yield ["AAAACCXX\n"];
+        yield ["AAAACCXX\n\r"];
+        // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
+        yield ["COBADEHD055"];
     }
 
 
@@ -60,38 +58,36 @@ class SepaBICValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerIsValid_invalidBIC_false()
+    public function providerIsValid_invalidBIC_false(): \Iterator
     {
-        return [
-            ["AAAACCX"],
-            ["AAAACCXXX"],
-            ["AAAACCXXXX"],
-            ["AAAACC2233"],
-            ["AAAACC2233*"],
-            ["AAAACC224444X"],
-            ["AAAACC224444XX"],
-            ["AAA1CC22"],
-            ["1AAAACXX"],
-            ["A1AAACXX"],
-            ["AA1AACXX"],
-            ["AAA1ACXX"],
-            ["AAAA1CXX"],
-            ["AAAAC1XX"],
-            ["AAAAC122"],
-            ["ASPK AT 2L"],
-            ["ASPK\tAT\t2L"],
-            ["123 ASPKAT2L"],
-            ["_ASPKAT2L"],
-            ["ASPKAT2"],
-            ["ASP_AT2L"],
-            ["ASPK*T2L"],
-            ["ASPKA-2L"],
-            ["AAAßCCXX"],
-            ["AAAACßXX"],
-            ["AAAACCXö"],
-            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
-            ["123COBADEHD055ABC"],
-        ];
+        yield ["AAAACCX"];
+        yield ["AAAACCXXX"];
+        yield ["AAAACCXXXX"];
+        yield ["AAAACC2233"];
+        yield ["AAAACC2233*"];
+        yield ["AAAACC224444X"];
+        yield ["AAAACC224444XX"];
+        yield ["AAA1CC22"];
+        yield ["1AAAACXX"];
+        yield ["A1AAACXX"];
+        yield ["AA1AACXX"];
+        yield ["AAA1ACXX"];
+        yield ["AAAA1CXX"];
+        yield ["AAAAC1XX"];
+        yield ["AAAAC122"];
+        yield ["ASPK AT 2L"];
+        yield ["ASPK\tAT\t2L"];
+        yield ["123 ASPKAT2L"];
+        yield ["_ASPKAT2L"];
+        yield ["ASPKAT2"];
+        yield ["ASP_AT2L"];
+        yield ["ASPK*T2L"];
+        yield ["ASPKA-2L"];
+        yield ["AAAßCCXX"];
+        yield ["AAAACßXX"];
+        yield ["AAAACCXö"];
+        // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
+        yield ["123COBADEHD055ABC"];
     }
 
     /**

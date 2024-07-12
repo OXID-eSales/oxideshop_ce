@@ -20,6 +20,6 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Actions');
-        $this->assertEquals('actions', $oView->render());
+        $this->assertSame('actions', $oView->render());
     }
 }

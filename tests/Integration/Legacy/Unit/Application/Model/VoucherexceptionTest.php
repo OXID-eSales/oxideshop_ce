@@ -13,9 +13,9 @@ class VoucherexceptionTest extends \PHPUnit\Framework\TestCase
     {
         $sVoucher = "a voucher nr.";
         $oTestObject = oxNew('oxVoucherException');
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\VoucherException::class, $oTestObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\VoucherException::class, $oTestObject::class);
         $oTestObject->setVoucherNr($sVoucher);
-        $this->assertEquals($sVoucher, $oTestObject->getVoucherNr());
+        $this->assertSame($sVoucher, $oTestObject->getVoucherNr());
     }
 
     // We check on class name (exception class) and message only - rest is not checked yet
@@ -24,7 +24,7 @@ class VoucherexceptionTest extends \PHPUnit\Framework\TestCase
         $sMsg = 'Erik was here..';
         $sVoucher = "a voucher nr.";
         $oTestObject = oxNew('oxVoucherException', $sMsg);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\VoucherException::class, $oTestObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\VoucherException::class, $oTestObject::class);
         $oTestObject->setVoucherNr($sVoucher);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertStringContainsString($sMsg, $sStringOut);
@@ -39,6 +39,6 @@ class VoucherexceptionTest extends \PHPUnit\Framework\TestCase
         $oTestObject->setVoucherNr($sVoucher);
         $aRes = $oTestObject->getValues();
         $this->assertArrayHasKey('voucherNr', $aRes);
-        $this->assertTrue($sVoucher === $aRes['voucherNr']);
+        $this->assertSame($sVoucher, $aRes['voucherNr']);
     }
 }

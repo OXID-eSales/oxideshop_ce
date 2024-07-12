@@ -11,7 +11,7 @@ use \oxBasketContentMarkGenerator;
 
 class BasketcontentmarkgeneratorTest extends \PHPUnit\Framework\TestCase
 {
-    public function providerGetExplanationMarks()
+    public function providerGetExplanationMarks(): \Iterator
     {
         $aResultDownloadable = ['skippedDiscount' => null, 'downloadable'    => '**', 'intangible'      => null];
 
@@ -24,8 +24,12 @@ class BasketcontentmarkgeneratorTest extends \PHPUnit\Framework\TestCase
         $aResultDownloadableIntangibleAndSkippedDiscount = ['skippedDiscount' => '**', 'downloadable'    => '***', 'intangible'      => '****'];
 
         $ResultEmptyArray = ['skippedDiscount'   => null, 'downloadable'      => null, 'intangible'        => null, 'thisDoesNotExists' => null];
-
-        return [[false, true, false, $aResultDownloadable], [true, false, false, $aResultIntangible], [false, false, true, $aResultSkippedDiscount], [true, true, false, $aResultDownloadableAndIntangible], [true, true, true, $aResultDownloadableIntangibleAndSkippedDiscount], [false, false, false, $ResultEmptyArray]];
+        yield [false, true, false, $aResultDownloadable];
+        yield [true, false, false, $aResultIntangible];
+        yield [false, false, true, $aResultSkippedDiscount];
+        yield [true, true, false, $aResultDownloadableAndIntangible];
+        yield [true, true, true, $aResultDownloadableIntangibleAndSkippedDiscount];
+        yield [false, false, false, $ResultEmptyArray];
     }
 
     /**
@@ -40,9 +44,9 @@ class BasketcontentmarkgeneratorTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxBasket $oBasket */
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['hasArticlesWithIntangibleAgreement', 'hasArticlesWithDownloadableAgreement', 'hasSkipedDiscount']);
-        $oBasket->expects($this->any())->method('hasArticlesWithIntangibleAgreement')->will($this->returnValue($blIsIntangible));
-        $oBasket->expects($this->any())->method('hasArticlesWithDownloadableAgreement')->will($this->returnValue($blIsDownloadable));
-        $oBasket->expects($this->any())->method('hasSkipedDiscount')->will($this->returnValue($blHasSkippedDiscounts));
+        $oBasket->method('hasArticlesWithIntangibleAgreement')->willReturn($blIsIntangible);
+        $oBasket->method('hasArticlesWithDownloadableAgreement')->willReturn($blIsDownloadable);
+        $oBasket->method('hasSkipedDiscount')->willReturn($blHasSkippedDiscounts);
 
         $oExplanationMarks = new oxBasketContentMarkGenerator($oBasket);
 

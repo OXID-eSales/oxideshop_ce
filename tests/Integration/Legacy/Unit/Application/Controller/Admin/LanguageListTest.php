@@ -28,10 +28,10 @@ class LanguageListTest extends \PHPUnit\Framework\TestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getConfigParam", "saveShopConfVar"]);
 
         $map = [['blAllowSharedEdit', null, "1"], ['aLanguageParams', null, [1 => ['baseId' => 1]]], ['aLanguages', null, [1 => 1]], ['aLanguageURLs', null, [1 => 1]], ['aLanguageSSLURLs', null, [1 => 1]], ['sDefaultLang', null, 1]];
-        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValueMap($map));
+        $oConfig->method('getConfigParam')->willReturnMap($map);
 
         $map = [['aarr', "aLanguageParams", [], null], ['aarr', "aLanguages", [], null], ['arr', "aLanguageURLs", [], null], ['arr', "aLanguageSSLURLs", [], null], ['str', "sDefaultLang", 0, null]];
-        $oConfig->expects($this->exactly(5))->method('saveShopConfVar')->will($this->returnValueMap($map));
+        $oConfig->expects($this->exactly(5))->method('saveShopConfVar')->willReturnMap($map);
 
         $aTasks = ["getConfig"];
 
@@ -48,7 +48,7 @@ class LanguageListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Language_List');
-        $this->assertEquals('language_list', $oView->render());
+        $this->assertSame('language_list', $oView->render());
     }
 
     /**
@@ -91,20 +91,20 @@ class LanguageListTest extends \PHPUnit\Framework\TestCase
         $oLang1->sort = 'EN';
         $oLang2 = new stdClass();
         $oLang2->sort = 'DE';
-        $this->assertEquals(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertSame(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 'DE';
         $oLang2 = new stdClass();
         $oLang2->sort = 'EN';
-        $this->assertEquals(-1, $oView->sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertSame(-1, $oView->sortLanguagesCallback($oLang1, $oLang2));
 
         $oLang1 = new stdClass();
         $oLang1->sort = 1;
         $oLang2 = new stdClass();
         $oLang2->sort = 2;
         $oView->setNonPublicVar("_sDefSortOrder", "desc");
-        $this->assertEquals(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
+        $this->assertSame(1, $oView->sortLanguagesCallback($oLang1, $oLang2));
     }
 
     /**
@@ -119,7 +119,7 @@ class LanguageListTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Language_List');
             $oView->resetMultiLangDbFields(3);
         } catch (Exception $exception) {
-            $this->assertEquals("addErrorToDisplay", $exception->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
+            $this->assertSame("addErrorToDisplay", $exception->getMessage(), "Error in Language_List::UNITresetMultiLangDbFields()");
 
             return;
         }

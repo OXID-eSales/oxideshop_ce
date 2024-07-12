@@ -54,7 +54,7 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de", trim((string) $oView->getQuery()));
+        $this->assertSame("from oxv_oxgroups_de", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -66,7 +66,7 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim((string) $oView->getQuery()));
+        $this->assertSame("from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -78,7 +78,7 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid", trim((string) $oView->getQuery()));
+        $this->assertSame("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -92,7 +92,7 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid and  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim((string) $oView->getQuery()));
+        $this->assertSame("from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sOxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid and  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -101,12 +101,12 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemovePayGroup()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testPayRemove1', '_testPayRemove2']));
+        $oView->method('getActionIds')->willReturn(['_testPayRemove1', '_testPayRemove2']);
 
         $sSql = "select count(oxid) from oxobject2group where oxid in ('_testPayRemove1', '_testPayRemove2')";
-        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(2, oxDb::getDb()->getOne($sSql));
         $oView->removePayGroup();
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -120,9 +120,9 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
 
         $sSql = "select count(oxid) from oxobject2group where oxobjectid = '" . $sOxid . "'";
         $oView = oxNew('payment_main_ajax');
-        $this->assertEquals(3, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(3, oxDb::getDb()->getOne($sSql));
         $oView->removePayGroup();
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -133,14 +133,14 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testPayAdd';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $sSql = sprintf('select count(oxid) from oxobject2group where oxobjectid=\'%s\'', $sSynchoxid);
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $sSql = sprintf("select count(oxid) from oxobject2group where oxobjectid='%s'", $sSynchoxid);
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testPayAdd1', '_testPayAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testPayAdd1', '_testPayAdd2']);
 
         $oView->addPayGroup();
-        $this->assertEquals(2, oxDb::getDb()->getOne($sSql));
+        $this->assertSame(2, oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -155,11 +155,11 @@ class PaymentMainAjaxTest extends \PHPUnit\Framework\TestCase
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne("select count(oxv_oxgroups_de.oxid) from oxv_oxgroups_de where  oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxv_oxgroups_de, oxobject2group where  oxobject2group.oxobjectid = '" . $sSynchoxid . "' and oxobject2group.oxgroupsid = oxv_oxgroups_de.oxid )");
 
-        $sSql = sprintf('select count(oxid) from oxobject2group where oxobjectid=\'%s\'', $sSynchoxid);
-        $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
+        $sSql = sprintf("select count(oxid) from oxobject2group where oxobjectid='%s'", $sSynchoxid);
+        $this->assertSame(0, oxDb::getDb()->getOne($sSql));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testPayAdd1', '_testPayAdd2']));
+        $oView->method('getActionIds')->willReturn(['_testPayAdd1', '_testPayAdd2']);
 
         $oView->addPayGroup();
         $this->assertEquals($iCount, oxDb::getDb()->getOne($sSql));

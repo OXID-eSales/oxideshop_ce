@@ -93,13 +93,13 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
         $sValue = '<script>alert("oxid");</script>';
 
         $oUserBasketItem->setFieldData('oxuserbasketitems__oxsellist', $sValue);
-        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
+        $this->assertSame($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
         $oUserBasketItem->setFieldData('oxsellist', $sValue);
-        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
+        $this->assertSame($sValue, $oUserBasketItem->oxuserbasketitems__oxsellist->value);
         $oUserBasketItem->setFieldData('oxuserbasketitems__oxtestfield', $sValue);
-        $this->assertEquals($this->encode($sValue), $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
+        $this->assertSame($this->encode($sValue), $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
         $oUserBasketItem->setFieldData('oxuserbasketitems__oxtestfield', $sValue, oxField::T_RAW);
-        $this->assertEquals($sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
+        $this->assertSame($sValue, $oUserBasketItem->oxuserbasketitems__oxtestfield->value);
     }
 
     public function testSelectionListSetterGetter()
@@ -113,10 +113,10 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
 
         // setting some list data
         $oUserBasketItem->setSelList($aData);
-        $this->assertEquals($aData, $oUserBasketItem->getSelList());
+        $this->assertSame($aData, $oUserBasketItem->getSelList());
 
         // chekcing direct value
-        $this->assertEquals(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxsellist->value);
+        $this->assertSame(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxsellist->value);
     }
 
     public function testPersParamSetterGetter()
@@ -130,10 +130,10 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
 
         // setting some list data
         $oUserBasketItem->setPersParams($aData);
-        $this->assertEquals($aData, $oUserBasketItem->getPersParams());
+        $this->assertSame($aData, $oUserBasketItem->getPersParams());
 
         // chekcing direct value
-        $this->assertEquals(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxpersparam->value);
+        $this->assertSame(serialize($aData), $oUserBasketItem->oxuserbasketitems__oxpersparam->value);
     }
 
     /**
@@ -171,7 +171,7 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
         try {
             $oBasketItem->getArticle("");
         } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $articleException) {
-            $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $articleException->getMessage());
+            $this->assertSame('EXCEPTION_ARTICLE_NOPRODUCTID', $articleException->getMessage());
 
             return;
         }
@@ -198,8 +198,8 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
         $oArticle = $oBasketItem->getArticle("123");
-        $this->assertTrue($oArticle instanceof article);
-        $this->assertEquals($oArticle->getItemKey(), "123");
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $oArticle);
+        $this->assertSame($oArticle->getItemKey(), "123");
     }
 
     // testing article title formatting - article has NO parent
@@ -219,7 +219,7 @@ class UserbasketitemTest extends \PHPUnit\Framework\TestCase
         $oBasketItem->oxuserbasketitems__oxartid = new oxField('xxx', oxField::T_RAW);
         $oArticle = $oBasketItem->getArticle('xxx');
 
-        $this->assertEquals('xxx', $oArticle->oxarticles__oxtitle->value);
+        $this->assertSame('xxx', $oArticle->oxarticles__oxtitle->value);
         $aSelectList = $oArticle->getDispSelList();
         $this->assertFalse(isset($aSelectList));
     }

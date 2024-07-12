@@ -18,11 +18,11 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     {
         $string = 'ssss<';
         $oField = new oxField($string);
-        $this->assertEquals($string, $oField->rawValue);
-        $this->assertEquals($this->encode($string), $oField->value);
+        $this->assertSame($string, $oField->rawValue);
+        $this->assertSame($this->encode($string), $oField->value);
         $oField = new oxField($string, oxField::T_RAW);
-        $this->assertEquals($string, $oField->rawValue);
-        $this->assertEquals($string, $oField->value);
+        $this->assertSame($string, $oField->rawValue);
+        $this->assertSame($string, $oField->value);
     }
 
     public function test_isset()
@@ -40,11 +40,11 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     {
         $string = 'ssss<';
         $oField = new oxField($string);
-        $this->assertEquals($string, $oField->rawValue);
-        $this->assertEquals($this->encode($string), $oField->value);
+        $this->assertSame($string, $oField->rawValue);
+        $this->assertSame($this->encode($string), $oField->value);
         $oField->setValue($string, oxField::T_RAW);
-        $this->assertEquals($string, $oField->rawValue);
-        $this->assertEquals($string, $oField->value);
+        $this->assertSame($string, $oField->rawValue);
+        $this->assertSame($string, $oField->value);
         $this->assertNull($oField->aaa);
     }
 
@@ -54,10 +54,10 @@ class FieldTest extends \PHPUnit\Framework\TestCase
 
         $string = "ssss<\n>";
         $oField->setValue($string);
-        $this->assertEquals($this->encode($string), $oField->value);
+        $this->assertSame($this->encode($string), $oField->value);
         $string = 'ssss<';
         $oField->setValue($string);
-        $this->assertEquals($this->encode($string), $oField->value);
+        $this->assertSame($this->encode($string), $oField->value);
     }
 
     public function testGetRawValue()
@@ -66,8 +66,8 @@ class FieldTest extends \PHPUnit\Framework\TestCase
 
         $string = "ssss<\n>";
         $oField->setValue($string);
-        $this->assertEquals($this->encode($string), $oField->value);
-        $this->assertEquals($string, $oField->getRawValue());
+        $this->assertSame($this->encode($string), $oField->value);
+        $this->assertSame($string, $oField->getRawValue());
     }
 
     public function testGetRawValueIfSetAsRaw()
@@ -75,8 +75,8 @@ class FieldTest extends \PHPUnit\Framework\TestCase
         $oField = new oxField();
 
         $oField->setValue("ssss<\n>", oxField::T_RAW);
-        $this->assertEquals("ssss<\n>", $oField->value);
-        $this->assertEquals("ssss<\n>", $oField->getRawValue());
+        $this->assertSame("ssss<\n>", $oField->value);
+        $this->assertSame("ssss<\n>", $oField->getRawValue());
     }
 
     public function testToString()

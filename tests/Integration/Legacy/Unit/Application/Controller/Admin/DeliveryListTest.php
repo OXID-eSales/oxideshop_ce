@@ -24,15 +24,15 @@ class DeliveryListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('Delivery_List'));
         $oView->init();
 
-        $this->assertEquals('oxdelivery', $oView->getNonPublicVar("_sListClass"));
-        $this->assertEquals('oxdeliverylist', $oView->getNonPublicVar("_sListType"));
-        $this->assertEquals(["oxdelivery" => ["oxsort" => "asc"]], $oView->getListSorting());
-        $this->assertEquals('delivery_list', $oView->render());
+        $this->assertSame('oxdelivery', $oView->getNonPublicVar("_sListClass"));
+        $this->assertSame('oxdeliverylist', $oView->getNonPublicVar("_sListType"));
+        $this->assertSame(["oxdelivery" => ["oxsort" => "asc"]], $oView->getListSorting());
+        $this->assertSame('delivery_list', $oView->render());
     }
 }

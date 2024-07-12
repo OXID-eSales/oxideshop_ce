@@ -39,10 +39,10 @@ class OrderOverviewTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Order_Overview');
-        $this->assertEquals('order_overview', $oView->render());
+        $this->assertSame('order_overview', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof order);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Order::class, $aViewData['edit']);
     }
 
     /**
@@ -59,8 +59,8 @@ class OrderOverviewTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Order_Overview');
         $oUserPayment = $oView->getPaymentType($oOrder);
 
-        $this->assertTrue($oUserPayment instanceof userpayment);
-        $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\UserPayment::class, $oUserPayment);
+        $this->assertSame("testValue", $oUserPayment->oxpayments__oxdesc->value);
     }
 
     /**
@@ -76,7 +76,7 @@ class OrderOverviewTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Order_Overview');
             $oView->resetorder();
         } catch (Exception $exception) {
-            $this->assertEquals("0000-00-00 00:00:00", $exception->getMessage(), "Error in Order_Overview::resetorder()");
+            $this->assertSame("0000-00-00 00:00:00", $exception->getMessage(), "Error in Order_Overview::resetorder()");
 
             return;
         }
@@ -132,9 +132,16 @@ class OrderOverviewTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function nameProvider()
+    public function nameProvider(): \Iterator
     {
-        return [['abc', 'abc'], ['ab/c', 'abc'], ['ab!@#$%^&*()c', 'abc'], ['ab_!_@_c', 'ab___c'], ['ab_!_@_c      s', 'ab___c_s'], ['      s', '_s'], ['!@#$%^&*()_+//////\\', '_'], [null, null]];
+        yield ['abc', 'abc'];
+        yield ['ab/c', 'abc'];
+        yield ['ab!@#$%^&*()c', 'abc'];
+        yield ['ab_!_@_c', 'ab___c'];
+        yield ['ab_!_@_c      s', 'ab___c_s'];
+        yield ['      s', '_s'];
+        yield ['!@#$%^&*()_+//////\\', '_'];
+        yield [null, null];
     }
 
     /**

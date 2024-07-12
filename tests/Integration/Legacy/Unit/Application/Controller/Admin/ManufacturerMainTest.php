@@ -27,11 +27,11 @@ class ManufacturerMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Manufacturer_Main');
-        $this->assertEquals('manufacturer_main', $oView->render());
+        $this->assertSame('manufacturer_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof manufacturer);
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Manufacturer::class, $aViewData['edit']);
+        $this->assertArrayHasKey('readonly', $aViewData);
     }
 
     /**
@@ -43,10 +43,10 @@ class ManufacturerMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Manufacturer_Main');
-        $this->assertEquals('manufacturer_main', $oView->render());
+        $this->assertSame('manufacturer_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -63,7 +63,7 @@ class ManufacturerMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Manufacturer_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Manufacturer_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Manufacturer_Main::save()");
 
             return;
         }
@@ -85,7 +85,7 @@ class ManufacturerMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Manufacturer_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Manufacturer_Main::saveinnlang()");
+            $this->assertSame("save", $exception->getMessage(), "error in Manufacturer_Main::saveinnlang()");
 
             return;
         }

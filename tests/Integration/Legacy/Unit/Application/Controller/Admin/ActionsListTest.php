@@ -26,9 +26,9 @@ class ActionsListTest extends \PHPUnit\Framework\TestCase
         $sTplName = $oView->render();
         $oView->getViewData();
 
-        $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
-        $this->assertEquals(['oxactions' => ['oxtitle' => 'asc']], $oView->getListSorting());
-        $this->assertEquals('actions_list', $sTplName);
+        $this->assertSame('oxactions', $oView->getNonPublicVar("_sListClass"));
+        $this->assertSame(['oxactions' => ['oxtitle' => 'asc']], $oView->getListSorting());
+        $this->assertSame('actions_list', $sTplName);
     }
 
     /**
@@ -42,10 +42,10 @@ class ActionsListTest extends \PHPUnit\Framework\TestCase
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
 
-        $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
-        $this->assertEquals(['oxactions' => ['oxtitle' => 'asc']], $oView->getListSorting());
-        $this->assertEquals('testType', $aViewData['displaytype']);
-        $this->assertEquals('actions_list', $sTplName);
+        $this->assertSame('oxactions', $oView->getNonPublicVar("_sListClass"));
+        $this->assertSame(['oxactions' => ['oxtitle' => 'asc']], $oView->getListSorting());
+        $this->assertSame('testType', $aViewData['displaytype']);
+        $this->assertSame('actions_list', $sTplName);
     }
 
     /**
@@ -65,16 +65,16 @@ class ActionsListTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Actions_List');
 
-        $sQ = sprintf(' and %s.oxactivefrom < \'%s\' and %s.oxactiveto > \'%s\' ', $sTable, $sNow, $sTable, $sNow);
+        $sQ = sprintf(" and %s.oxactivefrom < '%s' and %s.oxactiveto > '%s' ", $sTable, $sNow, $sTable, $sNow);
         $this->setRequestParameter('displaytype', 1);
-        $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
+        $this->assertSame($sQ, $oView->prepareWhereQuery([], ""));
 
-        $sQ = sprintf(' and %s.oxactivefrom > \'%s\' ', $sTable, $sNow);
+        $sQ = sprintf(" and %s.oxactivefrom > '%s' ", $sTable, $sNow);
         $this->setRequestParameter('displaytype', 2);
-        $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
+        $this->assertSame($sQ, $oView->prepareWhereQuery([], ""));
 
-        $sQ = sprintf(' and %s.oxactiveto < \'%s\' and %s.oxactiveto != \'0000-00-00 00:00:00\' ', $sTable, $sNow, $sTable);
+        $sQ = sprintf(" and %s.oxactiveto < '%s' and %s.oxactiveto != '0000-00-00 00:00:00' ", $sTable, $sNow, $sTable);
         $this->setRequestParameter('displaytype', 3);
-        $this->assertEquals($sQ, $oView->prepareWhereQuery([], ""));
+        $this->assertSame($sQ, $oView->prepareWhereQuery([], ""));
     }
 }

@@ -40,7 +40,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
     public function testMustSaveToSessionNoSslUrl()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getSslShopUrl"]);
-        $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('getSslShopUrl')->willReturn(false);
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["getConfig"]);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
@@ -53,8 +53,8 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
     public function testMustSaveToSession()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["getSslShopUrl", "getShopUrl"]);
-        $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue("https://ssl.oxid.com"));
-        $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue("http://www.oxid.com"));
+        $oConfig->expects($this->once())->method('getSslShopUrl')->willReturn("https://ssl.oxid.com");
+        $oConfig->expects($this->once())->method('getShopUrl')->willReturn("http://www.oxid.com");
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["getConfig"]);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
@@ -78,10 +78,10 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["getConfig"]);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals('ssl', $oUtilsServer->getSessionCookieKey(true));
-        $this->assertEquals('nossl', $oUtilsServer->getSessionCookieKey(true));
-        $this->assertEquals('nossl', $oUtilsServer->getSessionCookieKey(false));
-        $this->assertEquals('ssl', $oUtilsServer->getSessionCookieKey(false));
+        $this->assertSame('ssl', $oUtilsServer->getSessionCookieKey(true));
+        $this->assertSame('nossl', $oUtilsServer->getSessionCookieKey(true));
+        $this->assertSame('nossl', $oUtilsServer->getSessionCookieKey(false));
+        $this->assertSame('ssl', $oUtilsServer->getSessionCookieKey(false));
     }
 
     /**
@@ -90,13 +90,13 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
     public function testSaveSessionCookie()
     {
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["mustSaveToSession", "getSessionCookieKey"]);
-        $oUtilsServer->expects($this->any())->method('mustSaveToSession')->will($this->returnValue(true));
-        $oUtilsServer->expects($this->any())->method('getSessionCookieKey')->will($this->returnValue("key"));
+        $oUtilsServer->method('mustSaveToSession')->willReturn(true);
+        $oUtilsServer->method('getSessionCookieKey')->willReturn("key");
         $oUtilsServer->saveSessionCookie("var1", "val1", 123, "path1", "domain1");
         $oUtilsServer->saveSessionCookie("var2", "val2", 321, "path2", "domain2");
 
         $aVal = ["key" => ["var1" => ["value" => "val1", "expire" => 123, "path" => "path1", "domain" => "domain1"], "var2" => ["value" => "val2", "expire" => 321, "path" => "path2", "domain" => "domain2"]]];
-        $this->assertEquals($aVal, $this->getSession()->getVariable("aSessionCookies"));
+        $this->assertSame($aVal, $this->getSession()->getVariable("aSessionCookies"));
     }
 
     /**
@@ -109,10 +109,10 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable('aSessionCookies', $aVal);
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["getSessionCookieKey", "setOxCookie"]);
-        $oUtilsServer->method('getSessionCookieKey')->will($this->returnValue("key"));
+        $oUtilsServer->method('getSessionCookieKey')->willReturn("key");
         $oUtilsServer->loadSessionCookies();
 
-        $this->assertEquals([], oxRegistry::getSession()->getVariable('aSessionCookies'));
+        $this->assertSame([], oxRegistry::getSession()->getVariable('aSessionCookies'));
     }
 
     public function testIsTrustedClientIp()
@@ -123,7 +123,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         //
         $this->getConfig()->setConfigParam("aTrustedIPs", ["xxx"]);
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, ["getRemoteAddress"]);
-        $oUtilsServer->expects($this->once())->method('getRemoteAddress')->will($this->returnValue("xxx"));
+        $oUtilsServer->expects($this->once())->method('getRemoteAddress')->willReturn("xxx");
         $this->assertTrue($oUtilsServer->isTrustedClientIp());
     }
 
@@ -133,7 +133,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("aCookiePaths", [$sShopId => 'somepath']);
 
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals('somepath', $oUtilsServer->getCookiePath(""));
+        $this->assertSame('somepath', $oUtilsServer->getCookiePath(""));
     }
 
     public function testGetCookieDomainWhenACookieDomainsIssetup(): void
@@ -142,14 +142,14 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("aCookieDomains", [$sShopId => 'somedomain']);
 
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals('somedomain', $oUtilsServer->getCookieDomain(""));
+        $this->assertSame('somedomain', $oUtilsServer->getCookieDomain(""));
     }
 
     public function testGetCookiePath()
     {
         $oUtilsServer = oxNew('oxUtilsServer');
-        $this->assertEquals("xxx", $oUtilsServer->getCookiePath("xxx"));
-        $this->assertEquals("", $oUtilsServer->getCookiePath(null));
+        $this->assertSame("xxx", $oUtilsServer->getCookiePath("xxx"));
+        $this->assertSame("", $oUtilsServer->getCookiePath(null));
     }
 
     /**
@@ -168,7 +168,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         $aC = $_COOKIE;
         try {
             $_COOKIE['test'] = "asd'\"\000aa";
-            $this->assertEquals("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
+            $this->assertSame("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
         } catch (Exception $exception) {
         }
 
@@ -191,14 +191,14 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
             $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress());
         } else {
             $_SERVER["REMOTE_ADDR"] = $sIP;
-            $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
+            $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         }
 
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP;
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
+        $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         $_SERVER["HTTP_CLIENT_IP"] = $sIP;
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
+        $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_CLIENT_IP"]);
     }
 
@@ -208,7 +208,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
         $sProxy = '127.5.4.4';
         // in test mode, there are no remote adresses, thus null
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP . ',' . $sProxy;
-        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
+        $this->assertSame(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
     }
 
@@ -219,7 +219,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
 
         $_SERVER[$sName] = $sValue;
         ;
-        $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
+        $this->assertSame($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
         $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
     }
 
@@ -245,7 +245,7 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
 
         $oUtils = oxNew('oxUtilsServer');
         foreach ($aServerInfo as $sKey => $sVal) {
-            $this->assertTrue($oUtils->processUserAgentInfo($sKey) == $oUtils->processUserAgentInfo($sVal));
+            $this->assertEquals($oUtils->processUserAgentInfo($sVal), $oUtils->processUserAgentInfo($sKey));
         }
     }
 
@@ -301,17 +301,15 @@ class UtilsServerTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerIsCurrentWithSameHost()
+    public function providerIsCurrentWithSameHost(): \Iterator
     {
-        return [
-            ['/index.php', 'http://oxideshop.dev/index.php', true],
-            ['/shop1/index.php', 'http://oxideshop.dev/shop1/index.php', true],
-            ['/modules/oe/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
-            ['/modules/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true],
-            ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop1/module_index.php', true],
-            ['/shop1/index.php', 'http://oxideshop.dev/shop2/index.php', false],
-            ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop2/module_index.php', false],
-        ];
+        yield ['/index.php', 'http://oxideshop.dev/index.php', true];
+        yield ['/shop1/index.php', 'http://oxideshop.dev/shop1/index.php', true];
+        yield ['/modules/oe/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true];
+        yield ['/modules/test_module/module_index.php', 'http://oxideshop.dev/module_index.php', true];
+        yield ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop1/module_index.php', true];
+        yield ['/shop1/index.php', 'http://oxideshop.dev/shop2/index.php', false];
+        yield ['/shop1/modules/test_module/module_index.php', 'http://oxideshop.dev/shop2/module_index.php', false];
     }
 
     /**

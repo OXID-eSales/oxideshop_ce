@@ -22,7 +22,7 @@ class LinksTest extends \PHPUnit\Framework\TestCase
     {
         $oLinks = $this->getProxyClass('links');
         $oLink = $oLinks->getLinksList()->current();
-        $this->assertEquals('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
+        $this->assertSame('http://www.oxid-esales.com', $oLink->oxlinks__oxurl->value);
     }
 
     /**

@@ -53,7 +53,7 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('discount_categories_ajax');
         $sQuery = 'from ' . $sCategoryTable;
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -73,7 +73,7 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testOxid' and oxobject2discount.oxtype = 'oxcategories'  and ";
         $sQuery .= sprintf(' %s.oxid not in (  select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sCategoryTable, $sCategoryTable, $sCategoryTable, $sCategoryTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -90,7 +90,7 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery = sprintf('from %s where ', $sCategoryTable);
         $sQuery .= sprintf(' %s.oxid not in (  select %s.oxid from oxobject2discount, %s where %s.oxid=oxobject2discount.oxobjectid ', $sCategoryTable, $sCategoryTable, $sCategoryTable, $sCategoryTable);
         $sQuery .= " and oxobject2discount.oxdiscountid = '_testSynchoxid' and oxobject2discount.oxtype = 'oxcategories'  )";
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -99,11 +99,11 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemoveDiscCat()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountCategoriesAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testO2DRemove1', '_testO2DRemove2']));
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $oView->method('getActionIds')->willReturn(['_testO2DRemove1', '_testO2DRemove2']);
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->removeDiscCat();
-        $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -115,11 +115,11 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView = oxNew('discount_categories_ajax');
         $oView->removeDiscCat();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -130,11 +130,11 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testDiscount';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountCategoriesAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testCatAdd1', '_testCatAdd1']));
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $oView->method('getActionIds')->willReturn(['_testCatAdd1', '_testCatAdd1']);
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
 
         $oView->addDiscCat();
-        $this->assertEquals(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
+        $this->assertSame(5, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='_testDiscount'"));
     }
 
     /**
@@ -151,9 +151,9 @@ class DiscountCategoriesAjaxTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('discount_categories_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2discount where oxdiscountid='%s'", $sSynchoxid)));
 
         $oView->addDiscCat();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2discount where oxdiscountid=\'%s\'', $sSynchoxid)));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2discount where oxdiscountid='%s'", $sSynchoxid)));
     }
 }

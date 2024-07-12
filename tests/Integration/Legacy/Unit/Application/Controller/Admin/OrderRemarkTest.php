@@ -37,10 +37,10 @@ class OrderRemarkTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = oxNew('order_remark');
-        $this->assertEquals("order_remark", $oView->render());
+        $this->assertSame("order_remark", $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['allremark']));
-        $this->assertTrue($aViewData['allremark'] instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
+        $this->assertArrayHasKey('allremark', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Model\ListModel::class, $aViewData['allremark']);
     }
 
     /**
@@ -61,8 +61,8 @@ class OrderRemarkTest extends \PHPUnit\Framework\TestCase
 
         $oRemark = oxNew("oxRemark");
         $oRemark->load("_testRemark");
-        $this->assertEquals('r', oxDb::getDB()->getOne('select oxtype from oxremark where oxtext = "test text"'));
-        $this->assertEquals('oxdefaultadmin', oxDb::getDB()->getOne('select oxparentid from oxremark where oxtext = "test text"'));
+        $this->assertSame('r', oxDb::getDB()->getOne('select oxtype from oxremark where oxtext = "test text"'));
+        $this->assertSame('oxdefaultadmin', oxDb::getDB()->getOne('select oxparentid from oxremark where oxtext = "test text"'));
     }
 
     /**
@@ -77,7 +77,7 @@ class OrderRemarkTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('order_remark');
             $oView->delete();
         } catch (Exception $exception) {
-            $this->assertEquals("delete", $exception->getMessage(), "Error in order_remark::delete()");
+            $this->assertSame("delete", $exception->getMessage(), "Error in order_remark::delete()");
 
             return;
         }

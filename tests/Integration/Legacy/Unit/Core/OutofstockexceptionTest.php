@@ -24,7 +24,7 @@ class OutofstockexceptionTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\OutOfStockException::class, $this->message);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\OutOfStockException::class, $this->testObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\OutOfStockException::class, $this->testObject::class);
         $this->testObject->setRemainingAmount($this->amount);
         $this->testObject->setBasketIndex($this->basketIndex);
     }
@@ -34,7 +34,7 @@ class OutofstockexceptionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->message, $this->testObject->getMessage());
 
         $this->testObject->setDestination(null);
-        $this->assertEquals($this->message . ": " . $this->amount, $this->testObject->getMessage());
+        $this->assertSame($this->message . ": " . $this->amount, $this->testObject->getMessage());
     }
 
     public function testSetGetRemainingAmount()
@@ -55,8 +55,8 @@ class OutofstockexceptionTest extends \PHPUnit\Framework\TestCase
     {
         $aRes = $this->testObject->getValues();
         $this->assertArrayHasKey('remainingAmount', $aRes);
-        $this->assertTrue($this->amount === $aRes['remainingAmount']);
-        $this->assertTrue($this->basketIndex === $aRes['basketIndex']);
+        $this->assertSame($aRes['remainingAmount'], $this->amount);
+        $this->assertSame($aRes['basketIndex'], $this->basketIndex);
     }
 
     /**

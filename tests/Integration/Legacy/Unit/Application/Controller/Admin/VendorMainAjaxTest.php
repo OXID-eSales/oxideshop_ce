@@ -26,10 +26,10 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
 
         $sShopId = $this->getShopId();
 
-        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle1\', oxshopid=\'%s\', oxtitle=\'testArticle1\', oxvendorid=\'_testVendorId\'', $sShopId), 'oxarticles');
-        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle2\', oxshopid=\'%s\', oxtitle=\'testArticle2\', oxvendorid=\'_testVendorId\'', $sShopId), 'oxarticles');
-        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle3\', oxshopid=\'%s\', oxtitle=\'testArticle3\', oxvendorid=\'\'', $sShopId), 'oxarticles');
-        $this->addToDatabase(sprintf('insert into oxarticles set oxid=\'_testArticle4\', oxshopid=\'%s\', oxtitle=\'testArticle4\', oxvendorid=\'\'', $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf("insert into oxarticles set oxid='_testArticle1', oxshopid='%s', oxtitle='testArticle1', oxvendorid='_testVendorId'", $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf("insert into oxarticles set oxid='_testArticle2', oxshopid='%s', oxtitle='testArticle2', oxvendorid='_testVendorId'", $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf("insert into oxarticles set oxid='_testArticle3', oxshopid='%s', oxtitle='testArticle3', oxvendorid=''", $sShopId), 'oxarticles');
+        $this->addToDatabase(sprintf("insert into oxarticles set oxid='_testArticle4', oxshopid='%s', oxtitle='testArticle4', oxvendorid=''", $sShopId), 'oxarticles');
 
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid1', oxobjectid='_testArticle1', oxcatnid='_testCat1'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testOxid2', oxobjectid='_testArticle1', oxcatnid='_testCat2'", 'oxobject2category');
@@ -65,7 +65,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery = 'from ' . $this->getArticleViewTable() . ' where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and 1 ';
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxvendorid != '_testSyncOxId'";
         $sQuery = trim((string) preg_replace("/\s+/", " ", $sQuery));
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
+        $this->assertSame($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
     }
 
     /**
@@ -98,7 +98,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = '' ";
         $sQuery = trim((string) preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
+        $this->assertSame($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
     }
 
     /**
@@ -117,7 +117,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery .= 'where ' . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopId() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '_testVendorId' and " . $this->getArticleViewTable() . ".oxvendorid != '_testSyncOxId' ";
         $sQuery = trim((string) preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
+        $this->assertSame($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
     }
 
     /**
@@ -135,7 +135,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery .= "and " . $this->getArticleViewTable() . ".oxparentid = ''";
         $sQuery = trim((string) preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
+        $this->assertSame($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
     }
 
     /**
@@ -152,7 +152,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery = "from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxvendorid = '_testVendorId' ";
         $sQuery = trim((string) preg_replace("/\s+/", " ", $sQuery));
 
-        $this->assertEquals($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
+        $this->assertSame($sQuery, preg_replace("/\s+/", " ", trim((string) $oView->getQuery())));
     }
 
 
@@ -162,7 +162,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testAddFilter()
     {
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("", trim((string) $oView->addFilter('')));
+        $this->assertSame("", trim((string) $oView->addFilter('')));
     }
 
     /**
@@ -173,7 +173,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam("blVariantsSelection", false);
 
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("select * from oxarticles", trim((string) $oView->addFilter('select * from oxarticles')));
+        $this->assertSame("select * from oxarticles", trim((string) $oView->addFilter('select * from oxarticles')));
     }
 
     /**
@@ -184,7 +184,7 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('vendor_main_ajax');
-        $this->assertEquals("select * from oxarticles group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('select * from oxarticles')));
+        $this->assertSame("select * from oxarticles group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('select * from oxarticles')));
     }
 
     /**
@@ -195,14 +195,14 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "_testVendorId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle1']));
+        $oView->method('getActionIds')->willReturn(['_testArticle1']);
 
         $oDb = oxDb::getDb();
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
 
         $oView->removeVendor();
-        $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
-        $this->assertEquals("_testArticle2", $oDb->getOne("select oxid from oxarticles where oxvendorid='_testVendorId' "));
+        $this->assertSame(1, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
+        $this->assertSame("_testArticle2", $oDb->getOne("select oxid from oxarticles where oxvendorid='_testVendorId' "));
     }
 
     /**
@@ -214,12 +214,12 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "_testVendorId");
 
         $oDb = oxDb::getDb();
-        $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
+        $this->assertSame(2, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
 
         $oView = oxNew("vendor_main_ajax");
         $oView->removeVendor();
 
-        $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
+        $this->assertSame(0, $oDb->getOne("select count(oxid) from oxarticles where oxvendorid='_testVendorId' "));
     }
 
     /**
@@ -230,8 +230,8 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "_testVendorId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getActionIds", "resetCounter"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle1']));
-        $oView->expects($this->any())->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("_testVendorId"));
+        $oView->method('getActionIds')->willReturn(['_testArticle1']);
+        $oView->method('resetCounter')->with("vendorArticle", "_testVendorId");
 
         $oView->removeVendor();
     }
@@ -244,13 +244,13 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle3']));
+        $oView->method('getActionIds')->willReturn(['_testArticle3']);
 
         $oDb = oxDb::getDb();
-        $this->assertEquals("", $oDb->getOne("select oxvendorid from oxarticles where oxid='_testArticle3' "));
+        $this->assertSame("", $oDb->getOne("select oxvendorid from oxarticles where oxid='_testArticle3' "));
 
         $oView->addVendor();
-        $this->assertEquals("_testVendorId", $oDb->getOne("select oxvendorid from oxarticles where oxid='_testArticle3' "));
+        $this->assertSame("_testVendorId", $oDb->getOne("select oxvendorid from oxarticles where oxid='_testArticle3' "));
     }
 
     /**
@@ -262,14 +262,14 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("all", true);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getQuery"]);
-        $oView->expects($this->once())->method('getQuery')->will($this->returnValue(sprintf('from %s where oxid like \'\_test%%\' and oxvendorid=\'\' ', $this->getArticleViewTable())));
+        $oView->expects($this->once())->method('getQuery')->willReturn(sprintf('from %s where oxid like \'\_test%%\' and oxvendorid=\'\' ', $this->getArticleViewTable()));
 
         $oDb = oxDb::getDb();
-        $this->assertEquals("2", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='_testVendorId' "));
-        $this->assertEquals("2", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='' "));
+        $this->assertSame("2", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='_testVendorId' "));
+        $this->assertSame("2", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='' "));
 
         $oView->addVendor();
-        $this->assertEquals("4", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='_testVendorId' "));
+        $this->assertSame("4", $oDb->getOne("select count(oxid) from oxarticles where oxid like '\_test%' and oxvendorid='_testVendorId' "));
     }
 
     /**
@@ -280,8 +280,8 @@ class VendorMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", "_testVendorId");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, ["getActionIds", "resetCounter"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle3']));
-        $oView->expects($this->any())->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("_testVendorId"));
+        $oView->method('getActionIds')->willReturn(['_testArticle3']);
+        $oView->method('resetCounter')->with("vendorArticle", "_testVendorId");
 
         $oView->addVendor();
     }

@@ -28,19 +28,19 @@ class ThemeMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Theme_Main');
-        $this->assertEquals('theme_main', $oView->render());
+        $this->assertSame('theme_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oTheme']));
-        $this->assertTrue($aViewData['oTheme'] instanceof Theme);
-        $this->assertEquals('azure', $aViewData['oTheme']->getInfo('id'));
+        $this->assertArrayHasKey('oTheme', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Theme::class, $aViewData['oTheme']);
+        $this->assertSame('azure', $aViewData['oTheme']->getInfo('id'));
     }
 
 
     public function testSetTheme()
     {
         $oTM = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeMain::class, ['getEditObjectId']);
-        $oTM->expects($this->any())->method('getEditObjectId')->will($this->returnValue('azure'));
+        $oTM->method('getEditObjectId')->willReturn('azure');
 
         oxTestModules::addFunction('oxTheme', 'load($name)', '{if ($name != "azure") throw new Exception("FAIL TO LOAD"); return true;}');
         oxTestModules::addFunction('oxTheme', 'activate', '{throw new Exception("OK");}');
@@ -49,7 +49,7 @@ class ThemeMainTest extends \PHPUnit\Framework\TestCase
             $oTM->setTheme();
             $this->fail('should have called overriden activate');
         } catch (Exception $exception) {
-            $this->assertEquals('OK', $exception->getMessage());
+            $this->assertSame('OK', $exception->getMessage());
         }
     }
 

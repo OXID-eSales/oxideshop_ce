@@ -19,6 +19,6 @@ class ServiceListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oServiceList = oxNew('oxwServiceList');
-        $this->assertEquals('widget/footer/services', $oServiceList->render());
+        $this->assertSame('widget/footer/services', $oServiceList->render());
     }
 }

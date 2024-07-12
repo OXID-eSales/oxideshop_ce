@@ -149,7 +149,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->setDeliveryPrice($oPrice);
-        $this->assertEquals('xxx', $oDelivery->getDeliveryPrice());
+        $this->assertSame('xxx', $oDelivery->getDeliveryPrice());
     }
 
     public function testGetDeliveryPriceCache()
@@ -444,8 +444,8 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket();
 
         $this->assertTrue($oDelivery->isForBasket($oBasket));
-        $this->assertEquals(2, $oDelivery->getiItemCnt());
-        $this->assertEquals(1, $oDelivery->getiProdCnt());
+        $this->assertSame(2, $oDelivery->getiItemCnt());
+        $this->assertSame(1, $oDelivery->getiProdCnt());
 
         $oDelivery->oxdelivery__oxparam = new oxField(10, oxField::T_RAW);
         $oDelivery->save();
@@ -453,8 +453,8 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->setiItemCnt(0);
         $oDelivery->setiProdCnt(0);
         $this->assertTrue($oDelivery->isForBasket($oBasket));
-        $this->assertEquals(4, $oDelivery->getiItemCnt());
-        $this->assertEquals(2, $oDelivery->getiProdCnt());
+        $this->assertSame(4, $oDelivery->getiItemCnt());
+        $this->assertSame(2, $oDelivery->getiProdCnt());
     }
 
     //#M1130: Single article in Basket, checked as free shipping, is not buyable (step 3 no payments found)
@@ -514,7 +514,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
     public function testGetArticlesWhenNoArticlesAreAssigned()
     {
         $oDelivery = oxNew('oxDelivery');
-        $this->assertEquals(0, count($oDelivery->getArticles()));
+        $this->assertCount(0, $oDelivery->getArticles());
     }
 
     /*
@@ -526,9 +526,9 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->load($this->_sOxId);
 
         // Main check
-        $this->assertEquals(3, count($oDelivery->getArticles()));
+        $this->assertCount(3, $oDelivery->getArticles());
         foreach ($oDelivery->getArticles() as $sId) {
-            $this->assertTrue(in_array($sId, $this->aArticleIds));
+            $this->assertContains($sId, $this->aArticleIds);
         }
     }
 
@@ -539,7 +539,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
     public function testGetCategoriesWhenNoCatgoeriesAreAssigned()
     {
         $oTestObject = oxNew('oxDelivery');
-        $this->assertEquals(0, count($oTestObject->getCategories()));
+        $this->assertCount(0, $oTestObject->getCategories());
     }
 
     /*
@@ -550,9 +550,9 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->load($this->_sOxId);
 
-        $this->assertEquals(3, count($oDelivery->getCategories()));
+        $this->assertCount(3, $oDelivery->getCategories());
         foreach ($oDelivery->getCategories() as $sId) {
-            $this->assertTrue(in_array($sId, $this->aCategoryIds));
+            $this->assertContains($sId, $this->aCategoryIds);
         }
     }
 
@@ -605,13 +605,13 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
-        $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertTrue($oDelivery->getblFreeShipping());
 
         // non free shipping
         $this->_oBasketItem->getArticle()->oxarticles__oxfreeshipping = new oxField(false);
 
-        $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertFalse($oDelivery->getblFreeShipping());
     }
 
@@ -629,7 +629,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
-        $this->assertEquals(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(0, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertTrue($oDelivery->getblFreeShipping());
 
         // non free shiping
@@ -638,7 +638,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p');
 
-        $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertFalse($oDelivery->getblFreeShipping());
     }
 
@@ -651,7 +651,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         // 256 x 2items
-        $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -662,7 +662,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
-        $this->assertEquals(256, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(256, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -673,7 +673,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         // test for delivery by weight
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
-        $this->assertEquals(10, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(10, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -685,7 +685,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
-        $this->assertEquals(5, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(5, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -701,14 +701,14 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxOrderArticle|PHPUnit\Framework\MockObject\MockObject $oOrderArticle */
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, [], [], '', false);
-        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
-        $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
+        $oOrderArticle->method('getArticle')->willReturn($this->_oBasketItem->getArticle());
+        $oOrderArticle->method('isOrderArticle')->willReturn(true);
 
         /** @var oxBasketItem $oBasketItem|PHPUnit\Framework\MockObject\MockObject */
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, [], [], '', false);
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
+        $oBasketItem->method('getArticle')->willReturn($oOrderArticle);
 
-        $this->assertEquals(5, $oDelivery->getDeliveryAmount($oBasketItem));
+        $this->assertSame(5, $oDelivery->getDeliveryAmount($oBasketItem));
     }
 
     /*
@@ -721,7 +721,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
 
         // 2*4*6 x 2items (length * width * height * items)
-        $this->assertEquals(96, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(96, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -733,7 +733,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
-        $this->assertEquals(48, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(48, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -749,14 +749,14 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxOrderArticle|PHPUnit\Framework\MockObject\MockObject $oOrderArticle */
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, [], [], '', false);
-        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
-        $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
+        $oOrderArticle->method('getArticle')->willReturn($this->_oBasketItem->getArticle());
+        $oOrderArticle->method('isOrderArticle')->willReturn(true);
 
         /** @var oxBasketItem $oBasketItem|PHPUnit\Framework\MockObject\MockObject */
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, [], [], '', false);
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
+        $oBasketItem->method('getArticle')->willReturn($oOrderArticle);
 
-        $this->assertEquals(48, $oDelivery->getDeliveryAmount($oBasketItem));
+        $this->assertSame(48, $oDelivery->getDeliveryAmount($oBasketItem));
     }
 
     /*
@@ -768,7 +768,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('a', oxField::T_RAW);
 
-        $this->assertEquals(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -780,7 +780,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('a', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
-        $this->assertEquals(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
+        $this->assertSame(2, $oDelivery->getDeliveryAmount($this->_oBasketItem));
     }
 
     /*
@@ -793,7 +793,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
 
         $oDelivery->getDeliveryAmount($this->_oBasketItem);
-        $this->assertEquals(512, $oDelivery->getdPrice());
+        $this->assertSame(512, $oDelivery->getdPrice());
         $this->assertFalse($oDelivery->getblFreeShipping());
     }
 
@@ -816,7 +816,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
             $oDelivery->getDeliveryAmount($oBasketItem);
         }
 
-        $this->assertEquals(1024, $oDelivery->getdPrice());
+        $this->assertSame(1024, $oDelivery->getdPrice());
     }
 
     /*
@@ -850,7 +850,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
             $oDelivery->getDeliveryAmount($oBasketItem);
         }
 
-        $this->assertEquals(1024, $oDelivery->getdPrice());
+        $this->assertSame(1024, $oDelivery->getdPrice());
     }
 
     /*
@@ -866,7 +866,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oPrice = $oDelivery->getDeliveryPrice();
         $oDelivery->setblFreeShipping(false);
 
-        $this->assertEquals(0, $oPrice->getBruttoPrice());
+        $this->assertSame(0, $oPrice->getBruttoPrice());
     }
 
     /*
@@ -881,7 +881,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->setblFreeShipping(false);
         $oPrice = $oDelivery->getDeliveryPrice();
 
-        $this->assertEquals(10, $oPrice->getBruttoPrice());
+        $this->assertSame(10, $oPrice->getBruttoPrice());
     }
 
     /*
@@ -898,7 +898,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oDelivery->getDeliveryPrice();
 
-        $this->assertEquals(50, $oPrice->getBruttoPrice());
+        $this->assertSame(50, $oPrice->getBruttoPrice());
     }
 
     /*
@@ -915,7 +915,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oDelivery->getDeliveryPrice();
 
-        $this->assertEquals(70, $oPrice->getBruttoPrice());
+        $this->assertSame(70, $oPrice->getBruttoPrice());
     }
 
     /*
@@ -932,7 +932,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oDelivery->getDeliveryPrice();
 
-        $this->assertEquals(12, $oPrice->getBruttoPrice());
+        $this->assertSame(12, $oPrice->getBruttoPrice());
     }
 
     /*
@@ -949,8 +949,8 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oDelivery->getDeliveryPrice(18);
 
-        $this->assertEquals(50, $oPrice->getBruttoPrice());
-        $this->assertEquals(18, $oPrice->getVat());
+        $this->assertSame(50, $oPrice->getBruttoPrice());
+        $this->assertSame(18, $oPrice->getVat());
     }
 
     /*
@@ -969,7 +969,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oDelivery->getDeliveryPrice(20);
 
-        $this->assertEquals(50 * 1.2, $oPrice->getBruttoPrice());
+        $this->assertSame(50 * 1.2, $oPrice->getBruttoPrice());
         $this->assertEqualsWithDelta(50, $oPrice->getNettoPrice(), 0.0001);
         $this->assertEqualsWithDelta(50 * 1.2 - 50, $oPrice->getVatValue(), 0.0001);
         $this->assertEqualsWithDelta(20, $oPrice->getVat(), 0.0001);
@@ -988,7 +988,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oDelivery->setblFreeShipping(false);
         $oPrice = $oDelivery->getDeliveryPrice();
 
-        $this->assertEquals(14.33, $oPrice->getBruttoPrice());
+        $this->assertEqualsWithDelta(14.33, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
     }
 
     /*
@@ -1056,9 +1056,9 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
     public function testIsDeliveryRuleFitByArticle()
     {
         $oDelivery = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, ['checkDeliveryAmount', 'getCalculationRule']);
-        $oDelivery->expects($this->once())->method('checkDeliveryAmount')->will($this->returnValue(true));
+        $oDelivery->expects($this->once())->method('checkDeliveryAmount')->willReturn(true);
         $calculateMoreThanOncePerCartRule = 123;
-        $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));
+        $oDelivery->method('getCalculationRule')->willReturn($calculateMoreThanOncePerCartRule);
         $oDelivery->load('_testDeliveryId');
         $oDelivery->setblFreeShipping(false);
 
@@ -1080,7 +1080,7 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByName()
     {
         $oD = oxNew('oxDelivery');
-        $this->assertEquals('_testDeliveryId', $oD->getIdByName('test_oxDelivery'));
+        $this->assertSame('_testDeliveryId', $oD->getIdByName('test_oxDelivery'));
     }
 
     /**
@@ -1093,8 +1093,8 @@ class DeliveryTest extends \PHPUnit\Framework\TestCase
         $oD->load('1b842e7352422a708.01472527');
 
         $aCountries = $oD->getCountriesISO();
-        $this->assertEquals(2, count($aCountries), "Failed getting countries code");
-        $this->assertEquals(["AT", "CH"], $aCountries);
+        $this->assertCount(2, $aCountries, "Failed getting countries code");
+        $this->assertSame(["AT", "CH"], $aCountries);
     }
 
     public function testSetDelVatOnTop()

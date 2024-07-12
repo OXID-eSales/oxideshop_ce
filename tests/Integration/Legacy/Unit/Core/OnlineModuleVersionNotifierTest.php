@@ -14,12 +14,12 @@ class OnlineModuleVersionNotifierTest extends \PHPUnit\Framework\TestCase
     public function testVersionNotifyWithModulesInShop()
     {
         $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller::class, ['doRequest'], [], '', false);
-        $oCaller->expects($this->any())->method('doRequest');
+        $oCaller->method('doRequest');
 
         $oModule = $this->getMock('oxModule');
 
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, ['getList']);
-        $oModuleList->expects($this->any())->method('getList')->will($this->returnValue([$oModule]));
+        $oModuleList->method('getList')->willReturn([$oModule]);
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
         $oNotifier->versionNotify();

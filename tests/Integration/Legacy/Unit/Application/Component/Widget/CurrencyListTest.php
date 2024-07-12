@@ -19,6 +19,6 @@ class CurrencyListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oCurrencyList = oxNew('oxwCurrencyList');
-        $this->assertEquals('widget/header/currencies', $oCurrencyList->render());
+        $this->assertSame('widget/header/currencies', $oCurrencyList->render());
     }
 }

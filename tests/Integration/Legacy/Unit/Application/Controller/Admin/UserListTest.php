@@ -19,20 +19,20 @@ class UserListTest extends \PHPUnit\Framework\TestCase
     public function testInit()
     {
         $oUser1 = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["inGroup"]);
-        $oUser1->expects($this->once())->method('inGroup')->will($this->returnValue(true));
+        $oUser1->expects($this->once())->method('inGroup')->willReturn(true);
 
         $oUser2 = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["inGroup"]);
-        $oUser2->expects($this->exactly(2))->method('inGroup')->will($this->returnValue(false));
+        $oUser2->expects($this->exactly(2))->method('inGroup')->willReturn(false);
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["authorize", "getItemList", "allowAdminEdit"]);
-        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
-        $oView->expects($this->any())->method('getItemList')->will($this->returnValue([$oUser1, $oUser2]));
-        $oView->expects($this->any())->method('allowAdminEdit')->will($this->returnValue(false));
+        $oView->method('authorize')->willReturn(true);
+        $oView->method('getItemList')->willReturn([$oUser1, $oUser2]);
+        $oView->method('allowAdminEdit')->willReturn(false);
         $oView->render();
 
         $this->assertTrue(isset($oUser1->blacklist));
-        $this->assertEquals("1", $oUser1->blacklist);
+        $this->assertSame("1", $oUser1->blacklist);
         $this->assertTrue(isset($oUser1->blPreventDelete));
         $this->assertTrue($oUser1->blPreventDelete);
 
@@ -54,10 +54,10 @@ class UserListTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["allowAdminEdit"]);
-            $oView->expects($this->any())->method('allowAdminEdit')->will($this->returnValue(true));
+            $oView->method('allowAdminEdit')->willReturn(true);
             $oView->deleteEntry();
         } catch (Exception $exception) {
-            $this->assertEquals("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
+            $this->assertSame("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
 
             return;
         }
@@ -75,12 +75,12 @@ class UserListTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["allowAdminEdit", "buildWhere"]);
-            $oView->expects($this->any())->method('allowAdminEdit')->will($this->returnValue(true));
-            $oView->expects($this->once())->method('buildWhere')->will($this->returnValue([]));
+            $oView->method('allowAdminEdit')->willReturn(true);
+            $oView->expects($this->once())->method('buildWhere')->willReturn([]);
             $oView->getItemList();
             $oView->deleteEntry();
         } catch (Exception $exception) {
-            $this->assertEquals("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
+            $this->assertSame("deleteEntry", $exception->getMessage(), "Error in User_List::deleteEntry()");
 
             return;
         }
@@ -98,12 +98,12 @@ class UserListTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["allowAdminEdit", "buildWhere"]);
-            $oView->expects($this->any())->method('allowAdminEdit')->will($this->returnValue(true));
-            $oView->expects($this->once())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
+            $oView->method('allowAdminEdit')->willReturn(true);
+            $oView->expects($this->once())->method('buildWhere')->willThrowException(new Exception("list was empty"));
             $oView->getItemList();
             $oView->deleteEntry();
         } catch (Exception $exception) {
-            $this->assertEquals("list was empty", $exception->getMessage(), "Error in User_List::deleteEntry()");
+            $this->assertSame("list was empty", $exception->getMessage(), "Error in User_List::deleteEntry()");
             return;
         }
 
@@ -128,10 +128,10 @@ class UserListTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, ["isSearchValue", "processFilter", "buildFilter"]);
-        $oView->expects($this->any())->method('isSearchValue')->will($this->returnValue(true));
-        $oView->expects($this->any())->method('processFilter')->will($this->returnValue("testValue"));
-        $oView->expects($this->any())->method('buildFilter')->will($this->returnValue("testFilter"));
-        $this->assertEquals($sQ, $oView->prepareWhereQuery($aWhere, ''));
+        $oView->method('isSearchValue')->willReturn(true);
+        $oView->method('processFilter')->willReturn("testValue");
+        $oView->method('buildFilter')->willReturn("testFilter");
+        $this->assertSame($sQ, $oView->prepareWhereQuery($aWhere, ''));
     }
 
     /**
@@ -141,6 +141,6 @@ class UserListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('User_List');
-        $this->assertEquals('user_list', $oView->render());
+        $this->assertSame('user_list', $oView->render());
     }
 }

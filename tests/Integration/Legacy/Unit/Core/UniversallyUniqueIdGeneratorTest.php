@@ -23,7 +23,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
             $aIds[] = $oGenerator->generate();
         }
 
-        $this->assertEquals(100, count(array_unique($aIds)));
+        $this->assertCount(100, array_unique($aIds));
     }
 
     /**
@@ -46,7 +46,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
             $aIds[] = $oGenerator->generateV4();
         }
 
-        $this->assertEquals(100, count(array_unique($aIds)));
+        $this->assertCount(100, array_unique($aIds));
     }
 
     /**
@@ -56,7 +56,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
     public function testUUIDV4UniquenessWhenInFallbackMode()
     {
         $oCheckerMock = $this->getMock(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class, ['isOpenSslRandomBytesGeneratorAvailable']);
-        $oCheckerMock->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue(false));
+        $oCheckerMock->method('isOpenSslRandomBytesGeneratorAvailable')->willReturn(false);
         /** @var oxOpenSSLFunctionalityChecker $oChecker */
         $oChecker = $oCheckerMock;
 
@@ -67,7 +67,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
             $aIds[] = $oGenerator->generateV4();
         }
 
-        $this->assertEquals(100, count(array_unique($aIds)));
+        $this->assertCount(100, array_unique($aIds));
     }
 
     /**
@@ -93,7 +93,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
             $aIds[] = $oGenerator->generateV5('feed', 'salt' . $i);
         }
 
-        $this->assertEquals(100, count(array_unique($aIds)));
+        $this->assertCount(100, array_unique($aIds));
     }
 
     /**
@@ -108,7 +108,7 @@ class UniversallyUniqueIdGeneratorTest extends \PHPUnit\Framework\TestCase
             $aIds[] = $oGenerator->generateV5('feed' . $i, 'salt');
         }
 
-        $this->assertEquals(100, count(array_unique($aIds)));
+        $this->assertCount(100, array_unique($aIds));
     }
 
     /**

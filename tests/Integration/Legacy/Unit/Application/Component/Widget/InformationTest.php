@@ -20,7 +20,7 @@ class InformationTest extends \PHPUnit\Framework\TestCase
     {
         $oInformation = oxNew('oxwInformation');
 
-        $this->assertEquals('widget/footer/info', $oInformation->render());
+        $this->assertSame('widget/footer/info', $oInformation->render());
     }
 
     /**
@@ -29,7 +29,7 @@ class InformationTest extends \PHPUnit\Framework\TestCase
     public function testGetServicesList_ChecksServicesCount()
     {
         $aServicesList = $this->getServicesList();
-        $this->assertEquals(6, count($aServicesList));
+        $this->assertCount(6, $aServicesList);
     }
 
     /**

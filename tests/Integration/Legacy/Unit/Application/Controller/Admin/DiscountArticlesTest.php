@@ -26,10 +26,10 @@ class DiscountArticlesTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Discount_Articles');
-        $this->assertEquals('discount_articles', $oView->render());
+        $this->assertSame('discount_articles', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue(isset($aViewData['readonly']));
-        $this->assertTrue($aViewData['edit'] instanceof Discount);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertArrayHasKey('readonly', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Discount::class, $aViewData['edit']);
     }
 }

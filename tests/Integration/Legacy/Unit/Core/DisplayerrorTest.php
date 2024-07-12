@@ -27,7 +27,7 @@ class DisplayerrorTest extends \PHPUnit\Framework\TestCase
     public function testGetOxMessage()
     {
         $this->_oDisplayError->setMessage("Test ");
-        $this->assertEquals("Test ", $this->_oDisplayError->getOxMessage());
+        $this->assertSame("Test ", $this->_oDisplayError->getOxMessage());
     }
 
     /**
@@ -50,6 +50,6 @@ class DisplayerrorTest extends \PHPUnit\Framework\TestCase
     {
         $this->_oDisplayError->setMessage("Test %s string with %d values");
         $this->_oDisplayError->setFormatParameters(['formatting', 2]);
-        $this->assertEquals("Test formatting string with 2 values", $this->_oDisplayError->getOxMessage());
+        $this->assertSame("Test formatting string with 2 values", $this->_oDisplayError->getOxMessage());
     }
 }

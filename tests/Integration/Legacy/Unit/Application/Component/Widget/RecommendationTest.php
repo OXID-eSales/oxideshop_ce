@@ -26,7 +26,7 @@ class RecommendationTest extends \PHPUnit\Framework\TestCase
         $oRecomm->setViewParameters($aParams);
 
         $oRecommList = $oRecomm->getSimilarRecommLists();
-        $this->assertTrue(!isset($oRecommList), "Should be empty if no articles id given");
+        $this->assertFalse(isset($oRecommList), "Should be empty if no articles id given");
     }
 
     /**
@@ -35,7 +35,7 @@ class RecommendationTest extends \PHPUnit\Framework\TestCase
     public function testGetSimilarRecommLists()
     {
         $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, ["getRecommListsByIds"]);
-        $oRecommList->expects($this->once())->method("getRecommListsByIds")->with($this->equalTo(["articleId"]))->will($this->returnValue("oxRecommListMock"));
+        $oRecommList->expects($this->once())->method("getRecommListsByIds")->with(["articleId"])->willReturn("oxRecommListMock");
         oxTestModules::addModuleObject('oxrecommlist', $oRecommList);
 
         $aParams["aArticleIds"] = ["articleId"];
@@ -43,7 +43,7 @@ class RecommendationTest extends \PHPUnit\Framework\TestCase
         $oRecomm = oxNew('oxwRecommendation');
         $oRecomm->setViewParameters($aParams);
 
-        $this->assertEquals("oxRecommListMock", $oRecomm->getSimilarRecommLists(), "Should try to create RecommList object.");
+        $this->assertSame("oxRecommListMock", $oRecomm->getSimilarRecommLists(), "Should try to create RecommList object.");
     }
 
     /**
@@ -52,6 +52,6 @@ class RecommendationTest extends \PHPUnit\Framework\TestCase
     public function testGetRecommList()
     {
         $oRecommList = oxNew('oxwRecommendation');
-        $this->assertTrue($oRecommList->getRecommList() instanceof \OxidEsales\EshopCommunity\Application\Controller\RecommListController);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Controller\RecommListController::class, $oRecommList->getRecommList());
     }
 }

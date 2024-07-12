@@ -20,14 +20,14 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
     {
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxstarttitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, ['__get']);
-        $oShop->oxshops__oxstarttitle->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
+        $oShop->oxshops__oxstarttitle->expects($this->once())->method('__get')->willReturn('testsuffix');
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getActiveShop']);
-        $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
+        $oConfig->expects($this->once())->method('getActiveShop')->willReturn($oShop);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\StartController::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals('testsuffix', $oView->getTitleSuffix());
+        $this->assertSame('testsuffix', $oView->getTitleSuffix());
     }
 
     public function testGetCanonicalUrl()
@@ -35,12 +35,12 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, ["getHomeLink"]);
-        $oViewConfig->expects($this->once())->method('getHomeLink')->will($this->returnValue("testHomeLink"));
+        $oViewConfig->expects($this->once())->method('getHomeLink')->willReturn("testHomeLink");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\StartController::class, ["getViewConfig"]);
-        $oView->expects($this->once())->method('getViewConfig')->will($this->returnValue($oViewConfig));
+        $oView->expects($this->once())->method('getViewConfig')->willReturn($oViewConfig);
 
-        $this->assertEquals('testHomeLink', $oView->getCanonicalUrl());
+        $this->assertSame('testHomeLink', $oView->getCanonicalUrl());
     }
 
     public function testGetRealSeoCanonicalUrl()
@@ -56,8 +56,8 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getTopArticleList();
-        $this->assertTrue($aList instanceof ArticleList);
-        $this->assertEquals(1, $aList->count());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aList);
+        $this->assertSame(1, $aList->count());
 
         $expectedId = $this->getTestConfig()->getShopEdition() == 'EE' ? "2275" : "1849";
         $this->assertEquals($expectedId, $aList->current()->getId());
@@ -68,8 +68,8 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getNewestArticles();
-        $this->assertTrue($aList instanceof ArticleList);
-        $this->assertEquals(4, $aList->count());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aList);
+        $this->assertSame(4, $aList->count());
     }
 
     public function testGetCatOfferArticle()
@@ -87,8 +87,8 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         $oStart = $this->getProxyClass('start');
 
         $aList = $oStart->getCatOfferArticleList();
-        $this->assertTrue($aList instanceof ArticleList);
-        $this->assertEquals(2, $aList->count());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aList);
+        $this->assertSame(2, $aList->count());
     }
 
     public function testPrepareMetaKeyword()
@@ -96,10 +96,10 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getLongDescription']);
-        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
+        $oArticle->expects($this->once())->method('getLongDescription')->willReturn(new oxField('testlongdesc'));
 
         $oStart = $this->getMock(\OxidEsales\Eshop\Application\Controller\StartController::class, ['getFirstArticle']);
-        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
+        $oStart->expects($this->once())->method('getFirstArticle')->willReturn($oArticle);
 
         $oView = oxNew('oxubase');
         $this->assertEquals($oView->prepareMetaKeyword('testlongdesc'), $oStart->prepareMetaKeyword(null));
@@ -114,7 +114,7 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
 
         $aMetaKeywords = $oStart->getMetaKeywords();
 
-        $this->assertTrue(strlen((string) $aMetaKeywords) > 0);
+        $this->assertGreaterThan(0, strlen((string) $aMetaKeywords));
     }
 
     public function testPrepareMetaDescription()
@@ -122,10 +122,10 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('bl_perfLoadAktion', 1);
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getLongDescription']);
-        $oArticle->expects($this->once())->method('getLongDescription')->will($this->returnValue(new oxField('testlongdesc')));
+        $oArticle->expects($this->once())->method('getLongDescription')->willReturn(new oxField('testlongdesc'));
 
         $oStart = $this->getMock(\OxidEsales\Eshop\Application\Controller\StartController::class, ['getFirstArticle']);
-        $oStart->expects($this->once())->method('getFirstArticle')->will($this->returnValue($oArticle));
+        $oStart->expects($this->once())->method('getFirstArticle')->willReturn($oArticle);
 
         $oView = oxNew('oxubase');
         $this->assertEquals($oView->prepareMetaDescription('- testlongdesc'), $oStart->prepareMetaDescription(null));
@@ -140,7 +140,7 @@ class StartControllerTest extends \PHPUnit\Framework\TestCase
 
         $aMetaKeywords = $oStart->getMetaDescription();
 
-        $this->assertTrue(strlen((string) $aMetaKeywords) > 0);
+        $this->assertGreaterThan(0, strlen((string) $aMetaKeywords));
     }
 
     public function testGetBanners()

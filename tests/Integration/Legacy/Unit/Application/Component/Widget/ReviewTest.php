@@ -19,7 +19,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['type' => 'testreviewtype']);
-        $this->assertEquals('testreviewtype', $oReviewWidget->getReviewType());
+        $this->assertSame('testreviewtype', $oReviewWidget->getReviewType());
     }
 
     /**
@@ -29,7 +29,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['type' => 'TESTREVIEWTYPE']);
-        $this->assertEquals('testreviewtype', $oReviewWidget->getReviewType());
+        $this->assertSame('testreviewtype', $oReviewWidget->getReviewType());
     }
 
     /**
@@ -39,7 +39,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['aid' => 'testaid']);
-        $this->assertEquals('testaid', $oReviewWidget->getArticleId());
+        $this->assertSame('testaid', $oReviewWidget->getArticleId());
     }
 
     /**
@@ -49,7 +49,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['anid' => 'testanid']);
-        $this->assertEquals('testanid', $oReviewWidget->getArticleNId());
+        $this->assertSame('testanid', $oReviewWidget->getArticleNId());
     }
 
     /**
@@ -59,7 +59,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['recommid' => 'testrecommid']);
-        $this->assertEquals('testrecommid', $oReviewWidget->getRecommListId());
+        $this->assertSame('testrecommid', $oReviewWidget->getRecommListId());
     }
 
     /**
@@ -69,7 +69,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['canrate' => 'testcanrate']);
-        $this->assertEquals('testcanrate', $oReviewWidget->canRate());
+        $this->assertSame('testcanrate', $oReviewWidget->canRate());
     }
 
     /**
@@ -79,6 +79,6 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
     {
         $oReviewWidget = oxNew('oxwReview');
         $oReviewWidget->setViewParameters(['reviewuserhash' => 'testreviewuserhash']);
-        $this->assertEquals('testreviewuserhash', $oReviewWidget->getReviewUserHash());
+        $this->assertSame('testreviewuserhash', $oReviewWidget->getReviewUserHash());
     }
 }

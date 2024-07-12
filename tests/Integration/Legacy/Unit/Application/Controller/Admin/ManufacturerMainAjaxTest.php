@@ -57,7 +57,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != ''", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != ''", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -67,7 +67,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
     }
 
     /**
@@ -78,7 +78,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testAction';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1  and ' . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -90,7 +90,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and 1', trim((string) $oView->getQuery()));
     }
 
     /**
@@ -101,7 +101,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sOxid = '_testAction';
         $this->setRequestParameter("oxid", $sOxid);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxmanufacturerid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxmanufacturerid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -115,7 +115,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "' and " . $this->getArticleViewTable() . ".oxparentid = ''", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -130,7 +130,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
 
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  ( " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticleViewTable() . ".oxparentid = " . $this->getObject2CategoryViewTable() . ".oxobjectid )where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getObject2CategoryViewTable() . " left join " . $this->getArticleViewTable() . " on  ( " . $this->getArticleViewTable() . ".oxid = " . $this->getObject2CategoryViewTable() . ".oxobjectid or " . $this->getArticleViewTable() . ".oxparentid = " . $this->getObject2CategoryViewTable() . ".oxobjectid )where " . $this->getArticleViewTable() . '.oxshopid="' . $this->getShopIdTest() . '" and ' . $this->getObject2CategoryViewTable() . ".oxcatnid = '" . $sOxid . "' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -139,7 +139,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testAddFilter()
     {
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("", trim((string) $oView->addFilter('')));
+        $this->assertSame("", trim((string) $oView->addFilter('')));
     }
 
     /**
@@ -149,7 +149,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('')));
+        $this->assertSame("group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('')));
     }
 
     /**
@@ -159,7 +159,7 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam("blVariantsSelection", true);
         $oView = oxNew('Manufacturer_Main_Ajax');
-        $this->assertEquals("select count( * ) group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('select count( * )')));
+        $this->assertSame("select count( * ) group by " . $this->getArticleViewTable() . ".oxid", trim((string) $oView->addFilter('select count( * )')));
     }
 
     /**
@@ -168,11 +168,11 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testRemoveManufacturer()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, ["getActionIds", "resetCounter"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle1', '_testArticle2']));
-        $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"));
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid in('_testRemove1', '_testRemove2')"));
+        $oView->method('getActionIds')->willReturn(['_testArticle1', '_testArticle2']);
+        $oView->expects($this->once())->method('resetCounter')->with("manufacturerArticle");
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid in('_testRemove1', '_testRemove2')"));
         $oView->removeManufacturer();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid in('_testRemove1', '_testRemove2')"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid in('_testRemove1', '_testRemove2')"));
     }
 
     /**
@@ -184,12 +184,12 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 
-        $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
+        $this->assertSame(3, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, ["resetCounter"]);
-        $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo($sOxid));
+        $oView->expects($this->once())->method('resetCounter')->with("manufacturerArticle", $sOxid);
         $oView->removeManufacturer();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
     }
 
     /**
@@ -201,12 +201,12 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, ["getActionIds", "resetCounter"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticle1', '_testArticle2']));
-        $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"));
+        $oView->method('getActionIds')->willReturn(['_testArticle1', '_testArticle2']);
+        $oView->expects($this->once())->method('resetCounter')->with("manufacturerArticle");
 
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
         $oView->addManufacturer();
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
     }
 
     /**
@@ -219,10 +219,10 @@ class ManufacturerMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("all", true);
 
         $iCount = oxDb::getDb()->getOne(" select count(oxid) from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid='" . $this->getShopIdTest() . "' and 1  and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'");
-        $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, ["resetCounter"]);
-        $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo($sSynchoxid));
+        $oView->expects($this->once())->method('resetCounter')->with("manufacturerArticle", $sSynchoxid);
         $oView->addManufacturer();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
     }

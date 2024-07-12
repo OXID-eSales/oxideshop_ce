@@ -51,9 +51,9 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxmanufacturer", "loadInLang", "{ return true; }");
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ["getManufacturerUri"]);
-        $oEncoder->expects($this->once())->method('getManufacturerUri')->will($this->returnValue("manufacturerUri"));
+        $oEncoder->expects($this->once())->method('getManufacturerUri')->willReturn("manufacturerUri");
 
-        $this->assertEquals("manufacturerUri", $oEncoder->getAltUri('1126', 0));
+        $this->assertSame("manufacturerUri", $oEncoder->getAltUri('1126', 0));
     }
 
     public function testGetManufacturerUrlExistingManufacturer()
@@ -67,7 +67,7 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->load($vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer));
     }
 
     public function testGetManufacturerUrlExistingManufacturerEng()
@@ -85,7 +85,7 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->loadInLang(1, $vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer));
     }
 
     public function testGetManufacturerUrlExistingManufacturerWithLangParam()
@@ -99,7 +99,7 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->loadInLang(1, $vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer, 0));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer, 0));
     }
 
     public function testGetManufacturerUrlExistingManufacturerEngWithLangParam()
@@ -117,7 +117,7 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->loadInLang(0, $vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer, 1));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerUrl($manufacturer, 1));
     }
 
     /**
@@ -129,14 +129,14 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setId('xxx');
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ['loadFromDb', 'prepareTitle', 'getUniqueSeoUrl', 'saveToDb']);
-        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxmanufacturer'), $this->equalTo('xxx'), $this->equalTo($oManufacturer->getLanguage()))->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with('oxmanufacturer', 'xxx', $oManufacturer->getLanguage())->willReturn('seourl');
         $oEncoder->expects($this->never())->method('prepareTitle');
         $oEncoder->expects($this->never())->method('getUniqueSeoUrl');
         $oEncoder->expects($this->never())->method('saveToDb');
 
         $sUrl = 'seourl';
         $sSeoUrl = $oEncoder->getManufacturerUri($oManufacturer);
-        $this->assertEquals($sUrl, $sSeoUrl);
+        $this->assertSame($sUrl, $sSeoUrl);
     }
 
     public function testGetManufacturerUriRootManufacturer()
@@ -147,11 +147,11 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->oxmanufacturers__oxtitle = new oxField('root', oxField::T_RAW);
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ['saveToDb']);
-        $oEncoder->expects($this->once())->method('saveToDb')->with($this->equalTo('oxmanufacturer'), $this->equalTo('root'), $this->equalTo($oManufacturer->getStdLink()), $this->equalTo('root/'), $this->equalTo($oManufacturer->getLanguage()));
+        $oEncoder->expects($this->once())->method('saveToDb')->with('oxmanufacturer', 'root', $oManufacturer->getStdLink(), 'root/', $oManufacturer->getLanguage());
 
         $sUrl = 'root/';
         $sSeoUrl = $oEncoder->getManufacturerUri($oManufacturer);
-        $this->assertEquals($sUrl, $sSeoUrl);
+        $this->assertSame($sUrl, $sSeoUrl);
     }
 
     public function testGetManufacturerUriRootManufacturerSecondLanguage()
@@ -166,16 +166,16 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $encoder->expects($this->once())
             ->method('saveToDb')
             ->with(
-                $this->equalTo('oxmanufacturer'),
-                $this->equalTo('root'),
-                $this->equalTo($manufacturer->getBaseStdLink(1)),
-                $this->equalTo('en/root/'),
-                $this->equalTo($manufacturer->getLanguage())
+                'oxmanufacturer',
+                'root',
+                $manufacturer->getBaseStdLink(1),
+                'en/root/',
+                $manufacturer->getLanguage()
             );
 
         $link = 'en/root/';
         $seoUrl = $encoder->getManufacturerUri($manufacturer);
-        $this->assertEquals($link, $seoUrl);
+        $this->assertSame($link, $seoUrl);
     }
 
     public function testGetManufacturerUriNewManufacturer()
@@ -187,12 +187,12 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->oxmanufacturers__oxtitle = new oxField('xxx', oxField::T_RAW);
 
         $encoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ['loadFromDb', 'saveToDb']);
-        $encoder->expects($this->exactly(2))->method('loadFromDb')->will($this->returnValue(false));
+        $encoder->expects($this->exactly(2))->method('loadFromDb')->willReturn(false);
 
         $link = 'en/By-manufacturer/xxx/';
         $seoUrl = $encoder->getManufacturerUri($manufacturer);
 
-        $this->assertEquals($link, $seoUrl);
+        $this->assertSame($link, $seoUrl);
     }
 
     /**
@@ -209,7 +209,7 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->loadInLang(1, $vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerPageUrl($manufacturer, 100));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerPageUrl($manufacturer, 100));
     }
 
     public function testGetManufacturerPageUrlWithLangParam()
@@ -223,19 +223,19 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $manufacturer->loadInLang(0, $vendorId);
 
         $encoder = oxNew('oxSeoEncoderManufacturer');
-        $this->assertEquals($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerPageUrl($manufacturer, 100, 1));
+        $this->assertSame($this->getConfig()->getShopUrl() . $link, $encoder->getManufacturerPageUrl($manufacturer, 100, 1));
     }
 
     public function testGetManufacturerUrl()
     {
         $manufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getLanguage']);
-        $manufacturer->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
+        $manufacturer->expects($this->once())->method('getLanguage')->willReturn(0);
 
         $encoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ['getFullUrl', 'getManufacturerUri']);
-        $encoder->expects($this->once())->method('getFullUrl')->will($this->returnValue('seovndurl'));
+        $encoder->expects($this->once())->method('getFullUrl')->willReturn('seovndurl');
         $encoder->expects($this->once())->method('getManufacturerUri');
 
-        $this->assertEquals('seovndurl', $encoder->getManufacturerUrl($manufacturer));
+        $this->assertSame('seovndurl', $encoder->getManufacturerUrl($manufacturer));
     }
 
     public function testGetManufacturerUriExistingManufacturerWithLangParam()
@@ -245,14 +245,14 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->setId('xxx');
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ['loadFromDb', 'prepareTitle', 'getUniqueSeoUrl', 'saveToDb']);
-        $oEncoder->expects($this->once())->method('loadFromDb')->with($this->equalTo('oxmanufacturer'), $this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('seourl'));
+        $oEncoder->expects($this->once())->method('loadFromDb')->with('oxmanufacturer', 'xxx', 0)->willReturn('seourl');
         $oEncoder->expects($this->never())->method('prepareTitle');
         $oEncoder->expects($this->never())->method('getUniqueSeoUrl');
         $oEncoder->expects($this->never())->method('saveToDb');
 
         $sUrl = 'seourl';
         $sSeoUrl = $oEncoder->getManufacturerUri($oManufacturer, 0);
-        $this->assertEquals($sUrl, $sSeoUrl);
+        $this->assertSame($sUrl, $sSeoUrl);
     }
 
     public function testGetManufacturerUriRootManufacturerWithLangParam()
@@ -266,16 +266,16 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
         $oEncoder->expects($this->once())
             ->method('saveToDb')
             ->with(
-                $this->equalTo('oxmanufacturer'),
-                $this->equalTo('root'),
-                $this->equalTo($oManufacturer->getBaseStdLink(1)),
-                $this->equalTo('en/By-manufacturer/'),
-                $this->equalTo(1)
+                'oxmanufacturer',
+                'root',
+                $oManufacturer->getBaseStdLink(1),
+                'en/By-manufacturer/',
+                1
             );
 
         $sUrl = 'en/By-manufacturer/';
         $sSeoUrl = $oEncoder->getManufacturerUri($oManufacturer, 1);
-        $this->assertEquals($sUrl, $sSeoUrl);
+        $this->assertSame($sUrl, $sSeoUrl);
     }
 
     public function testonDeleteManufacturer()
@@ -288,10 +288,10 @@ class SeoEncoderManufacturerTest extends \PHPUnit\Framework\TestCase
                    ( 'oid', '132', '{$sShopId}', '0', '', '', 'oxmanufacturer', '0', '0', '' )";
         $oDb->execute($sQ);
 
-        $sQ = sprintf('insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( \'oid\', \'%s\', \'0\' )', $sShopId);
+        $sQ = sprintf("insert into oxobject2seodata ( oxobjectid, oxshopid, oxlang ) values ( 'oid', '%s', '0' )", $sShopId);
         $oDb->execute($sQ);
 
-        $sQ = sprintf('insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( \'oid\', \'132\', \'%s\', \'0\' )', $sShopId);
+        $sQ = sprintf("insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang ) values ( 'oid', '132', '%s', '0' )", $sShopId);
         $oDb->execute($sQ);
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxseo where oxobjectid = 'oid'"));

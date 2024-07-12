@@ -16,7 +16,11 @@ use \oxTestModules;
 
 class UtilsFileTest extends \PHPUnit\Framework\TestCase
 {
-    public function setup(): void
+    /**
+     * @var mixed[]
+     */
+    public $aFiles;
+    protected function setup(): void
     {
         parent::setUp();
         $this->aFiles = $_FILES;
@@ -35,7 +39,7 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
         $sFilePath = $this->getConfig()->getPictureDir(false) . "/master/product/1/";
 
         $oUtilsFile = oxNew('oxUtilsFile');
-        $this->assertEquals("2010_speed3_120_1(1).jpg", $oUtilsFile->getUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
+        $this->assertSame("2010_speed3_120_1(1).jpg", $oUtilsFile->getUniqueFileName($sFilePath, "2010_speed3_120_1", "jpg"));
     }
 
     public function testGetImageSize()
@@ -48,16 +52,16 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("sThumbnailsize", '100*100');
 
         // details img size
-        $this->assertEquals([251, 201], $oUtilsFile->getImageSize(null, 1, 'aDetailImageSizes'));
+        $this->assertSame([251, 201], $oUtilsFile->getImageSize(null, 1, 'aDetailImageSizes'));
 
         // details img size
-        $this->assertEquals([253, 203], $oUtilsFile->getImageSize(null, 3, 'aDetailImageSizes'));
+        $this->assertSame([253, 203], $oUtilsFile->getImageSize(null, 3, 'aDetailImageSizes'));
 
         // zoom img size
-        $this->assertEquals([450, 450], $oUtilsFile->getImageSize(null, 2, 'sZoomImageSize'));
+        $this->assertSame([450, 450], $oUtilsFile->getImageSize(null, 2, 'sZoomImageSize'));
 
         // thumbnail img size
-        $this->assertEquals([100, 100], $oUtilsFile->getImageSize(null, null, 'sThumbnailsize'));
+        $this->assertSame([100, 100], $oUtilsFile->getImageSize(null, null, 'sThumbnailsize'));
 
         // non existing img type size
         $this->assertNull($oUtilsFile->getImageSize('nonexisting', '666', 'nonexisting'));
@@ -69,7 +73,7 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
         $sName2 = __FILE__;
 
         $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, ['urlValidate']);
-        $oUtilsFile->expects($this->once())->method('urlValidate')->will($this->returnValue(true));
+        $oUtilsFile->expects($this->once())->method('urlValidate')->willReturn(true);
         $this->assertTrue($oUtilsFile->checkFile($sName1));
         $this->assertTrue($oUtilsFile->checkFile($sName1));
         $this->assertTrue($oUtilsFile->checkFile($sName2));
@@ -90,7 +94,7 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isDemoShop']);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(false);
 
         /** @var oxUtilsFile|PHPUnit\Framework\MockObject\MockObject $oUtilsFile */
         $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
@@ -106,7 +110,7 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
         //$oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('hasModule'));
         //$oConfig->expects( $this->once() )->method('hasModule')->with( $this->equalTo( 'demoshop' ) )->will( $this->returnValue( true ) );
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isDemoShop']);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
         $oUF = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
         Registry::set(Config::class, $oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new Exception("this is ok");}');
@@ -114,7 +118,7 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
             $oUF->processFiles();
             $this->fail();
         } catch (Exception $exception) {
-            $this->assertEquals('this is ok', $exception->getMessage());
+            $this->assertSame('this is ok', $exception->getMessage());
         }
     }
 
@@ -193,8 +197,8 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
     public function testReadRemoteFileAsString()
     {
         $oUtilsFile = oxNew('oxUtilsFile');
-        $this->assertEquals("", $oUtilsFile->readRemoteFileAsString(getShopBasePath() . time()));
-        $this->assertEquals("<?php", substr((string) $oUtilsFile->readRemoteFileAsString(getShopBasePath() . "index.php"), 0, 5));
+        $this->assertSame("", $oUtilsFile->readRemoteFileAsString(getShopBasePath() . time()));
+        $this->assertSame("<?php", substr((string) $oUtilsFile->readRemoteFileAsString(getShopBasePath() . "index.php"), 0, 5));
     }
 
     public function testProcessFileEmpty()
@@ -243,12 +247,12 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
     public function testNormalizeDir()
     {
         $sFullDir = "/test/good/dir/";
-        $this->assertEquals($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sFullDir));
+        $this->assertSame($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sFullDir));
 
         $sHalfDir = "/test/good/dir";
-        $this->assertEquals($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sHalfDir));
+        $this->assertSame($sFullDir, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sHalfDir));
 
-        $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(''));
+        $this->assertSame('', \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(''));
         $this->assertEquals(null, \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(null));
     }
 
@@ -256,47 +260,47 @@ class UtilsFileTest extends \PHPUnit\Framework\TestCase
     public function testTranslateError()
     {
         $oUF = oxNew('oxUtilsFile');
-        $this->assertEquals(
+        $this->assertSame(
             '',
             $oUF->translateError(0, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_1',
             $oUF->translateError(1, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_2',
             $oUF->translateError(2, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_3',
             $oUF->translateError(3, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_4',
             $oUF->translateError(4, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             '',
             $oUF->translateError(5, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_6',
             $oUF->translateError(6, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_7',
             $oUF->translateError(7, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'EXCEPTION_FILEUPLOADERROR_8',
             $oUF->translateError(8, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             '',
             $oUF->translateError(9, 'fileName')
         );
-        $this->assertEquals(
+        $this->assertSame(
             '',
             $oUF->translateError(-1, 'fileName')
         );

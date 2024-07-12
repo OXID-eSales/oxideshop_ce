@@ -18,6 +18,7 @@ use \oxTestModules;
 class ThankyouTest extends \PHPUnit\Framework\TestCase
 {
 
+    public $oArticle;
     /**
      * Tear down the fixture.
      */
@@ -40,14 +41,14 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oThankyou = $this->getProxyClass('thankyou');
 
         /** @var \PHPUnit\Framework\MockObject\MockObject $utilsMock */
-        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class, [], ["redirect"]);
-        $utilsMock->expects($this->any())->method('redirect')->willThrowException(new \Exception("expected redirect"));
+        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class);
+        $utilsMock->method('redirect')->willThrowException(new \Exception("expected redirect"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utilsMock);
 
         try {
             $oThankyou->init();
         } catch (\Exception $exception) {
-            $this->assertEquals("expected redirect", $exception->getMessage());
+            $this->assertSame("expected redirect", $exception->getMessage());
         }
 
         $this->assertEquals($oBasket, $oThankyou->getBasket());
@@ -61,8 +62,8 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oThankyou = $this->getProxyClass('thankyou');
 
         /** @var \PHPUnit\Framework\MockObject\MockObject $utilsMock */
-        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class, [], ["redirect"]);
-        $utilsMock->expects($this->any())->method('redirect')->willThrowException(new \Exception("expected redirect"));
+        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class);
+        $utilsMock->method('redirect')->willThrowException(new \Exception("expected redirect"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utilsMock);
 
         $oThankyou->init();
@@ -71,7 +72,7 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
     public function testGetCurrencyCovIndex()
     {
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals(1, $oThankyou->getCurrencyCovIndex());
+        $this->assertSame(1, $oThankyou->getCurrencyCovIndex());
     }
 
     public function testGetIPaymentBasket()
@@ -80,40 +81,40 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oPrice->setPrice(10.12);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getPrice']);
-        $oBasket->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getPrice')->willReturn($oPrice);
 
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
 
-        $this->assertEquals(10.12 * 100, $oThankyou->getIPaymentBasket());
+        $this->assertSame(10.12 * 100, $oThankyou->getIPaymentBasket());
     }
 
     public function testGetIPaymentAccount()
     {
         $this->getConfig()->setConfigParam('iShopID_iPayment_Account', 'testAccount');
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('testAccount', $oThankyou->getIPaymentAccount());
+        $this->assertSame('testAccount', $oThankyou->getIPaymentAccount());
     }
 
     public function testGetIPaymentUser()
     {
         $this->getConfig()->setConfigParam('iShopID_iPayment_User', 'testUser');
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('testUser', $oThankyou->getIPaymentUser());
+        $this->assertSame('testUser', $oThankyou->getIPaymentUser());
     }
 
     public function testGetIPaymentPassword()
     {
         $this->getConfig()->setConfigParam('iShopID_iPayment_Passwort', 'testPasswort');
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('testPasswort', $oThankyou->getIPaymentPassword());
+        $this->assertSame('testPasswort', $oThankyou->getIPaymentPassword());
     }
 
     public function testGetMailError()
     {
         $this->setRequestParameter('mailerror', 'testShop');
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('testShop', $oThankyou->getMailError());
+        $this->assertSame('testShop', $oThankyou->getMailError());
     }
 
     public function testGetOrder()
@@ -123,12 +124,12 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $myDB->Execute($sInsert);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getOrderId']);
-        $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue('_test'));
+        $oBasket->expects($this->once())->method('getOrderId')->willReturn('_test');
 
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
 
-        $this->assertEquals('_test', $oThankyou->getOrder()->getId());
+        $this->assertSame('_test', $oThankyou->getOrder()->getId());
     }
 
     public function testGetAlsoBoughtTheseProducts()
@@ -137,10 +138,10 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $this->oArticle->load('1126');
 
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['getArticle']);
-        $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($this->oArticle));
+        $oBasketItem->expects($this->once())->method('getArticle')->willReturn($this->oArticle);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents']);
-        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue([$oBasketItem]));
+        $oBasket->expects($this->once())->method('getContents')->willReturn([$oBasketItem]);
 
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
@@ -165,9 +166,9 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oBasketItem->setNonPublicVar('_sProductId', '_testArt');
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getContents', 'getProductsCount', 'getOrderId']);
-        $oBasket->expects($this->once())->method('getContents')->will($this->returnValue([$oBasketItem]));
-        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->expects($this->once())->method('getOrderId')->will($this->returnValue(1));
+        $oBasket->expects($this->once())->method('getContents')->willReturn([$oBasketItem]);
+        $oBasket->expects($this->once())->method('getProductsCount')->willReturn(1);
+        $oBasket->expects($this->once())->method('getOrderId')->willReturn(1);
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
         $oThankyou->render();
@@ -180,7 +181,7 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxpassword = new oxField("");
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getProductsCount']);
-        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
+        $oBasket->expects($this->once())->method('getProductsCount')->willReturn(1);
 
         $oThankyou = $this->getProxyClass('thankyou');
         $oThankyou->setNonPublicVar('_oBasket', $oBasket);
@@ -198,7 +199,7 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
     public function testGetActionClassName()
     {
         $oThankyou = $this->getProxyClass('thankyou');
-        $this->assertEquals('start', $oThankyou->getActionClassName());
+        $this->assertSame('start', $oThankyou->getActionClassName());
     }
 
     /**
@@ -208,7 +209,7 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
     {
         $oTh = oxNew('Thankyou');
 
-        $this->assertEquals(1, count($oTh->getBreadCrumb()));
+        $this->assertCount(1, $oTh->getBreadCrumb());
     }
 
     /**
@@ -220,8 +221,8 @@ class ThankyouTest extends \PHPUnit\Framework\TestCase
         $oOrder->oxorder__oxbillcountryid = new oxField('a7c40f631fc920687.20179984');
 
         $oTh = $this->getMock(\OxidEsales\Eshop\Application\Controller\ThankYouController::class, ['getOrder']);
-        $oTh->expects($this->any())->method('getOrder')->will($this->returnValue($oOrder));
+        $oTh->method('getOrder')->willReturn($oOrder);
 
-        $this->assertEquals('DEU', $oTh->getCountryISO3());
+        $this->assertSame('DEU', $oTh->getCountryISO3());
     }
 }

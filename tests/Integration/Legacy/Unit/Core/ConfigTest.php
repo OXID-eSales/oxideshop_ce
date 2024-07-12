@@ -109,7 +109,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLogsDir()
     {
-        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . 'log/', $this->getConfig()->getLogsDir());
+        $this->assertSame($this->getConfig()->getConfigParam('sShopDir') . 'log/', $this->getConfig()->getLogsDir());
     }
 
     /*
@@ -161,7 +161,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, ['getConfigParam']);
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue('https://eshop/'));
+        $oConfig->expects($this->once())->method('getConfigParam')->with('sSSLShopURL')->willReturn('https://eshop/');
 
         $this->assertTrue($oConfig->isSsl());
     }
@@ -193,7 +193,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, ['getConfigParam']);
-        $oConfig->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue('https://eshop'));
+        $oConfig->method('getConfigParam')->with('sSSLShopURL')->willReturn('https://eshop');
         $this->assertTrue($oConfig->isSsl());
 
         oxTestModules::cleanUp();
@@ -230,10 +230,11 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     private function isHttpsOnlySameUrl($withSsl)
     {
         $config = $this->getMock(Config::class, ['isSsl', 'getSslShopUrl', 'getShopUrl']);
-        $config->expects($this->any())->method('isSsl')->will($this->returnValue($withSsl));
+        $config->method('isSsl')->willReturn($withSsl);
         foreach (['getSslShopUrl', 'getShopUrl'] as $method) {
-            $config->expects($this->any())->method($method)->will($this->returnValue('http' . ($withSsl ? 's' : '') . '://oxid-esales.com'));
+            $config->method($method)->willReturn('http' . ($withSsl ? 's' : '') . '://oxid-esales.com');
         }
+
         return $config->isHttpsOnly();
     }
 
@@ -287,8 +288,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var Config|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(Config::class, ['loadVarsFromDb','getExceptionHandler']);
-        $config->expects($this->any())->method('loadVarsFromDb')->will($this->throwException($exception));
-        $config->expects($this->any())->method('getExceptionHandler')->will($this->returnValue($exceptionHandlerMock));
+        $config->method('loadVarsFromDb')->willThrowException($exception);
+        $config->method('getExceptionHandler')->willReturn($exceptionHandlerMock);
 
         $config->init();
     }
@@ -325,7 +326,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setConfigParam('dbType', 'yyy');
-        $this->assertEquals('yyy', $oConfig->getConfigParam('dbType'));
+        $this->assertSame('yyy', $oConfig->getConfigParam('dbType'));
     }
 
     public function testSetConfigParamOverridingCachedParam()
@@ -333,7 +334,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setConfigParam('xxx', 'yyy');
-        $this->assertEquals('yyy', $oConfig->getConfigParam('xxx'));
+        $this->assertSame('yyy', $oConfig->getConfigParam('xxx'));
     }
 
     /**
@@ -344,7 +345,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setGlobalParameter('xxx', 'yyy');
-        $this->assertEquals('yyy', $oConfig->getGlobalParameter('xxx'));
+        $this->assertSame('yyy', $oConfig->getGlobalParameter('xxx'));
     }
 
     /**
@@ -365,7 +366,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $oConfig = oxNew('oxConfig');
 
-        $this->assertTrue($oConfig->getActiveView() instanceof \OxidEsales\EshopCommunity\Application\Controller\FrontendController);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Controller\FrontendController::class, $oConfig->getActiveView());
     }
 
     public function testSetGetActiveView()
@@ -462,15 +463,15 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config = oxNew('oxConfig');
 
         $view1 = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ['getClassKey']);
-        $view1->expects($this->once())->method('getClassKey')->will($this->returnValue('testViewId1'));
+        $view1->expects($this->once())->method('getClassKey')->willReturn('testViewId1');
 
         $view2 = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ['getClassKey']);
-        $view2->expects($this->once())->method('getClassKey')->will($this->returnValue('testViewId2'));
+        $view2->expects($this->once())->method('getClassKey')->willReturn('testViewId2');
 
         $config->setActiveView($view1);
         $config->setActiveView($view2);
 
-        $this->assertEquals(['testViewId1', 'testViewId2'], $config->getActiveViewsIds());
+        $this->assertSame(['testViewId1', 'testViewId2'], $config->getActiveViewsIds());
     }
 
     /**
@@ -485,7 +486,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $this->assertEquals(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getBaseShopId());
+        $this->assertSame(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getBaseShopId());
     }
 
     /**
@@ -643,7 +644,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
             $sModule = $aData[0] !== '' && $aData[0] !== '0' ? $aData[0] : oxConfig::OXMODULE_THEME_PREFIX . $oConfig->getConfigParam('sTheme');
             $sVar = $aData[1];
 
-            $sQ = sprintf('select oxvarvalue from oxconfig where oxshopid=\'%s\' and oxmodule = \'%s\' and  oxvarname=\'%s\'', $sShopId, $sModule, $sVar);
+            $sQ = sprintf("select oxvarvalue from oxconfig where oxshopid='%s' and oxmodule = '%s' and  oxvarname='%s'", $sShopId, $sModule, $sVar);
             $this->assertEquals($oDb->getOne($sQ), $oConfig->getShopConfVar($sVar, $sShopId, $sModule), "\nshop:{$sShopId}; {$sModule}; var:{$sVar}\n");
         }
     }
@@ -663,7 +664,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         oxDb::getDb()->execute($sQ2);
 
         $oConfig = oxNew('oxConfig');
-        $this->assertFalse($oConfig->getShopConfVar('testVar1') == null);
+        $this->assertNotEquals(null, $oConfig->getShopConfVar('testVar1'));
     }
 
 
@@ -680,8 +681,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sShopId = $oConfig->getShopId();
         $oConfig->saveShopConfVar('int', $sName, $sVal, $sShopId);
-        $this->assertEquals($sVal, $oConfig->getShopConfVar($sName, $sShopId));
-        $this->assertEquals($sVal, $oConfig->getConfigParam($sName));
+        $this->assertSame($sVal, $oConfig->getShopConfVar($sName, $sShopId));
+        $this->assertSame($sVal, $oConfig->getConfigParam($sName));
     }
 
     /**
@@ -698,8 +699,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oE = null;
         try {
             $oConfig->saveShopConfVar('arr', $sVar, $aVal);
-            $this->assertEquals($aVal, $oConfig->getShopConfVar($sVar));
-            $this->assertEquals($aVal, $oConfig->getConfigParam($sVar));
+            $this->assertSame($aVal, $oConfig->getShopConfVar($sVar));
+            $this->assertSame($aVal, $oConfig->getConfigParam($sVar));
         } catch (Exception $exception) {
             // rethrow later
         }
@@ -720,12 +721,12 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config->saveShopConfVar('string', 'oxtesting', 'test', null, '');
         $config->saveShopConfVar('string', 'oxtesting', 'test', null, 'theme:basic');
 
-        $this->assertEquals('test', $config->getConfigParam('oxtesting'));
+        $this->assertSame('test', $config->getConfigParam('oxtesting'));
 
         oxDb::getDb()->execute('delete from oxconfig where oxmodule="theme:basic" and oxvarname="oxtesting"');
         $this->getConfig()->saveShopConfVar('string', 'oxtesting', 'test', null, 'theme:basic');
 
-        $this->assertEquals('test', $this->getConfig()->getConfigParam('oxtesting'));
+        $this->assertSame('test', $this->getConfig()->getConfigParam('oxtesting'));
 
         oxDb::getDb()->execute('delete from oxconfig where oxvarname="oxtesting"');
     }
@@ -879,11 +880,11 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oE = null;
         try {
             $oConfig->saveShopConfVar('num', "testVar", "10.000,5989");
-            $this->assertEquals(10000.5989, $oConfig->getShopConfVar("testVar"));
-            $this->assertEquals(10000.5989, $oConfig->getConfigParam("testVar"));
+            $this->assertEqualsWithDelta(10000.5989, $oConfig->getShopConfVar("testVar"), PHP_FLOAT_EPSILON);
+            $this->assertEqualsWithDelta(10000.5989, $oConfig->getConfigParam("testVar"), PHP_FLOAT_EPSILON);
             $oConfig->saveShopConfVar('num', "testVar", "20,000.5989");
-            $this->assertEquals(20000.5989, $oConfig->getShopConfVar("testVar"));
-            $this->assertEquals(20000.5989, $oConfig->getConfigParam("testVar"));
+            $this->assertEqualsWithDelta(20000.5989, $oConfig->getShopConfVar("testVar"), PHP_FLOAT_EPSILON);
+            $this->assertEqualsWithDelta(20000.5989, $oConfig->getConfigParam("testVar"), PHP_FLOAT_EPSILON);
         } catch (Exception $exception) {
             // rethrow later
         }
@@ -905,8 +906,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oE = null;
         try {
             $oConfig->saveShopConfVar('num', "testVar", "abc");
-            $this->assertEquals(0, $oConfig->getShopConfVar("testVar"));
-            $this->assertEquals(0, $oConfig->getConfigParam("testVar"));
+            $this->assertSame(0, $oConfig->getShopConfVar("testVar"));
+            $this->assertSame(0, $oConfig->getConfigParam("testVar"));
         } catch (Exception $exception) {
             // rethrow later
         }
@@ -928,8 +929,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oE = null;
         try {
             $oConfig->saveShopConfVar('num', "testVar", 50.009);
-            $this->assertEquals(50.009, $oConfig->getShopConfVar("testVar"));
-            $this->assertEquals(50.009, $oConfig->getConfigParam("testVar"));
+            $this->assertEqualsWithDelta(50.009, $oConfig->getShopConfVar("testVar"), PHP_FLOAT_EPSILON);
+            $this->assertEqualsWithDelta(50.009, $oConfig->getConfigParam("testVar"), PHP_FLOAT_EPSILON);
         } catch (Exception $exception) {
             // rethrow later
         }
@@ -1034,7 +1035,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         // additionally checking caching
         $oShop->xxx = 'yyy';
-        $this->assertEquals('yyy', $oConfig->getActiveShop()->xxx);
+        $this->assertSame('yyy', $oConfig->getActiveShop()->xxx);
 
         // checking if different language forces reload
         $iCurrLang = oxRegistry::getLang()->getBaseLanguage();
@@ -1057,7 +1058,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $this->assertEquals(1, $oConfig->getMandateCount());
+        $this->assertSame(1, $oConfig->getMandateCount());
     }
 
     public function testGetResourceUrlExpectsDefault()
@@ -1065,7 +1066,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $adminTheme = $this->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $oConfig = new modForTestGetBaseTplDirExpectsDefault();
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, $adminTheme, false) . "src/";
-        $this->assertEquals($sDir, $oConfig->getResourceUrl('', true));
+        $this->assertSame($sDir, $oConfig->getResourceUrl('', true));
     }
 
     /**
@@ -1079,7 +1080,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $sDir = $this->getViewsPath($oConfig);
         $sDir .= 'tpl/';
 
-        $this->assertEquals($sDir, $oConfig->getTemplateDir());
+        $this->assertSame($sDir, $oConfig->getTemplateDir());
     }
 
     public function testGetTemplateDirExpectsDefault()
@@ -1088,7 +1089,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $this->getViewsPath($oConfig, $this->get(AdminThemeBridgeInterface::class)->getActiveTheme()) . 'tpl/';
-        $this->assertEquals($sDir, $oConfig->getTemplateDir(true));
+        $this->assertSame($sDir, $oConfig->getTemplateDir(true));
     }
 
     /**
@@ -1102,7 +1103,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->getViewsPath($oConfig, null, false);
         $sDir .= 'tpl/';
 
-        $this->assertEquals($sDir, $oConfig->getTemplateUrl());
+        $this->assertSame($sDir, $oConfig->getTemplateUrl());
     }
 
     public function testGetTemplateUrlExpectsDefault()
@@ -1112,7 +1113,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->getViewsPath($oConfig, $adminTheme, false) . 'tpl/';
-        $this->assertEquals($sDir, $oConfig->getTemplateUrl(null, true));
+        $this->assertSame($sDir, $oConfig->getTemplateUrl(null, true));
     }
 
 
@@ -1123,11 +1124,11 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['isSsl']);
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $oConfig->method('isSsl')->willReturn(false);
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, null, false) . 'src/';
-        $this->assertEquals($sDir, $oConfig->getResourceUrl());
+        $this->assertSame($sDir, $oConfig->getResourceUrl());
     }
 
     public function testGetResourceUrlAdminSsl()
@@ -1137,7 +1138,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sSSLShopURL') . 'out/' . $adminTheme . '/src/';
-        $this->assertEquals($sDir, $oConfig->getResourceUrl(null, true));
+        $this->assertSame($sDir, $oConfig->getResourceUrl(null, true));
     }
 
     /**
@@ -1152,7 +1153,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sDir = $this->getViewsPath($oConfig) . 'tpl/page/shop/start.' . $templateExtension;
 
-        $this->assertEquals($sDir, $oConfig->getTemplatePath('page/shop/start.' . $templateExtension, false));
+        $this->assertSame($sDir, $oConfig->getTemplatePath('page/shop/start.' . $templateExtension, false));
     }
 
     public function testGetTemplatePathAdmin()
@@ -1165,7 +1166,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
             $this->getViewsPath($oConfig, $this->get(AdminThemeBridgeInterface::class)->getActiveTheme()) .
             'tpl/' . $templateName
             ;
-        $this->assertEquals($sDir, $oConfig->getTemplatePath($templateName, true));
+        $this->assertSame($sDir, $oConfig->getTemplatePath($templateName, true));
     }
 
     /**
@@ -1175,7 +1176,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $oConfig = oxNew('oxConfig');
         $sDir = $this->getConfigParam('sShopDir') . 'Application/translations/en/lang.php';
-        $this->assertEquals($sDir, $oConfig->getTranslationsDir('lang.php', 'en'));
+        $this->assertSame($sDir, $oConfig->getTranslationsDir('lang.php', 'en'));
         $this->assertFalse($oConfig->getTranslationsDir('lang.php', 'na'));
     }
 
@@ -1189,7 +1190,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
 
-        $this->assertEquals($sDir, $oConfig->getPictureDir(false));
+        $this->assertSame($sDir, $oConfig->getPictureDir(false));
     }
 
     public function testGetAbsDynImageDirForSecondLang()
@@ -1202,7 +1203,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sDir = $oConfig->getConfigParam('sShopDir') . "out/pictures/";
 
-        $this->assertEquals($sDir, $oConfig->getPictureDir(false));
+        $this->assertSame($sDir, $oConfig->getPictureDir(false));
     }
 
 
@@ -1216,7 +1217,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $this->getOutPath($oConfig) . 'img/';
-        $this->assertEquals($sDir, $oConfig->getImageDir());
+        $this->assertSame($sDir, $oConfig->getImageDir());
     }
 
     /**
@@ -1234,8 +1235,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $failed = false;
 
         try {
-            $this->assertEquals($sLangDir, $oConfig->getImageDir());
-            $this->assertEquals($sNoLangDir, $oConfig->getImageDir());
+            $this->assertSame($sLangDir, $oConfig->getImageDir());
+            $this->assertSame($sNoLangDir, $oConfig->getImageDir());
         } catch (Exception $exception) {
             $failed = true;
         }
@@ -1266,7 +1267,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopDir') . 'out/' . $adminTheme . '/img/';
-        $this->assertEquals($sDir, $oConfig->getImageDir(1));
+        $this->assertSame($sDir, $oConfig->getImageDir(1));
     }
 
     public function testGetAbsAdminGetImageDirForActLang()
@@ -1276,7 +1277,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopDir') . 'out/' . $adminTheme . '/img/';
-        $this->assertEquals($sDir, $oConfig->getImageDir(1));
+        $this->assertSame($sDir, $oConfig->getImageDir(1));
     }
 
 
@@ -1286,8 +1287,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetCoreUtilsUrl()
     {
         $oConfig = $this->getMock(Config::class, ['getCurrentShopUrl']);
-        $oConfig->expects($this->any())->method('getCurrentShopUrl')->will($this->returnValue('xxx/'));
-        $this->assertEquals('xxx/Core/utils/', $oConfig->getCoreUtilsUrl());
+        $oConfig->method('getCurrentShopUrl')->willReturn('xxx/');
+        $this->assertSame('xxx/Core/utils/', $oConfig->getCoreUtilsUrl());
     }
 
     public function testGetCoreUtilsUrlMall()
@@ -1297,7 +1298,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('aLanguageSSLURLs', null);
         $oConfig->setConfigParam('sMallSSLShopURL', null);
         $oConfig->setConfigParam('sMallShopURL', 'http://www.example3.com/');
-        $this->assertEquals('http://www.example3.com/Core/utils/', $oConfig->getCoreUtilsUrl());
+        $this->assertSame('http://www.example3.com/Core/utils/', $oConfig->getCoreUtilsUrl());
     }
 
 
@@ -1308,7 +1309,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['isSsl']);
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $oConfig->method('isSsl')->willReturn(false);
         $oConfig->init();
         $this->assertEquals($oConfig->getShopUrl(), $oConfig->getCurrentShopUrl());
     }
@@ -1328,7 +1329,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         // simple check if nothing was changed ...
-        $this->assertEquals((int) \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestEscapedParameter('currency'), $oConfig->getShopCurrency());
+        $this->assertSame((int) \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestEscapedParameter('currency'), $oConfig->getShopCurrency());
     }
 
 
@@ -1339,18 +1340,18 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals(0, $oConfig->getShopCurrency());
+        $this->assertSame(0, $oConfig->getShopCurrency());
         $oConfig->setActShopCurrency(1);
-        $this->assertEquals(1, $this->getSession()->getVariable('currency'));
+        $this->assertSame(1, $this->getSession()->getVariable('currency'));
     }
 
     public function testSetActShopCurrencySettingNotExisting()
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals(0, $oConfig->getShopCurrency());
+        $this->assertSame(0, $oConfig->getShopCurrency());
         $oConfig->setActShopCurrency('xxx');
-        $this->assertEquals(0, $oConfig->getShopCurrency());
+        $this->assertSame(0, $oConfig->getShopCurrency());
     }
 
     /**
@@ -1360,26 +1361,26 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['isAdmin', 'isSsl']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
+        $oConfig->method('isSsl')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('blNativeImages', true);
 
         $sUrl = $oConfig->getConfigParam('sSSLShopURL') ?: $oConfig->getConfigParam('sShopURL');
         $sUrl .= $this->getOutPath($oConfig, null, false) . 'img/';
-        $this->assertEquals($sUrl, $oConfig->getImageUrl());
+        $this->assertSame($sUrl, $oConfig->getImageUrl());
     }
 
     public function testGetImageDirDefaultLanguage()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
 
         $sUrl = $oConfig->getConfigParam('sShopURL');
         $sUrl .= $this->getOutPath($oConfig, null, false) . 'img/';
 
-        $this->assertEquals($sUrl, $oConfig->getImageUrl());
+        $this->assertSame($sUrl, $oConfig->getImageUrl());
     }
 
     /**
@@ -1392,7 +1393,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sUrl = $oConfig->getOutDir();
-        $this->assertEquals($sUrl . $adminTheme . "/img/start.gif", $oConfig->getImagePath("start.gif", true));
+        $this->assertSame($sUrl . $adminTheme . "/img/start.gif", $oConfig->getImagePath("start.gif", true));
     }
 
     /**
@@ -1405,7 +1406,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
 
         $sDir = $oConfig->getConfigParam('sShopURL') . 'out/' . $adminTheme . '/img/';
-        $this->assertEquals($sDir, $oConfig->getImageUrl(true));
+        $this->assertSame($sDir, $oConfig->getImageUrl(true));
     }
 
     public function testGetNoSslgetImageUrlDefaults()
@@ -1415,7 +1416,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->getOutPath($oConfig, null, false) . 'img/';
 
-        $this->assertEquals($sDir, $oConfig->getImageUrl());
+        $this->assertSame($sDir, $oConfig->getImageUrl());
     }
 
     /**
@@ -1431,7 +1432,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $this->setToRegistryOxUtilsUrlMock('index.php');
 
-        $this->assertEquals($sUrl, $oConfig->getShopHomeUrl());
+        $this->assertSame($sUrl, $oConfig->getShopHomeUrl());
     }
 
     /**
@@ -1448,7 +1449,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         \OxidEsales\Eshop\Core\Registry::set(Config::class, $oConfig);
 
-        $this->assertEquals($expectedUrl, $oConfig->getShopSecureHomeUrl());
+        $this->assertSame($expectedUrl, $oConfig->getShopSecureHomeUrl());
     }
 
 
@@ -1467,7 +1468,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         \OxidEsales\Eshop\Core\Registry::set(Config::class, $oConfig);
 
-        $this->assertEquals($expectedUrl, $oConfig->getShopSecureHomeUrl());
+        $this->assertSame($expectedUrl, $oConfig->getShopSecureHomeUrl());
     }
 
 
@@ -1481,16 +1482,16 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $aLanguageSslUrls = [5 => 'https://www.example.com/'];
         $oConfig->setConfigParam('aLanguageSSLURLs', $aLanguageSslUrls);
-        $this->assertEquals($aLanguageSslUrls[5], $oConfig->getSslShopUrl(5));
+        $this->assertSame($aLanguageSslUrls[5], $oConfig->getSslShopUrl(5));
     }
 
     public function testGetSslShopUrlByLanguageArrayAddsEndingSlash()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageSSLURLs', [5 => 'http://www.example.com']);
-        $this->assertEquals('http://www.example.com/', $oConfig->getSslShopUrl(5));
+        $this->assertSame('http://www.example.com/', $oConfig->getSslShopUrl(5));
     }
 
     public function testGetSslShopUrlMallSslUrl()
@@ -1499,7 +1500,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageSSLURLs', null);
         $oConfig->setConfigParam('sMallSSLShopURL', 'https://www.example2.com/');
-        $this->assertEquals('https://www.example2.com/', $oConfig->getSslShopUrl());
+        $this->assertSame('https://www.example2.com/', $oConfig->getSslShopUrl());
     }
 
     public function testGetSslShopUrlMallSslUrlAddsEndingSlash()
@@ -1508,7 +1509,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageSSLURLs', null);
         $oConfig->setConfigParam('sMallSSLShopURL', 'https://www.example2.com');
-        $this->assertEquals('https://www.example2.com/', $oConfig->getSslShopUrl());
+        $this->assertSame('https://www.example2.com/', $oConfig->getSslShopUrl());
     }
 
     public function testGetSslShopUrlMallUrl()
@@ -1518,7 +1519,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('aLanguageSSLURLs', null);
         $oConfig->setConfigParam('sMallSSLShopURL', null);
         $oConfig->setConfigParam('sMallShopURL', 'https://www.example3.com/');
-        $this->assertEquals('https://www.example3.com/', $oConfig->getSslShopUrl());
+        $this->assertSame('https://www.example3.com/', $oConfig->getSslShopUrl());
     }
 
     public function testGetSslShopUrlSslUrl()
@@ -1529,7 +1530,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('sMallSSLShopURL', null);
         $oConfig->setConfigParam('sMallShopURL', null);
         $oConfig->setConfigParam('sSSLShopURL', 'https://www.example4.com');
-        $this->assertEquals('https://www.example4.com', $oConfig->getSslShopUrl());
+        $this->assertSame('https://www.example4.com', $oConfig->getSslShopUrl());
     }
 
     public function testGetSslShopUrlDefaultUrl()
@@ -1548,7 +1549,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setConfigParam('sSSLShopURL', 'https://www.example4.com');
-        $this->assertEquals('https://www.example4.com', $oConfig->getSslShopUrl());
+        $this->assertSame('https://www.example4.com', $oConfig->getSslShopUrl());
     }
 
     /**
@@ -1600,17 +1601,17 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = $this->getConfigWithSslMocked();
         $oConfig->init();
         $oConfig->setConfigParam('sSSLShopURL', 'https://www.example.com/');
-        $this->assertEquals(0, strpos((string) $oConfig->getShopCurrentUrl(), 'https://www.example.com/index.php?'));
+        $this->assertSame(0, strpos((string) $oConfig->getShopCurrentUrl(), 'https://www.example.com/index.php?'));
     }
 
     public function testGetShopCurrentUrlNoSsl()
     {
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['isSsl']);
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
+        $oConfig->method('isSsl')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('sShopURL', 'http://www.example.com/');
-        $this->assertEquals(0, strpos((string) $oConfig->getShopCurrentUrl(), 'http://www.example.com/index.php?'));
+        $this->assertSame(0, strpos((string) $oConfig->getShopCurrentUrl(), 'http://www.example.com/index.php?'));
     }
 
 
@@ -1620,7 +1621,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetShopUrlIsAdmin()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oConfig->method('isAdmin')->willReturn(true);
 
         $oConfig->init();
         $this->assertEquals($oConfig->getConfigParam('sShopURL'), $oConfig->getShopUrl());
@@ -1629,47 +1630,47 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetShopUrlByLanguageArray()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageURLs', [5 => 'http://www.example.com/']);
-        $this->assertEquals('http://www.example.com/', $oConfig->getShopUrl(5));
+        $this->assertSame('http://www.example.com/', $oConfig->getShopUrl(5));
     }
 
     public function testGetShopUrlByLanguageArrayAddsEndingSlash()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageURLs', [5 => 'http://www.example.com']);
-        $this->assertEquals('http://www.example.com/', $oConfig->getShopUrl(5));
+        $this->assertSame('http://www.example.com/', $oConfig->getShopUrl(5));
     }
 
     public function testGetShopUrlByMallUrl()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
 
         $oConfig->setConfigParam('aLanguageURLs', null);
         $oConfig->setConfigParam('sMallShopURL', 'http://www.example2.com/');
-        $this->assertEquals('http://www.example2.com/', $oConfig->getShopUrl());
+        $this->assertSame('http://www.example2.com/', $oConfig->getShopUrl());
     }
 
     public function testGetShopUrlByMallUrlAddsEndingSlash()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
 
         $oConfig->setConfigParam('aLanguageURLs', null);
         $oConfig->setConfigParam('sMallShopURL', 'http://www.example2.com');
-        $this->assertEquals('http://www.example2.com/', $oConfig->getShopUrl());
+        $this->assertSame('http://www.example2.com/', $oConfig->getShopUrl());
     }
 
     public function testGetShopUrlDefaultUrl()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oConfig->method('isAdmin')->willReturn(false);
         $oConfig->init();
         $oConfig->setConfigParam('aLanguageURLs', null);
         $oConfig->setConfigParam('sMallShopURL', null);
@@ -1747,7 +1748,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getShopId());
+        $this->assertSame(ShopIdCalculator::BASE_SHOP_ID, $oConfig->getShopId());
     }
 
     public function testGetUploadedFile()
@@ -1755,7 +1756,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $aBack = $_FILES;
         $_FILES['upload'] = 'testValue';
 
-        $this->assertEquals('testValue', $this->getConfig()->getUploadedFile('upload'));
+        $this->assertSame('testValue', $this->getConfig()->getUploadedFile('upload'));
 
         $_FILES = $aBack;
     }
@@ -1764,20 +1765,20 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('&amp;testValue', Registry::getRequest()->getRequestEscapedParameter('testParameterKey'));
+        $this->assertSame('&amp;testValue', Registry::getRequest()->getRequestEscapedParameter('testParameterKey'));
     }
 
     public function testGetRequestParameterRaw()
     {
         $_POST['testParameterKey'] = '&testValue';
 
-        $this->assertEquals('&testValue', Registry::getRequest()->getRequestParameter('testParameterKey'));
+        $this->assertSame('&testValue', Registry::getRequest()->getRequestParameter('testParameterKey'));
     }
 
     public function testGetEdition()
     {
         $sEdition = (new Facts())->getEdition();
-        $this->assertEquals($sEdition, (new Facts())->getEdition());
+        $this->assertSame($sEdition, (new Facts())->getEdition());
     }
 
     public function testGetPackageInfo_FileExists()
@@ -1787,7 +1788,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $sFileContent = 'Inserting test string';
         $sFilePath = $this->createFile($sFileName, $sFileContent);
         $oConfig->setConfigParam('sShopDir', dirname($sFilePath));
-        $this->assertEquals($sFileContent, $oConfig->getPackageInfo());
+        $this->assertSame($sFileContent, $oConfig->getPackageInfo());
         unlink($sFilePath);
     }
 
@@ -1801,7 +1802,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
     public function testGetEditionNotEmpty()
     {
-        $this->assertNotEquals('', (new Facts())->getEdition());
+        $this->assertNotSame('', (new Facts())->getEdition());
     }
 
     public function testGetFullEdition()
@@ -1811,7 +1812,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         }
 
         $sFEdition = $this->getConfig()->getFullEdition();
-        $this->assertEquals("Community Edition", $sFEdition);
+        $this->assertSame("Community Edition", $sFEdition);
     }
 
     public function testGetVersion()
@@ -1821,12 +1822,12 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
     public function testGetVersionNotEmpty()
     {
-        $this->assertNotEquals('', ShopVersion::getVersion());
+        $this->assertNotSame('', ShopVersion::getVersion());
     }
 
     public function testCorrectVersion()
     {
-        $this->assertTrue(version_compare(ShopVersion::getVersion(), '4.9') >= 0);
+        $this->assertGreaterThanOrEqual(0, version_compare(ShopVersion::getVersion(), '4.9'));
     }
 
     public function testGetDir_level5()
@@ -1838,13 +1839,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test1', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . '1/de/test1/text.txt', $sDir);
+        $this->assertSame($sOutDir . '1/de/test1/text.txt', $sDir);
     }
 
     public function testGetDir_delvel4()
@@ -1856,13 +1857,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test2', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . '1/test2/text.txt', $sDir);
+        $this->assertSame($sOutDir . '1/test2/text.txt', $sDir);
     }
 
     public function testGetDir_level3()
@@ -1874,13 +1875,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test2a', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . 'de/test2a/text.txt', $sDir);
+        $this->assertSame($sOutDir . 'de/test2a/text.txt', $sDir);
     }
 
     public function testGetDir_delvel2()
@@ -1892,13 +1893,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test3', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . 'test3/text.txt', $sDir);
+        $this->assertSame($sOutDir . 'test3/text.txt', $sDir);
     }
 
     public function testGetDir_delvel1()
@@ -1910,13 +1911,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . $this->getOutPath($oConfig, 'test4', false);
 
         $sDir = $oConfig->getDir('text.txt', 'test4', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . 'text.txt', $sDir);
+        $this->assertSame($sOutDir . 'text.txt', $sDir);
     }
 
     public function testGetDir_delvel0()
@@ -1928,13 +1929,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getOutDir']);
-        $oConfig->expects($this->any())->method('getOutDir')->will($this->returnValue($sTestDir . 'out/'));
+        $oConfig->method('getOutDir')->willReturn($sTestDir . 'out/');
         $oConfig->init();
 
         $sOutDir = $sTestDir . "out/";
 
         $sDir = $oConfig->getDir('text.txt', 'test5', false, 0, 1, 'test4');
-        $this->assertEquals($sOutDir . 'de/test5/text.txt', $sDir);
+        $this->assertSame($sOutDir . 'de/test5/text.txt', $sDir);
     }
 
     public function testGetDirIfEditionTemplateFound()
@@ -1943,51 +1944,51 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(Config::class, ['getEditionTemplate']);
-        $config->expects($this->any())->method('getEditionTemplate')->will($this->returnValue($expectedResult));
+        $config->method('getEditionTemplate')->willReturn($expectedResult);
         $config->init();
 
         $realResult = $config->getDir('xxx', 'xxx', false);
-        $this->assertEquals($expectedResult, $realResult);
+        $this->assertSame($expectedResult, $realResult);
     }
 
     public function testGetOutDir()
     {
         $oConfig = oxNew('oxConfig');
-        $this->assertEquals('out/', $oConfig->getOutDir(false));
+        $this->assertSame('out/', $oConfig->getOutDir(false));
         $oConfig->setConfigParam('sShopDir', 'test/');
-        $this->assertEquals('test/out/', $oConfig->getOutDir());
+        $this->assertSame('test/out/', $oConfig->getOutDir());
     }
 
     public function testGetOutUrl()
     {
         $oConfig = $this->getMock(Config::class, ['isAdmin', 'getShopUrl']);
-        $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oConfig->expects($this->any())->method('getShopUrl')->will($this->returnValue('testUrl/'));
+        $oConfig->method('isAdmin')->willReturn(false);
+        $oConfig->method('getShopUrl')->willReturn('testUrl/');
         $oConfig->init();
-        $this->assertEquals('testUrl/out/', $oConfig->getOutUrl(false, null, true));
+        $this->assertSame('testUrl/out/', $oConfig->getOutUrl(false, null, true));
     }
 
     public function testGetOutUrlSsl()
     {
         $oConfig = $this->getMock(Config::class, ['isSsl', 'getSslShopUrl']);
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('sslUrl/'));
+        $oConfig->method('isSsl')->willReturn(true);
+        $oConfig->method('getSslShopUrl')->willReturn('sslUrl/');
         $oConfig->init();
-        $this->assertEquals('sslUrl/out/', $oConfig->getOutUrl(null, false, true));
+        $this->assertSame('sslUrl/out/', $oConfig->getOutUrl(null, false, true));
     }
 
     public function testGetOutUrlIsAdminFromParam()
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->setConfigParam('sShopURL', 'testUrl/');
-        $this->assertEquals('testUrl/out/', $oConfig->getOutUrl(false, true, true));
+        $this->assertSame('testUrl/out/', $oConfig->getOutUrl(false, true, true));
     }
 
     public function testGetOutUrlIsSslFromParam()
     {
         $oConfig = oxNew('oxConfig');
         $oConfig->setConfigParam('sSSLShopURL', 'testSslUrl/');
-        $this->assertEquals('testSslUrl/out/', $oConfig->getOutUrl(true, false, false));
+        $this->assertSame('testSslUrl/out/', $oConfig->getOutUrl(true, false, false));
     }
 
     /**
@@ -2000,7 +2001,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sDir = $oConfig->getConfigParam('sShopDir') . 'out/pictures/';
 
-        $this->assertEquals($sDir, $oConfig->getPicturePath(null, false));
+        $this->assertSame($sDir, $oConfig->getPicturePath(null, false));
     }
 
     /**
@@ -2019,10 +2020,10 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('sMallShopURL', $sMallURL);
 
         $oConfig->setConfigParam('blNativeImages', false);
-        $this->assertEquals($sMainURL . $sDir, $oConfig->getPictureUrl(null, false));
+        $this->assertSame($sMainURL . $sDir, $oConfig->getPictureUrl(null, false));
 
         $oConfig->setConfigParam('blNativeImages', true);
-        $this->assertEquals($sMallURL . $sDir, $oConfig->getPictureUrl(null, false));
+        $this->assertSame($sMallURL . $sDir, $oConfig->getPictureUrl(null, false));
     }
 
     public function testGetPictureUrlForAltImageDirA()
@@ -2030,13 +2031,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $sDir = 'http://www.example.com/test.gif';
 
         $oPH = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, ['getAltImageUrl']);
-        $oPH->expects($this->once())->method('getAltImageUrl')->will($this->returnValue($sDir));
+        $oPH->expects($this->once())->method('getAltImageUrl')->willReturn($sDir);
         oxTestModules::addModuleObject('oxPictureHandler', $oPH);
 
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
 
-        $this->assertEquals($sDir, $oConfig->getPictureUrl("/test.gif", false));
+        $this->assertSame($sDir, $oConfig->getPictureUrl("/test.gif", false));
     }
 
     public function testGetPictureUrlFormerTplSupport()
@@ -2052,7 +2053,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setConfigParam('blFormerTplSupport', true);
-        $this->assertNotEquals('', $oConfig->getPictureUrl("test.gif", false));
+        $this->assertNotSame('', $oConfig->getPictureUrl("test.gif", false));
         $this->assertStringContainsString('master/nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
     }
 
@@ -2067,7 +2068,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $sNoPicUrl = $myConfig->getConfigParam("sShopURL") . 'out/pictures/master/nopic.jpg';
 
-        $this->assertEquals($sNoPicUrl, $oConfig->getPictureUrl("unknown.file", true));
+        $this->assertSame($sNoPicUrl, $oConfig->getPictureUrl("unknown.file", true));
     }
 
     public function testGetTemplateBase()
@@ -2075,7 +2076,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $adminTheme = $this->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals("Application/views/" . $adminTheme . "/", $oConfig->getTemplateBase(true));
+        $this->assertSame("Application/views/" . $adminTheme . "/", $oConfig->getTemplateBase(true));
     }
 
     public function testGetResourcePath()
@@ -2083,7 +2084,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $adminTheme = $this->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals($oConfig->getConfigParam('sShopDir') . "out/" . $adminTheme . "/src/main.css", $oConfig->getResourcePath("main.css", true));
+        $this->assertSame($oConfig->getConfigParam('sShopDir') . "out/" . $adminTheme . "/src/main.css", $oConfig->getResourcePath("main.css", true));
     }
 
     public function testGetResourceDir()
@@ -2091,7 +2092,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $adminTheme = $this->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
-        $this->assertEquals($oConfig->getConfigParam('sShopDir') . "out/" . $adminTheme . "/src/", $oConfig->getResourceDir(true));
+        $this->assertSame($oConfig->getConfigParam('sShopDir') . "out/" . $adminTheme . "/src/", $oConfig->getResourceDir(true));
     }
 
     public function testGetResourceUrl()
@@ -2108,10 +2109,10 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam('sMallShopURL', $sMallURL);
 
         $oConfig->setConfigParam('blNativeImages', false);
-        $this->assertEquals($sMainURL . $sDir, $oConfig->getResourceUrl(null, false));
+        $this->assertSame($sMainURL . $sDir, $oConfig->getResourceUrl(null, false));
 
         $oConfig->setConfigParam('blNativeImages', true);
-        $this->assertEquals($sMallURL . $sDir, $oConfig->getResourceUrl(null, false));
+        $this->assertSame($sMallURL . $sDir, $oConfig->getResourceUrl(null, false));
     }
 
     public function testIsDemoShop()
@@ -2143,11 +2144,11 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $aAssocArray = ["a" => 1, "b" => 2, "c" => 3];
 
         $oConfig = oxNew('oxConfig');
-        $this->assertEquals($sString, $oConfig->decodeValue("string", $sString));
+        $this->assertSame($sString, $oConfig->decodeValue("string", $sString));
         $this->assertEquals($oObject, $oConfig->decodeValue("object", $oObject));
         $this->assertEquals(true, $oConfig->decodeValue("bool", $blBool));
-        $this->assertEquals($aArray, $oConfig->decodeValue("arr", serialize($aArray)));
-        $this->assertEquals($aAssocArray, $oConfig->decodeValue("aarr", serialize($aAssocArray)));
+        $this->assertSame($aArray, $oConfig->decodeValue("arr", serialize($aArray)));
+        $this->assertSame($aAssocArray, $oConfig->decodeValue("aarr", serialize($aAssocArray)));
     }
 
     public function testDecodeValueWithSerializedObjectWillNotInstantiateIt(): void
@@ -2172,10 +2173,10 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
 
         $oConfig->setIsSsl();
-        $this->assertEquals($sUrl, $oConfig->getShopMainUrl());
+        $this->assertSame($sUrl, $oConfig->getShopMainUrl());
 
         $oConfig->setIsSsl(true);
-        $this->assertEquals($sSSLUrl, $oConfig->getShopMainUrl());
+        $this->assertSame($sSSLUrl, $oConfig->getShopMainUrl());
     }
 
     /**
@@ -2187,8 +2188,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $oConfig = new modForTestInitLoadingPriority();
         $oConfig->init();
-        $this->assertNotEquals(33, $oConfig->iDebug);
-        $this->assertNotEquals(33, $oConfig->getConfigParam("iDebug"));
+        $this->assertNotSame(33, $oConfig->iDebug);
+        $this->assertNotSame(33, $oConfig->getConfigParam("iDebug"));
     }
 
     /**
@@ -2215,7 +2216,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxconfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['loadVarsFromDb', 'handleDbConnectionException']);
-        $oConfig->expects($this->once())->method('loadVarsFromDb')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('loadVarsFromDb')->willReturn(false);
         $oConfig->expects($this->once())->method('handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
@@ -2229,7 +2230,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxconfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['getShopId', 'handleDbConnectionException']);
-        $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('getShopId')->willReturn(false);
         $oConfig->expects($this->once())->method('handleDbConnectionException');
         $oConfig->setConfigParam('iDebug', -1);
 
@@ -2245,7 +2246,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $oConfig->saveSystemConfigParameter($sType, $sName, $sValue);
 
         if ($sType == 'num') {
-            $this->assertEquals((float) $sValue, $oConfig->getSystemConfigParameter($sName));
+            $this->assertSame((float) $sValue, $oConfig->getSystemConfigParameter($sName));
         } else {
             $this->assertEquals($sValue, $oConfig->getSystemConfigParameter($sName));
         }
@@ -2260,14 +2261,14 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxUtilsServer|PHPUnit\Framework\MockObject\MockObject $oUtilsServer */
         $oUtilsServer = $this->getMock('oxUtilsServer');
-        $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(true));
+        $oUtilsServer->method('isCurrentUrl')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
         $this->assertTrue($this->getConfig()->isCurrentUrl($sURLToCheck));
 
         /** @var oxUtilsServer|PHPUnit\Framework\MockObject\MockObject $oUtilsServer */
         $oUtilsServer = $this->getMock('oxUtilsServer');
-        $oUtilsServer->expects($this->any())->method('isCurrentUrl')->will($this->returnValue(false));
+        $oUtilsServer->method('isCurrentUrl')->willReturn(false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
         $this->assertFalse($this->getConfig()->isCurrentUrl($sURLToCheck));
@@ -2282,7 +2283,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $config->reinitialize();
 
-        $this->assertEquals('testReinitialize', $config->getConfigParam('testReinitialize'));
+        $this->assertSame('testReinitialize', $config->getConfigParam('testReinitialize'));
     }
 
     /**
@@ -2293,7 +2294,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config = oxNew('oxConfig');
         $_POST['cl'] = 'testControllerId';
 
-        $this->assertEquals('testControllerId', $config->getRequestControllerId());
+        $this->assertSame('testControllerId', $config->getRequestControllerId());
     }
 
     /**
@@ -2317,7 +2318,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config = oxNew('oxConfig');
         $_POST['cl'] = 'DDD';
 
-        $this->assertEquals('Vendor1\OtherTestModule\SomeOtherController', $config->getRequestControllerClass());
+        $this->assertSame('Vendor1\OtherTestModule\SomeOtherController', $config->getRequestControllerClass());
     }
 
     /**
@@ -2353,8 +2354,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(Config::class, ['isSsl', 'getSslShopUrl']);
-        $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->any())->method('getSslShopUrl')->will($this->returnValue($this->getConfigParam('sSSLShopURL')));
+        $oConfig->method('isSsl')->willReturn(true);
+        $oConfig->method('getSslShopUrl')->willReturn($this->getConfigParam('sSSLShopURL'));
         $oConfig->setConfigParam('sSSLShopURL', 'https://testUrl/');
 
         return $oConfig;
@@ -2363,9 +2364,14 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for testSaveSystemConfigurationParameter
      */
-    public function getSystemConfigurationParameters()
+    public function getSystemConfigurationParameters(): \Iterator
     {
-        return [['arr', 'aPraram', [1, 3]], ['aarr', 'aAParam', ['a' => 1]], ['bool', 'blParam', true], ['num', 'numNum', 2], ['int', 'iNum1', 0], ['int', 'iNum2', 4]];
+        yield ['arr', 'aPraram', [1, 3]];
+        yield ['aarr', 'aAParam', ['a' => 1]];
+        yield ['bool', 'blParam', true];
+        yield ['num', 'numNum', 2];
+        yield ['int', 'iNum1', 0];
+        yield ['int', 'iNum2', 4];
     }
 
     /**
@@ -2376,8 +2382,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $utilsUrl = $this->getMock('oxUtilsUrl');
         $utilsUrl->expects($this->atLeastOnce())
             ->method('processUrl')
-            ->with($this->identicalTo($this->shopUrl . $entryPoint, false))
-            ->will($this->returnValue($this->shopUrl . $entryPoint . '?'));
+            ->with($this->identicalTo($this->shopUrl . $entryPoint))
+            ->willReturn($this->shopUrl . $entryPoint . '?');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsUrl::class, $utilsUrl);
     }
 
@@ -2391,7 +2397,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $map = ['aAa' => 'OxidEsales\EshopCommunity\Application\SomeController', 'bbb' => 'OxidEsales\EshopCommunity\Application\SomeOtherController', 'CCC' => 'OxidEsales\EshopCommunity\Application\SomeDifferentController'];
 
         $mock = $this->getMock(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class, ['getControllerMap'], [], '', false);
-        $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
+        $mock->method('getControllerMap')->willReturn($map);
 
         return $mock;
     }

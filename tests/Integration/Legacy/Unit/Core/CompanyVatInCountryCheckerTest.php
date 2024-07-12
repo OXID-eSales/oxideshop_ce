@@ -51,9 +51,13 @@ class CompanyVatInCountryCheckerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($blExpectValidationResult, $oChecker->validate($oVatIn));
     }
 
-    public function validateDataProvider()
+    public function validateDataProvider(): \Iterator
     {
-        return [['LT', 'LT12345', true], ['LT', '', false], ['LT', '11', false], ['LT', 'ab', false], ['DE', 'LT12345', false]];
+        yield ['LT', 'LT12345', true];
+        yield ['LT', '', false];
+        yield ['LT', '11', false];
+        yield ['LT', 'ab', false];
+        yield ['DE', 'LT12345', false];
     }
 
     /**

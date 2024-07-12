@@ -84,9 +84,9 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672');
 
-        $sSelect = sprintf('select oxattrid from oxobject2attribute where oxobjectid = \'%s\'', $sArtID);
+        $sSelect = sprintf("select oxattrid from oxobject2attribute where oxobjectid = '%s'", $sArtID);
         $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = sprintf('select oxvalue from oxobject2attribute where oxattrid = \'%s\' and oxobjectid = \'%s\'', $sID, $sArtID);
+        $sSelect = sprintf("select oxvalue from oxobject2attribute where oxattrid = '%s' and oxobjectid = '%s'", $sID, $sArtID);
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
         $this->assertEquals($sExpectedValue, $sAttribValue);
@@ -99,7 +99,7 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
     {
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672', '1351');
-        $this->assertEquals(9, $oAttrList->count());
+        $this->assertSame(9, $oAttrList->count());
     }
 
 
@@ -118,8 +118,8 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
 
         $sAttribValue = $oAttrList['8a142c3f0b9527634.96987022']->oxattribute__oxvalue->rawValue;
         $sAttribParentValue = $oAttrList['d8842e3b7c5e108c1.63072778']->oxattribute__oxvalue->rawValue;
-        $this->assertEquals('25 cm', $sAttribValue);
-        $this->assertEquals('Granit', $sAttribParentValue);
+        $this->assertSame('25 cm', $sAttribValue);
+        $this->assertSame('Granit', $sAttribParentValue);
     }
 
     /**
@@ -129,7 +129,7 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
     {
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672');
-        $this->assertEquals(0, count($oAttrList));
+        $this->assertCount(0, $oAttrList);
     }
 
 
@@ -142,9 +142,9 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes('1672');
 
-        $sSelect = sprintf('select oxattrid from oxobject2attribute where oxobjectid = \'%s\'', $sArtID);
+        $sSelect = sprintf("select oxattrid from oxobject2attribute where oxobjectid = '%s'", $sArtID);
         $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = sprintf('select oxvalue_1 from oxobject2attribute where oxattrid = \'%s\' and oxobjectid = \'%s\'', $sID, $sArtID);
+        $sSelect = sprintf("select oxvalue_1 from oxobject2attribute where oxattrid = '%s' and oxobjectid = '%s'", $sID, $sArtID);
         $sExpectedValue = oxDb::getDB()->getOne($sSelect);
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
         $this->assertEquals($sExpectedValue, $sAttribValue);
@@ -167,7 +167,7 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
         $myDB->execute($sSql);
 
         $sArtId = 'testArt';
-        $sSql = sprintf('insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values (\'test3\', \'%s\', \'test3\', \'3\'), (\'test1\', \'%s\', \'test1\', \'1\'), (\'test2\', \'%s\', \'test2\', \'2\')', $sArtId, $sArtId, $sArtId);
+        $sSql = sprintf("insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '%s', 'test3', '3'), ('test1', '%s', 'test1', '1'), ('test2', '%s', 'test2', '2')", $sArtId, $sArtId, $sArtId);
         $myDB->execute($sSql);
 
         $oAttrList = oxNew('oxAttributelist');
@@ -175,8 +175,8 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
 
         $iCnt = 1;
         foreach ($oAttrList as $sId => $aAttr) {
-            $this->assertEquals('test' . $iCnt, $sId);
-            $this->assertEquals((string) $iCnt, $aAttr->oxattribute__oxvalue->value);
+            $this->assertSame('test' . $iCnt, $sId);
+            $this->assertSame((string) $iCnt, $aAttr->oxattribute__oxvalue->value);
             $iCnt++;
         }
     }
@@ -189,7 +189,7 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributes(null);
 
-        $this->assertEquals(0, count($oAttrList));
+        $this->assertCount(0, $oAttrList);
     }
 
     public function testGetCategoryAttributes()
@@ -209,7 +209,7 @@ class AttributelistTest extends \PHPUnit\Framework\TestCase
 
         $oAttribute = $oAttrList->offsetGet($sAttributeId);
 
-        $this->assertEquals(1, $oAttrList->count());
-        $this->assertEquals(6, count($oAttribute->getValues()));
+        $this->assertSame(1, $oAttrList->count());
+        $this->assertCount(6, $oAttribute->getValues());
     }
 }

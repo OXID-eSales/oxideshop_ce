@@ -60,7 +60,7 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
         $oReview->load('_testId');
 
         $this->assertTrue(isset($oReview->oxuser__oxfname));
-        $this->assertEquals('John', $oReview->oxuser__oxfname->value);
+        $this->assertSame('John', $oReview->oxuser__oxfname->value);
     }
 
     public function testLoadDe()
@@ -68,14 +68,14 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
         $oReview = oxNew('oxReview');
         $oReview->load('_testId');
 
-        $this->assertEquals('deValue', $oReview->oxreviews__oxtext->value);
+        $this->assertSame('deValue', $oReview->oxreviews__oxtext->value);
 
         $sCreate = date('d.m.Y H:i:s', $this->_iReviewTime);
         if (oxRegistry::getLang()->getBaseLanguage() == 1) {
             $sCreate = date('Y-m-d H:i:s', $this->_iReviewTime);
         }
 
-        $this->assertEquals($sCreate, $oReview->oxreviews__oxcreate->value);
+        $this->assertSame($sCreate, $oReview->oxreviews__oxcreate->value);
     }
 
     public function testUpdate()
@@ -93,8 +93,8 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
             $sCreate = date('Y-m-d H:i:s', $iCurrTime);
         }
 
-        $this->assertEquals('deValue2', $oReview->oxreviews__oxtext->value);
-        $this->assertTrue($sCreate >= $oReview->oxreviews__oxcreate->value);
+        $this->assertSame('deValue2', $oReview->oxreviews__oxtext->value);
+        $this->assertGreaterThanOrEqual($oReview->oxreviews__oxcreate->value, $sCreate);
     }
 
     public function testInsertAddsCreateDate()
@@ -115,13 +115,13 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
             $sCreate = date('Y-m-d H:i:s', $iCurrTime);
         }
 
-        $this->assertTrue($sCreate >= $oReview->oxreviews__oxcreate->value);
+        $this->assertGreaterThanOrEqual($oReview->oxreviews__oxcreate->value, $sCreate);
     }
 
     public function testLoadListNoIdsPassed()
     {
         $oRev = oxNew('oxReview');
-        $this->assertEquals(0, $oRev->loadList('x', null)->count());
+        $this->assertSame(0, $oRev->loadList('x', null)->count());
     }
 
     public function testLoadListModerationTest()
@@ -148,11 +148,11 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
         // moderation is OFF
         $this->getConfig()->setConfigParam('blGBModerate', 0);
         $oRev = oxNew('oxReview');
-        $this->assertEquals(2, $oRev->loadList('oxarticle', 'xxx')->count());
+        $this->assertSame(2, $oRev->loadList('oxarticle', 'xxx')->count());
 
         // moderation is ON
         $this->getConfig()->setConfigParam('blGBModerate', 1);
-        $this->assertEquals(1, $oRev->loadList('oxarticle', 'xxx')->count());
+        $this->assertSame(1, $oRev->loadList('oxarticle', 'xxx')->count());
     }
 
     public function testGetObjectIdAndType()
@@ -178,12 +178,12 @@ class ReviewTest extends \PHPUnit\Framework\TestCase
 
         $oRev = oxNew('oxReview');
         $oRev->load('id1');
-        $this->assertEquals('xx1', $oRev->getObjectId());
-        $this->assertEquals('oxarticle', $oRev->getObjectType());
+        $this->assertSame('xx1', $oRev->getObjectId());
+        $this->assertSame('oxarticle', $oRev->getObjectType());
 
         $oRev = oxNew('oxReview');
         $oRev->load('id2');
-        $this->assertEquals('xx2', $oRev->getObjectId());
-        $this->assertEquals('oxrecommlist', $oRev->getObjectType());
+        $this->assertSame('xx2', $oRev->getObjectId());
+        $this->assertSame('oxrecommlist', $oRev->getObjectType());
     }
 }

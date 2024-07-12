@@ -23,7 +23,7 @@ class ActionsOrderAjaxTest extends \PHPUnit\Framework\TestCase
 
         $sViewTable = $this->getSelectListViewTable();
 
-        $this->assertEquals(sprintf('from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'', $sViewTable, $sViewTable, $sOxid), trim((string) $oView->getQuery()));
+        $this->assertSame(sprintf("from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = '%s'", $sViewTable, $sViewTable, $sOxid), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -32,7 +32,7 @@ class ActionsOrderAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetSorting()
     {
         $oView = oxNew('actions_order_ajax');
-        $this->assertEquals("order by oxobject2selectlist.oxsort", trim((string) $oView->getSorting()));
+        $this->assertSame("order by oxobject2selectlist.oxsort", trim((string) $oView->getSorting()));
     }
 
     /**
@@ -43,10 +43,10 @@ class ActionsOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("iDebug", 1);
 
         $sViewTable = $this->getSelectListViewTable();
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'  ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf("select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = '%s'  ", $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, ["output"]);
-        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
+        $oView->method('output')->with(json_encode($aData));
         $oView->setsorting();
     }
 
@@ -60,10 +60,10 @@ class ActionsOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("iDebug", 1);
 
         $sViewTable = $this->getSelectListViewTable();
-        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf('select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = \'%s\'  ', $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
+        $aData = ['startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => sprintf("select count( * )  from %s left join oxobject2selectlist on oxobject2selectlist.oxselnid = %s.oxid where oxobjectid = '%s'  ", $sViewTable, $sViewTable, $sOxid), 'records' => [], 'totalRecords' => 0];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsOrderAjax::class, ["output"]);
-        $oView->expects($this->any())->method('output')->with($this->equalTo(json_encode($aData)));
+        $oView->method('output')->with(json_encode($aData));
         $oView->setsorting();
     }
 

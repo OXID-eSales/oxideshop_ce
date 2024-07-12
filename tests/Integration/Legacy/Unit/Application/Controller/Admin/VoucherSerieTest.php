@@ -20,6 +20,6 @@ class VoucherSerieTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('VoucherSerie');
-        $this->assertEquals('voucherserie', $oView->render());
+        $this->assertSame('voucherserie', $oView->render());
     }
 }

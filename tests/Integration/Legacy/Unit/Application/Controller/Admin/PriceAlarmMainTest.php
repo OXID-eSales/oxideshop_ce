@@ -50,15 +50,15 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "testId");
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendPricealarmToCustomer"]);
-        $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
+        $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->willReturn(true);
         oxTestModules::addModuleObject("oxEmail", $oEmail);
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');
-        $this->assertEquals('pricealarm_main', $oView->render());
+        $this->assertSame('pricealarm_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof pricealarm);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\PriceAlarm::class, $aViewData['edit']);
     }
 
     /**
@@ -95,7 +95,7 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
         $oView->render();
 
         $aViewData = $oView->getViewData();
-        $this->assertEquals("2", $aViewData['iAllCnt']);
+        $this->assertSame("2", $aViewData['iAllCnt']);
     }
 
     /**
@@ -116,7 +116,7 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
 
         $aViewData = $oView->getViewData();
 
-        $this->assertTrue(strpos((string) $aViewData["editor"], "test Mail Body") > 0);
+        $this->assertGreaterThan(0, strpos((string) $aViewData["editor"], "test Mail Body"));
     }
 
     /**
@@ -128,10 +128,10 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');
-        $this->assertEquals('pricealarm_main', $oView->render());
+        $this->assertSame('pricealarm_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -144,7 +144,7 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = oxNew('PriceAlarm_Main');
         $this->assertNull($oView->send());
-        $this->assertEquals(1, $oView->getViewDataElement("mail_err"));
+        $this->assertSame(1, $oView->getViewDataElement("mail_err"));
         $this->assertNull($oView->getViewDataElement("mail_succ"));
     }
 
@@ -159,7 +159,7 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxemail', 'send', '{ return true; }');
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendPricealarmToCustomer"]);
-        $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->will($this->returnValue(true));
+        $oEmail->expects($this->once())->method('sendPricealarmToCustomer')->willReturn(true);
 
         oxTestModules::addModuleObject("oxEmail", $oEmail);
 
@@ -173,7 +173,7 @@ class PriceAlarmMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = oxNew('PriceAlarm_Main');
         $this->assertNull($oView->send());
-        $this->assertEquals(1, $oView->getViewDataElement("mail_succ"));
+        $this->assertSame(1, $oView->getViewDataElement("mail_succ"));
         $this->assertNull($oView->getViewDataElement("mail_err"));
     }
 }

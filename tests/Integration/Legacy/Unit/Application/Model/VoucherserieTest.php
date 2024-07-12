@@ -129,11 +129,11 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
 
         foreach ($this->_aIds as $sOxid) {
             // removing groups assignment
-            $sQ = sprintf('delete from oxobject2group where oxobject2group.oxobjectid = \'%s\'', $sOxid);
+            $sQ = sprintf("delete from oxobject2group where oxobject2group.oxobjectid = '%s'", $sOxid);
             $myDB->Execute($sQ);
 
             // removing vouchers
-            $sQ = sprintf('delete from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
+            $sQ = sprintf("delete from oxvouchers where oxvouchers.oxvoucherserieid = '%s'", $sOxid);
             $myDB->Execute($sQ);
         }
     }
@@ -157,7 +157,7 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             $oSerie->delete();
 
             $sQ = 'select count(*) from oxobject2group where oxobject2group.oxobjectid = "' . $sOxid . '"';
-            $this->assertEquals(0, (int) $myDB->GetOne($sQ), 'oxobject2group (voucherserie) was not removed');
+            $this->assertSame(0, (int) $myDB->GetOne($sQ), 'oxobject2group (voucherserie) was not removed');
         }
     }
 
@@ -179,8 +179,8 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             // default deletion
             $oSerie->delete();
 
-            $sQ = sprintf('select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
-            $this->assertEquals(0, (int) $myDB->GetOne($sQ), 'oxvouchers (voucherserie) was not removed');
+            $sQ = sprintf("select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = '%s'", $sOxid);
+            $this->assertSame(0, (int) $myDB->GetOne($sQ), 'oxvouchers (voucherserie) was not removed');
         }
     }
 
@@ -202,8 +202,8 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             // default deletion
             $oSerie->delete();
 
-            $sQ = sprintf('select count(*) from oxvoucherseries where oxvoucherseries.oxid = \'%s\'', $sOxid);
-            $this->assertEquals(0, (int) $myDB->GetOne($sQ), 'voucherserie was not removed');
+            $sQ = sprintf("select count(*) from oxvoucherseries where oxvoucherseries.oxid = '%s'", $sOxid);
+            $this->assertSame(0, (int) $myDB->GetOne($sQ), 'voucherserie was not removed');
         }
     }
 
@@ -226,7 +226,7 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             $aGroups = $oSerie->setUserGroups();
 
             // by default we assigned 3 user groups - lets check the size of list
-            $this->assertEquals(3, $aGroups->count(), 'Incorect number of assigned user groups to oxvoucherserie');
+            $this->assertSame(3, $aGroups->count(), 'Incorect number of assigned user groups to oxvoucherserie');
         }
     }
 
@@ -282,8 +282,8 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             // unsetting groups
             $oSerie->unsetUserGroups();
 
-            $sQ = sprintf('select count(*) from oxobject2group where oxobject2group.oxobjectid = \'%s\'', $sOxid);
-            $this->assertEquals(0, $myDB->GetOne($sQ), 'oxobject2group (voucherserie) was not removed');
+            $sQ = sprintf("select count(*) from oxobject2group where oxobject2group.oxobjectid = '%s'", $sOxid);
+            $this->assertSame(0, $myDB->GetOne($sQ), 'oxobject2group (voucherserie) was not removed');
         }
     }
 
@@ -301,7 +301,7 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             }
 
             $oVoucherList = $oSerie->getVoucherList();
-            $this->assertEquals(10, $oVoucherList->count(), 'Incorect numer of loaded vouchers');
+            $this->assertSame(10, $oVoucherList->count(), 'Incorect numer of loaded vouchers');
         }
     }
 
@@ -321,8 +321,8 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
 
             $oSerie->deleteVoucherList();
 
-            $sQ = sprintf('select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = \'%s\'', $sOxid);
-            $this->assertEquals(0, $myDB->GetOne($sQ), 'Not all vouchers was removed by deleteVoucherList() function ');
+            $sQ = sprintf("select count(*) from oxvouchers where oxvouchers.oxvoucherserieid = '%s'", $sOxid);
+            $this->assertSame(0, $myDB->GetOne($sQ), 'Not all vouchers was removed by deleteVoucherList() function ');
         }
     }
 
@@ -342,9 +342,9 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
             $aStatus = $oSerie->countVouchers();
 
             // checking
-            $this->assertEquals(10, $aStatus['total'], 'Incorect number of total vouchers');
-            $this->assertEquals(0, $aStatus['used'], 'Incorect number of used vouchers');
-            $this->assertEquals(10, $aStatus['available'], 'Incorect number of available vouchers');
+            $this->assertSame(10, $aStatus['total'], 'Incorect number of total vouchers');
+            $this->assertSame(0, $aStatus['used'], 'Incorect number of used vouchers');
+            $this->assertSame(10, $aStatus['available'], 'Incorect number of available vouchers');
         }
     }
 
@@ -371,9 +371,9 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
 
             $aStatus = $oSerie->countVouchers();
             // checking
-            $this->assertEquals(11, $aStatus['total'], 'Incorect number of total vouchers');
-            $this->assertEquals(1, $aStatus['used'], 'Incorect number of used vouchers');
-            $this->assertEquals(10, $aStatus['available'], 'Incorect number of available vouchers');
+            $this->assertSame(11, $aStatus['total'], 'Incorect number of total vouchers');
+            $this->assertSame(1, $aStatus['used'], 'Incorect number of used vouchers');
+            $this->assertSame(10, $aStatus['available'], 'Incorect number of available vouchers');
         }
     }
 
@@ -400,9 +400,9 @@ class VoucherserieTest extends \PHPUnit\Framework\TestCase
 
             $aStatus = $oSerie->countVouchers();
             // checking
-            $this->assertEquals(11, $aStatus['total'], 'Incorect number of total vouchers');
-            $this->assertEquals(1, $aStatus['used'], 'Incorect number of used vouchers');
-            $this->assertEquals(10, $aStatus['available'], 'Incorect number of available vouchers');
+            $this->assertSame(11, $aStatus['total'], 'Incorect number of total vouchers');
+            $this->assertSame(1, $aStatus['used'], 'Incorect number of used vouchers');
+            $this->assertSame(10, $aStatus['available'], 'Incorect number of available vouchers');
         }
     }
 }

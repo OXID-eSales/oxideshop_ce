@@ -18,6 +18,6 @@ class TplTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("tpl", 'fulder/subfolder/test');
 
         $oView = oxNew('Tpl');
-        $this->assertEquals('custom/test', $oView->render());
+        $this->assertSame('custom/test', $oView->render());
     }
 }

@@ -28,6 +28,6 @@ class WrappingListTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($aViewData["malladmin"]);
         $this->assertNull($aViewData["updatelist"]);
 
-        $this->assertEquals('wrapping_list', $sTplName);
+        $this->assertSame('wrapping_list', $sTplName);
     }
 }

@@ -23,7 +23,7 @@ class RecommAddTest extends \PHPUnit\Framework\TestCase
         $oProduct->oxarticles__oxtemplate->value = 'details_persparam';
 
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommendationAddController::class, ["getProduct"]);
-        $oRecomm->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oRecomm->method('getProduct')->willReturn($oProduct);
         $oRecomm->init();
 
         $oBlankRecomm = oxNew('RecommAdd');
@@ -36,11 +36,11 @@ class RecommAddTest extends \PHPUnit\Framework\TestCase
     public function testGetRecommLists()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getUserRecommLists']);
-        $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
+        $oUser->expects($this->once())->method('getUserRecommLists')->willReturn('testRecommList');
 
         $oRecomm = oxNew('RecommAdd');
         $oRecomm->setUser($oUser);
-        $this->assertEquals('testRecommList', $oRecomm->getRecommLists('test'));
+        $this->assertSame('testRecommList', $oRecomm->getRecommLists('test'));
     }
 
     /**
@@ -53,8 +53,8 @@ class RecommAddTest extends \PHPUnit\Framework\TestCase
         $oProduct->oxarticles__oxvarselect = new oxField('select');
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommendationAddController::class, ['getProduct']);
-        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView->method('getProduct')->willReturn($oProduct);
 
-        $this->assertEquals('title select', $oView->getTitle());
+        $this->assertSame('title select', $oView->getTitle());
     }
 }

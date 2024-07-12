@@ -19,9 +19,13 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
     /**
      * Template view parameters data provider
      */
-    public function _dpTemplateViewParams()
+    public function _dpTemplateViewParams(): \Iterator
     {
-        return [["product", "listitem_grid", "widget/product/listitem_grid"], ["product", "listitem_infogrid", "widget/product/listitem_infogrid"], ["product", "listitem_line", "widget/product/listitem_line"], ["product", "boxproduct", "widget/product/boxproduct"], ["product", "bargainitem", "widget/product/bargainitem"]];
+        yield ["product", "listitem_grid", "widget/product/listitem_grid"];
+        yield ["product", "listitem_infogrid", "widget/product/listitem_infogrid"];
+        yield ["product", "listitem_line", "widget/product/listitem_line"];
+        yield ["product", "boxproduct", "widget/product/boxproduct"];
+        yield ["product", "bargainitem", "widget/product/bargainitem"];
     }
 
     /**
@@ -31,7 +35,7 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
     {
         $oArticleBox = oxNew('oxwArticleBox');
 
-        $this->assertEquals("widget/product/boxproduct", $oArticleBox->render(), "Default template should be loaded");
+        $this->assertSame("widget/product/boxproduct", $oArticleBox->render(), "Default template should be loaded");
     }
 
     /**
@@ -61,7 +65,7 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $aViewParams = ["oxwtemplate" => $sForcedTemplate];
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals($sForcedTemplate, $oArticleBox->render(), "Correct template should be loaded");
+        $this->assertSame($sForcedTemplate, $oArticleBox->render(), "Correct template should be loaded");
     }
 
     /**
@@ -76,8 +80,8 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $aViewParams = ["anid"      => $sId, "iLinkType" => $iLinkType];
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals($sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded");
-        $this->assertEquals($iLinkType, $oArticleBox->getProduct()->getLinkType(), "Correct link type should be set");
+        $this->assertSame($sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded");
+        $this->assertSame($iLinkType, $oArticleBox->getProduct()->getLinkType(), "Correct link type should be set");
     }
 
     /**
@@ -97,7 +101,7 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $oArticleBox->setParent("search");
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getTopActiveView']);
         $oSearch = oxNew('Search');
-        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
+        $oConfig->method('getTopActiveView')->willReturn($oSearch);
 
         Registry::set(Config::class, $oConfig);
         $sLinkUrl .= "?listtype=search&amp;searchparam=1126";
@@ -106,7 +110,7 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("searchparam", "1126");
         // removing cached object
         $oArticleBox->setProduct(null);
-        $this->assertEquals($sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded");
+        $this->assertSame($sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded");
     }
 
     /**
@@ -131,9 +135,17 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function _dpViewParameters()
+    public function _dpViewParameters(): \Iterator
     {
-        return [["recommid", "Z8oRXLEnInxn", "getRecommId", "Recommendation list id"], ["iIteration", "7", "getIteration", "Iteration number"], ["iIndex", "3", "getIndex", "Test id"], ["owishid", "7g7eZ6hxUsad", "getWishId", "Wishlist id"], ["showMainLink", false, "getShowMainLink", "Condition if main link is showed"], ["blDisableToCart", true, "getDisableToCart", "Condition if to cart button is showed"], ["toBasketFunction", "tobasket", "getToBasketFunction", "toBasket function"], ["removeFunction", "remove", "getRemoveFunction", "Remove function"], ["altproduct", false, "getAltProduct", "Condition if alternate product exists"]];
+        yield ["recommid", "Z8oRXLEnInxn", "getRecommId", "Recommendation list id"];
+        yield ["iIteration", "7", "getIteration", "Iteration number"];
+        yield ["iIndex", "3", "getIndex", "Test id"];
+        yield ["owishid", "7g7eZ6hxUsad", "getWishId", "Wishlist id"];
+        yield ["showMainLink", false, "getShowMainLink", "Condition if main link is showed"];
+        yield ["blDisableToCart", true, "getDisableToCart", "Condition if to cart button is showed"];
+        yield ["toBasketFunction", "tobasket", "getToBasketFunction", "toBasket function"];
+        yield ["removeFunction", "remove", "getRemoveFunction", "Remove function"];
+        yield ["altproduct", false, "getAltProduct", "Condition if alternate product exists"];
     }
 
     /**
@@ -164,14 +176,14 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $oList->setActiveCategory($oCategory);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getTopActiveView']);
-        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
+        $oConfig->method('getTopActiveView')->willReturn($oList);
 
         $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
-        $this->assertEquals('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
-        $this->assertEquals('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $oArticleBox->getActiveCategory());
+        $this->assertSame('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
+        $this->assertSame('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
     }
 
     /**
@@ -186,12 +198,12 @@ class ArticleBoxTest extends \PHPUnit\Framework\TestCase
         $oList->setActiveCategory($oCategory);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getTopActiveView']);
-        $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
+        $oConfig->method('getTopActiveView')->willReturn($oList);
 
         $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $oArticleBox->getActiveCategory());
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getTitle());
     }

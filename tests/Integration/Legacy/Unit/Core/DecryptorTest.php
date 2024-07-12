@@ -12,18 +12,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class DecryptorTest extends \PHPUnit\Framework\TestCase
 {
-    public function providerDecodingOfStringWithCorrectKey()
+    public function providerDecodingOfStringWithCorrectKey(): \Iterator
     {
-        return [
-            // string encrypted with empty key
-            ['ox_MCcrOiwrDCstNjE4Njs!', '', 'testString'],
-            // string encrypted with numeric key
-            ['ox_MEkrVCxFDEUtWDFWNlU!', 1, 'testString'],
-            // string encrypted with not empty key
-            ['ox_MAwRFgc/Ng0tHQsUHS8!', 'testKey', 'testString'],
-            // empty string encrypted with not empty key
-            ['ox_MAwMFw!!', 'testKey', ''],
-        ];
+        // string encrypted with empty key
+        yield ['ox_MCcrOiwrDCstNjE4Njs!', '', 'testString'];
+        // string encrypted with numeric key
+        yield ['ox_MEkrVCxFDEUtWDFWNlU!', 1, 'testString'];
+        // string encrypted with not empty key
+        yield ['ox_MAwRFgc/Ng0tHQsUHS8!', 'testKey', 'testString'];
+        // empty string encrypted with not empty key
+        yield ['ox_MAwMFw!!', 'testKey', ''];
     }
 
     /**

@@ -42,11 +42,11 @@ class CounterTest extends \PHPUnit\Framework\TestCase
     {
         $oCounter = oxNew('oxCounter');
 
-        $this->assertEquals(1, $oCounter->getNext("test4"));
+        $this->assertSame(1, $oCounter->getNext("test4"));
         $oCounter->update("test3", 3);
-        $this->assertEquals(4, $oCounter->getNext("test3"));
+        $this->assertSame(4, $oCounter->getNext("test3"));
         $oCounter->update("test3", 2);
-        $this->assertEquals(5, $oCounter->getNext("test3"));
-        $this->assertEquals(2, $oCounter->getNext("test4"));
+        $this->assertSame(5, $oCounter->getNext("test3"));
+        $this->assertSame(2, $oCounter->getNext("test4"));
     }
 }

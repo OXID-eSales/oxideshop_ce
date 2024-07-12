@@ -41,11 +41,11 @@ class ListReviewTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ["getDomXml"]);
-        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
+        $oNavTree->expects($this->once())->method('getDomXml')->willReturn(new DOMDocument());
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListReview::class, ["getNavigation"]);
-        $oView->expects($this->atLeastOnce())->method('getNavigation')->will($this->returnValue($oNavTree));
-        $this->assertEquals("list_review", $oView->render());
+        $oView->expects($this->atLeastOnce())->method('getNavigation')->willReturn($oNavTree);
+        $this->assertSame("list_review", $oView->render());
     }
 
     /**

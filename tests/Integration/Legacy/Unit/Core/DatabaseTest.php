@@ -74,14 +74,14 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
 
         $actualResult = $this->callProtectedClassMethod($database, 'getConfigParam', ['iDebug']);
 
-        $this->assertEquals($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
+        $this->assertSame($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
 
         $debug = 8;
         $configFile->iDebug = $debug;
         $database->setConfigFile($configFile);
         $actualResult = $this->callProtectedClassMethod($database, 'getConfigParam', ['iDebug']);
 
-        $this->assertEquals($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
+        $this->assertSame($debug, $actualResult, 'Result of getConfigParam(iDebug) should match value in config.inc.php');
     }
 
     public function testGetTableDescription()
@@ -100,7 +100,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
                 $metaColumnOne = oxDb::getInstance()->getTableDescription($tableName);
                 $metaColumnOneCached = oxDb::getInstance()->getTableDescription($tableName);
 
-                $this->assertEquals($metaColumns, $metaColumnOne, sprintf('not cached return is bad [shouldn\'t be] of %s.', $tableName));
+                $this->assertEquals($metaColumns, $metaColumnOne, sprintf("not cached return is bad [shouldn't be] of %s.", $tableName));
                 $this->assertEquals($metaColumns, $metaColumnOneCached, sprintf('cached [simple] return is bad of %s.', $tableName));
 
                 $resultSet->fetchRow();
@@ -131,29 +131,28 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Database::class, $database);
     }
 
-    public function provideQueriesToBeChecked()
+    public function provideQueriesToBeChecked(): \Iterator
     {
-        return [
-            [
-                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '%&nbsp;%';",
-            ],
-            [
-                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '\';';",
-            ],
-            [
-                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE ';\'';",
-            ],
-            [
-                'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "%&nbsp;%";',
-            ],
-            [
-                'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "\";";',
-            ],
-            [
-                'SELECT * FROM `oxid`.`oxshops;`;',
-            ],
-            [
-                "SELECT 
+        yield [
+            "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '%&nbsp;%';",
+        ];
+        yield [
+            "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '\';';",
+        ];
+        yield [
+            "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE ';\'';",
+        ];
+        yield [
+            'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "%&nbsp;%";',
+        ];
+        yield [
+            'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "\";";',
+        ];
+        yield [
+            'SELECT * FROM `oxid`.`oxshops;`;',
+        ];
+        yield [
+            "SELECT 
                 oxv_oxarticles_1_de.oxid, oxv_oxarticles_1_de.oxtimestamp
             FROM
                 oxv_oxarticles_1_de
@@ -183,9 +182,9 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
                     OR oxv_oxarticles_1_de.oxsearchkeys LIKE '%lederg&uuml;rtel%'
                     OR oxv_oxarticles_1_de.oxartnum LIKE '%ledergürtel%'
                     OR oxv_oxarticles_1_de.oxartnum LIKE '%lederg&uuml;rtel%'))"
-            ],
-            [
-                "SELECT 
+        ];
+        yield [
+            "SELECT 
                     `oxv_oxarticles_de`.`oxid`, oxv_oxarticles_de.oxtimestamp
                 FROM
                     oxv_oxarticles_de
@@ -220,7 +219,6 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
                         OR oxv_oxarticles_de.oxsearchkeys LIKE '%&#x84;%'
                         OR oxv_oxarticles_de.oxartnum LIKE '%&#x84;%'))
                 LIMIT 10 OFFSET 0"
-            ]
         ];
     }
 
@@ -254,7 +252,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $logger = new TestLogger();
         Registry::set('logger', $logger);
 
-        $this->assertEquals(
+        $this->assertSame(
             "SELECT 1 as 'id';",
             $this->callProtectedClassMethod(
                 $database,

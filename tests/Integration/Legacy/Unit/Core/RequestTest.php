@@ -24,7 +24,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase
     {
         $request = oxNew(Request::class);
 
-        $this->assertSame(null, $request->getRequestEscapedParameter('notExistingPostKey'));
+        $this->assertNull($request->getRequestEscapedParameter('notExistingPostKey'));
     }
 
     public function testGetRequestEscapedParameterWhenParameterNotFoundAndDefaultValueIsProvided()
@@ -66,7 +66,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&param2=value2';
 
         $request = oxNew(Request::class);
-        $this->assertEquals('index.php?param1=value1&amp;param2=value2', $request->getRequestUrl());
+        $this->assertSame('index.php?param1=value1&amp;param2=value2', $request->getRequestUrl());
     }
 
     /**
@@ -78,7 +78,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_URI'] = $sUri = '/shop/';
 
         $request = oxNew(Request::class);
-        $this->assertEquals('', $request->getRequestUrl());
+        $this->assertSame('', $request->getRequestUrl());
     }
 
     /**
@@ -90,7 +90,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $_SERVER['SCRIPT_URI'] = '/shop/?cl=details';
 
         $request = oxNew(Request::class);
-        $this->assertEquals('index.php?cl=details', $request->getRequestUrl());
+        $this->assertSame('index.php?cl=details', $request->getRequestUrl());
     }
 
     /**
@@ -101,13 +101,13 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $request = oxNew(Request::class);
         $_SERVER["REQUEST_METHOD"] = 'GET';
         $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sid=zzz&sysid=vvv&param2=ttt';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
+        $this->assertSame('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
 
         $_SERVER['REQUEST_URI'] = 'test.php?sid=zzz&param1=value1&sysid=vvv&param2=ttt';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
+        $this->assertSame('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
 
         $_SERVER['REQUEST_URI'] = 'test.php?param1=value1&sysid=vvv&param2=ttt&sid=zzz';
-        $this->assertEquals('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
+        $this->assertSame('index.php?param1=value1&amp;sysid=vvv&amp;param2=ttt', $request->getRequestUrl());
     }
 
     /**
@@ -126,10 +126,10 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($oVar, $request->checkParamSpecialChars($oVar));
 
         // array items comes fixed
-        $this->assertEquals(["&amp;&#092;o&lt;x&gt;i&quot;&#039;d"], $request->checkParamSpecialChars($aVar));
+        $this->assertSame(["&amp;&#092;o&lt;x&gt;i&quot;&#039;d"], $request->checkParamSpecialChars($aVar));
 
         // string comes fixed
-        $this->assertEquals('&amp;&#092;o&lt;x&gt;i&quot;&#039;d', $request->checkParamSpecialChars($sVar));
+        $this->assertSame('&amp;&#092;o&lt;x&gt;i&quot;&#039;d', $request->checkParamSpecialChars($sVar));
     }
 
     /**
@@ -144,9 +144,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $result = oxNew(Request::class)->checkParamSpecialChars($values, $aRaw);
 
         // object must came back the same
-        $this->assertEquals($values['first'], $result['first']);
-        $this->assertEquals('second char &amp;', $result['second']);
-        $this->assertEquals($values['third'], $result['third']);
+        $this->assertSame($values['first'], $result['first']);
+        $this->assertSame('second char &amp;', $result['second']);
+        $this->assertSame($values['third'], $result['third']);
     }
 
     /**
@@ -165,9 +165,12 @@ class RequestTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerCheckParamSpecialChars_newLineExist_newLineChanged()
+    public function providerCheckParamSpecialChars_newLineExist_newLineChanged(): \Iterator
     {
-        return [["\r", '&#13;'], ["\n", '&#10;'], ["\r\n", '&#13;&#10;'], ["\n\r", '&#10;&#13;']];
+        yield ["\r", '&#13;'];
+        yield ["\n", '&#10;'];
+        yield ["\r\n", '&#13;&#10;'];
+        yield ["\n\r", '&#10;&#13;'];
     }
 
     /**
@@ -188,6 +191,6 @@ class RequestTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(["text" . $sEscapedNewLineCharacter], $request->checkParamSpecialChars($aVar));
 
         // string comes fixed
-        $this->assertEquals("text" . $sEscapedNewLineCharacter, $request->checkParamSpecialChars($sVar));
+        $this->assertSame("text" . $sEscapedNewLineCharacter, $request->checkParamSpecialChars($sVar));
     }
 }

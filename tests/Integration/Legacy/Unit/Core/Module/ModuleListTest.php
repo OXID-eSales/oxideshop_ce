@@ -17,7 +17,7 @@ class ModuleListTest extends \PHPUnit\Framework\TestCase
     /**
      * test setup
      */
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
     }
@@ -55,7 +55,7 @@ class ModuleListTest extends \PHPUnit\Framework\TestCase
         $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $modules = [];
         $modulesArray = [];
-        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+        $this->assertSame($modulesArray, $moduleList->parseModuleChains($modules));
     }
 
     /**
@@ -66,7 +66,7 @@ class ModuleListTest extends \PHPUnit\Framework\TestCase
         $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $modules = ['oxtest' => 'test/mytest'];
         $modulesArray = ['oxtest' => ['test/mytest']];
-        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+        $this->assertSame($modulesArray, $moduleList->parseModuleChains($modules));
     }
 
     /**
@@ -77,6 +77,6 @@ class ModuleListTest extends \PHPUnit\Framework\TestCase
         $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $modules = ['oxtest' => 'test/mytest&test1/mytest1'];
         $modulesArray = ['oxtest' => ['test/mytest', 'test1/mytest1']];
-        $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
+        $this->assertSame($modulesArray, $moduleList->parseModuleChains($modules));
     }
 }

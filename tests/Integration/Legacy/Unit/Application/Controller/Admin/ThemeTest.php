@@ -20,6 +20,6 @@ class ThemeTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Theme');
-        $this->assertEquals('theme', $oView->render());
+        $this->assertSame('theme', $oView->render());
     }
 }

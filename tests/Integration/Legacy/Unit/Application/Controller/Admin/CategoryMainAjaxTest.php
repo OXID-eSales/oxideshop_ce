@@ -97,7 +97,7 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('category_main_ajax');
-        $this->assertEquals("from " . $this->getObject2CategoryViewTable() . " join " . $this->getArticleViewTable() . "  on  " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid  where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '' and " . $this->getArticleViewTable() . ".oxid is not null", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getObject2CategoryViewTable() . " join " . $this->getArticleViewTable() . "  on  " . $this->getArticleViewTable() . ".oxid=" . $this->getObject2CategoryViewTable() . ".oxobjectid  where " . $this->getObject2CategoryViewTable() . ".oxcatnid = '' and " . $this->getArticleViewTable() . ".oxid is not null", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -116,8 +116,8 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sQuery = "from " . $sO2CView . " join " . $sArticleTable . "  on  " . $sArticleTable . ".oxid=" . $sO2CView . ".oxobjectid";
         $sQuery .= "  where " . $sO2CView . ".oxcatnid = '_testOxid' and " . $sArticleTable . ".oxid is not null";
         $sQuery .= "  and " . $sArticleTable . sprintf('.oxid not in ( select %s.oxid from %s left join %s ', $sArticleTable, $sO2CView, $sArticleTable);
-        $sQuery .= sprintf('on  %s.oxid=%s.oxobjectid  where %s.oxcatnid =  \'_testSynchoxid\' and ', $sArticleTable, $sO2CView, $sO2CView) . $sArticleTable . ".oxid is not null )";
-        $this->assertEquals($sQuery, trim((string) $oView->getQuery()));
+        $sQuery .= sprintf("on  %s.oxid=%s.oxobjectid  where %s.oxcatnid =  '_testSynchoxid' and ", $sArticleTable, $sO2CView, $sO2CView) . $sArticleTable . ".oxid is not null )";
+        $this->assertSame($sQuery, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -129,7 +129,7 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
         $oView = oxNew('category_main_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where 1", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where 1", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -140,11 +140,11 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sOxid = '_testCategory';
         $this->setRequestParameter("oxid", $sOxid);
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testObjectRemove1']));
-        $this->assertEquals(3, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sOxid)));
+        $oView->method('getActionIds')->willReturn(['_testObjectRemove1']);
+        $this->assertSame(3, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sOxid)));
 
         $oView->removeArticle();
-        $this->assertEquals(1, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sOxid)));
+        $this->assertSame(1, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sOxid)));
     }
 
     /**
@@ -156,11 +156,11 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->setRequestParameter("all", true);
 
-        $this->assertEquals(3, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sOxid)));
+        $this->assertSame(3, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sOxid)));
 
         $oView = oxNew('category_main_ajax');
         $oView->removeArticle();
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sOxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sOxid)));
     }
 
     /**
@@ -171,11 +171,11 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testCategory';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class, ["getActionIds"]);
-        $oView->expects($this->any())->method('getActionIds')->will($this->returnValue(['_testArticleAdd1', '_testArticleAdd2']));
-        $this->assertEquals(3, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sSynchoxid)));
+        $oView->method('getActionIds')->willReturn(['_testArticleAdd1', '_testArticleAdd2']);
+        $this->assertSame(3, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sSynchoxid)));
 
         $oView->addArticle();
-        $this->assertEquals(5, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(5, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sSynchoxid)));
     }
 
     /**
@@ -191,10 +191,10 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('category_main_ajax');
         $this->assertGreaterThan(0, $iCount);
-        $this->assertEquals(0, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sSynchoxid)));
+        $this->assertSame(0, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sSynchoxid)));
 
         $oView->addArticle();
-        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf('select count(oxid) from oxobject2category where oxcatnid=\'%s\'', $sSynchoxid)));
+        $this->assertEquals($iCount, oxDb::getDb()->getOne(sprintf("select count(oxid) from oxobject2category where oxcatnid='%s'", $sSynchoxid)));
     }
 
     /**
@@ -206,11 +206,11 @@ class CategoryMainAjaxTest extends \PHPUnit\Framework\TestCase
         $sOxid = '_testObjectRemove1';
 
         // updating oxtime values
-        $sQ = sprintf('update oxobject2category set oxtime = 1 where oxobjectid = \'%s\' ', $sOxid);
+        $sQ = sprintf("update oxobject2category set oxtime = 1 where oxobjectid = '%s' ", $sOxid);
         $oDb->execute($sQ);
 
         $oView = oxNew('category_main_ajax');
         $oView->updateOxTime($oDb->quote($sOxid));
-        $this->assertEquals(1, $oDb->getOne(sprintf('select count(oxid) from oxobject2category where oxtime=0 and oxobjectid = \'%s\'', $sOxid)));
+        $this->assertSame(1, $oDb->getOne(sprintf("select count(oxid) from oxobject2category where oxtime=0 and oxobjectid = '%s'", $sOxid)));
     }
 }

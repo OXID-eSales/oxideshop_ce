@@ -108,10 +108,10 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     public function testConstruct()
     {
         $oLocator = $this->getProxyClass('oxlocator', ['test']);
-        $this->assertEquals('test', $oLocator->getNonPublicVar('_sType'));
+        $this->assertSame('test', $oLocator->getNonPublicVar('_sType'));
 
         $oLocator = $this->getProxyClass('oxlocator');
-        $this->assertEquals('list', $oLocator->getNonPublicVar('_sType'));
+        $this->assertSame('list', $oLocator->getNonPublicVar('_sType'));
     }
 
     /**
@@ -125,7 +125,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oLocatorTarget->expects($this->once())->method('setListType');
 
         $oLocator = $this->getMock(\OxidEsales\Eshop\Application\Component\Locator::class, ['setListLocatorData']);
-        $oLocator->expects($this->once())->method('setListLocatorData')->with($this->equalTo($oLocatorTarget), $this->equalTo($oCurrArticle));
+        $oLocator->expects($this->once())->method('setListLocatorData')->with($oLocatorTarget, $oCurrArticle);
         $oLocator->setLocatorData($oCurrArticle, $oLocatorTarget, 'xxx');
     }
 
@@ -141,7 +141,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $config = $this->getConfig();
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->method('getId')->willReturn('1651');
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $sActCat = '30e44ab83fdee7564.23264141';
@@ -157,12 +157,12 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oCategory->load($sActCat);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActiveCategory')->willReturn($oCategory);
+        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->willReturn(oxNew('oxcategorylist'));
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $oLocator = new testOxLocator();
 
@@ -174,9 +174,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedCount, $oCategory->iCntOfProd);
 
         $iPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? 2 : 0;
-        $this->assertEquals($config->getShopHomeUrl() . ('cl=alist&amp;cnid=' . $sActCat) . (($iPgNr !== 0) ? '&amp;pgNr=' . $iPgNr : ""), $oCategory->toListLink);
-        $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sNextId, $oCategory->nextProductLink);
-        $this->assertEquals($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sPrevId, $oCategory->prevProductLink);
+        $this->assertSame($config->getShopHomeUrl() . ('cl=alist&amp;cnid=' . $sActCat) . (($iPgNr !== 0) ? '&amp;pgNr=' . $iPgNr : ""), $oCategory->toListLink);
+        $this->assertSame($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sNextId, $oCategory->nextProductLink);
+        $this->assertSame($config->getShopHomeUrl() . "cl=details&amp;anid=" . $sPrevId, $oCategory->prevProductLink);
     }
 
     public function testSetListLocatorDataSeo()
@@ -185,7 +185,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->method('getId')->willReturn('1651');
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
@@ -193,12 +193,12 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oCategory->load($sActCat);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActiveCategory')->willReturn($oCategory);
+        $oLocatorTarget->expects($this->once())->method('getCategoryTree')->willReturn(oxNew('oxcategorylist'));
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $oLocator = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\testOxLocator::class, ['getConfig']);
 
@@ -222,9 +222,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedPosition, $oCategory->iProductPos);
         $this->assertEquals($expectedCount, $oCategory->iCntOfProd);
 
-        $this->assertEquals($sToListLink, $oCategory->toListLink);
-        $this->assertEquals($sNextProdLink, $oCategory->nextProductLink);
-        $this->assertEquals($sPrevProdLink, $oCategory->prevProductLink);
+        $this->assertSame($sToListLink, $oCategory->toListLink);
+        $this->assertSame($sNextProdLink, $oCategory->nextProductLink);
+        $this->assertSame($sPrevProdLink, $oCategory->prevProductLink);
     }
 
     public function testSetVendorLocatorData()
@@ -243,7 +243,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         }
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
+        $oCurrArticle->method('getId')->willReturn($sArt);
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? 'v_d2e44d9b31fcce448.08890330' : 'v_77442e37fdf34ccd3.94620745';
 
@@ -251,11 +251,11 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oVendor->load(str_replace('v_', '', $sActCat));
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActVendor')->willReturn($oVendor);
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_VENDOR);
 
         $oLocator = new testOxLocator();
         $oLocator->setVendorLocatorData($oLocatorTarget, $oCurrArticle);
@@ -266,9 +266,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedCount, $oVendor->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($myConfig->getShopHomeUrl() . sprintf('cl=vendorlist&amp;cnid=%s%s', $sActCat, $sPgNr), $oVendor->toListLink);
-        $this->assertEquals($sNextLink, $oVendor->nextProductLink);
-        $this->assertEquals($sPrevLink, $oVendor->prevProductLink);
+        $this->assertSame($myConfig->getShopHomeUrl() . sprintf('cl=vendorlist&amp;cnid=%s%s', $sActCat, $sPgNr), $oVendor->toListLink);
+        $this->assertSame($sNextLink, $oVendor->nextProductLink);
+        $this->assertSame($sPrevLink, $oVendor->prevProductLink);
     }
 
     public function testSetVendorLocatorDataSeo()
@@ -278,7 +278,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         $sArt = $this->getTestConfig()->getShopEdition() == 'EE' ? '1142' : '1964';
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
+        $oCurrArticle->method('getId')->willReturn($sArt);
         $oCurrArticle->setLinkType(1);
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? 'v_d2e44d9b31fcce448.08890330' : 'v_77442e37fdf34ccd3.94620745';
@@ -287,11 +287,11 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oVendor->load(str_replace('v_', '', $sActCat));
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActVendor')->willReturn($oVendor);
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_VENDOR);
 
         $oLocator = new testOxLocator();
         $oLocator->setVendorLocatorData($oLocatorTarget, $oCurrArticle);
@@ -313,7 +313,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
             $sNextProdLink = null;
         }
 
-        $this->assertEquals($sToListLink, $oVendor->toListLink);
+        $this->assertSame($sToListLink, $oVendor->toListLink);
         $this->assertEquals($sNextProdLink, $oVendor->nextProductLink);
         $this->assertEquals($sPrevProdLink, $oVendor->prevProductLink);
     }
@@ -335,7 +335,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         }
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
+        $oCurrArticle->method('getId')->willReturn($sArt);
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? md5('d2e44d9b31fcce448.08890330') : md5('77442e37fdf34ccd3.94620745');
 
@@ -343,12 +343,12 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->load($sActCat);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActManufacturer')->willReturn($oManufacturer);
+        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->willReturn(oxNew('oxmanufacturerlist'));
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_MANUFACTURER);
 
         $oLocator = new testOxLocator();
         $oLocator->setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
@@ -359,9 +359,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedCount, $oManufacturer->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($myConfig->getShopHomeUrl() . sprintf('cl=manufacturerlist&amp;mnid=%s%s', $sActCat, $sPgNr), $oManufacturer->toListLink);
-        $this->assertEquals($sNextLink, $oManufacturer->nextProductLink);
-        $this->assertEquals($sPrevLink, $oManufacturer->prevProductLink);
+        $this->assertSame($myConfig->getShopHomeUrl() . sprintf('cl=manufacturerlist&amp;mnid=%s%s', $sActCat, $sPgNr), $oManufacturer->toListLink);
+        $this->assertSame($sNextLink, $oManufacturer->nextProductLink);
+        $this->assertSame($sPrevLink, $oManufacturer->prevProductLink);
     }
 
     public function testSetManufacturerLocatorDataSeo()
@@ -371,7 +371,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         $sArt = $this->getTestConfig()->getShopEdition() == 'EE' ? '1142' : '1964';
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
+        $oCurrArticle->method('getId')->willReturn($sArt);
         $oCurrArticle->setLinkType(1);
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? md5('d2e44d9b31fcce448.08890330') : md5('77442e37fdf34ccd3.94620745');
@@ -380,12 +380,12 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->load($sActCat);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('setCatTreePath');
-        $oLocatorTarget->expects($this->any())->method('getCatTreePath');
-        $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
-        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('setCatTreePath');
+        $oLocatorTarget->method('getCatTreePath');
+        $oLocatorTarget->expects($this->once())->method('getActManufacturer')->willReturn($oManufacturer);
+        $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->willReturn(oxNew('oxmanufacturerlist'));
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_MANUFACTURER);
 
         $oLocator = new testOxLocator();
         $oLocator->setManufacturerLocatorData($oLocatorTarget, $oCurrArticle);
@@ -407,7 +407,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
             $sNextProdLink = null;
         }
 
-        $this->assertEquals($sToListLink, $oManufacturer->toListLink);
+        $this->assertSame($sToListLink, $oManufacturer->toListLink);
         $this->assertEquals($sNextProdLink, $oManufacturer->nextProductLink);
         $this->assertEquals($sPrevProdLink, $oManufacturer->prevProductLink);
     }
@@ -428,14 +428,14 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         }
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArtId));
+        $oCurrArticle->method('getId')->willReturn($sArtId);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('addTplParam');
+        $oLocatorTarget->method('setSearchTitle');
+        $oLocatorTarget->method('getSearchTitle');
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $this->setRequestParameter("searchparam", 'Bier');
         $oLocator = new testOxLocator();
@@ -450,9 +450,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
         $sPgNr = $this->getTestConfig()->getShopEdition() == 'EE' ? "&amp;pgNr=1" : '';
-        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=search%s&amp;searchparam=Bier&amp;listtype=search', $sPgNr), $oSearch->toListLink);
-        $this->assertEquals($sNextLink, $oSearch->nextProductLink);
-        $this->assertEquals($sPrevLink, $oSearch->prevProductLink);
+        $this->assertSame($config->getShopHomeUrl() . sprintf('cl=search%s&amp;searchparam=Bier&amp;listtype=search', $sPgNr), $oSearch->toListLink);
+        $this->assertSame($sNextLink, $oSearch->nextProductLink);
+        $this->assertSame($sPrevLink, $oSearch->prevProductLink);
     }
 
     public function testSetSearchLocatorDataFromVendor()
@@ -471,14 +471,14 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         }
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
+        $oCurrArticle->method('getId')->willReturn($sArt);
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('addTplParam');
+        $oLocatorTarget->method('setSearchTitle');
+        $oLocatorTarget->method('getSearchTitle');
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $sSearchVendor = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $this->setRequestParameter("searchparam", 'a');
@@ -492,13 +492,13 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         $expectedPosition = 2;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 12 : 5;
-        $this->assertEquals($expectedPosition, $oSearch->iProductPos);
+        $this->assertSame($expectedPosition, $oSearch->iProductPos);
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
         $iPgNr = 1;
-        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=search&amp;pgNr=%d&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $iPgNr, $sSearchVendor), $oSearch->toListLink);
-        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sNextId, $sSearchVendor), $oSearch->nextProductLink);
-        $this->assertEquals($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sPrevId, $sSearchVendor), $oSearch->prevProductLink);
+        $this->assertSame($config->getShopHomeUrl() . sprintf('cl=search&amp;pgNr=%d&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $iPgNr, $sSearchVendor), $oSearch->toListLink);
+        $this->assertSame($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sNextId, $sSearchVendor), $oSearch->nextProductLink);
+        $this->assertSame($config->getShopHomeUrl() . sprintf('cl=details&amp;anid=%s&amp;searchparam=a&amp;listtype=search&amp;searchvendor=%s', $sPrevId, $sSearchVendor), $oSearch->prevProductLink);
     }
 
     public function testSetSearchLocatorDataFromCat()
@@ -508,14 +508,14 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $myConfig = $this->getConfig();
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->method('getId')->willReturn('1651');
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting']);
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with('alist')->willReturn('oxid');
+        $oLocatorTarget->method('addTplParam');
+        $oLocatorTarget->method('setSearchTitle');
+        $oLocatorTarget->method('getSearchTitle');
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
 
         $sSearchCat = '8a142c3e4143562a5.46426637';
@@ -536,11 +536,11 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         $expectedPosition = 1;
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 2 : 1;
-        $this->assertEquals($expectedPosition, $oSearch->iProductPos);
+        $this->assertSame($expectedPosition, $oSearch->iProductPos);
         $this->assertEquals($expectedCount, $oSearch->iCntOfProd);
 
-        $this->assertEquals($myConfig->getShopHomeUrl() . ('cl=search&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=' . $sSearchCat), $oSearch->toListLink);
-        $this->assertEquals($sNextLink, $oSearch->nextProductLink);
+        $this->assertSame($myConfig->getShopHomeUrl() . ('cl=search&amp;searchparam=Bier&amp;listtype=search&amp;searchcnid=' . $sSearchCat), $oSearch->toListLink);
+        $this->assertSame($sNextLink, $oSearch->nextProductLink);
         $this->assertNull($oSearch->prevProductLink);
     }
 
@@ -565,27 +565,27 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oRecomm->load("testlist");
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->method('getId')->willReturn('1651');
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList']);
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecomm));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_RECOMM));
+        $oLocatorTarget->method('addTplParam');
+        $oLocatorTarget->method('setSearchTitle');
+        $oLocatorTarget->method('getSearchTitle');
+        $oLocatorTarget->method('getActiveRecommList')->willReturn($oRecomm);
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_RECOMM);
 
         $this->setRequestParameter("searchrecomm", 'test');
         $oLocator = new testOxLocator();
         $oLocator->_setRecommListLocatorData($oLocatorTarget, $oCurrArticle);
 
-        $this->assertEquals(2, $oRecomm->iProductPos);
-        $this->assertEquals(3, $oRecomm->iCntOfProd);
+        $this->assertSame(2, $oRecomm->iProductPos);
+        $this->assertSame(3, $oRecomm->iCntOfProd);
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1126&amp;recommid=testlist&amp;listtype=recommlist&amp;searchrecomm=test";
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2000&amp;recommid=testlist&amp;listtype=recommlist&amp;searchrecomm=test";
 
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=recommlist&amp;recommid=testlist&amp;pgNr=1&amp;searchrecomm=test", $oRecomm->toListLink);
-        $this->assertEquals($sPrevLink, $oRecomm->prevProductLink);
-        $this->assertEquals($sNextLink, $oRecomm->nextProductLink);
+        $this->assertSame($myConfig->getShopHomeUrl() . "cl=recommlist&amp;recommid=testlist&amp;pgNr=1&amp;searchrecomm=test", $oRecomm->toListLink);
+        $this->assertSame($sPrevLink, $oRecomm->prevProductLink);
+        $this->assertSame($sNextLink, $oRecomm->nextProductLink);
     }
 
     // set locator data for my account recommlists
@@ -609,33 +609,33 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oRecomm->load("testlist");
 
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->method('getId')->willReturn('1651');
 
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList']);
-        $oLocatorTarget->expects($this->any())->method('addTplParam');
-        $oLocatorTarget->expects($this->any())->method('setSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecomm));
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->method('addTplParam');
+        $oLocatorTarget->method('setSearchTitle');
+        $oLocatorTarget->method('getSearchTitle');
+        $oLocatorTarget->method('getActiveRecommList')->willReturn($oRecomm);
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $this->setRequestParameter("searchrecomm", null);
         $oLocator = new testOxLocator();
         $oLocator->_setRecommListLocatorData($oLocatorTarget, $oCurrArticle);
 
-        $this->assertEquals(2, $oRecomm->iProductPos);
-        $this->assertEquals(3, $oRecomm->iCntOfProd);
+        $this->assertSame(2, $oRecomm->iProductPos);
+        $this->assertSame(3, $oRecomm->iCntOfProd);
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1126&amp;recommid=testlist&amp;listtype=recommlist";
         $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=2000&amp;recommid=testlist&amp;listtype=recommlist";
 
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=recommlist&amp;recommid=testlist&amp;pgNr=1", $oRecomm->toListLink);
-        $this->assertEquals($sPrevLink, $oRecomm->prevProductLink);
-        $this->assertEquals($sNextLink, $oRecomm->nextProductLink);
+        $this->assertSame($myConfig->getShopHomeUrl() . "cl=recommlist&amp;recommid=testlist&amp;pgNr=1", $oRecomm->toListLink);
+        $this->assertSame($sPrevLink, $oRecomm->prevProductLink);
+        $this->assertSame($sNextLink, $oRecomm->nextProductLink);
     }
 
     public function testLoadIdsInList()
     {
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('1651'));
+        $oCurrArticle->expects($this->once())->method('getId')->willReturn('1651');
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
@@ -646,7 +646,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         // testing
         $oIdList = $oLocator->loadIdsInList($oCategory, $oCurrArticle, 'oxid');
-        $this->assertEquals('1651', $oIdList['1651']);
+        $this->assertSame('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
         $this->assertEquals($expectedCount, $oIdList->count());
@@ -655,7 +655,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     public function testLoadIdsInListNonExistingArticle()
     {
         $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
+        $oCurrArticle->expects($this->once())->method('getId')->willReturn('xxx');
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
@@ -666,7 +666,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         // testing
         $oIdList = $oLocator->loadIdsInList($oCategory, $oCurrArticle, 'oxid');
-        $this->assertEquals('1651', $oIdList['1651']);
+        $this->assertSame('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
         $this->assertEquals($expectedCount, $oIdList->count());
@@ -694,10 +694,10 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         // testing
         $oIdList = $oLocator->loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
-        $this->assertEquals('1651', $oIdList['1651']);
+        $this->assertSame('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
-        $this->assertEquals($expectedCount, count($oIdList));
+        $this->assertCount($expectedCount, $oIdList);
     }
 
     public function testLoadIdsInListForPriceCatNonExistingArticle()
@@ -722,24 +722,24 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
         // testing
         $oIdList = $oLocator->loadIdsInList($oCategory, oxNew('oxArticle'), 'oxid');
-        $this->assertEquals('1651', $oIdList['1651']);
+        $this->assertSame('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
-        $this->assertEquals($expectedCount, count($oIdList));
+        $this->assertCount($expectedCount, $oIdList);
     }
 
     public function testGetPageNumber()
     {
         $oLocator = oxNew('oxlocator');
-        $this->assertEquals('pgNr=5', $oLocator->getPageNumber(5));
-        $this->assertEquals('', $oLocator->getPageNumber(-3));
-        $this->assertEquals('', $oLocator->getPageNumber('nonumber'));
+        $this->assertSame('pgNr=5', $oLocator->getPageNumber(5));
+        $this->assertSame('', $oLocator->getPageNumber(-3));
+        $this->assertSame('', $oLocator->getPageNumber('nonumber'));
     }
 
     public function testGetProductPos()
     {
         $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType']);
-        $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $oLocatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $aTest = [];
         $sBackId = $aTest["1951"] = "1951";
@@ -751,7 +751,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oTest->assign($aTest);
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oArticle->expects($this->any())->method('getId')->will($this->returnValue('2000'));
+        $oArticle->method('getId')->willReturn('2000');
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
 
         $oLocator = new testOxLocator();
@@ -787,7 +787,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $oTest->assign($aTest);
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getId']);
-        $oArticle->expects($this->any())->method('getId')->will($this->returnValue('2000-1'));
+        $oArticle->method('getId')->willReturn('2000-1');
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
 
         $oLocator = new testOxLocator();
@@ -797,7 +797,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($oLocator->_oNextProduct);
         $this->assertEquals($oLocator->_oNextProduct->getId(), $sNextId);
 
-        $this->assertEquals(0, $oLocator->getProductPos($oArticle, new oxlist(), $oLocatorTarget));
+        $this->assertSame(0, $oLocator->getProductPos($oArticle, new oxlist(), $oLocatorTarget));
     }
 
     /**
@@ -809,7 +809,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
         $otherArticle = $this->insertArticle('1234567A');
 
         $locatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, ['getLinkType']);
-        $locatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
+        $locatorTarget->method('getLinkType')->willReturn(OXARTICLE_LINKTYPE_CATEGORY);
 
         $array = [];
         $array['943ed656e21971fb2f1827facbba9bec'] = '943ed656e21971fb2f1827facbba9bec';

@@ -20,10 +20,10 @@ class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
         $expEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $textEditorHandler = $this->getMock(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class, ['renderRichTextEditor']);
-        $textEditorHandler->expects($this->any())->method('renderRichTextEditor')->will($this->returnValue(''));
+        $textEditorHandler->method('renderRichTextEditor')->willReturn('');
 
         $editorHtml = $textEditorHandler->renderTextEditor(100, 100, 'sEditObjectValue', 'sField');
-        $this->assertEquals($expEditorHtml, $editorHtml);
+        $this->assertSame($expEditorHtml, $editorHtml);
     }
 
     /**
@@ -34,10 +34,10 @@ class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
         $expEditorHtml = "Rich Text Editor Output";
 
         $textEditorHandler = $this->getMock(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class, ['renderRichTextEditor']);
-        $textEditorHandler->expects($this->any())->method('renderRichTextEditor')->will($this->returnValue($expEditorHtml));
+        $textEditorHandler->method('renderRichTextEditor')->willReturn($expEditorHtml);
 
         $editorHtml = $textEditorHandler->renderTextEditor(100, 100, 'sEditObjectValue', 'sField');
-        $this->assertEquals($expEditorHtml, $editorHtml);
+        $this->assertSame($expEditorHtml, $editorHtml);
     }
 
     /**
@@ -53,7 +53,7 @@ class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $textEditorHandler = oxNew(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class);
         $editorHtml = $textEditorHandler->renderPlainTextEditor($width, $height, 'sEditObjectValue', 'sField');
-        $this->assertEquals($expectedEditorHtml, $editorHtml);
+        $this->assertSame($expectedEditorHtml, $editorHtml);
     }
 
     /**
@@ -61,9 +61,12 @@ class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function renderPlainTextEditorDataProvider()
+    public function renderPlainTextEditorDataProvider(): \Iterator
     {
-        return [[100, 100, "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"], ['100%', '100%', "<textarea id='editor_sField' name='sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"], [100, '100%', "<textarea id='editor_sField' name='sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"], ['100%', 100, "<textarea id='editor_sField' name='sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"]];
+        yield [100, 100, "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"];
+        yield ['100%', '100%', "<textarea id='editor_sField' name='sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"];
+        yield [100, '100%', "<textarea id='editor_sField' name='sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"];
+        yield ['100%', 100, "<textarea id='editor_sField' name='sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"];
     }
 
     /**
@@ -76,7 +79,7 @@ class TextEditorHandlerTest extends \PHPUnit\Framework\TestCase
         $textEditorHandler = oxNew(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class);
         $textEditorHandler->setStyleSheet($expCssFile);
 
-        $this->assertEquals($expCssFile, $textEditorHandler->getStyleSheet());
+        $this->assertSame($expCssFile, $textEditorHandler->getStyleSheet());
     }
 
     /**

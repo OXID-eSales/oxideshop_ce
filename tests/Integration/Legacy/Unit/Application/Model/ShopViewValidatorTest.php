@@ -20,9 +20,9 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 
         $aList = $oValidator->getMultiLangTables();
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals("table1", $aList[0]);
-        $this->assertEquals("table2", $aList[1]);
+        $this->assertCount(2, $aList);
+        $this->assertSame("table1", $aList[0]);
+        $this->assertSame("table2", $aList[1]);
     }
 
     /**
@@ -35,9 +35,9 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 
         $aList = $oValidator->getMultiShopTables();
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals("table3", $aList[0]);
-        $this->assertEquals("table4", $aList[1]);
+        $this->assertCount(2, $aList);
+        $this->assertSame("table3", $aList[0]);
+        $this->assertSame("table4", $aList[1]);
     }
 
     /**
@@ -50,9 +50,9 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 
         $aList = $oValidator->getLanguages();
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals("de", $aList[0]);
-        $this->assertEquals("xx", $aList[1]);
+        $this->assertCount(2, $aList);
+        $this->assertSame("de", $aList[0]);
+        $this->assertSame("xx", $aList[1]);
     }
 
     /**
@@ -65,9 +65,9 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 
         $aList = $oValidator->getAllShopLanguages();
 
-        $this->assertEquals(2, count($aList));
-        $this->assertEquals("de", $aList[0]);
-        $this->assertEquals("xx", $aList[1]);
+        $this->assertCount(2, $aList);
+        $this->assertSame("de", $aList[0]);
+        $this->assertSame("xx", $aList[1]);
     }
 
     /**
@@ -78,7 +78,7 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
         $oValidator = oxNew("oxShopViewValidator");
         $oValidator->setShopId(100);
 
-        $this->assertEquals(100, $oValidator->getShopId());
+        $this->assertSame(100, $oValidator->getShopId());
     }
 
     /**
@@ -93,7 +93,7 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
         $aLanguageIds = [0 => 'de', 1 => 'en'];
 
         $oValidator = $this->getMock(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class, ['getAllViews']);
-        $oValidator->expects($this->once())->method('getAllViews')->will($this->returnValue($aAllViews));
+        $oValidator->expects($this->once())->method('getAllViews')->willReturn($aAllViews);
 
         $oValidator->setShopId(1);
         $oValidator->setLanguages($aLanguageIds);
@@ -103,7 +103,7 @@ class ShopViewValidatorTest extends \PHPUnit\Framework\TestCase
 
         $aResult = $oValidator->getInvalidViews();
 
-        $this->assertEquals(3, count($aResult));
+        $this->assertCount(3, $aResult);
         $this->assertContains('oxv_oxartextends_lt', $aResult);
         $this->assertContains('oxv_oxarticles_lt', $aResult);
 

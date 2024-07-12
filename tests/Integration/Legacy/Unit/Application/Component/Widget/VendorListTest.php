@@ -21,7 +21,7 @@ class VendorListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oVendorList = oxNew('oxwVendorList');
-        $this->assertEquals('widget/footer/vendorlist', $oVendorList->render());
+        $this->assertSame('widget/footer/vendorlist', $oVendorList->render());
     }
 
     /**
@@ -31,7 +31,7 @@ class VendorListTest extends \PHPUnit\Framework\TestCase
     {
         $oVendorList = oxNew('oxwVendorList');
         $oList = $oVendorList->getVendorlist();
-        $this->assertTrue($oList instanceof VendorList);
-        $this->assertEquals(3, $oList->count());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VendorList::class, $oList);
+        $this->assertSame(3, $oList->count());
     }
 }

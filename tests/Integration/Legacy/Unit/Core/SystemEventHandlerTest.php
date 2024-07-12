@@ -14,7 +14,7 @@ use DateTime;
  */
 class SystemEventHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);
@@ -152,8 +152,8 @@ class SystemEventHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $hourToCheck = explode(':', $checkTime);
         $hour = $hourToCheck[0];
-        $this->assertTrue($hour < 24, 'Get hour: ' . $hour);
-        $this->assertTrue($hour > 7, 'Get hour: ' . $hour);
+        $this->assertLessThan(24, $hour, 'Get hour: ' . $hour);
+        $this->assertGreaterThan(7, $hour, 'Get hour: ' . $hour);
     }
 
     public function testOnShopEndDoNotChangeWhenToSendInformation()
@@ -196,7 +196,7 @@ class SystemEventHandlerTest extends \PHPUnit\Framework\TestCase
         $onlineLicenseCheckMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $onlineLicenseCheckMock->expects($this->any())->method("validateShopSerials");
+        $onlineLicenseCheckMock->method("validateShopSerials");
 
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $onlineLicenseCheck = $onlineLicenseCheckMock;
@@ -223,12 +223,12 @@ class SystemEventHandlerTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         $appServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface::class)->getMock();
-        $appServer->expects($this->any())->method('loadActiveAppServerList');
+        $appServer->method('loadActiveAppServerList');
 
         $systemEventHandler = $this->getMockBuilder(\OxidEsales\Eshop\Core\SystemEventHandler::class)
             ->setMethods(['getAppServerService', 'pageStart'])
             ->getMock();
-        $systemEventHandler->expects($this->any())->method('getAppServerService')->will($this->returnValue($appServer));
+        $systemEventHandler->method('getAppServerService')->willReturn($appServer);
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
         $systemEventHandler->onShopStart();

@@ -29,10 +29,10 @@ class DeliveryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Delivery_Main');
-        $this->assertEquals('delivery_main', $oView->render());
+        $this->assertSame('delivery_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Delivery);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Delivery::class, $aViewData['edit']);
     }
 
     /**
@@ -44,10 +44,10 @@ class DeliveryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Delivery_Main');
-        $this->assertEquals('delivery_main', $oView->render());
+        $this->assertSame('delivery_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -64,7 +64,7 @@ class DeliveryMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Delivery_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Delivery_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Delivery_Main::save()");
 
             return;
         }
@@ -86,7 +86,7 @@ class DeliveryMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Delivery_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Delivery_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Delivery_Main::save()");
 
             return;
         }

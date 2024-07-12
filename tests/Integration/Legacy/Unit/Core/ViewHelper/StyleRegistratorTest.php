@@ -36,30 +36,28 @@ class StyleRegistratorTest extends \PHPUnit\Framework\TestCase
     public function testAddFile($file, $expected)
     {
         $utils = $this->getMock('oxUtilsUrl', ['getHosts']);
-        $utils->expects($this->any())->method('getHosts')->will($this->returnValue([
+        $utils->method('getHosts')->willReturn([
             'shopurl.de'
-        ]));
+        ]);
         Registry::set('oxUtilsUrl', $utils);
 
         $styleRegistrator = $this->getMock(StyleRegistrator::class, ['getFileModificationTime']);
-        $styleRegistrator->expects($this->any())->method('getFileModificationTime')->will($this->returnValue(123456789));
+        $styleRegistrator->method('getFileModificationTime')->willReturn(123456789);
 
         $styleRegistrator->addFile($file, false ,false);
 
         $this->assertEquals($expected, Registry::getConfig()->getGlobalParameter('styles')[0]);
     }
 
-    public function addFileProvider()
+    public function addFileProvider(): \Iterator
     {
-        return [
-            ['http://someurl/style.css', 'http://someurl/style.css'],
-            ['http://someurl/style.css', 'http://someurl/style.css'],
-            ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'],
-            ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'],
-            ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'],
-            ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'],
-            ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'],
-            ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'],
-        ];
+        yield ['http://someurl/style.css', 'http://someurl/style.css'];
+        yield ['http://someurl/style.css', 'http://someurl/style.css'];
+        yield ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'];
+        yield ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'];
+        yield ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'];
+        yield ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'];
+        yield ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'];
+        yield ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'];
     }
 }

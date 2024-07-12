@@ -25,13 +25,13 @@ class ShopListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('Shop_List'));
         $oView->init();
 
-        $this->assertEquals(["oxshops" => ["oxname" => "asc"]], $oView->getListSorting());
+        $this->assertSame(["oxshops" => ["oxname" => "asc"]], $oView->getListSorting());
     }
 
     /**
@@ -41,7 +41,7 @@ class ShopListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Shop_List');
-        $this->assertEquals('shop_list', $oView->render());
+        $this->assertSame('shop_list', $oView->render());
     }
 
     /**
@@ -60,7 +60,7 @@ class ShopListTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = oxNew('Shop_List');
         $aWhere = $oView->buildWhere();
-        $this->assertTrue(isset($aWhere[$sViewName . '.oxid']));
-        $this->assertEquals("testShopId", $aWhere[$sViewName . '.oxid']);
+        $this->assertArrayHasKey($sViewName . '.oxid', $aWhere);
+        $this->assertSame("testShopId", $aWhere[$sViewName . '.oxid']);
     }
 }

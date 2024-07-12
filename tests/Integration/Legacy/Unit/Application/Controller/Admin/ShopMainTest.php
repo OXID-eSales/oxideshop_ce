@@ -24,7 +24,7 @@ class ShopMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Shop_Main');
 
         $this->setRequestParameter("oxid", $this->getConfig()->getBaseShopId());
-        $this->assertEquals('shop_main', $oView->render());
+        $this->assertSame('shop_main', $oView->render());
     }
 
     /**
@@ -40,7 +40,7 @@ class ShopMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Shop_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Shop_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Shop_Main::save()");
 
             return;
         }

@@ -33,9 +33,10 @@ class UserAddressListTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerLoadActiveAddress()
+    public function providerLoadActiveAddress(): \Iterator
     {
-        return [[0, 'Österreich'], [1, 'Austria']];
+        yield [0, 'Österreich'];
+        yield [1, 'Austria'];
     }
 
     /**
@@ -57,7 +58,7 @@ class UserAddressListTest extends \PHPUnit\Framework\TestCase
         $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
 
-        $this->assertSame(1, count($oAddressList), 'User has one address - Austria.');
+        $this->assertCount(1, $oAddressList, 'User has one address - Austria.');
         $this->assertSame($sCountryNameExpected, $oAddressList[$sAddressId]->oxaddress__oxcountry->value, 'Country name is different in different language.');
     }
 
@@ -73,7 +74,7 @@ class UserAddressListTest extends \PHPUnit\Framework\TestCase
         $oAddressList = oxNew('oxUserAddressList');
         $oAddressList->load($sUserId);
 
-        $this->assertSame(2, count($oAddressList), 'User has two addresses - Austria and Germany.');
+        $this->assertCount(2, $oAddressList, 'User has two addresses - Austria and Germany.');
     }
 
     /**

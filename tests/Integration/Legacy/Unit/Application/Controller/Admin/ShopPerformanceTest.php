@@ -20,6 +20,6 @@ class ShopPerformanceTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Shop_Performance');
-        $this->assertEquals('shop_performance', $oView->render());
+        $this->assertSame('shop_performance', $oView->render());
     }
 }

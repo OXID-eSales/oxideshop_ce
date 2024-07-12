@@ -20,6 +20,6 @@ class LanguageTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Language');
-        $this->assertEquals('language', $oView->render());
+        $this->assertSame('language', $oView->render());
     }
 }

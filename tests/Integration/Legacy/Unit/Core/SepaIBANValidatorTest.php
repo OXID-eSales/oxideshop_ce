@@ -29,7 +29,7 @@ class SepaIBANValidatorTest extends \PHPUnit\Framework\TestCase
 
         $oSepaIBANValidator->setCodeLengths($aCodeLengths);
 
-        $this->assertEquals($aCodeLengths, $oSepaIBANValidator->getCodeLengths(), "IBAN code lengths must be set");
+        $this->assertSame($aCodeLengths, $oSepaIBANValidator->getCodeLengths(), "IBAN code lengths must be set");
     }
 
     /**
@@ -47,12 +47,20 @@ class SepaIBANValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerCodeLengths()
+    public function providerCodeLengths(): \Iterator
     {
         $sNotValidMsg = "IBAN code lengths must be not valid";
         $sValidMsg = "IBAN code lengths must be valid";
-
-        return [[false, null, $sValidMsg], [false, ["AL", "GR", 33, 21], $sNotValidMsg], [false, ["GER" => 22], $sNotValidMsg], [false, ["DE" => "twotwo"], $sNotValidMsg], [false, ["de" => "22"], $sNotValidMsg], [false, ["EN" => "2.2"], $sNotValidMsg], [false, ["22" => "DE"], $sNotValidMsg], [false, [22 => "DE"], $sNotValidMsg], [true, ["DE" => "22"], $sValidMsg], [true, ["DE" => 22], $sValidMsg]];
+        yield [false, null, $sValidMsg];
+        yield [false, ["AL", "GR", 33, 21], $sNotValidMsg];
+        yield [false, ["GER" => 22], $sNotValidMsg];
+        yield [false, ["DE" => "twotwo"], $sNotValidMsg];
+        yield [false, ["de" => "22"], $sNotValidMsg];
+        yield [false, ["EN" => "2.2"], $sNotValidMsg];
+        yield [false, ["22" => "DE"], $sNotValidMsg];
+        yield [false, [22 => "DE"], $sNotValidMsg];
+        yield [true, ["DE" => "22"], $sValidMsg];
+        yield [true, ["DE" => 22], $sValidMsg];
     }
 
 
@@ -85,9 +93,13 @@ class SepaIBANValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerIsValid_validIBAN_true()
+    public function providerIsValid_validIBAN_true(): \Iterator
     {
-        return [["AL47212110090000000235698741", ['AL' => 28]], ["MT84MALT011000012345MTLCAST001S", ['MT' => 31]], ["NO9386011117947", ['NO' => 15]], ["NO9386011117947 ", ['NO' => 15]], [" NO9386011117947", ['NO' => 15]]];
+        yield ["AL47212110090000000235698741", ['AL' => 28]];
+        yield ["MT84MALT011000012345MTLCAST001S", ['MT' => 31]];
+        yield ["NO9386011117947", ['NO' => 15]];
+        yield ["NO9386011117947 ", ['NO' => 15]];
+        yield [" NO9386011117947", ['NO' => 15]];
     }
 
     /**
@@ -109,18 +121,16 @@ class SepaIBANValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerIsValid_invalidIBAN_false()
+    public function providerIsValid_invalidIBAN_false(): \Iterator
     {
-        return [
-            ["_NO9386011117947", ['NO' => 15]],
-            ["NX9386011117947", ['NX' => 15]],
-            ["MT84MALT011000012345MTLCAST001S", ['MT' => 30]],
-            ["MT84MALT011000012345MTLCAST001S", ['MT' => 32]],
-            ["MT84MALT011000012345MTLCAST001S", ["DE" => 22]],
-            ["MT84MALT011000012345MTLCAST001S", ["DE" => 31]],
-            // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
-            ["1234567895", ['NO' => 15]],
-        ];
+        yield ["_NO9386011117947", ['NO' => 15]];
+        yield ["NX9386011117947", ['NX' => 15]];
+        yield ["MT84MALT011000012345MTLCAST001S", ['MT' => 30]];
+        yield ["MT84MALT011000012345MTLCAST001S", ['MT' => 32]];
+        yield ["MT84MALT011000012345MTLCAST001S", ["DE" => 22]];
+        yield ["MT84MALT011000012345MTLCAST001S", ["DE" => 31]];
+        // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
+        yield ["1234567895", ['NO' => 15]];
     }
 
     /**

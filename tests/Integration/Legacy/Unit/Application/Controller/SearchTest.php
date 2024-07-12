@@ -42,18 +42,18 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return false; }');
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["appendStdLink", "appendLink"]);
-        $oArticle->expects($this->once())->method('appendStdLink')->with($this->equalto('testStdParams'));
-        $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
+        $oArticle->expects($this->once())->method('appendStdLink')->with('testStdParams');
+        $oArticle->expects($this->once())->method('appendLink')->with('testStdParams');
         $aArticleList[] = $oArticle;
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["appendStdLink", "appendLink"]);
-        $oArticle->expects($this->once())->method('appendStdLink')->with($this->equalto('testStdParams'));
-        $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
+        $oArticle->expects($this->once())->method('appendStdLink')->with('testStdParams');
+        $oArticle->expects($this->once())->method('appendLink')->with('testStdParams');
         $aArticleList[] = $oArticle;
 
         $oSearchView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ['getArticleList', "getAddUrlParams"]);
-        $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
-        $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
+        $oSearchView->expects($this->once())->method('getArticleList')->willReturn($aArticleList);
+        $oSearchView->expects($this->once())->method('getAddUrlParams')->willReturn('testStdParams');
 
         $oSearchView->processListArticles();
     }
@@ -67,17 +67,17 @@ class SearchTest extends \PHPUnit\Framework\TestCase
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["appendStdLink", "appendLink"]);
         $oArticle->expects($this->never())->method('appendStdLink');
-        $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
+        $oArticle->expects($this->once())->method('appendLink')->with('testStdParams');
         $aArticleList[] = $oArticle;
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["appendStdLink", "appendLink"]);
         $oArticle->expects($this->never())->method('appendStdLink');
-        $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
+        $oArticle->expects($this->once())->method('appendLink')->with('testStdParams');
         $aArticleList[] = $oArticle;
 
         $oSearchView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ['getArticleList', "getAddUrlParams"]);
-        $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
-        $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
+        $oSearchView->expects($this->once())->method('getArticleList')->willReturn($aArticleList);
+        $oSearchView->expects($this->once())->method('getAddUrlParams')->willReturn('testStdParams');
 
         $oSearchView->processListArticles();
     }
@@ -105,13 +105,13 @@ class SearchTest extends \PHPUnit\Framework\TestCase
     {
         $aArrayKeys = ["articleId"];
         $oArtList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ["count", "arrayKeys"]);
-        $oArtList->expects($this->once())->method("count")->will($this->returnValue(1));
-        $oArtList->expects($this->once())->method("arrayKeys")->will($this->returnValue($aArrayKeys));
+        $oArtList->expects($this->once())->method("count")->willReturn(1);
+        $oArtList->expects($this->once())->method("arrayKeys")->willReturn($aArrayKeys);
 
 
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ["getArticleList"]);
-        $oSearch->expects($this->once())->method("getArticleList")->will($this->returnValue($oArtList));
-        $this->assertEquals($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getArticleList()");
+        $oSearch->expects($this->once())->method("getArticleList")->willReturn($oArtList);
+        $this->assertSame($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getArticleList()");
     }
 
     public function testGetSearchParamForHtml()
@@ -120,7 +120,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearch->setNonPublicVar("_blSearchClass", true);
         $this->setRequestParameter('searchparam', 'ü  a');
 
-        $this->assertEquals('ü  a', $oSearch->getSearchParamForHtml());
+        $this->assertSame('ü  a', $oSearch->getSearchParamForHtml());
     }
 
     public function testGetSearchParam()
@@ -129,7 +129,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearch->setNonPublicVar("_blSearchClass", true);
         $this->setRequestParameter('searchparam', 'ü  a');
 
-        $this->assertEquals('%C3%BC%20%20a', $oSearch->getSearchParam());
+        $this->assertSame('%C3%BC%20%20a', $oSearch->getSearchParam());
     }
 
     public function testGetSearchCatId()
@@ -138,7 +138,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearch->setNonPublicVar("_blSearchClass", true);
         $this->setRequestParameter('searchcnid', 'test');
 
-        $this->assertEquals('test', $oSearch->getSearchCatId());
+        $this->assertSame('test', $oSearch->getSearchCatId());
     }
 
     public function testGetSearchVendor()
@@ -147,21 +147,21 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearch->setNonPublicVar("_blSearchClass", true);
         $this->setRequestParameter('searchvendor', 'test');
 
-        $this->assertEquals('test', $oSearch->getSearchVendor());
+        $this->assertSame('test', $oSearch->getSearchVendor());
     }
 
     public function testGetPageNavigation()
     {
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ['generatePageNavigation']);
-        $oSearch->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
-        $this->assertEquals('aaa', $oSearch->getPageNavigation());
+        $oSearch->method('generatePageNavigation')->willReturn("aaa");
+        $this->assertSame('aaa', $oSearch->getPageNavigation());
     }
 
     public function testGetActiveCategory()
     {
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ['getActSearch']);
-        $oSearch->expects($this->any())->method('getActSearch')->will($this->returnValue("aaa"));
-        $this->assertEquals('aaa', $oSearch->getActiveCategory());
+        $oSearch->method('getActSearch')->willReturn("aaa");
+        $this->assertSame('aaa', $oSearch->getActiveCategory());
     }
 
     public function testRender()
@@ -172,7 +172,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         );
         $n->expects($this->once())->method('processListArticles');
 
-        $this->assertEquals('page/search/search', $n->render());
+        $this->assertSame('page/search/search', $n->render());
     }
 
     public function testGetAddUrlParams()
@@ -181,7 +181,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('searchcnid', 'ysearchcnid');
         $this->setRequestParameter('searchvendor', 'ysearchvendor');
         $this->setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
-        $this->assertEquals('listtype=search&amp;searchparam=ysearchparam&amp;searchcnid=ysearchcnid&amp;searchvendor=ysearchvendor&amp;searchmanufacturer=ysearchmanufacturer', oxNew('search')->getAddUrlParams());
+        $this->assertSame('listtype=search&amp;searchparam=ysearchparam&amp;searchcnid=ysearchcnid&amp;searchvendor=ysearchvendor&amp;searchmanufacturer=ysearchmanufacturer', oxNew('search')->getAddUrlParams());
     }
 
     public function testIsSearchClass()
@@ -195,7 +195,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
     public function testGetSearchManufacturer()
     {
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ["isSearchClass"]);
-        $oSearch->expects($this->once())->method('isSearchClass')->will($this->returnValue(true));
+        $oSearch->expects($this->once())->method('isSearchClass')->willReturn(true);
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame('gsearchmanufacturer&amp;', $oSearch->getSearchManufacturer());
     }
@@ -203,16 +203,16 @@ class SearchTest extends \PHPUnit\Framework\TestCase
     public function testGetSearchManufacturerNotInSearch()
     {
         $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ["isSearchClass"]);
-        $oSearch->expects($this->once())->method('isSearchClass')->will($this->returnValue(false));
+        $oSearch->expects($this->once())->method('isSearchClass')->willReturn(false);
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
-        $this->assertSame(false, $oSearch->getSearchManufacturer());
+        $this->assertFalse($oSearch->getSearchManufacturer());
     }
 
     public function testGetBreadCrumb()
     {
         $oSearch = oxNew('Search');
 
-        $this->assertEquals(1, count($oSearch->getBreadCrumb()));
+        $this->assertCount(1, $oSearch->getBreadCrumb());
     }
 
     /**
@@ -221,7 +221,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
     public function testCanSelectDisplayType()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getConfigParam']);
-        $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('getConfigParam')->willReturn(true);
 
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
@@ -241,7 +241,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar('_iAllArtCnt', 3);
 
-        $this->assertEquals(3, $oSearch->getArticleCount());
+        $this->assertSame(3, $oSearch->getArticleCount());
     }
 
     /**
@@ -250,9 +250,9 @@ class SearchTest extends \PHPUnit\Framework\TestCase
     public function testGetTitle()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, ['getArticleCount', 'getSearchParamForHtml']);
-        $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue(6));
-        $oView->expects($this->any())->method('getSearchParamForHtml')->will($this->returnValue('searchStr'));
+        $oView->method('getArticleCount')->willReturn(6);
+        $oView->method('getSearchParamForHtml')->willReturn('searchStr');
 
-        $this->assertEquals('6 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "searchStr"', $oView->getTitle());
+        $this->assertSame('6 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "searchStr"', $oView->getTitle());
     }
 }

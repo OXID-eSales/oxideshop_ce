@@ -18,7 +18,7 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
     public function testGetCharset()
     {
         $oEmail = oxNew('oxEmail');
-        $this->assertEquals("UTF-8", $oEmail->getCharset());
+        $this->assertSame("UTF-8", $oEmail->getCharset());
     }
 
     /**
@@ -27,7 +27,7 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
     public function testGetCurrency()
     {
         $oEmail = oxNew('oxEmail');
-        $this->assertEquals("€", $oEmail->getCurrency()->sign);
+        $this->assertSame("€", $oEmail->getCurrency()->sign);
     }
 
     /**
@@ -36,14 +36,14 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
     public function testSendOrderEmailToUser()
     {
         $oPrice = $this->getMock('oxprice');
-        $oPrice->expects($this->any())->method('getPrice')->will($this->returnValue(256));
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(8));
+        $oPrice->method('getPrice')->willReturn(256);
+        $oPrice->method('getBruttoPrice')->willReturn(8);
 
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle']);
-        $oBasketItem->expects($this->any())->method('getPrice')->will($this->returnValue($oPrice));
-        $oBasketItem->expects($this->any())->method('getUnitPrice')->will($this->returnValue($oPrice));
-        $oBasketItem->expects($this->any())->method('getRegularUnitPrice')->will($this->returnValue($oPrice));
-        $oBasketItem->expects($this->any())->method('getTitle')->will($this->returnValue("testarticle"));
+        $oBasketItem->method('getPrice')->willReturn($oPrice);
+        $oBasketItem->method('getUnitPrice')->willReturn($oPrice);
+        $oBasketItem->method('getRegularUnitPrice')->willReturn($oPrice);
+        $oBasketItem->method('getTitle')->willReturn("testarticle");
 
         // insert test article
         $oArticle = oxNew("oxArticle");
@@ -58,10 +58,10 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
         $oPrice->setPrice(0);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getBasketArticles", "getContents", "getCosts", "getBruttoSum"]);
-        $oBasket->expects($this->any())->method('getBasketArticles')->will($this->returnValue($aBasketArticles));
-        $oBasket->expects($this->any())->method('getContents')->will($this->returnValue($aBasketContents));
-        $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
-        $oBasket->expects($this->any())->method('getBruttoSum')->will($this->returnValue(7));
+        $oBasket->method('getBasketArticles')->willReturn($aBasketArticles);
+        $oBasket->method('getContents')->willReturn($aBasketContents);
+        $oBasket->method('getCosts')->willReturn($oPrice);
+        $oBasket->method('getBruttoSum')->willReturn(7);
 
         $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
@@ -74,9 +74,9 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, ["getOrderUser", "getBasket", "getPayment"]);
-        $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($oUser));
-        $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
+        $oOrder->method('getOrderUser')->willReturn($oUser);
+        $oOrder->method('getBasket')->willReturn($oBasket);
+        $oOrder->method('getPayment')->willReturn($oPayment);
 
         $oOrder->oxorder__oxordernr = new oxField('987654321', oxField::T_RAW);
         $oOrder->oxorder__oxbillfname = new oxField('');
@@ -92,9 +92,9 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
         $oShop->load($this->getConfig()->getShopId());
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendMail", "getShop", "getOrderFileList"]);
-        $oEmail->expects($this->once())->method('sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('getShop')->will($this->returnValue($oShop));
-        $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));
+        $oEmail->expects($this->once())->method('sendMail')->willReturn(true);
+        $oEmail->method('getShop')->willReturn($oShop);
+        $oEmail->method('getOrderFileList')->willReturn(false);
 
         $blRet = $oEmail->sendOrderEmailToUser($oOrder);
         $this->assertTrue($blRet);
@@ -108,14 +108,14 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
         // checking if there are some utf-8 strings
 
         // translation check
-        $this->assertTrue($oStr->strpos($sBody, "Grußkarte:") > 0);
+        $this->assertGreaterThan(0, $oStr->strpos($sBody, "Grußkarte:"));
 
         // euro sign check
-        $this->assertTrue($oStr->strpos($sBody, "256,00 €") > 0);
+        $this->assertGreaterThan(0, $oStr->strpos($sBody, "256,00 €"));
 
         // strings, that comes from oxcontent
-        $this->assertTrue($oStr->strpos($sBody, "Vielen Dank für Ihre Bestellung!") > 0);
-        $this->assertTrue($oStr->strpos($sBody, "Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.") > 0);
+        $this->assertGreaterThan(0, $oStr->strpos($sBody, "Vielen Dank für Ihre Bestellung!"));
+        $this->assertGreaterThan(0, $oStr->strpos($sBody, "Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein."));
     }
 
     public function testSendForgotPwdEmailIsCaseInsensitive()
@@ -125,7 +125,7 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
 
         $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["send", "setRecipient"]);
         $oEmailMock->expects($this->once())->method("setRecipient")->with($realEmailAddress, 'John Doe');
-        $oEmailMock->expects($this->once())->method("send")->will($this->returnValue(true));
+        $oEmailMock->expects($this->once())->method("send")->willReturn(true);
 
         $oEmailMock->sendForgotPwdEmail($userProvidedEmailAddress);
     }
@@ -141,30 +141,28 @@ class EmailUtf8Test extends \PHPUnit\Framework\TestCase
 
         $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["send", "setRecipient"]);
         $oEmailMock->expects($this->atLeastOnce())->method("setRecipient")->with($realEmailAddress, 'John Doe');
-        $oEmailMock->expects($this->atLeastOnce())->method("send")->will($this->returnValue(true));
+        $oEmailMock->expects($this->atLeastOnce())->method("send")->willReturn(true);
 
         $oEmailMock->sendForgotPwdEmail($bogusEmailAddress);
     }
 
-    public function dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase()
+    public function dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase(): \Iterator
     {
-        return [
-            ['Admin'],
-            ['Àdmin'],
-            ['Ádmin'],
-            ['Âdmin'],
-            ['Ãdmin'],
-            ['Ädmin'],
-            ['Ådmin'],
-            ['àdmin'],
-            ['ádmin'],
-            ['âdmin'],
-            ['ãdmin'],
-            ['ädmin'],
-            ['ådmin'],
-            ['Ādmin'],
-            ['Ądmin'],
-            ['ądmin']
-        ];
+        yield ['Admin'];
+        yield ['Àdmin'];
+        yield ['Ádmin'];
+        yield ['Âdmin'];
+        yield ['Ãdmin'];
+        yield ['Ädmin'];
+        yield ['Ådmin'];
+        yield ['àdmin'];
+        yield ['ádmin'];
+        yield ['âdmin'];
+        yield ['ãdmin'];
+        yield ['ädmin'];
+        yield ['ådmin'];
+        yield ['Ādmin'];
+        yield ['Ądmin'];
+        yield ['ądmin'];
     }
 }

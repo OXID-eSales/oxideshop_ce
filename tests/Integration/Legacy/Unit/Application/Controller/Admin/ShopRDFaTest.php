@@ -25,7 +25,7 @@ class ShopRDFaTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $this->getConfig()->getShopId());
 
         $oView = oxNew("Shop_RDFA");
-        $this->assertEquals(4, $oView->getContentList()->count());
+        $this->assertSame(4, $oView->getContentList()->count());
     }
 
     /**
@@ -40,7 +40,7 @@ class ShopRDFaTest extends \PHPUnit\Framework\TestCase
 
         $oView = $this->getProxyClass('Shop_RDFA');
         Registry::set(Config::class, $oConf);
-        $this->assertEquals($aCustomers, $oView->getCustomers());
+        $this->assertSame($aCustomers, $oView->getCustomers());
     }
 
     /**
@@ -53,6 +53,6 @@ class ShopRDFaTest extends \PHPUnit\Framework\TestCase
 
         $oView = $this->getProxyClass('Shop_RDFA');
         Registry::set(Config::class, $oConf);
-        $this->assertEquals([], $oView->getCustomers());
+        $this->assertSame([], $oView->getCustomers());
     }
 }

@@ -29,49 +29,49 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oCurrency = $this->getConfig()->getActShopCurrencyObject();
         $dPrice = 99.66;
 
-        $this->assertEquals($dPrice * $oCurrency->rate, oxPrice::getPriceInActCurrency($dPrice));
+        $this->assertSame($dPrice * $oCurrency->rate, oxPrice::getPriceInActCurrency($dPrice));
     }
 
     public function testVatSetterAndGetter()
     {
         $this->_oPrice->setVat(18);
-        $this->assertEquals(18, $this->_oPrice->getVat());
+        $this->assertSame(18, $this->_oPrice->getVat());
 
         $this->_oPrice->setVat(4.5);
-        $this->assertEquals(4.5, $this->_oPrice->getVat());
+        $this->assertEqualsWithDelta(4.5, $this->_oPrice->getVat(), PHP_FLOAT_EPSILON);
 
         $this->_oPrice->setVat(-4.5);
-        $this->assertEquals(-4.5, $this->_oPrice->getVat());
+        $this->assertSame(-4.5, $this->_oPrice->getVat());
 
         $this->_oPrice->setVat(-4.4);
-        $this->assertNotEquals(-4, $this->_oPrice->getVat());
+        $this->assertNotSame(-4, $this->_oPrice->getVat());
     }
 
     public function testVatPriceGetter()
     {
         $this->_oPrice->setPrice(18, 0);
-        $this->assertEquals(0.00, $this->_oPrice->getVatValue());
+        $this->assertEqualsWithDelta(0.00, $this->_oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $this->_oPrice->setPrice(118, 18);
-        $this->assertEquals(18.00, $this->_oPrice->getVatValue());
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getVatValue(), PHP_FLOAT_EPSILON);
     }
 
     public function testVatPriceGetterWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(18, 0);
-        $this->assertEquals(0.00, $this->_oPrice->getVatValue());
+        $this->assertEqualsWithDelta(0.00, $this->_oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $this->_oPrice->setPrice(100, 18);
-        $this->assertEquals(18.00, $this->_oPrice->getVatValue());
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getVatValue(), PHP_FLOAT_EPSILON);
     }
 
     public function testSetUserVat()
     {
         $this->_oPrice->setPrice(118, 18);
         $this->_oPrice->setUserVat(19);
-        $this->assertEquals(119.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(100.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(119.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSetUserVatWithNetPriceMode()
@@ -79,81 +79,81 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(100, 18);
         $this->_oPrice->setUserVat(19);
-        $this->assertEquals(119.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(100.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(119.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testPriceSetterAndGetter()
     {
         $this->_oPrice->setPrice(18, 0);
-        $this->assertEquals(18.00, $this->_oPrice->getBruttoPrice());
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
         $this->_oPrice->setPrice(97.58, 18);
-        $this->assertEquals(97.58, $this->_oPrice->getBruttoPrice());
+        $this->assertEqualsWithDelta(97.58, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testPriceSetterAndGetterWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(99, 0);
-        $this->assertEquals(99.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(99.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
         $this->_oPrice->setPrice(873.57, 16);
-        $this->assertEquals(873.57, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(873.57, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testPositivePriceCalculationWithZeroVat()
     {
         $this->_oPrice->setVat(0);
         $this->_oPrice->setPrice(18);
-        $this->assertEquals(18.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(18.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
 
         $this->_oPrice->setPrice(7.58);
-        $this->assertEquals(7.58, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(7.58, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(7.58, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(7.58, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testNegativePriceCalculationWithZeroVat()
     {
         $this->_oPrice->setVat(0);
         $this->_oPrice->setPrice(-18);
-        $this->assertEquals(-18.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-18.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-18.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-18.00, $this->_oPrice->getNettoPrice());
 
         $this->_oPrice->setPrice(-7.58);
-        $this->assertEquals(-7.58, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-7.58, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-7.58, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-7.58, $this->_oPrice->getNettoPrice());
     }
 
     public function testPositivePriceCalculationWithPositiveVat()
     {
         $this->_oPrice->setVat(18);
         $this->_oPrice->setPrice(118);
-        $this->assertEquals(118.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(100.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(118.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testPositivePriceCalculationWithNegativeVat()
     {
         $this->_oPrice->setVat(-99.00);
         $this->_oPrice->setPrice(118);
-        $this->assertEquals(118.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(11800.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(118.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(11800.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testNegativePriceCalculationWithPositiveVat()
     {
         $this->_oPrice->setVat(19);
         $this->_oPrice->setPrice(-119);
-        $this->assertEquals(-119, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-100, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-119, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-100, $this->_oPrice->getNettoPrice());
     }
 
     public function testNegativePriceCalculationWithNegativeVat()
     {
         $this->_oPrice->setVat(-16.00);
         $this->_oPrice->setPrice(-84);
-        $this->assertEquals(-84.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-100, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-84.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-100, $this->_oPrice->getNettoPrice());
     }
 
     // --------------------------------------------------------------------------------------
@@ -161,56 +161,56 @@ class PriceTest extends \PHPUnit\Framework\TestCase
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(18, 0);
-        $this->assertEquals(18.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(18.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(18.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
 
         $this->_oPrice->setPrice(7.58, 0);
-        $this->assertEquals(7.58, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(7.58, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(7.58, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(7.58, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testNegativePriceCalculationWithZeroVatWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(-18, 0);
-        $this->assertEquals(-18.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-18.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-18.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-18.00, $this->_oPrice->getNettoPrice());
 
         $this->_oPrice->setPrice(-7.58);
-        $this->assertEquals(-7.58, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-7.58, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-7.58, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-7.58, $this->_oPrice->getNettoPrice());
     }
 
     public function testPositivePriceCalculationWithPositiveVatWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(118, 18);
-        $this->assertEquals(139.24, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(118.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(139.24, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(118.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testPositivePriceCalculationWithNegativeVatWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(100, -99.00);
-        $this->assertEquals(1.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(100.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(1.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testNegativePriceCalculationWithPositiveVatWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(-119, 19);
-        $this->assertEquals(-141.61, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-119, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-141.61, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-119, $this->_oPrice->getNettoPrice());
     }
 
     public function testNegativePriceCalculationWithNegativeVatWithNetPriceMode()
     {
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(-84, -16.00);
-        $this->assertEquals(-70.56, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-84.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-70.56, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-84.00, $this->_oPrice->getNettoPrice());
     }
 
     // ------------------------------------------------------------------------------------------------------
@@ -220,8 +220,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 0);
         $this->_oPrice->addPercent(50);
 
-        $this->assertEquals(150.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(150.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(150.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(150.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSubtractPercentCalculationWithZeroVat()
@@ -229,8 +229,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 0);
         $this->_oPrice->subtractPercent(50);
 
-        $this->assertEquals(50, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(50, $this->_oPrice->getNettoPrice());
+        $this->assertSame(50, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(50, $this->_oPrice->getNettoPrice());
     }
 
     public function testAddFixedCalculationZeroVat()
@@ -238,8 +238,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 0);
         $this->_oPrice->add(25);
 
-        $this->assertEquals(125, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(125, $this->_oPrice->getNettoPrice());
+        $this->assertSame(125, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(125, $this->_oPrice->getNettoPrice());
     }
 
     public function testSubtractFixedCalculationWithZeroVat()
@@ -247,8 +247,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 0);
         $this->_oPrice->subtract(25);
 
-        $this->assertEquals(75, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(75, $this->_oPrice->getNettoPrice());
+        $this->assertSame(75, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(75, $this->_oPrice->getNettoPrice());
     }
 
 
@@ -257,8 +257,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(118, 18);
         $this->_oPrice->addPercent(50);
 
-        $this->assertEquals(177.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(150.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(177.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(150.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSubtractPercentCalculationWithVat()
@@ -266,8 +266,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(177, 18);
         $this->_oPrice->subtractPercent(50);
 
-        $this->assertEquals(88.50, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(75.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(88.50, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(75.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testAddFixedCalculationWithVat()
@@ -275,8 +275,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(236, 18);
         $this->_oPrice->add(118);
 
-        $this->assertEquals(354.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(300.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(354.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(300.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSubtractFixedCalculationWithVat()
@@ -284,8 +284,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(354, 18);
         $this->_oPrice->subtract(118);
 
-        $this->assertEquals(236.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(200.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(236.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(200.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
 
@@ -295,8 +295,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 18);
         $this->_oPrice->addPercent(50);
 
-        $this->assertEquals(177.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(150.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(177.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(150.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSubtractPercentCalculationWithVatWithNetPriceMode()
@@ -305,8 +305,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(150, 18);
         $this->_oPrice->subtractPercent(50);
 
-        $this->assertEquals(88.50, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(75.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(88.50, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(75.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testAddFixedCalculationWithVatWithNetPriceMode()
@@ -315,8 +315,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(200, 18);
         $this->_oPrice->add(100);
 
-        $this->assertEquals(354.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(300.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(354.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(300.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testSubtractFixedCalculationWithVatWithNetPriceMode()
@@ -325,8 +325,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(300, 18);
         $this->_oPrice->subtract(100);
 
-        $this->assertEquals(236.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(200.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(236.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(200.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     // multiply
@@ -336,8 +336,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(300, 0);
         $this->_oPrice->multiply(10);
 
-        $this->assertEquals(3000.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(3000.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(3000.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(3000.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testMultiplyCalculationWithVat()
@@ -345,8 +345,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(118, 18);
         $this->_oPrice->multiply(-2);
 
-        $this->assertEquals(-236.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-200.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-236.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-200.00, $this->_oPrice->getNettoPrice());
     }
 
     public function testMultiplyCalculationWithZeroVatWithNetPriceMode()
@@ -355,8 +355,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(278, 0);
         $this->_oPrice->multiply(-10);
 
-        $this->assertEquals(-2780.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-2780.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-2780.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-2780.00, $this->_oPrice->getNettoPrice());
     }
 
     public function testMultiplyCalculationWithVatWithNetPriceMode()
@@ -365,8 +365,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 20);
         $this->_oPrice->multiply(3.2);
 
-        $this->assertEquals(384.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(320.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(384.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(320.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     // --------------
@@ -376,8 +376,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(300, 0);
         $this->_oPrice->divide(10);
 
-        $this->assertEquals(30.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(30.00, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(30.00, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(30.00, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testDivideCalculationWithVat()
@@ -385,8 +385,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(118, 18);
         $this->_oPrice->divide(-2);
 
-        $this->assertEquals(-59.00, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-50.00, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-59.00, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-50.00, $this->_oPrice->getNettoPrice());
     }
 
     public function testDivideCalculationWithZeroVatWithNetPriceMode()
@@ -395,8 +395,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(278, 0);
         $this->_oPrice->divide(-10);
 
-        $this->assertEquals(-27.80, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(-27.80, $this->_oPrice->getNettoPrice());
+        $this->assertSame(-27.80, $this->_oPrice->getBruttoPrice());
+        $this->assertSame(-27.80, $this->_oPrice->getNettoPrice());
     }
 
     public function testDivideCalculationWithVatWithNetPriceMode()
@@ -405,8 +405,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $this->_oPrice->setPrice(100, 20);
         $this->_oPrice->divide(3.2);
 
-        $this->assertEquals(37.50, $this->_oPrice->getBruttoPrice());
-        $this->assertEquals(31.25, $this->_oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(37.50, $this->_oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(31.25, $this->_oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testAddWithPriceObject()
@@ -418,8 +418,8 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oPrice2->setPrice(118, 18);
 
         $oPrice->addPrice($oPrice2);
-        $this->assertEquals(354.00, $oPrice->getBruttoPrice());
-        $this->assertEquals(300.00, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(354.00, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(300.00, $oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testAddWithPriceObjectIfNetPriceMode()
@@ -433,24 +433,24 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oPrice2->setPrice(100, 18);
 
         $oPrice->addPrice($oPrice2);
-        $this->assertEquals(354.00, $oPrice->getBruttoPrice());
-        $this->assertEquals(300.00, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(354.00, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(300.00, $oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testBrutto2Netto()
     {
-        $this->assertEquals(200.00, $this->_oPrice->brutto2Netto(236, 18));
+        $this->assertEqualsWithDelta(200.00, $this->_oPrice->brutto2Netto(236, 18), PHP_FLOAT_EPSILON);
         $this->assertLessThan(0.00001, abs(200.10462372881 - $this->_oPrice->brutto2Netto(236.123456, 18)));
     }
 
     public function testBrutto2NettoMinusVat()
     {
-        $this->assertEquals(0, $this->_oPrice->brutto2Netto(236, -100));
+        $this->assertSame(0, $this->_oPrice->brutto2Netto(236, -100));
     }
 
     public function testNetto2Brutto()
     {
-        $this->assertEquals(120.00, $this->_oPrice->netto2Brutto(100, 20));
+        $this->assertEqualsWithDelta(120.00, $this->_oPrice->netto2Brutto(100, 20), PHP_FLOAT_EPSILON);
         $this->assertLessThan(0.00001, abs(120.1481472 - $this->_oPrice->netto2Brutto(100.123456, 20)));
     }
 
@@ -468,15 +468,15 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oPrice4 = oxNew('oxPrice');
         $oPrice4->setPrice(100, 0);
 
-        $this->assertEquals(0, $oPrice1->compare($oPrice4));
-        $this->assertEquals(1, $oPrice1->compare($oPrice3));
-        $this->assertEquals(-1, $oPrice1->compare($oPrice2));
+        $this->assertSame(0, $oPrice1->compare($oPrice4));
+        $this->assertSame(1, $oPrice1->compare($oPrice3));
+        $this->assertSame(-1, $oPrice1->compare($oPrice2));
     }
 
     public function testInitWithParams()
     {
         $oPrice = new oxPrice(15);
-        $this->assertEquals(15, $oPrice->getBruttoPrice());
+        $this->assertSame(15, $oPrice->getBruttoPrice());
     }
 
     /**
@@ -487,12 +487,12 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 19);
-        $this->assertEquals(10, $oPrice->getPrice());
+        $this->assertSame(10, $oPrice->getPrice());
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(10, 19);
-        $this->assertEquals(10, $oPrice->getPrice());
+        $this->assertSame(10, $oPrice->getPrice());
     }
 
     /**
@@ -503,16 +503,16 @@ class PriceTest extends \PHPUnit\Framework\TestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setNettoPriceMode();
         $oPrice->setPrice(10, 19);
-        $this->assertEquals(10, $oPrice->getNettoPrice());
-        $this->assertEquals(11.9, $oPrice->getBruttoPrice());
-        $this->assertEquals(1.9, $oPrice->getVatValue());
+        $this->assertSame(10, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(11.9, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(1.9, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $oPrice = oxNew('oxPrice');
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(10, 19);
-        $this->assertEquals(8.40, $oPrice->getNettoPrice());
-        $this->assertEquals(10, $oPrice->getBruttoPrice());
-        $this->assertEquals(1.60, $oPrice->getVatValue());
+        $this->assertEqualsWithDelta(8.40, $oPrice->getNettoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame(10, $oPrice->getBruttoPrice());
+        $this->assertEqualsWithDelta(1.60, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
     }
 
 
@@ -527,34 +527,34 @@ class PriceTest extends \PHPUnit\Framework\TestCase
 
         $oPrice->setDiscount(50, '%');
         $oPrice->calculateDiscount();
-        $this->assertEquals(5, $oPrice->getNettoPrice());
-        $this->assertEquals(5.95, $oPrice->getBruttoPrice());
-        $this->assertEquals(0.95, $oPrice->getVatValue());
+        $this->assertSame(5, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(5.95, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(0.95, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $oPrice->setDiscount(1, 'abs');
         $oPrice->calculateDiscount();
-        $this->assertEquals(4, $oPrice->getNettoPrice());
-        $this->assertEquals(4.76, $oPrice->getBruttoPrice());
-        $this->assertEquals(0.76, $oPrice->getVatValue());
+        $this->assertSame(4, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(4.76, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(0.76, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $oPrice->setDiscount(-1, 'abs');
         $oPrice->calculateDiscount();
-        $this->assertEquals(5, $oPrice->getNettoPrice());
-        $this->assertEquals(5.95, $oPrice->getBruttoPrice());
-        $this->assertEquals(0.95, $oPrice->getVatValue());
+        $this->assertSame(5, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(5.95, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(0.95, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
         $oPrice->setDiscount(-20, '%');
         $oPrice->calculateDiscount();
-        $this->assertEquals(6, $oPrice->getNettoPrice());
-        $this->assertEquals(7.14, $oPrice->getBruttoPrice());
-        $this->assertEquals(1.14, $oPrice->getVatValue());
+        $this->assertSame(6, $oPrice->getNettoPrice());
+        $this->assertEqualsWithDelta(7.14, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(1.14, $oPrice->getVatValue(), PHP_FLOAT_EPSILON);
 
 
         $oPrice->setDiscount(7, 'abs');
         $oPrice->calculateDiscount();
-        $this->assertEquals(0, $oPrice->getNettoPrice());
-        $this->assertEquals(0, $oPrice->getBruttoPrice());
-        $this->assertEquals(0, $oPrice->getVatValue());
+        $this->assertSame(0, $oPrice->getNettoPrice());
+        $this->assertSame(0, $oPrice->getBruttoPrice());
+        $this->assertSame(0, $oPrice->getVatValue());
     }
 
     public function testSetModeNetto_defaultParam_NettoMode()

@@ -19,6 +19,7 @@ use oxTestModules;
 class ActionsTest extends \PHPUnit\Framework\TestCase
 {
 
+    public $sOxId;
     /**
      * Contains a object of oxactions()
      *
@@ -73,7 +74,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $sArtOxid = 'xxx';
         $this->_oAction->addArticle($sArtOxid);
 
-        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf('\' and oxartid = \'%s\' ', $sArtOxid));
+        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf("' and oxartid = '%s' ", $sArtOxid));
         if (!$sCheckOxid) {
             $this->fail("fail adding article");
         }
@@ -89,7 +90,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $this->_oAction->addArticle($sArtOxid);
         $this->assertTrue($this->_oAction->removeArticle($sArtOxid));
 
-        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf('\' and oxartid = \'%s\' ', $sArtOxid));
+        $sCheckOxid = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getOne("select oxid from oxactions2article where oxactionid = '" . $this->_oAction->getId() . sprintf("' and oxartid = '%s' ", $sArtOxid));
         if ($sCheckOxid) {
             $this->fail("fail removing article");
         }
@@ -140,7 +141,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
-        $this->assertEquals(10, $this->_oPromo->getTimeLeft());
+        $this->assertSame(10, $this->_oPromo->getTimeLeft());
     }
 
     /**
@@ -151,7 +152,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
-        $this->assertEquals(10, $this->_oPromo->getTimeUntilStart());
+        $this->assertSame(10, $this->_oPromo->getTimeUntilStart());
     }
 
     /**
@@ -170,20 +171,20 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
 
-        $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
-        $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactivefrom->value);
+        $this->assertSame('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
+        $this->assertSame('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactivefrom->value);
 
         $this->_oPromo->start();
         $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
-        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
-        $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
+        $this->assertSame(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
+        $this->assertSame('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
 
         $id = $this->_oPromo->getId();
         $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
-        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
-        $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
+        $this->assertSame(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
+        $this->assertSame('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
 
 
         $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
@@ -211,13 +212,13 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $this->_oPromo->stop();
         $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
-        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
+        $this->assertSame(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
 
         $id = $this->_oPromo->getId();
         $this->_oPromo = oxNew('oxActions');
         $this->_oPromo->load($id);
 
-        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
+        $this->assertSame(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
     }
 
     /**
@@ -273,7 +274,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
         $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, ['fetchBannerArticleId']);
-        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
     }
@@ -284,13 +285,13 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
 
         $oArticle = $this->getMock('stdclass', ['load']);
         $oArticle->expects($this->once())->method('load')
-            ->with($this->equalTo($databaseResult))
-            ->will($this->returnValue(false));
+            ->with($databaseResult)
+            ->willReturn(false);
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
         $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, ['fetchBannerArticleId']);
-        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
     }
@@ -301,13 +302,13 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
 
         $oArticle = $this->getMock('stdclass', ['load']);
         $oArticle->expects($this->once())->method('load')
-            ->with($this->equalTo('2000'))
-            ->will($this->returnValue(true));
+            ->with('2000')
+            ->willReturn(true);
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
         $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, ['fetchBannerArticleId']);
-        $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
+        $promotionMock->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $oArt = $promotionMock->getBannerArticle();
         $this->assertNotNull($oArt);
@@ -323,7 +324,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $oPromo->oxactions__oxpic = new oxField("current_de.jpg");
         $oConfig = $this->getConfig();
 
-        $this->assertEquals($oConfig->getPictureUrl("promo/") . "current_de.jpg", $oPromo->getBannerPictureUrl());
+        $this->assertSame($oConfig->getPictureUrl("promo/") . "current_de.jpg", $oPromo->getBannerPictureUrl());
     }
 
     /**
@@ -344,7 +345,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
     {
         $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxpic = new oxField("noSuchPic.jpg");
-        $this->assertEquals($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
+        $this->assertSame($this->getConfig()->getPictureUrl("master/") . "nopic.jpg", $oPromo->getBannerPictureUrl());
     }
 
     /**
@@ -355,14 +356,14 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $sUrl = "action-link";
 
         $oUtilsUrl = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, ['processUrl', 'addShopHost']);
-        $oUtilsUrl->expects($this->any())->method('addShopHost')->with($sUrl)->will($this->returnValue('http://with-url/' . $sUrl));
-        $oUtilsUrl->expects($this->any())->method('processUrl')->with('http://with-url/' . $sUrl)->will($this->returnValue($sUrl . '/with-params'));
+        $oUtilsUrl->method('addShopHost')->with($sUrl)->willReturn('http://with-url/' . $sUrl);
+        $oUtilsUrl->method('processUrl')->with('http://with-url/' . $sUrl)->willReturn($sUrl . '/with-params');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsUrl::class, $oUtilsUrl);
 
         $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxlink = new oxField($sUrl);
 
-        $this->assertEquals($sUrl . '/with-params', $oPromo->getBannerLink());
+        $this->assertSame($sUrl . '/with-params', $oPromo->getBannerLink());
     }
 
     /**
@@ -383,14 +384,14 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
     {
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ['getLink']);
         $oArticle->expects($this->once())->method('getLink')
-            ->will($this->returnValue("testLinkToArticle"));
+            ->willReturn("testLinkToArticle");
 
         $oPromo = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, ['getBannerArticle']);
         $oPromo->expects($this->once())->method('getBannerArticle')
-            ->will($this->returnValue($oArticle));
+            ->willReturn($oArticle);
 
         $oPromo->oxactions__oxlink = new oxField(null);
 
-        $this->assertEquals("testLinkToArticle", $oPromo->getBannerLink());
+        $this->assertSame("testLinkToArticle", $oPromo->getBannerLink());
     }
 }

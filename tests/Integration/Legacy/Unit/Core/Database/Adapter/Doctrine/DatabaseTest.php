@@ -25,7 +25,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
     /**
      * Set up the test
      */
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
     {
         $quoted = $this->database->quote(null);
 
-        $this->assertEquals("''", $quoted);
+        $this->assertSame("''", $quoted);
     }
 
     /**
@@ -49,7 +49,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
     {
         $quoted = $this->database->quote('');
 
-        $this->assertEquals("''", $quoted);
+        $this->assertSame("''", $quoted);
     }
 
     /**
@@ -59,7 +59,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
     {
         $quoted = $this->database->quote('NonEmptyValue');
 
-        $this->assertEquals("'NonEmptyValue'", $quoted);
+        $this->assertSame("'NonEmptyValue'", $quoted);
     }
 
     /**
@@ -70,7 +70,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
         $quoted = $this->database->quote("NonEmptyValue");
         $quoted = $this->database->quote($quoted);
 
-        $this->assertEquals("'\'NonEmptyValue\''", $quoted);
+        $this->assertSame("'\'NonEmptyValue\''", $quoted);
     }
 
     /**
@@ -82,7 +82,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
 
         $quotedArray = $this->database->quoteArray($originalArray);
 
-        $this->assertEquals($originalArray, $quotedArray);
+        $this->assertSame($originalArray, $quotedArray);
     }
 
     /**
@@ -96,7 +96,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
 
         $expectedQuotedArray = ["'Hello'", "'quoteThis'"];
 
-        $this->assertEquals($expectedQuotedArray, $quotedArray);
+        $this->assertSame($expectedQuotedArray, $quotedArray);
     }
 
     /**
@@ -118,45 +118,43 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function dataProviderTestQuoteIdentifier()
+    public function dataProviderTestQuoteIdentifier(): \Iterator
     {
         $identifierQuoteCharacter = '`';
-        return [
-            [
-                'string to be quoted',
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
-                'A normal string will be quoted with "' . $identifierQuoteCharacter . '""'
-            ],
-            [
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
-                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
-            ],
-            [
-                $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
-                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
-            ],
-            [
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
-                $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
-                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
-            ],
-            [
-                $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
-                $identifierQuoteCharacter . 'string to  be quoted' . $identifierQuoteCharacter,
-                'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
-            ],
-            [
-                '',
-                $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
-                'An empty string will be quoted with "' . $identifierQuoteCharacter . '"'
-            ],
-            [
-                null,
-                $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
-                'An empty string will be quoted as an empty string with "' . $identifierQuoteCharacter . '"'
-            ],
+        yield [
+            'string to be quoted',
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+            'A normal string will be quoted with "' . $identifierQuoteCharacter . '""'
+        ];
+        yield [
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+            'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+        ];
+        yield [
+            $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+            'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+        ];
+        yield [
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
+            $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
+            'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+        ];
+        yield [
+            $identifierQuoteCharacter . 'string to ' . $identifierQuoteCharacter . ' be quoted' . $identifierQuoteCharacter,
+            $identifierQuoteCharacter . 'string to  be quoted' . $identifierQuoteCharacter,
+            'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
+        ];
+        yield [
+            '',
+            $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
+            'An empty string will be quoted with "' . $identifierQuoteCharacter . '"'
+        ];
+        yield [
+            null,
+            $identifierQuoteCharacter . '' . $identifierQuoteCharacter,
+            'An empty string will be quoted as an empty string with "' . $identifierQuoteCharacter . '"'
         ];
     }
 }

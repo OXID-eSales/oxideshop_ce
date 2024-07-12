@@ -14,22 +14,22 @@ class SubShopSpecificFileCacheTest extends \PHPUnit\Framework\TestCase
         $sTest = "test val";
 
         $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, ['getShopId'], [], '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(1));
+        $shopIdCalculator->method('getShopId')->willReturn(1);
 
         $moduleCache = oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
 
         $moduleCache->setToCache("testKey", $sTest);
-        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey"));
+        $this->assertSame($sTest, $moduleCache->getFromCache("testKey"));
     }
 
     public function testGetCacheFileName()
     {
         $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, ['getShopId'], [], '', false);
-        $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(2));
+        $shopIdCalculator->method('getShopId')->willReturn(2);
 
         $moduleCache = $this->getProxyClass('oxSubShopSpecificFileCache', [$shopIdCalculator]);
 
         $sExpt = "config.2.testval.txt";
-        $this->assertEquals($sExpt, basename((string) $moduleCache->getCacheFilePath("testVal")));
+        $this->assertSame($sExpt, basename((string) $moduleCache->getCacheFilePath("testVal")));
     }
 }

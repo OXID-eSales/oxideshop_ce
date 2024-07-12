@@ -21,7 +21,7 @@ class ExceptionErrorTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oErr = oxNew('exceptionError');
-        $this->assertEquals('message/exception', $oErr->render());
+        $this->assertSame('message/exception', $oErr->render());
     }
 
     /**
@@ -33,14 +33,14 @@ class ExceptionErrorTest extends \PHPUnit\Framework\TestCase
         $aErrors = ["default" => ["aaa" => serialize($sEx)]];
 
         $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, ["getErrors"]);
-        $oErr->expects($this->once())->method('getErrors')->will($this->returnValue($aErrors));
+        $oErr->expects($this->once())->method('getErrors')->willReturn($aErrors);
 
         $oErr->displayExceptionError();
 
         $aTplVars = $oErr->getViewDataElement("Errors");
         $oViewEx = $aTplVars["default"]["aaa"];
 
-        $this->assertEquals($sEx, $oViewEx);
+        $this->assertSame($sEx, $oViewEx);
     }
 
     /**
@@ -49,15 +49,15 @@ class ExceptionErrorTest extends \PHPUnit\Framework\TestCase
     public function testDisplayExceptionError_resetsErrorsInSession()
     {
         $this->getSession()->setVariable("Errors", "testValue");
-        $this->assertEquals("testValue", $this->getSession()->getVariable("Errors"));
+        $this->assertSame("testValue", $this->getSession()->getVariable("Errors"));
 
         $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, ["getErrors", 'getViewData']);
-        $oErr->expects($this->once())->method('getViewData')->will($this->returnValue([]));
-        $oErr->expects($this->once())->method('getErrors')->will($this->returnValue([]));
+        $oErr->expects($this->once())->method('getViewData')->willReturn([]);
+        $oErr->expects($this->once())->method('getErrors')->willReturn([]);
 
         $oErr->displayExceptionError();
 
-        $this->assertEquals([], $this->getSession()->getVariable("Errors"));
+        $this->assertSame([], $this->getSession()->getVariable("Errors"));
     }
 
     /**
@@ -68,6 +68,6 @@ class ExceptionErrorTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable("Errors", "testValue");
 
         $oErr = $this->getProxyClass("exceptionError");
-        $this->assertEquals("testValue", $oErr->getErrors());
+        $this->assertSame("testValue", $oErr->getErrors());
     }
 }

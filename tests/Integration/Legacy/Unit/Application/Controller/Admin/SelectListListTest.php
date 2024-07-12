@@ -20,10 +20,10 @@ class SelectListListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListList::class, ["authorize"]);
-        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
+        $oView->method('authorize')->willReturn(true);
         $oView->init();
         $oView->render();
-        $this->assertEquals(['oxselectlist' => ["oxtitle" => "asc"]], $oView->getListSorting());
+        $this->assertSame(['oxselectlist' => ["oxtitle" => "asc"]], $oView->getListSorting());
     }
 
     /**
@@ -33,6 +33,6 @@ class SelectListListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('SelectList_List');
-        $this->assertEquals('selectlist_list', $oView->render());
+        $this->assertSame('selectlist_list', $oView->render());
     }
 }

@@ -24,9 +24,9 @@ class UserOverviewTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('User_Overview');
-        $this->assertEquals('user_overview', $oView->render());
+        $this->assertSame('user_overview', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof user);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\User::class, $aViewData['edit']);
     }
 }

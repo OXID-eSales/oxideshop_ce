@@ -32,7 +32,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
     /** @var oxStrRegular */
     protected $_oSubj;
 
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -49,7 +49,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testStrlen()
     {
-        $this->assertEquals(
+        $this->assertSame(
             2,
             $this->_oSubj->strlen($this->_2Utf($this->_sStrNeedle))
         );
@@ -73,7 +73,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testStrpos2Params()
     {
-        $this->assertEquals(
+        $this->assertSame(
             26,
             $this->_oSubj->strpos($this->_sStrHaystack, "H�hen")
         );
@@ -85,13 +85,13 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
     public function testPregMatchAll()
     {
         $aRez = [['a', 'b', 'c']];
-        $this->assertEquals(3, $this->_oSubj->preg_match_all("/[^\-]+/", $this->_2Utf("a-b-c"), $aMatches));
-        $this->assertEquals($aRez, $aMatches);
+        $this->assertSame(3, $this->_oSubj->preg_match_all("/[^\-]+/", $this->_2Utf("a-b-c"), $aMatches));
+        $this->assertSame($aRez, $aMatches);
     }
 
     public function testStrpos3Params()
     {
-        $this->assertEquals(
+        $this->assertSame(
             33,
             $this->_oSubj->strpos($this->_sStrHaystack, "H�", 27)
         );
@@ -107,7 +107,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testStrtolower()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "h� h�",
             $this->_oSubj->strtolower($this->_sStrUpperCase)
         );
@@ -115,7 +115,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testStrtoupper()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H� H�",
             $this->_oSubj->strtoupper("h� h�")
         );
@@ -123,7 +123,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testHtmlspecialchars()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H� H� &lt;b&gt;bold&lt;/b&gt;&amp;amp;",
             $this->_oSubj->htmlspecialchars($this->_sStrHtmlEntities)
         );
@@ -131,7 +131,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testHtmlentities()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H&Ouml; H&Ouml; &lt;b&gt;bold&lt;/b&gt;&amp;amp;",
             $this->_oSubj->htmlentities($this->_sStrHtmlEntities)
         );
@@ -139,7 +139,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testHtmlEntityDecode()
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->_sStrHtmlEntities,
             $this->_oSubj->html_entity_decode("H&Ouml; H&Ouml; &lt;b&gt;bold&lt;/b&gt;&amp;amp;")
         );
@@ -147,7 +147,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testPregSplit()
     {
-        $this->assertEquals(
+        $this->assertSame(
             ["H�", "H�"],
             $this->_oSubj->preg_split('/ /', $this->_sStrUpperCase)
         );
@@ -155,7 +155,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testPregReplace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H�_H�",
             $this->_oSubj->preg_replace('/ /', '_', $this->_sStrUpperCase)
         );
@@ -163,7 +163,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testPregReplaceArray()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H�_H�",
             $this->_oSubj->preg_replace(['/ /', '|//+|'], '_', $this->_sStrUpperCase)
         );
@@ -172,7 +172,7 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
     public function testPregReplaceCallback()
     {
         $callBack = fn($matches) => "_";
-        $this->assertEquals(
+        $this->assertSame(
             "H�_H�",
             $this->_oSubj->preg_replace_callback('/ /', $callBack, $this->_sStrUpperCase)
         );
@@ -189,36 +189,36 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testPregMatch()
     {
-        $this->assertEquals(
+        $this->assertSame(
             1,
             $this->_oSubj->preg_match('/Bau/', $this->_sStrHaystack)
         );
         $aRes = [];
         $this->_oSubj->preg_match('/Bau/', $this->_sStrHaystack, $aRes);
-        $this->assertEquals(['Bau'], $aRes);
+        $this->assertSame(['Bau'], $aRes);
     }
 
     public function testUcfirst()
     {
         // with umlaut's doesn't work
-        $this->assertEquals('�l', $this->_oSubj->ucfirst('�l'));
+        $this->assertSame('�l', $this->_oSubj->ucfirst('�l'));
     }
 
     public function testWordwrap()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "H�\nH�",
             $this->_oSubj->wordwrap($this->_sStrUpperCase, 2)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "H�\na\nH�\na",
             $this->_oSubj->wordwrap("H�a H�a", 2, "\n", true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "H�a\na\nH�a\na",
             $this->_oSubj->wordwrap("H�aa H�aa", 3, "\n", true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "H�a\nH�a",
             $this->_oSubj->wordwrap("H�a H�a", 2, "\n")
         );
@@ -226,35 +226,35 @@ class StrRegularTest extends \PHPUnit\Framework\TestCase
 
     public function testRecodeEntities()
     {
-        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities(' � � � � � � �', true));
-        $this->assertEquals(' � � � � � � � &amp;', $this->_oSubj->recodeEntities(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', false, ['&amp;'], ['&']));
+        $this->assertSame(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities(' � � � � � � �', true));
+        $this->assertSame(' � � � � � � � &amp;', $this->_oSubj->recodeEntities(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', false, ['&amp;'], ['&']));
     }
 
     public function testHasSpecialChars()
     {
-        $this->assertEquals(1, $this->_oSubj->hasSpecialChars(' � � � � � � �'));
-        $this->assertEquals(0, $this->_oSubj->hasSpecialChars('aaaa'));
+        $this->assertSame(1, $this->_oSubj->hasSpecialChars(' � � � � � � �'));
+        $this->assertSame(0, $this->_oSubj->hasSpecialChars('aaaa'));
     }
 
     public function testCleanStr()
     {
-        $this->assertEquals(' " \' : ! ?            ', $this->_oSubj->cleanStr(' " \'' . " : ! ? \n \r \t \x95 \xa0 ;"));
+        $this->assertSame(' " \' : ! ?            ', $this->_oSubj->cleanStr(' " \'' . " : ! ? \n \r \t \x95 \xa0 ;"));
     }
 
     public function testCleanStrLeavsDots()
     {
-        $this->assertEquals('.  ', $this->_oSubj->cleanStr(". ;"));
+        $this->assertSame('.  ', $this->_oSubj->cleanStr(". ;"));
     }
 
     public function testJsonEncode()
     {
-        $this->assertEquals('[". ;","asdasd",{"asd":"asdasd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => 'asdasd', 'asda']]));
-        $this->assertEquals('[". ;","asdasd",{"asd":"as\n\t\\\\d\\\\a\\\\\'\"[]{sd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => "as\n\t\\d\a\'\"[]{sd", 'asda']]));
+        $this->assertSame('[". ;","asdasd",{"asd":"asdasd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => 'asdasd', 'asda']]));
+        $this->assertSame('[". ;","asdasd",{"asd":"as\n\t\\\\d\\\\a\\\\\'\"[]{sd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => "as\n\t\\d\a\'\"[]{sd", 'asda']]));
     }
 
     public function testStripTags()
     {
-        $this->assertEquals('without styling definition.', $this->_oSubj->strip_tags('<div>without</div> <style type="text/css">p {color:blue;}</style>styling definition.'));
-        $this->assertEquals('with <style type="text/css">p {color:blue;}</style>styling definition.', $this->_oSubj->strip_tags('<div>with</div> <style type="text/css">p {color:blue;}</style>styling definition.', '<style>'));
+        $this->assertSame('without styling definition.', $this->_oSubj->strip_tags('<div>without</div> <style type="text/css">p {color:blue;}</style>styling definition.'));
+        $this->assertSame('with <style type="text/css">p {color:blue;}</style>styling definition.', $this->_oSubj->strip_tags('<div>with</div> <style type="text/css">p {color:blue;}</style>styling definition.', '<style>'));
     }
 }

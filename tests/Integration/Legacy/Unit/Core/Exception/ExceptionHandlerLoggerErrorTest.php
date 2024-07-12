@@ -45,7 +45,7 @@ final class ExceptionHandlerLoggerErrorTest extends \PHPUnit\Framework\TestCase
     /** @var Config */
     private $configInstance;
 
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ final class ExceptionHandlerLoggerErrorTest extends \PHPUnit\Framework\TestCase
         Registry::set(Config::class, $config);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Registry::set(Config::class, $this->configInstance);
 
@@ -91,7 +91,7 @@ final class ExceptionHandlerLoggerErrorTest extends \PHPUnit\Framework\TestCase
             $exceptionHandler->handleUncaughtException($exception);
         } catch (\Throwable $throwable) {
             $exceptionThrown = true;
-            $this->assertEquals('My test exception', $throwable->getMessage());
+            $this->assertSame('My test exception', $throwable->getMessage());
             $log = file_get_contents($this->logFileName);
             $this->assertTrue(str_contains($log, 'My test exception'));
         }

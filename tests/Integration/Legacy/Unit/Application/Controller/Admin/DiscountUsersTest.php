@@ -25,9 +25,9 @@ class DiscountUsersTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Discount_Users');
-        $this->assertEquals('discount_users', $oView->render());
+        $this->assertSame('discount_users', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['allgroups2']));
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('allgroups2', $aViewData);
+        $this->assertArrayHasKey('readonly', $aViewData);
     }
 }

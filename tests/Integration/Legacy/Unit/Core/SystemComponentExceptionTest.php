@@ -15,7 +15,7 @@ class SystemComponentExceptionTest extends \PHPUnit\Framework\TestCase
         $oTestObject = oxNew('oxSystemComponentException');
         $this->assertStringContainsString('SystemComponentException', $oTestObject::class);
         $oTestObject->setComponent($sComponent);
-        $this->assertEquals($sComponent, $oTestObject->getComponent());
+        $this->assertSame($sComponent, $oTestObject->getComponent());
     }
 
     // We check on class name (exception class) and message only - rest is not checked yet
@@ -39,7 +39,7 @@ class SystemComponentExceptionTest extends \PHPUnit\Framework\TestCase
         $oTestObject->setComponent($sComponent);
         $aRes = $oTestObject->getValues();
         $this->assertArrayHasKey('component', $aRes);
-        $this->assertTrue($sComponent === $aRes['component']);
+        $this->assertSame($sComponent, $aRes['component']);
     }
 
     /**

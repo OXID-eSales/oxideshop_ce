@@ -36,7 +36,7 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertEquals('object_seo', $oView->render());
+        $this->assertSame('object_seo', $oView->render());
     }
 
     /**
@@ -46,7 +46,7 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertEquals('oxmanufacturer', $oView->getType());
+        $this->assertSame('oxmanufacturer', $oView->getType());
     }
 
     /**
@@ -60,7 +60,7 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, ["getEditObjectId"]);
-        $oView->expects($this->atLeastOnce())->method('getEditObjectId')->will($this->returnValue(123));
+        $oView->expects($this->atLeastOnce())->method('getEditObjectId')->willReturn(123);
 
         $this->assertNull($oView->save());
     }
@@ -71,7 +71,7 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Manufacturer_Seo');
-        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderManufacturer);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\SeoEncoderManufacturer::class, $oView->getEncoder());
     }
 
     /**
@@ -124,12 +124,12 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->save();
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class, ["getManufacturerUri"]);
-        $oEncoder->expects($this->once())->method('getManufacturerUri')->will($this->returnValue("ManufacturerUri"));
+        $oEncoder->expects($this->once())->method('getManufacturerUri')->willReturn("ManufacturerUri");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, ["getEditObjectId", "getEncoder"]);
-        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
-        $this->assertEquals("ManufacturerUri", $oView->getEntryUri());
+        $oView->expects($this->once())->method('getEditObjectId')->willReturn("_test1");
+        $oView->expects($this->once())->method('getEncoder')->willReturn($oEncoder);
+        $this->assertSame("ManufacturerUri", $oView->getEntryUri());
     }
 
     /**
@@ -144,7 +144,7 @@ class ManufacturerSeoTest extends \PHPUnit\Framework\TestCase
         $oManufacturer->save();
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerSeo::class, ["getEditLang"]);
-        $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
+        $oView->expects($this->once())->method('getEditLang')->willReturn(0);
 
         $this->assertEquals($oManufacturer->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }

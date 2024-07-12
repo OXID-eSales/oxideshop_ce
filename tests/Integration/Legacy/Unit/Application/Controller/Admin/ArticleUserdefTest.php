@@ -25,7 +25,7 @@ class ArticleUserdefTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Article_Userdef');
-        $this->assertEquals('article_userdef', $oView->render());
+        $this->assertSame('article_userdef', $oView->render());
         $this->assertTrue($oView->getViewDataElement('readonly'));
     }
 }

@@ -27,10 +27,10 @@ class DeliverySetMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Main');
-        $this->assertEquals('deliveryset_main', $oView->render());
+        $this->assertSame('deliveryset_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof DeliverySet);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\DeliverySet::class, $aViewData['edit']);
     }
 
     /**
@@ -42,10 +42,10 @@ class DeliverySetMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Main');
-        $this->assertEquals('deliveryset_main', $oView->render());
+        $this->assertSame('deliveryset_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -62,7 +62,7 @@ class DeliverySetMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('DeliverySet_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in DeliverySet_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in DeliverySet_Main::save()");
 
             return;
         }
@@ -83,7 +83,7 @@ class DeliverySetMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('DeliverySet_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in DeliverySet_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in DeliverySet_Main::save()");
 
             return;
         }

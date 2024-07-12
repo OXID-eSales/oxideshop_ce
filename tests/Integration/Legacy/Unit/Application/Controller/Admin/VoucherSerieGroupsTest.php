@@ -26,9 +26,9 @@ class VoucherSerieGroupsTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Groups');
-        $this->assertEquals('voucherserie_groups', $oView->render());
+        $this->assertSame('voucherserie_groups', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof voucherserie);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VoucherSerie::class, $aViewData['edit']);
     }
 }

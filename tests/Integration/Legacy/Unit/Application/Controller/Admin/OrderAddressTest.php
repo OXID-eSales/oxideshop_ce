@@ -26,10 +26,10 @@ class OrderAddressTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Order_Address');
-        $this->assertEquals('order_address', $oView->render());
+        $this->assertSame('order_address', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof order);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Order::class, $aViewData['edit']);
     }
 
     /**
@@ -41,10 +41,10 @@ class OrderAddressTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Order_Address');
-        $this->assertEquals('order_address', $oView->render());
+        $this->assertSame('order_address', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -61,7 +61,7 @@ class OrderAddressTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Order_Address');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Order_Address::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Order_Address::save()");
 
             return;
         }
@@ -82,6 +82,6 @@ class OrderAddressTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Order_Address');
         $aInData = $oView->processAddress($aInData, "oxorder__oxdel", ["oxorder__oxdelsal"]);
 
-        $this->assertEquals($aOutData, $aInData);
+        $this->assertSame($aOutData, $aInData);
     }
 }

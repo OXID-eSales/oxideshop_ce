@@ -53,9 +53,9 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
     public function testGetHtml()
     {
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(0));
-        $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(0);
+        $oCfg->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->expects($this->never())->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -65,28 +65,28 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = '<a href="http://shop/out/media/test.jpg" target="_blank">test1</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
 
         // -- SSL ----------
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(1));
-        $oCfg->expects($this->never())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(1);
+        $oCfg->expects($this->never())->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -96,29 +96,29 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = '<a href="https://shop/out/media/test.jpg" target="_blank">test1</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getHtml());
     }
 
     public function testGetHtmlLink($blNewPage = false)
     {
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(0));
-        $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(0);
+        $oCfg->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->expects($this->never())->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -128,28 +128,28 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = '<a href="http://shop/out/media/test.jpg" target="_blank">test1</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.youtube.com/watch?v=ZN239G6aJZo" target="_blank">test2</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
 
         // -- SSL -------------------
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(1));
-        $oCfg->expects($this->never())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(1);
+        $oCfg->expects($this->never())->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -159,21 +159,21 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = '<a href="https://shop/out/media/test.jpg" target="_blank">test1</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.youtube.com/watch?v=ZN239G6aJZo" target="_blank">test2</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = '<a href="http://www.site.com/watch?v=ZN239G6aJZo" target="_blank">test4</a>';
-        $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
+        $this->assertSame($sExpt, $oMediaUrl->getHtmlLink());
     }
 
     public function testGetLink()
@@ -181,9 +181,9 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(0));
-        $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(0);
+        $oCfg->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->expects($this->never())->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -193,28 +193,28 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'test.jpg';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'http://www.youtube.com/watch?v=ZN239G6aJZo';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'http://www.site.com/watch?v=ZN239G6aJZo';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // -- SSL -------------------
 
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isSsl', 'getShopUrl', 'getSslShopUrl']);
-        $oCfg->expects($this->any())->method('isSsl')->will($this->returnValue(1));
-        $oCfg->expects($this->never())->method('getShopUrl')->will($this->returnValue('http://shop/'));
-        $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
+        $oCfg->method('isSsl')->willReturn(1);
+        $oCfg->expects($this->never())->method('getShopUrl')->willReturn('http://shop/');
+        $oCfg->method('getSslShopUrl')->willReturn('https://shop/');
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, ['getConfig'], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -224,35 +224,35 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = 'https://shop/out/media/test.jpg';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // uploaded file with full url (#2444)
         $oMediaUrl->oxmediaurls__oxurl = new oxField('https://shop/out/media/test.jpg', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = 'https://shop/out/media/test.jpg';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // uploaded file with different url (#2444) is it ok so?
         $oMediaUrl->oxmediaurls__oxurl = new oxField('https://shop/out/mymedia/test.jpg', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test1', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(1, oxField::T_RAW);
         $sExpt = 'https://shop/out/media/test.jpg';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // youtube link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.youtube.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test2', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'http://www.youtube.com/watch?v=ZN239G6aJZo';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
 
         // simple link
         $oMediaUrl->oxmediaurls__oxurl = new oxField('http://www.site.com/watch?v=ZN239G6aJZo', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxdesc = new oxField('test4', oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'http://www.site.com/watch?v=ZN239G6aJZo';
-        $this->assertEquals($sExpt, $oMediaUrl->getLink());
+        $this->assertSame($sExpt, $oMediaUrl->getLink());
     }
 
     public function testDeleteNonUploaded()
@@ -263,9 +263,9 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->load('_test3');
 
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(false, oxField::T_RAW);
-        $this->assertTrue(file_exists($sFilePath));
+        $this->assertFileExists($sFilePath);
         $oMediaUrl->delete();
-        $this->assertTrue(file_exists($sFilePath));
+        $this->assertFileExists($sFilePath);
     }
 
     public function testDeleteUploaded()
@@ -276,9 +276,9 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->load('_test3');
 
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
-        $this->assertTrue(file_exists($sFilePath));
+        $this->assertFileExists($sFilePath);
         $oMediaUrl->delete();
-        $this->assertFalse(file_exists($sFilePath));
+        $this->assertFileNotExists($sFilePath);
     }
 
     public function testDeleteUploadedIfFullPathAdded()
@@ -290,9 +290,9 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
 
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(true, oxField::T_RAW);
         $oMediaUrl->oxmediaurls__oxurl = new oxField($this->getConfig()->getShopUrl() . '/out/media/test.jpg', oxField::T_RAW);
-        $this->assertTrue(file_exists($sFilePath));
+        $this->assertFileExists($sFilePath);
         $oMediaUrl->delete();
-        $this->assertFalse(file_exists($sFilePath));
+        $this->assertFileNotExists($sFilePath);
     }
 
     public function testGetYoutubeHtml()
@@ -301,7 +301,7 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->load('_test2');
 
         $sExpt = 'test2<br><iframe width="425" height="344" src="http://www.youtube.com/embed/ZN239G6aJZo" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getYoutubeHtml());
     }
 
     public function testGetYoutubeHtmlWithParams()
@@ -311,7 +311,7 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
 
         $url = $this->encode("http://www.youtube.com/embed/GQ3AcPEPbH0?loop=1&rel=0");
         $sExpt = sprintf('test5<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>', $url);
-        $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getYoutubeHtml());
     }
 
     public function testNewYoutubePattern()
@@ -320,6 +320,6 @@ class MediaurlTest extends \PHPUnit\Framework\TestCase
         $oMediaUrl->load('_test6');
 
         $sExpt = 'test6<br><iframe width="425" height="344" src="http://www.youtube.com/embed/tRCwo6pSHnk" frameborder="0" allowfullscreen></iframe>';
-        $this->assertEquals($sExpt, $oMediaUrl->getYoutubeHtml());
+        $this->assertSame($sExpt, $oMediaUrl->getYoutubeHtml());
     }
 }

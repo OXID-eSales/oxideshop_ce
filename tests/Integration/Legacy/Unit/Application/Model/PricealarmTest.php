@@ -35,7 +35,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
-        $this->assertEquals('1970-01-01 00:00:00', $oAlarm->oxpricealarm__oxinsert->value);
+        $this->assertSame('1970-01-01 00:00:00', $oAlarm->oxpricealarm__oxinsert->value);
     }
 
     public function testGetFPrice()
@@ -49,7 +49,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
-        $this->assertEquals('23,00', $oAlarm->getFPrice());
+        $this->assertSame('23,00', $oAlarm->getFPrice());
     }
 
     public function testGetPrice()
@@ -63,7 +63,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
-        $this->assertEquals('23.00', $oAlarm->getPrice());
+        $this->assertSame('23.00', $oAlarm->getPrice());
     }
 
     public function testGetArticle()
@@ -76,7 +76,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
-        $this->assertEquals('1672', $oAlarm->getArticle()->getId());
+        $this->assertSame('1672', $oAlarm->getArticle()->getId());
     }
 
     public function testGetTitle()
@@ -132,7 +132,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->load('testalarm');
-        $this->assertEquals('12,36', $oAlarm->getFProposedPrice());
+        $this->assertSame('12,36', $oAlarm->getFProposedPrice());
     }
 
     public function testGetPriceAlarmStatus()
@@ -144,9 +144,9 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $oAlarm->save();
 
         $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, ['getPrice']);
-        $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("15"));
+        $oAlarm->expects($this->once())->method('getPrice')->willReturn("15");
         $oAlarm->load('testalarm');
-        $this->assertEquals(0, $oAlarm->getPriceAlarmStatus());
+        $this->assertSame(0, $oAlarm->getPriceAlarmStatus());
     }
 
     public function testGetPriceAlarmStatusSendEmail()
@@ -159,9 +159,9 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $oAlarm->save();
 
         $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, ['getPrice']);
-        $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("15"));
+        $oAlarm->expects($this->once())->method('getPrice')->willReturn("15");
         $oAlarm->load('testalarm');
-        $this->assertEquals(2, $oAlarm->getPriceAlarmStatus());
+        $this->assertSame(2, $oAlarm->getPriceAlarmStatus());
     }
 
     public function testGetPriceAlarmStatusChangedPrice()
@@ -173,8 +173,8 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $oAlarm->save();
 
         $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, ['getPrice']);
-        $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("12"));
+        $oAlarm->expects($this->once())->method('getPrice')->willReturn("12");
         $oAlarm->load('testalarm');
-        $this->assertEquals(1, $oAlarm->getPriceAlarmStatus());
+        $this->assertSame(1, $oAlarm->getPriceAlarmStatus());
     }
 }

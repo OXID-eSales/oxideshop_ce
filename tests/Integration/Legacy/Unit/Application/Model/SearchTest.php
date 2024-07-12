@@ -64,8 +64,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles();
         $iAllArtCnt = $oSearch->getSearchArticleCount();
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testEmptySearchWithCorrectCategory()
@@ -81,11 +81,11 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles('', $sID);
         $iAllArtCnt = $oSearch->getSearchArticleCount('', $sID);
 
-        $aAll = oxDb::getDb()->getAll(sprintf('select oxobjectid from oxobject2category where oxcatnid=\'%s\'', $sID));
+        $aAll = oxDb::getDb()->getAll(sprintf("select oxobjectid from oxobject2category where oxcatnid='%s'", $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
-        $this->assertEquals(10, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertSame(10, $oSearchList->count());
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -97,7 +97,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testEmptySearchWithIncorrectCategory()
@@ -108,8 +108,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles('', "xxx");
         $iAllArtCnt = $oSearch->getSearchArticleCount('', "xxx");
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testEmptySearchWithCorrectVendor()
@@ -123,7 +123,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, $sID);
 
-        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxvendorid=\'%s\'', $sID));
+        $aAll = oxDb::getDb()->getAll(sprintf("select oxid from oxarticles where oxvendorid='%s'", $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -132,7 +132,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -144,7 +144,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testEmptySearchWithCorrectManufacturer()
@@ -159,7 +159,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles('', false, false, $sID);
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount('', false, false, $sID);
 
-        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxmanufacturerid=\'%s\'', $sID));
+        $aAll = oxDb::getDb()->getAll(sprintf("select oxid from oxarticles where oxmanufacturerid='%s'", $sID));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -168,7 +168,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -180,7 +180,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testEmptySearchWithIncorrectVendor()
@@ -188,8 +188,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles("", false, "xxx");
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount("", false, "xxx");
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testEmptySearchWithIncorrectManufacturer()
@@ -197,8 +197,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $this->_oSearchHandler->getSearchArticles("", false, false, "xxx");
         $iAllArtCnt = $this->_oSearchHandler->getSearchArticleCount("", false, false, "xxx");
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testEmptySearchWithCorrectVendorAndWithSort()
@@ -219,7 +219,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("", false, $sID, false, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, $sID, false);
 
-        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxvendorid=\'%s\' order by %s ', $sID, $sSortBy));
+        $aAll = oxDb::getDb()->getAll(sprintf("select oxid from oxarticles where oxvendorid='%s' order by %s ", $sID, $sSortBy));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -228,7 +228,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -240,7 +240,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testEmptySearchWithCorrectManufacturerAndWithSort()
@@ -260,7 +260,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("", false, false, $sID, $sSortBy);
         $iAllArtCnt = $oSearch->getSearchArticleCount("", false, false, $sID);
 
-        $aAll = oxDb::getDb()->getAll(sprintf('select oxid from oxarticles where oxmanufacturerid=\'%s\' order by %s ', $sID, $sSortBy));
+        $aAll = oxDb::getDb()->getAll(sprintf("select oxid from oxarticles where oxmanufacturerid='%s' order by %s ", $sID, $sSortBy));
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
@@ -269,7 +269,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -281,7 +281,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testSearchWithParam()
@@ -311,7 +311,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $searchList->count());
-        $this->assertEquals(count($all), $allArticlesCount);
+        $this->assertCount($allArticlesCount, $all);
 
         // now looking if all found articles are correct
         $foundIds = $searchList->arrayKeys();
@@ -323,7 +323,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($foundIds));
+        $this->assertCount(0, $foundIds);
     }
 
     public function testSearchForArtNr()
@@ -333,12 +333,12 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("1142");
         $iAllArtCnt = $oSearch->getSearchArticleCount("1142");
 
-        $this->assertEquals(1, $oSearchList->count());
-        $this->assertEquals(1, $iAllArtCnt);
+        $this->assertSame(1, $oSearchList->count());
+        $this->assertSame(1, $iAllArtCnt);
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = $oSearchList->current();
-        $this->assertEquals("1142", $oArticle->getId());
+        $this->assertSame("1142", $oArticle->getId());
     }
 
     public function testSearchWithParamInSecondPage()
@@ -352,7 +352,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a");
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        $sQ = sprintf("select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < '", $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
         {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
         {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1
         and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
@@ -361,9 +361,9 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $aAll = oxDb::getDb()->getAll($sQ . " limit 10, 10 ");
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
-        $this->assertEquals(10, $oSearchList->count());
+        $this->assertSame(10, $oSearchList->count());
 
-        $this->assertEquals(count(oxDb::getDb()->getAll($sQ)), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, oxDb::getDb()->getAll($sQ));
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -375,7 +375,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testSearchWithParamCorrectVendor()
@@ -393,7 +393,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, $sID);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        $sQ = sprintf("select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < '", $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
         {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
         {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sID}'
         and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
@@ -408,7 +408,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -420,7 +420,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testSearchWithParamCorrectManufacturer()
@@ -439,7 +439,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $iAllArtCnt = $oSearch->getSearchArticleCount("a", false, false, $sID);
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
-        $sQ = sprintf('select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < \'', $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
+        $sQ = sprintf("select oxid from %s where ( ( %s.oxactive = 1  or ( %s.oxactivefrom < '", $sArticleTable, $sArticleTable, $sArticleTable) . date('Y-m-d H:i:s') . "' and
         {$sArticleTable}.oxactiveto > '" . date('Y-m-d H:i:s') . "' ) ) and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock +
         {$sArticleTable}.oxvarstock ) > 0 ) ) and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxmanufacturerid = '{$sID}'
         and ( ( {$sArticleTable}.oxtitle like '%a%' or  {$sArticleTable}.oxshortdesc like '%a%' or {$sArticleTable}.oxsearchkeys like '%a%' or
@@ -454,7 +454,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -466,7 +466,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testSearchWithParamCorrectVendorCorrectCatCorrectManufacturer()
@@ -490,7 +490,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sQ = "select {$sArticleTable}.* from {$sArticleTable}, oxobject2category as
         oxobject2category where oxobject2category.oxcatnid='{$sIDCat}' and
         oxobject2category.oxobjectid={$sArticleTable}.oxid and ( ( {$sArticleTable}.oxactive = 1  or (
-        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf('\' and %s.oxactiveto > \'', $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
+        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf("' and %s.oxactiveto > '", $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
         and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock + {$sArticleTable}.oxvarstock ) > 0  )  ) and
         {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sIDVend}' and {$sArticleTable}.oxmanufacturerid = '{$sIDMan}'
         and ( (  {$sArticleTable}.oxtitle like '%a%' or {$sArticleTable}.oxshortdesc like '%a%' or  {$sArticleTable}.oxsearchkeys like '%a%' or
@@ -505,7 +505,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -517,7 +517,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     public function testSearchWithParamWrongVendorCorrectCat()
@@ -532,8 +532,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("bar", $sIDCat, "sdfsdf");
         $iAllArtCnt = $oSearch->getSearchArticleCount("bar", $sIDCat, "sdfsdf");
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testSearchWithParamWrongManufacturerCorrectCat()
@@ -548,8 +548,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("bar", $sIDCat, false, "sdfsdf");
         $iAllArtCnt = $oSearch->getSearchArticleCount("bar", $sIDCat, false, "sdfsdf");
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testSearchWithParamCorrectVendorWrongCat()
@@ -564,8 +564,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("bar", "xxx", $sIDVend);
         $iAllArtCnt = $oSearch->getSearchArticleCount("bar", "xxx", $sIDVend);
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testSearchWithParamCorrectManufacturerWrongCat()
@@ -580,8 +580,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $oSearchList = $oSearch->getSearchArticles("bar", "xxx", false, $sIDMan);
         $iAllArtCnt = $oSearch->getSearchArticleCount("bar", "xxx", false, $sIDMan);
 
-        $this->assertEquals(0, $oSearchList->count());
-        $this->assertEquals(0, $iAllArtCnt);
+        $this->assertSame(0, $oSearchList->count());
+        $this->assertSame(0, $iAllArtCnt);
     }
 
     public function testSearchWithCorrectVendorAndCat()
@@ -604,7 +604,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sQ = "select {$sArticleTable}.* from {$sArticleTable}, oxobject2category as
         oxobject2category where oxobject2category.oxcatnid='{$sIDCat}' and
         oxobject2category.oxobjectid={$sArticleTable}.oxid and ( ( {$sArticleTable}.oxactive = 1  or (
-        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf('\' and %s.oxactiveto > \'', $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
+        {$sArticleTable}.oxactivefrom < '" . date('Y-m-d H:i:s') . sprintf("' and %s.oxactiveto > '", $sArticleTable) . date('Y-m-d H:i:s') . "' ) )
         and ( {$sArticleTable}.oxstockflag != 2 or ( {$sArticleTable}.oxstock + {$sArticleTable}.oxvarstock ) > 0  )  ) and
         {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1  and {$sArticleTable}.oxvendorid = '{$sIDVend}'
         and ( (  {$sArticleTable}.oxtitle like '%%' or {$sArticleTable}.oxshortdesc like '%%' or  {$sArticleTable}.oxsearchkeys like '%%' or
@@ -619,7 +619,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals($count, $oSearchList->count());
-        $this->assertEquals(count($aAll), $iAllArtCnt);
+        $this->assertCount($iAllArtCnt, $aAll);
 
         // now looking if all found articles are correct
         $aFoundIds = $oSearchList->arrayKeys();
@@ -631,7 +631,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals(0, count($aFoundIds));
+        $this->assertCount(0, $aFoundIds);
     }
 
     /**
@@ -652,7 +652,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         Registry::set(Config::class, $oConfig);
         $sQ = $oSearch->getWhere($sSearchString);
 
-        $this->assertEquals($sFix, $sQ);
+        $this->assertSame($sFix, $sQ);
     }
 
     public function testGetWhere()
@@ -660,7 +660,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $this->cleanTmpDir();
 
         $articleTable = $this->tableViewNameGenerator->getViewName('oxarticles', 1);
-        $expectedWhere = sprintf(' and ( (  %s.oxtitle like \'%%a%%\' or  %s.oxshortdesc like \'%%a%%\' or  %s.oxsearchkeys like \'%%a%%\' or  %s.oxartnum like \'%%a%%\' )  ) ', $articleTable, $articleTable, $articleTable, $articleTable);
+        $expectedWhere = sprintf(" and ( (  %s.oxtitle like '%%a%%' or  %s.oxshortdesc like '%%a%%' or  %s.oxsearchkeys like '%%a%%' or  %s.oxartnum like '%%a%%' )  ) ", $articleTable, $articleTable, $articleTable, $articleTable);
 
         /** @var Search $search */
         $search = oxNew('oxSearch');
@@ -668,7 +668,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
 
         $where = $search->getWhere('a');
 
-        $this->assertEquals($expectedWhere, $where);
+        $this->assertSame($expectedWhere, $where);
     }
 
     // testing SQL builder
@@ -753,7 +753,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sQ = trim(strtolower((string) preg_replace($aSearch, " ", $sQ)));
         $sFix = trim(strtolower((string) preg_replace($aSearch, " ", $sFix)));
 
-        $this->assertEquals($sFix, $sQ);
+        $this->assertSame($sFix, $sQ);
     }
 
     public function testGetSearchSelectPassingPriceCat()
@@ -783,8 +783,8 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sFix = sprintf('select `%s`.`oxid`, %s.oxtimestamp from %s ', $sArticleTable, $sArticleTable, $sArticleTable) .
                 sprintf('where %s.oxid in ( select %s.oxid as id from %s, ', $sArticleTable, $sArticleTable, $sArticleTable) .
                 sprintf('%s as oxobject2category, %s as oxcategories ', $sO2Cat, $sCatView) .
-                sprintf('where (oxobject2category.oxcatnid=\'_testCat\' and oxobject2category.oxobjectid=%s.oxid) ', $sArticleTable) .
-                sprintf('or (oxcategories.oxid=\'_testCat\' and %s.oxprice >= oxcategories.oxpricefrom and ', $sArticleTable) .
+                sprintf("where (oxobject2category.oxcatnid='_testCat' and oxobject2category.oxobjectid=%s.oxid) ", $sArticleTable) .
+                sprintf("or (oxcategories.oxid='_testCat' and %s.oxprice >= oxcategories.oxpricefrom and ", $sArticleTable) .
                 ($sArticleTable . '.oxprice <= oxcategories.oxpriceto )) and
                  ') . $oArticle->getSqlActiveSnippet() . "  and {$sArticleTable}.oxparentid = ''
                  and {$sArticleTable}.oxissearch = 1
@@ -800,7 +800,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sQ = trim(strtolower((string) preg_replace($aSearch, " ", $sQ)));
         $sFix = trim(strtolower((string) preg_replace($aSearch, " ", $sFix)));
 
-        $this->assertEquals($sFix, $sQ);
+        $this->assertSame($sFix, $sQ);
     }
 
     public function testGetWhereWithSearchIngLongDescSecondLanguage()
@@ -809,7 +809,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('aSearchCols', ['oxlongdesc']);
         $sAETable = $this->tableViewNameGenerator->getViewName('oxartextends', 1);
 
-        $sQ = sprintf(' and ( (  %s.oxlongdesc like \'%%xxx%%\' )  ) ', $sAETable);
+        $sQ = sprintf(" and ( (  %s.oxlongdesc like '%%xxx%%' )  ) ", $sAETable);
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
@@ -823,7 +823,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $sQ = trim(strtolower((string) preg_replace($aSearch, " ", $sQ)));
         $sFix = trim(strtolower((string) preg_replace($aSearch, " ", $sFix)));
 
-        $this->assertEquals($sQ, $sFix);
+        $this->assertSame($sQ, $sFix);
     }
 
     /**
@@ -838,7 +838,7 @@ class SearchTest extends \PHPUnit\Framework\TestCase
 
         $this->addToDatabase($sQ, 'oxarticles');
         $aResults = $this->_oSearchHandler->getSearchArticles('searchTestVal');
-        $this->assertEquals(1, count($aResults));
+        $this->assertCount(1, $aResults);
     }
 
     /**
@@ -859,6 +859,6 @@ class SearchTest extends \PHPUnit\Framework\TestCase
         $this->addToDatabase($sQ2, 'oxcategories');
         $this->addToDatabase($sQ3, 'oxobject2category');
         $aResults = $this->_oSearchHandler->getSearchArticles('searchTestVal', '_testCatSearch');
-        $this->assertEquals(1, count($aResults));
+        $this->assertCount(1, $aResults);
     }
 }

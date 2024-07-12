@@ -22,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 final class RecommlistTest extends \PHPUnit\Framework\TestCase
 {
+    public $sArticleID;
     private $_sArticleID;
 
     protected function setUp(): void
@@ -64,7 +65,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
     {
         oxNew('oxArticle');
         $oView = oxNew('RecommList');
-        $this->assertEquals(5, $oView->getProductLinkType());
+        $this->assertSame(5, $oView->getProductLinkType());
     }
 
     /**
@@ -76,8 +77,8 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('RecommList');
         $aParams = $oView->getNavigationParams();
-        $this->assertTrue(isset($aParams["recommid"]));
-        $this->assertTrue("paramValue" === $aParams["recommid"]);
+        $this->assertArrayHasKey("recommid", $aParams);
+        $this->assertSame("paramValue", $aParams["recommid"]);
     }
 
     /**
@@ -89,7 +90,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var oxRecommList|PHPUnit\Framework\MockObject\MockObject $oRecommList */
@@ -98,8 +99,8 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
 
         /** @var RecommList|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, ["getActiveRecommList", "getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
+        $oView->method('getUser')->willReturn(false);
+        $oView->method('getActiveRecommList')->willReturn($oRecommList);
 
         $oView->saveReview();
     }
@@ -139,11 +140,11 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $db = oxDb::getDb();
 
         // testing db for records
-        $this->assertEquals(
+        $this->assertSame(
             1,
             $db->getOne("select 1 from oxratings where oxuserid='testUserId' and oxrating = '3' and oxobjectid = 'testRecommListId'")
         );
-        $this->assertEquals(
+        $this->assertSame(
             1,
             $db->getOne("select 1 from oxreviews where oxuserid='testUserId' and oxobjectid = 'testRecommListId'")
         );
@@ -155,20 +156,20 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxSeoEncoderRecomm', 'getRecommPageUrl', '{return "testPageUrl";}');
 
         $oRecommListView = $this->getMock(RecommListController::class, ["getActiveRecommList"]);
-        $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue(oxNew('oxrecommlist')));
+        $oRecommListView->method('getActiveRecommList')->willReturn(oxNew('oxrecommlist'));
 
-        $this->assertEquals("testPageUrl", $oRecommListView->addPageNrParam(null, 1));
+        $this->assertSame("testPageUrl", $oRecommListView->addPageNrParam(null, 1));
     }
 
     public function testGeneratePageNavigationUrlSeoOn()
     {
         $oActRecommtList = $this->getMock(RecommendationList::class, ["getLink"]);
-        $oActRecommtList->expects($this->any())->method('getLink')->will($this->returnValue("testLink"));
+        $oActRecommtList->method('getLink')->willReturn("testLink");
 
         $oRecommListView = $this->getMock(RecommListController::class, ["getActiveRecommList"]);
-        $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oActRecommtList));
+        $oRecommListView->method('getActiveRecommList')->willReturn($oActRecommtList);
 
-        $this->assertEquals("testLink", $oRecommListView->generatePageNavigationUrl());
+        $this->assertSame("testLink", $oRecommListView->generatePageNavigationUrl());
     }
 
     public function testGeneratePageNavigationUrlSeoOff()
@@ -194,14 +195,14 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oActRecommtList->setId("testRecommListId");
 
         $oRecommListView = $this->getMock(RecommListController::class, ["getActiveRecommList"]);
-        $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oActRecommtList));
+        $oRecommListView->method('getActiveRecommList')->willReturn($oActRecommtList);
 
         $oListView = oxNew('aList');
         $sTestParams = $oListView->getAddUrlParams();
         $sTestParams .= ($sTestParams ? '&amp;' : '') . "listtype=recommlist";
         $sTestParams .= "&amp;recommid=testRecommListId";
 
-        $this->assertEquals($sTestParams, $oRecommListView->getAddUrlParams());
+        $this->assertSame($sTestParams, $oRecommListView->getAddUrlParams());
     }
 
     public function testGetAddSeoUrlParams()
@@ -212,7 +213,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $sTestParams = $oListView->getAddSeoUrlParams();
 
         $oRecommListView = oxNew('RecommList');
-        $this->assertEquals($sTestParams . "&amp;searchrecomm=testSearchRecommParam", $oRecommListView->getAddSeoUrlParams());
+        $this->assertSame($sTestParams . "&amp;searchrecomm=testSearchRecommParam", $oRecommListView->getAddSeoUrlParams());
     }
 
     public function testGetTreePath()
@@ -233,7 +234,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $aPath[1]->oxcategories__oxtitle = new oxField($sTitle);
 
         $oView = $this->getMock(RecommListController::class, ["getRecommSearch"]);
-        $oView->expects($this->once())->method('getRecommSearch')->will($this->returnValue($sSearchparam));
+        $oView->expects($this->once())->method('getRecommSearch')->willReturn($sSearchparam);
 
         $this->assertEquals($aPath, $oView->getTreePath());
     }
@@ -246,7 +247,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('recommid', 'testlist');
         $oRecomm = oxNew('RecommList');
         $oRecommList = $oRecomm->getActiveRecommList();
-        $this->assertEquals('testlist', $oRecommList->getId());
+        $this->assertSame('testlist', $oRecommList->getId());
     }
 
     public function testGetArticleList()
@@ -257,7 +258,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommtList->load('testlist');
 
         $oRecomm->setNonPublicVar("_oActiveRecommItems", $oRecommtList);
-        $this->assertEquals(1, count($oRecomm->getArticleList()));
+        $this->assertCount(1, $oRecomm->getArticleList());
     }
 
     public function testGetSimilarRecommLists()
@@ -271,17 +272,17 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommtList->setId("testlist");
 
         $oRecommtListItem = $this->getMock(RecommendationList::class, ['arrayKeys']);
-        $oRecommtListItem->expects($this->any())->method('arrayKeys')->will($this->returnValue([$this->_sArticleID, $sArticleID]));
+        $oRecommtListItem->method('arrayKeys')->willReturn([$this->_sArticleID, $sArticleID]);
 
         $oRecomm = $this->getMock(RecommListController::class, ["getArticleList", "getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getArticleList')->will($this->returnValue($oRecommtListItem));
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommtList));
+        $oRecomm->expects($this->once())->method('getArticleList')->willReturn($oRecommtListItem);
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecommtList);
 
         $aLists = $oRecomm->getSimilarRecommLists();
         $this->assertNotNull($aLists);
-        $this->assertEquals(1, $aLists->count());
-        $this->assertEquals('testlist2', $aLists['testlist2']->getId());
-        $this->assertTrue($aLists['testlist2']->getFirstArticle()->getId() == $sArticleID);
+        $this->assertSame(1, $aLists->count());
+        $this->assertSame('testlist2', $aLists['testlist2']->getId());
+        $this->assertSame($sArticleID, $aLists['testlist2']->getFirstArticle()->getId());
     }
 
     public function testGetReviews()
@@ -293,8 +294,8 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
 
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
         $oResult = $oRecomm->getReviews();
-        $this->assertEquals("oxrecommlist", $oResult->args[0]);
-        $this->assertEquals("testid", $oResult->args[1]);
+        $this->assertSame("oxrecommlist", $oResult->args[0]);
+        $this->assertSame("testid", $oResult->args[1]);
     }
 
     public function testIsReviewActive()
@@ -326,13 +327,13 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
-        $this->assertEquals(3.5, $oRecomm->getRatingValue());
+        $this->assertEqualsWithDelta(3.5, $oRecomm->getRatingValue(), PHP_FLOAT_EPSILON);
     }
 
     public function testGetRatingValueNotNull()
     {
         $oRecomm = $this->getMock(RecommListController::class, ["isReviewActive"]);
-        $oRecomm->expects($this->any())->method('isReviewActive')->will($this->returnValue(false));
+        $oRecomm->method('isReviewActive')->willReturn(false);
 
         $this->assertSame((double) 0, $oRecomm->getRatingValue());
     }
@@ -348,7 +349,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
 
         $oRecomm = $this->getProxyClass("recommlist");
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
-        $this->assertEquals(2, $oRecomm->getRatingCount());
+        $this->assertSame(2, $oRecomm->getRatingCount());
     }
 
     public function testGetRecommLists()
@@ -361,21 +362,21 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecomm = oxNew('RecommList');
         $this->setRequestParameter('searchrecomm', 'test');
         $aLists = $oRecomm->getRecommLists('test');
-        $this->assertEquals(2, count($aLists));
+        $this->assertCount(2, $aLists);
     }
 
     public function testGetRecommSearch()
     {
         $this->setRequestParameter('searchrecomm', 'test');
         $oRecomm = oxNew('RecommList');
-        $this->assertEquals('test', $oRecomm->getRecommSearch());
+        $this->assertSame('test', $oRecomm->getRecommSearch());
     }
 
     public function testGetRecommSearchSpecialChar()
     {
         $this->setRequestParameter('searchrecomm', 'test"');
         $oRecomm = oxNew('RecommList');
-        $this->assertEquals('test&quot;', $oRecomm->getRecommSearch());
+        $this->assertSame('test&quot;', $oRecomm->getRecommSearch());
     }
 
     // #M43
@@ -383,7 +384,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('searchrecomm', 'test search');
         $oRecomm = oxNew('RecommList');
-        $this->assertEquals('test search', $oRecomm->getRecommSearch());
+        $this->assertSame('test search', $oRecomm->getRecommSearch());
     }
 
     public function testGetAdditionalParams()
@@ -392,27 +393,27 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommList->setId("testRecommId");
 
         $oRecomm = $this->getMock(RecommListController::class, ["getActiveRecommList", "getRecommSearch"]);
-        $oRecomm->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
-        $oRecomm->expects($this->any())->method('getRecommSearch')->will($this->returnValue("testRecommSearch"));
+        $oRecomm->method('getActiveRecommList')->willReturn($oRecommList);
+        $oRecomm->method('getRecommSearch')->willReturn("testRecommSearch");
 
         $oUBase = oxNew('oxUBase');
         $sTestParams = $oUBase->getAdditionalParams();
 
-        $this->assertEquals($sTestParams . "&amp;recommid=testRecommId&amp;searchrecomm=testRecommSearch", $oRecomm->getAdditionalParams());
+        $this->assertSame($sTestParams . "&amp;recommid=testRecommId&amp;searchrecomm=testRecommSearch", $oRecomm->getAdditionalParams());
     }
 
     public function testGetPageNavigation()
     {
         $oRecomm = $this->getMock(RecommListController::class, ['generatePageNavigation']);
-        $oRecomm->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
-        $this->assertEquals('aaa', $oRecomm->getPageNavigation());
+        $oRecomm->method('generatePageNavigation')->willReturn("aaa");
+        $this->assertSame('aaa', $oRecomm->getPageNavigation());
     }
 
     public function testGetSearchForHtml()
     {
         $this->setRequestParameter('searchrecomm', 'aaa');
         $oRecomm = oxNew('RecommList');
-        $this->assertEquals('aaa', $oRecomm->getSearchForHtml());
+        $this->assertSame('aaa', $oRecomm->getSearchForHtml());
     }
 
     public function testGetSearchForHtmlWithActiveRecomm()
@@ -422,7 +423,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommtList->load('testlist');
 
         $oRecomm->setNonPublicVar("_oActiveRecommList", $oRecommtList);
-        $this->assertEquals('oxtest', $oRecomm->getSearchForHtml());
+        $this->assertSame('oxtest', $oRecomm->getSearchForHtml());
     }
 
     public function testGetLinkActiveRecommListAvailable()
@@ -430,12 +431,12 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('searchrecomm', 'aaa');
 
         $oRecList = $this->getMock(RecommendationList::class, ["getLink"]);
-        $oRecList->expects($this->once())->method('getLink')->will($this->returnValue("testRecommListUrl"));
+        $oRecList->expects($this->once())->method('getLink')->willReturn("testRecommListUrl");
 
         $oRecomm = $this->getMock(RecommListController::class, ["getActiveRecommList"]);
-        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecList));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->willReturn($oRecList);
 
-        $this->assertEquals("testRecommListUrl?searchrecomm=aaa", $oRecomm->getLink());
+        $this->assertSame("testRecommListUrl?searchrecomm=aaa", $oRecomm->getLink());
     }
 
     public function testGetLinkActiveRecommListUnAvailable()
@@ -443,12 +444,12 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('searchrecomm', 'aaa');
 
         $oRecomm = $this->getMock(RecommListController::class, ["getActiveRecommList"]);
-        $oRecomm->expects($this->atLeastOnce())->method('getActiveRecommList')->will($this->returnValue(false));
+        $oRecomm->expects($this->atLeastOnce())->method('getActiveRecommList')->willReturn(false);
 
         $oUBaseView = oxNew('oxUBase');
         $sTestLink = $oUBaseView->getLink(0);
 
-        $this->assertEquals($sTestLink . "&amp;searchrecomm=aaa", $oRecomm->getLink());
+        $this->assertSame($sTestLink . "&amp;searchrecomm=aaa", $oRecomm->getLink());
     }
 
     /**
@@ -458,7 +459,7 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
     {
         $oRecommList = oxNew('RecommList');
 
-        $this->assertEquals(1, count($oRecommList->getBreadCrumb()));
+        $this->assertCount(1, $oRecommList->getBreadCrumb());
     }
 
     /**
@@ -471,9 +472,9 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
         $oRecommlist->oxrecommlists__oxauthor = new oxField('author');
 
         $oView = $this->getMock(RecommListController::class, ['getActiveRecommList']);
-        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommlist));
+        $oView->method('getActiveRecommList')->willReturn($oRecommlist);
 
-        $this->assertEquals('title (' . oxRegistry::getLang()->translateString('LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false) . ' author)', $oView->getTitle());
+        $this->assertSame('title (' . oxRegistry::getLang()->translateString('LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false) . ' author)', $oView->getTitle());
     }
 
     /**
@@ -482,10 +483,10 @@ final class RecommlistTest extends \PHPUnit\Framework\TestCase
     public function testGetTitleWithoutActiveRecommList()
     {
         $oView = $this->getMock(RecommListController::class, ['getActiveRecommList', 'getArticleCount', 'getSearchForHtml']);
-        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue(null));
-        $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue(7));
-        $oView->expects($this->any())->method('getSearchForHtml')->will($this->returnValue('string'));
+        $oView->method('getActiveRecommList')->willReturn(null);
+        $oView->method('getArticleCount')->willReturn(7);
+        $oView->method('getSearchForHtml')->willReturn('string');
 
-        $this->assertEquals('7 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "string"', $oView->getTitle());
+        $this->assertSame('7 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "string"', $oView->getTitle());
     }
 }

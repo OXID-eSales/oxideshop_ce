@@ -28,16 +28,16 @@ class UserAddressTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, ["allowAdminEdit"]);
-        $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
-        $this->assertEquals('user_address', $oView->render());
+        $oView->expects($this->once())->method('allowAdminEdit')->willReturn(false);
+        $this->assertSame('user_address', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxaddressid']));
-        $this->assertTrue(isset($aViewData['edituser']));
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edituser'] instanceof user);
-        $this->assertTrue(isset($aViewData['countrylist']));
-        $this->assertTrue($aViewData['countrylist'] instanceof CountryList);
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('oxaddressid', $aViewData);
+        $this->assertArrayHasKey('edituser', $aViewData);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\User::class, $aViewData['edituser']);
+        $this->assertArrayHasKey('countrylist', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CountryList::class, $aViewData['countrylist']);
+        $this->assertArrayHasKey('readonly', $aViewData);
         $this->assertTrue($aViewData['readonly']);
     }
 
@@ -56,10 +56,10 @@ class UserAddressTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, ["allowAdminEdit"]);
-            $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
+            $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with("testId")->willReturn(true);
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in User_Address::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in User_Address::save()");
 
             return;
         }
@@ -79,7 +79,7 @@ class UserAddressTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, ["allowAdminEdit"]);
-        $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
+        $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with("testId")->willReturn(true);
         $oView->delAddress();
     }
 }

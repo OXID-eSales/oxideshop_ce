@@ -63,9 +63,9 @@ class OrderarticlelistTest extends \PHPUnit\Framework\TestCase
     {
         $oOrderArticleList = oxNew('oxorderarticlelist');
         $oOrderArticleList->loadOrderArticlesForUser('oxdefaultadmin');
-        $this->assertEquals(1, $oOrderArticleList->count());
+        $this->assertSame(1, $oOrderArticleList->count());
         $oOrderArticle = $oOrderArticleList->current();
-        $this->assertEquals('_testOrderArticleId', $oOrderArticle->getId());
+        $this->assertSame('_testOrderArticleId', $oOrderArticle->getId());
     }
 
     /*
@@ -75,6 +75,6 @@ class OrderarticlelistTest extends \PHPUnit\Framework\TestCase
     {
         $oOrderArticleList = oxNew('oxorderarticlelist');
         $oOrderArticleList->loadOrderArticlesForUser(null);
-        $this->assertEquals(0, $oOrderArticleList->count());
+        $this->assertSame(0, $oOrderArticleList->count());
     }
 }

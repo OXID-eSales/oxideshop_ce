@@ -99,15 +99,15 @@ class OrderfilelistTest extends \PHPUnit\Framework\TestCase
         $oUserFilesList = oxNew('oxOrderFileList');
         $oUserFilesList->loadUserFiles('_userId');
 
-        $this->assertEquals(3, count($oUserFilesList));
+        $this->assertCount(3, $oUserFilesList);
 
         foreach ($oUserFilesList as $oUserFile) {
-            $this->assertEquals('title', $oUserFile->oxorderfiles__oxarticletitle->value);
-            $this->assertEquals('artnum', $oUserFile->oxorderfiles__oxarticleartnum->value);
+            $this->assertSame('title', $oUserFile->oxorderfiles__oxarticletitle->value);
+            $this->assertSame('artnum', $oUserFile->oxorderfiles__oxarticleartnum->value);
             if ($oUserFile->oxorderfiles__oxorderid->value == '_orderId_2') {
-                $this->assertEquals(1, $oUserFile->isPaid());
+                $this->assertSame(1, $oUserFile->isPaid());
             } else {
-                $this->assertEquals(0, $oUserFile->isPaid());
+                $this->assertSame(0, $oUserFile->isPaid());
             }
         }
     }
@@ -120,11 +120,11 @@ class OrderfilelistTest extends \PHPUnit\Framework\TestCase
         $oOrderFilesList = oxNew('oxOrderFileList');
         $oOrderFilesList->loadOrderFiles('_orderId_1');
 
-        $this->assertEquals(2, count($oOrderFilesList));
+        $this->assertCount(2, $oOrderFilesList);
 
         foreach ($oOrderFilesList as $oOrderFile) {
-            $this->assertEquals('title', $oOrderFile->oxorderfiles__oxarticletitle->value);
-            $this->assertEquals('artnum', $oOrderFile->oxorderfiles__oxarticleartnum->value);
+            $this->assertSame('title', $oOrderFile->oxorderfiles__oxarticletitle->value);
+            $this->assertSame('artnum', $oOrderFile->oxorderfiles__oxarticleartnum->value);
         }
     }
 }

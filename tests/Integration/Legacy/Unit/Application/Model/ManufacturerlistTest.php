@@ -34,7 +34,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         Registry::getLang()->setBaseLanguage(1);
         $list = oxNew(ManufacturerList::class);
         $list->loadManufacturerList();
-        $this->assertTrue((count($list) > 0), 'Manufacturers list not loaded');
+        $this->assertGreaterThan(0, count($list), 'Manufacturers list not loaded');
         $resultSet = oxDb::getDB()
             ->select(
                 'select oxid, oxtitle_1, oxshortdesc_1 from oxmanufacturers where oxmanufacturers.oxshopid = "'
@@ -47,7 +47,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 
         while (!$resultSet->EOF) {
             $this->assertEquals($resultSet->fields[1], $list[$resultSet->fields[0]]->oxmanufacturers__oxtitle->value);
-            $this->assertEquals(
+            $this->assertSame(
                 $this->encode($resultSet->fields[2]),
                 $list[$resultSet->fields[0]]->oxmanufacturers__oxshortdesc->value
             );
@@ -70,7 +70,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
 
         foreach ($oManufacturerlist as $sVndId => $value) {
             $iArtCount = $oManufacturerlist[$sVndId]->oxmanufacturers__oxnrofarticles->value;
-            $this->assertTrue(($iArtCount > 0), "Manufacturer articles were not counted");
+            $this->assertGreaterThan(0, $iArtCount, "Manufacturer articles were not counted");
         }
     }
 
@@ -98,7 +98,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($oManufacturerlist->getClickManufacturer());
         $this->assertEquals($sFirstManufacturerId, $oManufacturerlist->getClickManufacturer()->getId());
         $this->assertEquals($aPath[0], $oManufacturerlist->getRootCat());
-        $this->assertEquals('root', $aPath[0]->getId(), 'Not added root for Manufacturer tree'); //oxManufacturer__oxid->value
+        $this->assertSame('root', $aPath[0]->getId(), 'Not added root for Manufacturer tree'); //oxManufacturer__oxid->value
 
         //check if first Manufacturer was added to Manufacturers tree path array
         $this->assertEquals($sFirstManufacturerId, $aPath[1]->getId(), 'Manufacturer was not added to Manufacturers tree path');
@@ -131,7 +131,7 @@ class ManufacturerlistTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($oManufacturer->oxmanufacturers__oxicon, $oManufacturer->oxcategories__oxicon);
         $this->assertEquals($oManufacturer->oxmanufacturers__oxtitle, $oManufacturer->oxcategories__oxtitle);
         $this->assertEquals($oManufacturer->oxmanufacturers__oxshortdesc, $oManufacturer->oxcategories__oxdesc);
-        $this->assertEquals($myConfig->getShopHomeURL() . ('cl=manufacturerlist&amp;mnid=' . $oManufacturer->oxcategories__oxid->value), $oManufacturer->getLink());
+        $this->assertSame($myConfig->getShopHomeURL() . ('cl=manufacturerlist&amp;mnid=' . $oManufacturer->oxcategories__oxid->value), $oManufacturer->getLink());
 
         $this->assertTrue($oManufacturer->getIsVisible());
         $this->assertFalse($oManufacturer->hasVisibleSubCats);

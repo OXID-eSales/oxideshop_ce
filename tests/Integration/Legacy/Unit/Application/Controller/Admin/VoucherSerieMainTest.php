@@ -20,7 +20,7 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
     /**
      * Cleanup
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // cleanup
         $this->cleanUpTable("oxvouchers");
@@ -38,11 +38,11 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Main');
-        $this->assertEquals('voucherserie_main', $oView->render());
+        $this->assertSame('voucherserie_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof voucherserie);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VoucherSerie::class, $aViewData['edit']);
     }
 
     /**
@@ -54,11 +54,11 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Main');
-        $this->assertEquals('voucherserie_main', $oView->render());
+        $this->assertSame('voucherserie_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse(isset($aViewData['edit']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayNotHasKey('edit', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -73,7 +73,7 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('VoucherSerie_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }
@@ -97,16 +97,16 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
     {
         // no series..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, ["getVoucherSerie"]);
-        $oView->expects($this->once())->method('getVoucherSerie')->will($this->returnValue(false));
+        $oView->expects($this->once())->method('getVoucherSerie')->willReturn(false);
         $this->assertNull($oView->getStatus());
 
         // with serie..
         $oSerie = $this->getMock(\OxidEsales\Eshop\Application\Model\VoucherSerie::class, ["countVouchers"]);
-        $oSerie->expects($this->once())->method('countVouchers')->will($this->returnValue("testCountVouchers"));
+        $oSerie->expects($this->once())->method('countVouchers')->willReturn("testCountVouchers");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, ["getVoucherSerie"]);
-        $oView->expects($this->once())->method('getVoucherSerie')->will($this->returnValue($oSerie));
-        $this->assertEquals("testCountVouchers", $oView->getStatus());
+        $oView->expects($this->once())->method('getVoucherSerie')->willReturn($oSerie);
+        $this->assertSame("testCountVouchers", $oView->getStatus());
     }
 
     /**
@@ -169,7 +169,7 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
         $oVoucherSerie = $oView->getVoucherSerie();
 
         $this->assertNotNull($oVoucherSerie);
-        $this->assertEquals("_testvoucherserie", $oVoucherSerie->getId());
+        $this->assertSame("_testvoucherserie", $oVoucherSerie->getId());
     }
 
     /**
@@ -178,6 +178,6 @@ class VoucherSerieMainTest extends \PHPUnit\Framework\TestCase
     public function testGetViewId()
     {
         $oView = oxNew('VoucherSerie_Main');
-        $this->assertEquals("tbclvoucherserie_main", $oView->getViewId());
+        $this->assertSame("tbclvoucherserie_main", $oView->getViewId());
     }
 }

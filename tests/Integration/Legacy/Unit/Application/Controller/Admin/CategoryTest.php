@@ -20,6 +20,6 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Category');
-        $this->assertEquals('category', $oView->render());
+        $this->assertSame('category', $oView->render());
     }
 }

@@ -32,10 +32,10 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('folder', $sObjects . 'TestFolderName');
 
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, ["getItemList"]);
-        $oAdminList->expects($this->once())->method('getItemList')->will($this->returnValue(null));
+        $oAdminList->expects($this->once())->method('getItemList')->willReturn(null);
         $aBuildWhere = $oAdminList->buildWhere();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $this->assertEquals(
+        $this->assertSame(
             'oxArticleTestFolderName',
             $aBuildWhere[$tableViewNameGenerator->getViewName('oxarticles') . '.oxfolder']
         );
@@ -52,17 +52,17 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("art_category", "cat@@" . $sCatId);
         // testing..
         $oView = oxNew('Article_List');
-        $this->assertEquals('article_list', $oView->render());
+        $this->assertSame('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CategoryList::class, $aViewData["cattree"]);
         $this->assertTrue($aViewData["cattree"]->offsetExists($sCatId));
-        $this->assertEquals(1, $aViewData["cattree"]->offsetGet($sCatId)->selected);
-        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
-        $this->assertTrue(isset($aViewData["pwrsearchinput"]));
-        $this->assertEquals("testValue", $aViewData["pwrsearchinput"]);
+        $this->assertSame(1, $aViewData["cattree"]->offsetGet($sCatId)->selected);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ManufacturerList::class, $aViewData["mnftree"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VendorList::class, $aViewData["vndtree"]);
+        $this->assertArrayHasKey("pwrsearchinput", $aViewData);
+        $this->assertSame("testValue", $aViewData["pwrsearchinput"]);
     }
 
     /**
@@ -75,16 +75,16 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, ["getItemList"]);
-        $oView->expects($this->any())->method('getItemList')->will($this->returnValue(oxNew('oxarticlelist')));
-        $this->assertEquals('article_list', $oView->render());
+        $oView->method('getItemList')->willReturn(oxNew('oxarticlelist'));
+        $this->assertSame('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CategoryList::class, $aViewData["cattree"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ManufacturerList::class, $aViewData["mnftree"]);
         $this->assertTrue($aViewData["mnftree"]->offsetExists($sManId));
-        $this->assertEquals(1, $aViewData["mnftree"]->offsetGet($sManId)->selected);
-        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
+        $this->assertSame(1, $aViewData["mnftree"]->offsetGet($sManId)->selected);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VendorList::class, $aViewData["vndtree"]);
     }
 
     /**
@@ -115,16 +115,16 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, ["getItemList"]);
-        $oView->expects($this->any())->method('getItemList')->will($this->returnValue($oList));
-        $this->assertEquals('article_list', $oView->render());
+        $oView->method('getItemList')->willReturn($oList);
+        $this->assertSame('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CategoryList::class, $aViewData["cattree"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ManufacturerList::class, $aViewData["mnftree"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\VendorList::class, $aViewData["vndtree"]);
         $this->assertTrue($aViewData["vndtree"]->offsetExists($sVndId));
-        $this->assertEquals(1, $aViewData["vndtree"]->offsetGet($sVndId)->selected);
+        $this->assertSame(1, $aViewData["vndtree"]->offsetGet($sVndId)->selected);
     }
 
     /**
@@ -139,7 +139,7 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
 
         $oProduct = oxNew('oxArticle');
         $sQ = $oProduct->buildSelectString(null);
-        $sQ = str_replace(sprintf(' from %s where 1 ', $sTable), sprintf(' from %s left join %s on %s.oxid = %s.oxobjectid where %s.oxcatnid = \'testCategory\' and  1  and %s.oxparentid = \'\' ', $sTable, $sO2CView, $sTable, $sO2CView, $sO2CView, $sTable), $sQ);
+        $sQ = str_replace(sprintf(' from %s where 1 ', $sTable), sprintf(" from %s left join %s on %s.oxid = %s.oxobjectid where %s.oxcatnid = 'testCategory' and  1  and %s.oxparentid = '' ", $sTable, $sO2CView, $sTable, $sO2CView, $sO2CView, $sTable), $sQ);
 
         $oView = oxNew('Article_List');
         $this->assertEquals($sQ, $oView->buildSelectString($oProduct));
@@ -158,7 +158,7 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . sprintf(' and %s.oxparentid = \'\'  and %s.oxmanufacturerid = \'testManufacturer\'', $sTable, $sTable), $oView->buildSelectString($oProduct));
+        $this->assertSame($sQ . sprintf(" and %s.oxparentid = ''  and %s.oxmanufacturerid = 'testManufacturer'", $sTable, $sTable), $oView->buildSelectString($oProduct));
     }
 
     /**
@@ -174,7 +174,7 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
         $sQ = $oProduct->buildSelectString(null);
 
         $oView = oxNew('Article_List');
-        $this->assertEquals($sQ . sprintf(' and %s.oxparentid = \'\'  and %s.oxvendorid = \'testVendor\'', $sTable, $sTable), $oView->buildSelectString($oProduct));
+        $this->assertSame($sQ . sprintf(" and %s.oxparentid = ''  and %s.oxvendorid = 'testVendor'", $sTable, $sTable), $oView->buildSelectString($oProduct));
     }
 
     /**
@@ -200,7 +200,7 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Article_List');
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $this->assertEquals(
+        $this->assertSame(
             $sQ . " and " . $tableViewNameGenerator->getViewName('oxarticles') . ".oxparentid = '' ",
             $oView->buildSelectString($oProduct)
         );
@@ -219,11 +219,11 @@ class ArticleListTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", "testId");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, ["authorize"]);
-        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
+        $oView->method('authorize')->willReturn(true);
         $oView->deleteEntry();
     }
 

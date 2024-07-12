@@ -120,9 +120,9 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(1, $oOrderArticles->count());
-        $this->assertEquals('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
-        $this->assertEquals(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
+        $this->assertSame(1, $oOrderArticles->count());
+        $this->assertSame('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
+        $this->assertSame(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
     }
 
     /**
@@ -142,7 +142,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrder = oxNew("oxOrder");
         $oOrder->load('_testOrderId1');
-        $this->assertEquals(1, $oOrder->oxorder__oxtotalbrutsum->value);
+        $this->assertSame(1, $oOrder->oxorder__oxtotalbrutsum->value);
     }
 
     /**
@@ -164,9 +164,9 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(1, $oOrderArticles->count());
-        $this->assertEquals('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
-        $this->assertEquals(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
+        $this->assertSame(1, $oOrderArticles->count());
+        $this->assertSame('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
+        $this->assertSame(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
 
         $this->setRequestParameter("sArtID", $oOrderArticles->current()->getId());
 
@@ -178,7 +178,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(0, $oOrderArticles->count());
+        $this->assertSame(0, $oOrderArticles->count());
     }
 
     /**
@@ -199,10 +199,10 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(1, $oOrderArticles->count());
-        $this->assertEquals('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
-        $this->assertEquals(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
-        $this->assertEquals(0, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
+        $this->assertSame(1, $oOrderArticles->count());
+        $this->assertSame('_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value);
+        $this->assertSame(4, $oOrderArticles->current()->oxorderarticles__oxamount->value);
+        $this->assertSame(0, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
 
         $this->setRequestParameter("sArtID", $oOrderArticles->current()->getId());
 
@@ -213,8 +213,8 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(1, $oOrderArticles->count());
-        $this->assertEquals(1, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
+        $this->assertSame(1, $oOrderArticles->count());
+        $this->assertSame(1, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
 
         $this->setRequestParameter("sArtID", $oOrderArticles->current()->getId());
 
@@ -225,8 +225,8 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $this->assertEquals(1, $oOrderArticles->count());
-        $this->assertEquals(0, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
+        $this->assertSame(1, $oOrderArticles->count());
+        $this->assertSame(0, $oOrderArticles->current()->oxorderarticles__oxstorno->value);
     }
 
 
@@ -244,7 +244,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Order_Article');
         $oOrder = $oView->getEditObject();
-        $this->assertTrue($oOrder instanceof order);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Order::class, $oOrder);
     }
 
     /**
@@ -258,7 +258,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $this->setRequestParameter("sSearchArtNum", 123);
         $oView = oxNew('Order_Article');
-        $this->assertEquals(123, $oView->getSearchProductArtNr());
+        $this->assertSame(123, $oView->getSearchProductArtNr());
     }
 
     /**
@@ -271,8 +271,8 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
         $oProduct->oxarticles__oxartnum = new oxField($sProdArtNr);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class, ["getSearchProductArtNr", "getProductList"]);
-        $oView->expects($this->once())->method('getSearchProductArtNr')->will($this->returnValue($sProdArtNr));
-        $oView->expects($this->once())->method('getProductList')->will($this->returnValue([$oProduct]));
+        $oView->expects($this->once())->method('getSearchProductArtNr')->willReturn($sProdArtNr);
+        $oView->expects($this->once())->method('getProductList')->willReturn([$oProduct]);
 
         $this->assertEquals($oProduct, $oView->getSearchProduct());
     }
@@ -299,7 +299,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Order_Article');
         $oProduct = $oView->getMainProduct();
-        $this->assertTrue($oProduct instanceof article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $oProduct);
     }
 
     /**
@@ -312,7 +312,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oView = oxNew('Order_Article');
         $oList = $oView->getProductList();
-        $this->assertEquals(0, $oList->count());
+        $this->assertSame(0, $oList->count());
 
         $iCnt = 4;
         $searchArticleNumber = "2077";
@@ -344,7 +344,7 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrder = oxNew("oxOrder");
         $oOrder->load('_testOrderId1');
-        $this->assertEquals(0, $oOrder->oxorder__oxtotalbrutsum->value);
+        $this->assertSame(0, $oOrder->oxorder__oxtotalbrutsum->value);
     }
 
     /**
@@ -363,6 +363,6 @@ class OrderArticleTest extends \PHPUnit\Framework\TestCase
 
         $oOrder = oxNew("oxOrder");
         $oOrder->load('_testOrderId1');
-        $this->assertEquals(0, $oOrder->oxorder__oxtotalbrutsum->value);
+        $this->assertSame(0, $oOrder->oxorder__oxtotalbrutsum->value);
     }
 }

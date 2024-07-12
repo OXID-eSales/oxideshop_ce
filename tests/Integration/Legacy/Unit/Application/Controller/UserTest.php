@@ -71,7 +71,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('aMustFillFields', ["bb" => "aa"]);
         $oUserView = oxNew('user');
-        $this->assertEquals(["aa" => "bb"], $oUserView->getMustFillFields());
+        $this->assertSame(["aa" => "bb"], $oUserView->getMustFillFields());
     }
 
     public function testGetShowNoRegOption()
@@ -85,14 +85,14 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('option', 1);
         $oUserView = oxNew('user');
-        $this->assertEquals(1, $oUserView->getLoginOption());
+        $this->assertSame(1, $oUserView->getLoginOption());
     }
 
     public function testGetLoginOptionIfNotLogedIn()
     {
         $this->setRequestParameter('option', 2);
         $oUserView = oxNew('user');
-        $this->assertEquals(0, $oUserView->getLoginOption());
+        $this->assertSame(0, $oUserView->getLoginOption());
     }
 
     /**
@@ -102,7 +102,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         // get user returns false (not logged in)
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, ['getUser']);
-        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue(false));
+        $oUserView->expects($this->once())->method('getUser')->willReturn(false);
 
         // not connected and no post (will return false)
         $this->assertFalse($oUserView->getOrderRemark());
@@ -118,8 +118,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
 
         // get user returns false (not logged in)
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, ['getUser']);
-        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('test', $oUserView->getOrderRemark());
+        $oUserView->expects($this->once())->method('getUser')->willReturn(false);
+        $this->assertSame('test', $oUserView->getOrderRemark());
     }
 
     /**
@@ -130,8 +130,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
         // setting the variable
         $this->getSession()->setVariable('ordrem', "test");
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, ['getUser']);
-        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue(true));
-        $this->assertEquals('test', $oUserView->getOrderRemark());
+        $oUserView->expects($this->once())->method('getUser')->willReturn(true);
+        $this->assertSame('test', $oUserView->getOrderRemark());
     }
 
     public function testIsNewsSubscribed()
@@ -144,11 +144,11 @@ class UserTest extends \PHPUnit\Framework\TestCase
     public function testIsNewsSubscribedIfUserIsLogedIn()
     {
         $oNewsSubscribed = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, ['getOptInStatus']);
-        $oNewsSubscribed->expects($this->once())->method('getOptInStatus')->will($this->returnValue(true));
+        $oNewsSubscribed->expects($this->once())->method('getOptInStatus')->willReturn(true);
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getNewsSubscription']);
-        $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oNewsSubscribed));
+        $oUser->expects($this->once())->method('getNewsSubscription')->willReturn($oNewsSubscribed);
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, ['getUser']);
-        $oUserView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oUserView->expects($this->once())->method('getUser')->willReturn($oUser);
         $this->assertTrue($oUserView->isNewsSubscribed());
     }
 
@@ -169,7 +169,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oUserView = oxNew('User');
-        $this->assertEquals('page/checkout/user', $oUserView->render());
+        $this->assertSame('page/checkout/user', $oUserView->render());
     }
 
 
@@ -190,10 +190,10 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', ['renewExpiration']);
-        $oR->expects($this->once())->method('renewExpiration')->will($this->throwException(new Exception("call is ok")));
+        $oR->expects($this->once())->method('renewExpiration')->willThrowException(new Exception("call is ok"));
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasketReservations']);
-        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session->expects($this->once())->method('getBasketReservations')->willReturn($oR);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oU = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
@@ -201,7 +201,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
         try {
             $oU->render();
         } catch (Exception $exception) {
-            $this->assertEquals('call is ok', $exception->getMessage());
+            $this->assertSame('call is ok', $exception->getMessage());
 
             return;
         }
@@ -217,14 +217,14 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('sslredirect', 'forced');
 
         $oR = $this->getMock('stdclass', ['renewExpiration']);
-        $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
+        $oR->expects($this->once())->method('renewExpiration')->willReturn(null);
 
         $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getProductsCount']);
-        $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(0));
+        $oB->expects($this->once())->method('getProductsCount')->willReturn(0);
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasketReservations', 'getBasket']);
-        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session->expects($this->once())->method('getBasketReservations')->willReturn($oR);
+        $session->method('getBasket')->willReturn($oB);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
@@ -232,7 +232,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
         try {
             $oO->render();
         } catch (Exception $exception) {
-            $this->assertEquals($this->getConfig()->getShopHomeURL() . 'cl=basket', $exception->getMessage());
+            $this->assertSame($this->getConfig()->getShopHomeURL() . 'cl=basket', $exception->getMessage());
 
             return;
         }
@@ -246,10 +246,10 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $myConfig->setConfigParam("blEnableDownloads", true);
 
         $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['hasDownloadableProducts']);
-        $oB->expects($this->once())->method('hasDownloadableProducts')->will($this->returnValue(true));
+        $oB->expects($this->once())->method('hasDownloadableProducts')->willReturn(true);
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasket']);
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session->method('getBasket')->willReturn($oB);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
@@ -262,7 +262,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $myConfig->setConfigParam("blEnableDownloads", true);
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasket']);
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue(false));
+        $session->method('getBasket')->willReturn(false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
@@ -277,7 +277,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $oB = oxNew('oxBasket');
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasket']);
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session->method('getBasket')->willReturn($oB);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);

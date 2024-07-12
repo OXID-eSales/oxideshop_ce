@@ -24,7 +24,7 @@ class FileCollectorTest extends \PHPUnit\Framework\TestCase
 
         $aResultExistingPHP = $oDirReader->getFiles();
 
-        $this->assertEquals(1, count($aResultExistingPHP));
+        $this->assertCount(1, $aResultExistingPHP);
         $this->assertContains('bin/cron.php', $aResultExistingPHP);
     }
 
@@ -40,7 +40,7 @@ class FileCollectorTest extends \PHPUnit\Framework\TestCase
 
         $aResultExistingAll = $oDirReader->getFiles();
 
-        $this->assertEquals(3, count($aResultExistingAll));
+        $this->assertCount(3, $aResultExistingAll);
         $this->assertContains('bin/.htaccess', $aResultExistingAll);
         $this->assertContains('bin/cron.php', $aResultExistingAll);
         $this->assertContains('bin/log.txt', $aResultExistingAll);
@@ -60,7 +60,7 @@ class FileCollectorTest extends \PHPUnit\Framework\TestCase
 
         $aResult = $oDirReader->getFiles();
 
-        $this->assertEquals(2, count($aResult));
+        $this->assertCount(2, $aResult);
         $this->assertContains('bin/cron.php', $aResult);
         $this->assertContains('index.php', $aResult);
     }

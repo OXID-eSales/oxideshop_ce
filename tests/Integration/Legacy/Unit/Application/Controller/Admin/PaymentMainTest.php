@@ -26,10 +26,10 @@ class PaymentMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Payment_Main');
-        $this->assertEquals('payment_main', $oView->render());
+        $this->assertSame('payment_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof payment);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Payment::class, $aViewData['edit']);
     }
 
     /**
@@ -41,10 +41,10 @@ class PaymentMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('payment_main');
-        $this->assertEquals('payment_main', $oView->render());
+        $this->assertSame('payment_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -61,7 +61,7 @@ class PaymentMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Payment_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Payment_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Payment_Main::save()");
 
             return;
         }
@@ -83,7 +83,7 @@ class PaymentMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Payment_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Payment_Main::saveinnlang()");
+            $this->assertSame("save", $exception->getMessage(), "error in Payment_Main::saveinnlang()");
 
             return;
         }
@@ -123,7 +123,7 @@ class PaymentMainTest extends \PHPUnit\Framework\TestCase
 
         $fields = $view->getNonPublicVar('_aFieldArray');
         $this->assertCount(3, $fields);
-        $this->assertEquals('foobar', $fields[2]->name);
+        $this->assertSame('foobar', $fields[2]->name);
     }
 
     /**

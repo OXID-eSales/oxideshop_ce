@@ -19,6 +19,6 @@ class ManufacturerListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oManufacturerList = oxNew('oxwManufacturerList');
-        $this->assertEquals('widget/footer/manufacturerlist', $oManufacturerList->render());
+        $this->assertSame('widget/footer/manufacturerlist', $oManufacturerList->render());
     }
 }

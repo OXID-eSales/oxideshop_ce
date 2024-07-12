@@ -52,7 +52,7 @@ class ActionsTest extends \PHPUnit\Framework\TestCase
         $action->setViewParameters(['action' => 'oxtop5']);
 
         $aList = $action->getAction();
-        $this->assertTrue($aList instanceof ArticleList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $aList);
         $this->assertSame($topProductCount, $aList->count());
         $this->assertSame($topProductId, $aList->current()->getId());
     }

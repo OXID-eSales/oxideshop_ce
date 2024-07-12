@@ -22,7 +22,7 @@ class ToolsTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Tools');
-        $this->assertEquals('tools', $oView->render());
+        $this->assertSame('tools', $oView->render());
     }
 
     /**
@@ -34,11 +34,11 @@ class ToolsTest extends \PHPUnit\Framework\TestCase
 
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop"]);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ToolsController::class, ["getConfig"], [], '', false);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals("Access denied !", $oView->render());
+        $this->assertSame("Access denied !", $oView->render());
     }
 }

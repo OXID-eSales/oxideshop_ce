@@ -50,9 +50,10 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerLang()
+    public function providerLang(): \Iterator
     {
-        return [['de'], ['en']];
+        yield ['de'];
+        yield ['en'];
     }
 
     /**
@@ -60,9 +61,11 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerTheme()
+    public function providerTheme(): \Iterator
     {
-        return [[''], [$this->_sTheme], [$this->getAdminThemeName()]];
+        yield [''];
+        yield [$this->_sTheme];
+        yield [$this->getAdminThemeName()];
     }
 
     /**
@@ -70,9 +73,12 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerLangTheme()
+    public function providerLangTheme(): \Iterator
     {
-        return [['de', ''], ['en', ''], ['de', $this->_sTheme], ['en', $this->_sTheme]];
+        yield ['de', ''];
+        yield ['en', ''];
+        yield ['de', $this->_sTheme];
+        yield ['en', $this->_sTheme];
     }
 
     /**
@@ -82,7 +88,16 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      */
     public function providerLangThemeFilename()
     {
-        return [['de', '', 'lang.php'], ['en', '', 'lang.php'], ['de', $this->_sTheme, 'lang.php'], ['en', $this->_sTheme, 'lang.php'], ['de', $this->_sTheme, 'map.php'], ['en', $this->_sTheme, 'map.php'], ['de', $this->getAdminThemeName(), 'lang.php'], ['en', $this->getAdminThemeName(), 'lang.php']];
+        return [
+            ['de', '', 'lang.php'],
+            ['en', '', 'lang.php'],
+            ['de', $this->_sTheme, 'lang.php'],
+            ['en', $this->_sTheme, 'lang.php'],
+            ['de', $this->_sTheme, 'map.php'],
+            ['en', $this->_sTheme, 'map.php'],
+            ['de', $this->getAdminThemeName(), 'lang.php'],
+            ['en', $this->getAdminThemeName(), 'lang.php'],
+        ];
     }
 
     /**
@@ -90,7 +105,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerLangThemeWithAdmin()
+    public function providerLangThemeWithAdmin(): \Iterator
     {
         $aDetectOrder = mb_detect_order();
         array_unshift($aDetectOrder, 'ISO-8859-15');
@@ -99,8 +114,12 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
         array_unshift($aDetectOrder, 'UTF-8');
 
         $sThemeName = $this->_sTheme;
-
-        return [['de', '', $aDetectOrder], ['en', '', $aDetectOrder], ['de', $sThemeName, $aDetectOrder], ['en', $sThemeName, $aDetectOrder], ['de', $this->getAdminThemeName(), $aDetectOrder], ['en', $this->getAdminThemeName(), $aDetectOrder]];
+        yield ['de', '', $aDetectOrder];
+        yield ['en', '', $aDetectOrder];
+        yield ['de', $sThemeName, $aDetectOrder];
+        yield ['en', $sThemeName, $aDetectOrder];
+        yield ['de', $this->getAdminThemeName(), $aDetectOrder];
+        yield ['en', $this->getAdminThemeName(), $aDetectOrder];
     }
 
     /**
@@ -114,7 +133,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
 
         //oxid lang encoding should stay on utf-8 because all language files are utf-8 encoded,
         //or at least converted to utf8
-        $this->assertEquals('UTF-8', $aLang['charset'], sprintf('non utf8 for language %s in theme %s', $sLanguage, $sTheme));
+        $this->assertSame('UTF-8', $aLang['charset'], sprintf('non utf8 for language %s in theme %s', $sLanguage, $sTheme));
 
         $aFileContent = $this->getLangFileContents($sTheme, $sLanguage, '*.php');
 
@@ -124,8 +143,8 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
         //check for unicode replacement character because it appears when some re-encodings went wrong
         //https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character
         $posOfIlligalChar = strpos((string) $sFileContent, "�");
-        $this->assertTrue(
-            $posOfIlligalChar === false,
+        $this->assertFalse(
+            $posOfIlligalChar,
             sprintf('there is an unicode replacement character in file %s in Line at %s', $sFileName, $posOfIlligalChar)
         );
 
@@ -144,8 +163,9 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
 
         //converting utf8 to ISO-8859-1 to check if there are double encodings in the next step
         $sISO88591 = utf8_decode((string) $sFileContent);
-        $this->assertFalse(
-            mb_detect_encoding($sISO88591) === 'UTF-8',
+        $this->assertNotSame(
+            'UTF-8',
+            mb_detect_encoding($sISO88591),
             sprintf('There are double UTF-8 encoding in file %s.', $sFileName)
         );
 
@@ -169,8 +189,8 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             $this->fail(' Map array is empty');
         }
 
-        $this->assertEquals([], array_diff_key($aMapIdentsDE, $aMapIdentsEN), 'Ident does not match EN misses some maps');
-        $this->assertEquals([], array_diff_key($aMapIdentsEN, $aMapIdentsDE), 'Ident does not match DE misses some maps');
+        $this->assertSame([], array_diff_key($aMapIdentsDE, $aMapIdentsEN), 'Ident does not match EN misses some maps');
+        $this->assertSame([], array_diff_key($aMapIdentsEN, $aMapIdentsDE), 'Ident does not match DE misses some maps');
     }
 
     /**
@@ -183,9 +203,9 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
         $aLangIdentsDE = $this->getLanguageFileContents($sTheme, 'de');
         $aLangIdentsEN = $this->getLanguageFileContents($sTheme, 'en');
 
-        $this->assertEquals([], array_diff_key($aLangIdentsDE, $aLangIdentsEN), 'ident does not match, EN misses translations');
-        $this->assertEquals([], array_diff_key($aLangIdentsEN, $aLangIdentsDE), 'ident does not match, DE misses translations');
-        $this->assertEquals(count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
+        $this->assertSame([], array_diff_key($aLangIdentsDE, $aLangIdentsEN), 'ident does not match, EN misses translations');
+        $this->assertSame([], array_diff_key($aLangIdentsEN, $aLangIdentsDE), 'ident does not match, DE misses translations');
+        $this->assertCount(count($aLangIdentsDE), $aLangIdentsEN, 'ident count does not match');
     }
 
     /**
@@ -207,7 +227,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s, theme - %s ', $sLang, $sTheme));
+        $this->assertSame([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s, theme - %s ', $sLang, $sTheme));
     }
 
     /**
@@ -229,7 +249,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals([], $aMapIdentsDE, 'Maps are bound differently');
+        $this->assertSame([], $aMapIdentsDE, 'Maps are bound differently');
     }
 
     /**
@@ -254,7 +274,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s ', $sLang));
+        $this->assertSame([], $aIncorrectIndents, sprintf('html entities found. Params: lang - %s ', $sLang));
     }
 
     /**
@@ -283,7 +303,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals([], $aIncorrectMap, sprintf('missing translations in generic %s file', $sLang));
+        $this->assertSame([], $aIncorrectMap, sprintf('missing translations in generic %s file', $sLang));
     }
 
     /**
@@ -296,7 +316,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
     {
         $aIdents = $this->getLanguageFileContents($sTheme, $sLang);
 
-        $this->assertEquals([], $this->getConstantsWithColons($aIdents), sprintf('%s has colons. Theme - %s', $sLang, $sTheme));
+        $this->assertSame([], $this->getConstantsWithColons($aIdents), sprintf('%s has colons. Theme - %s', $sLang, $sTheme));
     }
 
     /**
@@ -310,7 +330,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
         $aThemeTranslations = $this->getLanguageFileContents($this->_sTheme, $sLang);
         $aIntersectionsDE = array_intersect_key($aThemeTranslations, $aGenericTranslations);
 
-        $this->assertEquals(['charset' => 'UTF-8'], $aIntersectionsDE, sprintf('some %s translations in theme overrides generic translations', $sLang));
+        $this->assertSame(['charset' => 'UTF-8'], $aIntersectionsDE, sprintf('some %s translations in theme overrides generic translations', $sLang));
     }
 
     /**
@@ -389,7 +409,7 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals('', $sDuplicates, 'some translations are duplicated');
+        $this->assertSame('', $sDuplicates, 'some translations are duplicated');
     }
 
     /**
@@ -565,9 +585,16 @@ class LangIntegrityTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerLanguageFilesForInvalidEncoding()
+    public function providerLanguageFilesForInvalidEncoding(): \Iterator
     {
-        return [['de', '', '*.php'], ['en', '', '*.php'], ['de', $this->_sTheme, '*.php'], ['en', $this->_sTheme, '*.php'], ['de', $this->getAdminThemeName(), '*.php'], ['en', $this->getAdminThemeName(), '*.php'], ['De', 'Setup', 'lang.php'], ['En', 'Setup', 'lang.php']];
+        yield ['de', '', '*.php'];
+        yield ['en', '', '*.php'];
+        yield ['de', $this->_sTheme, '*.php'];
+        yield ['en', $this->_sTheme, '*.php'];
+        yield ['de', $this->getAdminThemeName(), '*.php'];
+        yield ['en', $this->getAdminThemeName(), '*.php'];
+        yield ['De', 'Setup', 'lang.php'];
+        yield ['En', 'Setup', 'lang.php'];
     }
 
     /**
@@ -724,34 +751,30 @@ EOD;
      *
      * @return array
      */
-    public function providerAllLanguageFilesForExistence()
+    public function providerAllLanguageFilesForExistence(): \Iterator
     {
         $themeName = $this->_sTheme;
-
-        return [
-            // LanguageCode, Type, FileName
-            ['en', '', 'translit_lang.php'],
-            ['en', '', 'lang.php'],
-            ['en', $themeName, 'cust_lang.php'],
-            ['en', $themeName, 'lang.php'],
-            ['en', $themeName, 'map.php'],
-            ['en', $themeName, 'theme_options.php'],
-            ['en', $this->getAdminThemeName(), 'cust_lang.php.dist'],
-            ['en', $this->getAdminThemeName(), 'help_lang.php'],
-            ['en', $this->getAdminThemeName(), 'lang.php'],
-            ['En', 'Setup', 'lang.php'],
-
-            ['de', '', 'translit_lang.php'],
-            ['de', '', 'lang.php'],
-            ['de', $themeName, 'cust_lang.php'],
-            ['de', $themeName, 'lang.php'],
-            ['de', $themeName, 'map.php'],
-            ['de', $themeName, 'theme_options.php'],
-            ['de', $this->getAdminThemeName(), 'cust_lang.php.dist'],
-            ['de', $this->getAdminThemeName(), 'help_lang.php'],
-            ['de', $this->getAdminThemeName(), 'lang.php'],
-            ['De', 'Setup', 'lang.php'],
-        ];
+        // LanguageCode, Type, FileName
+        yield ['en', '', 'translit_lang.php'];
+        yield ['en', '', 'lang.php'];
+        yield ['en', $themeName, 'cust_lang.php'];
+        yield ['en', $themeName, 'lang.php'];
+        yield ['en', $themeName, 'map.php'];
+        yield ['en', $themeName, 'theme_options.php'];
+        yield ['en', $this->getAdminThemeName(), 'cust_lang.php.dist'];
+        yield ['en', $this->getAdminThemeName(), 'help_lang.php'];
+        yield ['en', $this->getAdminThemeName(), 'lang.php'];
+        yield ['En', 'Setup', 'lang.php'];
+        yield ['de', '', 'translit_lang.php'];
+        yield ['de', '', 'lang.php'];
+        yield ['de', $themeName, 'cust_lang.php'];
+        yield ['de', $themeName, 'lang.php'];
+        yield ['de', $themeName, 'map.php'];
+        yield ['de', $themeName, 'theme_options.php'];
+        yield ['de', $this->getAdminThemeName(), 'cust_lang.php.dist'];
+        yield ['de', $this->getAdminThemeName(), 'help_lang.php'];
+        yield ['de', $this->getAdminThemeName(), 'lang.php'];
+        yield ['De', 'Setup', 'lang.php'];
     }
 
     /**

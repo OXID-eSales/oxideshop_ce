@@ -26,10 +26,10 @@ class UserGroupMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('UserGroup_Main');
-        $this->assertEquals('usergroup_main', $oView->render());
+        $this->assertSame('usergroup_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof groups);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Groups::class, $aViewData['edit']);
     }
 
     /**
@@ -41,11 +41,11 @@ class UserGroupMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('UserGroup_Main');
-        $this->assertEquals('usergroup_main', $oView->render());
+        $this->assertSame('usergroup_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse(isset($aViewData['edit']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayNotHasKey('edit', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -65,7 +65,7 @@ class UserGroupMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('UserGroup_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in UserGroup_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in UserGroup_Main::save()");
 
             return;
         }

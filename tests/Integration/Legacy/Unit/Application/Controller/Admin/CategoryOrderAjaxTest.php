@@ -86,7 +86,7 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
     public function testGetQuery()
     {
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("from " . $this->getArticleViewTable() . " where  1 = 0", trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $this->getArticleViewTable() . " where  1 = 0", trim((string) $oView->getQuery()));
     }
 
     /**
@@ -99,7 +99,7 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $sArticleTable = $this->getArticleViewTable();
 
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("from " . $sArticleTable . sprintf(' where  %s.oxid in ( \'_testOxid1\', \'_testOxid2\' )', $sArticleTable), trim((string) $oView->getQuery()));
+        $this->assertSame("from " . $sArticleTable . sprintf(" where  %s.oxid in ( '_testOxid1', '_testOxid2' )", $sArticleTable), trim((string) $oView->getQuery()));
     }
 
     /**
@@ -114,11 +114,11 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $sO2CView = $this->getObject2CategoryViewTable();
         $sArticleTable = $this->getArticleViewTable();
 
-        $sReturn = sprintf('from %s left join %s on %s.oxid=%s.oxobjectid where %s.oxcatnid = \'_testSynchoxid\'', $sArticleTable, $sO2CView, $sArticleTable, $sO2CView, $sO2CView);
-        $sReturn .= sprintf(' and %s.oxid not in ( \'_testOxid1\', \'_testOxid2\' )', $sArticleTable);
+        $sReturn = sprintf("from %s left join %s on %s.oxid=%s.oxobjectid where %s.oxcatnid = '_testSynchoxid'", $sArticleTable, $sO2CView, $sArticleTable, $sO2CView, $sO2CView);
+        $sReturn .= sprintf(" and %s.oxid not in ( '_testOxid1', '_testOxid2' )", $sArticleTable);
 
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals($sReturn, trim((string) $oView->getQuery()));
+        $this->assertSame($sReturn, trim((string) $oView->getQuery()));
     }
 
     /**
@@ -129,7 +129,7 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $sSynchoxid = '_testSynchoxid';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals("order by _0 asc", trim((string) $oView->getSorting()));
+        $this->assertSame("order by _0 asc", trim((string) $oView->getSorting()));
     }
 
     /**
@@ -141,7 +141,7 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $aOxid = ['_testOxid1', '_testOxid2'];
         $this->setSessionParam("neworder_sess", $aOxid);
         $oView = oxNew('category_order_ajax');
-        $this->assertEquals(sprintf('order by  %s.oxid=\'_testOxid2\' ,  %s.oxid=\'_testOxid1\'', $sArticleTable, $sArticleTable), trim((string) $oView->getSorting()));
+        $this->assertSame(sprintf("order by  %s.oxid='_testOxid2' ,  %s.oxid='_testOxid1'", $sArticleTable, $sArticleTable), trim((string) $oView->getSorting()));
     }
 
     /**
@@ -153,13 +153,13 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("oxid", $sOxid);
         $aOxid = ['_testOxid1', '_testOxid2'];
         $this->setSessionParam("neworder_sess", $aOxid);
-        $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
-        $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
 
         $oView = oxNew('category_order_ajax');
         $oView->saveNewOrder();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
-        $this->assertEquals(1, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
         $this->assertNull($this->getSessionParam("neworder_sess"));
     }
 
@@ -178,12 +178,12 @@ class CategoryOrderAjaxTest extends \PHPUnit\Framework\TestCase
         $oDb->execute($sQ);
         $sQ = "update oxobject2category set oxpos = 2 where oxobjectid = '_testOxid2' ";
         $oDb->execute($sQ);
-        $this->assertEquals(1, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
-        $this->assertEquals(2, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
+        $this->assertSame(1, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
+        $this->assertSame(2, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
 
         $oView = oxNew('category_order_ajax');
         $oView->remNewOrder();
-        $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
-        $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
+        $this->assertSame(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
     }
 }

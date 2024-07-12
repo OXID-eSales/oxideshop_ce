@@ -20,6 +20,6 @@ class SysreqlistTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('sysreq_list');
-        $this->assertEquals('sysreq_list', $oView->render());
+        $this->assertSame('sysreq_list', $oView->render());
     }
 }

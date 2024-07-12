@@ -20,7 +20,7 @@ class ModuleVariablesCacheTest extends \PHPUnit\Framework\TestCase
         $moduleCache = oxNew('oxFileCache');
 
         $moduleCache->setToCache("testKey", $sTest);
-        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey"));
+        $this->assertSame($sTest, $moduleCache->getFromCache("testKey"));
     }
 
     public function testSetGetCacheSubShopSpecific()
@@ -30,7 +30,7 @@ class ModuleVariablesCacheTest extends \PHPUnit\Framework\TestCase
         $moduleCache = oxNew('oxFileCache');
 
         $moduleCache->setToCache("testKey", $sTest);
-        $this->assertEquals($sTest, $moduleCache->getFromCache("testKey"));
+        $this->assertSame($sTest, $moduleCache->getFromCache("testKey"));
     }
 
     public function testGetCacheFileName()
@@ -38,6 +38,6 @@ class ModuleVariablesCacheTest extends \PHPUnit\Framework\TestCase
         $moduleCache = $this->getProxyClass('oxFileCache');
 
         $sExpt = "config.all.testval.txt";
-        $this->assertEquals($sExpt, basename((string) $moduleCache->getCacheFilePath("testVal")));
+        $this->assertSame($sExpt, basename((string) $moduleCache->getCacheFilePath("testVal")));
     }
 }

@@ -189,7 +189,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
@@ -221,7 +221,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $this->assertTrue($oNewVoucher->checkBasketVoucherAvailability($aVouchers, 100));
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
 
             return;
         }
@@ -252,7 +252,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
 
         $oNewVoucher = oxNew('oxvoucher');
         $oNewVoucher->getVoucherByNr($sNr);
-        $this->assertEquals($sNr, $oNewVoucher->oxvouchers__oxvouchernr->value);
+        $this->assertSame($sNr, $oNewVoucher->oxvouchers__oxvouchernr->value);
     }
 
     public function testGetVoucherByNr2()
@@ -262,7 +262,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         $oNewVoucher = oxNew('oxvoucher');
         $oNewVoucher->getVoucherByNr($sNr, $aVouchers);
 
-        $this->assertEquals($sNr, $oNewVoucher->oxvouchers__oxvouchernr->value);
+        $this->assertSame($sNr, $oNewVoucher->oxvouchers__oxvouchernr->value);
     }
 
     public function testGetVoucherByNr3()
@@ -407,7 +407,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
             return;
         }
 
-        $this->assertEquals(0.99, $oNewVoucher->getDiscountValue(100));
+        $this->assertEqualsWithDelta(0.99, $oNewVoucher->getDiscountValue(100), PHP_FLOAT_EPSILON);
     }
 
     public function testGetDiscountValuePERC()
@@ -420,7 +420,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
             return;
         }
 
-        $this->assertEquals(9.99, $oNewVoucher->getDiscountValue(100));
+        $this->assertEqualsWithDelta(9.99, $oNewVoucher->getDiscountValue(100), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -437,7 +437,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
             return;
         }
 
-        $this->assertEquals(0, $oNewVoucher->getDiscountValue(null));
+        $this->assertSame(0, $oNewVoucher->getDiscountValue(null));
     }
 
     /**
@@ -514,7 +514,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $aErrors = $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $voucherException->getMessage());
 
             return;
         }
@@ -539,7 +539,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
@@ -564,7 +564,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->checkVoucherAvailability($aVouchers, $dInitPrice);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $voucherException->getMessage());
 
             return;
         }
@@ -631,7 +631,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getActShopCurrencyObject'], [], '', false);
         $myCurr = new stdclass();
         $myCurr->rate = 1000;
-        $oConfig->expects($this->once())->method('getActShopCurrencyObject')->will($this->returnValue($myCurr));
+        $oConfig->expects($this->once())->method('getActShopCurrencyObject')->willReturn($myCurr);
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
 
@@ -650,7 +650,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
             $sErrorMsg = $voucherException->getMessage();
         }
 
-        $this->assertEquals('ERROR_MESSAGE_VOUCHER_INCORRECTPRICE', $sErrorMsg);
+        $this->assertSame('ERROR_MESSAGE_VOUCHER_INCORRECTPRICE', $sErrorMsg);
     }
 
     /**
@@ -886,7 +886,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->isValidDate();
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
+            $this->assertSame('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
 
             return;
         }
@@ -914,7 +914,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->isValidDate();
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
+            $this->assertSame('MESSAGE_COUPON_EXPIRED', $voucherException->getMessage());
 
             return;
         }
@@ -1003,7 +1003,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->isNotReserved();
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('EXCEPTION_VOUCHER_ISRESERVED', $voucherException->getMessage());
+            $this->assertSame('EXCEPTION_VOUCHER_ISRESERVED', $voucherException->getMessage());
 
             return;
         }
@@ -1080,7 +1080,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->checkUserAvailability($oUser);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $voucherException->getMessage());
 
             return;
         }
@@ -1113,7 +1113,7 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         try {
             $oNewVoucher->checkUserAvailability($oUser);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $voucherException) {
-            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
+            $this->assertSame('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $voucherException->getMessage());
 
             return;
         }
@@ -1357,9 +1357,9 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         $oVoucher->load($sVoucher);
         $oVoucher->markAsUsed('xxx', 'yyy', $oSerie->oxvoucherseries__oxdiscount->value);
 
-        $this->assertEquals('xxx', $oVoucher->oxvouchers__oxorderid->value);
-        $this->assertEquals('yyy', $oVoucher->oxvouchers__oxuserid->value);
-        $this->assertEquals('1970-01-01', $oVoucher->oxvouchers__oxdateused->value);
+        $this->assertSame('xxx', $oVoucher->oxvouchers__oxorderid->value);
+        $this->assertSame('yyy', $oVoucher->oxvouchers__oxuserid->value);
+        $this->assertSame('1970-01-01', $oVoucher->oxvouchers__oxdateused->value);
         $this->assertEquals($oSerie->oxvoucherseries__oxdiscount->value, $oVoucher->oxvouchers__oxdiscount->value);
     }
 
@@ -1420,11 +1420,11 @@ class VoucherTest extends \PHPUnit\Framework\TestCase
         $oDiscount->oxdiscount__oxitmmultiple = new oxField();
 
         $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, ["getSerieDiscount", "getBasketItems", "isAdmin"]);
-        $oVoucher->expects($this->once())->method('getSerieDiscount')->will($this->returnValue($oDiscount));
-        $oVoucher->expects($this->once())->method('getBasketItems')->will($this->returnValue([$oBasketItem1]));
-        $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $oVoucher->expects($this->once())->method('getSerieDiscount')->willReturn($oDiscount);
+        $oVoucher->expects($this->once())->method('getBasketItems')->willReturn([$oBasketItem1]);
+        $oVoucher->method('isAdmin')->willReturn(false);
 
-        $this->assertEquals(54.5, $oVoucher->getCategoryDiscountValue($dPrice));
+        $this->assertEqualsWithDelta(54.5, $oVoucher->getCategoryDiscountValue($dPrice), PHP_FLOAT_EPSILON);
     }
 
     /**

@@ -20,6 +20,6 @@ class AdminLinksTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Links');
-        $this->assertEquals('admin_links', $oView->render());
+        $this->assertSame('admin_links', $oView->render());
     }
 }

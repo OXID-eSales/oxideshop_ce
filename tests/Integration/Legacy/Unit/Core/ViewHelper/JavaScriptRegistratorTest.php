@@ -36,30 +36,28 @@ class JavaScriptRegistratorTest extends \PHPUnit\Framework\TestCase
     public function testAddFile($file, $expected)
     {
         $utils = $this->getMock('oxUtilsUrl', ['getHosts']);
-        $utils->expects($this->any())->method('getHosts')->will($this->returnValue([
+        $utils->method('getHosts')->willReturn([
             'shopurl.de'
-        ]));
+        ]);
         Registry::set('oxUtilsUrl', $utils);
 
         $scriptRegistrator = $this->getMock(JavaScriptRegistrator::class, ['getFileModificationTime']);
-        $scriptRegistrator->expects($this->any())->method('getFileModificationTime')->will($this->returnValue(123456789));
+        $scriptRegistrator->method('getFileModificationTime')->willReturn(123456789);
 
         $scriptRegistrator->addFile($file, 0);
 
         $this->assertEquals($expected, Registry::getConfig()->getGlobalParameter('includes')[0][0]);
     }
 
-    public function addFileProvider()
+    public function addFileProvider(): \Iterator
     {
-        return [
-            ['http://someurl/script.js', 'http://someurl/script.js'],
-            ['http://someurl/script.js', 'http://someurl/script.js'],
-            ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'],
-            ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'],
-            ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'],
-            ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'],
-            ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'],
-            ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'],
-        ];
+        yield ['http://someurl/script.js', 'http://someurl/script.js'];
+        yield ['http://someurl/script.js', 'http://someurl/script.js'];
+        yield ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'];
+        yield ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'];
+        yield ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'];
+        yield ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'];
+        yield ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'];
+        yield ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'];
     }
 }

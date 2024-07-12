@@ -12,9 +12,10 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ClassNameProviderTest extends \PHPUnit\Framework\TestCase
 {
-    public function providerReturnsClassNameFromClassAlias()
+    public function providerReturnsClassNameFromClassAlias(): \Iterator
     {
-        return [['oxdbmetadatahandler', \OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class], ['OxidEsales\EshopEnterprise\Core\NonExisting', 'OxidEsales\EshopEnterprise\Core\NonExisting']];
+        yield ['oxdbmetadatahandler', \OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class];
+        yield ['OxidEsales\EshopEnterprise\Core\NonExisting', 'OxidEsales\EshopEnterprise\Core\NonExisting'];
     }
 
     /**
@@ -34,9 +35,12 @@ class ClassNameProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($className, $utilsObject->getClassName($classAlias));
     }
 
-    public function providerReturnsClassNameAliasFromClassName()
+    public function providerReturnsClassNameAliasFromClassName(): \Iterator
     {
-        return [[\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class, 'oxdbmetadatahandler'], ['OxidEsales\EshopEnterprise\Core\NonExisting', null], [\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class, 'oxdbmetadatahandler'], ['OxidEsales\EshopEnterprise\Core\NonExisting', null]];
+        yield [\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class, 'oxdbmetadatahandler'];
+        yield ['OxidEsales\EshopEnterprise\Core\NonExisting', null];
+        yield [\OxidEsales\EshopEnterprise\Core\DbMetaDataHandler::class, 'oxdbmetadatahandler'];
+        yield ['OxidEsales\EshopEnterprise\Core\NonExisting', null];
     }
 
     /**

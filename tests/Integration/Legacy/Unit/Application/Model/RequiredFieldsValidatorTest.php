@@ -29,9 +29,19 @@ class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function providerValidateFields()
+    public function providerValidateFields(): \Iterator
     {
-        return [[['field1' => 'value1', 'field2' => 'value2'], [], true], [['field1' => 'value1', 'field2' => 'value2', 'field3' => 'value3'], [], true], [['field1' => 'value1', 'field2' => 'value2', 'field3' => ''], [], true], [['field1' => 'value1', 'field2' => ''], ['field2'], false], [['field1' => '', 'field2' => 'value2'], ['field1'], false], [['field1' => '', 'field2' => ''], ['field1', 'field2'], false], [['field1' => '', 'field2' => '', 'field3' => 'value3'], ['field1', 'field2'], false], [['field1' => 'value1'], ['field2'], false], [['field2' => 'value2'], ['field1'], false], [['field2' => 'value2', 'field3' => 'value3'], ['field1'], false], [[], ['field1', 'field2'], false]];
+        yield [['field1' => 'value1', 'field2' => 'value2'], [], true];
+        yield [['field1' => 'value1', 'field2' => 'value2', 'field3' => 'value3'], [], true];
+        yield [['field1' => 'value1', 'field2' => 'value2', 'field3' => ''], [], true];
+        yield [['field1' => 'value1', 'field2' => ''], ['field2'], false];
+        yield [['field1' => '', 'field2' => 'value2'], ['field1'], false];
+        yield [['field1' => '', 'field2' => ''], ['field1', 'field2'], false];
+        yield [['field1' => '', 'field2' => '', 'field3' => 'value3'], ['field1', 'field2'], false];
+        yield [['field1' => 'value1'], ['field2'], false];
+        yield [['field2' => 'value2'], ['field1'], false];
+        yield [['field2' => 'value2', 'field3' => 'value3'], ['field1'], false];
+        yield [[], ['field1', 'field2'], false];
     }
 
     /**

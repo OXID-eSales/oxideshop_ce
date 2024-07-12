@@ -20,6 +20,6 @@ class ToolsMainTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Tools_Main');
-        $this->assertEquals('tools_main', $oView->render());
+        $this->assertSame('tools_main', $oView->render());
     }
 }

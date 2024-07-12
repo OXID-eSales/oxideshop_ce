@@ -26,8 +26,8 @@ class CategoryPicturesTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Category);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $aViewData["edit"]);
 
-        $this->assertEquals('category_pictures', $sTplName);
+        $this->assertSame('category_pictures', $sTplName);
     }
 }

@@ -47,7 +47,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
         $oList->addToPriceList($this->aPrices[0]);
         $oList->addToPriceList($this->aPrices[3]);
 
-        $this->assertEquals(50, $oList->getBruttoSum());
+        $this->assertSame(50, $oList->getBruttoSum());
     }
 
     /**
@@ -59,7 +59,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
         $oList->addToPriceList($this->aPrices[0]);
         $oList->addToPriceList($this->aPrices[3]);
 
-        $this->assertEquals(round(10 / 1.05, 2) + round(40 / 1.20, 2), $oList->getNettoSum());
+        $this->assertSame(round(10 / 1.05, 2) + round(40 / 1.20, 2), $oList->getNettoSum());
     }
 
     /**
@@ -121,7 +121,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $aPriceInfo = [5  => 10, 10 => 100, 20 => 40];
 
-        $this->assertEquals($aPriceInfo, $oList->getPriceInfo());
+        $this->assertSame($aPriceInfo, $oList->getPriceInfo());
     }
 
     /**
@@ -136,7 +136,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
         $oList->addToPriceList($this->aPrices[3]);
         $oList->addToPriceList($this->aPrices[4]);
 
-        $this->assertEquals(10, $oList->getMostUsedVatPercent());
+        $this->assertSame(10, $oList->getMostUsedVatPercent());
     }
 
     /**
@@ -157,7 +157,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
         $oPrice->setPrice(121, 21);
 
         $oList->addToPriceList($oPrice);
-        $this->assertEquals(19.5, $oList->getProportionalVatPercent());
+        $this->assertEqualsWithDelta(19.5, $oList->getProportionalVatPercent(), PHP_FLOAT_EPSILON);
 
 
         $oList = oxNew('oxPriceList');
@@ -185,7 +185,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $oList->addToPriceList($oPrice);
 
-        $this->assertEquals(18.5, $oList->getProportionalVatPercent());
+        $this->assertEqualsWithDelta(18.5, $oList->getProportionalVatPercent(), PHP_FLOAT_EPSILON);
 
         $oList = oxNew('oxPriceList');
         $oPrice = oxNew('oxPrice');
@@ -194,7 +194,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $oList->addToPriceList($oPrice);
 
-        $this->assertEquals(0, $oList->getProportionalVatPercent());
+        $this->assertSame(0, $oList->getProportionalVatPercent());
 
         $oList = oxNew('oxPriceList');
         $oPrice = oxNew('oxPrice');
@@ -203,7 +203,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $oList->addToPriceList($oPrice);
 
-        $this->assertEquals(0, $oList->getProportionalVatPercent());
+        $this->assertSame(0, $oList->getProportionalVatPercent());
 
         $oList = oxNew('oxPriceList');
         $oPrice = oxNew('oxPrice');
@@ -212,7 +212,7 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $oList->addToPriceList($oPrice);
 
-        $this->assertEquals(0, $oList->getProportionalVatPercent());
+        $this->assertSame(0, $oList->getProportionalVatPercent());
     }
 
     /**
@@ -237,10 +237,10 @@ class PricelistTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oList->calculateToPrice();
 
-        $this->assertEquals(200, $oPrice->getNettoPrice());
-        $this->assertEquals(239, $oPrice->getBruttoPrice());
-        $this->assertEquals(39, $oPrice->getVatValue());
-        $this->assertEquals(19.5, $oPrice->getVat());
+        $this->assertSame(200, $oPrice->getNettoPrice());
+        $this->assertSame(239, $oPrice->getBruttoPrice());
+        $this->assertSame(39, $oPrice->getVatValue());
+        $this->assertEqualsWithDelta(19.5, $oPrice->getVat(), PHP_FLOAT_EPSILON);
     }
 
 

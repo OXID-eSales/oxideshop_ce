@@ -20,9 +20,9 @@ class ManufacturerListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerList::class, ["authorize"]);
-        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
+        $oView->method('authorize')->willReturn(true);
         $oView->init();
-        $this->assertEquals("manufacturer_list", $oView->render());
-        $this->assertEquals(['oxmanufacturers' => ["oxtitle" => "asc"]], $oView->getListSorting());
+        $this->assertSame("manufacturer_list", $oView->render());
+        $this->assertSame(['oxmanufacturers' => ["oxtitle" => "asc"]], $oView->getListSorting());
     }
 }

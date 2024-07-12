@@ -30,7 +30,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $pa['aid'] = '2000';
         $this->setRequestParameter('pa', $pa);
 
-        $this->assertEquals('2000', $oPriceAlarm->getProduct()->getId());
+        $this->assertSame('2000', $oPriceAlarm->getProduct()->getId());
     }
 
     public function testGetBidPrice()
@@ -39,7 +39,7 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $pa['price'] = '10';
         $this->setRequestParameter('pa', $pa);
 
-        $this->assertEquals('10,00', $oPriceAlarm->getBidPrice());
+        $this->assertSame('10,00', $oPriceAlarm->getBidPrice());
     }
 
     public function testAddme_incorectEmail()
@@ -51,10 +51,10 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("pa", ["email" => "ladyGaga"]);
         $oPriceAlarm->addme();
 
-        $this->assertEquals(0, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
+        $this->assertSame(0, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
 
         $sSql = "select count(oxid) from oxpricealarm";
-        $this->assertEquals(0, $oDb->getOne($sSql));
+        $this->assertSame(0, $oDb->getOne($sSql));
     }
 
     public function testAddme_savesAndSendsPriceAlarm()
@@ -72,19 +72,19 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("pa", $aParams);
         $oPriceAlarm->addme();
 
-        $this->assertEquals(999, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
+        $this->assertSame(999, $oPriceAlarm->getNonPublicVar("_iPriceAlarmStatus"));
 
         $sSql = "select * from oxpricealarm";
 
         $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $aAlarm = $oDb->getRow($sSql);
 
-        $this->assertEquals($aParams["email"], $aAlarm["OXEMAIL"]);
-        $this->assertEquals($aParams["aid"], $aAlarm["OXARTID"]);
-        $this->assertEquals($aParams["price"], $aAlarm["OXPRICE"]);
-        $this->assertEquals("testUserId", $aAlarm["OXUSERID"]);
-        $this->assertEquals("EUR", $aAlarm["OXCURRENCY"]);
-        $this->assertEquals(0, $aAlarm["OXLANG"]);
+        $this->assertSame($aParams["email"], $aAlarm["OXEMAIL"]);
+        $this->assertSame($aParams["aid"], $aAlarm["OXARTID"]);
+        $this->assertSame($aParams["price"], $aAlarm["OXPRICE"]);
+        $this->assertSame("testUserId", $aAlarm["OXUSERID"]);
+        $this->assertSame("EUR", $aAlarm["OXCURRENCY"]);
+        $this->assertSame(0, $aAlarm["OXLANG"]);
     }
 
     public function testAddme_savesCurrentActiveLang()
@@ -105,6 +105,6 @@ class PricealarmTest extends \PHPUnit\Framework\TestCase
         $sSql = "select oxlang from oxpricealarm";
         $iLang = $oDb->getOne($sSql);
 
-        $this->assertEquals(1, $iLang);
+        $this->assertSame(1, $iLang);
     }
 }

@@ -27,9 +27,9 @@ class ContentListTest extends \PHPUnit\Framework\TestCase
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
         $this->assertEquals($this->getConfig()->getConfigParam('afolder'), $aViewData["CMSFOLDER_EMAILS"]);
-        $this->assertEquals("sTestFolder", $aViewData["folder"]);
+        $this->assertSame("sTestFolder", $aViewData["folder"]);
 
-        $this->assertEquals('content_list', $sTplName);
+        $this->assertSame('content_list', $sTplName);
     }
 
     /**
@@ -49,8 +49,8 @@ class ContentListTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Content_List');
         $sResQ = $oView->prepareWhereQuery([], "");
 
-        $sQ = sprintf(' and %s.oxfolder = \'testFolder\'', $sViewName);
+        $sQ = sprintf(" and %s.oxfolder = 'testFolder'", $sViewName);
 
-        $this->assertEquals($sQ, $sResQ);
+        $this->assertSame($sQ, $sResQ);
     }
 }

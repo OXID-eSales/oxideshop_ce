@@ -20,6 +20,6 @@ class AdminWrappingTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Wrapping');
-        $this->assertEquals('wrapping', $oView->render());
+        $this->assertSame('wrapping', $oView->render());
     }
 }

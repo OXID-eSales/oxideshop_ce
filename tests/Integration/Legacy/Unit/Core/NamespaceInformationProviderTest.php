@@ -19,7 +19,7 @@ class NamespaceInformationProviderTest extends \PHPUnit\Framework\TestCase
         $expected = ['CE' => 'OxidEsales\EshopCommunity\\',
                      'PE' => 'OxidEsales\EshopProfessional\\',
                      'EE' => 'OxidEsales\EshopEnterprise\\'];
-        $this->assertEquals($expected, \OxidEsales\Eshop\Core\NamespaceInformationProvider::getShopEditionNamespaces());
+        $this->assertSame($expected, \OxidEsales\Eshop\Core\NamespaceInformationProvider::getShopEditionNamespaces());
     }
 
     /**
@@ -27,7 +27,7 @@ class NamespaceInformationProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetUnifiedNamespace()
     {
-        $this->assertEquals('OxidEsales\Eshop\\', \OxidEsales\Eshop\Core\NamespaceInformationProvider::getUnifiedNamespace());
+        $this->assertSame('OxidEsales\Eshop\\', \OxidEsales\Eshop\Core\NamespaceInformationProvider::getUnifiedNamespace());
     }
 
     /**

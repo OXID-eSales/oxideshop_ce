@@ -62,6 +62,6 @@ class VoucherlistTest extends \PHPUnit\Framework\TestCase
         $oVouchers = oxNew('oxvoucherlist');
         $oVouchers->selectString('select * from oxvouchers where oxvouchers.oxvoucherserieid = "' . $this->_sOxid . '"');
 
-        $this->assertEquals(self::MAX_LOOP_AMOUNT, $oVouchers->count());
+        $this->assertSame(self::MAX_LOOP_AMOUNT, $oVouchers->count());
     }
 }

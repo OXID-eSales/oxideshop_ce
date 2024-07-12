@@ -27,10 +27,10 @@ class CountryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Country_Main');
-        $this->assertEquals('country_main', $oView->render());
+        $this->assertSame('country_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Country);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Country::class, $aViewData['edit']);
     }
 
     /**
@@ -42,10 +42,10 @@ class CountryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Country_Main');
-        $this->assertEquals('country_main', $oView->render());
+        $this->assertSame('country_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -62,7 +62,7 @@ class CountryMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Country_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Country_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Country_Main::save()");
 
             return;
         }
@@ -83,7 +83,7 @@ class CountryMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Country_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Country_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Country_Main::save()");
 
             return;
         }

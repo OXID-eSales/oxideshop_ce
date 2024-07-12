@@ -28,11 +28,11 @@ class WrappingMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Wrapping_Main');
-        $this->assertEquals('wrapping_main', $oView->render());
+        $this->assertSame('wrapping_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof wrapping);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Wrapping::class, $aViewData['edit']);
     }
 
     /**
@@ -44,11 +44,11 @@ class WrappingMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Wrapping_Main');
-        $this->assertEquals('wrapping_main', $oView->render());
+        $this->assertSame('wrapping_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse(isset($aViewData['edit']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayNotHasKey('edit', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -63,7 +63,7 @@ class WrappingMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Wrapping_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }
@@ -83,7 +83,7 @@ class WrappingMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Wrapping_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Wrapping_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Wrapping_Main::save()");
 
             return;
         }

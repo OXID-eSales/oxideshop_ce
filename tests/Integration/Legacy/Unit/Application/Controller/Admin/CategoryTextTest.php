@@ -31,8 +31,8 @@ class CategoryTextTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Category);
-        $this->assertEquals('category_text', $sTplName);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $aViewData["edit"]);
+        $this->assertSame('category_text', $sTplName);
     }
 
     /**
@@ -44,10 +44,10 @@ class CategoryTextTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Category_Text');
-        $this->assertEquals('category_text', $oView->render());
+        $this->assertSame('category_text', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -62,7 +62,7 @@ class CategoryTextTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Category_Text');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Category_Text::Save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Category_Text::Save()");
 
             return;
         }

@@ -52,7 +52,7 @@ class RemarkTest extends \PHPUnit\Framework\TestCase
             $sSendDate = 'Y-m-d H:i:s';
         }
 
-        $this->assertEquals(date($sSendDate, $this->_iNow), $oRemark->oxremark__oxcreate->value);
+        $this->assertSame(date($sSendDate, $this->_iNow), $oRemark->oxremark__oxcreate->value);
     }
 
     public function testUpdate()
@@ -83,6 +83,6 @@ class RemarkTest extends \PHPUnit\Framework\TestCase
         $oRemark->setId($this->_oRemark->oxremark__oxid->value);
         $oRemark->save();
 
-        $this->assertEquals(date('Y-m-d H:i:s', $iNow), $oRemark->oxremark__oxcreate->value);
+        $this->assertSame(date('Y-m-d H:i:s', $iNow), $oRemark->oxremark__oxcreate->value);
     }
 }

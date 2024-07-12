@@ -26,10 +26,10 @@ class PaymentCountryTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Payment_Country');
-        $this->assertEquals('payment_country', $oView->render());
+        $this->assertSame('payment_country', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof payment);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Payment::class, $aViewData['edit']);
     }
 
     /**
@@ -41,10 +41,10 @@ class PaymentCountryTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Payment_Country');
-        $this->assertEquals('payment_country', $oView->render());
+        $this->assertSame('payment_country', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -61,7 +61,7 @@ class PaymentCountryTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Payment_Country');
             $oView->addcountry();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Payment_Country::addcountry()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Payment_Country::addcountry()");
 
             return;
         }
@@ -83,7 +83,7 @@ class PaymentCountryTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Payment_Country');
             $oView->removecountry();
         } catch (Exception $exception) {
-            $this->assertEquals("delete", $exception->getMessage(), "Error in Payment_Country::removecountry()");
+            $this->assertSame("delete", $exception->getMessage(), "Error in Payment_Country::removecountry()");
 
             return;
         }

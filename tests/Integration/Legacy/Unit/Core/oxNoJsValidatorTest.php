@@ -12,9 +12,12 @@ class oxNoJsValidatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerValidatesForJavaScript()
+    public function providerValidatesForJavaScript(): \Iterator
     {
-        return [['testConfigValue', true], ['<script>alert("test script");</script>', false], ['<script parameters>alert("test script");</script>', false], ['<script src="/assets/javascripts/application.js"></script>', false]];
+        yield ['testConfigValue', true];
+        yield ['<script>alert("test script");</script>', false];
+        yield ['<script parameters>alert("test script");</script>', false];
+        yield ['<script src="/assets/javascripts/application.js"></script>', false];
     }
 
     /**

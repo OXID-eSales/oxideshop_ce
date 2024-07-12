@@ -16,9 +16,9 @@ class SelectionTest extends \PHPUnit\Framework\TestCase
     {
         $oSelection = oxNew('oxSelection', "test", "test", true, true);
 
-        $this->assertEquals("test", $oSelection->getValue());
-        $this->assertEquals("test", $oSelection->getName());
-        $this->assertEquals("#", $oSelection->getLink());
+        $this->assertSame("test", $oSelection->getValue());
+        $this->assertSame("test", $oSelection->getName());
+        $this->assertSame("#", $oSelection->getLink());
         $this->assertTrue($oSelection->isActive());
         $this->assertTrue($oSelection->isDisabled());
 

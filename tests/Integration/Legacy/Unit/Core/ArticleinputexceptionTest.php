@@ -22,7 +22,7 @@ class ArticleinputexceptionTest extends \PHPUnit\Framework\TestCase
     {
         $msg = 'Erik was here..';
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class, $msg);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class, $testObject::class);
+        $this->assertSame(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class, $testObject::class);
         $articleNumber = 'sArticleNumber';
         $testObject->setArticleNr($articleNumber);
         $stringOut = $testObject->getString();

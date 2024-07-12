@@ -27,10 +27,10 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Attribute_Main');
-        $this->assertEquals('attribute_main', $oView->render());
+        $this->assertSame('attribute_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Attribute);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Attribute::class, $aViewData['edit']);
     }
 
     /**
@@ -42,10 +42,10 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Attribute_Main');
-        $this->assertEquals('attribute_main', $oView->render());
+        $this->assertSame('attribute_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -60,7 +60,7 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Attribute_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Attribute_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "error in Attribute_Main::save()");
 
             return;
         }
@@ -80,7 +80,7 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Attribute_Main');
         $oView->save();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -95,7 +95,7 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Attribute_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "error in Attribute_Main::Saveinnlang()");
+            $this->assertSame("save", $exception->getMessage(), "error in Attribute_Main::Saveinnlang()");
 
             return;
         }
@@ -116,7 +116,7 @@ class AttributeMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Attribute_Main');
         $oView->saveinnlang();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
-        $this->assertEquals(999, $this->getRequestParameter("new_lang"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame(999, $this->getRequestParameter("new_lang"));
     }
 }

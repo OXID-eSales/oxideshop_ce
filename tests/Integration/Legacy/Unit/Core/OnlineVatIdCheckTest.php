@@ -80,7 +80,7 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
 
         $this->assertFalse($oOnlineVatCheck->checkOnline($oCheckVat));
         ini_set('default_socket_timeout', $iTime);
-        $this->assertEquals('INVALID_INPUT', $oOnlineVatCheck->getNonPublicVar('_sError'));
+        $this->assertSame('INVALID_INPUT', $oOnlineVatCheck->getNonPublicVar('_sError'));
     }
 
     /**
@@ -120,10 +120,10 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
     public function testCheckOnlineWithServiceNotReachable()
     {
         $oOnlineVatIdCheck = $this->getMock($this->getProxyClassName("oxOnlineVatIdCheck"), ["isServiceAvailable"]);
-        $oOnlineVatIdCheck->expects($this->once())->method('isServiceAvailable')->will($this->returnValue(false));
+        $oOnlineVatIdCheck->expects($this->once())->method('isServiceAvailable')->willReturn(false);
 
         $this->assertEquals(false, $oOnlineVatIdCheck->checkOnline(new stdClass()));
-        $this->assertEquals("SERVICE_UNREACHABLE", $oOnlineVatIdCheck->getError());
+        $this->assertSame("SERVICE_UNREACHABLE", $oOnlineVatIdCheck->getError());
     }
 
     /**
@@ -132,7 +132,7 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
     public function testGetWsdlUrl_default()
     {
         $oOnline = oxNew('oxOnlineVatIdCheck');
-        $this->assertEquals('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl', $oOnline->getWsdlUrl());
+        $this->assertSame('https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl', $oOnline->getWsdlUrl());
     }
 
     /**
@@ -142,7 +142,7 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
     {
         $oOnline = oxNew('oxOnlineVatIdCheck');
         $this->getConfig()->setConfigParam("sVatIdCheckInterfaceWsdl", "sVatIdCheckInterfaceWsdl");
-        $this->assertEquals("sVatIdCheckInterfaceWsdl", $oOnline->getWsdlUrl());
+        $this->assertSame("sVatIdCheckInterfaceWsdl", $oOnline->getWsdlUrl());
     }
 
     public function testValidate()
@@ -154,7 +154,7 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
         $oExpect->vatNumber = '1212';
 
         $oOnlineVatCheck = $this->getMock(\OxidEsales\Eshop\Core\OnlineVatIdCheck::class, ['checkOnline']);
-        $oOnlineVatCheck->expects($this->once())->method('checkOnline')->with($this->equalTo($oExpect));
+        $oOnlineVatCheck->expects($this->once())->method('checkOnline')->with($oExpect);
 
         $oOnlineVatCheck->validate($oVatIn);
     }
@@ -168,7 +168,7 @@ class OnlineVatIdCheckTest extends \PHPUnit\Framework\TestCase
         $oExpect->vatNumber = '1212';
 
         $oOnlineVatCheck = $this->getMock(\OxidEsales\Eshop\Core\OnlineVatIdCheck::class, ['checkOnline']);
-        $oOnlineVatCheck->expects($this->once())->method('checkOnline')->with($this->equalTo($oExpect))->will($this->returnValue(false));
+        $oOnlineVatCheck->expects($this->once())->method('checkOnline')->with($oExpect)->willReturn(false);
 
         $this->assertFalse($oOnlineVatCheck->validate($oVatIn));
         $this->assertSame('ID_NOT_VALID', $oOnlineVatCheck->getError());

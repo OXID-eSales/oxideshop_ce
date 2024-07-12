@@ -20,6 +20,6 @@ class AdminUserTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_User');
-        $this->assertEquals('user', $oView->render());
+        $this->assertSame('user', $oView->render());
     }
 }

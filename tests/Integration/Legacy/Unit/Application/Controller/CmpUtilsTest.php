@@ -29,17 +29,17 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getId", "setOnComparisonList"]);
-        $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
-        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(true));
+        $oProduct->expects($this->exactly(2))->method('getId')->willReturn("1126");
+        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with(true);
 
         /** @var oxView|PHPUnit\Framework\MockObject\MockObject $oParentView */
         $oParentView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ["getViewProduct", "getViewProductList"]);
-        $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
-        $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue([$oProduct]));
+        $oParentView->expects($this->once())->method('getViewProduct')->willReturn($oProduct);
+        $oParentView->expects($this->once())->method('getViewProductList')->willReturn([$oProduct]);
 
         /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["getParent"]);
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->expects($this->once())->method('getParent')->willReturn($oParentView);
         $oCmp->toCompareList("1126");
     }
 
@@ -57,17 +57,17 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, ["getId", "setOnComparisonList"]);
-        $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
-        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(false));
+        $oProduct->expects($this->exactly(2))->method('getId')->willReturn("1126");
+        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with(false);
 
         /** @var oxView|PHPUnit\Framework\MockObject\MockObject $oParentView */
         $oParentView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ["getViewProduct", "getViewProductList"]);
-        $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
-        $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue([$oProduct]));
+        $oParentView->expects($this->once())->method('getViewProduct')->willReturn($oProduct);
+        $oParentView->expects($this->once())->method('getViewProductList')->willReturn([$oProduct]);
 
         /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["getParent"]);
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->expects($this->once())->method('getParent')->willReturn($oParentView);
         $oCmp->toCompareList("1126");
     }
 
@@ -78,12 +78,12 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["toList"]);
-        $oCmp->expects($this->once())->method('toList')->with($this->equalTo('noticelist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
+        $oCmp->expects($this->once())->method('toList')->with('noticelist', '1126', 999, 'sel');
         $oCmp->toNoticeList('1126', 999, 'sel');
     }
 
@@ -94,7 +94,7 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         $this->getConfig()->setConfigParam("bl_showWishlist", false);
@@ -108,7 +108,7 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["toList"]);
-        $oCmp->expects($this->once())->method('toList')->with($this->equalTo('wishlist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
+        $oCmp->expects($this->once())->method('toList')->with('wishlist', '1126', 999, 'sel');
         $oCmp->toWishList('1126', 999, 'sel');
     }
 
@@ -120,14 +120,14 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blAllowUnevenAmounts", false);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["addItemToBasket", "getItemCount"]);
-        $oBasket->expects($this->once())->method('addItemToBasket')->with($this->equalTo("1126"), $this->equalTo(999), $this->equalTo('sel'));
+        $oBasket->expects($this->once())->method('addItemToBasket')->with("1126", 999, 'sel');
         $oBasket->expects($this->once())->method('getItemCount');
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getBasket"]);
-        $oUser->expects($this->once())->method('getBasket')->with($this->equalTo('testList'))->will($this->returnValue($oBasket));
+        $oUser->expects($this->once())->method('getBasket')->with('testList')->willReturn($oBasket);
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["getUser"]);
-        $oCmp->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oCmp->expects($this->once())->method('getUser')->willReturn($oUser);
         $oCmp->toList('testList', '1126', 999, 'sel');
     }
 
@@ -144,7 +144,7 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
         $oParentView->expects($this->atLeastOnce())->method('setMenueList');
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["getParent"]);
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->expects($this->once())->method('getParent')->willReturn($oParentView);
         $this->assertNull($oCmp->render());
     }
 
@@ -165,7 +165,7 @@ class CmpUtilsTest extends \PHPUnit\Framework\TestCase
         $oParentView->expects($this->atLeastOnce())->method('setMenueList');
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, ["getParent"]);
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->expects($this->once())->method('getParent')->willReturn($oParentView);
         $oCmp->render();
     }
 }

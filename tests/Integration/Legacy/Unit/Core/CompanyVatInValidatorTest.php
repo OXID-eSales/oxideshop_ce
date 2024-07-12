@@ -56,7 +56,7 @@ class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
         $oChecker = oxNew('oxCompanyVatInCountryChecker');
         $oValidator->addChecker($oChecker);
 
-        $this->assertSame(1, count($oValidator->getCheckers()));
+        $this->assertCount(1, $oValidator->getCheckers());
     }
 
     public function testValidate_noCheckers()
@@ -75,7 +75,7 @@ class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker->expects($this->any())->method('validate')->will($this->returnValue(true));
+        $oChecker->method('validate')->willReturn(true);
 
         $oValidator->addChecker($oChecker);
 
@@ -89,8 +89,8 @@ class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker->expects($this->any())->method('validate')->will($this->returnValue(false));
-        $oChecker->expects($this->any())->method('getError')->will($this->returnValue('Error'));
+        $oChecker->method('validate')->willReturn(false);
+        $oChecker->method('getError')->willReturn('Error');
 
 
         $oValidator->addChecker($oChecker);
@@ -106,12 +106,12 @@ class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker->expects($this->any())->method('validate')->will($this->returnValue(true));
+        $oChecker->method('validate')->willReturn(true);
 
         $oValidator->addChecker($oChecker);
 
         $oChecker2 = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker2->expects($this->any())->method('validate')->will($this->returnValue(true));
+        $oChecker2->method('validate')->willReturn(true);
 
         $oValidator->addChecker($oChecker2);
 
@@ -125,13 +125,13 @@ class CompanyVatInValidatorTest extends \PHPUnit\Framework\TestCase
         $oValidator = new oxCompanyVatInValidator($oCountry);
 
         $oChecker = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker->expects($this->any())->method('validate')->will($this->returnValue(true));
+        $oChecker->method('validate')->willReturn(true);
 
         $oValidator->addChecker($oChecker);
 
         $oChecker2 = $this->getMock('oxCompanyVatInCountryChecker');
-        $oChecker2->expects($this->any())->method('validate')->will($this->returnValue(false));
-        $oChecker2->expects($this->any())->method('getError')->will($this->returnValue('Error'));
+        $oChecker2->method('validate')->willReturn(false);
+        $oChecker2->method('getError')->willReturn('Error');
 
         $oValidator->addChecker($oChecker2);
 

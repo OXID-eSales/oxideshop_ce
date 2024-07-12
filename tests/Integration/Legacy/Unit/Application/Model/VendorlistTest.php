@@ -36,7 +36,7 @@ class VendorlistTest extends \PHPUnit\Framework\TestCase
 
         $oVendorlist->loadVendorList();
 
-        $this->assertTrue((count($oVendorlist) > 0), "Vendors list not loaded");
+        $this->assertGreaterThan(0, count($oVendorlist), "Vendors list not loaded");
 
         // checking if vendros are the same
         $sQ = 'select oxid, oxtitle_1, oxshortdesc_1 from oxvendor where oxvendor.oxshopid = "' . $myConfig->getShopID() . '"';
@@ -68,7 +68,7 @@ class VendorlistTest extends \PHPUnit\Framework\TestCase
 
         foreach ($oVendorlist as $sVndId => $value) {
             $iArtCount = $oVendorlist[$sVndId]->oxvendor__oxnrofarticles->value;
-            $this->assertTrue(($iArtCount > 0), "Vendor articles were not counted");
+            $this->assertGreaterThan(0, $iArtCount, "Vendor articles were not counted");
         }
     }
 
@@ -96,7 +96,7 @@ class VendorlistTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($oVendorlist->getClickVendor());
         $this->assertEquals($sFirstVendorId, $oVendorlist->getClickVendor()->getId());
         $this->assertEquals($aPath[0], $oVendorlist->getRootCat());
-        $this->assertEquals('root', $aPath[0]->getId(), 'Not added root for vendor tree'); //oxvendor__oxid->value
+        $this->assertSame('root', $aPath[0]->getId(), 'Not added root for vendor tree'); //oxvendor__oxid->value
 
         //check if first vendor was added to vendors tree path array
         $this->assertEquals($sFirstVendorId, $aPath[1]->getId(), 'Vendor was not added to vendors tree path');
@@ -125,11 +125,11 @@ class VendorlistTest extends \PHPUnit\Framework\TestCase
         $oVendorlist->addCategoryFields($oVendor);
 
         // check if category specific fields was added to vendor object
-        $this->assertEquals("v_" . $oVendor->getId(), $oVendor->oxcategories__oxid->value);
+        $this->assertSame("v_" . $oVendor->getId(), $oVendor->oxcategories__oxid->value);
         $this->assertEquals($oVendor->oxvendor__oxicon, $oVendor->oxcategories__oxicon);
         $this->assertEquals($oVendor->oxvendor__oxtitle, $oVendor->oxcategories__oxtitle);
         $this->assertEquals($oVendor->oxvendor__oxshortdesc, $oVendor->oxcategories__oxdesc);
-        $this->assertEquals($myConfig->getShopHomeURL() . ('cl=vendorlist&amp;cnid=' . $oVendor->oxcategories__oxid->value), $oVendor->getLink());
+        $this->assertSame($myConfig->getShopHomeURL() . ('cl=vendorlist&amp;cnid=' . $oVendor->oxcategories__oxid->value), $oVendor->getLink());
 
         $this->assertTrue($oVendor->getIsVisible());
         $this->assertFalse($oVendor->getHasVisibleSubCats());

@@ -24,13 +24,13 @@ class AttributeListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('Attribute_List'));
         $oView->init();
 
-        $this->assertEquals("oxattribute", $oView->getNonPublicVar("_sListClass"));
+        $this->assertSame("oxattribute", $oView->getNonPublicVar("_sListClass"));
     }
 
     /**
@@ -40,6 +40,6 @@ class AttributeListTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Attribute_List');
-        $this->assertEquals('attribute_list', $oView->render());
+        $this->assertSame('attribute_list', $oView->render());
     }
 }

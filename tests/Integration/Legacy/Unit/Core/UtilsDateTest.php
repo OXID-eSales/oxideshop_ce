@@ -45,7 +45,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         foreach ($aDates as $aDate) {
             [$sResult, $sInput, $blForce] = $aDate;
-            $this->assertEquals($sResult, $oUtilsDate->formatDBDate($sInput, $blForce));
+            $this->assertSame($sResult, $oUtilsDate->formatDBDate($sInput, $blForce));
         }
     }
 
@@ -57,7 +57,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $actual = Registry::getUtilsDate()->shiftServerTime($now);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testShiftServerTimeWithConfigWillReturnExpected()
@@ -82,15 +82,15 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
     {
         $sTimeStamp = '1186052540'; // from 2007-08-02 -> week nr = 31;
 
-        $this->assertEquals(31, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp));
-        $this->assertEquals(30, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%U'));
-        $this->assertEquals(31, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%W'));
+        $this->assertSame(31, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp));
+        $this->assertSame(30, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%U'));
+        $this->assertSame(31, Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%W'));
 
-        $this->assertEquals(30, Registry::getUtilsDate()->getWeekNumber(1, $sTimeStamp));
+        $this->assertSame(30, Registry::getUtilsDate()->getWeekNumber(1, $sTimeStamp));
 
         $sCurTimeStamp = time();
         $iCurWeekNr = (int)strftime('%U', $sCurTimeStamp);
-        $this->assertEquals($iCurWeekNr, Registry::getUtilsDate()->getWeekNumber(1));
+        $this->assertSame($iCurWeekNr, Registry::getUtilsDate()->getWeekNumber(1));
     }
 
     /**
@@ -98,9 +98,9 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
      */
     public function testGerman2English()
     {
-        $this->assertEquals('2008-05-25', Registry::getUtilsDate()->german2English('25.05.2008'));
-        $this->assertEquals('2008-05', Registry::getUtilsDate()->german2English('05.2008'));
-        $this->assertEquals('08-05-25', Registry::getUtilsDate()->german2English('25.05.08'));
+        $this->assertSame('2008-05-25', Registry::getUtilsDate()->german2English('25.05.2008'));
+        $this->assertSame('2008-05', Registry::getUtilsDate()->german2English('05.2008'));
+        $this->assertSame('08-05-25', Registry::getUtilsDate()->german2English('25.05.08'));
     }
 
     /**
@@ -129,7 +129,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $sReturn = Registry::getUtilsDate()->convertDBDateTime($oObject, false, false);
 
-        $this->assertEquals('xxx', $sReturn);
+        $this->assertSame('xxx', $sReturn);
     }
 
     public function testConvertDBDateTimeTimeNotFound()
@@ -138,7 +138,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $sReturn = Registry::getUtilsDate()->convertDBDateTime($oObject, false, false);
 
-        $this->assertEquals('2007-08-01', $sReturn);
+        $this->assertSame('2007-08-01', $sReturn);
     }
 
     // bunch of tests ...
@@ -327,8 +327,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
         $oxUtilsDate->setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', false);
-        $this->assertEquals('xxx', $oObject->value);
-        $this->assertEquals(0, $oObject->fldmax_length);
+        $this->assertSame('xxx', $oObject->value);
+        $this->assertSame(0, $oObject->fldmax_length);
     }
 
     // only date
@@ -339,8 +339,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
         $oxUtilsDate->setDefaultFormatedValue($oObject, 'xxx', 'ISO', 'ISO', true);
-        $this->assertEquals('0000-00-00', $oObject->value);
-        $this->assertEquals(strlen('0000-00-00'), $oObject->fldmax_length);
+        $this->assertSame('0000-00-00', $oObject->value);
+        $this->assertSame(strlen('0000-00-00'), $oObject->fldmax_length);
     }
 
     // full date
@@ -351,8 +351,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
         $oxUtilsDate->setDefaultFormatedValue($oObject, '0000-00-00 00:00:00', 'ISO', 'ISO', false);
-        $this->assertEquals('0000-00-00 00:00:00', $oObject->value);
-        $this->assertEquals(strlen('0000-00-00 00:00:00'), $oObject->fldmax_length);
+        $this->assertSame('0000-00-00 00:00:00', $oObject->value);
+        $this->assertSame(strlen('0000-00-00 00:00:00'), $oObject->fldmax_length);
     }
 
     /**
@@ -386,8 +386,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
         $oxUtilsDate->setDefaultDateTimeValue($oObject, "ISO", "ISO", false);
 
-        $this->assertEquals("0000-00-00 00:00:00", $oObject->value);
-        $this->assertEquals(strlen("0000-00-00 00:00:00"), $oObject->fldmax_length);
+        $this->assertSame("0000-00-00 00:00:00", $oObject->value);
+        $this->assertSame(strlen("0000-00-00 00:00:00"), $oObject->fldmax_length);
     }
 
     /**
@@ -403,8 +403,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
         $oxUtilsDate = $this->getProxyClass('oxUtilsDate');
         $oxUtilsDate->setDate($oObject, "Y-m-d", $aDFields, $aDateMatches);
 
-        $this->assertEquals("1981-05-14", $oObject->value);
-        $this->assertEquals(strlen("1981-05-14"), $oObject->fldmax_length);
+        $this->assertSame("1981-05-14", $oObject->value);
+        $this->assertSame(strlen("1981-05-14"), $oObject->fldmax_length);
     }
 
     /**
@@ -431,8 +431,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
             $aDFields
         );
 
-        $this->assertEquals("1981-05-14 12:12:12", $oObject->value);
-        $this->assertEquals(strlen("1981-05-14 12:12:12"), $oObject->fldmax_length);
+        $this->assertSame("1981-05-14 12:12:12", $oObject->value);
+        $this->assertSame(strlen("1981-05-14 12:12:12"), $oObject->fldmax_length);
     }
 
     /**
@@ -441,8 +441,8 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
     public function testGetTimeStatic()
     {
         $this->setTime(157);
-        $this->assertEquals(157, $this->getTime());
-        $this->assertEquals(157, Registry::getUtilsDate()->getTime());
+        $this->assertSame(157, $this->getTime());
+        $this->assertSame(157, Registry::getUtilsDate()->getTime());
     }
 
     public function testFormTimeNoTimeShift()
@@ -452,7 +452,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
         $oDateTime = new DateTime('tomorrow');
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
-        $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
+        $this->assertSame(Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
     }
 
     public function testFormTimeNoTimeShiftHourSet()
@@ -464,7 +464,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
-        $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+        $this->assertSame(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
     }
 
     public function testFormTimeWithTimeShift()
@@ -476,7 +476,7 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
         $oDateTime = new DateTime('tomorrow');
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
-        $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
+        $this->assertSame(Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
     }
 
     public function testFormTimeWithTimeShiftHourSet()
@@ -490,12 +490,14 @@ class UtilsDateTest extends \PHPUnit\Framework\TestCase
 
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
-        $this->assertEquals(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+        $this->assertSame(Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
     }
 
-    public function providerShiftServerTime()
+    public function providerShiftServerTime(): \Iterator
     {
-        return [[2], [0], [null]];
+        yield [2];
+        yield [0];
+        yield [null];
     }
 
     /**

@@ -25,12 +25,12 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
-        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oView = oxNew($this->getProxyClassName('Category_List'));
         $oView->init();
-        $this->assertEquals(["oxcategories" => ["oxrootid" => "desc", "oxleft" => "asc"]], $oView->getListSorting());
+        $this->assertSame(["oxcategories" => ["oxrootid" => "desc", "oxleft" => "asc"]], $oView->getListSorting());
     }
 
     /**
@@ -44,8 +44,8 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\CategoryList::class, $aViewData["cattree"]);
 
-        $this->assertEquals('category_list', $sTplName);
+        $this->assertSame('category_list', $sTplName);
     }
 }

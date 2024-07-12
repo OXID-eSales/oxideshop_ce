@@ -23,7 +23,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oContact = oxNew('Contact');
-        $this->assertEquals('page/info/contact', $oContact->render());
+        $this->assertSame('page/info/contact', $oContact->render());
     }
 
     /**
@@ -84,7 +84,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
         $oObj = $this->getProxyClass("Contact");
         $oObj->send();
 
-        $this->assertEquals(1, $oObj->getNonPublicVar('_blContactSendStatus'));
+        $this->assertSame(1, $oObj->getNonPublicVar('_blContactSendStatus'));
     }
 
     /**
@@ -94,7 +94,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('editval', 'testval');
         $oObj = $this->getProxyClass("Contact");
-        $this->assertEquals('testval', $oObj->getUserData());
+        $this->assertSame('testval', $oObj->getUserData());
     }
 
     /**
@@ -104,7 +104,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('c_subject', 'testsubject');
         $oObj = $this->getProxyClass("Contact");
-        $this->assertEquals('testsubject', $oObj->getContactSubject());
+        $this->assertSame('testsubject', $oObj->getContactSubject());
     }
 
     /**
@@ -114,7 +114,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     {
         $this->setRequestParameter('c_message', 'testmessage');
         $oObj = $this->getProxyClass("Contact");
-        $this->assertEquals('testmessage', $oObj->getContactMessage());
+        $this->assertSame('testmessage', $oObj->getContactMessage());
     }
 
     /**
@@ -134,7 +134,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     {
         $oContact = oxNew('Contact');
 
-        $this->assertEquals(1, count($oContact->getBreadCrumb()));
+        $this->assertCount(1, $oContact->getBreadCrumb());
     }
 
     /**
@@ -157,11 +157,11 @@ class ContactTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('sendContactMail')
             ->with(
-                $this->equalTo('user@oxid-esales.com'),
-                $this->equalTo('subject'),
-                $this->equalTo($sMessage)
-            )->will(
-                $this->returnValue(true)
+                'user@oxid-esales.com',
+                'subject',
+                $sMessage
+            )->willReturn(
+                true
             );
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
@@ -178,7 +178,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
     {
         /** @var oxUtilsView|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['addErrorToDisplay']);
-        $oUtils->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo("ERROR_MESSAGE_CHECK_EMAIL"));
+        $oUtils->expects($this->once())->method('addErrorToDisplay')->with("ERROR_MESSAGE_CHECK_EMAIL");
         oxTestModules::addModuleObject('oxUtilsView', $oUtils);
 
         $aParams = ["oxuser__oxusername" => "user@oxid-esales.com", "oxuser__oxfname"    => "admin", "oxuser__oxlname"    => "admin", "oxuser__oxsal"      => "MR"];
@@ -189,7 +189,7 @@ class ContactTest extends \PHPUnit\Framework\TestCase
 
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["sendContactMail"]);
-        $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
+        $oEmail->expects($this->once())->method('sendContactMail')->willReturn(false);
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
@@ -207,11 +207,11 @@ class ContactTest extends \PHPUnit\Framework\TestCase
         $oShop->oxshops__oxcompany = new oxField('shop');
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['getActiveShop']);
-        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
+        $oConfig->method('getActiveShop')->willReturn($oShop);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContactController::class, ['getConfig']);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $this->assertEquals('shop', $oView->getTitle());
+        $this->assertSame('shop', $oView->getTitle());
     }
 }

@@ -142,6 +142,10 @@ class oxCategoryListHelperLoadCategoryMenusPE extends \oxCategoryList
 
 class CategoryListTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var bool
+     */
+    public $testAdmin;
     /** @var oxCategoryList  */
     protected $_oList;
 
@@ -190,7 +194,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $sCurSnippet = $this->_oList->getDepthSqlSnippet(null);
         $sExpSnippet = ' ( 0 ) ';
-        $this->assertEquals($sExpSnippet, $sCurSnippet);
+        $this->assertSame($sExpSnippet, $sCurSnippet);
     }
 
     /**
@@ -208,9 +212,9 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
-        $sExpSnippet = sprintf(' ( 0 or %s.oxparentid = \'oxrootid\' ) ', $sViewName);
+        $sExpSnippet = sprintf(" ( 0 or %s.oxparentid = 'oxrootid' ) ", $sViewName);
 
-        $this->assertEquals($sExpSnippet, $sCurSnippet);
+        $this->assertSame($sExpSnippet, $sCurSnippet);
     }
 
     /**
@@ -227,9 +231,9 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
-        $sExpSnippet = sprintf(' ( 0 or %s.oxparentid = \'oxrootid\' or %s.oxrootid = %s.oxparentid or %s.oxid = %s.oxrootid ) ', $sViewName, $sViewName, $sViewName, $sViewName, $sViewName);
+        $sExpSnippet = sprintf(" ( 0 or %s.oxparentid = 'oxrootid' or %s.oxrootid = %s.oxparentid or %s.oxid = %s.oxrootid ) ", $sViewName, $sViewName, $sViewName, $sViewName, $sViewName);
 
-        $this->assertEquals($sExpSnippet, $sCurSnippet);
+        $this->assertSame($sExpSnippet, $sCurSnippet);
     }
 
     /**
@@ -251,9 +255,9 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         $sViewName = $tableViewNameGenerator->getViewName('oxcategories');
 
         $snippetOxid = $this->getTestConfig()->getShopEdition() === 'EE' ? '3ee44bf933cf342e2.99739972' : '8a142c3e44ea4e714.31136811';
-        $sExpSnippet = sprintf(' ( 0 or (%s.oxparentid = \'', $sViewName) . $snippetOxid . "') ) ";
+        $sExpSnippet = sprintf(" ( 0 or (%s.oxparentid = '", $sViewName) . $snippetOxid . "') ) ";
 
-        $this->assertEquals($sExpSnippet, $sCurSnippet);
+        $this->assertSame($sExpSnippet, $sCurSnippet);
     }
 
     /**
@@ -268,7 +272,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $sCurSnippet = $this->_oList->getDepthSqlSnippet(null);
         $sExpSnippet = " ( 0 ) ";
-        $this->assertEquals($sExpSnippet, $sCurSnippet);
+        $this->assertSame($sExpSnippet, $sCurSnippet);
     }
 
     /**
@@ -390,7 +394,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
                    . 'not tablex.oxactive as oxppremove';
 
         $oList = oxNew('oxCategoryList');
-        $this->assertEquals($sExpect, $oList->getSqlSelectFieldsForTree('tablex'));
+        $this->assertSame($sExpect, $oList->getSqlSelectFieldsForTree('tablex'));
     }
 
     /**
@@ -421,7 +425,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $oList = oxNew('oxCategoryList');
 
-        $this->assertEquals($sExpect, $oList->getSqlSelectFieldsForTree('tablex'));
+        $this->assertSame($sExpect, $oList->getSqlSelectFieldsForTree('tablex'));
     }
 
 
@@ -437,24 +441,24 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, ['getSqlSelectFieldsForTree']);
         $oList->expects($this->once())->method('getSqlSelectFieldsForTree')
-            ->with($this->equalTo('maincats'), $this->equalTo(null))
-            ->will($this->returnValue('qqqqq'));
+            ->with('maincats', null)
+            ->willReturn('qqqqq');
 
         $sViewName = $oCat->getViewName();
 
-        $this->assertEquals(sprintf('UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = \'rootid\' AND subcats.oxleft <= 151 AND subcats.oxright >= 959', $sViewName), $oList->getDepthSqlUnion($oCat));
+        $this->assertSame(sprintf("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $sViewName), $oList->getDepthSqlUnion($oCat));
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, ['getSqlSelectFieldsForTree']);
         $oList->expects($this->once())->method('getSqlSelectFieldsForTree')
-            ->with($this->equalTo('maincats'), $this->equalTo('lalala'))
-            ->will($this->returnValue('qqqqq'));
+            ->with('maincats', 'lalala')
+            ->willReturn('qqqqq');
 
-        $this->assertEquals(sprintf('UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = \'rootid\' AND subcats.oxleft <= 151 AND subcats.oxright >= 959', $sViewName), $oList->getDepthSqlUnion($oCat, 'lalala'));
+        $this->assertSame(sprintf("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN %s AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $sViewName), $oList->getDepthSqlUnion($oCat, 'lalala'));
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, ['getSqlSelectFieldsForTree']);
         $oList->expects($this->never())->method('getSqlSelectFieldsForTree');
 
-        $this->assertEquals("", $oList->getDepthSqlUnion(null));
+        $this->assertSame("", $oList->getDepthSqlUnion(null));
     }
 
     /**
@@ -511,10 +515,10 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $this->_oList->selectString($this->_oList->getSelectString());
         $this->_oList[$this->_sActCat] = [];
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
+        $this->assertNotInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $this->_oList[$this->_sActCat]);
 
         $this->_oList->ppLoadFullCategory($this->_sActCat);
-        $this->assertTrue($this->_oList[$this->_sActCat] instanceof category);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $this->_oList[$this->_sActCat]);
     }
 
     /**
@@ -537,8 +541,8 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $this->_oList->ppLoadFullCategory($this->_sActCat);
 
-        $this->assertTrue($this->_sActCat !== null);
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
+        $this->assertNotNull($this->_sActCat);
+        $this->assertNotInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $this->_oList[$this->_sActCat]);
     }
 
     /**
@@ -576,7 +580,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         $this->_oList->setVar('iForceLevel', 0);
 
         $this->_oList->ppAddPathInfo();
-        $this->assertEquals(0, count($this->_oList->getPath()));
+        $this->assertCount(0, $this->_oList->getPath());
     }
 
     /**
@@ -595,7 +599,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $aContent = $this->_oList[$this->_sActCat]->getContentCats();
 
-        $this->assertEquals(0, count($aContent));
+        $this->assertCount(0, $aContent);
     }
 
     /**
@@ -617,7 +621,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $aContent = $this->_oList[$this->_sActCat]->getContentCats();
 
-        $this->assertEquals(2, count($aContent));
+        $this->assertCount(2, $aContent);
     }
 
     /**
@@ -717,7 +721,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $aExpRootOrder = $aCurRootOrder;
         asort($aExpRootOrder);
-        $this->assertEquals(implode(',', $aExpRootOrder), implode(',', $aCurRootOrder));
+        $this->assertSame(implode(',', $aExpRootOrder), implode(',', $aCurRootOrder));
 
         //Chect subcat order
         $aCurSubOrder = [];
@@ -727,7 +731,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
 
         $aExpSubOrder = $aCurSubOrder;
         asort($aExpSubOrder);
-        $this->assertEquals(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
+        $this->assertSame(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
     }
 
     /**
@@ -770,7 +774,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         $oCat->oxcategories__oxtitle = new oxField("_test");
         $oCat->save();
         $oCat2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, ['getSubCats']);
-        $oCat2->expects($this->any())->method('getSubCats')->will($this->returnValue([$oCat]));
+        $oCat2->method('getSubCats')->willReturn([$oCat]);
         $oCat2->setId("_test2");
         $oCat2->oxcategories__oxparentid = new oxField("oxrootid");
         $oCat2->oxcategories__oxsort = new oxField(2);
@@ -782,7 +786,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
         $sDepth = "";
         foreach ($aNewTree as $oCat) {
             $sDepth .= "-";
-            $this->assertEquals($sDepth . " _test", $oCat->oxcategories__oxtitle->value);
+            $this->assertSame($sDepth . " _test", $oCat->oxcategories__oxtitle->value);
         }
     }
 
@@ -834,7 +838,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
     {
         $oCatList = $this->getProxyClass("oxcategorylist");
         $oCatList->setShopID(3);
-        $this->assertEquals(3, $oCatList->getNonPublicVar('_sShopID'));
+        $this->assertSame(3, $oCatList->getNonPublicVar('_sShopID'));
     }
 
     /**
@@ -844,7 +848,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
     {
         $oCatList = $this->getProxyClass("oxcategorylist");
         $oCatList->setNonPublicVar("_aPath", ["aaa", "bbb"]);
-        $this->assertEquals("bbb", $oCatList->getClickCat());
+        $this->assertSame("bbb", $oCatList->getClickCat());
     }
 
     /**
@@ -854,7 +858,7 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
     {
         $oCatList = $this->getProxyClass("oxcategorylist");
         $oCatList->setNonPublicVar("_aPath", [2 => "aaa", 1 => "bbb"]);
-        $this->assertEquals([0 => "aaa"], $oCatList->getClickRoot());
+        $this->assertSame([0 => "aaa"], $oCatList->getClickRoot());
     }
 
     /**
@@ -968,19 +972,19 @@ class CategoryListTest extends \PHPUnit\Framework\TestCase
     {
         $oCategoryList = oxNew('oxCategoryList');
         $oCategoryList->setLoadLevel(1);
-        $this->assertEquals(1, $oCategoryList->getLoadLevel());
+        $this->assertSame(1, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(0);
-        $this->assertEquals(0, $oCategoryList->getLoadLevel());
+        $this->assertSame(0, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(2);
-        $this->assertEquals(2, $oCategoryList->getLoadLevel());
+        $this->assertSame(2, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(3);
-        $this->assertEquals(2, $oCategoryList->getLoadLevel());
+        $this->assertSame(2, $oCategoryList->getLoadLevel());
 
         $oCategoryList->setLoadLevel(-1);
-        $this->assertEquals(0, $oCategoryList->getLoadLevel());
+        $this->assertSame(0, $oCategoryList->getLoadLevel());
     }
 
     /**

@@ -67,8 +67,8 @@ class DeliverySetTest extends \PHPUnit\Framework\TestCase
     {
         $oDelSet = oxNew('oxDeliverySet');
 
-        $this->assertEquals('oxdeliveryset', $oDelSet->getClassName());
-        $this->assertEquals('oxdeliveryset', $oDelSet->getCoreTableName());
+        $this->assertSame('oxdeliveryset', $oDelSet->getClassName());
+        $this->assertSame('oxdeliveryset', $oDelSet->getCoreTableName());
     }
 
     /**
@@ -91,10 +91,10 @@ class DeliverySetTest extends \PHPUnit\Framework\TestCase
         $oDelSet->load('_testDeliverySetId');
 
         // checking before deletion
-        $this->assertEquals(1, $oDB->getOne('select count(*) from oxobject2payment where oxobjectid = "' . $oDelSet->getId() . '" '));
-        $this->assertEquals(1, $oDB->getOne('select count(*) from oxobject2delivery where oxdeliveryid = "' . $oDelSet->getId() . '" '));
-        $this->assertEquals(1, $oDB->getOne('select count(*) from oxdel2delset where oxdelsetid = "' . $oDelSet->getId() . '" '));
-        $this->assertEquals(1, $oDB->getOne('select count(*) from oxdeliveryset where oxid = "' . $oDelSet->getId() . '" '));
+        $this->assertSame(1, $oDB->getOne('select count(*) from oxobject2payment where oxobjectid = "' . $oDelSet->getId() . '" '));
+        $this->assertSame(1, $oDB->getOne('select count(*) from oxobject2delivery where oxdeliveryid = "' . $oDelSet->getId() . '" '));
+        $this->assertSame(1, $oDB->getOne('select count(*) from oxdel2delset where oxdelsetid = "' . $oDelSet->getId() . '" '));
+        $this->assertSame(1, $oDB->getOne('select count(*) from oxdeliveryset where oxid = "' . $oDelSet->getId() . '" '));
 
         $oDelSet->delete();
 
@@ -108,6 +108,6 @@ class DeliverySetTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByName()
     {
         $oD = oxNew('oxDeliverySet');
-        $this->assertEquals('_testDeliverySetId', $oD->getIdByName('_testDeliverySetTitle'));
+        $this->assertSame('_testDeliverySetId', $oD->getIdByName('_testDeliverySetTitle'));
     }
 }

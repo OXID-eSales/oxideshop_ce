@@ -18,7 +18,7 @@ class MaintenanceTest extends \PHPUnit\Framework\TestCase
     public function testExecute()
     {
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, ['updateUpcomingPrices']);
-        $oList->expects($this->once())->method('updateUpcomingPrices')->with($this->equalTo(true));
+        $oList->expects($this->once())->method('updateUpcomingPrices')->with(true);
 
         oxTestModules::addModuleObject('oxarticlelist', $oList);
 

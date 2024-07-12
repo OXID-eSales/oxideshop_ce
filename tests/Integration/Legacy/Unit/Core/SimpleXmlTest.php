@@ -30,7 +30,7 @@ class SimpleXmlTest extends \PHPUnit\Framework\TestCase
         $sTestResult .= "<keys><key>testKey1</key><key>someSpecialCharsValue&amp;€#</key><key>testKey2</key></keys>";
         $sTestResult .= "</testXml>\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+        $this->assertSame($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testObjectToXmlWithObjectsInArray()
@@ -86,10 +86,10 @@ class SimpleXmlTest extends \PHPUnit\Framework\TestCase
 
         $oRes = $oXml->xmlToObject($sTestXml);
 
-        $this->assertEquals((string) $oRes->title, "TestTitle");
-        $this->assertEquals((string) $oRes->keys->key[0], "testKey1");
-        $this->assertEquals((string) $oRes->keys->key[1], "testKey2");
-        $this->assertEquals((string) $oRes->keys->key[2], "testKey3WithSpecialChars&#€");
+        $this->assertSame((string) $oRes->title, "TestTitle");
+        $this->assertSame((string) $oRes->keys->key[0], "testKey1");
+        $this->assertSame((string) $oRes->keys->key[1], "testKey2");
+        $this->assertSame((string) $oRes->keys->key[2], "testKey3WithSpecialChars&#€");
     }
 
     public function testObjectToXmlWithElementsAndAttributes()
@@ -116,7 +116,7 @@ class SimpleXmlTest extends \PHPUnit\Framework\TestCase
         $sTestResult .= '</elements>';
         $sTestResult .= '</testXml>' . "\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+        $this->assertSame($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testObjectToXmlWithElementsWithAttributesKey()
@@ -136,7 +136,7 @@ class SimpleXmlTest extends \PHPUnit\Framework\TestCase
         $sTestResult .= '</attributes>';
         $sTestResult .= '</testXml>' . "\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+        $this->assertSame($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 
     public function testObjectToXmlWithAssocArrayKeys()
@@ -154,6 +154,6 @@ class SimpleXmlTest extends \PHPUnit\Framework\TestCase
         $sTestResult .= "</elements>";
         $sTestResult .= "</testXml>\n";
 
-        $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
+        $this->assertSame($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
     }
 }

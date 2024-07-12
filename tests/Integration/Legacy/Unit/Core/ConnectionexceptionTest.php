@@ -18,7 +18,7 @@ class ConnectionexceptionTest extends \PHPUnit\Framework\TestCase
         $sAddress = 'sServerAddress';
         $oTestObject = oxNew('oxConnectionException');
         $oTestObject->setAdress($sAddress);
-        $this->assertEquals($sAddress, $oTestObject->getAdress());
+        $this->assertSame($sAddress, $oTestObject->getAdress());
     }
 
     public function testSetGetConnectionError()
@@ -26,7 +26,7 @@ class ConnectionexceptionTest extends \PHPUnit\Framework\TestCase
         $sConnectionError = 'sSomeConnectionError';
         $oTestObject = oxNew('oxConnectionException');
         $oTestObject->setConnectionError($sConnectionError);
-        $this->assertEquals($sConnectionError, $oTestObject->getConnectionError());
+        $this->assertSame($sConnectionError, $oTestObject->getConnectionError());
     }
 
     // We check on class name and message only - rest is not checked yet
@@ -54,9 +54,9 @@ class ConnectionexceptionTest extends \PHPUnit\Framework\TestCase
         $oTestObject->setConnectionError($sConnectionError);
         $aRes = $oTestObject->getValues();
         $this->assertArrayHasKey('adress', $aRes);
-        $this->assertTrue($sAddress === $aRes['adress']);
+        $this->assertSame($sAddress, $aRes['adress']);
         $this->assertArrayHasKey('connectionError', $aRes);
-        $this->assertTrue($sConnectionError === $aRes['connectionError']);
+        $this->assertSame($sConnectionError, $aRes['connectionError']);
     }
 
     /**

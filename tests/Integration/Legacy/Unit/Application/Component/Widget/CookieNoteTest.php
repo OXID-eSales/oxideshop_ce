@@ -19,7 +19,7 @@ class CookieNoteTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oCookieNote = oxNew('oxwCookieNote');
-        $this->assertEquals('widget/header/cookienote', $oCookieNote->render());
+        $this->assertSame('widget/header/cookienote', $oCookieNote->render());
     }
 
     /**

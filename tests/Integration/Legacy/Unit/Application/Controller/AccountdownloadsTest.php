@@ -24,7 +24,7 @@ class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
     public function testGetBreadCrumb()
     {
         $oAccDownloads = oxNew('Account_Downloads');
-        $this->assertEquals(2, count($oAccDownloads->getBreadCrumb()));
+        $this->assertCount(2, $oAccDownloads->getBreadCrumb());
     }
 
 
@@ -37,7 +37,7 @@ class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
 
         $oAccDownloads = oxNew('Account_Downloads');
 
-        $this->assertEquals('aaa', $oAccDownloads->getDownloadError());
+        $this->assertSame('aaa', $oAccDownloads->getDownloadError());
     }
 
     /**
@@ -46,7 +46,7 @@ class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
     public function testGetArticleList()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getId']);
-        $oUser->expects($this->any())->method('getId')->will($this->returnValue("userId"));
+        $oUser->method('getId')->willReturn("userId");
 
         $oFileOrder = oxNew("oxorderfile");
         $oFileOrder->oxorderfiles__oxorderarticleid = new oxField("testArtNr");
@@ -55,18 +55,18 @@ class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
         $oFileOrder->oxorderfiles__oxarticletitle = new oxField("testArtTitle");
 
         $oOrderFileList = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFileList::class, ['loadUserFiles']);
-        $oOrderFileList->expects($this->any())->method('loadUserFiles')->will($this->returnValue("orderfilelist"));
+        $oOrderFileList->method('loadUserFiles')->willReturn("orderfilelist");
         $oOrderFileList[] = $oFileOrder;
         oxTestModules::addModuleObject('oxOrderFileList', $oOrderFileList);
 
         $oAccDownloads = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountDownloadsController::class, ['getUser']);
-        $oAccDownloads->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oAccDownloads->method('getUser')->willReturn($oUser);
 
         $aOrderFilesList = $oAccDownloads->getOrderFilesList();
-        $this->assertEquals("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
-        $this->assertEquals("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
-        $this->assertEquals("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
-        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof OrderFile);
+        $this->assertSame("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
+        $this->assertSame("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
+        $this->assertSame("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\OrderFile::class, $aOrderFilesList["testArtNr"]["oxorderfiles"][0]);
     }
 
     /**
@@ -76,6 +76,6 @@ class AccountdownloadsTest extends \PHPUnit\Framework\TestCase
     {
         $oAccDownloads = $this->getProxyClass('Account_Downloads');
         $oAccDownloads->setNonPublicVar('_oOrderFilesList', "testOrder");
-        $this->assertEquals("testOrder", $oAccDownloads->getOrderFilesList());
+        $this->assertSame("testOrder", $oAccDownloads->getOrderFilesList());
     }
 }

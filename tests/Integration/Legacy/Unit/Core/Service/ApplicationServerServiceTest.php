@@ -25,7 +25,7 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals(['foundAppServer'], $service->loadAppServerList());
+        $this->assertSame(['foundAppServer'], $service->loadAppServerList());
     }
 
     public function testDeleteAppServer()
@@ -47,7 +47,7 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals($id, $service->loadAppServer($id));
+        $this->assertSame($id, $service->loadAppServer($id));
     }
 
     public function testLoadAppServerDoesNotExists()
@@ -70,8 +70,8 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(['findAppServer', 'update'])
             ->getMock();
-        $appServerDao->expects($this->once())->method('findAppServer')->will($this->returnValue($id));
-        $appServerDao->expects($this->once())->method('update')->will($this->returnValue($id));
+        $appServerDao->expects($this->once())->method('findAppServer')->willReturn($id);
+        $appServerDao->expects($this->once())->method('update')->willReturn($id);
 
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId($id);
@@ -88,8 +88,8 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(['findAppServer', 'insert'])
             ->getMock();
-        $appServerDao->expects($this->once())->method('findAppServer')->will($this->returnValue(null));
-        $appServerDao->expects($this->once())->method('insert')->will($this->returnValue($id));
+        $appServerDao->expects($this->once())->method('findAppServer')->willReturn(null);
+        $appServerDao->expects($this->once())->method('insert')->willReturn($id);
 
         $server = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $server->setId($id);
@@ -130,7 +130,7 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals([], $service->loadActiveAppServerList());
+        $this->assertSame([], $service->loadActiveAppServerList());
     }
 
     public function testLoadActiveAppServerListIfNoServersFound()
@@ -139,7 +139,7 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
 
         $service = $this->getApplicationServerService($appServerDao);
 
-        $this->assertEquals([], $service->loadActiveAppServerList());
+        $this->assertSame([], $service->loadActiveAppServerList());
     }
 
     public function testUpdateAppServerInformationNewAppServer()
@@ -149,15 +149,15 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
         $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $appServerDao->expects($this->once())->method('findAppServer')->will($this->returnValue(null));
-        $appServerDao->expects($this->once())->method('findAll')->will($this->returnValue([]));
-        $appServerDao->expects($this->once())->method('save')->will($this->returnValue($id));
+        $appServerDao->expects($this->once())->method('findAppServer')->willReturn(null);
+        $appServerDao->expects($this->once())->method('findAll')->willReturn([]);
+        $appServerDao->expects($this->once())->method('save')->willReturn($id);
 
         $utilsServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsServer::class)
             ->setMethods(['getServerNodeId', 'getServerIp'])
             ->getMock();
-        $utilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue('serverNameHash2'));
-        $utilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue('127.0.0.1'));
+        $utilsServer->method('getServerNodeId')->willReturn('serverNameHash2');
+        $utilsServer->method('getServerIp')->willReturn('127.0.0.1');
 
         $currentTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
@@ -169,7 +169,7 @@ class ApplicationServerServiceTest extends \PHPUnit\Framework\TestCase
         $appServerDao = $this->getMockBuilder(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $appServerDao->expects($this->once())->method($methodToMock)->will($this->returnValue($expectedReturnValue));
+        $appServerDao->expects($this->once())->method($methodToMock)->willReturn($expectedReturnValue);
 
         return $appServerDao;
     }

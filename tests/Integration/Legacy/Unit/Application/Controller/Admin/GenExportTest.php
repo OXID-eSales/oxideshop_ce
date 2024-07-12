@@ -20,6 +20,6 @@ class GenExportTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('GenExport');
-        $this->assertEquals('dynexportbase', $oView->render());
+        $this->assertSame('dynexportbase', $oView->render());
     }
 }

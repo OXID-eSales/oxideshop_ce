@@ -21,7 +21,7 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
         $oChecker = oxNew("oxDiagnostics");
         $oChecker->setVersion("v123");
 
-        $this->assertEquals("v123", $oChecker->getVersion());
+        $this->assertSame("v123", $oChecker->getVersion());
     }
 
     /**
@@ -32,7 +32,7 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
         $oChecker = oxNew("oxDiagnostics");
         $oChecker->setEdition("e123");
 
-        $this->assertEquals("e123", $oChecker->getEdition());
+        $this->assertSame("e123", $oChecker->getEdition());
     }
 
     /**
@@ -43,7 +43,7 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
         $oChecker = oxNew("oxDiagnostics");
         $oChecker->setShopLink("somelink");
 
-        $this->assertEquals("somelink", $oChecker->getShopLink());
+        $this->assertSame("somelink", $oChecker->getShopLink());
     }
 
     /**
@@ -55,7 +55,7 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
         $oDb->execute("DELETE FROM `oxshops` WHERE `oxid` > 1");
 
         for ($i = 2; $i < 5; $i++) {
-            $oDb->execute(sprintf('INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES (%d, ', $i) . ($i % 2) . sprintf(', \'Test Shop %d\')', $i));
+            $oDb->execute(sprintf('INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES (%d, ', $i) . ($i % 2) . sprintf(", 'Test Shop %d')", $i));
         }
 
         $oDb->execute("DELETE FROM `oxcategories`");
@@ -99,17 +99,17 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
 
         $aResult = $oDiagnostics->getShopDetails();
 
-        $this->assertEquals(11, count($aResult));
-        $this->assertEquals('someShopURL', $aResult['URL']);
-        $this->assertEquals('someEdition', $aResult['Edition']);
-        $this->assertEquals('someVersion', $aResult['Version']);
-        $this->assertEquals(4, $aResult['Subshops (Total)']);
-        $this->assertEquals(2, $aResult['Subshops (Active)']);
-        $this->assertEquals(9, $aResult['Categories (Total)']);
-        $this->assertEquals(5, $aResult['Categories (Active)']);
-        $this->assertEquals(7, $aResult['Articles (Total)']);
-        $this->assertEquals(3, $aResult['Articles (Active)']);
-        $this->assertEquals(9, $aResult['Users (Total)']);
+        $this->assertCount(11, $aResult);
+        $this->assertSame('someShopURL', $aResult['URL']);
+        $this->assertSame('someEdition', $aResult['Edition']);
+        $this->assertSame('someVersion', $aResult['Version']);
+        $this->assertSame(4, $aResult['Subshops (Total)']);
+        $this->assertSame(2, $aResult['Subshops (Active)']);
+        $this->assertSame(9, $aResult['Categories (Total)']);
+        $this->assertSame(5, $aResult['Categories (Active)']);
+        $this->assertSame(7, $aResult['Articles (Total)']);
+        $this->assertSame(3, $aResult['Articles (Active)']);
+        $this->assertSame(9, $aResult['Users (Total)']);
     }
 
 
@@ -123,33 +123,33 @@ class DiagnosticsTest extends \PHPUnit\Framework\TestCase
             ['getCpuAmount', 'getCpuMhz', 'getBogoMips', 'getMemoryTotal', 'getMemoryFree', 'getCpuModel', 'getVirtualizationSystem', 'getApacheVersion', 'isExecAllowed', 'getPhpVersion', 'getMySqlServerInfo', 'getDiskTotalSpace', 'getDiskFreeSpace']
         );
 
-        $oDiagnostics->expects($this->once())->method('getCpuAmount')->will($this->returnValue(5));
-        $oDiagnostics->expects($this->once())->method('getCpuMhz')->will($this->returnValue(500));
-        $oDiagnostics->expects($this->once())->method('getBogoMips')->will($this->returnValue(1000));
-        $oDiagnostics->expects($this->once())->method('getMemoryTotal')->will($this->returnValue("3000"));
-        $oDiagnostics->expects($this->once())->method('getMemoryFree')->will($this->returnValue("1234"));
-        $oDiagnostics->expects($this->once())->method('getCpuModel')->will($this->returnValue("Cpu Model"));
-        $oDiagnostics->expects($this->once())->method('getVirtualizationSystem')->will($this->returnValue("LINUX"));
-        $oDiagnostics->expects($this->once())->method('getApacheVersion')->will($this->returnValue("321"));
-        $oDiagnostics->expects($this->once())->method('getPhpVersion')->will($this->returnValue("654"));
-        $oDiagnostics->expects($this->once())->method('getMySqlServerInfo')->will($this->returnValue("MySQL information"));
-        $oDiagnostics->expects($this->once())->method('getDiskTotalSpace')->will($this->returnValue(9999));
-        $oDiagnostics->expects($this->once())->method('getDiskFreeSpace')->will($this->returnValue(3333));
-        $oDiagnostics->expects($this->any())->method('isExecAllowed')->will($this->returnValue(true));
+        $oDiagnostics->expects($this->once())->method('getCpuAmount')->willReturn(5);
+        $oDiagnostics->expects($this->once())->method('getCpuMhz')->willReturn(500);
+        $oDiagnostics->expects($this->once())->method('getBogoMips')->willReturn(1000);
+        $oDiagnostics->expects($this->once())->method('getMemoryTotal')->willReturn("3000");
+        $oDiagnostics->expects($this->once())->method('getMemoryFree')->willReturn("1234");
+        $oDiagnostics->expects($this->once())->method('getCpuModel')->willReturn("Cpu Model");
+        $oDiagnostics->expects($this->once())->method('getVirtualizationSystem')->willReturn("LINUX");
+        $oDiagnostics->expects($this->once())->method('getApacheVersion')->willReturn("321");
+        $oDiagnostics->expects($this->once())->method('getPhpVersion')->willReturn("654");
+        $oDiagnostics->expects($this->once())->method('getMySqlServerInfo')->willReturn("MySQL information");
+        $oDiagnostics->expects($this->once())->method('getDiskTotalSpace')->willReturn(9999);
+        $oDiagnostics->expects($this->once())->method('getDiskFreeSpace')->willReturn(3333);
+        $oDiagnostics->method('isExecAllowed')->willReturn(true);
 
         $aServerInfo = $oDiagnostics->getServerInfo();
 
-        $this->assertEquals(12, count($aServerInfo));
-        $this->assertEquals('LINUX', $aServerInfo['VM']);
-        $this->assertEquals("321", $aServerInfo['Apache']);
-        $this->assertEquals("654", $aServerInfo['PHP']);
-        $this->assertEquals("MySQL information", $aServerInfo['MySQL']);
-        $this->assertEquals(9999, $aServerInfo['Disk total']);
-        $this->assertEquals(3333, $aServerInfo['Disk free']);
-        $this->assertEquals(3000, $aServerInfo['Memory total']);
-        $this->assertEquals(1234, $aServerInfo['Memory free']);
-        $this->assertEquals('5x Cpu Model', $aServerInfo['CPU Model']);
-        $this->assertEquals('500 MHz', $aServerInfo['CPU frequency']);
-        $this->assertEquals(2, $aServerInfo['CPU cores']);
+        $this->assertCount(12, $aServerInfo);
+        $this->assertSame('LINUX', $aServerInfo['VM']);
+        $this->assertSame("321", $aServerInfo['Apache']);
+        $this->assertSame("654", $aServerInfo['PHP']);
+        $this->assertSame("MySQL information", $aServerInfo['MySQL']);
+        $this->assertSame(9999, $aServerInfo['Disk total']);
+        $this->assertSame(3333, $aServerInfo['Disk free']);
+        $this->assertSame(3000, $aServerInfo['Memory total']);
+        $this->assertSame(1234, $aServerInfo['Memory free']);
+        $this->assertSame('5x Cpu Model', $aServerInfo['CPU Model']);
+        $this->assertSame('500 MHz', $aServerInfo['CPU frequency']);
+        $this->assertSame(2, $aServerInfo['CPU cores']);
     }
 }

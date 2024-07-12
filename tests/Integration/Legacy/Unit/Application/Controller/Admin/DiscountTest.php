@@ -20,6 +20,6 @@ class DiscountTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Discount');
-        $this->assertEquals('discount', $oView->render());
+        $this->assertSame('discount', $oView->render());
     }
 }

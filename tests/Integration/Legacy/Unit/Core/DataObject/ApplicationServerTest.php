@@ -64,18 +64,16 @@ class ApplicationServerTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for the test method .
      */
-    public function dataProviderServerIsInUse()
+    public function dataProviderServerIsInUse(): \Iterator
     {
         $currentTime = 1400000000;
-        return [
-            [null, $currentTime - (25 * 3600), true],
-            // If server timestamp is not set at all.
-            [1, $currentTime - (25 * 3600), true],
-            // If server timestamp is not valid.
-            [$currentTime, $currentTime - (25 * 3600), false],
-            // If server TTL has exceeded.
-            [$currentTime, $currentTime - (11 * 3600), true],
-        ];
+        yield [null, $currentTime - (25 * 3600), true];
+        // If server timestamp is not set at all.
+        yield [1, $currentTime - (25 * 3600), true];
+        // If server timestamp is not valid.
+        yield [$currentTime, $currentTime - (25 * 3600), false];
+        // If server TTL has exceeded.
+        yield [$currentTime, $currentTime - (11 * 3600), true];
     }
 
     /**
@@ -95,18 +93,16 @@ class ApplicationServerTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for the test method .
      */
-    public function dataProviderNeedToDeleteAppServer()
+    public function dataProviderNeedToDeleteAppServer(): \Iterator
     {
         $currentTime = 1400000000;
-        return [
-            [null, $currentTime - (73 * 3600), false],
-            // Don't remove server if timestamp is not set at all.
-            [1, $currentTime - (73 * 3600), false],
-            // Don't remove server if timestamp is not valid.
-            [$currentTime, $currentTime - (73 * 3600), true],
-            // Remove server if its TTL has exceeded.
-            [$currentTime, $currentTime - (11 * 3600), false],
-        ];
+        yield [null, $currentTime - (73 * 3600), false];
+        // Don't remove server if timestamp is not set at all.
+        yield [1, $currentTime - (73 * 3600), false];
+        // Don't remove server if timestamp is not valid.
+        yield [$currentTime, $currentTime - (73 * 3600), true];
+        // Remove server if its TTL has exceeded.
+        yield [$currentTime, $currentTime - (11 * 3600), false];
     }
 
     /**
@@ -126,21 +122,19 @@ class ApplicationServerTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for the test method .
      */
-    public function dataProviderNeedToUpdateAppServer()
+    public function dataProviderNeedToUpdateAppServer(): \Iterator
     {
         $currentTime = 1400000000;
-        return [
-            [null, $currentTime - (25 * 3600), true],
-            // Update server if server time is not set at all.
-            [$currentTime, $currentTime - (25 * 3600), true],
-            // Time when server information must be updated.
-            [$currentTime, $currentTime - (24 * 3600), true],
-            // Exact time when server information must be updated.
-            [$currentTime, $currentTime - (11 * 3600), false],
-            // Time when server information is up to date.
-            [$currentTime, $currentTime, false],
-            // When node time is the same as current time.
-            [$currentTime, $currentTime + (11 * 3600), true],
-        ];
+        yield [null, $currentTime - (25 * 3600), true];
+        // Update server if server time is not set at all.
+        yield [$currentTime, $currentTime - (25 * 3600), true];
+        // Time when server information must be updated.
+        yield [$currentTime, $currentTime - (24 * 3600), true];
+        // Exact time when server information must be updated.
+        yield [$currentTime, $currentTime - (11 * 3600), false];
+        // Time when server information is up to date.
+        yield [$currentTime, $currentTime, false];
+        // When node time is the same as current time.
+        yield [$currentTime, $currentTime + (11 * 3600), true];
     }
 }

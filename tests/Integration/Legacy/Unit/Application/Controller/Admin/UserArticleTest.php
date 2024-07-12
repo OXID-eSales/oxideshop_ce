@@ -24,9 +24,9 @@ class UserArticleTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('User_Article');
-        $this->assertEquals('user_article', $oView->render());
+        $this->assertSame('user_article', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oArticlelist']));
-        $this->assertTrue($aViewData['oArticlelist'] instanceof orderarticlelist);
+        $this->assertArrayHasKey('oArticlelist', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\OrderArticleList::class, $aViewData['oArticlelist']);
     }
 }

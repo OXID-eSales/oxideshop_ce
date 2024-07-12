@@ -22,23 +22,23 @@ class ExceptionTest extends \PHPUnit\Framework\TestCase
     {
         $message = 'Erik was here..';
         $testObject = oxNew(StandardException::class, $message);
-        $this->assertEquals(StandardException::class, $testObject::class);
-        $this->assertTrue($testObject->getMessage() === $message);
+        $this->assertSame(StandardException::class, $testObject::class);
+        $this->assertSame($message, $testObject->getMessage());
     }
 
     public function testSetMessage(): void
     {
         $message = 'Erik was here..';
         $testObject = oxNew('oxException');
-        $this->assertEquals(StandardException::class, $testObject::class);
+        $this->assertSame(StandardException::class, $testObject::class);
         $testObject->setMessage($message);
-        $this->assertTrue($testObject->getMessage() === $message);
+        $this->assertSame($message, $testObject->getMessage());
     }
 
     public function testSetIsRenderer(): void
     {
         $testObject = oxNew('oxException');
-        $this->assertEquals(StandardException::class, $testObject::class);
+        $this->assertSame(StandardException::class, $testObject::class);
         $testObject->setRenderer();
         $this->assertTrue($testObject->isRenderer());
     }
@@ -46,7 +46,7 @@ class ExceptionTest extends \PHPUnit\Framework\TestCase
     public function testSetIsNotCaught(): void
     {
         $testObject = oxNew('oxException');
-        $this->assertEquals(StandardException::class, $testObject::class);
+        $this->assertSame(StandardException::class, $testObject::class);
         $testObject->setNotCaught();
         $this->assertTrue($testObject->isNotCaught());
     }
@@ -55,7 +55,7 @@ class ExceptionTest extends \PHPUnit\Framework\TestCase
     {
         $message = uniqid('some-message-', true);
         $testObject = oxNew('oxException', $message);
-        $this->assertEquals(StandardException::class, $testObject::class);
+        $this->assertSame(StandardException::class, $testObject::class);
         $testObject->setRenderer();
         $testObject->setNotCaught();
 
@@ -68,7 +68,7 @@ class ExceptionTest extends \PHPUnit\Framework\TestCase
     {
         $testObject = oxNew('oxException');
         $result = $testObject->getValues();
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
     }
 
     public function testGetType(): void

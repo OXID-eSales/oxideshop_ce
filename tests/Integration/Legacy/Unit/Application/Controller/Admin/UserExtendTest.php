@@ -26,12 +26,12 @@ class UserExtendTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, ["allowAdminEdit"]);
-        $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
-        $this->assertEquals('user_extend', $oView->render());
+        $oView->expects($this->once())->method('allowAdminEdit')->willReturn(false);
+        $this->assertSame('user_extend', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof user);
-        $this->assertTrue(isset($aViewData['readonly']));
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\User::class, $aViewData['edit']);
+        $this->assertArrayHasKey('readonly', $aViewData);
         $this->assertTrue($aViewData['readonly']);
     }
 
@@ -56,10 +56,10 @@ class UserExtendTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, ["allowAdminEdit"]);
-            $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
+            $oView->expects($this->atLeastOnce())->method('allowAdminEdit')->with("testId")->willReturn(true);
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in User_Extend::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in User_Extend::save()");
 
             return;
         }

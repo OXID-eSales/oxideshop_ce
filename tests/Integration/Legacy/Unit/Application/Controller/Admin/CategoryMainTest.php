@@ -63,10 +63,10 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Category_Main');
-        $this->assertEquals('category_main', $oView->render());
+        $this->assertSame('category_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Category);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Category::class, $aViewData['edit']);
     }
 
     /**
@@ -78,10 +78,10 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Category_Main');
-        $this->assertEquals('category_main', $oView->render());
+        $this->assertSame('category_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -98,7 +98,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oView->save();
 
         $sActive = oxDb::getDb()->getOne("SELECT OXACTIVE FROM oxcategories WHERE OXTITLE='Test category title for unit'");
-        $this->assertEquals(0, $sActive);
+        $this->assertSame(0, $sActive);
     }
 
     /**
@@ -113,7 +113,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Category_Main');
         $oView->save();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -128,7 +128,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Category_Main');
         $oView->save();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -143,7 +143,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Category_Main');
         $oView->saveinnlang();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -158,7 +158,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Category_Main');
         $oView->saveinnlang();
 
-        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
+        $this->assertSame("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -169,8 +169,8 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oCatMain = oxNew('Category_Main');
 
         $aFields = $oCatMain->getSortableFields();
-        $this->assertTrue(in_array('OXTITLE', $aFields));
-        $this->assertFalse(in_array('OXAMITEMID', $aFields));
+        $this->assertContains('OXTITLE', $aFields);
+        $this->assertNotContains('OXAMITEMID', $aFields);
     }
 
     /**
@@ -182,12 +182,12 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         $this->_oCategory->oxcategories__oxtitle = new oxField('Test_title');
         $this->_oCategory->save();
-        $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
+        $this->assertSame('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->deleteCatPicture($this->_oCategory, 'oxtitle');
-        $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "));
+        $this->assertSame('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -199,12 +199,12 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         $this->_oCategory->oxcategories__oxpromoicon = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
+        $this->assertSame('testIcon.jpg', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->deleteCatPicture($this->_oCategory, 'oxpromoicon');
-        $this->assertEquals('', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "));
+        $this->assertSame('', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -216,12 +216,12 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         $this->_oCategory->oxcategories__oxthumb = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
+        $this->assertSame('testIcon.jpg', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->deleteCatPicture($this->_oCategory, 'oxthumb');
-        $this->assertEquals('', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "));
+        $this->assertSame('', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -233,12 +233,12 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
 
         $this->_oCategory->oxcategories__oxicon = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
+        $this->assertSame('testIcon.jpg', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass('Category_Main');
         $oView->deleteCatPicture($this->_oCategory, 'oxicon');
-        $this->assertEquals('', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "));
+        $this->assertSame('', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -247,7 +247,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
     public function testDeletePicture_demoShopMode()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["isDemoShop"]);
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         oxRegistry::getSession()->deleteVariable("Errors");
 
@@ -260,7 +260,7 @@ class CategoryMainTest extends \PHPUnit\Framework\TestCase
         $oEx = unserialize($aEx["default"][0]);
         $sExpMsg = oxRegistry::getLang()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
 
-        $this->assertFalse(empty($sExpMsg), 'no translation for CATEGORY_PICTURES_UPLOADISDISABLED');
+        $this->assertNotEmpty($sExpMsg, 'no translation for CATEGORY_PICTURES_UPLOADISDISABLED');
         $this->assertEquals($sExpMsg, $oEx->getOxMessage());
     }
 }

@@ -26,7 +26,7 @@ class SuperConfigTest extends \PHPUnit\Framework\TestCase
         $oActUser = oxNew('oxuser');
         $oActUser->oxuser__oxusername = new oxField('testUser', oxField::T_RAW);
         $oOxSuperCfg->setUser($oActUser);
-        $this->assertEquals('testUser', $oOxSuperCfg->getUser()->oxuser__oxusername->value);
+        $this->assertSame('testUser', $oOxSuperCfg->getUser()->oxuser__oxusername->value);
     }
 
     public function testSetGetAdminMode()

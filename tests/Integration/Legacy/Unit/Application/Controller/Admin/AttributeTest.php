@@ -20,6 +20,6 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeController::class);
-        $this->assertEquals('attribute', $oView->render());
+        $this->assertSame('attribute', $oView->render());
     }
 }

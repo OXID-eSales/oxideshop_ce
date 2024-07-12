@@ -43,8 +43,8 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
         $userCounter = $this->getMockBuilder(\OxidEsales\Eshop\Core\UserCounter::class)
             ->setMethods(['getAdminCount', 'getActiveAdminCount'])
             ->getMock();
-        $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
-        $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
+        $userCounter->expects($this->once())->method('getAdminCount')->willReturn($adminUsers);
+        $userCounter->expects($this->once())->method('getActiveAdminCount')->willReturn($activeAdminUsers);
         $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
         $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
@@ -78,7 +78,7 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
     #[\PHPUnit\Framework\Attributes\Depends('testValidationPassed')]
     public function testErrorMessageEmptyOnSuccess($licenseCheck)
     {
-        $this->assertEquals('', $licenseCheck->getErrorMessage());
+        $this->assertSame('', $licenseCheck->getErrorMessage());
     }
 
     /**
@@ -147,8 +147,8 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
         $userCounter = $this->getMockBuilder(\OxidEsales\Eshop\Core\UserCounter::class)
             ->setMethods(['getAdminCount', 'getActiveAdminCount'])
             ->getMock();
-        $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
-        $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
+        $userCounter->expects($this->once())->method('getAdminCount')->willReturn($adminUsers);
+        $userCounter->expects($this->once())->method('getActiveAdminCount')->willReturn($activeAdminUsers);
         $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
         $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
@@ -201,7 +201,7 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(['doRequest'])
             ->getMock();
-        $caller->expects($this->any())->method('doRequest')->will($this->throwException($exception));
+        $caller->method('doRequest')->willThrowException($exception);
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
         $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
@@ -225,7 +225,7 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
 
         $licenseCheck->validate('validSerial');
 
-        $this->assertEquals(10, $this->getConfig()->getConfigParam('iOlcSuccess'));
+        $this->assertSame(10, $this->getConfig()->getConfigParam('iOlcSuccess'));
     }
 
     /**
@@ -255,7 +255,7 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
         $config = $this->getMockBuilder(\OxidEsales\Eshop\Core\Config::class)
             ->setMethods(['getMandateCount'])
             ->getMock();
-        $config->expects($this->any())->method('getMandateCount')->will($this->returnValue($subShops));
+        $config->method('getMandateCount')->willReturn($subShops);
 
         return $config;
     }
@@ -271,7 +271,7 @@ class OnlineLicenseCheckTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(['doRequest'])
             ->getMock();
-        $caller->expects($this->any())->method('doRequest')->will($this->returnValue($response));
+        $caller->method('doRequest')->willReturn($response);
         return $caller;
     }
 }

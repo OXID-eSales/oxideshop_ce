@@ -21,7 +21,7 @@ class CreditsTest extends \PHPUnit\Framework\TestCase
     public function testGetSeoObjectId()
     {
         $oView = oxNew('Credits');
-        $this->assertEquals("oxcredits", $oView->getSeoObjectId());
+        $this->assertSame("oxcredits", $oView->getSeoObjectId());
     }
 
     /**
@@ -32,8 +32,8 @@ class CreditsTest extends \PHPUnit\Framework\TestCase
         // default "oxcredits"
         $oView = oxNew('Credits');
         $oContent = $oView->getContent();
-        $this->assertTrue($oContent instanceof Content);
-        $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);
-        $this->assertNotEquals("", $oContent->oxcontents__oxcontent->value);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Content::class, $oContent);
+        $this->assertSame("oxcredits", $oContent->oxcontents__oxloadid->value);
+        $this->assertNotSame("", $oContent->oxcontents__oxcontent->value);
     }
 }

@@ -20,6 +20,6 @@ class GenImportTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('GenImport');
-        $this->assertEquals('genimport_main', $oView->render());
+        $this->assertSame('genimport_main', $oView->render());
     }
 }

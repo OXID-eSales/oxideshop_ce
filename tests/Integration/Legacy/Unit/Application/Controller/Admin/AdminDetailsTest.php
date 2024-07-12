@@ -31,7 +31,7 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
     public function testGetEditValueObjectNotSet()
     {
         $oAdminDetails = oxNew('oxadmindetails');
-        $this->assertEquals('', $oAdminDetails->getEditValue(null, null));
+        $this->assertSame('', $oAdminDetails->getEditValue(null, null));
     }
 
     /**
@@ -46,9 +46,9 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
         $oObject->oField2->value = 'field2value';
 
         $oAdminDetails = oxNew('oxadmindetails');
-        $this->assertEquals('', $oAdminDetails->getEditValue($oObject, 'notExistingField'));
-        $this->assertEquals('field1value', $oAdminDetails->getEditValue($oObject, 'oField1'));
-        $this->assertEquals('field2value', $oAdminDetails->getEditValue($oObject, 'oField2'));
+        $this->assertSame('', $oAdminDetails->getEditValue($oObject, 'notExistingField'));
+        $this->assertSame('field1value', $oAdminDetails->getEditValue($oObject, 'oField1'));
+        $this->assertSame('field2value', $oAdminDetails->getEditValue($oObject, 'oField2'));
     }
 
     /**
@@ -71,7 +71,7 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
         $oAdminDetails->changeFolder();
 
         $sSql = "select oxfolder from oxcontents where oxid = '_testId' ";
-        $this->assertEquals('neu', oxDb::getDb()->getOne($sSql));
+        $this->assertSame('neu', oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -96,7 +96,7 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
         $oAdminDetails->changeFolder();
 
         $sSql = "select oxfolder from oxcontents where oxid = '_testId' ";
-        $this->assertEquals('', oxDb::getDb()->getOne($sSql));
+        $this->assertSame('', oxDb::getDb()->getOne($sSql));
     }
 
     /**
@@ -105,15 +105,15 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
     public function testSetupNavigation()
     {
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ['getBtn', 'getActiveTab']);
-        $oNavigation->expects($this->once())->method('getBtn')->with($this->equalTo('xxx'))->will($this->returnValue('bottom_buttons'));
-        $oNavigation->expects($this->once())->method('getActiveTab')->with($this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('default_edit'));
+        $oNavigation->expects($this->once())->method('getBtn')->with('xxx')->willReturn('bottom_buttons');
+        $oNavigation->expects($this->once())->method('getActiveTab')->with('xxx', 0)->willReturn('default_edit');
 
         $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, ['getNavigation']);
-        $oAdminDetails->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
+        $oAdminDetails->expects($this->once())->method('getNavigation')->willReturn($oNavigation);
 
         $oAdminDetails->setupNavigation('xxx');
-        $this->assertEquals('default_edit', $oAdminDetails->getViewDataElement('default_edit'));
-        $this->assertEquals('bottom_buttons', $oAdminDetails->getViewDataElement('bottom_buttons'));
+        $this->assertSame('default_edit', $oAdminDetails->getViewDataElement('default_edit'));
+        $this->assertSame('bottom_buttons', $oAdminDetails->getViewDataElement('bottom_buttons'));
     }
 
     /**
@@ -127,7 +127,7 @@ class AdminDetailsTest extends \PHPUnit\Framework\TestCase
         $oList->rewind();
 
         $oCat = $oList->current();
-        $this->assertEquals('--', $oCat->oxcategories__oxtitle->value);
+        $this->assertSame('--', $oCat->oxcategories__oxtitle->value);
         $this->assertEquals($sActCatId, $oCat->getId());
     }
 

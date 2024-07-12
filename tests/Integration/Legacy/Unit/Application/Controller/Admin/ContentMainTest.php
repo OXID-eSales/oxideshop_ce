@@ -26,10 +26,10 @@ class ContentMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertEquals('content_main', $oView->render());
+        $this->assertSame('content_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof Content);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Content::class, $aViewData['edit']);
     }
 
     /**
@@ -41,10 +41,10 @@ class ContentMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertEquals('content_main', $oView->render());
+        $this->assertSame('content_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -57,10 +57,10 @@ class ContentMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, ["checkIdent"]);
-            $oView->expects($this->once())->method('checkIdent')->will($this->returnValue(false));
+            $oView->expects($this->once())->method('checkIdent')->willReturn(false);
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Content_Main::Save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Content_Main::Save()");
 
             return;
         }
@@ -80,7 +80,7 @@ class ContentMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Content_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Content_Main::Save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Content_Main::Save()");
 
             return;
         }
@@ -105,7 +105,7 @@ class ContentMainTest extends \PHPUnit\Framework\TestCase
     {
         // defining parameters
         $oView = oxNew('Content_Main');
-        $this->assertEquals("aaabbb", $oView->prepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
+        $this->assertSame("aaabbb", $oView->prepareIdent("~!@#$%^&^%*%(&^)aaabbb"));
     }
 
     /**

@@ -20,6 +20,6 @@ class AdminStartTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Start');
-        $this->assertEquals('start', $oView->render());
+        $this->assertSame('start', $oView->render());
     }
 }

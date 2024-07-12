@@ -13,6 +13,8 @@ use oxRegistry;
 
 class PaymentlistTest extends \PHPUnit\Framework\TestCase
 {
+    public $oUser;
+    public $oDelSet;
     protected $_aPayList = [];
 
     protected $_oDefPaymentList;
@@ -226,7 +228,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $iListCount = $oPaymentList->count();
 
         // list must contain at least one item
-        $this->assertTrue($iListCount > 0);
+        $this->assertGreaterThan(0, $iListCount);
 
         $oPayment = $oPaymentList->current();
 
@@ -255,8 +257,8 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $iNewListCount = $oPaymentList->count();
 
         // list must contain at least one item
-        $this->assertTrue($iNewListCount > 0);
-        $this->assertTrue($iNewListCount === $iListCount);
+        $this->assertGreaterThan(0, $iNewListCount);
+        $this->assertSame($iListCount, $iNewListCount);
 
         $blFound = false;
         foreach ($oPaymentList as $oPay) {
@@ -627,9 +629,9 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
 
         $oPaymentList = oxNew('oxPaymentList');
         $aPaymentList = $oPaymentList->getPaymentList("1b842e732a23255b1.91207751", 2.5, $oUser);
-        $this->assertEquals(1, count($aPaymentList));
+        $this->assertCount(1, $aPaymentList);
         $oPayment = current($aPaymentList);
-        $this->assertEquals("oxidcashondel", $oPayment->getId());
+        $this->assertSame("oxidcashondel", $oPayment->getId());
     }
 
     /**
@@ -645,9 +647,9 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $sPaymentsTable = $tableViewNameGenerator->getViewName('oxpayments');
 
         $sTestQ = sprintf('select %s.* from( select distinct %s.* from %s ', $sTable, $sTable, $sTable);
-        $sTestQ .= sprintf('inner join oxobject2payment ON oxobject2payment.oxobjectid = \'xxx\' and oxobject2payment.oxpaymentid = %s.oxid ', $sTable);
-        $sTestQ .= sprintf('where %s.oxactive=\'1\' ', $sTable); // and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= sprintf('and %s.oxfromboni <= \'0\' and %s.oxfromamount <= \'666\' and %s.oxtoamount >= \'666\' ', $sPaymentsTable, $sPaymentsTable, $sPaymentsTable);
+        $sTestQ .= sprintf("inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = %s.oxid ", $sTable);
+        $sTestQ .= sprintf("where %s.oxactive='1' ", $sTable); // and oxobject2group.oxobjectid = $sTable.oxid
+        $sTestQ .= sprintf("and %s.oxfromboni <= '0' and %s.oxfromamount <= '666' and %s.oxtoamount >= '666' ", $sPaymentsTable, $sPaymentsTable, $sPaymentsTable);
         $sTestQ .= " order by {$sTable}.oxsort asc ) as {$sTable} where ( if( exists( select 1 from oxobject2payment as ss1, {$sCountryTable} where {$sCountryTable}.oxid=ss1.oxobjectid and ss1.oxpaymentid={$sTable}.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1 ), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, {$sGroupTable} where {$sGroupTable}.oxid=ss3.oxgroupsid and ss3.OXOBJECTID={$sTable}.OXID limit 1), 0, 1) ) ) order by {$sTable}.oxsort asc ";
@@ -679,9 +681,9 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $sCountryTable = $tableViewNameGenerator->getViewName('oxcountry');
 
         $sTestQ = sprintf('select %s.* from( select distinct %s.* from %s ', $sTable, $sTable, $sTable);
-        $sTestQ .= sprintf('inner join oxobject2payment ON oxobject2payment.oxobjectid = \'xxx\' and oxobject2payment.oxpaymentid = %s.oxid ', $sTable);
-        $sTestQ .= sprintf('where %s.oxactive=\'1\' ', $sTable); //  and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= sprintf('and %s.oxfromboni <= \'1000\' and %s.oxfromamount <= \'666\' and %s.oxtoamount >= \'666\' ', $sTable, $sTable, $sTable);
+        $sTestQ .= sprintf("inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = %s.oxid ", $sTable);
+        $sTestQ .= sprintf("where %s.oxactive='1' ", $sTable); //  and oxobject2group.oxobjectid = $sTable.oxid
+        $sTestQ .= sprintf("and %s.oxfromboni <= '1000' and %s.oxfromamount <= '666' and %s.oxtoamount >= '666' ", $sTable, $sTable, $sTable);
         $sTestQ .= " order by {$sTable}.oxsort asc ) as {$sTable} where ( if( exists( select 1 from oxobject2payment as ss1, {$sCountryTable} where {$sCountryTable}.oxid=ss1.oxobjectid and ss1.oxpaymentid={$sTable}.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, {$sGroupTable} where {$sGroupTable}.oxid=ss3.oxgroupsid and ss3.OXOBJECTID={$sTable}.OXID limit 1),
@@ -702,7 +704,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $oList = oxNew('oxPaymentList');
 
         // testing default
-        $this->assertEquals('a7c40f631fc920687.20179984', $oList->getCountryId(null));
+        $this->assertSame('a7c40f631fc920687.20179984', $oList->getCountryId(null));
 
         // now resetting country ids
         $oList->setHomeCountry(null);
@@ -710,17 +712,17 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
 
         // now passing user and testing
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getActiveCountry']);
-        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('xxx'));
+        $oUser->expects($this->once())->method('getActiveCountry')->willReturn('xxx');
 
-        $this->assertEquals('xxx', $oList->getCountryId($oUser));
+        $this->assertSame('xxx', $oList->getCountryId($oUser));
 
         // setting array
         $oList->setHomeCountry(['a', 'b']);
-        $this->assertEquals('a', $oList->getCountryId(null));
+        $this->assertSame('a', $oList->getCountryId(null));
 
         // setting string
         $oList->setHomeCountry('a');
-        $this->assertEquals('a', $oList->getCountryId(null));
+        $this->assertSame('a', $oList->getCountryId(null));
     }
 
     /**
@@ -730,7 +732,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
     public function testGetPaymentListNoValidDelSet()
     {
         $oList = oxNew('oxPaymentList');
-        $this->assertEquals([], $oList->getPaymentList('xxx', 55, $this->oUser));
+        $this->assertSame([], $oList->getPaymentList('xxx', 55, $this->oUser));
     }
 
     // valid delivery set, but price is too high
@@ -743,7 +745,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         }
 
         $oList = oxNew('oxPaymentList');
-        $this->assertEquals([], $oList->getPaymentList($this->oDelSet->getId(), 666666, $this->oUser));
+        $this->assertSame([], $oList->getPaymentList($this->oDelSet->getId(), 666666, $this->oUser));
     }
 
     // all input is just fine + admin user
@@ -770,7 +772,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         }
 
         $oList = oxNew('oxPaymentList');
-        $this->assertEquals(0, count($oList->getPaymentList($this->oDelSet->getId(), 55)));
+        $this->assertCount(0, $oList->getPaymentList($this->oDelSet->getId(), 55));
     }
 
     // buglist_332 sorting test
@@ -806,7 +808,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
 
         $this->oUser->removeFromGroup('oxidadmin');
 
-        $this->assertEquals([], array_keys($oList->getPaymentList($this->oDelSet->getId(), 55, $this->oUser)));
+        $this->assertSame([], array_keys($oList->getPaymentList($this->oDelSet->getId(), 55, $this->oUser)));
     }
 
     /**
@@ -857,7 +859,7 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
 
         $oPaymentList = oxNew('oxPaymentList');
         $oPaymentList->loadNonRDFaPaymentList();
-        $this->assertEquals(3, $oPaymentList->count());
+        $this->assertSame(3, $oPaymentList->count());
     }
 
     /**
@@ -883,10 +885,10 @@ class PaymentlistTest extends \PHPUnit\Framework\TestCase
         $oPaymentList = oxNew('oxPaymentList');
         $oPaymentList->loadRDFaPaymentList(12);
 
-        $this->assertEquals(4, $oPaymentList->count());
+        $this->assertSame(4, $oPaymentList->count());
         foreach ($oPaymentList as $oPayment) {
             if ($oPayment->getId() == $this->_aPayList[0]->getId()) {
-                $this->assertEquals('CASH', $oPayment->oxpayments__oxobjectid->value);
+                $this->assertSame('CASH', $oPayment->oxpayments__oxobjectid->value);
             } else {
                 $this->assertNull($oPayment->oxpayments__oxobjectid->value);
             }

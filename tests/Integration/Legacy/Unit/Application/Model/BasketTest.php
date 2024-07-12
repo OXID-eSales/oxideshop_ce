@@ -44,6 +44,12 @@ class modForTestAddBundles extends oxBasket
 
 class BasketTest extends \PHPUnit\Framework\TestCase
 {
+    public $oVariant;
+    public $oVoucherSerie;
+    public $aVouchers;
+    public $oDelAdress;
+    public $oCard;
+    public $oWrap;
     public $oArticle;
 
     public $oCategory;
@@ -422,11 +428,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oVoucherDiscount->setBruttoPriceMode();
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getDiscountProductsPrice", "getTotalDiscount", "getVoucherDiscount"]);
-        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->will($this->returnValue($oProdPriceList));
-        $oBasket->expects($this->once())->method('getTotalDiscount')->will($this->returnValue($oTotalDiscount));
-        $oBasket->expects($this->once())->method('getVoucherDiscount')->will($this->returnValue($oVoucherDiscount));
+        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->willReturn($oProdPriceList);
+        $oBasket->expects($this->once())->method('getTotalDiscount')->willReturn($oTotalDiscount);
+        $oBasket->expects($this->once())->method('getVoucherDiscount')->willReturn($oVoucherDiscount);
 
-        $this->assertEquals(999, $oBasket->getDiscountedProductsBruttoPrice());
+        $this->assertSame(999, $oBasket->getDiscountedProductsBruttoPrice());
     }
 
     /**
@@ -437,7 +443,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("iMinOrderPrice", 2);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice"]);
-        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(0));
+        $oBasket->expects($this->once())->method('getProductsCount')->willReturn(0);
         $oBasket->expects($this->never())->method('getDiscountedProductsBruttoPrice');
 
         $this->assertFalse($oBasket->isBelowMinOrderPrice());
@@ -453,24 +459,24 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oConfig->setConfigParam("iMinOrderPrice", 2);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice"]);
-        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->expects($this->any())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(1));
+        $oBasket->method('getProductsCount')->willReturn(1);
+        $oBasket->method('getDiscountedProductsBruttoPrice')->willReturn(1);
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
 
         $oConfig->setConfigParam("iMinOrderPrice", 10.5);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice"]);
-        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->expects($this->any())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(10));
+        $oBasket->method('getProductsCount')->willReturn(1);
+        $oBasket->method('getDiscountedProductsBruttoPrice')->willReturn(10);
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
 
         $oConfig->setConfigParam("iMinOrderPrice", 10.21);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice"]);
-        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->expects($this->any())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(10.2));
+        $oBasket->method('getProductsCount')->willReturn(1);
+        $oBasket->method('getDiscountedProductsBruttoPrice')->willReturn(10.2);
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
     }
@@ -509,11 +515,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // checking amounts
         $aContents = $oBasket->getContents();
-        $this->assertEquals(2, count($aContents));
+        $this->assertCount(2, $aContents);
 
         // checking counts
         $oBasketItem = reset($aContents);
-        $this->assertEquals(1, $oBasketItem->getAmount());
+        $this->assertSame(1, $oBasketItem->getAmount());
 
         next($aContents);
 
@@ -523,11 +529,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // checking final basket amount
         $aContents = $oBasket->getContents();
-        $this->assertEquals(1, count($aContents));
+        $this->assertCount(1, $aContents);
 
         // checking counts
         $oBasketItem = reset($aContents);
-        $this->assertEquals(2, $oBasketItem->getAmount());
+        $this->assertSame(2, $oBasketItem->getAmount());
     }
 
     /**
@@ -592,7 +598,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aBasketContents = $oBasket->getNonPublicVar("_aBasketContents");
 
         $this->assertEquals($oTestBasketItem, $oBasketItem);
-        $this->assertTrue(isset($aBasketContents["sOrderArticleId"]));
+        $this->assertArrayHasKey("sOrderArticleId", $aBasketContents);
         $this->assertEquals($oTestBasketItem, $aBasketContents["sOrderArticleId"]);
     }
 
@@ -632,19 +638,19 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->setBasketUser($oUser);
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(0, count($aContents));
+        $this->assertCount(0, $aContents);
 
         $oBasket->load();
         $aContents = $oBasket->getContents();
-        $this->assertEquals(2, count($aContents));
+        $this->assertCount(2, $aContents);
 
         $oItem = current($aContents);
-        $this->assertEquals('1126', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1126', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
 
         $oItem = next($aContents);
-        $this->assertEquals('1127', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1127', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
     }
 
     /**
@@ -671,20 +677,20 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->setBasketUser($oUser);
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(0, count($aContents));
+        $this->assertCount(0, $aContents);
         $oBasket->load();
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(2, count($aContents));
+        $this->assertCount(2, $aContents);
 
 
         $oItem = current($aContents);
-        $this->assertEquals('1126', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1126', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
 
         $oItem = next($aContents);
-        $this->assertEquals('1127', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1127', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
     }
 
     /**
@@ -710,28 +716,28 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->load();
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(2, count($aContents));
+        $this->assertCount(2, $aContents);
         $oItem = current($aContents);
-        $this->assertEquals('1126', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1126', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
 
         $oItem = next($aContents);
-        $this->assertEquals('1127', $oItem->getArticle()->getId());
-        $this->assertEquals(2, $oItem->getAmount());
+        $this->assertSame('1127', $oItem->getArticle()->getId());
+        $this->assertSame(2, $oItem->getAmount());
 
         $oBasket->addToBasket('1126', 0, null, null, true);
         $oBasket->addToBasket('1127', 0, null, null, true);
         $oBasket->calculateBasket(true);
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(0, count($aContents));
+        $this->assertCount(0, $aContents);
 
         $oBasket = oxNew('oxbasket');
         $oBasket->setBasketUser($oUser);
         $oBasket->calculateBasket(true);
 
         $aContents = $oBasket->getContents();
-        $this->assertEquals(0, count($aContents));
+        $this->assertCount(0, $aContents);
     }
 
     /**
@@ -740,7 +746,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testStockStatusGetterCheck()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['isEnabled', 'getStockCheckMode']);
-        $oBasket->expects($this->exactly(2))->method('isEnabled')->will($this->returnValue(true));
+        $oBasket->expects($this->exactly(2))->method('isEnabled')->willReturn(true);
         $oBasket->expects($this->exactly(2))->method('getStockCheckMode');
 
         $oBasket->addToBasket($this->oArticle->getId(), 10);
@@ -783,7 +789,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
                 $blSelFound = isset($aSelectList);
             }
 
-            $this->assertTrue(in_array($oArticle->getId(), $aIds));
+            $this->assertContains($oArticle->getId(), $aIds);
         }
 
         if (!$blSelFound) {
@@ -806,7 +812,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $this->oArticle->save();
-        $this->assertEquals(0, count($oBasket->getBasketArticles()));
+        $this->assertCount(0, $oBasket->getBasketArticles());
     }
 
     /**
@@ -824,7 +830,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(3, oxField::T_RAW);
         $this->oArticle->save();
-        $this->assertEquals(0, count($oBasket->getBasketArticles()));
+        $this->assertCount(0, $oBasket->getBasketArticles());
     }
 
     /**
@@ -834,7 +840,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testAddToBasketDisabled()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['isEnabled']);
-        $oBasket->expects($this->once())->method('isEnabled')->will($this->returnValue(false));
+        $oBasket->expects($this->once())->method('isEnabled')->willReturn(false);
         $this->assertNull($oBasket->addToBasket($this->oArticle->getId(), 10));
     }
 
@@ -846,8 +852,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10);
-        $this->assertEquals(10, $oBasketItem->getAmount());
-        $this->assertEquals(100, $oBasketItem->getWeight());
+        $this->assertSame(10, $oBasketItem->getAmount());
+        $this->assertSame(100, $oBasketItem->getWeight());
         $this->assertEquals($this->oArticle->getId(), $oBasketItem->getProductId());
     }
 
@@ -893,8 +899,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
 
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
-        $this->assertEquals(20, $oBasketItem->getAmount());
-        $this->assertEquals(200, $oBasketItem->getWeight());
+        $this->assertSame(20, $oBasketItem->getAmount());
+        $this->assertSame(200, $oBasketItem->getWeight());
         $this->assertEquals($this->oArticle->getId(), $oBasketItem->getProductId());
     }
 
@@ -907,8 +913,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket = oxNew('oxBasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, ['0'], null, false, true);
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
-        $this->assertEquals(20, $oBasketItem->getAmount());
-        $this->assertEquals(200, $oBasketItem->getWeight());
+        $this->assertSame(20, $oBasketItem->getAmount());
+        $this->assertSame(200, $oBasketItem->getWeight());
         $this->assertEquals($this->oArticle->getId(), $oBasketItem->getProductId());
     }
 
@@ -920,7 +926,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oBasket->addToBasket($this->oArticle->getId(), 0, null, null);
-        $this->assertEquals(0, count($oBasket->getBasketArticles()));
+        $this->assertCount(0, $oBasket->getBasketArticles());
     }
 
     /**
@@ -953,7 +959,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $sKey = md5('_xxx|' . serialize(['_xxx']) . '|' . serialize(['_xxx']) . '|' . (int) true . '|' . serialize('_xxx'));
 
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', ['_xxx'], ['_xxx'], true, '_xxx'));
+        $this->assertSame($sKey, $oBasket->getItemKey('_xxx', ['_xxx'], ['_xxx'], true, '_xxx'));
     }
 
     /**
@@ -964,7 +970,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $sKey = md5('_xxx|' . serialize(['0']) . '|' . serialize(['_xxx']) . '|' . (int) true . '|' . serialize('_xxx'));
 
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', null, ['_xxx'], true, '_xxx'));
+        $this->assertSame($sKey, $oBasket->getItemKey('_xxx', null, ['_xxx'], true, '_xxx'));
     }
 
     /**
@@ -982,7 +988,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->removeItem($sKey);
 
         // testing if it was removed
-        $this->assertEquals([], $oBasket->getContents());
+        $this->assertSame([], $oBasket->getContents());
     }
 
     /**
@@ -992,10 +998,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, ['discardArticleReservation']);
-        $oBR->expects($this->once())->method('discardArticleReservation')->with($this->equalTo($this->oArticle->getId()))->will($this->returnValue(null));
+        $oBR->expects($this->once())->method('discardArticleReservation')->with($this->oArticle->getId())->willReturn(null);
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasketReservations']);
-        $session->expects($this->any())->method('getBasketReservations')->will($this->returnValue($oBR));
+        $session->method('getBasketReservations')->willReturn($oBR);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
@@ -1009,7 +1015,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->removeItem($sKey);
 
         // testing if it was removed
-        $this->assertEquals([], $oBasket->getContents());
+        $this->assertSame([], $oBasket->getContents());
     }
 
     /**
@@ -1022,13 +1028,13 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 2, null, null, false, true);
 
         // first bundle is added separatelly
-        $this->assertEquals(2, count($oBasket->getContents()));
+        $this->assertCount(2, $oBasket->getContents());
 
         $oBasket->clearBundles();
 
         // first bundle is added separatelly
         $oItem2 = $oBasket->getContents();
-        $this->assertEquals(1, count($oItem2));
+        $this->assertCount(1, $oItem2);
         $this->assertEquals($oItem, reset($oItem2));
     }
 
@@ -1040,7 +1046,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
-        $this->assertEquals([], $oBasket->getArticleBundles($oItem));
+        $this->assertSame([], $oBasket->getArticleBundles($oItem));
     }
 
     /**
@@ -1054,7 +1060,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(['xxx' => 1], $oBasket->getArticleBundles($oItem));
+        $this->assertSame(['xxx' => 1], $oBasket->getArticleBundles($oItem));
     }
 
     /**
@@ -1065,7 +1071,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1, null, null, false, true);
-        $this->assertEquals([], $oBasket->getItemBundles($oItem));
+        $this->assertSame([], $oBasket->getItemBundles($oItem));
     }
 
     /**
@@ -1076,7 +1082,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = $this->createBasketWithNoDiscounts();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals([], $oBasket->getItemBundles($oItem));
+        $this->assertSame([], $oBasket->getItemBundles($oItem));
     }
 
     /**
@@ -1094,7 +1100,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals($aArray, $oBasket->getItemBundles($oItem, $aArray));
+        $this->assertSame($aArray, $oBasket->getItemBundles($oItem, $aArray));
     }
 
     /**
@@ -1107,7 +1113,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = oxNew('oxbasket');
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals(['xxx' => (double) 6], $oBasket->getItemBundles($oItem, $aArray));
+        $this->assertSame(['xxx' => (double) 6], $oBasket->getItemBundles($oItem, $aArray));
     }
 
     /**
@@ -1120,7 +1126,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals($aArray, $oBasket->getBasketBundles());
+        $this->assertSame($aArray, $oBasket->getBasketBundles());
     }
 
     // has no bundle items
@@ -1128,7 +1134,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 1);
-        $this->assertEquals([], $oBasket->getBasketBundles());
+        $this->assertSame([], $oBasket->getBasketBundles());
     }
 
     /**
@@ -1142,9 +1148,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasketItem->init($this->oArticle->getId(), 1);
 
         $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, ['getItemBundles', 'addToBasket', 'getBasketBundles']);
-        $oBasket->expects($this->once())->method('getItemBundles')->will($this->returnValue(['x' => 1]));
-        $oBasket->expects($this->exactly(1))->method('addToBasket')->will($this->returnValue($oBasketItem));
-        $oBasket->expects($this->once())->method('getBasketBundles')->will($this->returnValue(['x' => 1]));
+        $oBasket->expects($this->once())->method('getItemBundles')->willReturn(['x' => 1]);
+        $oBasket->expects($this->exactly(1))->method('addToBasket')->willReturn($oBasketItem);
+        $oBasket->expects($this->once())->method('getBasketBundles')->willReturn(['x' => 1]);
 
         // testing
         $oBasket->setBasket([$oBasketItem]);
@@ -1160,14 +1166,14 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         // simulating basket contents
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['isBundle']);
-        $oBasketItem->expects($this->any())->method('isBundle')->will($this->returnValue(true));
+        $oBasketItem->method('isBundle')->willReturn(true);
         $oBasketItem->init($this->oArticle->getId(), 1);
 
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $this->oArticle->save();
         $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, ['addToBasket']);
-        $oBasket->expects($this->never())->method('addToBasket')->will($this->returnValue($oBasketItem));
+        $oBasket->expects($this->never())->method('addToBasket')->willReturn($oBasketItem);
 
         // testing
         $oBasket->setBasket([$oBasketItem]);
@@ -1183,14 +1189,14 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         // simulating basket contents
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['isBundle']);
-        $oBasketItem->expects($this->any())->method('isBundle')->will($this->returnValue(true));
+        $oBasketItem->method('isBundle')->willReturn(true);
         $oBasketItem->init($this->oArticle->getId(), 1);
 
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(3, oxField::T_RAW);
         $this->oArticle->save();
         $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, ['addToBasket']);
-        $oBasket->expects($this->never())->method('addToBasket')->will($this->returnValue($oBasketItem));
+        $oBasket->expects($this->never())->method('addToBasket')->willReturn($oBasketItem);
 
         // testing
         $oBasket->setBasket([$oBasketItem]);
@@ -1206,7 +1212,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         // simulating basket contents
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['isDiscountArticle']);
-        $oBasketItem->expects($this->any())->method('isDiscountArticle')->will($this->returnValue(true));
+        $oBasketItem->method('isDiscountArticle')->willReturn(true);
         $oBasketItem->init($this->oArticle->getId(), 1);
 
         $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, ['getItemBundles', 'addToBasket', 'getBasketBundles']);
@@ -1278,15 +1284,15 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // simulating basket contents
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, ['isDiscountArticle', 'isBundle']);
-        $oBasketItem->expects($this->any())->method('isDiscountArticle')->will($this->returnValue(true));
-        $oBasketItem->expects($this->any())->method('isBundle')->will($this->returnValue(true));
+        $oBasketItem->method('isDiscountArticle')->willReturn(true);
+        $oBasketItem->method('isBundle')->willReturn(true);
         $oBasketItem->init($this->oArticle->getId(), 1);
         $oBasket->setBasket([$oBasketItem]);
         $oBasket->calcItemsPrice();
 
         $aBasketContents = $oBasket->getVar('aBasketContents');
         foreach ($aBasketContents as $oBasketItem) {
-            $this->assertEquals(0, $oBasketItem->getPrice()->getBruttoPrice());
+            $this->assertSame(0, $oBasketItem->getPrice()->getBruttoPrice());
         }
     }
 
@@ -1304,9 +1310,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->calcItemsPrice();
 
-        $this->assertEquals(1, $oBasket->getVar('iProductsCnt'));
-        $this->assertEquals(10, $oBasket->getVar('dItemsCnt'));
-        $this->assertEquals(100, $oBasket->getVar('dWeight'));
+        $this->assertSame(1, $oBasket->getVar('iProductsCnt'));
+        $this->assertSame(10, $oBasket->getVar('dItemsCnt'));
+        $this->assertSame(100, $oBasket->getVar('dWeight'));
     }
 
     /**
@@ -1384,11 +1390,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oBasket->calcDeliveryCost();
 
-        $this->assertEquals(0, $oPrice->getVat());
-        $this->assertEquals(0, $oPrice->getBruttoPrice());
-        $this->assertEquals(0, $oPrice->getNettoPrice());
-        $this->assertEquals(0, $oPrice->getVatValue());
-        $this->assertEquals(0, $oPrice->getVatValue());
+        $this->assertSame(0, $oPrice->getVat());
+        $this->assertSame(0, $oPrice->getBruttoPrice());
+        $this->assertSame(0, $oPrice->getNettoPrice());
+        $this->assertSame(0, $oPrice->getVatValue());
+        $this->assertSame(0, $oPrice->getVatValue());
     }
 
     /**
@@ -1418,7 +1424,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oBasket->getCosts('oxdelivery');
 
-        $this->assertEquals(0, $oPrice->getBruttoPrice());
+        $this->assertSame(0, $oPrice->getBruttoPrice());
     }
 
     /**
@@ -1451,7 +1457,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oPrice = $oBasket->getCosts('oxdelivery');
 
-        $this->assertEquals(5, $oPrice->getBruttoPrice());
+        $this->assertSame(5, $oPrice->getBruttoPrice());
     }
 
     /**
@@ -1489,7 +1495,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oSubj = oxNew('oxBasket');
         $oSubj->setBasketUser('testUser');
-        $this->assertEquals('testUser', $oSubj->getBasketUser());
+        $this->assertSame('testUser', $oSubj->getBasketUser());
     }
 
     /**
@@ -1499,7 +1505,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oSubj = oxNew('oxBasket');
         $oSubj->setUser('testUser');
-        $this->assertEquals('testUser', $oSubj->getBasketUser());
+        $this->assertSame('testUser', $oSubj->getBasketUser());
     }
 
     /**
@@ -1510,7 +1516,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oSubj = oxNew('oxBasket');
         $oSubj->setUser('testUser');
         $oSubj->setBasketUser('testLocalUser');
-        $this->assertEquals('testLocalUser', $oSubj->getBasketUser());
+        $this->assertSame('testLocalUser', $oSubj->getBasketUser());
     }
 
     /**
@@ -1550,8 +1556,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oBasket->getVoucherDiscount());
         $oBasket->calcVoucherDiscount();
         $aVouch = $oBasket->getVouchers();
-        $this->assertEquals(10, end($aVouch)->dVoucherdiscount);
-        $this->assertEquals(40, $oBasket->getVoucherDiscount()->getBruttoPrice());
+        $this->assertSame(10, end($aVouch)->dVoucherdiscount);
+        $this->assertSame(40, $oBasket->getVoucherDiscount()->getBruttoPrice());
     }
 
     /**
@@ -1563,7 +1569,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oStdVoucher->sVoucherId = "aaa";
 
         $oProductsPriceList = $this->getMock(\OxidEsales\Eshop\Core\PriceList::class, ['getBruttoSum']);
-        $oProductsPriceList->expects($this->once())->method('getBruttoSum')->will($this->returnValue(9));
+        $oProductsPriceList->expects($this->once())->method('getBruttoSum')->willReturn(9);
 
         $oBasket = new modForTestAddBundles();
         $oBasket->setVar('oDiscountProductsPriceList', $oProductsPriceList);
@@ -1576,12 +1582,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket->setVar('aVouchers', $aV);
         $aV = $oBasket->getVouchers();
-        $this->assertEquals(4, count($aV));
+        $this->assertCount(4, $aV);
 
         $oBasket->calcVoucherDiscount();
 
         $aV = $oBasket->getVouchers();
-        $this->assertEquals(0, count($aV));
+        $this->assertCount(0, $aV);
     }
 
     /**
@@ -1646,24 +1652,24 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oWrapPrice = $oBasket->calcBasketWrapping();
 
         // wrapping
-        $this->assertEquals((5 * 5) * 1.19, $oWrapPrice->getBruttoPrice());
-        $this->assertEquals((5 * 5), $oWrapPrice->getNettoPrice());
-        $this->assertEquals(19, (int) $oWrapPrice->getVat());
+        $this->assertSame((5 * 5) * 1.19, $oWrapPrice->getBruttoPrice());
+        $this->assertSame((5 * 5), $oWrapPrice->getNettoPrice());
+        $this->assertSame(19, (int) $oWrapPrice->getVat());
 
         // gift card
         $oCardPrice = $oBasket->calcBasketGiftCard();
-        $this->assertEquals(11.9, $oCardPrice->getBruttoPrice());
-        $this->assertEquals(10, $oCardPrice->getNettoPrice());
-        $this->assertEquals(19, (int) $oCardPrice->getVat());
+        $this->assertEqualsWithDelta(11.9, $oCardPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame(10, $oCardPrice->getNettoPrice());
+        $this->assertSame(19, (int) $oCardPrice->getVat());
 
         $this->getConfig()->setConfigParam('blShowVATForWrapping', true);
 
-        $this->assertEquals('29,75', $oBasket->getFWrappingCosts());
-        $this->assertEquals('25,00', $oBasket->getWrappCostNet());
-        $this->assertEquals('4,75', $oBasket->getWrappCostVat());
-        $this->assertEquals('11,90', $oBasket->getFGiftCardCosts());
-        $this->assertEquals('10,00', $oBasket->getGiftCardCostNet());
-        $this->assertEquals('1,90', $oBasket->getGiftCardCostVat());
+        $this->assertSame('29,75', $oBasket->getFWrappingCosts());
+        $this->assertSame('25,00', $oBasket->getWrappCostNet());
+        $this->assertSame('4,75', $oBasket->getWrappCostVat());
+        $this->assertSame('11,90', $oBasket->getFGiftCardCosts());
+        $this->assertSame('10,00', $oBasket->getGiftCardCostNet());
+        $this->assertSame('1,90', $oBasket->getGiftCardCostVat());
     }
 
     /**
@@ -1681,9 +1687,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oPayCost = $oBasket->calcPaymentCost(false, false);
 
-        $this->assertEquals(7.5, $oPayCost->getBruttoPrice());
-        $this->assertTrue(7.5 > $oPayCost->getNettoPrice());
-        $this->assertEquals(19, $oPayCost->getVat());
+        $this->assertEqualsWithDelta(7.5, $oPayCost->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertGreaterThan(7.5, $oPayCost->getNettoPrice());
+        $this->assertSame(19, $oPayCost->getVat());
     }
 
     /**
@@ -1701,9 +1707,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oPayCost = $oBasket->calcPaymentCost(false, false);
 
-        $this->assertEquals(8.93, $oPayCost->getBruttoPrice());
-        $this->assertEquals(7.5, $oPayCost->getNettoPrice());
-        $this->assertEquals(19, $oPayCost->getVat());
+        $this->assertEqualsWithDelta(8.93, $oPayCost->getBruttoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(7.5, $oPayCost->getNettoPrice(), PHP_FLOAT_EPSILON);
+        $this->assertSame(19, $oPayCost->getVat());
     }
 
     /**
@@ -1735,7 +1741,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, $aMethodsToTest);
 
-        $oBasket->expects($this->once())->method('isEnabled')->will($this->returnValue(true));
+        $oBasket->expects($this->once())->method('isEnabled')->willReturn(true);
         $oBasket->expects($this->once())->method('save');
         $oBasket->expects($this->once())->method('clearBundles');
         $oBasket->expects($this->once())->method('addBundles');
@@ -1772,13 +1778,13 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetBasketSummaryDisabledByConfig()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['isEnabled']);
-        $oBasket->expects($this->once())->method('isEnabled')->will($this->returnValue(false));
+        $oBasket->expects($this->once())->method('isEnabled')->willReturn(false);
 
         $oSummary = $oBasket->getBasketSummary();
-        $this->assertEquals([], $oSummary->aArticles);
-        $this->assertEquals([], $oSummary->aCategories);
-        $this->assertEquals(0, $oSummary->iArticleCount);
-        $this->assertEquals(0, $oSummary->dArticlePrice);
+        $this->assertSame([], $oSummary->aArticles);
+        $this->assertSame([], $oSummary->aCategories);
+        $this->assertSame(0, $oSummary->iArticleCount);
+        $this->assertSame(0, $oSummary->dArticlePrice);
     }
 
     /**
@@ -1793,12 +1799,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
         $oSummary = $oBasket->getBasketSummary();
-        $this->assertEquals(2, count($oSummary->aArticles));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oArticle->getId()]));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oVariant->getId()]));
-        $this->assertEquals(20, $oSummary->iArticleCount);
-        $this->assertEquals(0, $oSummary->dArticlePrice);
-        $this->assertTrue(isset($oSummary->aCategories[$this->oCategory->getId()]));
+        $this->assertCount(2, $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oArticle->getId(), $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oVariant->getId(), $oSummary->aArticles);
+        $this->assertSame(20, $oSummary->iArticleCount);
+        $this->assertSame(0, $oSummary->dArticlePrice);
+        $this->assertArrayHasKey($this->oCategory->getId(), $oSummary->aCategories);
     }
 
     /**
@@ -1812,12 +1818,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
         $oSummary = $oBasket->getBasketSummary();
-        $this->assertEquals(2, count($oSummary->aArticles));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oArticle->getId()]));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oVariant->getId()]));
-        $this->assertEquals(20, $oSummary->iArticleCount);
-        $this->assertEquals(20 * 19, $oSummary->dArticlePrice);
-        $this->assertTrue(isset($oSummary->aCategories[$this->oCategory->getId()]));
+        $this->assertCount(2, $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oArticle->getId(), $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oVariant->getId(), $oSummary->aArticles);
+        $this->assertSame(20, $oSummary->iArticleCount);
+        $this->assertSame(20 * 19, $oSummary->dArticlePrice);
+        $this->assertArrayHasKey($this->oCategory->getId(), $oSummary->aCategories);
     }
 
     /**
@@ -1833,12 +1839,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $this->oArticle->save();
         $oSummary = $oBasket->getBasketSummary();
-        $this->assertEquals(2, count($oSummary->aArticles));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oArticle->getId()]));
-        $this->assertTrue(isset($oSummary->aArticles[$this->oVariant->getId()]));
-        $this->assertEquals(20, $oSummary->iArticleCount);
-        $this->assertEquals(20 * 19, $oSummary->dArticlePrice);
-        $this->assertTrue(isset($oSummary->aCategories[$this->oCategory->getId()]));
+        $this->assertCount(2, $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oArticle->getId(), $oSummary->aArticles);
+        $this->assertArrayHasKey($this->oVariant->getId(), $oSummary->aArticles);
+        $this->assertSame(20, $oSummary->iArticleCount);
+        $this->assertSame(20 * 19, $oSummary->dArticlePrice);
+        $this->assertArrayHasKey($this->oCategory->getId(), $oSummary->aCategories);
     }
 
     /**
@@ -1853,7 +1859,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket(false);
         $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\VoucherException::class);
         $oBasket->addVoucher('_xxx');
-        $this->assertEquals(0, count($oBasket->getVouchers()));
+        $this->assertCount(0, $oBasket->getVouchers());
     }
 
     /**
@@ -1874,8 +1880,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aVouchers = $oBasket->getVouchers();
 
-        $this->assertEquals(1, count($aVouchers));
-        $this->assertTrue(isset($aVouchers[$oVoucher->oxvouchers__oxid->value]));
+        $this->assertCount(1, $aVouchers);
+        $this->assertArrayHasKey($oVoucher->oxvouchers__oxid->value, $aVouchers);
     }
 
     /**
@@ -1921,10 +1927,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // testing if voucher is really removed
         $oBasket->removeVoucher($sVoucherId);
-        $this->assertEquals([], $oBasket->getVouchers());
+        $this->assertSame([], $oBasket->getVouchers());
 
         $sSql = "select oxreserved from oxvouchers where oxid = '" . $sVoucherId . "'";
-        $this->assertEquals(0, $myDb->getOne($sSql));
+        $this->assertSame(0, $myDb->getOne($sSql));
     }
 
     /**
@@ -1952,7 +1958,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->setVar('aVouchers', ['_xxx' => 1]);
         $oBasket->removeVoucher('_zzz');
 
-        $this->assertEquals(['_xxx' => 1], $oBasket->getVouchers());
+        $this->assertSame(['_xxx' => 1], $oBasket->getVouchers());
     }
 
     /**
@@ -2009,13 +2015,13 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oUserBasketItem->expects($this->once())->method('getPersParams');
 
         $oUserBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\UserBasket::class, ['getItems']);
-        $oUserBasket->expects($this->once())->method('getItems')->will($this->returnValue([$oUserBasketItem]));
+        $oUserBasket->expects($this->once())->method('getItems')->willReturn([$oUserBasketItem]);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getBasket']);
-        $oUser->expects($this->once())->method('getBasket')->will($this->returnValue($oUserBasket));
+        $oUser->expects($this->once())->method('getBasket')->willReturn($oUserBasket);
 
         $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, ['getBasketUser', 'addToBasket']);
-        $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
+        $oBasket->expects($this->once())->method('getBasketUser')->willReturn($oUser);
         $oBasket->expects($this->once())->method('addToBasket');
         $oBasket->setVar('aBasketContents', [new oxbasketitem()]);
 
@@ -2032,11 +2038,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oUserBasket->expects($this->once())->method('addItemToBasket');
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getBasket']);
-        $oUser->expects($this->once())->method('getBasket')->will($this->returnValue($oUserBasket));
+        $oUser->expects($this->once())->method('getBasket')->willReturn($oUserBasket);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getBasketUser', 'isSaveToDataBaseEnabled']);
-        $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
-        $oBasket->expects($this->once())->method('isSaveToDataBaseEnabled')->will($this->returnValue(true));
+        $oBasket->expects($this->once())->method('getBasketUser')->willReturn($oUser);
+        $oBasket->expects($this->once())->method('isSaveToDataBaseEnabled')->willReturn(true);
 
         $oBasket->addToBasket('1127', 10, 'testSel', 'testPersParam');
 
@@ -2054,10 +2060,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oUserBasket->expects($this->once())->method('delete');
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getBasket']);
-        $oUser->expects($this->once())->method('getBasket')->will($this->returnValue($oUserBasket));
+        $oUser->expects($this->once())->method('getBasket')->willReturn($oUserBasket);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getBasketUser']);
-        $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
+        $oBasket->expects($this->once())->method('getBasketUser')->willReturn($oUser);
         $oBasket->deleteSavedBasket();
     }
 
@@ -2083,7 +2089,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = oxNew('oxBasket');
         $oBasket->setBasketUser(false);
-        $this->assertEquals('_xxx', $oBasket->findDelivCountry());
+        $this->assertSame('_xxx', $oBasket->findDelivCountry());
     }
 
     /**
@@ -2111,7 +2117,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->setBasketUser($oUser);
 
         $this->getConfig()->setGlobalParameter('delcountryid', '_yyy');
-        $this->assertEquals('_yyy', $oBasket->findDelivCountry());
+        $this->assertSame('_yyy', $oBasket->findDelivCountry());
     }
 
     /**
@@ -2127,7 +2133,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $this->getConfig()->setGlobalParameter('delcountryid', null);
         $this->getSession()->setVariable('deladrid', $this->oDelAdress->getId());
-        $this->assertEquals('_xxx', $oBasket->findDelivCountry());
+        $this->assertSame('_xxx', $oBasket->findDelivCountry());
     }
 
     /**
@@ -2163,9 +2169,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, ['discardReservations']);
-        $oBR->expects($this->once())->method('discardReservations')->will($this->returnValue(null));
+        $oBR->expects($this->once())->method('discardReservations')->willReturn(null);
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getBasketReservations']);
-        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
+        $session->expects($this->once())->method('getBasketReservations')->willReturn($oBR);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
@@ -2186,11 +2192,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         // testing if value is taken from request
         $this->getSession()->setVariable('paymentid', 'xxx');
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals('xxx', $oBasket->getPaymentId());
+        $this->assertSame('xxx', $oBasket->getPaymentId());
 
         // testing if value is taken from setter
         $oBasket->setPayment('yyy');
-        $this->assertEquals('yyy', $oBasket->getPaymentId());
+        $this->assertSame('yyy', $oBasket->getPaymentId());
     }
 
     /**
@@ -2200,16 +2206,16 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         // testing if default value is set
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals('oxidstandard', $oBasket->getShippingId());
+        $this->assertSame('oxidstandard', $oBasket->getShippingId());
 
         // testing if value is taken from request
         $this->getSession()->setVariable('sShipSet', 'xxx');
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals('xxx', $oBasket->getShippingId());
+        $this->assertSame('xxx', $oBasket->getShippingId());
 
         // testing if value is taken from setter
         $oBasket->setShipping('yyy');
-        $this->assertEquals('yyy', $oBasket->getShippingId());
+        $this->assertSame('yyy', $oBasket->getShippingId());
     }
 
     public function testGetShippingIdWhenPaymentIdIsOxEmpty()
@@ -2217,7 +2223,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter("sShipSet", null);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getPaymentId"]);
-        $oBasket->expects($this->once())->method('getPaymentId')->will($this->returnValue("oxempty"));
+        $oBasket->expects($this->once())->method('getPaymentId')->willReturn("oxempty");
         $this->assertNull($oBasket->getShippingId());
     }
 
@@ -2240,7 +2246,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
             // selection list check
             $blSelNotSet &= !isset($oArticle->selectlist);
 
-            $this->assertTrue(in_array($oArticle->getId(), $aIds));
+            $this->assertContains($oArticle->getId(), $aIds);
         }
 
         if ($blSelNotSet === 0 || $blSelNotSet === false) {
@@ -2259,7 +2265,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket(false);
 
         $oPrice = $oBasket->getDiscountProductsPrice();
-        $this->assertEquals(20 * 19, $oPrice->getBruttoSum());
+        $this->assertSame(20 * 19, $oPrice->getBruttoSum());
     }
 
     /**
@@ -2273,13 +2279,13 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket();
 
         $oProdPrice = $oBasket->getProductsPrice();
-        $this->assertTrue($oProdPrice instanceof pricelist);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\PriceList::class, $oProdPrice);
 
-        $this->assertEquals(20 * 19, $oProdPrice->getBruttoSum(), 'brutto sum');
+        $this->assertSame(20 * 19, $oProdPrice->getBruttoSum(), 'brutto sum');
         $this->assertEqualsWithDelta(20 * 19 / 1.19, $oProdPrice->getNettoSum(), 0.01, 'netto sum');
-        $this->assertEquals([19 => 20 * 19 - 20 * 19 / 1.19], $oProdPrice->getVatInfo(false), 'get vat info');
-        $this->assertEquals([19 => 20 * 19], $oProdPrice->getPriceInfo(), 'get price info');
-        $this->assertEquals(19, $oProdPrice->getMostUsedVatPercent());
+        $this->assertSame([19 => 20 * 19 - 20 * 19 / 1.19], $oProdPrice->getVatInfo(false), 'get vat info');
+        $this->assertSame([19 => 20 * 19], $oProdPrice->getPriceInfo(), 'get price info');
+        $this->assertSame(19, $oProdPrice->getMostUsedVatPercent());
     }
 
     /**
@@ -2289,7 +2295,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oProdPrice = $oBasket->getProductsPrice();
-        $this->assertTrue($oProdPrice instanceof pricelist);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\PriceList::class, $oProdPrice);
     }
 
     /**
@@ -2303,11 +2309,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket(false);
 
         $oPrice = $oBasket->getPrice();
-        $this->assertTrue($oPrice instanceof price);
-        $this->assertEquals(0, $oPrice->getVat());
-        $this->assertEquals(19 * 20, $oPrice->getBruttoPrice());
-        $this->assertEquals(19 * 20, $oPrice->getNettoPrice());
-        $this->assertEquals(0, $oPrice->getVatValue());
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Price::class, $oPrice);
+        $this->assertSame(0, $oPrice->getVat());
+        $this->assertSame(19 * 20, $oPrice->getBruttoPrice());
+        $this->assertSame(19 * 20, $oPrice->getNettoPrice());
+        $this->assertSame(0, $oPrice->getVatValue());
     }
 
     /**
@@ -2317,7 +2323,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oPrice = $oBasket->getPrice();
-        $this->assertTrue($oPrice instanceof price);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\Price::class, $oPrice);
     }
 
     /**
@@ -2327,7 +2333,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oBasket->setOrderId('xxx');
-        $this->assertEquals('xxx', $oBasket->getOrderId());
+        $this->assertSame('xxx', $oBasket->getOrderId());
     }
 
     /**
@@ -2340,7 +2346,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 11);
         $oBasket->calculateBasket(false);
-        $this->assertEquals(['oxdelivery', 'oxwrapping', 'oxgiftcard', 'oxpayment'], array_keys($oBasket->getCosts()));
+        $this->assertSame(['oxdelivery', 'oxwrapping', 'oxgiftcard', 'oxpayment'], array_keys($oBasket->getCosts()));
     }
 
     /**
@@ -2360,9 +2366,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aVouchers = $oBasket->getVouchers();
 
         // testing if they are the same
-        $this->assertEquals(count($this->aVouchers), count($aVouchers));
+        $this->assertCount(count($this->aVouchers), $aVouchers);
         foreach ($aVouchers as $oStdVoucher) {
-            $this->assertTrue(isset($this->aVouchers[$oStdVoucher->sVoucherNr]));
+            $this->assertArrayHasKey($oStdVoucher->sVoucherNr, $this->aVouchers);
         }
     }
 
@@ -2373,16 +2379,16 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = $this->createBasketWithNoDiscounts();
 
-        $this->assertEquals(0, $oBasket->getProductsCount());
+        $this->assertSame(0, $oBasket->getProductsCount());
 
         $oBasket->addToBasket($this->oArticle->getId(), 2);
-        $this->assertEquals(1, $oBasket->getProductsCount());
+        $this->assertSame(1, $oBasket->getProductsCount());
 
         $oBasket->addToBasket($this->oVariant->getId(), 11);
-        $this->assertEquals(2, $oBasket->getProductsCount());
+        $this->assertSame(2, $oBasket->getProductsCount());
 
         $oBasket->calculateBasket(false);
-        $this->assertEquals(2, $oBasket->getProductsCount());
+        $this->assertSame(2, $oBasket->getProductsCount());
     }
 
     /**
@@ -2391,16 +2397,16 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetItemsCount()
     {
         $oBasket = $this->createBasketWithNoDiscounts();
-        $this->assertEquals(0, $oBasket->getItemsCount());
+        $this->assertSame(0, $oBasket->getItemsCount());
 
         $oBasket->addToBasket($this->oArticle->getId(), 7);
-        $this->assertEquals(7, $oBasket->getItemsCount());
+        $this->assertSame(7, $oBasket->getItemsCount());
 
         $oBasket->addToBasket($this->oVariant->getId(), 6);
-        $this->assertEquals(13, $oBasket->getItemsCount());
+        $this->assertSame(13, $oBasket->getItemsCount());
 
         $oBasket->calculateBasket(false);
-        $this->assertEquals(13, $oBasket->getItemsCount());
+        $this->assertSame(13, $oBasket->getItemsCount());
     }
 
     /**
@@ -2409,16 +2415,16 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetWeight()
     {
         $oBasket = $this->createBasketWithNoDiscounts();
-        $this->assertEquals(0, $oBasket->getWeight());
+        $this->assertSame(0, $oBasket->getWeight());
 
         $oBasket->addToBasket($this->oArticle->getId(), 10);
-        $this->assertEquals(100, $oBasket->getWeight());
+        $this->assertSame(100, $oBasket->getWeight());
 
         $oBasket->addToBasket($this->oVariant->getId(), 10);
-        $this->assertEquals(200, $oBasket->getWeight());
+        $this->assertSame(200, $oBasket->getWeight());
 
         $oBasket->calculateBasket(false);
-        $this->assertEquals(200, $oBasket->getWeight());
+        $this->assertSame(200, $oBasket->getWeight());
     }
 
     /**
@@ -2434,7 +2440,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // testing
         foreach ($oBasket->getContents() as $oBasketItem) {
-            $this->assertTrue(in_array($oBasketItem->getProductId(), $aIds));
+            $this->assertContains($oBasketItem->getProductId(), $aIds);
         }
     }
 
@@ -2468,7 +2474,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetProductVatsIfPriceNotSet()
     {
         $oBasket = oxNew('oxbasket');
-        $this->assertEquals(0, count($oBasket->getProductVats()));
+        $this->assertCount(0, $oBasket->getProductVats());
     }
 
     /**
@@ -2478,7 +2484,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = oxNew('oxbasket');
         $oBasket->setCardMessage('xxx');
-        $this->assertEquals('xxx', $oBasket->getCardMessage());
+        $this->assertSame('xxx', $oBasket->getCardMessage());
     }
 
     /**
@@ -2495,7 +2501,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         // testing card getter
         $oCard = $oBasket->getCard();
         $this->assertEquals($this->oCard->getId(), $oCard->getId());
-        $this->assertTrue($oCard instanceof wrapping);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Wrapping::class, $oCard);
     }
 
     /**
@@ -2573,7 +2579,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->calculateBasket(false);
 
         $oPrice = $oBasket->getVoucherDiscount();
-        $this->assertEquals(40, $oPrice->getBruttoPrice());
+        $this->assertSame(40, $oPrice->getBruttoPrice());
     }
 
     /**
@@ -2602,7 +2608,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         // basket price 380, total discount 10% (38), so voucher discount = (380 - 38) * 10% = 34.2
         $oPrice = $oBasket->getVoucherDiscount();
-        $this->assertEquals(34.2, $oPrice->getBruttoPrice());
+        $this->assertEqualsWithDelta(34.2, $oPrice->getBruttoPrice(), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -2661,7 +2667,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aDiscounts[] = $oDiscount2;
 
         $oDiscountList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, ['getBasketDiscounts']);
-        $oDiscountList->expects($this->any())->method("getBasketDiscounts")->will($this->returnValue($aDiscounts));
+        $oDiscountList->method("getBasketDiscounts")->willReturn($aDiscounts);
 
         oxTestModules::addModuleObject('oxDiscountList', $oDiscountList);
 
@@ -2679,12 +2685,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
-        $this->assertEquals(1, count($aDiscounts));
+        $this->assertCount(1, $aDiscounts);
 
         //asserting second discount values
-        $this->assertEquals('Test discount title 2', $aDiscounts['_testDiscountId2']->sDiscount);
+        $this->assertSame('Test discount title 2', $aDiscounts['_testDiscountId2']->sDiscount);
         //checking 15 % discount (after first discount discountable items price = 20)
-        $this->assertEquals(3, $aDiscounts['_testDiscountId2']->dDiscount);
+        $this->assertSame(3, $aDiscounts['_testDiscountId2']->dDiscount);
     }
 
     /**
@@ -2702,7 +2708,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aDiscounts[] = $oDiscount2;
 
         $oDiscountList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, ['getBasketDiscounts']);
-        $oDiscountList->expects($this->any())->method("getBasketDiscounts")->will($this->returnValue($aDiscounts));
+        $oDiscountList->method("getBasketDiscounts")->willReturn($aDiscounts);
 
         oxTestModules::addModuleObject('oxDiscountList', $oDiscountList);
 
@@ -2719,10 +2725,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
-        $this->assertEquals(1, count($aDiscounts));
+        $this->assertCount(1, $aDiscounts);
 
         //asserting first discount values
-        $this->assertEquals('Test discount title 2', $aDiscounts['_testDiscountId2']->sDiscount);
+        $this->assertSame('Test discount title 2', $aDiscounts['_testDiscountId2']->sDiscount);
         //checking 15 % discount (discountable items price = 79.5)
         $this->assertEqualsWithDelta(11.925, $aDiscounts['_testDiscountId2']->dDiscount, 0.0001);
     }
@@ -2745,7 +2751,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
-        $this->assertEquals(0, count($aDiscounts));
+        $this->assertCount(0, $aDiscounts);
     }
 
     /**
@@ -2773,7 +2779,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
-        $this->assertEquals(12, $oTotalDiscount->getBruttoPrice());
+        $this->assertSame(12, $oTotalDiscount->getBruttoPrice());
     }
 
     /**
@@ -2796,7 +2802,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
-        $this->assertEquals(12, $oTotalDiscount->getBruttoPrice());
+        $this->assertSame(12, $oTotalDiscount->getBruttoPrice());
 
         // remove one discount, and calculate again
         unset($aDiscounts[0]);
@@ -2806,7 +2812,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
-        $this->assertEquals(7, $oTotalDiscount->getBruttoPrice());
+        $this->assertSame(7, $oTotalDiscount->getBruttoPrice());
     }
 
     /**
@@ -2822,14 +2828,14 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oTotalDiscount = new oxPrice(100);
 
         $oBasket = $this->getMock($this->getProxyClassName('oxBasket'), ['isAdmin']);
-        $oBasket->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oBasket->method('isAdmin')->willReturn(true);
         $oBasket->setTotalDiscount(100);
         $oBasket->setNonPublicVar('_aDiscounts', $aDiscounts);
         $oBasket->calcBasketTotalDiscount();
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
-        $this->assertEquals(100, $oTotalDiscount->getBruttoPrice());
+        $this->assertSame(100, $oTotalDiscount->getBruttoPrice());
     }
 
     /**
@@ -2845,7 +2851,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oTotalDiscount = $oBasket->getNonPublicVar('_oTotalDiscount');
 
-        $this->assertEquals(0, $oTotalDiscount->getBruttoPrice());
+        $this->assertSame(0, $oTotalDiscount->getBruttoPrice());
     }
 
     /**
@@ -2877,7 +2883,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $arr2 = ['a' => 1, 'c' => 222, 'g' => 's', 'ds' => 'aaa'];
         $oBasket->setNonPublicVar('_aBasketContents', $arr1);
         $oBasket->changeBasketItemKey('b', 'c', 222);
-        $this->assertEquals($arr2, $oBasket->getNonPublicVar('_aBasketContents'));
+        $this->assertSame($arr2, $oBasket->getNonPublicVar('_aBasketContents'));
         $arr2 = ['a' => 1, 'c' => 222, 'g' => 's', 'dsa' => null];
         $oBasket->changeBasketItemKey('ds', 'dsa');
         $this->assertEquals($arr2, $oBasket->getNonPublicVar('_aBasketContents'));
@@ -2889,8 +2895,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testResetUserInfo()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['setPayment', 'setShipping']);
-        $oBasket->expects($this->once())->method('setPayment')->with($this->equalTo(null));
-        $oBasket->expects($this->once())->method('setShipping')->with($this->equalTo(null));
+        $oBasket->expects($this->once())->method('setPayment')->with(null);
+        $oBasket->expects($this->once())->method('setShipping')->with(null);
         $oBasket->resetUserInfo();
     }
 
@@ -2910,7 +2916,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFProductsPriceIfPriceNotSet()
     {
         $oBasket = $this->getProxyClass("oxBasket");
-        $this->assertEquals('0,00', $oBasket->getFProductsPrice());
+        $this->assertSame('0,00', $oBasket->getFProductsPrice());
     }
 
     /**
@@ -2919,10 +2925,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetDelCostVatPercent()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVat']);
-        $oPrice->expects($this->once())->method('getVat')->will($this->returnValue(19));
+        $oPrice->expects($this->once())->method('getVat')->willReturn(19);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
-        $this->assertEquals(19, $oBasket->getDelCostVatPercent());
+        $this->assertSame(19, $oBasket->getDelCostVatPercent());
     }
 
     /**
@@ -2932,10 +2938,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForDelivery', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVatValue']);
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getVatValue')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
-        $this->assertEquals("11,59", $oBasket->getDelCostVat());
+        $this->assertSame("11,59", $oBasket->getDelCostVat());
     }
 
     /**
@@ -2945,7 +2951,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVatValue']);
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getVatValue')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
         $this->assertFalse($oBasket->getDelCostVat());
@@ -2958,11 +2964,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForDelivery', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->once())->method('getNettoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getNettoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
         $oBasket->setNonPublicVar('_oUser', true);
-        $this->assertEquals("11,59", $oBasket->getDelCostNet());
+        $this->assertSame("11,59", $oBasket->getDelCostNet());
     }
 
     /**
@@ -2972,7 +2978,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->never())->method('getNettoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->never())->method('getNettoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
         $oBasket->setNonPublicVar('_oUser', true);
@@ -2985,7 +2991,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetDelCostNetWithoutUser()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->any())->method('getNettoPrice')->will($this->returnValue(11.588));
+        $oPrice->method('getNettoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
         $oBasket->setNonPublicVar('_oUser', false);
@@ -3001,7 +3007,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->once())->method('getNettoPrice')->will($this->returnValue(0));
+        $oPrice->expects($this->once())->method('getNettoPrice')->willReturn(0);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
         $oBasket->setNonPublicVar('_oUser', false);
@@ -3014,10 +3020,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetPayCostVatPercent()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVat']);
-        $oPrice->expects($this->once())->method('getVat')->will($this->returnValue(19));
+        $oPrice->expects($this->once())->method('getVat')->willReturn(19);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
-        $this->assertEquals(19, $oBasket->getPayCostVatPercent());
+        $this->assertSame(19, $oBasket->getPayCostVatPercent());
     }
 
     /**
@@ -3027,10 +3033,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForPayCharge', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVatValue']);
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getVatValue')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
-        $this->assertEquals("11,59", $oBasket->getPayCostVat());
+        $this->assertSame("11,59", $oBasket->getPayCostVat());
     }
 
     /**
@@ -3040,7 +3046,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForPayCharge', false);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVatValue']);
-        $oPrice->expects($this->once())->method('getVatValue')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getVatValue')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
         $this->assertFalse($oBasket->getPayCostVat());
@@ -3053,10 +3059,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForPayCharge', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->any())->method('getNettoPrice')->will($this->returnValue(11.588));
+        $oPrice->method('getNettoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
-        $this->assertEquals("11,59", $oBasket->getPayCostNet());
+        $this->assertSame("11,59", $oBasket->getPayCostNet());
     }
 
     /**
@@ -3066,7 +3072,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blShowVATForPayCharge', false);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getNettoPrice']);
-        $oPrice->expects($this->never())->method('getNettoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->never())->method('getNettoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
         $this->assertFalse($oBasket->getPayCostNet());
@@ -3078,10 +3084,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetPaymentCosts()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxpayment" => $oPrice]);
-        $this->assertEquals(11.588, $oBasket->getPaymentCosts());
+        $this->assertEqualsWithDelta(11.588, $oBasket->getPaymentCosts(), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -3090,10 +3096,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetVoucherDiscValue()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_oVoucherDiscount', $oPrice);
-        $this->assertEquals(11.588, $oBasket->getVoucherDiscValue());
+        $this->assertEqualsWithDelta(11.588, $oBasket->getVoucherDiscValue(), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -3111,10 +3117,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetWrappCostVatPercent()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getVat']);
-        $oPrice->expects($this->once())->method('getVat')->will($this->returnValue(19));
+        $oPrice->expects($this->once())->method('getVat')->willReturn(19);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxwrapping" => $oPrice]);
-        $this->assertEquals(19, $oBasket->getWrappCostVatPercent());
+        $this->assertSame(19, $oBasket->getWrappCostVatPercent());
     }
 
     /**
@@ -3128,7 +3134,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxwrapping" => $oPrice]);
-        $this->assertEquals("0,80", $oBasket->getWrappCostVat());
+        $this->assertSame("0,80", $oBasket->getWrappCostVat());
     }
 
     /**
@@ -3169,7 +3175,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxwrapping" => $oPrice]);
-        $this->assertEquals("4,20", $oBasket->getWrappCostNet());
+        $this->assertSame("4,20", $oBasket->getWrappCostNet());
     }
 
     /**
@@ -3205,10 +3211,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFPrice()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_oPrice', $oPrice);
-        $this->assertEquals("11,59", $oBasket->getFPrice());
+        $this->assertSame("11,59", $oBasket->getFPrice());
     }
 
     /**
@@ -3218,10 +3224,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
-        $this->assertEquals("11,59", $oBasket->getFDeliveryCosts());
+        $this->assertSame("11,59", $oBasket->getFDeliveryCosts());
     }
 
     /**
@@ -3231,10 +3237,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $this->getConfig()->setConfigParam('blCalculateDelCostIfNotLoggedIn', true);
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(0));
+        $oPrice->method('getBruttoPrice')->willReturn(0);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
-        $this->assertEquals("0,00", $oBasket->getFDeliveryCosts());
+        $this->assertSame("0,00", $oBasket->getFDeliveryCosts());
     }
 
     /**
@@ -3252,10 +3258,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetDeliveryCosts()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aCosts', ["oxdelivery" => $oPrice]);
-        $this->assertEquals(11.588, $oBasket->getDeliveryCosts());
+        $this->assertEqualsWithDelta(11.588, $oBasket->getDeliveryCosts(), PHP_FLOAT_EPSILON);
     }
 
     public function testGetDeliveryCostsIfNotSet()
@@ -3270,10 +3276,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetTotalDiscount()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
+        $oPrice->expects($this->once())->method('getBruttoPrice')->willReturn(11.588);
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_oTotalDiscount', $oPrice);
-        $this->assertEquals(11.588, $oBasket->getTotalDiscount()->getBruttoPrice());
+        $this->assertEqualsWithDelta(11.588, $oBasket->getTotalDiscount()->getBruttoPrice(), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -3283,21 +3289,21 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetPriceForPayment()
     {
         $oProductsPrice = $this->getMock(\OxidEsales\Eshop\Core\PriceList::class, ['getBruttoSum']);
-        $oProductsPrice->expects($this->once())->method('getBruttoSum')->will($this->returnValue(100));
+        $oProductsPrice->expects($this->once())->method('getBruttoSum')->willReturn(100);
 
         $oVoucher = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oVoucher->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(40));
+        $oVoucher->expects($this->once())->method('getBruttoPrice')->willReturn(40);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getDiscountProductsPrice', 'getVoucherDiscount']);
-        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->will($this->returnValue($oProductsPrice));
-        $oBasket->expects($this->once())->method('getVoucherDiscount')->will($this->returnValue($oVoucher));
+        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->willReturn($oProductsPrice);
+        $oBasket->expects($this->once())->method('getVoucherDiscount')->willReturn($oVoucher);
 
         $oBasket->setCost('oxpayment', new oxPrice(30));
         $oBasket->setCost('oxdelivery', new oxPrice(25));
 
         //final price  = products price - voucher + delivery cost (100 - 40 + 25)
         //payment costs should not be included
-        $this->assertEquals(85, $oBasket->getPriceForPayment());
+        $this->assertSame(85, $oBasket->getPriceForPayment());
     }
 
     /**
@@ -3308,22 +3314,22 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetPriceForPaymentIfWithNotDiskcountedArticles()
     {
         $oProductsPrice = $this->getMock(\OxidEsales\Eshop\Core\PriceList::class, ['getBruttoSum']);
-        $oProductsPrice->expects($this->any())->method('getBruttoSum')->will($this->returnValue(100));
+        $oProductsPrice->method('getBruttoSum')->willReturn(100);
 
         $oVoucher = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oVoucher->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(40));
+        $oVoucher->expects($this->once())->method('getBruttoPrice')->willReturn(40);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getDiscountProductsPrice', 'getVoucherDiscount', 'getNotDiscountProductsPrice']);
-        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->will($this->returnValue($oProductsPrice));
-        $oBasket->expects($this->once())->method('getVoucherDiscount')->will($this->returnValue($oVoucher));
-        $oBasket->expects($this->once())->method('getNotDiscountProductsPrice')->will($this->returnValue($oProductsPrice));
+        $oBasket->expects($this->once())->method('getDiscountProductsPrice')->willReturn($oProductsPrice);
+        $oBasket->expects($this->once())->method('getVoucherDiscount')->willReturn($oVoucher);
+        $oBasket->expects($this->once())->method('getNotDiscountProductsPrice')->willReturn($oProductsPrice);
 
         $oBasket->setCost('oxpayment', new oxPrice(30));
         $oBasket->setCost('oxdelivery', new oxPrice(25));
 
         //final price  = products price - voucher + delivery cost (100 - 40 + 25 + 100)
         //payment costs should not be included
-        $this->assertEquals(185, $oBasket->getPriceForPayment());
+        $this->assertSame(185, $oBasket->getPriceForPayment());
     }
 
     /**
@@ -3332,12 +3338,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFPaymentCosts()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(10.992));
+        $oPrice->method('getBruttoPrice')->willReturn(10.992);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn($oPrice);
 
-        $this->assertEquals("10,99", $oBasket->getFPaymentCosts());
+        $this->assertSame("10,99", $oBasket->getFPaymentCosts());
     }
 
     /**
@@ -3346,7 +3352,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFPaymentCosts_noCost()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue(false));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn(false);
 
         $this->assertFalse($oBasket->getFPaymentCosts());
     }
@@ -3357,10 +3363,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFPaymentCosts_zeroValue()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(0));
+        $oPrice->method('getBruttoPrice')->willReturn(0);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn($oPrice);
 
         $this->assertFalse($oBasket->getFPaymentCosts());
     }
@@ -3371,12 +3377,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFWrappingCosts()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(10.992));
+        $oPrice->method('getBruttoPrice')->willReturn(10.992);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn($oPrice);
 
-        $this->assertEquals("10,99", $oBasket->getFWrappingCosts());
+        $this->assertSame("10,99", $oBasket->getFWrappingCosts());
     }
 
     /**
@@ -3385,7 +3391,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFWrappingCosts_noCost()
     {
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue(false));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn(false);
 
         $this->assertFalse($oBasket->getFWrappingCosts());
     }
@@ -3396,10 +3402,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     public function testGetFWrappingCosts_zeroValue()
     {
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ['getBruttoPrice']);
-        $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(0));
+        $oPrice->method('getBruttoPrice')->willReturn(0);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ['getCosts']);
-        $oBasket->expects($this->once())->method('getCosts')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getCosts')->willReturn($oPrice);
 
         $this->assertFalse($oBasket->getFWrappingCosts());
     }
@@ -3419,8 +3425,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket = $this->getProxyClass("oxBasket");
         $oBasket->setNonPublicVar('_aBasketContents', ["_testItem" => $oBasketItem, "_testItem2" => $oBasketItem2]);
 
-        $this->assertEquals(3, $oBasket->getArtStockInBasket($this->oArticle->getId()));
-        $this->assertEquals(1, $oBasket->getArtStockInBasket($this->oArticle->getId(), "_testItem2"));
+        $this->assertSame(3, $oBasket->getArtStockInBasket($this->oArticle->getId()));
+        $this->assertSame(1, $oBasket->getArtStockInBasket($this->oArticle->getId(), "_testItem2"));
     }
 
     /**
@@ -3439,7 +3445,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aDiscounts[] = $oDiscount2;
 
         $oDiscountList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, ['getBasketDiscounts']);
-        $oDiscountList->expects($this->once())->method('getBasketDiscounts')->will($this->returnValue($aDiscounts));
+        $oDiscountList->expects($this->once())->method('getBasketDiscounts')->willReturn($aDiscounts);
         oxTestModules::addModuleObject('oxDiscountList', $oDiscountList);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -3455,11 +3461,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
-        $this->assertEquals(1, count($aDiscounts));
+        $this->assertCount(1, $aDiscounts);
 
         //asserting second discount values
-        $this->assertEquals('Test discount title 123', $aDiscounts['_testDiscountId2']->sDiscount);
-        $this->assertEquals(20, $aDiscounts['_testDiscountId2']->dDiscount);
+        $this->assertSame('Test discount title 123', $aDiscounts['_testDiscountId2']->sDiscount);
+        $this->assertSame(20, $aDiscounts['_testDiscountId2']->dDiscount);
     }
 
     /**
@@ -3478,7 +3484,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aDiscounts[] = $oDiscount2;
 
         $oDiscountList = $this->getMock(\OxidEsales\Eshop\Application\Model\DiscountList::class, ['getBasketDiscounts']);
-        $oDiscountList->expects($this->once())->method('getBasketDiscounts')->will($this->returnValue($aDiscounts));
+        $oDiscountList->expects($this->once())->method('getBasketDiscounts')->willReturn($aDiscounts);
         oxTestModules::addModuleObject('oxDiscountList', $oDiscountList);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -3494,11 +3500,11 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $aDiscounts = $oBasket->getNonPublicVar('_aDiscounts');
 
-        $this->assertEquals(1, count($aDiscounts));
+        $this->assertCount(1, $aDiscounts);
 
         //asserting second discount values
-        $this->assertEquals('Test discount title 123', $aDiscounts['_testDiscountId2']->sDiscount);
-        $this->assertEquals(-10, $aDiscounts['_testDiscountId2']->dDiscount);
+        $this->assertSame('Test discount title 123', $aDiscounts['_testDiscountId2']->sDiscount);
+        $this->assertSame(-10, $aDiscounts['_testDiscountId2']->dDiscount);
     }
 
     /**
@@ -3509,8 +3515,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("iMinOrderPrice", 0);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice"]);
-        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->expects($this->once())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(-1));
+        $oBasket->expects($this->once())->method('getProductsCount')->willReturn(1);
+        $oBasket->expects($this->once())->method('getDiscountedProductsBruttoPrice')->willReturn(-1);
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
 
@@ -3532,12 +3538,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("iMinOrderPrice", 2);
 
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, ["getBruttoSum"]);
-        $oPrice->expects($this->once())->method('getBruttoSum')->will($this->returnValue(2));
+        $oPrice->expects($this->once())->method('getBruttoSum')->willReturn(2);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["getProductsCount", "getDiscountedProductsBruttoPrice", "getNotDiscountProductsPrice"]);
-        $oBasket->expects($this->once())->method('getProductsCount')->will($this->returnValue(2));
-        $oBasket->expects($this->once())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(1));
-        $oBasket->expects($this->once())->method('getNotDiscountProductsPrice')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->once())->method('getProductsCount')->willReturn(2);
+        $oBasket->expects($this->once())->method('getDiscountedProductsBruttoPrice')->willReturn(1);
+        $oBasket->expects($this->once())->method('getNotDiscountProductsPrice')->willReturn($oPrice);
 
         $this->assertFalse($oBasket->isBelowMinOrderPrice());
     }
@@ -3565,8 +3571,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oDb = oxDb::getDb();
         $sVariantId = $oDb->getOne("select oxid from oxarticles where oxparentid != ''");
-        $sProductId = $oDb->getOne(sprintf('select oxparentid from oxarticles where oxid = \'%s\'', $sVariantId));
-        $oDb->getOne(sprintf('select oxcatnid from oxobject2category where oxobjectid = \'%s\'', $sProductId));
+        $sProductId = $oDb->getOne(sprintf("select oxparentid from oxarticles where oxid = '%s'", $sVariantId));
+        $oDb->getOne(sprintf("select oxcatnid from oxobject2category where oxobjectid = '%s'", $sProductId));
 
         $sQ = "select oxcategories.oxrootid from oxobject2category
                  left join oxcategories on oxcategories.oxid = oxobject2category.oxcatnid
@@ -3593,13 +3599,13 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blBasketExcludeEnabled", true);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["canAddProductToBasket", "setCatChangeWarningState"]);
-        $oBasket->expects($this->once())->method('canAddProductToBasket')->with($this->equalTo("1126"))->will($this->returnValue(true));
-        $oBasket->expects($this->once())->method('setCatChangeWarningState')->with($this->equalTo(false));
+        $oBasket->expects($this->once())->method('canAddProductToBasket')->with("1126")->willReturn(true);
+        $oBasket->expects($this->once())->method('setCatChangeWarningState')->with(false);
         $oBasket->addToBasket("1126", 1);
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, ["canAddProductToBasket", "setCatChangeWarningState"]);
-        $oBasket->expects($this->once())->method('canAddProductToBasket')->with($this->equalTo("1126"))->will($this->returnValue(false));
-        $oBasket->expects($this->once())->method('setCatChangeWarningState')->with($this->equalTo(true));
+        $oBasket->expects($this->once())->method('canAddProductToBasket')->with("1126")->willReturn(false);
+        $oBasket->expects($this->once())->method('setCatChangeWarningState')->with(true);
         $oBasket->addToBasket("1126", 1);
     }
 
@@ -3669,12 +3675,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oDb = oxDb::getDb();
 
         $sCatId = $oDb->getOne("select oxcatnid, count(oxcatnid) as _cnt from oxobject2category group by oxcatnid having _cnt > 1");
-        $sRootCatId = $oDb->getOne(sprintf('select oxrootid from oxcategories where oxid = \'%s\'', $sCatId));
+        $sRootCatId = $oDb->getOne(sprintf("select oxrootid from oxcategories where oxid = '%s'", $sCatId));
         $this->setRequestParameter('cnid', $sCatId);
 
-        $sProductId1 = $oDb->getOne(sprintf('select oxobjectid from oxobject2category where oxcatnid = \'%s\'', $sCatId));
-        $sProductId2 = $oDb->getOne(sprintf('select oxobjectid from oxobject2category where oxcatnid = \'%s\' and oxobjectid != \'%s\'', $sCatId, $sProductId1));
-        $sProductId3 = $oDb->getOne(sprintf('select oxid from oxcategories where oxrootid != \'%s\' ', $sRootCatId));
+        $sProductId1 = $oDb->getOne(sprintf("select oxobjectid from oxobject2category where oxcatnid = '%s'", $sCatId));
+        $sProductId2 = $oDb->getOne(sprintf("select oxobjectid from oxobject2category where oxcatnid = '%s' and oxobjectid != '%s'", $sCatId, $sProductId1));
+        $sProductId3 = $oDb->getOne(sprintf("select oxid from oxcategories where oxrootid != '%s' ", $sRootCatId));
 
         $oBasket = oxNew('oxBasket');
         $this->assertTrue($oBasket->canAddProductToBasket($sProductId1));
@@ -3693,7 +3699,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oBasket->getNonPublicVar("_sBasketCategoryId"));
 
         $oBasket->setBasketRootCatId('_testExclRoot');
-        $this->assertEquals('_testExclRoot', $oBasket->getNonPublicVar("_sBasketCategoryId"));
+        $this->assertSame('_testExclRoot', $oBasket->getNonPublicVar("_sBasketCategoryId"));
     }
 
     /**
@@ -3707,7 +3713,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($oBasket->getBasketRootCatId());
 
         $oBasket->setNonPublicVar("_sBasketCategoryId", '_testExclRoot');
-        $this->assertEquals('_testExclRoot', $oBasket->getBasketRootCatId());
+        $this->assertSame('_testExclRoot', $oBasket->getBasketRootCatId());
     }
 
     /**
@@ -3717,7 +3723,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     {
         $oBasket = $this->getProxyClass("oxbasket");
         $this->assertNull($oBasket->setNonPublicVar("_oNotDiscountedProductsPriceList", "testPrice"));
-        $this->assertEquals("testPrice", $oBasket->getNotDiscountProductsPrice());
+        $this->assertSame("testPrice", $oBasket->getNotDiscountProductsPrice());
     }
 
 
@@ -3775,10 +3781,10 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aContents = $oBasket->getContents();
         $aInfo = ['1142' => 3, '1126' => 6, '1131' => 3];
 
-        $this->assertEquals(3, count($aContents));
+        $this->assertCount(3, $aContents);
         foreach ($aContents as $oContent) {
             $sId = $oContent->getProductId();
-            $this->assertTrue(isset($aInfo[$sId]));
+            $this->assertArrayHasKey($sId, $aInfo);
             $this->assertEquals($aInfo[$sId], $oContent->getAmount());
         }
     }
@@ -3824,8 +3830,8 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $vats = $basket->getProductVats(false);
 
-        $this->assertEquals(7.12, oxRegistry::getUtils()->fRound($vats[19]));
-        $this->assertEquals(37.48, oxRegistry::getUtils()->fRound($basket->getNettoSum()));
+        $this->assertEqualsWithDelta(7.12, oxRegistry::getUtils()->fRound($vats[19]), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(37.48, oxRegistry::getUtils()->fRound($basket->getNettoSum()), PHP_FLOAT_EPSILON);
     }
 
     /**
@@ -3853,7 +3859,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
 
         $oArticle->oxarticles__oxisdownloadable = new oxField(true);
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, ['getArticle']);
-        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($oArticle));
+        $oOrderArticle->method('getArticle')->willReturn($oArticle);
         $oBasket = $this->getProxyClass("oxbasket");
         $oBasket->setNonPublicVar("_aBasketContents", [$oOrderArticle]);
         $this->assertTrue($oBasket->hasDownloadableProducts());
@@ -3917,9 +3923,9 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oBasket->addToBasket('_testArt2', 1);
         $oBasket->calculateBasket();
 
-        $this->assertEquals(15, $oBasket->getAdditionalServicesVatPercent());
+        $this->assertSame(15, $oBasket->getAdditionalServicesVatPercent());
         $this->getConfig()->setConfigParam("sAdditionalServVATCalcMethod", 'not propotional');
-        $this->assertEquals(20, $oBasket->getAdditionalServicesVatPercent());
+        $this->assertSame(20, $oBasket->getAdditionalServicesVatPercent());
     }
 
 
@@ -3959,7 +3965,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oSummary = $oBasket->getBasketSummary();
 
         // checking amounts
-        $this->assertEquals(44, $oSummary->dArticleDiscountablePrice);
+        $this->assertSame(44, $oSummary->dArticleDiscountablePrice);
     }
 
     public function testGetSaveBasketSetNotSave()
@@ -3993,7 +3999,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerHasArticlesWithIntangibleAgreement()
+    public function providerHasArticlesWithIntangibleAgreement(): \Iterator
     {
         $aEmptyBasket = [];
 
@@ -4006,8 +4012,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aBasketWithOtherArticles = [$this->createBasketItemForArticleAgreementTests(false, false, false), $this->createBasketItemForArticleAgreementTests(false, true, true)];
 
         $aBasketWithIntangibleWithoutShowingAgreement = [$this->createBasketItemForArticleAgreementTests(true, false, false)];
-
-        return [[$aEmptyBasket, false], [$aBasketWithOneIntangibleArticle, true], [$aBasketWithOneIntangibleAndOtherArticles, true], [$aBasketWithOneIntangibleAndDownloadableArticles, true], [$aBasketWithOtherArticles, false], [$aBasketWithIntangibleWithoutShowingAgreement, false]];
+        yield [$aEmptyBasket, false];
+        yield [$aBasketWithOneIntangibleArticle, true];
+        yield [$aBasketWithOneIntangibleAndOtherArticles, true];
+        yield [$aBasketWithOneIntangibleAndDownloadableArticles, true];
+        yield [$aBasketWithOtherArticles, false];
+        yield [$aBasketWithIntangibleWithoutShowingAgreement, false];
     }
 
     /**
@@ -4026,7 +4036,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function providerHasArticlesWithDownloadableAgreement()
+    public function providerHasArticlesWithDownloadableAgreement(): \Iterator
     {
         $aEmptyBasket = [];
 
@@ -4039,8 +4049,12 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $aBasketWithOtherArticles = [$this->createBasketItemForArticleAgreementTests(false, false, false), $this->createBasketItemForArticleAgreementTests(true, false, true)];
 
         $aBasketWithDownloadableArticleWithoutShowingAgreement = [$this->createBasketItemForArticleAgreementTests(true, false, false)];
-
-        return [[$aEmptyBasket, false], [$aBasketWithOneDownloadableArticle, true], [$aBasketWithOneDownloadableAndOtherArticles, true], [$aBasketWithOneIntangibleAndDownloadableArticles, true], [$aBasketWithOtherArticles, false], [$aBasketWithDownloadableArticleWithoutShowingAgreement, false]];
+        yield [$aEmptyBasket, false];
+        yield [$aBasketWithOneDownloadableArticle, true];
+        yield [$aBasketWithOneDownloadableAndOtherArticles, true];
+        yield [$aBasketWithOneIntangibleAndDownloadableArticles, true];
+        yield [$aBasketWithOtherArticles, false];
+        yield [$aBasketWithDownloadableArticleWithoutShowingAgreement, false];
     }
 
     /**
@@ -4075,7 +4089,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         $oArticle->oxarticles__oxshowcustomagreement = new oxField($blShowCustomAgreement);
 
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, ['getArticle']);
-        $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($oArticle));
+        $oOrderArticle->method('getArticle')->willReturn($oArticle);
 
         return $oOrderArticle;
     }
@@ -4091,6 +4105,7 @@ class BasketTest extends \PHPUnit\Framework\TestCase
         foreach ($this->aDiscounts as $oDiscount) {
             $oDiscount->delete();
         }
+
         return new oxbasket();
     }
 }

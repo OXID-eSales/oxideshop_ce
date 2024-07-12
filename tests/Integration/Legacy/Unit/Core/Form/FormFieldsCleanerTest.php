@@ -35,14 +35,12 @@ class FormFieldsCleanerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame([], $cleanedFieldsList);
     }
 
-    public function providerGetSameCaseSensitiveDataAsRequested()
+    public function providerGetSameCaseSensitiveDataAsRequested(): \Iterator
     {
-        return [
-            [['userName' => 'some value 1', 'none_existing_2' => 'some value 2'], ['userName' => 'some value 1']],
-            [['username' => 'some value 1', 'none_existing_2' => 'some value 2'], ['username' => 'some value 1']],
-            [['USERNAME' => 'some value 1', 'none_existing_2' => 'some value 2'], ['USERNAME' => 'some value 1']],
-            [['oxuser__username' => 'user name', 'oxuser__notexisting' => 'some value'], ['oxuser__username' => 'user name']],
-        ];
+        yield [['userName' => 'some value 1', 'none_existing_2' => 'some value 2'], ['userName' => 'some value 1']];
+        yield [['username' => 'some value 1', 'none_existing_2' => 'some value 2'], ['username' => 'some value 1']];
+        yield [['USERNAME' => 'some value 1', 'none_existing_2' => 'some value 2'], ['USERNAME' => 'some value 1']];
+        yield [['oxuser__username' => 'user name', 'oxuser__notexisting' => 'some value'], ['oxuser__username' => 'user name']];
     }
 
     /**

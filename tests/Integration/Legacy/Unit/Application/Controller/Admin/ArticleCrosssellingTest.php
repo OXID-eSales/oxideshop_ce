@@ -30,9 +30,9 @@ class ArticleCrosssellingTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
         $this->assertTrue($aViewData["readonly"]);
 
-        $this->assertEquals('article_crossselling', $sTplName);
+        $this->assertSame('article_crossselling', $sTplName);
     }
 }

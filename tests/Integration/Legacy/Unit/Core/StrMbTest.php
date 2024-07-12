@@ -28,7 +28,7 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
     /** @var oxStrMb */
     protected $_oSubj;
 
-    public function setup(): void
+    protected function setup(): void
     {
         parent::setUp();
         $this->_oSubj = oxNew('oxStrMb');
@@ -36,7 +36,7 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
 
     public function testStrlen()
     {
-        $this->assertEquals(
+        $this->assertSame(
             1,
             $this->_oSubj->strlen($this->_2Utf($this->_sStrNeedle))
         );
@@ -60,7 +60,7 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
 
     public function testStrpos2Params()
     {
-        $this->assertEquals(
+        $this->assertSame(
             26,
             $this->_oSubj->strpos($this->_2Utf($this->_sStrHaystack), $this->_2Utf("H�hen"))
         );
@@ -68,7 +68,7 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
 
     public function testStrpos3Params()
     {
-        $this->assertEquals(
+        $this->assertSame(
             33,
             $this->_oSubj->strpos($this->_2Utf($this->_sStrHaystack), $this->_2Utf("H�"), 27)
         );
@@ -172,13 +172,13 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
 
     public function testPregMatch()
     {
-        $this->assertEquals(
+        $this->assertSame(
             1,
             $this->_oSubj->preg_match('/Bau/', $this->_2Utf($this->_sStrHaystack))
         );
         $aRes = [];
         $this->_oSubj->preg_match('/Bau/', $this->_2Utf($this->_sStrHaystack), $aRes);
-        $this->assertEquals(['Bau'], $aRes);
+        $this->assertSame(['Bau'], $aRes);
     }
 
     /**
@@ -187,8 +187,8 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
     public function testPregMatchAll()
     {
         $aRez = [['a', 'b', 'c']];
-        $this->assertEquals(3, $this->_oSubj->preg_match_all("/[^\-]+/", $this->_2Utf("a-b-c"), $aMatches));
-        $this->assertEquals($aRez, $aMatches);
+        $this->assertSame(3, $this->_oSubj->preg_match_all("/[^\-]+/", $this->_2Utf("a-b-c"), $aMatches));
+        $this->assertSame($aRez, $aMatches);
     }
 
     public function testUcfirst()
@@ -232,42 +232,42 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
     public function testWordwrapMimicsPhpInternalWW()
     {
         // check if it really acts same as intended
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('aaa aaa', 2, "\n", false),
             $this->_oSubj->wordwrap('aaa aaa', 2, "\n", false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('aaa aaa', 2, "\n", true),
             $this->_oSubj->wordwrap('aaa aaa', 2, "\n", true)
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('aaa aaa a', 5, "\n", false),
             $this->_oSubj->wordwrap('aaa aaa a', 5, "\n", false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('aaa aaa', 5, "\n", true),
             $this->_oSubj->wordwrap('aaa aaa', 5, "\n", true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('   aaa    aaa', 2, "\n", false),
             $this->_oSubj->wordwrap('   aaa    aaa', 2, "\n", false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('   aaa    aaa', 2, "\n", true),
             $this->_oSubj->wordwrap('   aaa    aaa', 2, "\n", true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('   aaa    aaa', 5, "\n", false),
             $this->_oSubj->wordwrap('   aaa    aaa', 5, "\n", false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap('   aaa    aaa', 5, "\n", true),
             $this->_oSubj->wordwrap('   aaa    aaa', 5, "\n", true)
         );
 
         // very important:
-        $this->assertEquals(
+        $this->assertSame(
             wordwrap("laba diena, kjabsdjhb hb bhb bhbhh\n as esu sarunas tekste.\n o chia buvo new line. arvydas.\naaa    aaa", 10, "\n", true),
             $this->_oSubj->wordwrap("laba diena, kjabsdjhb hb bhb bhbhh\n as esu sarunas tekste.\n o chia buvo new line. arvydas.\naaa    aaa", 10, "\n", true)
         );
@@ -275,35 +275,35 @@ class StrMbTest extends \PHPUnit\Framework\TestCase
 
     public function testRecodeEntities()
     {
-        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities($this->_2Utf(' � � � � � � �'), true));
+        $this->assertSame(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities($this->_2Utf(' � � � � � � �'), true));
         $this->assertEquals($this->_2Utf(' � � � � � � � &amp;'), $this->_oSubj->recodeEntities(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', false, ['&amp;'], ['&']));
     }
 
     public function testHasSpecialChars()
     {
-        $this->assertEquals(1, $this->_oSubj->hasSpecialChars($this->_2Utf(' � � � � � � �')));
-        $this->assertEquals(0, $this->_oSubj->hasSpecialChars('aaaa'));
+        $this->assertSame(1, $this->_oSubj->hasSpecialChars($this->_2Utf(' � � � � � � �')));
+        $this->assertSame(0, $this->_oSubj->hasSpecialChars('aaaa'));
     }
 
     public function testCleanStr()
     {
-        $this->assertEquals(' " \' : ! ?            ', $this->_oSubj->cleanStr(' " \'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;"));
+        $this->assertSame(' " \' : ! ?            ', $this->_oSubj->cleanStr(' " \'' . " : ! ? \n \r \t \xc2\x95 \xc2\xa0 ;"));
     }
 
     public function testCleanStrLeavesDots()
     {
-        $this->assertEquals('.  ', $this->_oSubj->cleanStr(". ;"));
+        $this->assertSame('.  ', $this->_oSubj->cleanStr(". ;"));
     }
 
     public function testJsonEncode()
     {
-        $this->assertEquals('[". ;","asdasd",{"asd":"asdasd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => 'asdasd', 'asda']]));
-        $this->assertEquals('[". ;","asdasd",{"asd":"as\n\t\\\\d\\\\a\\\\\'\"[]{sd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => "as\n\t\\d\a\'\"[]{sd", 'asda']]));
+        $this->assertSame('[". ;","asdasd",{"asd":"asdasd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => 'asdasd', 'asda']]));
+        $this->assertSame('[". ;","asdasd",{"asd":"as\n\t\\\\d\\\\a\\\\\'\"[]{sd","0":"asda"}]', $this->_oSubj->jsonEncode([". ;", 'asdasd', ['asd' => "as\n\t\\d\a\'\"[]{sd", 'asda']]));
     }
 
     public function testStripTags()
     {
-        $this->assertEquals('without styling definition.', $this->_oSubj->strip_tags('<div>without</div> <style type="text/css">p {color:blue;}</style>styling definition.'));
-        $this->assertEquals('with <style type="text/css">p {color:blue;}</style>styling definition.', $this->_oSubj->strip_tags('<div>with</div> <style type="text/css">p {color:blue;}</style>styling definition.', '<style>'));
+        $this->assertSame('without styling definition.', $this->_oSubj->strip_tags('<div>without</div> <style type="text/css">p {color:blue;}</style>styling definition.'));
+        $this->assertSame('with <style type="text/css">p {color:blue;}</style>styling definition.', $this->_oSubj->strip_tags('<div>with</div> <style type="text/css">p {color:blue;}</style>styling definition.', '<style>'));
     }
 }

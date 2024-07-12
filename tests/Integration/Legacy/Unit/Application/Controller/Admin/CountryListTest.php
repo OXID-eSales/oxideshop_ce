@@ -29,7 +29,7 @@ final class CountryListTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Country_List');
             $oView->deleteEntry();
         } catch (Exception $exception) {
-            $this->assertEquals("delete", $exception->getMessage(), "Error in Country_List::DeleteEntry()");
+            $this->assertSame("delete", $exception->getMessage(), "Error in Country_List::DeleteEntry()");
 
             return;
         }
@@ -44,8 +44,8 @@ final class CountryListTest extends \PHPUnit\Framework\TestCase
     {
         $view = oxNew('Country_List');
 
-        $this->assertEquals(['oxcountry' => ['oxactive' => 'asc', 'oxtitle' => 'asc']], $view->getListSorting());
-        $this->assertEquals('country_list', $view->render());
+        $this->assertSame(['oxcountry' => ['oxactive' => 'asc', 'oxtitle' => 'asc']], $view->getListSorting());
+        $this->assertSame('country_list', $view->render());
     }
 
     /**
@@ -67,8 +67,8 @@ final class CountryListTest extends \PHPUnit\Framework\TestCase
             $firstInactiveTitle = $this->getTitleIfUnset($firstInactiveTitle, $country, !$isCountryActive);
         }
 
-        $this->assertEquals('Deutschland', $firstActiveTitle);
-        $this->assertEquals('Afghanistan', $firstInactiveTitle);
+        $this->assertSame('Deutschland', $firstActiveTitle);
+        $this->assertSame('Afghanistan', $firstInactiveTitle);
     }
 
     /**

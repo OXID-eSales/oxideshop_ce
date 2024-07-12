@@ -49,7 +49,7 @@ class DeliverySetRDFaTest extends \PHPUnit\Framework\TestCase
             'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?',
             [$sTestID, 'rdfadeliveryset']
         );
-        $this->assertFalse(empty($iExists));
+        $this->assertNotEmpty($iExists);
 
         $oView = oxNew('DeliverySet_RDFa');
         $oView->save();
@@ -58,7 +58,7 @@ class DeliverySetRDFaTest extends \PHPUnit\Framework\TestCase
             'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?',
             [$sTestID, 'rdfadeliveryset']
         );
-        $this->assertTrue(empty($iExists));
+        $this->assertEmpty($iExists);
     }
 
     /**
@@ -97,12 +97,12 @@ class DeliverySetRDFaTest extends \PHPUnit\Framework\TestCase
         $aAssignedRDFaDeliveries = ['DeliveryModeOwnFleet'];
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetRdfa::class, ['getAssignedRDFaDeliveries']);
-        $oView->expects($this->once())->method('getAssignedRDFaDeliveries')->will($this->returnValue($aAssignedRDFaDeliveries));
+        $oView->expects($this->once())->method('getAssignedRDFaDeliveries')->willReturn($aAssignedRDFaDeliveries);
         $aCurrResp = $oView->getAllRDFaDeliveries();
 
         $this->assertTrue(is_array($aCurrResp), 'Array should be returned');
-        $this->assertTrue(count($aCurrResp) > 0, 'Empty array returned');
-        $this->assertTrue(current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass');
+        $this->assertGreaterThan(0, count($aCurrResp), 'Empty array returned');
+        $this->assertInstanceOf(\stdClass::class, current($aCurrResp), 'Array elements should be of type stdClass');
         foreach ($aCurrResp as $oItem) {
             foreach ($aAssignedRDFaDeliveries as $sAssignedName) {
                 if (strcasecmp($oItem->name, $sAssignedName) === 0) {

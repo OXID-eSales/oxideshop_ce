@@ -33,7 +33,7 @@ class PriceAlarmListTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('PriceAlarm_List');
-        $this->assertEquals($sSql, $oView->buildSelectString(new stdClass()));
+        $this->assertSame($sSql, $oView->buildSelectString(new stdClass()));
     }
 
     /**
@@ -42,7 +42,7 @@ class PriceAlarmListTest extends \PHPUnit\Framework\TestCase
     public function testRender()
     {
         $oView = oxNew('PriceAlarm_List');
-        $this->assertEquals('pricealarm_list', $oView->render());
+        $this->assertSame('pricealarm_list', $oView->render());
     }
 
     /**
@@ -57,11 +57,11 @@ class PriceAlarmListTest extends \PHPUnit\Framework\TestCase
         $sArtViewName = $tableViewNameGenerator->getViewName("oxarticles");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, ["authorize"]);
-        $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
+        $oView->method('authorize')->willReturn(true);
         $oView->init();
 
         $queryWhereParts = $oView->buildWhere();
-        $this->assertEquals('%15%', $queryWhereParts[$sViewName . '.oxprice']);
-        $this->assertEquals('%15%', $queryWhereParts[$sArtViewName . '.oxprice']);
+        $this->assertSame('%15%', $queryWhereParts[$sViewName . '.oxprice']);
+        $this->assertSame('%15%', $queryWhereParts[$sArtViewName . '.oxprice']);
     }
 }

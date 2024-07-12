@@ -20,6 +20,6 @@ class AdminPricealarmTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Admin_Pricealarm');
-        $this->assertEquals('admin_pricealarm', $oView->render());
+        $this->assertSame('admin_pricealarm', $oView->render());
     }
 }

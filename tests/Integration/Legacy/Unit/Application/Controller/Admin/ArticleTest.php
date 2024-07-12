@@ -20,6 +20,6 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Article');
-        $this->assertEquals('article', $oView->render());
+        $this->assertSame('article', $oView->render());
     }
 }

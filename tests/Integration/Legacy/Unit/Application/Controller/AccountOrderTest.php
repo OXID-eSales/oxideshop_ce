@@ -33,7 +33,7 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
     public function testGetOrderArticleListEmptyOrderList()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getOrderList"]);
-        $oView->expects($this->any())->method('getOrderList')->will($this->returnValue(false));
+        $oView->method('getOrderList')->willReturn(false);
         $this->assertFalse($oView->getOrderArticleList());
     }
 
@@ -45,11 +45,11 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction('oxarticlelist', 'loadOrderArticles', '{ return "testOrderArticles"; }');
 
         $oOrderList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, ["count"]);
-        $oOrderList->expects($this->any())->method('count')->will($this->returnValue(1));
+        $oOrderList->method('count')->willReturn(1);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getOrderList"]);
-        $oView->expects($this->any())->method('getOrderList')->will($this->returnValue($oOrderList));
-        $this->assertTrue($oView->getOrderArticleList() instanceof ArticleList);
+        $oView->method('getOrderList')->willReturn($oOrderList);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\ArticleList::class, $oView->getOrderArticleList());
     }
 
     /**
@@ -58,8 +58,8 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
     public function testGetOrderListNoSessionUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals(0, count($oView->getOrderList()));
+        $oView->method('getUser')->willReturn(false);
+        $this->assertCount(0, $oView->getOrderList());
     }
 
     /**
@@ -68,12 +68,12 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
     public function testGetOrderList()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ["getOrders", "getOrderCount"]);
-        $oUser->expects($this->once())->method('getOrders')->will($this->returnValue("testOrders"));
-        $oUser->expects($this->once())->method('getOrderCount')->will($this->returnValue(1));
+        $oUser->expects($this->once())->method('getOrders')->willReturn("testOrders");
+        $oUser->expects($this->once())->method('getOrderCount')->willReturn(1);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals("testOrders", $oView->getOrderList());
+        $oView->method('getUser')->willReturn($oUser);
+        $this->assertSame("testOrders", $oView->getOrderList());
     }
 
     /**
@@ -82,8 +82,8 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
     public function testRenderNoUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login', $oView->render());
+        $oView->method('getUser')->willReturn(false);
+        $this->assertSame('page/account/login', $oView->render());
     }
 
     /**
@@ -95,8 +95,8 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, ["getUser"]);
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/order', $oView->render());
+        $oView->method('getUser')->willReturn($oUser);
+        $this->assertSame('page/account/order', $oView->render());
     }
 
     /**
@@ -106,6 +106,6 @@ class AccountOrderTest extends \PHPUnit\Framework\TestCase
     {
         $oAccOrder = oxNew('Account_Order');
 
-        $this->assertEquals(2, count($oAccOrder->getBreadCrumb()));
+        $this->assertCount(2, $oAccOrder->getBreadCrumb());
     }
 }

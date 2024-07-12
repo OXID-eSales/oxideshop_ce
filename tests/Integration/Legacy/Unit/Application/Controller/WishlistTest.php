@@ -14,6 +14,7 @@ use \oxRegistry;
 class WishlistTest extends \PHPUnit\Framework\TestCase
 {
 
+    public $_oUser;
     /**
      * Initialize the fixture.
      */
@@ -53,7 +54,7 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $oWishUser = $oWishList->getWishUser();
 
         $this->assertEquals($this->_oUser->getId(), $oWishUser->getId());
-        $this->assertEquals('_testId', oxRegistry::getSession()->getVariable('wishid'));
+        $this->assertSame('_testId', oxRegistry::getSession()->getVariable('wishid'));
     }
 
     /*
@@ -73,9 +74,9 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $myDB->Execute($sQ);
 
         $oList = $oWishList->getWishList();
-        $this->assertEquals(1, count($oList));
+        $this->assertCount(1, $oList);
         $oArticle = array_pop($oList);
-        $this->assertEquals('1126', $oArticle->getId());
+        $this->assertSame('1126', $oArticle->getId());
     }
 
 
@@ -119,8 +120,8 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $oWishList->searchForWishList();
         $oUsersList = $oWishList->getNonPublicVar('_oWishListUsers');
         $oUser = $oUsersList->current();
-        $this->assertEquals('_testId', $oUser->getId());
-        $this->assertEquals('testUserName', $oWishList->getNonPublicVar('_sSearchParam'));
+        $this->assertSame('_testId', $oUser->getId());
+        $this->assertSame('testUserName', $oWishList->getNonPublicVar('_sSearchParam'));
     }
 
     /*
@@ -131,7 +132,7 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $oWishList = $this->getProxyClass("Wishlist");
 
         $oWishList->setNonPublicVar('_oWishListUsers', 'testValue');
-        $this->assertEquals('testValue', $oWishList->getWishListUsers());
+        $this->assertSame('testValue', $oWishList->getWishListUsers());
     }
 
     /*
@@ -142,7 +143,7 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $oWishList = $this->getProxyClass("Wishlist");
 
         $oWishList->setNonPublicVar('_sSearchParam', 'testValue');
-        $this->assertEquals('testValue', $oWishList->getWishListSearchParam());
+        $this->assertSame('testValue', $oWishList->getWishListSearchParam());
     }
 
     /*
@@ -152,7 +153,7 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
     {
         $oWishList = $this->getProxyClass("Wishlist");
 
-        $this->assertEquals('page/wishlist/wishlist', $oWishList->render());
+        $this->assertSame('page/wishlist/wishlist', $oWishList->render());
     }
 
     /**
@@ -182,9 +183,9 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
         $oUser->oxuser__oxlname = new oxField('lName');
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WishListController::class, ['getWishUser']);
-        $oView->expects($this->any())->method('getWishUser')->will($this->returnValue($oUser));
+        $oView->method('getWishUser')->willReturn($oUser);
 
-        $this->assertEquals(oxRegistry::getLang()->translateString('GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false) . ' fName lName', $oView->getTitle());
+        $this->assertSame(oxRegistry::getLang()->translateString('GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false) . ' fName lName', $oView->getTitle());
     }
 
     /**
@@ -193,7 +194,7 @@ class WishlistTest extends \PHPUnit\Framework\TestCase
     public function testGetTitleWithoutUser()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WishListController::class, ['getWishUser']);
-        $oView->expects($this->any())->method('getWishUser')->will($this->returnValue(null));
+        $oView->method('getWishUser')->willReturn(null);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }

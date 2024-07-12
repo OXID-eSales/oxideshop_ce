@@ -48,7 +48,7 @@ class CountryTest extends \PHPUnit\Framework\TestCase
     {
         $oObj = oxNew('oxCountry');
         $oObj->load($this->oObj->getId());
-        $this->assertEquals('oxCountryTestDE', $oObj->oxcountry__oxtitle->value);
+        $this->assertSame('oxCountryTestDE', $oObj->oxcountry__oxtitle->value);
     }
 
     // for second language
@@ -57,7 +57,7 @@ class CountryTest extends \PHPUnit\Framework\TestCase
         $oObj = oxNew('oxCountry');
         //$this->getConfig()->setLanguage( 1 );
         $oObj->loadInLang(1, $this->oObj->getId());
-        $this->assertEquals('oxCountryTestENG', $oObj->oxcountry__oxtitle->value);
+        $this->assertSame('oxCountryTestENG', $oObj->oxcountry__oxtitle->value);
     }
 
     /**
@@ -104,7 +104,7 @@ class CountryTest extends \PHPUnit\Framework\TestCase
         $oSubj->load('8f241f11095649d18.02676059');
 
         $aStates = $oSubj->getStates();
-        $this->assertEquals(13, count($aStates));
+        $this->assertCount(13, $aStates);
     }
 
     /**
@@ -119,9 +119,9 @@ class CountryTest extends \PHPUnit\Framework\TestCase
 
         $aStates = $oSubj->getStates();
         $aKeys = $aStates->arrayKeys();
-        $this->assertEquals('AL', $aKeys[0]);
-        $this->assertEquals('AA', $aKeys[6]);
-        $this->assertEquals('WY', $aKeys[61]);
+        $this->assertSame('AL', $aKeys[0]);
+        $this->assertSame('AA', $aKeys[6]);
+        $this->assertSame('WY', $aKeys[61]);
     }
 
 
@@ -136,7 +136,7 @@ class CountryTest extends \PHPUnit\Framework\TestCase
         $oSubj->load('8f241f11095649d18.02676059');
 
         $aStates = $oSubj->getStates();
-        $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
+        $this->assertSame('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
     }
 
     /**
@@ -147,16 +147,14 @@ class CountryTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByCode()
     {
         $oSubj = oxNew('oxCountry');
-        $this->assertEquals('a7c40f631fc920687.20179984', $oSubj->getIdByCode('DE'));
+        $this->assertSame('a7c40f631fc920687.20179984', $oSubj->getIdByCode('DE'));
     }
 
-    public function providerGetVatIdentificationNumberPrefix()
+    public function providerGetVatIdentificationNumberPrefix(): \Iterator
     {
-        return [
-            ['a7c40f631fc920687.20179984', 'DE'],
-            // Exceptional country
-            ['a7c40f633114e8fc6.25257477', 'EL'],
-        ];
+        yield ['a7c40f631fc920687.20179984', 'DE'];
+        // Exceptional country
+        yield ['a7c40f633114e8fc6.25257477', 'EL'];
     }
 
     /**

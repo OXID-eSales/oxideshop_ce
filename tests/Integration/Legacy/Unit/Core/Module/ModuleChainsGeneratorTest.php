@@ -29,7 +29,7 @@ class ModuleChainsGeneratorTest extends \PHPUnit\Framework\TestCase
 
         $actualClassName = $moduleChainsGeneratorMock->createClassChain('content');
 
-        $this->assertEquals('content', $actualClassName);
+        $this->assertSame('content', $actualClassName);
         $this->assertLoggedException(SystemComponentException::class);
     }
 

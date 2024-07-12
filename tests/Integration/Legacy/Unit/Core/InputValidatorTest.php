@@ -49,13 +49,12 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->_validator->validateBasketAmount('1.6'), 1.6);
     }
 
-    public function providerNotAllowedArticleAmounts()
+    public function providerNotAllowedArticleAmounts(): \Iterator
     {
-        return [
-            [-1],
-            ['Alpha'], //FS#1758
-            ['0.000,0']
-        ];
+        yield [-1];
+        yield ['Alpha'];
+        //FS#1758
+        yield ['0.000,0'];
     }
 
 /**
@@ -82,13 +81,11 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($validator->validatePaymentInputData('oxiddebitnote', $dynvalue));
     }
 
-    public function lsblz()
+    public function lsblz(): \Iterator
     {
-        return [
-            ['12345678'],
-            ['12345'],
-            ['123456'],
-        ];
+        yield ['12345678'];
+        yield ['12345'];
+        yield ['123456'];
     }
 
     /**
@@ -129,20 +126,20 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $validator = oxNew(InputValidator::class);
         $iErr = -4;
-        $this->assertEquals($iErr, $validator->validatePaymentInputData('oxiddebitnote', $value));
+        $this->assertSame($iErr, $validator->validatePaymentInputData('oxiddebitnote', $value));
     }
 
     public function testAddValidationError()
     {
         $validator = oxNew(InputValidator::class);
-        $this->assertEquals([], $validator->getFieldValidationErrors());
+        $this->assertSame([], $validator->getFieldValidationErrors());
         $this->assertNull($validator->getFirstValidationError());
 
         $validator->addValidationError("userid", "err");
         $validator->addValidationError("fieldname", "err");
         $validator->addValidationError("error", "err");
 
-        $this->assertEquals(
+        $this->assertSame(
             [
                 "userid" => ["err"], 
                 "fieldname" => ["err"], 
@@ -150,7 +147,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             $validator->getFieldValidationErrors()
         );
-        $this->assertEquals("err", $validator->getFirstValidationError());
+        $this->assertSame("err", $validator->getFirstValidationError());
     }
 
     /**
@@ -166,16 +163,14 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $validator->checkVatId($user, $valuesFromForm);
     }
 
-    public function formValuesDataProviderWithMissingFields()
+    public function formValuesDataProviderWithMissingFields(): \Iterator
     {
-        return [
-            [[]],
-            [['oxuser__oxustid' => 1]],
-            [['oxuser__oxustid' => 1, 'oxuser__oxcountryid' => 1]],
-            [['oxuser__oxcountryid' => 1]],
-            [['oxuser__oxcountryid' => 1, 'oxuser__oxcompany' => 1]],
-            [['oxuser__oxcompany' => 1, 'oxuser__oxustid' => 1]]
-        ];
+        yield [[]];
+        yield [['oxuser__oxustid' => 1]];
+        yield [['oxuser__oxustid' => 1, 'oxuser__oxcountryid' => 1]];
+        yield [['oxuser__oxcountryid' => 1]];
+        yield [['oxuser__oxcountryid' => 1, 'oxuser__oxcompany' => 1]];
+        yield [['oxuser__oxcompany' => 1, 'oxuser__oxustid' => 1]];
     }
 
     public function testCheckVatIdWithMissingParametersForCheckCountryMissingError()
@@ -198,7 +193,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $user = oxNew("oxUser");
 
         $validator = $this->getMock(InputValidator::class, ['getCompanyVatInValidator']);
-        $validator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(oxNew('oxCountry'))));
+        $validator->method('getCompanyVatInValidator')->willReturn(new oxCompanyVatInValidator(oxNew('oxCountry')));
 
         $validator->checkVatId(
             $user,
@@ -215,7 +210,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $user = oxNew("oxUser");
 
         $validator = $this->getMock(InputValidator::class, ['getCompanyVatInValidator']);
-        $validator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue(new oxCompanyVatInValidator(oxNew('oxCountry'))));
+        $validator->method('getCompanyVatInValidator')->willReturn(new oxCompanyVatInValidator(oxNew('oxCountry')));
 
         $validator->checkVatId(
             $user, 
@@ -256,7 +251,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
             ["oxaddress__oxcountryid" => "yyy"]
         );
 
-        $this->assertTrue($validator->getFirstValidationError() instanceof UserException, "error in oxinputvalidator::checkCountries()");
+        $this->assertInstanceOf(\OxidEsales\Eshop\Core\Exception\UserException::class, $validator->getFirstValidationError(), "error in oxinputvalidator::checkCountries()");
     }
 
     public function testCheckCountriesAddsCorrectKeyForValidationError()
@@ -273,8 +268,9 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $fieldValidationErrors = $validator->getFieldValidationErrors();
 
-        $this->assertTrue(
-            array_key_exists('oxuser__oxcountryid', $fieldValidationErrors),
+        $this->assertArrayHasKey(
+            'oxuser__oxcountryid',
+            $fieldValidationErrors,
             'Correct key must be set for the country validation error'
         );
     }
@@ -332,7 +328,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
     public function testGetPasswordLengthDefaultValue()
     {
         $oViewConf = oxNew(InputValidator::class);
-        $this->assertEquals(6, $oViewConf->getPasswordLength());
+        $this->assertSame(6, $oViewConf->getPasswordLength());
     }
 
     public function testGetPasswordLengthFromConfig()
@@ -340,7 +336,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $oViewConf = oxNew(InputValidator::class);
 
         $this->getConfig()->setConfigParam("iPasswordLength", 66);
-        $this->assertEquals(66, $oViewConf->getPasswordLength());
+        $this->assertSame(66, $oViewConf->getPasswordLength());
     }
 
     public function testCheckRequiredFieldsAllFieldsAreFine()
@@ -412,30 +408,28 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $validator->checkPassword(new oxuser(), '', '');
     }
 
-    public function passwordInputChecksProvider()
+    public function passwordInputChecksProvider(): \Iterator
     {
-        return [
-            [
-                '',
-                '',
-                true,
-                InputException::class,
-                'ERROR_MESSAGE_INPUT_EMPTYPASS'
-            ],
-            [
-                'xxx',
-                '',
-                true,
-                InputException::class,
-                'ERROR_MESSAGE_PASSWORD_TOO_SHORT'
-            ],
-            [
-                'xxxxxx',
-                'yyyyyy',
-                false,
-                UserException::class,
-                'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'
-            ],
+        yield [
+            '',
+            '',
+            true,
+            InputException::class,
+            'ERROR_MESSAGE_INPUT_EMPTYPASS'
+        ];
+        yield [
+            'xxx',
+            '',
+            true,
+            InputException::class,
+            'ERROR_MESSAGE_PASSWORD_TOO_SHORT'
+        ];
+        yield [
+            'xxxxxx',
+            'yyyyyy',
+            false,
+            UserException::class,
+            'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'
         ];
     }
     
@@ -460,17 +454,15 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function emailInputChecksProvider()
+    public function emailInputChecksProvider(): \Iterator
     {
-        return [
-            [
-                '',
-                'ERROR_MESSAGE_INPUT_NOTALLFIELDS'
-            ],
-            [
-                'a@aa',
-                'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'
-            ]
+        yield [
+            '',
+            'ERROR_MESSAGE_INPUT_NOTALLFIELDS'
+        ];
+        yield [
+            'a@aa',
+            'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'
         ];
     }
 
@@ -501,7 +493,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $user = $this->getMock(User::class, ["checkIfEmailExists"]);
         $user->setId("testlalaa_");
 
-        $user->expects($this->once())->method('checkIfEmailExists')->will($this->returnValue(true));
+        $user->expects($this->once())->method('checkIfEmailExists')->willReturn(true);
         $user->oxuser__oxusername = new Field("testuser");
 
         $invAdress['oxuser__oxusername'] = $user->oxuser__oxusername->value;
@@ -579,7 +571,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $validator = oxNew(InputValidator::class);
 
-        $this->assertEquals('a@a.a', $validator->checkLogin($user, 'a@a.a', []));
+        $this->assertSame('a@a.a', $validator->checkLogin($user, 'a@a.a', []));
     }
 
     public function testCheckLoginWithUserNameTakenFromAddress()
@@ -591,7 +583,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $validator = oxNew(InputValidator::class);
 
-        $this->assertEquals('a@a.a', $validator->checkLogin($user, null, $invAdress));
+        $this->assertSame('a@a.a', $validator->checkLogin($user, null, $invAdress));
     }
 
     public function testValidatePaymentInputData_SepaBankCodeCorrectSepaAccountNumberCorrect_NoError()
@@ -605,16 +597,13 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should not appear.');
     }
 
-    public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError()
+    public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError(): \Iterator
     {
         $sOldAccountNumberTooShort = "12345678";
         $sOldAccountNumber = $this->getOldAccountNumber();
         $sOldBankCode = $this->getOldBankCode();
-
-        return [
-            [$sOldBankCode, $sOldAccountNumber],
-            [$sOldBankCode, $sOldAccountNumberTooShort]
-        ];
+        yield [$sOldBankCode, $sOldAccountNumber];
+        yield [$sOldBankCode, $sOldAccountNumberTooShort];
     }
 
     /**
@@ -641,15 +630,12 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($this->getBankCodeErrorNo(), $validator->validatePaymentInputData("oxiddebitnote", $dynValue), 'Error should appear as old bank information not allowed.');
     }
 
-    public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumber()
+    public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumber(): \Iterator
     {
         $sOldAccountNumberTooLong = "1234567890123";
         $sOldAccountIncorrectFormat = "ABC1234567";
-
-        return [
-            [$sOldAccountNumberTooLong],
-            [$sOldAccountIncorrectFormat],
-        ];
+        yield [$sOldAccountNumberTooLong];
+        yield [$sOldAccountIncorrectFormat];
     }
 
     /**
@@ -682,7 +668,7 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($iErrorNumber, $oValidationResult, 'Should validate as bank code error.');
     }
 
-    public function providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCode()
+    public function providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCode(): \Iterator
     {
         $sOldBankCodeTooShort = '1234';
         $sOldBankCodeTooLong = '123456789';
@@ -695,32 +681,26 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $sSepaAccountNumber = $this->getSepaAccountNumber();
         $sSepaAccountNumberWrong = 'NX9386011117947';
-
-        return [
-            [$sOldBankCodeTooShort, $sOldAccountNumber],
-            [$sOldBankCodeTooShort, $sOldAccountNumberTooLong],
-            [$sOldBankCodeTooShort, $sOldAccountIncorrectFormat],
-            [$sOldBankCodeTooShort, $sSepaAccountNumber],
-            [$sOldBankCodeTooShort, $sSepaAccountNumberWrong],
-
-            [$sOldBankCodeTooLong, $sOldAccountNumber],
-            [$sOldBankCodeTooLong, $sOldAccountNumberTooLong],
-            [$sOldBankCodeTooLong, $sOldAccountIncorrectFormat],
-            [$sOldBankCodeTooLong, $sSepaAccountNumber],
-            [$sOldBankCodeTooLong, $sSepaAccountNumberWrong],
-
-            [$sOldBankCodeWrongFormat, $sOldAccountNumber],
-            [$sOldBankCodeWrongFormat, $sOldAccountNumberTooLong],
-            [$sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat],
-            [$sOldBankCodeWrongFormat, $sSepaAccountNumber],
-            [$sOldBankCodeWrongFormat, $sSepaAccountNumberWrong],
-
-            [$sSepaBankCodeWrong, $sOldAccountNumber],
-            [$sSepaBankCodeWrong, $sOldAccountNumberTooLong],
-            [$sSepaBankCodeWrong, $sOldAccountIncorrectFormat],
-            [$sSepaBankCodeWrong, $sSepaAccountNumber],
-            [$sSepaBankCodeWrong, $sSepaAccountNumberWrong],
-        ];
+        yield [$sOldBankCodeTooShort, $sOldAccountNumber];
+        yield [$sOldBankCodeTooShort, $sOldAccountNumberTooLong];
+        yield [$sOldBankCodeTooShort, $sOldAccountIncorrectFormat];
+        yield [$sOldBankCodeTooShort, $sSepaAccountNumber];
+        yield [$sOldBankCodeTooShort, $sSepaAccountNumberWrong];
+        yield [$sOldBankCodeTooLong, $sOldAccountNumber];
+        yield [$sOldBankCodeTooLong, $sOldAccountNumberTooLong];
+        yield [$sOldBankCodeTooLong, $sOldAccountIncorrectFormat];
+        yield [$sOldBankCodeTooLong, $sSepaAccountNumber];
+        yield [$sOldBankCodeTooLong, $sSepaAccountNumberWrong];
+        yield [$sOldBankCodeWrongFormat, $sOldAccountNumber];
+        yield [$sOldBankCodeWrongFormat, $sOldAccountNumberTooLong];
+        yield [$sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat];
+        yield [$sOldBankCodeWrongFormat, $sSepaAccountNumber];
+        yield [$sOldBankCodeWrongFormat, $sSepaAccountNumberWrong];
+        yield [$sSepaBankCodeWrong, $sOldAccountNumber];
+        yield [$sSepaBankCodeWrong, $sOldAccountNumberTooLong];
+        yield [$sSepaBankCodeWrong, $sOldAccountIncorrectFormat];
+        yield [$sSepaBankCodeWrong, $sSepaAccountNumber];
+        yield [$sSepaBankCodeWrong, $sSepaAccountNumberWrong];
     }
 
     /**
@@ -737,19 +717,16 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.');
     }
 
-    public function providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber()
+    public function providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber(): \Iterator
     {
         $sOldBankCodeTooShort = '1234';
         $sOldAccountNumberTooLong = "123456789123456789";
         $sOldAccountIncorrectFormat = "ABC1234567";
         $sSepaAccountNumberIncorrect = 'NX9386011117947';
-
-        return [
-            [$sOldBankCodeTooShort],
-            [$sOldAccountNumberTooLong],
-            [$sOldAccountIncorrectFormat],
-            [$sSepaAccountNumberIncorrect]
-        ];
+        yield [$sOldBankCodeTooShort];
+        yield [$sOldAccountNumberTooLong];
+        yield [$sOldAccountIncorrectFormat];
+        yield [$sSepaAccountNumberIncorrect];
     }
 
     /**
@@ -851,13 +828,13 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
 
         $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
-        $this->assertTrue($oVatInValidator instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInValidator);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\CompanyVatInValidator::class, $oVatInValidator);
         $aCheckers = $oVatInValidator->getCheckers();
 
-        $this->assertSame(2, count($aCheckers));
+        $this->assertCount(2, $aCheckers);
 
-        $this->assertTrue($aCheckers[0] instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInCountryChecker);
-        $this->assertTrue($aCheckers[1] instanceof \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\CompanyVatInCountryChecker::class, $aCheckers[0]);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\OnlineVatIdCheck::class, $aCheckers[1]);
     }
 
     public function testGetCompanyVatInValidator_DefaultTurnedOffOnline()
@@ -867,10 +844,10 @@ class InputValidatorTest extends \PHPUnit\Framework\TestCase
         $oInputValidator = oxNew(InputValidator::class);
         $oVatInValidator = $oInputValidator->getCompanyVatInValidator(oxNew('oxCountry'));
 
-        $this->assertTrue($oVatInValidator instanceof \OxidEsales\EshopCommunity\Core\CompanyVatInValidator);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Core\CompanyVatInValidator::class, $oVatInValidator);
 
         $aCheckers = $oVatInValidator->getCheckers();
-        $this->assertSame(1, count($aCheckers));
-        $this->assertFalse($aCheckers[0] instanceof \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck);
+        $this->assertCount(1, $aCheckers);
+        $this->assertNotInstanceOf(\OxidEsales\EshopCommunity\Core\OnlineVatIdCheck::class, $aCheckers[0]);
     }
 }

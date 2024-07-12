@@ -52,11 +52,11 @@ class ArticleOverviewTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals('article_overview', $sTplName);
+        $this->assertSame('article_overview', $sTplName);
     }
 
     /**
@@ -74,10 +74,10 @@ class ArticleOverviewTest extends \PHPUnit\Framework\TestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Article::class, $aViewData["edit"]);
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals('article_overview', $sTplName);
+        $this->assertSame('article_overview', $sTplName);
     }
 }

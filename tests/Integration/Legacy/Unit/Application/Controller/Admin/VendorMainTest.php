@@ -27,10 +27,10 @@ class VendorMainTest extends \PHPUnit\Framework\TestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMain::class, ["createCategoryTree"]);
         $oView->expects($this->once())->method('createCategoryTree');
-        $this->assertEquals('vendor_main', $oView->render());
+        $this->assertSame('vendor_main', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof vendor);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\Vendor::class, $aViewData['edit']);
     }
 
     /**
@@ -42,11 +42,11 @@ class VendorMainTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Vendor_Main');
-        $this->assertEquals('vendor_main', $oView->render());
+        $this->assertSame('vendor_main', $oView->render());
 
         $aViewData = $oView->getViewData();
-        $this->assertFalse(isset($aViewData['edit']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayNotHasKey('edit', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 
     /**
@@ -66,7 +66,7 @@ class VendorMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Vendor_Main');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Main::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Vendor_Main::save()");
 
             return;
         }
@@ -91,7 +91,7 @@ class VendorMainTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Vendor_Main');
             $oView->saveinnlang();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Main::saveinnlang()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Vendor_Main::saveinnlang()");
 
             return;
         }

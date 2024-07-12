@@ -26,11 +26,11 @@ class DeliverySetPaymentTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Payment');
-        $this->assertEquals('deliveryset_payment', $oView->render());
+        $this->assertSame('deliveryset_payment', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue(isset($aViewData['readonly']));
-        $this->assertTrue($aViewData['edit'] instanceof deliveryset);
+        $this->assertArrayHasKey('edit', $aViewData);
+        $this->assertArrayHasKey('readonly', $aViewData);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\DeliverySet::class, $aViewData['edit']);
     }
 
     /**
@@ -42,9 +42,9 @@ class DeliverySetPaymentTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Payment');
-        $this->assertEquals('deliveryset_payment', $oView->render());
+        $this->assertSame('deliveryset_payment', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData['oxid']));
-        $this->assertEquals("-1", $aViewData['oxid']);
+        $this->assertArrayHasKey('oxid', $aViewData);
+        $this->assertSame("-1", $aViewData['oxid']);
     }
 }

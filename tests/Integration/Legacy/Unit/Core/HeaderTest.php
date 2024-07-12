@@ -20,7 +20,7 @@ class HeaderTest extends \PHPUnit\Framework\TestCase
     public function testGetHeader_default()
     {
         $oHeader = oxNew('oxHeader');
-        $this->assertEquals([], $oHeader->getHeader(), 'Default header should be empty as nothing is set.');
+        $this->assertSame([], $oHeader->getHeader(), 'Default header should be empty as nothing is set.');
     }
 
     /**
@@ -31,7 +31,7 @@ class HeaderTest extends \PHPUnit\Framework\TestCase
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header");
-        $this->assertEquals(['Some header
+        $this->assertSame(['Some header
 '], $oHeader->getHeader(), 'Set header check.');
     }
 
@@ -43,16 +43,19 @@ class HeaderTest extends \PHPUnit\Framework\TestCase
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setNonCacheable();
-        $this->assertEquals(['Cache-Control: no-cache;
+        $this->assertSame(['Cache-Control: no-cache;
 '], $oHeader->getHeader(), 'Cache header was NOT formated correctly.');
     }
 
     /**
      * @return array
      */
-    public function providerSetGetHeader_withNewLine_newLineRemoved()
+    public function providerSetGetHeader_withNewLine_newLineRemoved(): \Iterator
     {
-        return [["\r"], ["\n"], ["\r\n"], ["\n\r"]];
+        yield ["\r"];
+        yield ["\n"];
+        yield ["\r\n"];
+        yield ["\n\r"];
     }
 
     /**
@@ -67,7 +70,7 @@ class HeaderTest extends \PHPUnit\Framework\TestCase
     {
         $oHeader = oxNew('oxHeader');
         $oHeader->setHeader("Some header" . $sNewLine . "2");
-        $this->assertEquals(['Some header2
+        $this->assertSame(['Some header2
 '], $oHeader->getHeader(), 'Set header check.');
     }
 }

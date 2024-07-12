@@ -24,7 +24,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetClassNameByIdFromShop()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('OxidEsales\EshopCommunity\Application\SomeOtherController', $resolver->getClassNameById('bbb'));
+        $this->assertSame('OxidEsales\EshopCommunity\Application\SomeOtherController', $resolver->getClassNameById('bbb'));
     }
 
     /**
@@ -33,7 +33,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetClassNameByIdFromModule()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('Vendor2\OtherTestModule\SomeDifferentController', $resolver->getClassNameById('eee'));
+        $this->assertSame('Vendor2\OtherTestModule\SomeDifferentController', $resolver->getClassNameById('eee'));
     }
 
     /**
@@ -51,7 +51,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetClassNameByIdNotTypeSensitive()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('OxidEsales\EshopCommunity\Application\SomeDifferentController', $resolver->getClassNameById('ccc'));
+        $this->assertSame('OxidEsales\EshopCommunity\Application\SomeDifferentController', $resolver->getClassNameById('ccc'));
     }
 
     /**
@@ -60,7 +60,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByClassNameFromShop()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('bbb', $resolver->getIdByClassName('OxidEsales\EshopCommunity\Application\SomeOtherController'));
+        $this->assertSame('bbb', $resolver->getIdByClassName('OxidEsales\EshopCommunity\Application\SomeOtherController'));
     }
 
     /**
@@ -69,7 +69,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByClassNameFromModule()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('eee', $resolver->getIdByClassName('Vendor2\OtherTestModule\SomeDifferentController'));
+        $this->assertSame('eee', $resolver->getIdByClassName('Vendor2\OtherTestModule\SomeDifferentController'));
     }
 
     /**
@@ -87,7 +87,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testGetIdByClassNameNotTypeSensitive()
     {
         $resolver = $this->getResolver();
-        $this->assertEquals('eee', $resolver->getIdByClassName(strtolower('Vendor2\OtherTestModule\SomeDifferentController')));
+        $this->assertSame('eee', $resolver->getIdByClassName(strtolower('Vendor2\OtherTestModule\SomeDifferentController')));
     }
 
     /**
@@ -100,7 +100,7 @@ class ControllerClassNameResolverTest extends \PHPUnit\Framework\TestCase
         $map = ['aAa' => 'OxidEsales\EshopCommunity\Application\SomeController', 'bbb' => 'OxidEsales\EshopCommunity\Application\SomeOtherController', 'CCC' => 'OxidEsales\EshopCommunity\Application\SomeDifferentController'];
 
         $mock = $this->getMock(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class, ['getControllerMap'], [], '', false);
-        $mock->expects($this->any())->method('getControllerMap')->will($this->returnValue($map));
+        $mock->method('getControllerMap')->willReturn($map);
 
         return $mock;
     }

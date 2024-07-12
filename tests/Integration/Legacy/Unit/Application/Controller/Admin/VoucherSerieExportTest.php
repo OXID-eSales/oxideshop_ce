@@ -19,7 +19,7 @@ class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
     /**
      * Cleanup
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // cleanup
         $this->cleanUpTable("oxvouchers");
@@ -41,7 +41,7 @@ class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
 
         // ssl
         $oView = oxNew('VoucherSerie_Export');
-        $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
+        $this->assertSame($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
 
         $myConfig->setConfigParam("sAdminSSLURL", null);
         $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
@@ -49,7 +49,7 @@ class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
 
         // non ssl
         $oView = oxNew('VoucherSerie_Export');
-        $this->assertEquals($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
+        $this->assertSame($sUrl . '&amp;cl=voucherserie_export&amp;fnc=download', $oView->getDownloadUrl());
     }
 
     /**
@@ -69,9 +69,9 @@ class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
     public function testGetExportFilePath()
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, ["getExportFileName"]);
-        $oView->expects($this->once())->method('getExportFileName')->will($this->returnValue("testName"));
+        $oView->expects($this->once())->method('getExportFileName')->willReturn("testName");
 
-        $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->getExportFilePath());
+        $this->assertSame($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->getExportFilePath());
     }
 
     /**
@@ -93,11 +93,11 @@ class VoucherSerieExportTest extends \PHPUnit\Framework\TestCase
         $oVoucher->save();
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, ["write", "getVoucherSerie"]);
-        $oView->expects($this->atLeastOnce())->method('getVoucherSerie')->will($this->returnValue($oVoucherSerie));
+        $oView->expects($this->atLeastOnce())->method('getVoucherSerie')->willReturn($oVoucherSerie);
         $oView
             ->method('write')
             ->withConsecutive(['Gutscheine'], ['_testvoucher']);
 
-        $this->assertEquals(1, $oView->exportVouchers(0));
+        $this->assertSame(1, $oView->exportVouchers(0));
     }
 }

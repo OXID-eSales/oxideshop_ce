@@ -37,7 +37,7 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Vendor_Seo');
-        $this->assertEquals('object_seo', $oView->render());
+        $this->assertSame('object_seo', $oView->render());
     }
 
     /**
@@ -47,7 +47,7 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Vendor_Seo');
-        $this->assertEquals("oxvendor", $oView->getType());
+        $this->assertSame("oxvendor", $oView->getType());
     }
 
     /**
@@ -65,7 +65,7 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Vendor_Seo');
             $oView->save();
         } catch (Exception $exception) {
-            $this->assertEquals("save", $exception->getMessage(), "Error in Vendor_Seo::save()");
+            $this->assertSame("save", $exception->getMessage(), "Error in Vendor_Seo::save()");
 
             return;
         }
@@ -79,7 +79,7 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Vendor_Seo');
-        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderVendor);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\SeoEncoderVendor::class, $oView->getEncoder());
     }
 
     /**
@@ -132,12 +132,12 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
         $oVendor->save();
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, ["getVendorUri"]);
-        $oEncoder->expects($this->once())->method('getVendorUri')->will($this->returnValue("VendorUri"));
+        $oEncoder->expects($this->once())->method('getVendorUri')->willReturn("VendorUri");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorSeo::class, ["getEditObjectId", "getEncoder"]);
-        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
-        $this->assertEquals("VendorUri", $oView->getEntryUri());
+        $oView->expects($this->once())->method('getEditObjectId')->willReturn("_test1");
+        $oView->expects($this->once())->method('getEncoder')->willReturn($oEncoder);
+        $this->assertSame("VendorUri", $oView->getEntryUri());
     }
 
     /**
@@ -152,7 +152,7 @@ class VendorSeoTest extends \PHPUnit\Framework\TestCase
         $oVendor->save();
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorSeo::class, ["getEditLang"]);
-        $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
+        $oView->expects($this->once())->method('getEditLang')->willReturn(0);
 
         $this->assertEquals($oVendor->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }

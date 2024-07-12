@@ -34,7 +34,7 @@ class ContentSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Content_Seo');
-        $this->assertEquals('oxcontent', $oView->getType());
+        $this->assertSame('oxcontent', $oView->getType());
     }
 
     /**
@@ -43,7 +43,7 @@ class ContentSeoTest extends \PHPUnit\Framework\TestCase
     public function testGetEncoder()
     {
         $oView = oxNew('Content_Seo');
-        $this->assertTrue($oView->getEncoder() instanceof SeoEncoderContent);
+        $this->assertInstanceOf(\OxidEsales\EshopCommunity\Application\Model\SeoEncoderContent::class, $oView->getEncoder());
     }
 
     /**
@@ -56,12 +56,12 @@ class ContentSeoTest extends \PHPUnit\Framework\TestCase
         $oContent->save();
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, ["getContentUri"]);
-        $oEncoder->expects($this->once())->method('getContentUri')->will($this->returnValue("ContentUri"));
+        $oEncoder->expects($this->once())->method('getContentUri')->willReturn("ContentUri");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentSeo::class, ["getEditObjectId", "getEncoder"]);
-        $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->once())->method('getEncoder')->will($this->returnValue($oEncoder));
-        $this->assertEquals("ContentUri", $oView->getEntryUri());
+        $oView->expects($this->once())->method('getEditObjectId')->willReturn("_test1");
+        $oView->expects($this->once())->method('getEncoder')->willReturn($oEncoder);
+        $this->assertSame("ContentUri", $oView->getEntryUri());
     }
 
     /**
@@ -74,7 +74,7 @@ class ContentSeoTest extends \PHPUnit\Framework\TestCase
         $oContent->save();
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentSeo::class, ["getEditLang"]);
-        $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(0));
+        $oView->expects($this->once())->method('getEditLang')->willReturn(0);
 
         $this->assertEquals($oContent->getBaseStdLink(0, true, false), $oView->getStdUrl("_test1"));
     }
@@ -86,6 +86,6 @@ class ContentSeoTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Content_Seo');
-        $this->assertEquals('object_seo', $oView->render());
+        $this->assertSame('object_seo', $oView->render());
     }
 }

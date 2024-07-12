@@ -30,7 +30,7 @@ class WidgetControlTest extends \PHPUnit\Framework\TestCase
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, ["runOnce", "runLast", "process"], [], '', false);
         $oControl->expects($this->once())->method('runOnce');
         $oControl->expects($this->once())->method('runLast');
-        $oControl->expects($this->once())->method('process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\StartController::class), $this->equalTo("testFnc"), $this->equalTo("testParams"), $this->equalTo("testViewsChain"));
+        $oControl->expects($this->once())->method('process')->with(\OxidEsales\Eshop\Application\Controller\StartController::class, "testFnc", "testParams", "testViewsChain");
         $oControl->start("start", "testFnc", "testParams", "testViewsChain");
     }
 
@@ -40,12 +40,12 @@ class WidgetControlTest extends \PHPUnit\Framework\TestCase
     public function testRunLast()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ["hasActiveViewsChain"]);
-        $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
+        $oConfig->method('hasActiveViewsChain')->willReturn(true);
 
         $oConfig->setActiveView("testView1");
         $oConfig->setActiveView("testView2");
 
-        $this->assertEquals(["testView1", "testView2"], $oConfig->getActiveViewsList());
+        $this->assertSame(["testView1", "testView2"], $oConfig->getActiveViewsList());
 
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, ["getConfig"]);
@@ -55,9 +55,9 @@ class WidgetControlTest extends \PHPUnit\Framework\TestCase
 
         $template = $this->getContainer()->get(TemplateRendererInterface::class);
 
-        $this->assertEquals(["testView1"], $oConfig->getActiveViewsList());
+        $this->assertSame(["testView1"], $oConfig->getActiveViewsList());
         $globals = $template->getTemplateEngine()->getGlobals();
-        $this->assertEquals("testView1", $globals["oView"]);
+        $this->assertSame("testView1", $globals["oView"]);
     }
 
     /**
@@ -69,13 +69,13 @@ class WidgetControlTest extends \PHPUnit\Framework\TestCase
         $oView = $oControl->initializeViewObject("oxwCookieNote", "testFunction", ["testParam" => "testValue"]);
 
         //checking widget object
-        $this->assertEquals("oxwCookieNote", $oView->getClassKey());
-        $this->assertEquals("testFunction", $oView->getFncName());
-        $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
+        $this->assertSame("oxwCookieNote", $oView->getClassKey());
+        $this->assertSame("testFunction", $oView->getFncName());
+        $this->assertSame("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view object
-        $this->assertEquals(1, count(Registry::getConfig()->getActiveViewsList()));
-        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
+        $this->assertCount(1, Registry::getConfig()->getActiveViewsList());
+        $this->assertSame("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
     }
 
     /**
@@ -87,19 +87,19 @@ class WidgetControlTest extends \PHPUnit\Framework\TestCase
         $oView = $oControl->initializeViewObject("oxwCookieNote", "testFunction", ["testParam" => "testValue"], ["account", "oxubase"]);
 
         //checking widget object
-        $this->assertEquals("oxwCookieNote", $oView->getClassKey());
-        $this->assertEquals("testFunction", $oView->getFncName());
-        $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
+        $this->assertSame("oxwCookieNote", $oView->getClassKey());
+        $this->assertSame("testFunction", $oView->getFncName());
+        $this->assertSame("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view objects
         $aActiveViews = Registry::getConfig()->getActiveViewsList();
 
-        $this->assertEquals(3, count($aActiveViews));
-        $this->assertEquals("account", $aActiveViews[0]->getClassKey());
+        $this->assertCount(3, $aActiveViews);
+        $this->assertSame("account", $aActiveViews[0]->getClassKey());
         $this->assertInstanceOf(BaseController::class, $aActiveViews[1]);
-        $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassKey());
+        $this->assertSame("oxwCookieNote", $aActiveViews[2]->getClassKey());
 
-        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
+        $this->assertSame("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
     }
 
     /**

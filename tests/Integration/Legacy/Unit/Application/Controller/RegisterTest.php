@@ -20,8 +20,8 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, ["isConfirmed"]);
-        $oView->expects($this->once())->method('isConfirmed')->will($this->returnValue(true));
-        $this->assertEquals('page/account/register_confirm', $oView->render());
+        $oView->expects($this->once())->method('isConfirmed')->willReturn(true);
+        $this->assertSame('page/account/register_confirm', $oView->render());
     }
 
     /**
@@ -33,8 +33,8 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxUtilsView", "addErrorToDisplay", "{}");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, ["getUpdateId"]);
-        $oView->expects($this->once())->method('getUpdateId')->will($this->returnValue("testUpdateId"));
-        $this->assertEquals('account', $oView->confirmRegistration());
+        $oView->expects($this->once())->method('getUpdateId')->willReturn("testUpdateId");
+        $this->assertSame('account', $oView->confirmRegistration());
     }
 
     /**
@@ -47,8 +47,8 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         oxTestModules::addFunction("oxuser", "save", "{return true;}");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, ["getUpdateId"]);
-        $oView->expects($this->once())->method('getUpdateId')->will($this->returnValue("testUpdateId"));
-        $this->assertEquals('register?confirmstate=1', $oView->confirmRegistration());
+        $oView->expects($this->once())->method('getUpdateId')->willReturn("testUpdateId");
+        $this->assertSame('register?confirmstate=1', $oView->confirmRegistration());
     }
 
     /**
@@ -59,7 +59,7 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         $this->setRequestParameter('uid', "testUid");
 
         $oView = oxNew('register');
-        $this->assertEquals("testUid", $oView->getUpdateId());
+        $this->assertSame("testUid", $oView->getUpdateId());
     }
 
     /**
@@ -81,7 +81,7 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         $oRegister = $this->getProxyClass('register');
         $this->setRequestParameter('newslettererror', 'testError');
 
-        $this->assertEquals('testError', $oRegister->getRegistrationError());
+        $this->assertSame('testError', $oRegister->getRegistrationError());
     }
 
     public function testGetRegistrationStatus()
@@ -89,7 +89,7 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
         $oRegister = $this->getProxyClass('register');
         $this->setRequestParameter('success', 'success');
 
-        $this->assertEquals('success', $oRegister->getRegistrationStatus());
+        $this->assertSame('success', $oRegister->getRegistrationStatus());
     }
 
     /**
@@ -98,7 +98,7 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
     public function testIsFieldRequired()
     {
         $oRegister = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, ['getMustFillFields']);
-        $oRegister->expects($this->any())->method('getMustFillFields')->will($this->returnValue(["testValue1" => 1, "testValue2" => 1]));
+        $oRegister->method('getMustFillFields')->willReturn(["testValue1" => 1, "testValue2" => 1]);
 
         $this->assertTrue($oRegister->isFieldRequired("testValue1"));
         $this->assertFalse($oRegister->isFieldRequired("testValue5"));
@@ -107,24 +107,24 @@ class RegisterTest extends \PHPUnit\Framework\TestCase
     public function testRenderNoRStat()
     {
         $oRegister = oxNew('register');
-        $this->assertEquals('page/account/register', $oRegister->render());
+        $this->assertSame('page/account/register', $oRegister->render());
     }
 
     public function testRenderRStat()
     {
         $oRegister = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, ['getRegistrationStatus', 'getRegistrationError']);
-        $oRegister->expects($this->exactly(2))->method('getRegistrationStatus')->will($this->returnValue('rst'));
-        $oRegister->expects($this->once())->method('getRegistrationError')->will($this->returnValue('rer'));
+        $oRegister->expects($this->exactly(2))->method('getRegistrationStatus')->willReturn('rst');
+        $oRegister->expects($this->once())->method('getRegistrationError')->willReturn('rer');
 
-        $this->assertEquals('page/account/register_success', $oRegister->render());
-        $this->assertEquals('rst', $oRegister->getRegistrationStatus());
-        $this->assertEquals('rer', $oRegister->getRegistrationError());
+        $this->assertSame('page/account/register_success', $oRegister->render());
+        $this->assertSame('rst', $oRegister->getRegistrationStatus());
+        $this->assertSame('rer', $oRegister->getRegistrationError());
     }
 
     public function testGetBreadCrumb()
     {
         $oRegister = oxNew('register');
 
-        $this->assertEquals(1, count($oRegister->getBreadCrumb()));
+        $this->assertCount(1, $oRegister->getBreadCrumb());
     }
 }

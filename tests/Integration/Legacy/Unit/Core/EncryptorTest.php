@@ -12,18 +12,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class EncryptorTest extends \PHPUnit\Framework\TestCase
 {
-    public function providerEncodingAndDecoding()
+    public function providerEncodingAndDecoding(): \Iterator
     {
-        return [
-            // string encrypted with empty key
-            ['testString', '', 'ox_MCcrOiwrDCstNjE4Njs!'],
-            // string encrypted with numeric key
-            ['testString', 1, 'ox_MEkrVCxFDEUtWDFWNlU!'],
-            // string encrypted with not empty key
-            ['testString', 'testKey', 'ox_MAwRFgc/Ng0tHQsUHS8!'],
-            // empty string encrypted with not empty key
-            ['', 'testKey', 'ox_MAwMFw!!'],
-        ];
+        // string encrypted with empty key
+        yield ['testString', '', 'ox_MCcrOiwrDCstNjE4Njs!'];
+        // string encrypted with numeric key
+        yield ['testString', 1, 'ox_MEkrVCxFDEUtWDFWNlU!'];
+        // string encrypted with not empty key
+        yield ['testString', 'testKey', 'ox_MAwRFgc/Ng0tHQsUHS8!'];
+        // empty string encrypted with not empty key
+        yield ['', 'testKey', 'ox_MAwMFw!!'];
     }
 
     /**

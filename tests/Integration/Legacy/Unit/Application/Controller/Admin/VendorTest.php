@@ -20,6 +20,6 @@ class VendorTest extends \PHPUnit\Framework\TestCase
     {
         // testing..
         $oView = oxNew('Vendor');
-        $this->assertEquals('vendor', $oView->render());
+        $this->assertSame('vendor', $oView->render());
     }
 }

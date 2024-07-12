@@ -38,9 +38,9 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
         $oView = oxNew('Navigation');
         $oView->chshp();
 
-        $this->assertEquals("testlistview", $oView->getViewDataElement("listview"));
-        $this->assertEquals("testeditview", $oView->getViewDataElement("editview"));
-        $this->assertEquals("testactedit", $oView->getViewDataElement("actedit"));
+        $this->assertSame("testlistview", $oView->getViewDataElement("listview"));
+        $this->assertSame("testeditview", $oView->getViewDataElement("editview"));
+        $this->assertSame("testactedit", $oView->getViewDataElement("actedit"));
         $this->assertEquals(true, $oView->getViewDataElement("loadbasefrm"));
     }
 
@@ -54,7 +54,7 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = oxNew('Navigation');
-        $this->assertEquals('nav_frame', $oView->render());
+        $this->assertSame('nav_frame', $oView->render());
     }
 
     /**
@@ -76,24 +76,24 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
         $oDom->documentElement->childNodes = 'testNodes';
 
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ["getDomXml", "getListNodes"]);
-        $oNavigation->expects($this->once())->method('getDomXml')->will($this->returnValue($oDom));
-        $oNavigation->expects($this->any())->method('getListNodes')->will($this->returnValue("testNodes"));
+        $oNavigation->expects($this->once())->method('getDomXml')->willReturn($oDom);
+        $oNavigation->method('getListNodes')->willReturn("testNodes");
 
         // testing..
         $oView = $this->getMock(NavigationController::class, ["getNavigation", "doStartUpChecks"]);
-        $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
-        $oView->expects($this->once())->method('doStartUpChecks')->will($this->returnValue("check"));
-        $this->assertEquals($templateName, $oView->render());
+        $oView->expects($this->once())->method('getNavigation')->willReturn($oNavigation);
+        $oView->expects($this->once())->method('doStartUpChecks')->willReturn("check");
+        $this->assertSame($templateName, $oView->render());
 
         // checking vew data
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData["menustructure"]));
-        $this->assertTrue(isset($aViewData["sVersion"]));
-        $this->assertTrue(isset($aViewData["aMessage"]));
-        $this->assertTrue(isset($aViewData["menufavorites"]));
-        $this->assertTrue(isset($aViewData["aFavorites"]));
-        $this->assertTrue(isset($aViewData["menuhistory"]));
-        $this->assertTrue(isset($aViewData["blOpenHistory"]));
+        $this->assertArrayHasKey("menustructure", $aViewData);
+        $this->assertArrayHasKey("sVersion", $aViewData);
+        $this->assertArrayHasKey("aMessage", $aViewData);
+        $this->assertArrayHasKey("menufavorites", $aViewData);
+        $this->assertArrayHasKey("aFavorites", $aViewData);
+        $this->assertArrayHasKey("menuhistory", $aViewData);
+        $this->assertArrayHasKey("blOpenHistory", $aViewData);
     }
 
     /**
@@ -114,24 +114,24 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
         $oDom->documentElement->childNodes = 'testNodes';
 
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, ["getDomXml", "getListNodes"]);
-        $oNavigation->expects($this->once())->method('getDomXml')->will($this->returnValue($oDom));
-        $oNavigation->expects($this->any())->method('getListNodes')->will($this->returnValue("testNodes"));
+        $oNavigation->expects($this->once())->method('getDomXml')->willReturn($oDom);
+        $oNavigation->method('getListNodes')->willReturn("testNodes");
 
         // testing..
         $oView = $this->getMock(NavigationController::class, ["getNavigation", "doStartUpChecks"]);
-        $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
-        $oView->expects($this->never())->method('doStartUpChecks')->will($this->returnValue("check"));
-        $this->assertEquals('home', $oView->render());
+        $oView->expects($this->once())->method('getNavigation')->willReturn($oNavigation);
+        $oView->expects($this->never())->method('doStartUpChecks')->willReturn("check");
+        $this->assertSame('home', $oView->render());
 
         // checking vew data
         $aViewData = $oView->getViewData();
-        $this->assertTrue(isset($aViewData["menustructure"]));
-        $this->assertTrue(isset($aViewData["sVersion"]));
-        $this->assertFalse(isset($aViewData["aMessage"]));
-        $this->assertTrue(isset($aViewData["menufavorites"]));
-        $this->assertTrue(isset($aViewData["aFavorites"]));
-        $this->assertTrue(isset($aViewData["menuhistory"]));
-        $this->assertTrue(isset($aViewData["blOpenHistory"]));
+        $this->assertArrayHasKey("menustructure", $aViewData);
+        $this->assertArrayHasKey("sVersion", $aViewData);
+        $this->assertArrayNotHasKey("aMessage", $aViewData);
+        $this->assertArrayHasKey("menufavorites", $aViewData);
+        $this->assertArrayHasKey("aFavorites", $aViewData);
+        $this->assertArrayHasKey("menuhistory", $aViewData);
+        $this->assertArrayHasKey("blOpenHistory", $aViewData);
         $this->assertNull(oxRegistry::getSession()->getVariable("navReload"));
     }
 
@@ -179,7 +179,7 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
             $oView = oxNew('Navigation');
             $oView->exturl();
         } catch (Exception $exception) {
-            $this->assertEquals("showMessageAndExit", $exception->getMessage(), "Error in Navigation::exturl()");
+            $this->assertSame("showMessageAndExit", $exception->getMessage(), "Error in Navigation::exturl()");
 
             return;
         }
@@ -196,11 +196,11 @@ class NavigationTest extends \PHPUnit\Framework\TestCase
 
         // testing..
         $oView = $this->getMock(NavigationController::class, ["checkVersion"]);
-        $oView->expects($this->once())->method('checkVersion')->will($this->returnValue("versionnotice"));
+        $oView->expects($this->once())->method('checkVersion')->willReturn("versionnotice");
         $aState = $oView->doStartUpChecks();
         $this->assertTrue(is_array($aState));
-        $this->assertTrue(isset($aState['message']));
-        $this->assertTrue(isset($aState['warning']));
+        $this->assertArrayHasKey('message', $aState);
+        $this->assertArrayHasKey('warning', $aState);
     }
 
     public function testCheckVersion(): void

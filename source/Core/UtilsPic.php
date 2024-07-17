@@ -81,7 +81,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         }
         $removed = $this->removeMasterFile(Path::join($masterImagePath, $filename));
 
-        if (!Registry::getConfig()->getConfigParam('sAltImageUrl')) {
+        if (!ContainerFacade::getParameter('oxid_alternative_image_url')) {
             $generatedImagePath = str_replace('/master/', '/generated/', $masterImagePath);
             $files = glob(Path::join($generatedImagePath,'*',$filename));
             if (\is_array($files)) {

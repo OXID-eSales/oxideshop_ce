@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use stdClass;
 use OxidEsales\Eshop\Application\Model\Actions;
 use OxidEsales\Eshop\Core\Registry;
@@ -54,13 +55,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
 
         if ($this->getViewConfig()->isAltImageServerConfigured()) {
-            $config = Registry::getConfig();
-
-            if ($config->getConfigParam('sAltImageUrl')) {
-                $this->_aViewData["imageUrl"] = $config->getConfigParam('sAltImageUrl');
-            } else {
-                $this->_aViewData["imageUrl"] = $config->getConfigParam('sSSLAltImageUrl');
-            }
+            $this->_aViewData["imageUrl"] = ContainerFacade::getParameter('oxid_alternative_image_url');
         }
 
         if (Registry::getRequest()->getRequestEscapedParameter("aoc")) {

@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * class for pictures processing
@@ -256,7 +258,7 @@ class PictureHandler extends Base
     protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null)
     {
         // custom server as image storage?
-        if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile, $blSSL)) {
+        if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile)) {
             return ['path' => false, 'url' => $sAltUrl];
         }
 
@@ -272,42 +274,15 @@ class PictureHandler extends Base
         return ['path' => $sPath, 'url' => str_replace($sDirPrefix, $sUrlPrefix, $sPath)];
     }
 
-    /**
-     * Returns alternative image url
-     *
-     * @param string $sFilePath path to file
-     * @param string $sFile     filename in pictures dir
-     * @param bool   $blSSL     is ssl ?
-     *
-     * @return string
-     */
-    public function getAltImageUrl($sFilePath, $sFile, $blSSL = null)
+    public function getAltImageUrl($filePath, $file)
     {
-        $oConfig = Registry::getConfig();
+        $altUrl = ContainerFacade::getParameter('oxid_alternative_image_url') ?: null;
 
-        $sAltUrl = $oConfig->getConfigParam('sAltImageUrl');
-        if (!$sAltUrl) {
-            $sAltUrl = $oConfig->getConfigParam('sAltImageDir');
+        if ($altUrl && !is_null($file)) {
+            $altUrl = Path::join($altUrl, $filePath, $file);
         }
 
-        if ($sAltUrl) {
-            if ((is_null($blSSL) && $oConfig->isSsl()) || $blSSL) {
-                $sSslAltUrl = $oConfig->getConfigParam('sSSLAltImageUrl');
-                if (!$sSslAltUrl) {
-                    $sSslAltUrl = $oConfig->getConfigParam('sSSLAltImageDir');
-                }
-
-                if ($sSslAltUrl) {
-                    $sAltUrl = $sSslAltUrl;
-                }
-            }
-
-            if (!is_null($sFile)) {
-                $sAltUrl = Registry::getUtils()->checkUrlEndingSlash($sAltUrl) . $sFilePath . $sFile;
-            }
-        }
-
-        return $sAltUrl;
+        return $altUrl;
     }
 
     /**

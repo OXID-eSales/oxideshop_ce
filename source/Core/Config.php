@@ -440,11 +440,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->setConfigParam('iAdminListSize', 9);
         }
 
-        // #1173M  for EE - not all pic are deleted
-        if (is_null($this->getConfigParam('iPicCount'))) {
-            $this->setConfigParam('iPicCount', 12);
-        }
-
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
             $this->setConfigParam('iZoomPicCount', 4);
         }
@@ -1287,7 +1282,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
     {
-        if ($altUrl = Registry::getPictureHandler()->getAltImageUrl('', $file, $ssl)) {
+        if ($altUrl = Registry::getPictureHandler()->getAltImageUrl('', $file)) {
             return $altUrl;
         }
 

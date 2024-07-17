@@ -22,6 +22,7 @@
 - The visibility of time-activated products has changed, products with an undefined end date appear in the shop for an
   unlimited period of time
 - Functionality to extend Symfony DIC for environments and shops
+- Method `getAltImageUrl` of PictureHandler will not use ssl parameter anymore
 
 ### Removed
 

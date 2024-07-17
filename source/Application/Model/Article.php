@@ -2344,81 +2344,74 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getPictureGallery()
     {
-        $myConfig = Registry::getConfig();
-
-        //initialize
-        $blMorePic = false;
-        $aArtPics = [];
-        $aArtIcons = [];
-        $iActPicId = 1;
-        $sActPic = $this->getPictureUrl($iActPicId);
+        $morePic = false;
+        $articlePics = [];
+        $articleIcons = [];
+        $articlePicId = 1;
+        $articlePic = $this->getPictureUrl($articlePicId);
 
         if (Registry::getRequest()->getRequestEscapedParameter('actpicid')) {
-            $iActPicId = Registry::getRequest()->getRequestEscapedParameter('actpicid');
+            $articlePicId = Registry::getRequest()->getRequestEscapedParameter('actpicid');
         }
 
-        $oStr = Str::getStr();
-        $iCntr = 0;
-        $iPicCount = $myConfig->getConfigParam('iPicCount');
-        $blCheckActivePicId = true;
+        $str = Str::getStr();
+        $pictureCounter = 0;
+        $activePicId = true;
+        $maxPicPerProduct = ContainerFacade::getParameter('oxid_max_product_picture_count');
 
-        for ($i = 1; $i <= $iPicCount; $i++) {
-            $sPicVal = $this->getPictureUrl($i);
-            $sIcoVal = $this->getIconUrl($i);
+        for ($i = 1; $i <= $maxPicPerProduct; $i++) {
+            $picture = $this->getPictureUrl($i);
+            $icon = $this->getIconUrl($i);
             if (
-                !$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
-                !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg') &&
-                !$oStr->strstr($sIcoVal, 'nopic.webp') && !$oStr->strstr($sPicVal, 'nopic.webp') &&
-                $sPicVal !== null
+                !$str->strstr($icon, 'nopic_ico.jpg') && !$str->strstr($icon, 'nopic.jpg') &&
+                !$str->strstr($picture, 'nopic_ico.jpg') && !$str->strstr($picture, 'nopic.jpg') &&
+                !$str->strstr($icon, 'nopic.webp') && !$str->strstr($picture, 'nopic.webp') &&
+                $picture !== null
             ) {
-                if ($iCntr) {
-                    $blMorePic = true;
+                if ($pictureCounter) {
+                    $morePic = true;
                 }
-                $aArtIcons[$i] = $sIcoVal;
-                $aArtPics[$i] = $sPicVal;
-                $iCntr++;
+                $articleIcons[$i] = $icon;
+                $articlePics[$i] = $picture;
+                $pictureCounter++;
 
-                if ($iActPicId == $i) {
-                    $sActPic = $sPicVal;
-                    $blCheckActivePicId = false;
+                if ($articlePicId == $i) {
+                    $articlePic = $picture;
+                    $activePicId = false;
                 }
-            } elseif ($blCheckActivePicId && $iActPicId <= $i) {
+            } elseif ($activePicId && $articlePicId <= $i) {
                 // if picture is empty, setting active pic id to next
-                // picture
-                $iActPicId++;
+                $articlePicId++;
             }
         }
 
-        $blZoomPic = false;
-        $aZoomPics = [];
-        $iZoomPicCount = $myConfig->getConfigParam('iPicCount');
+        $zoomPic = false;
+        $zoomPics = [];
 
-        for ($j = 1, $c = 1; $j <= $iZoomPicCount; $j++) {
-            $sVal = $this->getZoomPictureUrl($j);
+        for ($j = 1, $c = 1; $j <= $maxPicPerProduct; $j++) {
+            $zoomPicUrl = $this->getZoomPictureUrl($j);
 
-            if ($sVal && !$oStr->strstr($sVal, 'nopic.jpg')) {
-                $blZoomPic = true;
-                $aZoomPics[$c]['id'] = $c;
-                $aZoomPics[$c]['file'] = $sVal;
+            if ($zoomPicUrl && !$str->strstr($zoomPicUrl, 'nopic.jpg')) {
+                $zoomPic = true;
+                $zoomPics[$c]['id'] = $c;
+                $zoomPics[$c]['file'] = $zoomPicUrl;
                 //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
-                if (!$sVal) {
-                    $aZoomPics[$c]['file'] = "nopic.jpg";
+                if (!$zoomPicUrl) {
+                    $zoomPics[$c]['file'] = "nopic.jpg";
                 }
                 $c++;
             }
         }
 
-        $aPicGallery = [
-            'ActPicID' => $iActPicId,
-            'ActPic'   => $sActPic,
-            'MorePics' => $blMorePic,
-            'Pics'     => $aArtPics,
-            'Icons'    => $aArtIcons,
-            'ZoomPic'  => $blZoomPic,
-            'ZoomPics' => $aZoomPics
+        return [
+            'ActPicID' => $articlePicId,
+            'ActPic'   => $articlePic,
+            'MorePics' => $morePic,
+            'Pics'     => $articlePics,
+            'Icons'    => $articleIcons,
+            'ZoomPic'  => $zoomPic,
+            'ZoomPics' => $zoomPics
         ];
-
-        return $aPicGallery;
     }
 
     /**
@@ -4719,19 +4712,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function deletePics()
     {
-        $myConfig = Registry::getConfig();
-        $oPictureHandler = Registry::getPictureHandler();
+        $pictureHandler = Registry::getPictureHandler();
 
         //deleting custom main icon
-        $oPictureHandler->deleteMainIcon($this);
+        $pictureHandler->deleteMainIcon($this);
 
         //deleting custom thumbnail
-        $oPictureHandler->deleteThumbnail($this);
+        $pictureHandler->deleteThumbnail($this);
 
-        // deleting master image and all generated images
-        $iPicCount = $myConfig->getConfigParam('iPicCount');
-        for ($i = 1; $i <= $iPicCount; $i++) {
-            $oPictureHandler->deleteArticleMasterPicture($this, $i);
+        for ($i = 1; $i <= ContainerFacade::getParameter('oxid_max_product_picture_count'); $i++) {
+            $pictureHandler->deleteArticleMasterPicture($this, $i);
         }
     }
 

@@ -8,6 +8,9 @@ parameters:
     oxid_smtp_debug_mode: false
     oxid_shop_url: 'http://localhost.local/'
     oxid_shop_admin_url: null
+    oxid_alternative_image_url:
+    oxid_shop_logo:
+    oxid_max_product_picture_count: 12
 
 services:
     _defaults:

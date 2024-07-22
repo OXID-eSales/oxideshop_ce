@@ -19,19 +19,19 @@ use PHPUnit\Framework\TestCase;
 class HtmlFilterTest extends TestCase
 {
     #[Test]
-    #[DataProvider('filterNoneProvider')]
-    public function filterNone(string $html): void
+    #[DataProvider('noScriptTagsProvider')]
+    public function filterDoesNotRemoveWhenNoScriptTagsFound(string $html): void
     {
-        $remover = $this->createMock(HtmlRemoverInterface::class);
-        $remover
+        $removerSpy = $this->createMock(HtmlRemoverInterface::class);
+        $removerSpy
             ->expects($this->never())
             ->method('remove');
-        $filter = new HtmlFilter($remover);
+        $filter = new HtmlFilter($removerSpy);
 
         $filter->filter($html);
     }
 
-    public static function filterNoneProvider(): array
+    public static function noScriptTagsProvider(): array
     {
         return [
             ['html' => ''],
@@ -41,22 +41,22 @@ class HtmlFilterTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('filterOneProvider')]
-    public function filterOne(string $html): void
+    #[DataProvider('oneScriptTagProvider')]
+    public function filterRemovesOneScriptTag(string $html): void
     {
-        $remover = $this->createMock(HtmlRemoverInterface::class);
-        $remover
+        $removerSpy = $this->createMock(HtmlRemoverInterface::class);
+        $removerSpy
             ->expects($this->once())
             ->method('remove')
             ->with($this->callback(function (DOMNode $node) {
                 return $node->nodeName == 'script' && $node->textContent == '//content';
             }));
-        $filter = new HtmlFilter($remover);
+        $filter = new HtmlFilter($removerSpy);
 
         $filter->filter($html);
     }
 
-    public static function filterOneProvider(): array
+    public static function oneScriptTagProvider(): array
     {
         return [
             ['html' => '<div><script>//content</script></div>'],
@@ -66,10 +66,10 @@ class HtmlFilterTest extends TestCase
     }
 
     #[Test]
-    public function filterOneClosedTag(): void
+    public function filterRemovesOneClosedScriptTag(): void
     {
-        $remover = $this->createMock(HtmlRemoverInterface::class);
-        $remover
+        $removerSpy = $this->createMock(HtmlRemoverInterface::class);
+        $removerSpy
             ->expects($this->once())
             ->method('remove')
             ->with($this->callback(function (DOMNode $node) {
@@ -78,22 +78,22 @@ class HtmlFilterTest extends TestCase
                     && $node->attributes[0]->nodeValue == 'app.js';
                 return $node->nodeName == 'script' && $isAttributeValid;
             }));
-        $filter = new HtmlFilter($remover);
+        $filter = new HtmlFilter($removerSpy);
 
         $filter->filter('<div><script src="app.js"/></div>');
     }
 
     #[Test]
-    public function filterMore(): void
+    public function filterRemovesManyScriptTags(): void
     {
-        $remover = $this->createMock(HtmlRemoverInterface::class);
-        $remover
+        $removerSpy = $this->createMock(HtmlRemoverInterface::class);
+        $removerSpy
             ->expects($this->exactly(2))
             ->method('remove')
             ->with($this->callback(function (DOMNode $node) {
                 return $node->nodeName == 'script' && $node->textContent == '//content';
             }));
-        $filter = new HtmlFilter($remover);
+        $filter = new HtmlFilter($removerSpy);
 
         $filter->filter('<div><script>//content</script><script>//content</script></div>');
     }

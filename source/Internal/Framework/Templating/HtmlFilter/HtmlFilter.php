@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\HtmlFilter;
 
 use DOMDocument;
+use DOMXPath;
 
 class HtmlFilter implements HtmlFilterInterface
 {
@@ -22,9 +23,8 @@ class HtmlFilter implements HtmlFilterInterface
         $doc = new DOMDocument();
         $doc->loadHTML("<div>$html</div>", LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        $list = $doc->getElementsByTagName('script');
-        for ($i = $list->length - 1; $i >= 0; --$i) {
-            $node = $list->item($i);
+        $xpath = new DOMXPath($doc);
+        foreach ($xpath->query('//script') as $node) {
             $this->htmlRemover->remove($node);
         }
 

@@ -426,9 +426,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $view->setViewData($viewData);
 
         $renderer = $this->getRenderer();
-        // passing current view object to template engine
-        // TODO: remove it! Also in varnish module
-        $renderer->oxobject = $view;
 
         $viewData['oxEngineTemplateId'] = $view->getViewId();
         $viewData = $this->passSessionErrorsToViewData($view, $viewData);

@@ -817,7 +817,12 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function forceSessionStart()
     {
-        return (!Registry::getUtils()->isSearchEngine()) && (((bool) Registry::getConfig()->getConfigParam('blForceSessionStart')) || Registry::getRequest()->getRequestEscapedParameter("su") || $this->_blForceNewSession);
+        return !Registry::getUtils()->isSearchEngine() &&
+            (
+                ContainerFacade::getParameter('oxid_force_session_start') ||
+                Registry::getRequest()->getRequestEscapedParameter('su') ||
+                $this->_blForceNewSession
+            );
     }
 
     /**
@@ -1011,19 +1016,17 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getRequireSessionWithParams()
     {
-        $aCfgArray = Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
-        if (is_array($aCfgArray)) {
-            $aDefault = $this->_aRequireSessionWithParams;
-            foreach ($aCfgArray as $key => $val) {
-                if (!is_array($val) && $val) {
-                    unset($aDefault[$key]);
-                }
-            }
-
-            return array_merge_recursive($aCfgArray, $aDefault);
+        $config = ContainerFacade::getParameter('oxid_session_init_params');
+        $defaults = $this->_aRequireSessionWithParams;
+        if (!$config) {
+            return $defaults;
         }
-
-        return $this->_aRequireSessionWithParams;
+        foreach ($config as $key => $val) {
+            if ($val && !\is_array($val)) {
+                unset($defaults[$key]);
+            }
+        }
+        return array_replace_recursive($defaults, $config);
     }
 
     /**
@@ -1056,7 +1059,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getSessionUseCookies()
     {
-        return $this->isAdmin() || Registry::getConfig()->getConfigParam('blSessionUseCookies');
+        return $this->isAdmin() || ContainerFacade::getParameter('oxid_cookies_session');
     }
 
     /**
@@ -1153,7 +1156,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
     private function isForceSidBlocked(): bool
     {
-        return (bool)Registry::getConfig()->getConfigParam('disallowForceSessionIdInRequest');
+        return ContainerFacade::getParameter('oxid_disallow_force_session_id');
     }
 
     private function canSendSidWithRequest(bool $useForceSid): bool

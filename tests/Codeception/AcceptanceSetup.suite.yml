@@ -15,25 +15,25 @@ modules:
         user: '%DB_USERNAME%'
         password: '%DB_PASSWORD%'
         port: '%DB_PORT%'
-    - \OxidEsales\Codeception\Module\Database:
+    - OxidEsales\Codeception\Module\Database:
         depends: Db
-    - \OxidEsales\Codeception\Module\Oxideshop:
+    - OxidEsales\Codeception\Module\Oxideshop:
         screen_shot_url: '%SCREEN_SHOT_URL%'
         depends:
           - WebDriver
           - Db
-    - \OxidEsales\Codeception\Module\OxideshopAdmin:
+    - OxidEsales\Codeception\Module\OxideshopAdmin:
         screen_shot_url: '%SCREEN_SHOT_URL%'
         depends:
           - WebDriver
-          - \OxidEsales\Codeception\Module\Oxideshop
-    - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
+          - OxidEsales\Codeception\Module\Oxideshop
+    - OxidEsales\Codeception\Module\Translation\TranslationsModule:
         shop_path: '%SHOP_SOURCE_PATH%'
         paths:
           - 'Application/views/%THEME_ID%'
         paths_admin:
           - 'Application/views/admin_twig'
-    - \OxidEsales\Codeception\Module\ShopSetup\SetupEnvironment:
+    - OxidEsales\Codeception\Module\ShopSetup\SetupEnvironment:
         theme_id: '%THEME_ID%'
         db_host: '%DB_HOST%'
         db_port: '%DB_PORT%'
@@ -41,6 +41,6 @@ modules:
         db_user_name: '%DB_USERNAME%'
         db_user_password: '%DB_PASSWORD%'
         depends:
-          - \OxidEsales\Codeception\Module\Database
+          - OxidEsales\Codeception\Module\Database
 step_decorators:
-  - \Codeception\Step\Retry
+  - Codeception\Step\Retry

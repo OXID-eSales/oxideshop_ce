@@ -9,12 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Yaml;
+use UnitEnum;
 
 /**
  * @internal
@@ -34,6 +39,14 @@ trait ContainerTrait
     {
         $this->prepareContainer();
         return $this->container->getParameter($name);
+    }
+
+    private function setParameter(string $name, array|bool|string|int|float|UnitEnum|null $value): void
+    {
+        if (!$this->container) {
+            $this->createContainer();
+        }
+        $this->container->setParameter($name, $value);
     }
 
     private function prepareContainer(): void
@@ -78,8 +91,22 @@ trait ContainerTrait
      */
     private function attachContainerToContainerFactory(): void
     {
+        if (!$this->container->isCompiled()) {
+            $this->container->compile();
+        }
         $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
         $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
+    }
+
+    private function rewriteProjectConfiguration(array $config): void
+    {
+        (new Filesystem())->dumpFile(
+            Path::join(
+                ContainerFacade::get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
+                'parameters.yaml'
+            ),
+            Yaml::dump($config)
+        );
     }
 }

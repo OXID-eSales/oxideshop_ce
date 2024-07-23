@@ -12,6 +12,10 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
+use function array_key_exists;
+use function in_array;
 
 /**
  * Server data manipulation class
@@ -42,14 +46,14 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * sets cookie
      *
-     * @param string $sName       cookie name
-     * @param string $sValue      value
-     * @param int    $iExpire     expire time
-     * @param string $sPath       The path on the server in which the cookie will be available on
-     * @param string $sDomain     The domain that the cookie is available.
-     * @param bool   $blToSession is true, records cookie information to session
-     * @param bool   $blSecure    if true, transfer cookie only via SSL
-     * @param bool   $blHttpOnly  if true, only accessible via HTTP
+     * @param string $sName cookie name
+     * @param string $sValue value
+     * @param int $iExpire expire time
+     * @param string $sPath The path on the server in which the cookie will be available on
+     * @param string $sDomain The domain that the cookie is available.
+     * @param bool $blToSession is true, records cookie information to session
+     * @param bool $blSecure if true, transfer cookie only via SSL
+     * @param bool $blHttpOnly if true, only accessible via HTTP
      *
      * @return bool
      */
@@ -120,10 +124,10 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * Copies cookie info to session
      *
-     * @param string $sName   cookie name
-     * @param string $sValue  cookie value
-     * @param int    $iExpire expiration time
-     * @param string $sPath   cookie path
+     * @param string $sName cookie name
+     * @param string $sValue cookie value
+     * @param int $iExpire expiration time
+     * @param string $sPath cookie path
      * @param string $sDomain cookie domain
      */
     protected function saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
@@ -131,7 +135,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         if ($this->mustSaveToSession()) {
             $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
 
-            $aSessionCookies = (array) Registry::getSession()->getVariable($this->_sSessionCookiesName);
+            $aSessionCookies = (array)\OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
             $aSessionCookies[$this->getSessionCookieKey(false)][$sName] = $aCookieData;
 
             Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
@@ -160,52 +164,31 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns cookie path. If user did not set path, or set it to null, according to php
-     * documentation empty string will be returned, marking to skip argument. Additionally
-     * path can be defined in config.inc.php file as "sCookiePath" param. Please check cookie
-     * documentation for more details about current parameter
-     *
-     * @param string $sPath user defined cookie path
+     * @param string $path
      *
      * @return string
      */
-    protected function getCookiePath($sPath)
+    protected function getCookiePath($path)
     {
-        if ($aCookiePaths = Registry::getConfig()->getConfigParam('aCookiePaths')) {
-            // in case user wants to have shop specific setup
-            $sShopId = Registry::getConfig()->getShopId();
-            $sPath = isset($aCookiePaths[$sShopId]) ? $aCookiePaths[$sShopId] : $sPath;
-        }
-
-        // from php doc: .. You may also replace an argument with an empty string ("") in order to skip that argument..
-        return $sPath ? $sPath : "";
+        return ContainerFacade::getParameter(
+            'oxid_cookie_paths'
+        )[ContainerFacade::get(ContextInterface::class)->getCurrentShopId()] ??
+            $path ?:
+            '';
     }
 
     /**
-     * Returns domain that cookie available. If user did not set domain, or set it to null, according to php
-     * documentation empty string will be returned, marking to skip argument. Additionally domain can be defined
-     * in config.inc.php file as "sCookieDomain" param. Please check cookie documentation for more details about
-     * current parameter
-     *
-     * @param string $sDomain the domain that the cookie is available.
+     * @param string $domain
      *
      * @return string
      */
-    protected function getCookieDomain($sDomain)
+    protected function getCookieDomain($domain)
     {
-        $sDomain = $sDomain ? $sDomain : "";
-
-        // on special cases, like separate domain for SSL, cookies must be defined on domain specific path
-        // please have a look at
-        if (!$sDomain) {
-            if ($aCookieDomains = Registry::getConfig()->getConfigParam('aCookieDomains')) {
-                // in case user wants to have shop specific setup
-                $sShopId = Registry::getConfig()->getShopId();
-                $sDomain = isset($aCookieDomains[$sShopId]) ? $aCookieDomains[$sShopId] : $sDomain;
-            }
-        }
-
-        return $sDomain;
+        return $domain ?:
+            ContainerFacade::getParameter(
+                'oxid_cookie_domains'
+            )[ContainerFacade::get(ContextInterface::class)->getCurrentShopId()] ??
+            '';
     }
 
     /**
@@ -237,13 +220,13 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     public function getRemoteAddress()
     {
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $sIP = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $sIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
             $sIP = preg_replace('/,.*$/', '', $sIP);
-        } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
-            $sIP = $_SERVER["HTTP_CLIENT_IP"];
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $sIP = $_SERVER['HTTP_CLIENT_IP'];
         } else {
-            $sIP = $_SERVER["REMOTE_ADDR"];
+            $sIP = $_SERVER['REMOTE_ADDR'] ?? null;
         }
 
         return $sIP;
@@ -324,27 +307,22 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         }
 
         if (array_key_exists($sShopId, $this->_aUserCookie) && $this->_aUserCookie[$sShopId] !== null) {
-            return $this->_aUserCookie[$sShopId] ? $this->_aUserCookie[$sShopId] : null;
+            return $this->_aUserCookie[$sShopId] ?: null;
         }
 
         return $this->_aUserCookie[$sShopId] = $this->getOxCookie('oxid_' . $sShopId);
     }
 
     /**
-     * Checks if current client ip is in trusted IPs list.
-     * IP list is defined in config file as "aTrustedIPs" parameter
-     *
      * @return bool
      */
     public function isTrustedClientIp()
     {
-        $blTrusted = false;
-        $aTrustedIPs = (array) Registry::getConfig()->getConfigParam("aTrustedIPs");
-        if (count($aTrustedIPs)) {
-            $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
-        }
-
-        return $blTrusted;
+        return in_array(
+            $this->getRemoteAddress(),
+            ContainerFacade::getParameter('oxid_trusted_ips'),
+            true
+        );
     }
 
     /**
@@ -357,7 +335,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function processUserAgentInfo($sAgent)
     {
         if ($sAgent) {
-            $sAgent = Str::getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", "", (string) $sAgent);
+            $sAgent = Str::getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", "", (string)$sAgent);
         }
 
         return $sAgent;
@@ -395,7 +373,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * the protocol is optional (www.domain.com/shop/)
      * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
      *
-     * @param string $sURL        URL to check if is same as request.
+     * @param string $sURL URL to check if is same as request.
      * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
@@ -404,10 +382,10 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
-        $sUrlHost = isset($matches[3]) ? $matches[3] : null;
+        $sUrlHost = $matches[3] ?? null;
 
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", (string)$sServerHost, $matches);
-        $sRealHost =  isset($matches[3]) ? $matches[3] : null;
+        $sRealHost = $matches[3] ?? null;
 
 
         //fetch the path from SCRIPT_NAME and ad it to the $sServerHost

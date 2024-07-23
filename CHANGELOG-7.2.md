@@ -12,8 +12,9 @@
 - `ConnectionProviderInterface` will be superseded by `ConnectionFactory` in next major
 - Redundant interfaces `TransactionServiceInterface, FinderFactoryInterface`
 - `BasicContextInterface` methods
-- - The `getSslShopUrl` method will be deprecated and replaced by `getShopUrl`, which will now support SSL exclusively
+- The `getSslShopUrl` method will be deprecated and replaced by `getShopUrl`, which will now support SSL exclusively
 - The configFile for a setup will be replaced by container parameters
+- The use of ssl parameter in `getAltImageUrl` method of PictureHandler will be deleted in next major version
 
 ### Fixed
 - User registration in the Private Sales mode

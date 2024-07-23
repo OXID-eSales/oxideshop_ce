@@ -1,4 +1,5 @@
 imports:
+  - { resource: parameters.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Console/services.yaml }
   - { resource: DIContainer/services.yaml }

@@ -24,44 +24,67 @@ final class SessionHandlingCest
     public function checkForceSidWithDefaultConfig(AcceptanceTester $I): void
     {
         $I->wantToTest('that force_sid allows to access the current users session');
-
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
 
         $I->amGoingTo('login to existing user account and grab active session ID');
-        $accountUser = $this->createUserSession($I, $userData['userLoginName'], $userData['userPassword']);
-        $accountUser->seeUserAccount($userData);
+        $this->createUserSession(
+            $I,
+            $userData['userLoginName'],
+            $userData['userPassword']
+        )
+            ->seePageOpened()
+            ->seeUserAccount($userData);
         $sessionId = $I->grabCookie('sid');
 
         $I->amGoingTo('clear the cookie data and see that the session is not accessible');
-        $this->forgetUserSession($I);
-        $I->openShop()->openUserAccountPage()->seePageOpened();
+        $this->resetSessionCookie($I);
+        $I->openShop()
+            ->openUserAccountPage()
+            ->seePageOpened()
+            ->seeLoginForm();
 
         $I->amGoingTo('add force_sid to URL and see that the session is accessible');
-        $this->restoreUserSession($I, $sessionId);
-        $I->openShop()->openAccountPage()->seeUserAccount($userData);
+        $this->sendRequestToSwitchSessionId($I, $sessionId);
+        $I->openShop()
+            ->openAccountPage()
+            ->seePageOpened()
+            ->seeUserAccount($userData);
     }
 
     public function checkForceSidWithDisabledForceSid(AcceptanceTester $I): void
     {
         $I->wantToTest('that force_sid is not working after configuration update');
-
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
 
         $I->amGoingTo('disable force_sid via configuration');
-        $I->updateConfigInDatabase('disallowForceSessionIdInRequest', true);
+        $I->updateProjectConfigurations(['oxid_disallow_force_session_id' => true], []);
 
         $I->amGoingTo('login to existing user account and grab active session ID');
-        $accountUser = $this->createUserSession($I, $userData['userLoginName'], $userData['userPassword']);
-        $accountUser->seeUserAccount($userData);
+        $this->createUserSession(
+            $I,
+            $userData['userLoginName'],
+            $userData['userPassword']
+        )
+            ->seeUserAccount($userData);
         $sessionId = $I->grabCookie('sid');
 
         $I->amGoingTo('clear the cookie data and see that the session is not accessible');
-        $this->forgetUserSession($I);
-        $I->openShop()->openUserAccountPage()->seePageOpened();
+        $this->resetSessionCookie($I);
+        $I->openShop()
+            ->openUserAccountPage()
+            ->seePageOpened()
+            ->seeLoginForm();
 
         $I->amGoingTo('add force_sid to URL and see that the session is not accessible');
-        $this->restoreUserSession($I, $sessionId);
-        $I->openShop()->openUserAccountPage()->seePageOpened();
+        $this->sendRequestToSwitchSessionId($I, $sessionId);
+        $I->expect('to see user login form instead of user account page');
+        $I->openShop()
+            ->openUserAccountPage()
+            ->seePageOpened()
+            ->seeLoginForm();
+
+        $I->amGoingTo('do cleanup');
+        $I->restoreProjectConfigurations();
     }
 
     public function userSessionAfterPasswordChange(AcceptanceTester $I): void
@@ -151,25 +174,19 @@ final class SessionHandlingCest
 
     private function createUserSession(AcceptanceTester $I, string $userName, string $password): UserAccount
     {
-        return $I
-            ->openShop()
+        return $I->openShop()
             ->loginUser($userName, $password)
             ->openAccountPage();
     }
 
-    private function forgetUserSession(AcceptanceTester $I): void
+    private function resetSessionCookie(AcceptanceTester $I): void
     {
         $I->resetCookie('sid');
         Context::resetActiveUser();
     }
 
-    private function restoreUserSession(AcceptanceTester $I, string $sessionId): void
+    private function sendRequestToSwitchSessionId(AcceptanceTester $I, string $sessionId): void
     {
         $I->amOnUrl("{$I->getCurrentURL()}?force_sid=$sessionId");
-    }
-
-    private function getExistingUserData(): array
-    {
-        return Fixtures::get('existingUser');
     }
 }

@@ -3,7 +3,7 @@ bootstrap: _bootstrap.php
 modules:
     enabled:
         - Asserts
-        - \OxidEsales\EshopCommunity\Tests\Codeception\Support\Helper\Acceptance
+        - OxidEsales\EshopCommunity\Tests\Codeception\Support\Helper\Acceptance
         - WebDriver:
             url: '%SHOP_URL%'
             browser: '%BROWSER%'
@@ -17,7 +17,7 @@ modules:
                     excludeSwitches: ['enable-automation']
                     prefs:
                         'credentials_enable_service': false
-        - \OxidEsales\Codeception\Module\ShopSetup:
+        - OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'
             mysql_config: '%MYSQL_CONFIG_PATH%'
@@ -35,35 +35,39 @@ modules:
             populator: 'mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
             initial_queries:
                 - 'SET @@SESSION.sql_mode=""'
-        - \OxidEsales\Codeception\Module\Oxideshop:
+        - OxidEsales\Codeception\Module\Oxideshop:
             screen_shot_url: '%SCREEN_SHOT_URL%'
             depends:
               - WebDriver
               - Db
-        - \OxidEsales\Codeception\Module\OxideshopAdmin:
+        - OxidEsales\Codeception\Module\OxideshopAdmin:
               screen_shot_url: '%SCREEN_SHOT_URL%'
               depends:
                   - WebDriver
-                  - \OxidEsales\Codeception\Module\Oxideshop
-        - \OxidEsales\Codeception\Module\Database:
+                  - OxidEsales\Codeception\Module\Oxideshop
+        - OxidEsales\Codeception\Module\Database:
             depends: Db
-        - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
-            shop_path: '%SHOP_SOURCE_PATH%'
+        - OxidEsales\Codeception\Module\Translation\TranslationsModule:
+            shop_path: '%PROJECT_ROOT%/source'
             paths:
                 - 'Application/views/%THEME_ID%'
             paths_admin:
                 - 'Application/views/admin_twig'
-        - \OxidEsales\Codeception\Module\SelectTheme:
+        - OxidEsales\Codeception\Module\SelectTheme:
               depends:
-                  - \OxidEsales\Codeception\Module\Database
+                  - OxidEsales\Codeception\Module\Database
               theme_id: '%THEME_ID%'
-        - \OxidEsales\Codeception\Module\OxideshopModules:
+        - OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:
             url: '%MAIL_HOST%'
             port: '%MAIL_WEB_PORT%'
-        - \OxidEsales\Codeception\Module\Email:
+        - OxidEsales\Codeception\Module\Email:
               depends:
                   - Mailpit
               deleteEmailsAfterTest: false
+        - OxidEsales\Codeception\Module\ProjectConfiguration:
+              config_path: '%PROJECT_ROOT%/var/configuration'
+              parameters: []
+              services: []
 step_decorators:
-    - \Codeception\Step\Retry
+    - Codeception\Step\Retry

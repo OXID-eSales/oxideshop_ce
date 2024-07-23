@@ -19,9 +19,7 @@ use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-/**
- * @group basketfrontend
- */
+#[Group('basketfrontend')]
 final class CheckoutProcessCest
 {
     public function _before(AcceptanceTester $I): void
@@ -165,9 +163,7 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
-    /**
-     * @group todo_add_clean_cache_after_database_update
-     */
+    #[Group('todo_add_clean_cache_after_database_update')]
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -439,30 +435,30 @@ final class CheckoutProcessCest
 
     public function checkNoSessionCookiesCheckout(AcceptanceTester $I): void
     {
-        $I->wantToTest('Check if checkout is possible without cookies');
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->wantToTest('checkout process can be completed with cookies disabled');
 
-        file_put_contents(
-            getenv('SHOP_SOURCE_PATH') . '/cust_config.inc.php',
-            '<?php $this->blSessionUseCookies = false;'
-        );
+        $I->amGoingTo('disable storing session in cookies via configuration');
+        $I->updateProjectConfigurations(['oxid_cookies_session' => false], []);
 
-        $basket = new Basket($I);
-        $userRegistration = new UserRegistrationInCheckout($I);
-        $email1 = 'abc@def.gh';
-
-        $basket->addProductToBasketAndOpenUserCheckout('1000', 10);
-        $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
-            $email1,
-            $this->getUserFormData(),
-            $this->getUserAddressFormData()
-        );
-
-        $orderPage = $paymentPage->selectPayment('oxidcashondel')
+        $I->amGoingTo('go through checkout steps');
+        (new Basket($I))->addProductToBasketAndOpenUserCheckout('1000', 10);
+        $orderSubmitPage = (new UserRegistrationInCheckout($I))
+            ->createNotRegisteredUserInCheckout(
+                'abc@def.gh',
+                $this->getUserFormData(),
+                $this->getUserAddressFormData()
+            )
+            ->selectPayment('oxidcashondel')
             ->goToNextStep();
 
+        $I->expect('that cookies were disabled all the way through checkout');
+        $I->dontSeeCookie('sid');
 
-        $orderPage->submitOrderSuccessfully();
+        $I->expect('to submit order without errors');
+        $orderSubmitPage->submitOrderSuccessfully();
+
+        $I->amGoingTo('do cleanup');
+        $I->restoreProjectConfigurations();
     }
 
     public function checkAttributesInBasket(AcceptanceTester $I): void
@@ -484,7 +480,7 @@ final class CheckoutProcessCest
         (new Basket($I))->addProductToBasket('1001', 1);
 
         $I->openShop()->openMiniBasket()->openBasketDisplay()
-          ->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
+            ->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
     }
 
     public function vatsInCheckoutSummary(AcceptanceTester $I): void
@@ -749,7 +745,7 @@ final class CheckoutProcessCest
             'itemNumber' => '1',
             'amount' => '1',
             'product' => 'Test product 1 [EN] šÄßüл'
-            ];
+        ];
 
         $orderHistory->seeOrder($orderInformation);
         $productDetailsPage = $orderHistory->openProduct($orderInformation);

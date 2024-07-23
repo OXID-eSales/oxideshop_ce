@@ -1,0 +1,8 @@
+parameters:
+  oxid_force_session_start: false
+  oxid_cookies_session: true
+  oxid_cookie_domains: []
+  oxid_cookie_paths: []
+  oxid_trusted_ips: []
+  oxid_session_init_params: []
+  oxid_disallow_force_session_id: false

@@ -57,7 +57,9 @@
         "oxid-esales/oxideshop-ide-helper": "dev-b-8.0.x",
         "phpspec/prophecy-phpunit": "^v2.0.1",
         "phpunit/phpunit": "^10.4",
-        "squizlabs/php_codesniffer": "^3.5.4"
+        "squizlabs/php_codesniffer": "^3.5.4",
+        "symfony/browser-kit": "^6.3",
+        "symfony/http-client": "^6.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

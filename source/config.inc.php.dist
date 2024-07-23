@@ -49,24 +49,6 @@ $this->sAdminEmail = '';
 // Defines the time interval in seconds warnings are sent during the shop is offline.
 $this->offlineWarningInterval = 60 * 5;
 
-// In case session must be started on the very first user page visit (not only on session required action).
-$this->blForceSessionStart = false;
-
-// Use browser cookies to store session id (no sid parameter in URL)
-$this->blSessionUseCookies = true;
-
-/**
- * The domain that the cookie is available: array(_SHOP_ID_ => _DOMAIN_);
- * Check setcookie() documentation for more details: http://php.net/manual/de/function.setcookie.php
- */
-$this->aCookieDomains = null;
-
-/**
- * The path on the server in which the cookie will be available on: array(_SHOP_ID_ => _PATH_);
- * Check setcookie() documentation for more details: http://php.net/manual/de/function.setcookie.php
- */
-$this->aCookiePaths = null;
-
 // List of all Search-Engine Robots
 $this->aRobots = array(
     'ahrefs',
@@ -112,9 +94,6 @@ $this->aRobots = array(
 
 // Deactivate Static URL's for these Robots
 $this->aRobotsExcept = array();
-
-// IP addresses for which session/cookie id match and user agent change checks are off
-$this->aTrustedIPs = array();
 
 /**
  * Works only if basket reservations feature is enabled in admin.

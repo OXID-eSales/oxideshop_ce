@@ -28,7 +28,7 @@ class CodeceptionParametersProvider
         $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
         return [
             'SHOP_URL' => getenv('SHOP_URL') ?: $facts->getShopUrl(),
-            'SHOP_SOURCE_PATH' => getenv('SHOP_SOURCE_PATH'),
+            'PROJECT_ROOT' => $this->getProjectRoot(),
             'VENDOR_PATH' => $facts->getVendorPath(),
             'DB_NAME' => $this->getDbName(),
             'DB_USERNAME' => $this->getDbUser(),
@@ -78,7 +78,7 @@ class CodeceptionParametersProvider
     {
         $testSuitePath = (string)getenv('TEST_SUITE');
         if ($testSuitePath === '' || $testSuitePath === '0') {
-            $testSuitePath = Path::join((new ProjectRootLocator())->getProjectRoot(), 'tests');
+            $testSuitePath = Path::join($this->getProjectRoot(), 'tests');
         }
         return $testSuitePath;
     }
@@ -128,6 +128,11 @@ class CodeceptionParametersProvider
 
     private function loadEnvironmentVariables(): void
     {
-        (new DotenvLoader((new ProjectRootLocator())->getProjectRoot()))->loadEnvironmentVariables();
+        (new DotenvLoader($this->getProjectRoot()))->loadEnvironmentVariables();
+    }
+
+    private function getProjectRoot(): string
+    {
+        return (new ProjectRootLocator())->getProjectRoot();
     }
 }

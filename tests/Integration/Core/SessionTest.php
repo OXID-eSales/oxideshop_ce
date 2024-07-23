@@ -12,19 +12,26 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\Eshop\Core\UtilsServer;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-final class SessionTest extends IntegrationTestCase
+final class SessionTest extends TestCase
 {
-    public function setUp(): void
+    use ContainerTrait;
+
+    public static function tearDownAfterClass(): void
     {
-        parent::setUp();
-        $this->setApplicationDefaults();
+        ContainerFactory::resetContainer();
+
+        parent::tearDownAfterClass();
     }
 
     public function testGetSidFromRequestWithForceSidInRequestAndDisabledConfig(): void
     {
-        Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
+        $this->setParameter('oxid_disallow_force_session_id', true);
+        $this->attachContainerToContainerFactory();
         $sessionId = uniqid('session-id-', true);
         $_GET['force_sid'] = $sessionId;
         $session = oxNew(Session::class);
@@ -49,7 +56,8 @@ final class SessionTest extends IntegrationTestCase
 
     public function testProcessUrlWithDisabledConfig(): void
     {
-        Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
+        $this->setParameter('oxid_disallow_force_session_id', true);
+        $this->attachContainerToContainerFactory();
         $sessionId = uniqid('session-id-', true);
         $url = 'https://myshop.abc';
         $session = oxNew(Session::class);
@@ -76,7 +84,8 @@ final class SessionTest extends IntegrationTestCase
 
     public function testAllowSessionStartWithSidInRequestAndDisabledConfig(): void
     {
-        Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
+        $this->setParameter('oxid_disallow_force_session_id', true);
+        $this->attachContainerToContainerFactory();
         $utilsSever = $this->createMock(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $session = oxNew(Session::class);
@@ -105,7 +114,8 @@ final class SessionTest extends IntegrationTestCase
 
     public function testAllowSessionStartWithForceSidInRequestAndDisabledConfig(): void
     {
-        Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
+        $this->setParameter('oxid_disallow_force_session_id', true);
+        $this->attachContainerToContainerFactory();
         $utilsSever = $this->createMock(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $session = oxNew(Session::class);
@@ -173,8 +183,133 @@ final class SessionTest extends IntegrationTestCase
         $this->assertFalse($challenge);
     }
 
-    private function setApplicationDefaults(): void
+    public function testIsSidNeededWithForceSessionStartAndDefaultConfiguration(): void
     {
-        Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', false);
+        $needSid = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertFalse($needSid);
+    }
+
+    public function testIsSidNeededWithForceSessionStart(): void
+    {
+        $this->assertFalse(oxNew(Session::class)->isSidNeeded());
+
+        $this->setParameter('oxid_force_session_start', true);
+        $this->attachContainerToContainerFactory();
+
+        $needSid = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($needSid);
+    }
+
+    public function testIsSidNeededWithOxidCookiesSession(): void
+    {
+        $this->assertFalse(oxNew(Session::class)->isSidNeeded());
+
+        $this->setParameter('oxid_cookies_session', false);
+        $this->attachContainerToContainerFactory();
+
+        $needSid = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($needSid);
+    }
+
+    public static function isSidNeededDefaultsDataProvider(): array
+    {
+        return [
+            ['cl', 'register'],
+            ['cl', 'account'],
+            ['fnc', 'tobasket'],
+            ['fnc', 'login_noredirect'],
+            ['fnc', 'tocomparelist'],
+            ['fnc', 'tocomparelist'],
+            ['_artperpage', '1'],
+            ['ldtype', 'some-type'],
+            ['listorderby', 'id'],
+        ];
+    }
+
+    #[DataProvider('isSidNeededDefaultsDataProvider')]
+    public function testIsSidNeededWithSessionInitParamsAndDefaults(string $param, string $value): void
+    {
+        $_GET[$param] = $value;
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($sidNeeded);
+    }
+
+    public function testIsSidNeededWithSessionInitParamsAndParamNotInDefaults(): void
+    {
+        $_GET['cl'] = 'this-controller-is-not-configured';
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertFalse($sidNeeded);
+    }
+
+    public function testIsSidNeededWithSessionInitParamsAndNewParam(): void
+    {
+        $this->setParameter('oxid_session_init_params', [
+            'cl' => [
+                'abc' => true,
+            ]
+        ]);
+        $this->attachContainerToContainerFactory();
+
+        $_GET['cl'] = 'abc';
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($sidNeeded);
+    }
+
+    public function testIsSidNeededWithSessionInitParamsAndOverwrittenDefault(): void
+    {
+        $this->setParameter('oxid_session_init_params', [
+            'cl' => [
+                'abc' => true,
+                'register' => false,
+            ]
+        ]);
+        $this->attachContainerToContainerFactory();
+
+        $_GET['cl'] = 'register';
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertFalse($sidNeeded);
+    }
+
+    #[DataProvider('isSidNeededDefaultsDataProvider')]
+    public function testIsSidNeededWithSessionInitParamsAndDefaultsUnchanged(string $param, string $value): void
+    {
+        $this->setParameter('oxid_session_init_params', [
+            'cl' => [
+                'abc' => true,
+            ],
+            'fnc' => [
+                'def' => true,
+            ],
+            'ghi' => true,
+        ]);
+        $this->attachContainerToContainerFactory();
+
+        $_GET[$param] = $value;
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($sidNeeded);
+    }
+
+    public function testIsSidNeededWithNonArrayValueWillSetAnyControllerAsRequiringSessionId(): void
+    {
+        $_GET['cl'] = 'some-unconfigured-controller';
+
+        $this->assertFalse(oxNew(Session::class)->isSidNeeded());
+
+        $this->setParameter('oxid_session_init_params', [
+            'cl' => true,
+        ]);
+        $this->attachContainerToContainerFactory();
+
+        $sidNeeded = oxNew(Session::class)->isSidNeeded();
+
+        $this->assertTrue($sidNeeded);
     }
 }

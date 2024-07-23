@@ -36,7 +36,10 @@ final class UserAccountCest
         $startPage->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->seeUserLoggedIn();
 
-        $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
+        $startPage
+            ->openAccountPage()
+            ->seePageOpened()
+            ->seeUserAccount($userData);
     }
 
     /**
@@ -56,9 +59,11 @@ final class UserAccountCest
             ->loginUser($userName, $oldPass);
         $I->dontSee(Translator::translate('LOGIN'));
 
-        $accountPage = $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
-
-        $changePasswordPage = $accountPage->openChangePasswordPage();
+        $changePasswordPage = $startPage
+            ->openAccountPage()
+            ->seePageOpened()
+            ->seeUserAccount($userData)
+            ->openChangePasswordPage();
 
         //entered not matching new passwords
         $changePasswordPage->fillPasswordFields($oldPass, $newPass, $oldPass);

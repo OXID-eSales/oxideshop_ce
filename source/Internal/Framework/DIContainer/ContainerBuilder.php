@@ -53,10 +53,10 @@ class ContainerBuilder
         $this->loadEditionServices();
         $this->loadComponentServices();
         $this->loadModuleServices();
-        $this->loadProjectExtensionsForDefaultEnvironment();
-        $this->loadProjectExtensionsForSpecificShopAndDefaultEnvironment();
-        $this->loadProjectExtensionsForCurrentEnvironment();
-        $this->loadProjectExtensionsForSpecificShopAndSpecificEnvironment();
+        $this->loadProjectServices();
+        $this->loadProjectSubshopServices();
+        $this->loadEnvironmentServices();
+        $this->loadSubshopEnvironmentServices();
 
         return $this->containerBuilder;
     }
@@ -107,21 +107,21 @@ class ContainerBuilder
         }
     }
 
-    private function loadProjectExtensionsForDefaultEnvironment(): void
+    private function loadProjectServices(): void
     {
         $this->loadProjectExtensionFiles(
             $this->basicContext->getProjectConfigurationDirectory()
         );
     }
 
-    private function loadProjectExtensionsForSpecificShopAndDefaultEnvironment(): void
+    private function loadProjectSubshopServices(): void
     {
         $this->loadProjectExtensionFiles(
             $this->basicContext->getShopConfigurationDirectory($this->shopId)
         );
     }
 
-    private function loadProjectExtensionsForSpecificShopAndSpecificEnvironment(): void
+    private function loadSubshopEnvironmentServices(): void
     {
         $this->loadProjectExtensionFiles(
             $this->getShopConfigurationPathForSpecificEnvironment()
@@ -141,7 +141,7 @@ class ContainerBuilder
         );
     }
 
-    private function loadProjectExtensionsForCurrentEnvironment(): void
+    private function loadEnvironmentServices(): void
     {
         $this->loadProjectExtensionFiles(
             EnvUrlFormatter::toEnvUrl(

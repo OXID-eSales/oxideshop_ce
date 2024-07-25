@@ -53,7 +53,6 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oArticle->loadInLang(key($oOtherLang), $sOxId);
             }
 

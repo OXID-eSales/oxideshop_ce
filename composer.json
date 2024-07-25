@@ -10,7 +10,7 @@
     ],
     "homepage": "https://www.oxid-esales.com/en",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-dom": "*",
         "ext-gd": "*",
         "ext-iconv": "*",

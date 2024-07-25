@@ -38,7 +38,6 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             $oOtherLang = $oPayment->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oPayment->loadInLang(key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oPayment;

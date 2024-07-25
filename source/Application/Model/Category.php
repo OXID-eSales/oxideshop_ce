@@ -936,23 +936,16 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
             //If empty rootID, we set it to categorys oxid
             if ($sNewRootID == "") {
-                //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
             $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = :oxid", [
                 ':oxid' => $this->oxcategories__oxparentid->value
             ]);
 
-            //if(!$sNewParentLeft){
-            //the current node has become root node, (oxrootid == "oxrootid")
-            //    $sNewParentLeft = 0;
-            //}
-
             $iMoveAfter = $sNewParentLeft + 1;
 
             //New parentid can not be set to it's child
             if ($sNewParentLeft > $sOldParentLeft && $sNewParentLeft < $sOldParentRight && $this->oxcategories__oxrootid->value == $sNewRootID) {
-                //echo "<br>* ) Can't asign category to it's child";
 
                 //Restoring old parentid, stoping further actions
                 $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = :oxparentid WHERE oxid = :oxid";
@@ -971,9 +964,6 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             }
 
             $iDelta = $iMoveAfter - $sOldParentLeft;
-
-            //echo "Size=$iTreeSize, NewStart=$iMoveAfter, delta=$iDelta";
-
             $sAddOld = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $database->quote($this->oxcategories__oxrootid->value) . ";";
             $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $database->quote($sNewRootID) . ";";
 
@@ -981,11 +971,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $params = [':treeSize' => $iTreeSize, ':offset' => $iMoveAfter];
             $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + :treeSize) WHERE OXLEFT >= :offset" . $sAddNew, $params);
             $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + :treeSize) WHERE OXRIGHT >= :offset" . $sAddNew, $params);
-            //echo "<br>1.) + $iTreeSize, >= $iMoveAfter";
 
             $sChangeRootID = "";
             if ($this->oxcategories__oxrootid->value != $sNewRootID) {
-                //echo "<br>* ) changing root IDs ( {$this->oxcategories__oxrootid->value} -> {$sNewRootID} )";
                 $sChangeRootID = ", OXROOTID=" . $database->quote($sNewRootID);
             }
 
@@ -997,13 +985,11 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 ':oxleft' => $sOldParentLeft,
                 ':oxright' => $sOldParentRight
             ]);
-            //echo "<br>2.) + $iDelta, >= $sOldParentLeft and <= $sOldParentRight";
 
             //Updating everything after old position
             $params = [':treeSize' => $iTreeSize, ':offset' => $sOldParentRight + 1];
             $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - :treeSize) WHERE OXLEFT >= :offset" . $sAddOld, $params);
             $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - :treeSize) WHERE OXRIGHT >= :offset" . $sAddOld, $params);
-            //echo "<br>3.) - $iTreeSize, >= ".($sOldParentRight+1);
         }
 
         if ($blRes && $this->_blIsSeoObject && $this->isAdmin()) {

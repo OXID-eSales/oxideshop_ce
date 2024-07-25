@@ -38,7 +38,6 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             $oOtherLang = $oContent->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oContent->loadInLang(key($oOtherLang), $soxId);
             }
 

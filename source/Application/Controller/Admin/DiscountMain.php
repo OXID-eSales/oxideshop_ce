@@ -32,7 +32,6 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
             $oOtherLang = $oDiscount->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oDiscount->loadInLang(key($oOtherLang), $sOxId);
             }
 

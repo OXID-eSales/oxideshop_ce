@@ -32,7 +32,6 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $oOtherLang = $odeliveryset->getAvailableInLangs();
 
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $odeliveryset->loadInLang(key($oOtherLang), $soxId);
             }
 

@@ -282,7 +282,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sShopID = Registry::getConfig()->getShopId();
         $sActionID = strtolower($sActionID);
 
-        //echo $sSelect;
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();

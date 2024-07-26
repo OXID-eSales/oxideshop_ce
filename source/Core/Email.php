@@ -394,8 +394,7 @@ class Email extends PHPMailer
      */
     public function setSmtp($shop = null)
     {
-        $myConfig = Registry::getConfig();
-        $shop = ($shop) ? $shop : $this->getShop();
+        $shop = ($shop) ?: $this->getShop();
 
         $smtpUrl = $this->setSmtpProtocol($shop->oxshops__oxsmtp->value);
 

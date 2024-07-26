@@ -10,42 +10,9 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
 class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
-    /**
-     * Templating instance getter
-     *
-     * @return TemplateRendererInterface
-     */
-    private function getRenderer()
-    {
-        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
-            ->getTemplateRenderer();
-    }
-
-    /**
-     * Returns rendered template output. According to debug configuration outputs
-     * debug information.
-     *
-     * @param string $templateName template file name
-     * @param object $oObject      object, witch template we wish to output
-     *
-     * @return string
-     */
-    public function getTemplateOutput($templateName, $oObject)
-    {
-        $viewData = $oObject->getViewData();
-        if (!is_array($viewData)) {
-            $viewData = [];
-        }
-
-        return $this->getRenderer()->renderTemplate($templateName, $viewData);
-    }
-
     /**
      * adds the given errors to the view array
      *

@@ -19,6 +19,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -385,34 +387,29 @@ class Email extends PHPMailer
     }
 
     /**
-     * Sets SMTP mailer parameters, such as user name, password, location.
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
      *
-     * @param \OxidEsales\Eshop\Application\Model\Shop $shop Object, that keeps base shop info
-     *
-     * @return null
+     * @return void
      */
     public function setSmtp($shop = null)
     {
-        $myConfig = Registry::getConfig();
-        $shop = ($shop) ? $shop : $this->getShop();
-
-        $smtpUrl = $this->setSmtpProtocol($shop->oxshops__oxsmtp->value);
-
-        if (!$this->isValidSmtpHost($smtpUrl)) {
-            $this->setMailer("mail");
-
-            return;
-        }
-
-        $this->setHost($smtpUrl);
-        $this->setMailer("smtp");
-
-        if ($shop->oxshops__oxsmtpuser->value) {
-            $this->setSmtpAuthInfo($shop->oxshops__oxsmtpuser->value, $shop->oxshops__oxsmtppwd->getRawValue());
-        }
-
-        if (ContainerFacade::getParameter('oxid_smtp_debug_mode')) {
-            $this->setSmtpDebug(true);
+        $shop = ($shop) ?: $this->getShop();
+        $smtpUrl = $this->setSmtpProtocol($shop->getFieldData('oxsmtp'));
+        if ($this->isValidSmtpHost($smtpUrl)) {
+            $this->setHost($smtpUrl);
+            $this->setMailer('smtp');
+            if ($shop->getFieldData('oxsmtpuser')) {
+                $this->setSmtpAuthInfo(
+                    $shop->getFieldData('oxsmtpuser'),
+                    $shop->getFieldData('oxsmtppwd')
+                );
+            }
+            if (ContainerFacade::getParameter('oxid_smtp_debug_mode')) {
+                $this->set('SMTPDebug', SMTP::DEBUG_CLIENT);
+                $this->set('Debugoutput', ContainerFacade::get(LoggerInterface::class));
+            }
+        } else {
+            $this->setMailer('mail');
         }
     }
 

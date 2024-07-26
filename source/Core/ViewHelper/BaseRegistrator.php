@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Registry;
 
@@ -52,12 +53,18 @@ abstract class BaseRegistrator
             $parameters = $this->getFileModificationTime($path);
         }
 
-        if (empty($url) && ContainerFacade::getParameter('oxid_debug_mode')) {
-            $error = "{" . static::TAG_NAME . "} resource not found: " . \OxidEsales\Eshop\Core\Str::getStr()->htmlspecialchars($url);
-            trigger_error($error, E_USER_WARNING);
+        if (!$url && ContainerFacade::getParameter('oxid_debug_mode')) {
+            trigger_error(
+                sprintf(
+                    '{%s} resource not found: %s',
+                    static::TAG_NAME,
+                    Str::getStr()->htmlspecialchars($url)
+                ),
+                E_USER_WARNING
+            );
         }
 
-        return $url . ($parameters ? '?' . $parameters : '');
+        return $parameters ? "$url?$parameters" : $url;
     }
 
     /**

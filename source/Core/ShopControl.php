@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEv
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use PHPMailer\PHPMailer\PHPMailer;
+use Psr\Log\LoggerInterface;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Path;
 
@@ -573,38 +574,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function stopMonitoring($view = null)
     {
-        if (is_null($view)) {
-            $controllerKey = $this->getStartControllerKey();
-            $controllerClass = $this->getControllerClass($controllerKey);
-            $view = oxNew($controllerClass);
+        if (!$this->isDebugMode() || $this->isAdmin()) {
+            return;
         }
-
-        if ($this->isDebugMode() && !$this->isAdmin()) {
-            $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
-
-            $logId = md5(time() . rand() . rand());
-            $header = $debugInfo->formatGeneralInfo();
-            $display = ContainerFacade::getParameter('oxid_debug_mode') ? 'none' : 'block';
-            $monitorMessage = $this->formMonitorMessage($view);
-
-            $logMessage = "
-                <div id='oxidDebugInfo_$logId'>
-                    <div style='color:#630;margin:15px 0 0;cursor:pointer'
-                         onclick='var el=document.getElementById(\"debugInfoBlock_$logId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>
-                          $header(show/hide)
-                    </div>
-                    <div id='debugInfoBlock_$logId' style='display:$display' class='debugInfoBlock' align='left'>
-                        $monitorMessage
-                    </div>
-                    <script type='text/javascript'>
-                        var b = document.getElementById('oxidDebugInfo_$logId');
-                        var c = document.body;
-                        if (c) { c.appendChild(b.parentNode.removeChild(b));}
-                    </script>
-                </div>";
-
-            $this->getOutputManager()->output('debuginfo', $logMessage);
-        }
+        $view ??= oxNew($this->getControllerClass($this->getStartControllerKey()));
+        ContainerFacade::get(LoggerInterface::class)->debug(
+            strip_tags($this->formMonitorMessage($view))
+        );
     }
 
     /**
@@ -616,16 +592,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function formMonitorMessage($view)
     {
+        $this->_dTimeEnd = microtime(true);
         $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-        // Output timing
-        $this->_dTimeEnd = microtime(true);
-
-        $message = $debugInfo->formatMemoryUsage();
-        $message .= $debugInfo->formatTimeStamp();
-        $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
-
-        return $message;
+        return $debugInfo->formatMemoryUsage() .
+            $debugInfo->formatTimeStamp() .
+            $debugInfo->formatExecutionTime($this->getTotalTime());
     }
 
     /**

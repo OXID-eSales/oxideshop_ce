@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
@@ -214,40 +215,31 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blIsSe  sets if Search Engine is on
      * @param string $sClient user browser agent
      *
-     * @return null
+     * @return void
      */
     public function setSearchEngine($blIsSe = null, $sClient = null)
     {
-        if (isset($blIsSe)) {
-            $this->_blIsSe = $blIsSe;
-
+        $this->_blIsSe = $blIsSe ?? false;
+        if ($blIsSe || (ContainerFacade::getParameter('oxid_debug_mode') && $this->isAdmin())) {
             return;
         }
-        startProfile("isSearchEngine");
+        startProfile('isSearchEngine');
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $blIsSe = false;
+        $aRobots = Registry::getConfig()->getConfigParam('aRobots');
+        $aRobots = \is_array($aRobots) ? $aRobots : [];
 
-        if (!(ContainerFacade::getParameter('oxid_debug_mode') && $this->isAdmin())) {
-            $aRobots = $myConfig->getConfigParam('aRobots');
-            $aRobots = is_array($aRobots) ? $aRobots : [];
+        $aRobotsExcept = Registry::getConfig()->getConfigParam('aRobotsExcept');
+        $aRobotsExcept = \is_array($aRobotsExcept) ? $aRobotsExcept : [];
 
-            $aRobotsExcept = $myConfig->getConfigParam('aRobotsExcept');
-            $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : [];
-
-            $sClient = $sClient ?: strtolower(getenv('HTTP_USER_AGENT'));
-            $aRobots = array_merge($aRobots, $aRobotsExcept);
-            foreach ($aRobots as $sRobot) {
-                if (strpos($sClient, $sRobot) !== false) {
-                    $blIsSe = true;
-                    break;
-                }
+        $sClient = $sClient ?: strtolower(getenv('HTTP_USER_AGENT'));
+        $aRobots = array_merge($aRobots, $aRobotsExcept);
+        foreach ($aRobots as $sRobot) {
+            if (str_contains($sClient, $sRobot)) {
+                $this->_blIsSe = true;
+                break;
             }
         }
-
-        $this->_blIsSe = $blIsSe;
-
-        stopProfile("isSearchEngine");
+        stopProfile('isSearchEngine');
     }
 
     /**
@@ -263,7 +255,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         // checking for available profiles list
         if (is_array($aInterfaceProfiles)) {
             //checking for previous profiles
-            $sPrevProfile = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminprofile');
+            $sPrevProfile = Registry::getUtilsServer()->getOxCookie('oxidadminprofile');
             if (isset($sPrevProfile)) {
                 $aPrevProfile = @explode("@", trim($sPrevProfile));
             }
@@ -279,7 +271,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                 $aProfiles[$aPrevProfile[0]][2] = 1;
             }
 
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("aAdminProfiles", $aProfiles);
+            Registry::getSession()->setVariable("aAdminProfiles", $aProfiles);
 
             return $aProfiles;
         }
@@ -460,7 +452,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $aMeta = $this->getCacheMeta($sKey);
         if ($iTtl) {
             $aCacheData['ttl'] = $iTtl;
-            $aCacheData['timestamp'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+            $aCacheData['timestamp'] = Registry::getUtilsDate()->getTime();
         }
         $this->_aFileCacheContents[$sKey] = $aCacheData;
 
@@ -494,7 +486,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                     $iTimestamp = $sRes['timestamp'];
                     $iTtl = $sRes['ttl'];
 
-                    $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+                    $iTime = Registry::getUtilsDate()->getTime();
                     if ($iTime > $iTimestamp + $iTtl) {
                         return null;
                     }
@@ -729,7 +721,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $blCan = null;
         if (
             ($sPrevId = Registry::getRequest()->getRequestEscapedParameter('preview')) &&
-            ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
+            ($sAdminSid = Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sTable = $tableViewNameGenerator->getViewName('oxuser');
@@ -750,7 +742,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function getPreviewId()
     {
-        $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
+        $sAdminSid = Registry::getUtilsServer()->getOxCookie('admin_sid');
         if (($oUser = $this->getUser())) {
             return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
         }
@@ -763,16 +755,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function checkAccessRights()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         $blIsAuth = false;
 
-        $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("auth");
+        $sUserID = Registry::getSession()->getVariable("auth");
 
         // deleting admin marker
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("malladmin", 0);
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blIsAdmin", 0);
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("blIsAdmin");
+        Registry::getSession()->setVariable("malladmin", 0);
+        Registry::getSession()->setVariable("blIsAdmin", 0);
+        Registry::getSession()->deleteVariable("blIsAdmin");
         $myConfig->setConfigParam('blMallAdmin', false);
         //#1552T
         $myConfig->setConfigParam('blAllowInheritedEdit', false);
@@ -784,16 +776,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             if ($sRights != "user") {
                 // malladmin ?
                 if ($sRights == "malladmin") {
-                    \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("malladmin", 1);
+                    Registry::getSession()->setVariable("malladmin", 1);
                     $myConfig->setConfigParam('blMallAdmin', true);
 
                     //#1552T
                     //So far this blAllowSharedEdit is Equal to blMallAdmin but in future to be solved over rights and roles
                     $myConfig->setConfigParam('blAllowSharedEdit', true);
 
-                    $sShop = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+                    $sShop = Registry::getSession()->getVariable("actshop");
                     if (!isset($sShop)) {
-                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $myConfig->getBaseShopId());
+                        Registry::getSession()->setVariable("actshop", $myConfig->getBaseShopId());
                     }
                     $blIsAuth = true;
                 } else {
@@ -802,9 +794,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                     if (isset($sShopID) && $sShopID) {
                         // success, this shop exists
 
-                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $sRights);
-                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("currentadminshop", $sRights);
-                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $sRights);
+                        Registry::getSession()->setVariable("actshop", $sRights);
+                        Registry::getSession()->setVariable("currentadminshop", $sRights);
+                        Registry::getSession()->setVariable("shp", $sRights);
 
                         // check if this subshop admin is evil.
                         if ('chshp' == Registry::getRequest()->getRequestEscapedParameter('fnc')) {
@@ -826,7 +818,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                     }
                 }
                 // marking user as admin
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blIsAdmin", 1);
+                Registry::getSession()->setVariable("blIsAdmin", 1);
             }
         }
 
@@ -880,14 +872,14 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             return $this->_blSeoIsActive;
         }
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
             $this->_blSeoIsActive = true;
 
             $aSeoModes = $myConfig->getconfigParam('aSeoModes');
             $sActShopId = $sShopId ? $sShopId : $myConfig->getActiveShop()->getId();
-            $iActLang = $iActLang ? $iActLang : (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+            $iActLang = $iActLang ? $iActLang : (int) Registry::getLang()->getBaseLanguage();
 
             // checking special config param for active shop and language
             if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
@@ -975,10 +967,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $this->simpleRedirect($sUrl, $sHeaderCode);
 
         try { //may occur in case db is lost
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $session->freeze();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
             //do nothing else to make sure the redirect takes place
         }
 
@@ -1002,19 +994,19 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function prepareToExit()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         $session->freeze();
         $this->commitFileCache();
 
         ContainerFacade::dispatch(new ApplicationExitEvent());
 
         if ($this->isSearchEngine()) {
-            $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+            $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
             $header->setNonCacheable();
         }
 
         //Send headers that have been registered
-        $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+        $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
         $header->sendHeader();
     }
 
@@ -1060,7 +1052,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function fillExplodeArray($aName, $dVat = null)
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $oObject = new stdClass();
         $aPrice = explode('!P!', $aName[0]);
 
@@ -1077,7 +1069,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             } else {
                 $oCur = $myConfig->getActShopCurrencyObject();
                 $oObject->price = str_replace(',', '.', $oObject->price);
-                $oObject->fprice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
+                $oObject->fprice = Registry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
                 $oObject->priceUnit = 'abs';
             }
 
@@ -1094,7 +1086,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                 if ($dVat != null && $oObject->priceUnit == 'abs') {
                     $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
                     $oPrice->setPrice($oObject->price, $dVat);
-                    $aName[0] .= \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
+                    $aName[0] .= Registry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
                 } else {
                     $aName[0] .= $oObject->fprice;
                 }
@@ -1125,9 +1117,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $blCalculationModeNetto = $this->isPriceViewModeNetto();
 
-        $oCurrency = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
+        $oCurrency = Registry::getConfig()->getActShopCurrencyObject();
 
-        $blEnterNetPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice');
+        $blEnterNetPrice = Registry::getConfig()->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
             $dPrice = round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
@@ -1144,7 +1136,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function isPriceViewModeNetto()
     {
-        $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool) Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -1292,19 +1284,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function handlePageNotFoundError($sUrl = '')
     {
-        $this->setHeader("HTTP/1.0 404 Not Found");
-        $this->setHeader("Content-Type: text/html; charset=UTF-8");
+        $this->setHeader('HTTP/1.0 404 Not Found');
+        $this->setHeader('Content-Type: text/html; charset=UTF-8');
+        $errorPageHtml =  ContainerFacade::get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer()
+            ->renderTemplate('message/err_404', ['sUrl' => $sUrl]);
 
-        $sReturn = "Page not found.";
-        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-        $oView->init();
-        $oView->render();
-        $oView->setClassKey('oxUBase');
-        $oView->addTplParam('sUrl', $sUrl);
-        if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
-            $sReturn = $sRet;
-        }
-        $this->showMessageAndExit($sReturn);
+        $this->showMessageAndExit($errorPageHtml ?: 'Page not found.');
     }
 
     /**

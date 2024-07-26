@@ -584,7 +584,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
             $logId = md5(time() . rand() . rand());
             $header = $debugInfo->formatGeneralInfo();
-            $display = ContainerFacade::getParameter('oxid_debug_mode') ? 'none' : 'block';
+            $display = 'none';
             $monitorMessage = $this->formMonitorMessage($view);
 
             $logMessage = "

@@ -58,9 +58,6 @@ docker compose "${install_container_method}" -T \
     --db-name example \
     --db-user root \
     --db-password root \
-    --shop-url http://localhost.local/ \
-    --shop-directory /var/www/source \
-    --compile-directory "${OXID_BUILD_DIRECTORY}"
 
 if [ -e vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config

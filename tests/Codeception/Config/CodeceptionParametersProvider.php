@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Config;
 
 use OxidEsales\Codeception\Module\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
@@ -22,6 +23,8 @@ class CodeceptionParametersProvider
     public function getParameters(): array
     {
         $facts = new Facts();
+        $this->loadEnvironmentVariables();
+
         $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
         return [
             'SHOP_URL' => getenv('SHOP_URL') ?: $facts->getShopUrl(),
@@ -75,7 +78,7 @@ class CodeceptionParametersProvider
     {
         $testSuitePath = (string)getenv('TEST_SUITE');
         if ($testSuitePath === '' || $testSuitePath === '0') {
-            Path::join((new ProjectRootLocator())->getProjectRoot(), 'tests');
+            $testSuitePath = Path::join((new ProjectRootLocator())->getProjectRoot(), 'tests');
         }
         return $testSuitePath;
     }
@@ -121,5 +124,10 @@ class CodeceptionParametersProvider
     private function getDbPort(): int
     {
         return (int) getenv('DB_PORT') ?: $this->dbConfig->getPort();
+    }
+
+    private function loadEnvironmentVariables(): void
+    {
+        (new DotenvLoader((new ProjectRootLocator())->getProjectRoot()))->loadEnvironmentVariables();
     }
 }

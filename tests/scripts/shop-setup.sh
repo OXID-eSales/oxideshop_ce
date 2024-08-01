@@ -106,7 +106,7 @@ echo "codecept build exited with error code ${RESULT}"
     -c "${ABSOLUTE_PATH}/${TESTDIR}/codeception.yml" \
     --ext DotReporter \
     -o "paths: output: ${OUTPUT_DIR}" 2>&1 \
-| tee "${LOG_FILE}.txt"
+| tee "${LOG_FILE}"
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
 "${SCRIPT_DIR}check_log.sh" "${LOG_FILE}" "${PATTERN_FILE}"

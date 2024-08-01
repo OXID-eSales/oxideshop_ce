@@ -11,6 +11,7 @@
 ### Fixed
 - User registration in the Private Sales mode
 - New item in basket message display [#0007548](https://bugs.oxid-esales.com/view.php?id=7548) [PR-964](https://github.com/OXID-eSales/oxideshop_ce/pull/964)
+- Remove unnecessary `<small>` tags from CHF currency
 
 ### Changed
 -  

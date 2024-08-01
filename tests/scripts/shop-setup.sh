@@ -1,93 +1,113 @@
 #!/bin/bash
 set -e
-export SELENIUM_SERVER_HOST=selenium
-export BROWSER_NAME=chrome
-export DB_NAME=setup_test
-export DB_USERNAME=root
-export DB_PASSWORD=root
-export DB_HOST=mysql
-export DB_PORT=3306
-export SHOP_URL=http://localhost.local/
-if [ -d /var/www/vendor/oxid-esales/oxideshop-ce/source/ ]; then
-    export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
-else
-    export SHOP_SOURCE_PATH=/var/www/source/
-fi
-export THEME_ID=apex
-export SHOP_ROOT_PATH=/var/www
-SUITE="AcceptanceSetup"
-if [ ! -d "tests/Codeception/${SUITE}" ]; then
-  SUITE="acceptanceSetup"
-  if [ ! -d "tests/Codeception/${SUITE}" ]; then
-    echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in tests/Codeception\033[0m"
-    exit 1
-  fi
-fi
+SUITE="${1}"
 
-CODECEPT="vendor/bin/codecept"
-if [ ! -f "${CODECEPT}" ]; then
-    CODECEPT="/var/www/${CODECEPT}"
-    if [ ! -f "${CODECEPT}" ]; then
-        echo -e "\033[0;31mCould not find codecept in vendor/bin or /var/www/vendor/bin\033[0m"
-        exit 1
+function init() {
+    export SELENIUM_SERVER_HOST=selenium
+    export BROWSER_NAME=chrome
+    export DB_NAME=setup_test
+    export DB_USERNAME=root
+    export DB_PASSWORD=root
+    export DB_HOST=mysql
+    export DB_PORT=3306
+    export SHOP_URL=http://localhost.local/
+    if [ -d /var/www/vendor/oxid-esales/oxideshop-ce/source/ ]; then
+        export SHOP_SOURCE_PATH=/var/www/vendor/oxid-esales/oxideshop-ce/source/
+    else
+        export SHOP_SOURCE_PATH=/var/www/source/
     fi
-fi
-# wait for selenium host
-I=60
-until  [ $I -le 0 ]; do
-    curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status" |grep '"ready": true' && break
-    echo "."
-    sleep 1
-    ((I--))
-done
-set -e
-curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
+    export THEME_ID=apex
+    export SHOP_ROOT_PATH=/var/www
 
-"${CODECEPT}" build \
-    -c tests/codeception.yml
+    # shellcheck disable=SC2128
+    if [[ ${BASH_SOURCE} = */* ]]; then
+        SCRIPT_DIR=${BASH_SOURCE%/*}/
+    else
+        SCRIPT_DIR=./
+    fi
+    if [ -z "${ABSOLUTE_PATH}" ]; then
+        ABSOLUTE_PATH="$(pwd)"
+    else
+        ABSOLUTE_PATH="/var/www/${ABSOLUTE_PATH}"
+    fi
+    TESTDIR='tests'
+    if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}" ]; then
+        TESTDIR='Tests'
+        if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}" ]; then
+            echo -e "\033[0;31m###  Could not find folder tests or Tests in ${ABSOLUTE_PATH} ###\033[0m"
+            exit 1
+        fi
+    fi
+
+    [[ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TESTDIR}/Output"
+    [[ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TESTDIR}/Reports"
+
+    OUTPUT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Output"
+    REPORT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Reports"
+
+    if [ -z "${SELENIUM_SERVER_HOST}" ]; then
+        SELENIUM_SERVER_HOST='selenium'
+    fi
+
+    if [ -z "${SUITE}" ]; then
+        SUITE="AcceptanceSetup"
+        if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Codeception/${SUITE}" ]; then
+            SUITE="acceptanceSetup"
+            if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Codeception/${SUITE}" ]; then
+                echo -e "\033[0;31mCould not find suite AcceptanceSetup or acceptanceSetup in ${TESTDIR}/Codeception\033[0m"
+                exit 1
+            fi
+        fi
+    fi
+    LOG_FILE="${OUTPUT_DIR}/codeception_${SUITE}.txt"
+    PATTERN_FILE="${SCRIPT_DIR}codeception_failure_pattern.txt"
+
+    CODECEPT="vendor/bin/codecept"
+    if [ ! -f "${CODECEPT}" ]; then
+        CODECEPT="/var/www/${CODECEPT}"
+        if [ ! -f "${CODECEPT}" ]; then
+            echo -e "\033[0;31mCould not find codecept in vendor/bin or /var/www/vendor/bin\033[0m"
+            exit 1
+        fi
+    fi
+
+    cat <<EOF
+        Path: ${ABSOLUTE_PATH}
+        Script directory: ${SCRIPT_DIR}
+        Output directory: ${OUTPUT_DIR}
+        Report directory: ${REPORT_DIR}
+        Selenium host: ${SELENIUM_SERVER_HOST}
+        Suite: ${SUITE}
+        Codeception: ${CODECEPT}
+        Log file: ${LOG_FILE}
+        Failure patterns: ${PATTERN_FILE}
+EOF
+}
+
+# wait for selenium host
+function wait_for_selenium() {
+    local I=60
+    until  [ $I -le 0 ]; do
+        curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status" |grep '"ready": true' && break
+        echo "."
+        sleep 1
+        ((I--))
+    done
+    set -e
+    curl -sSjkL "http://${SELENIUM_SERVER_HOST}:4444/wd/hub/status"
+}
+
+init
+wait_for_selenium
+
+"${CODECEPT}" build -c "${ABSOLUTE_PATH}/${TESTDIR}/codeception.yml"
 RESULT=$?
 echo "codecept build exited with error code ${RESULT}"
 "${CODECEPT}" run "${SUITE}" \
-    -c tests/codeception.yml \
-    --ext DotReporter 2>&1 \
-| tee tests/Output/codeception_${SUITE}.txt
+    -c "${ABSOLUTE_PATH}/${TESTDIR}/codeception.yml" \
+    --ext DotReporter \
+    -o "paths: output: ${OUTPUT_DIR}" 2>&1 \
+| tee "${LOG_FILE}.txt"
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
-[[ ! -d tests/Output ]] && mkdir tests/Output
-find tests/Codeception/_output -type f -exec cp \{\} tests/Output/ \;
-if [ ! -s "tests/Output/codeception_${SUITE}.txt" ]; then
-    echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
-    RESULT=1
-fi
-cat >failure_pattern.tmp <<EOF
-fail
-\\.\\=\\=
-Warning
-Notice
-Deprecated
-Fatal
-Error
-DID NOT FINISH
-Test file ".+" not found
-Cannot open file
-No tests executed
-Could not read
-Warnings: [1-9][0-9]*
-Errors: [1-9][0-9]*
-Failed: [1-9][0-9]*
-Deprecations: [1-9][0-9]*
-Risky: [1-9][0-9]*
-EOF
-sed -e 's|(.*)\r|$1|' -i failure_pattern.tmp
-while read -r LINE ; do
-    if [ -n "${LINE}" ]; then
-        if grep -q -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"; then
-            echo -e "\033[0;31m codecept ${SUITE} failed matching pattern ${LINE}\033[0m"
-            grep -E "${LINE}" "tests/Output/codeception_${SUITE}.txt"
-            RESULT=1
-        else
-            echo -e "\033[0;32m codecept ${SUITE} passed matching pattern ${LINE}"
-        fi
-    fi
-done <failure_pattern.tmp
-exit ${RESULT}
+"${SCRIPT_DIR}check_log.sh" "${LOG_FILE}" "${PATTERN_FILE}"

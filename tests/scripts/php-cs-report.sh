@@ -9,16 +9,24 @@ set -x
 
 PHPCS_DIFF_ONLY='true'
 PHPCS_DIFF_FILTER='\.php$'
+TESTDIR='tests'
+if [ ! -d "${TESTDIR}" ]; then
+    TESTDIR='Tests'
+    if [ ! -d "${TESTDIR}" ]; then
+        echo -e "\033[0;31m###  Could not find folder tests or Tests in $(pwd) ###\033[0m"
+        exit 1
+    fi
+fi
 
 if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     echo -e "\033[0;35m###  Use git diff for phpcs using filter '${PHPCS_DIFF_FILTER}' ###\033[0m"
     if [ "${GITHUB_EVENT_NAME}" == 'pull_request' ]; then
-        URL="https://github.com/OXID-eSales/oxideshop_ce.git"
+        URL="https://oxidci:${GITHUB_TOKEN}@github.com/OXID-eSales/oxideshop_ee.git"
         git clone --depth 2 "${URL}" --branch ${GITHUB_BASE_REF} --single-branch .phpcs
         git -C .phpcs fetch origin ${GITHUB_REF}:tmp_pr
         git -C .phpcs checkout tmp_pr
     else
-        URL="https://github.com/OXID-eSales/oxideshop_ce.git"
+        URL="https://oxidci:${GITHUB_TOKEN}@github.com/OXID-eSales/oxideshop_ee.git"
         git clone --depth 2 "${URL}" --branch "${GITHUB_REF_NAME}" --single-branch .phpcs
     fi
     git -C .phpcs diff --name-only --diff-filter=AM "${GITHUB_REF}" HEAD~1 | grep "${PHPCS_DIFF_FILTER}" | while read -r file; do
@@ -38,14 +46,14 @@ if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     fi
     rm -rf .changed-files.txt .phpcs
     vendor/bin/phpcs \
-        --standard=tests/phpcs.xml \
+        --standard=${TESTDIR}${TESTDIR}/phpcs.xml \
         --report=json \
-        --report-file=tests/Reports/phpcs.report.json \
+        --report-file=${TESTDIR}/Reports/phpcs.report.json \
         ${FILES} \
     ||true
     # As the first one does not produce legible output, this gives us something to see in the log
     vendor/bin/phpcs \
-        --standard=tests/phpcs.xml \
+        --standard=${TESTDIR}/phpcs.xml \
         --report=full \
         ${FILES}
 else
@@ -53,13 +61,12 @@ else
     cd .phpcs
     find . -type f | grep "${PHPCS_DIFF_FILTER}" >changed-files.txt || true
     vendor/bin/phpcs \
-        --standard=tests/phpcs.xml \
+        --standard=${TESTDIR}/phpcs.xml \
         --report=json \
-        --report-file=tests/Reports/phpcs.report.json \
+        --report-file=${TESTDIR}/Reports/phpcs.report.json \
     ||true
     # As the first one does not produce legible output, this gives us something to see in the log
     vendor/bin/phpcs \
-        --standard=tests/phpcs.xml \
+        --standard=${TESTDIR}/phpcs.xml \
         --report=full
 fi
-

@@ -1,59 +1,80 @@
 #!/bin/bash
 set -e
-PHPUNIT="vendor/bin/phpunit"
-if [ ! -f "${PHPUNIT}" ]; then
-    PHPUNIT="/var/www/${PHPUNIT}"
-    if [ ! -f "${PHPUNIT}" ]; then
-        echo -e "\033[0;31mCould not find phpunit in vendor/bin or /var/www/vendor/bin\033[0m"
-        exit 1
+export XDEBUG_MODE=coverage
+function init() {
+    # shellcheck disable=SC2128
+    if [[ ${BASH_SOURCE} = */* ]]; then
+        SCRIPT_DIR=${BASH_SOURCE%/*}/
+    else
+        SCRIPT_DIR=./
     fi
-fi
-"${PHPUNIT}" \
-    -c phpunit.xml \
-    --bootstrap tests/bootstrap.php \
-    --coverage-clover=tests/Reports/coverage_phpunit_unit.xml \
-    --log-junit tests/Reports/phpunit-unit.xml \
-    tests/Unit 2>&1 \
-| tee tests/Output/unit_tests.txt
-RESULT=$?
-echo "phpunit exited with error code ${RESULT}"
-if [ ! -s "tests/Output/unit_tests.txt" ]; then
-    echo -e "\033[0;31mLog file is empty! Seems like no tests have been run!\033[0m"
-    RESULT=1
-fi
-cat >failure_pattern.tmp <<EOF
-fail
-\\.\\=\\=
-Warning
-Notice
-Deprecated
-Fatal
-Error
-DID NOT FINISH
-Test file ".+" not found
-Cannot open file
-No tests executed
-Could not read
-Warnings: [1-9][0-9]*
-Errors: [1-9][0-9]*
-Failed: [1-9][0-9]*
-Deprecations: [1-9][0-9]*
-Risky: [1-9][0-9]*
-EOF
-sed -e 's|(.*)\r|$1|' -i failure_pattern.tmp
-while read -r LINE ; do
-    if [ -n "${LINE}" ]; then
-        if grep -q -E "${LINE}" "tests/Output/unit_tests.txt"; then
-            echo -e "\033[0;31m unit test failed matching pattern ${LINE}\033[0m"
-            grep -E "${LINE}" "tests/Output/unit_tests.txt"
-            RESULT=1
-        else
-            echo -e "\033[0;32m unit test passed matching pattern ${LINE}"
+    if [ -z "${ABSOLUTE_PATH}" ]; then
+        ABSOLUTE_PATH="$(pwd)"
+    else
+        ABSOLUTE_PATH="/var/www/${ABSOLUTE_PATH}"
+    fi
+    TESTDIR='tests'
+    if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}" ]; then
+        TESTDIR='Tests'
+        if [ ! -d "${ABSOLUTE_PATH}/${TESTDIR}" ]; then
+            echo -e "\033[0;31m###  Could not find folder tests or Tests in ${ABSOLUTE_PATH} ###\033[0m"
+            exit 1
         fi
     fi
-done <failure_pattern.tmp
-if [[ ! -s "tests/Reports/coverage_phpunit_unit.xml" ]]; then
-    echo -e "\033[0;31m coverage report tests/Reports/coverage_phpunit_unit.xml is empty\033[0m"
-    RESULT=1
-fi
-exit ${RESULT}
+    [[ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TESTDIR}/Output"
+    [[ ! -d "${ABSOLUTE_PATH}/${TESTDIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TESTDIR}/Reports"
+
+    OUTPUT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Output"
+    REPORT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Reports"
+
+    if [ -z "${SUITE}" ]; then
+        SUITE="${ABSOLUTE_PATH}/${TESTDIR}/Unit"
+    fi
+
+    LOG_FILE="${OUTPUT_DIR}/phpunit_unit.txt"
+    PATTERN_FILE="${SCRIPT_DIR}unit_failure_pattern.txt"
+
+    PHPUNIT="vendor/bin/phpunit"
+    if [ ! -f "${PHPUNIT}" ]; then
+        PHPUNIT="/var/www/${PHPUNIT}"
+        if [ ! -f "${PHPUNIT}" ]; then
+            echo -e "\033[0;31mCould not find phpunit in vendor/bin or /var/www/vendor/bin\033[0m"
+            exit 1
+        fi
+    fi
+
+    BOOTSTRAP="/var/www/source/bootstrap.php"
+    if [ ! -f "${BOOTSTRAP}" ]; then
+        BOOTSTRAP="/var/www/vendor/oxid-esales/oxideshop-ce/tests/bootstrap.php"
+        if [ ! -f "${BOOTSTRAP}" ]; then
+            echo -e "\033[0;31mCould not find bootstrap.php in /var/www/tests or /var/www/oxid-esales/oxideshop-ce/tests\033[0m"
+            find /var/www -iname "bootstrap.php"
+            exit 1
+        fi
+    fi
+
+    XML_FILE="${ABSOLUTE_PATH}/${TESTDIR}/phpunit.xml"
+    COVERAGE_FILE="${REPORT_DIR}/coverage_phpunit_unit.xml"
+
+    cat <<EOF
+        Path: ${ABSOLUTE_PATH}
+        Script directory: ${SCRIPT_DIR}
+        Output directory: ${OUTPUT_DIR}
+        Report directory: ${REPORT_DIR}
+        Suite: ${SUITE}
+        Bootstrap: ${BOOTSTRAP}
+        Config: ${XML_FILE}
+        Phpunit: ${PHPUNIT}
+        Coverage: ${COVERAGE_FILE}
+        Log file: ${LOG_FILE}
+        Failure patterns: ${PATTERN_FILE}
+EOF
+}
+
+init
+
+"${PHPUNIT}" -c "${XML_FILE}" --bootstrap "${BOOTSTRAP}" --coverage-clover="${COVERAGE_FILE}" "${SUITE}" 2>&1 \
+| tee "${LOG_FILE}"
+RESULT=$?
+echo "phpunit exited with error code ${RESULT}"
+"${SCRIPT_DIR}check_log.sh" "${LOG_FILE}" "${PATTERN_FILE}"

@@ -21,12 +21,12 @@ fi
 if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     echo -e "\033[0;35m###  Use git diff for phpcs using filter '${PHPCS_DIFF_FILTER}' ###\033[0m"
     if [ "${GITHUB_EVENT_NAME}" == 'pull_request' ]; then
-        URL="https://oxidci:${GITHUB_TOKEN}@github.com/OXID-eSales/oxideshop_ee.git"
+        URL="https://github.com/OXID-eSales/oxideshop_ce.git"
         git clone --depth 2 "${URL}" --branch ${GITHUB_BASE_REF} --single-branch .phpcs
         git -C .phpcs fetch origin ${GITHUB_REF}:tmp_pr
         git -C .phpcs checkout tmp_pr
     else
-        URL="https://oxidci:${GITHUB_TOKEN}@github.com/OXID-eSales/oxideshop_ee.git"
+        URL="https://github.com/OXID-eSales/oxideshop_ce.git"
         git clone --depth 2 "${URL}" --branch "${GITHUB_REF_NAME}" --single-branch .phpcs
     fi
     git -C .phpcs diff --name-only --diff-filter=AM "${GITHUB_REF}" HEAD~1 | grep "${PHPCS_DIFF_FILTER}" | while read -r file; do

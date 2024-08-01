@@ -53,7 +53,7 @@ function init() {
         fi
     fi
 
-    XML_FILE="${ABSOLUTE_PATH}/${TESTDIR}/phpunit.xml"
+    XML_FILE="${ABSOLUTE_PATH}/phpunit.xml"
     COVERAGE_FILE="${REPORT_DIR}/coverage_phpunit_unit.xml"
 
     cat <<EOF

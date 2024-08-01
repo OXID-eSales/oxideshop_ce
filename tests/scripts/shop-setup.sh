@@ -3,7 +3,6 @@ set -e
 SUITE="${1}"
 
 function init() {
-    export SELENIUM_SERVER_HOST=selenium
     export BROWSER_NAME=chrome
     export DB_NAME=setup_test
     export DB_USERNAME=root
@@ -46,7 +45,7 @@ function init() {
     REPORT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Reports"
 
     if [ -z "${SELENIUM_SERVER_HOST}" ]; then
-        SELENIUM_SERVER_HOST='selenium'
+        export SELENIUM_SERVER_HOST=selenium
     fi
 
     if [ -z "${SUITE}" ]; then

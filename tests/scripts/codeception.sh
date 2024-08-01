@@ -30,7 +30,7 @@ function init() {
     REPORT_DIR="${ABSOLUTE_PATH}/${TESTDIR}/Reports"
 
     if [ -z "${SELENIUM_SERVER_HOST}" ]; then
-        SELENIUM_SERVER_HOST='selenium'
+        export SELENIUM_SERVER_HOST=selenium
     fi
 
     if [ -z "${SUITE}" ]; then

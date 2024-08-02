@@ -1,0 +1,17 @@
+fail
+\\.\\=\\=
+Warning
+Notice
+Deprecated
+Fatal
+Error
+DID NOT FINISH
+Test file ".+" not found
+Cannot open file
+No tests executed
+Could not read
+Warnings: [1-9][0-9]*
+Errors: [1-9][0-9]*
+Failed: [1-9][0-9]*
+Deprecations: [1-9][0-9]*
+Risky: [1-9][0-9]*

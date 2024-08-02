@@ -46,7 +46,7 @@ if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     fi
     rm -rf .changed-files.txt .phpcs
     vendor/bin/phpcs \
-        --standard=${TESTDIR}${TESTDIR}/phpcs.xml \
+        --standard=${TESTDIR}/phpcs.xml \
         --report=json \
         --report-file=${TESTDIR}/Reports/phpcs.report.json \
         ${FILES} \

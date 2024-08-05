@@ -69,6 +69,7 @@ $aLang = [
 'CELLUAR_PHONE'                                               => 'Cell phone',
 'CHANGE'                                                      => 'Change',
 'CHANGE_ACCOUNT_PASSWORD'                                     => 'Change account password',
+'CHANGE_LANGUAGE_AND_CURRENCY'                                => 'Change language and currency',
 'CHANGE_PASSWORD'                                             => 'Change password',
 'CHARGES'                                                     => 'Charges',
 'CHECKOUT'                                                    => 'Checkout',

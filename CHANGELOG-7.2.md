@@ -3,7 +3,7 @@
 ## v7.2.0 - unreleased
 
 ### Added
-- 
+- Translations for Change language and currency
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed

@@ -8,15 +8,15 @@
 - Support PSR caching interface, related functionalities and applied them on module cache.
 - Registration of environment variables via Symfony Dotenv Component
 - Bootstrap parameters have been moved from config.inc.php to environment and container parameters
-- Container parameters
-  - `oxid_debug_mode`
-  - `oxid_smtp_debug_mode`
-  - `oxid_multilingual_tables`
-  - `oxid_skip_database_views_usage`
-  - `oxid_multishop_article_fields`
-  - `oxid_show_update_views_button`
-  - `oxid_shop_url`
-  - `oxid_shop_admin_url`
+  - Container parameters
+    - `oxid_debug_mode`
+    - `oxid_smtp_debug_mode`
+    - `oxid_multilingual_tables`
+    - `oxid_skip_database_views_usage`
+    - `oxid_multishop_article_fields`
+    - `oxid_show_update_views_button`
+    - `oxid_shop_url`
+    - `oxid_shop_admin_url`
 
 ### Changed
 
@@ -62,6 +62,6 @@
   - `sShopURL`
   - `sSSLShopURL`
   - `sAdminSSLURL`
-- The ConfigFile for setup will no longer be used. Please use container parameters to obtain the necessary settings
+- The `ConfigFile` will no longer be used. Please use container parameters to obtain the necessary settings
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods

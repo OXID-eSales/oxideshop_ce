@@ -21,13 +21,6 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aDbTablesFields = null;
-
-
-    /**
-     *
-     * @var array
-     */
     protected $_aTables = null;
 
     /**
@@ -542,11 +535,11 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Updates all views
      *
-     * @param array $tables array of DB table name that can store different data per shop like oxArticle
+     * @param array|null $tables array of DB table name that can store different data per shop like oxArticle
      *
      * @return bool
      */
-    public function updateViews($tables = null)
+    public function updateViews(array $tables = null): bool
     {
         set_time_limit(0);
 
@@ -559,7 +552,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         $shops = $db->getAll('select * from oxshops');
 
-        $tables = $tables ?: $config->getConfigParam('aMultiShopTables');
+        $tables = $tables ?: ContainerFacade::getParameter('oxid_multi_shop_tables');
 
         $success = true;
         foreach ($shops as $shopValues) {

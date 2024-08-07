@@ -13,10 +13,11 @@
     - `oxid_smtp_debug_mode`
     - `oxid_multilingual_tables`
     - `oxid_skip_database_views_usage`
-    - `oxid_multishop_article_fields`
+    - `oxid_multi_shop_article_fields`
     - `oxid_show_update_views_button`
     - `oxid_shop_url`
     - `oxid_shop_admin_url`
+    - `oxid_multi_shop_tables`
 
 ### Changed
 

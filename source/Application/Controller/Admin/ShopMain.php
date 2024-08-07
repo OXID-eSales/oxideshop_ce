@@ -7,7 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Shop;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * Admin article main shop manager.
@@ -33,7 +38,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      */
     public function render()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         parent::render();
 
         $shopId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -48,8 +53,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $shopId = $this->updateShopIdByUser($user, $shopId, true);
 
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
-            // load object
-            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
+            $shop = oxNew(Shop::class);
             $subjLang = Registry::getRequest()->getRequestEscapedParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
@@ -62,7 +66,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $shop->loadInLang($subjLang, $shopId);
 
             $this->_aViewData["edit"] = $shop;
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $shopId);
+            Registry::getSession()->setVariable("shp", $shopId);
         }
 
         $this->checkParent($shop);
@@ -84,7 +88,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     {
         parent::save();
 
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         $shopId = $this->getEditObjectId();
 
         $parameters = Registry::getRequest()->getRequestEscapedParameter("editval");
@@ -100,7 +104,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $subjLang = Registry::getRequest()->getRequestEscapedParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
-        $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
+        $shop = oxNew(Shop::class);
         if ($shopId != self::NEW_SHOP_ID) {
             $shop->loadInLang($shopLanguageId, $shopId);
         } else {
@@ -126,7 +130,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         try {
             $shop->save();
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $e) {
+        } catch (StandardException $e) {
             $this->checkExceptionType($e);
             return;
         }
@@ -135,7 +139,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         $this->updateShopInformation($config, $shop, $shopId);
 
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $shopId);
+        Registry::getSession()->setVariable("actshop", $shopId);
     }
 
     /**
@@ -143,7 +147,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      *
      * @return array
      */
-    protected function getNonCopyConfigVars()
+    protected function getNonCopyConfigVars(): array
     {
         $nonCopyVars = [
             'aSerials',
@@ -153,10 +157,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             'sBackTag',
             'sUtilModule',
         ];
-        //adding non copable multishop field options
-        $multiShopTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiShopTables');
-        foreach ($multiShopTables as $multishopTable) {
-            $nonCopyVars[] = 'blMallInherit_' . strtolower($multishopTable);
+        $multiShopTables = ContainerFacade::getParameter('oxid_multi_shop_tables');
+        foreach ($multiShopTables as $multiShopTable) {
+            $nonCopyVars[] = 'blMallInherit_' . strtolower($multiShopTable);
         }
 
         return $nonCopyVars;
@@ -165,19 +168,20 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Copies base shop config variables to current
      *
-     * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
+     * @param Shop $shop new shop object
      */
     protected function copyConfigVars($shop)
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $config = Registry::getConfig();
+        $utilsObject = Registry::getUtilsObject();
+        $db = DatabaseProvider::getDb();
 
         $nonCopyVars = $this->getNonCopyConfigVars();
 
         $selectShopConfigurationQuery =
             "select oxvarname, oxvartype, oxvarvalue, oxmodule
             from oxconfig where oxshopid = '1'";
+
         $shopConfiguration = $db->select($selectShopConfigurationQuery);
         if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
             while (!$shopConfiguration->EOF) {
@@ -193,7 +197,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
                         ':oxvarname' => $shopConfiguration->fields[0],
                         ':oxvartype' => $shopConfiguration->fields[1],
                         ':value' => $shopConfiguration->fields[2],
-                        ':oxmodule' => $shopConfiguration->fields[3]
+                        ':oxmodule' => $shopConfiguration->fields[3],
                     ]);
                 }
                 $shopConfiguration->fetchRow();
@@ -201,9 +205,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         }
 
         $inheritAll = $shop->oxshops__oxisinherited->value ? "true" : "false";
-        $multiShopTables = $config->getConfigParam('aMultiShopTables');
-        foreach ($multiShopTables as $multishopTable) {
-            $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multishopTable), $inheritAll, $shop->oxshops__oxid->value);
+        $multiShopTables = ContainerFacade::getParameter('oxid_multi_shop_tables');
+        foreach ($multiShopTables as $multiShopTable) {
+            $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multiShopTable), $inheritAll, $shop->oxshops__oxid->value);
         }
     }
 
@@ -218,11 +222,11 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     }
 
     /**
-     * Check user rights and change userId if need.
+     * Check user rights and change userId if it needs.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $user
-     * @param string                                   $shopId
-     * @param bool                                     $updateViewData If needs to update view data when shop Id changes.
+     * @param User $user
+     * @param string $shopId
+     * @param bool $updateViewData Update view data when shop ID changes.
      *
      * @return string
      */
@@ -234,7 +238,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Load Shop parent and set result to _aViewData.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
+     * @param Shop $shop
      */
     protected function checkParent($shop)
     {
@@ -257,7 +261,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Check for exception type and set it to _aViewData.
      *
-     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
+     * @param StandardException $exception
      */
     protected function checkExceptionType($exception)
     {
@@ -266,8 +270,8 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Check if Shop can be created.
      *
-     * @param string                                   $shopId
-     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
+     * @param string $shopId
+     * @param Shop $shop
      *
      * @return bool
      */
@@ -279,9 +283,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Update shop information in DB and oxConfig.
      *
-     * @param \OxidEsales\Eshop\Core\Config            $config
-     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
-     * @param string                                   $shopId
+     * @param \OxidEsales\Eshop\Core\Config $config
+     * @param Shop $shop
+     * @param string $shopId
      */
     protected function updateShopInformation($config, $shop, $shopId)
     {

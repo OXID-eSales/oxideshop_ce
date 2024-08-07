@@ -550,6 +550,8 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     {
         set_time_limit(0);
 
+        Shop::disableViews();
+
         $db = DatabaseProvider::getDb();
         $config = Registry::getConfig();
 
@@ -563,7 +565,6 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         foreach ($shops as $shopValues) {
             $shopId = $shopValues[0];
             $shop = oxNew(Shop::class);
-            $shop->disableViews();
             $shop->load($shopId);
             $shop->setMultiShopTables($tables);
             $mallInherit = [];

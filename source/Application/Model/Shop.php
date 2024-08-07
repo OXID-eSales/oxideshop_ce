@@ -30,11 +30,11 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /** @var bool Defines if multishop inherits categories. */
     protected $_blMultiShopInheritCategories = false;
 
-    protected bool $disabledViewUsage = false;
+    static private bool $disabledViewUsage = false;
 
-    public function disableViews(): void
+    public static function disableViews(): void
     {
-        $this->disabledViewUsage = true;
+        self::$disabledViewUsage = true;
     }
 
     /**
@@ -195,7 +195,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     public function getViewName($forceCoreTableUsage = null)
     {
-        if ($this->disabledViewUsage) {
+        if (self::$disabledViewUsage) {
             return $this->getCoreTableName();
         }
 

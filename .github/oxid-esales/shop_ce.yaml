@@ -2,6 +2,7 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 
 install: &install
+  add_services: 'selenium-chrome-126'
   method: script
   script: 'source/.github/oxid-esales/install.sh'
   cache:

@@ -35,7 +35,7 @@ if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     fi
     done >.changed-files.txt || true
     if [[ -f ".changed-files.txt" && -s ".changed-files.txt" ]]; then
-        cat changed-files.txt
+        cat .changed-files.txt
         FILES=""
         for FILE in $(cat .changed-files.txt); do
             FILES="${FILES} ${FILE}"
@@ -59,7 +59,6 @@ if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
 else
     echo -e "\033[0;35m###  Use full file list for phpcs using filter '${PHPCS_DIFF_FILTER}' ###\033[0m"
     cd .phpcs
-    find . -type f | grep "${PHPCS_DIFF_FILTER}" >changed-files.txt || true
     vendor/bin/phpcs \
         --standard=${TESTDIR}/phpcs.xml \
         --report=json \

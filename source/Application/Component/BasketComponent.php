@@ -61,35 +61,30 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // END deprecated
     ];
 
-    /**
-     * Initiates component.
-     */
     public function init()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
-            if ($oReservations = $session->getBasketReservations()) {
-                if (!$oReservations->getTimeLeft()) {
-                    $oBasket = $session->getBasket();
-                    if ($oBasket && $oBasket->getProductsCount()) {
-                        $this->emptyBasket($oBasket);
+        if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            $basketReservations = Registry::getSession()->getBasketReservations();
+            if ($basketReservations) {
+                if (!$basketReservations->getTimeLeft()) {
+                    $basket = Registry::getSession()->getBasket();
+                    if ($basket && $basket->getProductsCount()) {
+                        $this->emptyBasket($basket);
                     }
                 }
-                $iLimit = (int) $oConfig->getConfigParam('iBasketReservationCleanPerRequest');
-                if (!$iLimit) {
-                    $iLimit = 200;
-                }
-                $oReservations->discardUnusedReservations($iLimit);
+                $basketReservations->discardUnusedReservations(
+                    ContainerFacade::getParameter('oxid_basket_reservation_cleanup_rate')
+                );
             }
         }
 
         parent::init();
 
         // Basket exclude
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
-            if ($oBasket = $session->getBasket()) {
-                $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
+        if (Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
+            $basket = Registry::getSession()->getBasket();
+            if ($basket) {
+                $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $basket->getContents());
             }
         }
     }
@@ -102,7 +97,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function render()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         // recalculating
         if ($oBasket = $session->getBasket()) {
@@ -146,8 +141,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // adding to basket is not allowed ?
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+        $myConfig = Registry::getConfig();
+        if (Registry::getUtils()->isSearchEngine()) {
             return;
         }
 
@@ -218,7 +213,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         // fetching item ID
         if (!$sProductId) {
@@ -296,7 +291,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if (Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
             // saving return to shop link to session
             Registry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 
@@ -398,9 +393,9 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function addItems($products)
     {
-        $activeView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
+        $activeView = Registry::getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         $basket = $session->getBasket();
         $basketInfo = $basket->getBasketSummary();
@@ -490,7 +485,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function isRootCatChanged()
     {
         // in Basket
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         $oBasket = $session->getBasket();
         if ($oBasket->showCatChangeWarning()) {
             $oBasket->setCatChangeWarningState(false);
@@ -529,7 +524,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return "basket";
         } else {
             // clear basket
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $session->getBasket()->deleteBasket();
             $this->getParent()->setRootCatChanged(false);
         }
@@ -595,7 +590,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         } catch (OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
-            if (!$errorDestination && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+            if (!$errorDestination && Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
             Registry::getUtilsView()->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);

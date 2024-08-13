@@ -35,7 +35,6 @@ final class UserTest extends TestCase
                 )
         );
         $this->assertEmpty($user->getFieldData('oxpasssalt'));
-
     }
 
     public function testSetPasswordWithEmptyPass(): void
@@ -46,5 +45,24 @@ final class UserTest extends TestCase
 
         $this->assertEmpty($user->getFieldData('oxpassword'));
         $this->assertEmpty($user->getFieldData('oxpasssalt'));
+    }
+
+    public function testGetBoniWithDefaultConfig(): void
+    {
+        $rating = oxNew(User::class)->getBoni();
+
+        $this->assertEquals(1000, $rating);
+    }
+
+    public function testGetBoniWithModifiedConfig(): void
+    {
+        $configValue = 123;
+        $this->setParameter('oxid_shop_credit_rating', $configValue);
+        $this->setParameter('oxid_build_directory', getenv('OXID_BUILD_DIRECTORY'));
+        $this->replaceContainerInstance();
+
+        $rating = oxNew(User::class)->getBoni();
+
+        $this->assertEquals($configValue, $rating);
     }
 }

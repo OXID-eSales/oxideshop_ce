@@ -7,14 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
 use Exception;
-use oxDb;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 /**
  * Article list manager.
@@ -1152,18 +1149,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function canUpdatePrices()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $blCan = false;
-
-        // crontab is off?
-        if (!$oConfig->getConfigParam("blUseCron")) {
-            $iTimeToUpdate = $oConfig->getConfigParam("iTimeToUpdatePrices");
-            if (!$iTimeToUpdate || $iTimeToUpdate <= \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) {
-                $blCan = true;
-            }
+        if (ContainerFacade::getParameter('oxid_cron_enabled')) {
+            return false;
         }
+        $timeToUpdate = Registry::getConfig()->getConfigParam("iTimeToUpdatePrices");
 
-        return $blCan;
+        return empty($timeToUpdate) || $timeToUpdate <= Registry::getUtilsDate()->getTime();
     }
 
     /**

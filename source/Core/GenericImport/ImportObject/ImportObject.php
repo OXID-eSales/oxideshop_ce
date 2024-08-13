@@ -87,7 +87,7 @@ abstract class ImportObject
     }
 
     /**
-     * Used for the RR implementation, right now not really used.
+     * Used for the RR implementation.
      *
      * @return array
      */

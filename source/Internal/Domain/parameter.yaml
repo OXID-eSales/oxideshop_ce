@@ -1,0 +1,4 @@
+parameters:
+  oxid_basket_reservation_cleanup_rate: 200
+  oxid_seo_mode: true
+  oxid_shop_credit_rating: 1000

@@ -7,13 +7,15 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use stdClass;
-use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Filesystem\Path;
+
+use function is_array;
 
 /**
  * General utils class
@@ -862,31 +864,19 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if Seo mode should be used
      *
-     * @param bool   $blReset  used to reset cached SEO mode
-     * @param string $sShopId  shop id (optional; if not passed active session shop id will be used)
-     * @param int    $iActLang language id (optional; if not passed active session language will be used)
+     * @param bool $reset used to reset cached SEO mode
+     * @param string $shopId shop id (optional; if not passed active session shop id will be used)
+     * @param int $languageId language id (optional; if not passed active session language will be used)
      *
      * @return bool
      */
-    public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
+    public function seoIsActive($reset = false, $shopId = null, $languageId = null)
     {
-        if (!is_null($this->_blSeoIsActive) && !$blReset) {
-            return $this->_blSeoIsActive;
-        }
-
-        $myConfig = Registry::getConfig();
-
-        if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
-            $this->_blSeoIsActive = true;
-
-            $aSeoModes = $myConfig->getconfigParam('aSeoModes');
-            $sActShopId = $sShopId ? $sShopId : $myConfig->getActiveShop()->getId();
-            $iActLang = $iActLang ? $iActLang : (int) Registry::getLang()->getBaseLanguage();
-
-            // checking special config param for active shop and language
-            if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
-                $this->_blSeoIsActive = (bool) $aSeoModes[$sActShopId][$iActLang];
-            }
+        if (!isset($this->_blSeoIsActive) || $reset) {
+            $this->_blSeoIsActive = $this->isSeoEnabled() && !$this->isSeoDisabledForShopAndLanguage(
+                (int)$shopId ?: Registry::getConfig()->getActiveShop()->getId(),
+                (int)$languageId ?: (int)Registry::getLang()->getBaseLanguage()
+            );
         }
 
         return $this->_blSeoIsActive;
@@ -1191,8 +1181,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns full path (including file name) to cache file
      *
-     * @todo: test
-     *
      * @param string $sCacheName cache file name
      * @param bool   $blPathOnly if TRUE, name parameter will be ignored and only cache folder will be returned (default FALSE)
      * @param string $sExtension cache file extension
@@ -1322,5 +1310,17 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sHost;
+    }
+
+    private function isSeoEnabled(): bool
+    {
+        return (bool)ContainerFacade::getParameter('oxid_seo_mode');
+    }
+
+    private function isSeoDisabledForShopAndLanguage(int $shopId, int $languageId): bool
+    {
+        $seoModes = Registry::getConfig()->getconfigParam('aSeoModes');
+
+        return is_array($seoModes) && isset($seoModes[$shopId][$languageId]) && !$seoModes[$shopId][$languageId];
     }
 }

@@ -30,19 +30,6 @@ $this->blSeoLogging = false;
 $this->sAdminEmail = '';
 
 /**
- * Works only if basket reservations feature is enabled in admin.
- *
- * The number specifies how many expired basket reservations are
- * cleaned per one request (to the eShop).
- * Cleaning a reservation basically means returning the reserved
- * stock to the articles.
- *
- * Keeping this number too low may cause article stock being returned too
- * slowly, while too high value may have spiking impact on the performance.
- */
-$this->iBasketReservationCleanPerRequest = 200;
-
-/**
  * To override FrontendController::$_aUserComponentNames use this array option:
  * array keys are component(class) names and array values defines if component is cacheable (true/false)
  * E.g. array('user_class' => false);
@@ -57,16 +44,7 @@ $this->blUseCron = false;
  * This options have no effect on Community/Professional Editions.
  */
 
-/**
- * Enables Rights and Roles engine
- * 0 - off,
- * 1 - only in admin,
- * 2 - only in shop,
- * 3 - both
- */
-$this->blUseRightsRoles = 3;
-
-// If default 30 seconds is not enougth
+// If default 30 seconds is not enough
 // @set_time_limit(3000);
 
 // Control the removal of Setup directory

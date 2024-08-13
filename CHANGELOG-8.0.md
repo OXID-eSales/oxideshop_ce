@@ -18,6 +18,11 @@
     - `oxid_shop_url`
     - `oxid_shop_admin_url`
     - `oxid_multi_shop_tables`
+    - `oxid_basket_reservation_cleanup_rate`
+    - `oxid_cron_enabled`
+    - `oxid_user_rights_roles_mode`
+    - `oxid_seo_mode`
+    - `oxid_shop_credit_rating`
 - Interface for storing Symfony Service Container parameters in configuration
 
 ### Changed
@@ -80,6 +85,12 @@
   - `sAuthOpenIdRandSource`
   - `aSlaveHosts`
   - `iDebugSlowQueryTime`
+  - `iBasketReservationCleanPerRequest`
+  - `blUseCron`
+  - `blUseRightsRoles`
+  - `blMallSharedBasket`
+  - `blSeoMode`
+  - `iCreditRating`
 - The `ConfigFile` will no longer be used. Please use container parameters to obtain the necessary settings
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods

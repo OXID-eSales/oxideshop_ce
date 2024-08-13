@@ -1116,11 +1116,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBoni()
     {
-        if (!$iBoni = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iCreditRating')) {
-            $iBoni = 1000;
-        }
-
-        return $iBoni;
+        return ContainerFacade::getParameter('oxid_shop_credit_rating');
     }
 
     /**

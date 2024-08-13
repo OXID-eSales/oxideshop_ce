@@ -990,12 +990,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getBasketName()
     {
-        $myConfig = Registry::getConfig();
-        if ($myConfig->getConfigParam('blMallSharedBasket') == 0) {
-            return $myConfig->getShopId() . "_basket";
-        }
-
-        return "basket";
+        return 'basket';
     }
 
     /**

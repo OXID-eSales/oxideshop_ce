@@ -2,3 +2,4 @@ parameters:
   oxid_build_directory: '%env(OXID_BUILD_DIRECTORY)%'
   oxid_debug_mode: '%env(bool:OXID_DEBUG_MODE)%'
   oxid_smtp_debug_mode: false
+  oxid_cron_enabled: false

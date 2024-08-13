@@ -864,30 +864,28 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if Seo mode should be used
      *
-     * @param bool   $blReset  used to reset cached SEO mode
-     * @param string $sShopId  shop id (optional; if not passed active session shop id will be used)
-     * @param int    $iActLang language id (optional; if not passed active session language will be used)
+     * @param bool   $reset  used to reset cached SEO mode
+     * @param string $shopId  shop id (optional; if not passed active session shop id will be used)
+     * @param int    $activeLang language id (optional; if not passed active session language will be used)
      *
      * @return bool
      */
-    public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
+    public function seoIsActive($reset = false, $shopId = null, $activeLang = null)
     {
-        if (!is_null($this->_blSeoIsActive) && !$blReset) {
+        if (!is_null($this->_blSeoIsActive) && !$reset) {
             return $this->_blSeoIsActive;
         }
 
         $myConfig = Registry::getConfig();
 
-        if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
-            $this->_blSeoIsActive = true;
-
-            $aSeoModes = $myConfig->getconfigParam('aSeoModes');
-            $sActShopId = $sShopId ? $sShopId : $myConfig->getActiveShop()->getId();
-            $iActLang = $iActLang ? $iActLang : (int) Registry::getLang()->getBaseLanguage();
+        if (($this->_blSeoIsActive = ContainerFacade::getParameter('oxid_seo_mode')) === true) {
+            $seoModes = $myConfig->getconfigParam('aSeoModes');
+            $activeShopId = $shopId ?: $myConfig->getActiveShop()->getId();
+            $activeLang = $activeLang ?: (int) Registry::getLang()->getBaseLanguage();
 
             // checking special config param for active shop and language
-            if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
-                $this->_blSeoIsActive = (bool) $aSeoModes[$sActShopId][$iActLang];
+            if (is_array($seoModes) && isset($seoModes[$activeShopId]) && isset($seoModes[$activeShopId][$activeLang])) {
+                $this->_blSeoIsActive = (bool) $seoModes[$activeShopId][$activeLang];
             }
         }
 

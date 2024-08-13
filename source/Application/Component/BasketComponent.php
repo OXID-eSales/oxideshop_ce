@@ -66,30 +66,28 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function init()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
-            if ($oReservations = $session->getBasketReservations()) {
-                if (!$oReservations->getTimeLeft()) {
-                    $oBasket = $session->getBasket();
-                    if ($oBasket && $oBasket->getProductsCount()) {
-                        $this->emptyBasket($oBasket);
-                    }
+        $basketReservations = $session->getBasketReservations();
+        if ($config->getConfigParam('blPsBasketReservationEnabled') && $basketReservations) {
+            if (!$basketReservations->getTimeLeft()) {
+                $basket = $session->getBasket();
+                if ($basket && $basket->getProductsCount()) {
+                    $this->emptyBasket($basket);
                 }
-                $iLimit = (int) $oConfig->getConfigParam('iBasketReservationCleanPerRequest');
-                if (!$iLimit) {
-                    $iLimit = 200;
-                }
-                $oReservations->discardUnusedReservations($iLimit);
             }
+
+            $basketReservations->discardUnusedReservations(
+                ContainerFacade::getParameter('oxid_basket_reservation_cleanup_rate')
+            );
         }
 
         parent::init();
 
         // Basket exclude
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
-            if ($oBasket = $session->getBasket()) {
-                $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
+            if ($basket = $session->getBasket()) {
+                $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $basket->getContents());
             }
         }
     }

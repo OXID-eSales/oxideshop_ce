@@ -71,8 +71,7 @@ runscript: &runscript
       [
         "shop:~/unit.sh",
         "shop:~/integration.sh",
-        "shop:~/codeception.sh",
-        "setup:~/shop-setup.sh"
+        "shop:~/codeception.sh"
       ]
   shop: &shop
     path: 'vendor/{{ $org}}/{{ $name }}'

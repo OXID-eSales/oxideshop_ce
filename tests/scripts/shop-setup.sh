@@ -109,4 +109,7 @@ echo "codecept build exited with error code ${RESULT}"
 | tee "${LOG_FILE}"
 RESULT=$?
 echo "codecept run exited with error code ${RESULT}"
+if [ -f /var/www/source/config.inc.php ]; then
+    cp /var/www/source/config.inc.php "${OUTPUT_DIR}"/config.inc.php
+fi
 "${SCRIPT_DIR}check_log.sh" "${LOG_FILE}" "${PATTERN_FILE}"

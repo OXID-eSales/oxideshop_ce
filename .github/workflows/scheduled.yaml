@@ -7,12 +7,13 @@ on:
 jobs:
   oxideshop_ce_71x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
     with:
-      testplan: '~/defaults/7.1.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
+      testplan: '~/defaults/7.1.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '7.1.x-nightly'
@@ -30,12 +31,13 @@ jobs:
 
   oxideshop_ce_72x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
     with:
-      testplan: '~/defaults/7.2.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
+      testplan: '~/defaults/7.2.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '7.2.x-nightly'
@@ -53,12 +55,13 @@ jobs:
 
   oxideshop_ce_80x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
     with:
-      testplan: '~/defaults/8.0.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
+      testplan: '~/defaults/8.0.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
+      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '8.0.x-nightly'

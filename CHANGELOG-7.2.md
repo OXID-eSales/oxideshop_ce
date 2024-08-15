@@ -7,7 +7,8 @@
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed
-- Config parameters `sShopDir`, `sCompileDir`, `sLogLevel`, `iDebug`, `sShopURL`, `sSSLShopURL` and `sAdminSSLURL` will be moved from config file to env parameters
+- Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html)
+will be moved to env or container parameters
 - Global functions `warningHandler(), dumpVar(), debug()`
 - `ConnectionProviderInterface` will be superseded by `ConnectionFactory` in next major
 - Redundant interfaces `TransactionServiceInterface, FinderFactoryInterface`

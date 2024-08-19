@@ -19,6 +19,7 @@ jobs:
           title: '7.1.x-nightly'
         finish:
           slack_title: 'Nightly Shop CE 7.1.x on {{ .Github.Repository }}'
+      use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -28,6 +29,7 @@ jobs:
       enterprise_github_token: ${{ secrets.enterprise_github_token }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SLACK_SCHEDULED_WEBHOOK_URL: ${{ secrets.SLACK_SCHEDULED_WEBHOOK_URL }}
 
   oxideshop_ce_72x_nightly:
     if: always()
@@ -43,6 +45,7 @@ jobs:
           title: '7.2.x-nightly'
         finish:
           slack_title: 'Nightly Shop CE 7.2.x on {{ .Github.Repository }}'  
+      use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -52,6 +55,7 @@ jobs:
       enterprise_github_token: ${{ secrets.enterprise_github_token }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SLACK_SCHEDULED_WEBHOOK_URL: ${{ secrets.SLACK_SCHEDULED_WEBHOOK_URL }}
 
   oxideshop_ce_80x_nightly:
     if: always()
@@ -67,6 +71,7 @@ jobs:
           title: '8.0.x-nightly'
         finish:
           slack_title: 'Nightly Shop CE 8.0.x on {{ .Github.Repository }}'
+      use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -76,3 +81,4 @@ jobs:
       enterprise_github_token: ${{ secrets.enterprise_github_token }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SLACK_SCHEDULED_WEBHOOK_URL: ${{ secrets.SLACK_SCHEDULED_WEBHOOK_URL }}
